@@ -1,0 +1,5 @@
+package edaisong.entity.req;
+
+public class TestServiceReq extends RequestBase{
+
+}

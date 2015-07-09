@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+    	">
+	<!-- 相当于将spring-datasource.xml和当前文档合并在一起，或者将这两个文件的内容合并在一起 -->
+	<import resource="spring-datasource.xml" />
+	<import resource="redis-confg.xml" />
+	 <context:component-scan base-package="com.edaisong.core" /> 
+ <context:component-scan base-package="com.edaisong.api" /> 
+
+<!-- 	<context:component-scan base-package="fg.ab" -->
+<!-- 		use-default-filters="false"> -->
+ 		<!-- 扫描符合@Service @Repository的类 --> 
+<!-- 		<context:include-filter type="annotation" -->
+<!-- 			expression="org.springframework.stereotype.Service" /> -->
+<!-- 		<context:include-filter type="annotation" -->
+<!-- 			expression="org.springframework.stereotype.Repository" /> -->
+<!-- 	</context:component-scan> -->
+</beans>

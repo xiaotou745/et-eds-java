@@ -1,0 +1,38 @@
+package com.edaisong.api.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.edaisong.api.dal.dao.inter.IBusinessBalanceRecord;
+import com.edaisong.api.service.inter.ITestService;
+import com.edaisong.entity.BusinessBalanceRecord;
+
+@Service
+public class TestService implements ITestService{
+	
+	@Autowired
+    private IBusinessBalanceRecord dao; 
+	
+    @Override
+	public List<BusinessBalanceRecord> selectBusinessBalanceByID(
+			int RecordType, String OperateTime) {
+    	 return dao.selectBusinessBalanceByID(RecordType, OperateTime); 
+	}
+	@Override
+	public int addBusinessBalance(BusinessBalanceRecord record) {
+		  return dao.addBusinessBalance(new BusinessBalanceRecord());
+	}
+	@Override
+	public int updateBusinessBalance(BusinessBalanceRecord record) {
+		  return dao.updateBusinessBalance(record);
+	}
+    
+	@Override
+	public int deleteBusinessBalance(int id) {
+		  return dao.deleteBusinessBalance(id);
+	} 
+
+}

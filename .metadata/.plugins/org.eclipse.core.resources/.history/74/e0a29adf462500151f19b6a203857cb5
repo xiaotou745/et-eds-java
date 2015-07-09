@@ -1,0 +1,54 @@
+package edaisong.entity.common;
+
+public class ResponseBase {
+	/**
+     * 返回码（>0 业务异常）
+     */
+    private int responseCode = ResponseCode.SUCESS;
+    /**
+     * 错误信息
+     */
+    private String message;
+    /**
+     * 处理服务器Ip
+     */
+    private String processServerIp;
+
+    public int getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(int responseCode) {
+        //给soa返回消息设置code
+        // 需要判断当前的请求上下文是否存在,避免在单元测试中因为没有上下文而抛错
+        if (RequestContextHolder.getRequestAttributes() != null) {
+            WebContext.getInstance().setResponseCode(responseCode);
+        }
+        this.responseCode = responseCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        //给soa返回消息设置message
+        // 需要判断当前的请求上下文是否存在,避免在单元测试中因为没有上下文而抛错
+        if (RequestContextHolder.getRequestAttributes() != null) {
+            if (message == null) {
+                WebContext.getInstance().setResponseMsg("");
+            }else {
+                WebContext.getInstance().setResponseMsg(message);
+            }
+        }
+        this.message = message;
+    }
+
+    public String getProcessServerIp() {
+        return processServerIp;
+    }
+
+    public void setProcessServerIp(String processServerIp) {
+        this.processServerIp = processServerIp;
+    }
+}

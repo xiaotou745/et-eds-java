@@ -1,0 +1,22 @@
+package com.edaisong.api.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.edaisong.api.business.SqlSessionFactoryPool;
+
+import com.edaisong.api.service.inter.ITestService;
+
+
+
+@Service
+public class Hellp {
+	public static void main(String[] args) {
+		ITestService um =SqlSessionFactoryPool.getCustomBeanByType(ITestService.class);
+
+    	um.selectBusinessBalanceByID(9,"2015-1-1");
+    	um.addBusinessBalance(new BusinessBalanceRecord());
+    	um.deleteBusinessBalance(1541);
+    	um.updateBusinessBalance(new BusinessBalanceRecord());
+    	System.exit(0);
+	}
+}

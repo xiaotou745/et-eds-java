@@ -1,0 +1,49 @@
+# MySQL
+#============================================================================
+jdbc.mysql.driver=com.mysql.jdbc.Driver
+jdbc.mysql.url=jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+jdbc.mysql.username=root
+jdbc.mysql.password=root
+
+#============================================================================
+# MS SQL Server
+#============================================================================
+jdbc.sqlserver.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+jdbc.sqlserver.url=jdbc:sqlserver://10.8.7.41:1433;DatabaseName=superman;
+jdbc.sqlserver.username=sa
+jdbc.sqlserver.password=110
+
+#============================================================================
+# readonly MS SQL Server
+#============================================================================
+jdbc.readonlysqlserver.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+jdbc.readonlysqlserver.url=jdbc:sqlserver://10.8.8.56:1433;DatabaseName=superman;
+jdbc.readonlysqlserver.username=etaoshi_master
+jdbc.readonlysqlserver.password=Tr1iV8Q7sY005
+
+
+		
+#============================================================================
+# MS SQL Server (JTDS)
+#============================================================================
+#jdbc.sqlserver.driver=net.sourceforge.jtds.jdbc.Driver
+#jdbc.sqlserver.url=jdbc:jtds:sqlserver://127.0.0.1:1433/test
+#jdbc.sqlserver.username=sa
+#jdbc.sqlserver.password=sa
+
+
+#============================================================================
+# \u901A\u7528\u914D\u7F6E
+#============================================================================
+jdbc.initialSize=5
+jdbc.minIdle=5
+jdbc.maxIdle=20
+jdbc.maxActive=100
+jdbc.maxWait=100000
+jdbc.defaultAutoCommit=false
+jdbc.removeAbandoned=true
+jdbc.removeAbandonedTimeout=600
+jdbc.testWhileIdle=true
+jdbc.timeBetweenEvictionRunsMillis=60000
+jdbc.numTestsPerEvictionRun=20
+jdbc.minEvictableIdleTimeMillis=300000
