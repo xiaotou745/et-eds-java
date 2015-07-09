@@ -13,7 +13,7 @@
     	">
 	<!-- 相当于将spring-datasource.xml和当前文档合并在一起，或者将这两个文件的内容合并在一起 -->
 	<import resource="spring-datasource.xml" />
-	<import resource="redis-confg.xml" />
+	<import resource="redis-config.xml" />
 	 <context:component-scan base-package="com.edaisong.core" /> 
  <context:component-scan base-package="com.edaisong.api" /> 
 
