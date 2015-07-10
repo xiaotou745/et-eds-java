@@ -14,12 +14,8 @@
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 	<!-- 引入配置文件 -->
-	<context:property-placeholder location="classpath:conf/custom/conf.properties"
-		ignore-unresolvable="true" />
+	<import resource="classpath:conf/core/spring-context.xml" />
 
-
-	<import resource="classpath:conf/core/spring-datasource.xml" />
-		<import resource="classpath:conf/core/redis-config.xml" />
 	<!-- <mvc:default-servlet-handler/> -->
 	<!-- <context:annotation-config/> -->
 
