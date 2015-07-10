@@ -33,11 +33,4 @@
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/main/resources/conf/mybatis/BusinessBalanceRecordMapper.xml</name>
-			<type>1</type>
-			<location>D:/Gen/sqlmap/ctas/test/entity/xml/BusinessBalanceRecordMapper.xml</location>
-		</link>
-	</linkedResources>
 </projectDescription>
