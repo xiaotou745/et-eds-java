@@ -11,12 +11,8 @@
 		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
     	">
 
-	<context:property-placeholder location="classpath:conf/custom/log4j.properties"
-		ignore-unresolvable="true" />
 	<!-- 相当于将spring-datasource.xml和当前文档合并在一起，或者将这两个文件的内容合并在一起 -->
 	<import resource="classpath:conf/core/spring-datasource.xml" />
-<!-- 	<import resource="classpath:conf/core/log4j.xml" /> -->
-	<import resource="classpath:conf/core/redis-config.xml" />
-
+	<import resource="classpath:conf/core/core-context.xml" />
 	<context:component-scan base-package="com.edaisong.api" />
 </beans>

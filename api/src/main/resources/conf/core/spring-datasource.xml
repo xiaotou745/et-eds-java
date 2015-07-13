@@ -32,17 +32,17 @@
 		<!--dataSource属性指定要用到的连接池 -->
 		<property name="dataSource" ref="superManSqlServerDataSource" />
 		<!--configLocation属性指定mybatis的核心配置文件 -->
-		<property name="configLocation" value="classpath:conf/core/mybatis-config.xml" />
+<!-- 		<property name="configLocation" value="classpath:conf/core/mybatis-config.xml" /> -->
 		<!-- 所有配置的sqlmapper文件，自动注入时使用 -->
-		<!--<property name="mapperLocations" value="conf/mybatis/*.xml" /> -->
+		<property name="mapperLocations" value="classpath:conf/mybatis/*.xml" /> 
 	</bean>
 	<bean id="superManReadOnlySqlServerSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<!--dataSource属性指定要用到的连接池 -->
 		<property name="dataSource" ref="superManReadOnlySqlServerDataSource" />
 		<!--configLocation属性指定mybatis的核心配置文件 -->
-		<property name="configLocation" value="classpath:conf/core/mybatis-config.xml" />
+<!-- 		<property name="configLocation" value="classpath:conf/core/mybatis-config.xml" /> -->
 		<!-- 所有配置的sqlmapper文件，自动注入时使用 -->
-		<!-- <property name="mapperLocations" value="conf/mybatis/*.xml" /> -->
+		 <property name="mapperLocations" value="classpath:conf/mybatis/*.xml" /> 
 	</bean>
 
 
