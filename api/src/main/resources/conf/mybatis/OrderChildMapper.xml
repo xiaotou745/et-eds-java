@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IOrderChildDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderChild" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="OrderId" property="orderid" jdbcType="INTEGER" />
+    <result column="ChildId" property="childid" jdbcType="INTEGER" />
+    <result column="TotalPrice" property="totalprice" jdbcType="DECIMAL" />
+    <result column="GoodPrice" property="goodprice" jdbcType="DECIMAL" />
+    <result column="DeliveryPrice" property="deliveryprice" jdbcType="DECIMAL" />
+    <result column="PayStyle" property="paystyle" jdbcType="SMALLINT" />
+    <result column="PayType" property="paytype" jdbcType="SMALLINT" />
+    <result column="PayStatus" property="paystatus" jdbcType="SMALLINT" />
+    <result column="PayBy" property="payby" jdbcType="NVARCHAR" />
+    <result column="PayTime" property="paytime" jdbcType="TIMESTAMP" />
+    <result column="PayPrice" property="payprice" jdbcType="DECIMAL" />
+    <result column="HasUploadTicket" property="hasuploadticket" jdbcType="BIT" />
+    <result column="TicketUrl" property="ticketurl" jdbcType="VARCHAR" />
+    <result column="CreateBy" property="createby" jdbcType="NVARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="UpdateBy" property="updateby" jdbcType="NVARCHAR" />
+    <result column="UpdateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="OriginalOrderNo" property="originalorderno" jdbcType="VARCHAR" />
+    <result column="WxCodeUrl" property="wxcodeurl" jdbcType="VARCHAR" />
+    <result column="ThirdPayStatus" property="thirdpaystatus" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, OrderId, ChildId, TotalPrice, GoodPrice, DeliveryPrice, PayStyle, PayType, PayStatus, 
+    PayBy, PayTime, PayPrice, HasUploadTicket, TicketUrl, CreateBy, CreateTime, UpdateBy, 
+    UpdateTime, OriginalOrderNo, WxCodeUrl, ThirdPayStatus
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderChild
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from OrderChild
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.OrderChild" >
+    insert into OrderChild (Id, OrderId, ChildId, 
+      TotalPrice, GoodPrice, DeliveryPrice, 
+      PayStyle, PayType, PayStatus, 
+      PayBy, PayTime, PayPrice, 
+      HasUploadTicket, TicketUrl, CreateBy, 
+      CreateTime, UpdateBy, UpdateTime, 
+      OriginalOrderNo, WxCodeUrl, ThirdPayStatus
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderid,jdbcType=INTEGER}, #{childid,jdbcType=INTEGER}, 
+      #{totalprice,jdbcType=DECIMAL}, #{goodprice,jdbcType=DECIMAL}, #{deliveryprice,jdbcType=DECIMAL}, 
+      #{paystyle,jdbcType=SMALLINT}, #{paytype,jdbcType=SMALLINT}, #{paystatus,jdbcType=SMALLINT}, 
+      #{payby,jdbcType=NVARCHAR}, #{paytime,jdbcType=TIMESTAMP}, #{payprice,jdbcType=DECIMAL}, 
+      #{hasuploadticket,jdbcType=BIT}, #{ticketurl,jdbcType=VARCHAR}, #{createby,jdbcType=NVARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updateby,jdbcType=NVARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{originalorderno,jdbcType=VARCHAR}, #{wxcodeurl,jdbcType=VARCHAR}, #{thirdpaystatus,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.OrderChild" >
+    insert into OrderChild
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orderid != null" >
+        OrderId,
+      </if>
+      <if test="childid != null" >
+        ChildId,
+      </if>
+      <if test="totalprice != null" >
+        TotalPrice,
+      </if>
+      <if test="goodprice != null" >
+        GoodPrice,
+      </if>
+      <if test="deliveryprice != null" >
+        DeliveryPrice,
+      </if>
+      <if test="paystyle != null" >
+        PayStyle,
+      </if>
+      <if test="paytype != null" >
+        PayType,
+      </if>
+      <if test="paystatus != null" >
+        PayStatus,
+      </if>
+      <if test="payby != null" >
+        PayBy,
+      </if>
+      <if test="paytime != null" >
+        PayTime,
+      </if>
+      <if test="payprice != null" >
+        PayPrice,
+      </if>
+      <if test="hasuploadticket != null" >
+        HasUploadTicket,
+      </if>
+      <if test="ticketurl != null" >
+        TicketUrl,
+      </if>
+      <if test="createby != null" >
+        CreateBy,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="updateby != null" >
+        UpdateBy,
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime,
+      </if>
+      <if test="originalorderno != null" >
+        OriginalOrderNo,
+      </if>
+      <if test="wxcodeurl != null" >
+        WxCodeUrl,
+      </if>
+      <if test="thirdpaystatus != null" >
+        ThirdPayStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="childid != null" >
+        #{childid,jdbcType=INTEGER},
+      </if>
+      <if test="totalprice != null" >
+        #{totalprice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodprice != null" >
+        #{goodprice,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryprice != null" >
+        #{deliveryprice,jdbcType=DECIMAL},
+      </if>
+      <if test="paystyle != null" >
+        #{paystyle,jdbcType=SMALLINT},
+      </if>
+      <if test="paytype != null" >
+        #{paytype,jdbcType=SMALLINT},
+      </if>
+      <if test="paystatus != null" >
+        #{paystatus,jdbcType=SMALLINT},
+      </if>
+      <if test="payby != null" >
+        #{payby,jdbcType=NVARCHAR},
+      </if>
+      <if test="paytime != null" >
+        #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payprice != null" >
+        #{payprice,jdbcType=DECIMAL},
+      </if>
+      <if test="hasuploadticket != null" >
+        #{hasuploadticket,jdbcType=BIT},
+      </if>
+      <if test="ticketurl != null" >
+        #{ticketurl,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null" >
+        #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="originalorderno != null" >
+        #{originalorderno,jdbcType=VARCHAR},
+      </if>
+      <if test="wxcodeurl != null" >
+        #{wxcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdpaystatus != null" >
+        #{thirdpaystatus,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderChild" >
+    update OrderChild
+    <set >
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="childid != null" >
+        ChildId = #{childid,jdbcType=INTEGER},
+      </if>
+      <if test="totalprice != null" >
+        TotalPrice = #{totalprice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodprice != null" >
+        GoodPrice = #{goodprice,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryprice != null" >
+        DeliveryPrice = #{deliveryprice,jdbcType=DECIMAL},
+      </if>
+      <if test="paystyle != null" >
+        PayStyle = #{paystyle,jdbcType=SMALLINT},
+      </if>
+      <if test="paytype != null" >
+        PayType = #{paytype,jdbcType=SMALLINT},
+      </if>
+      <if test="paystatus != null" >
+        PayStatus = #{paystatus,jdbcType=SMALLINT},
+      </if>
+      <if test="payby != null" >
+        PayBy = #{payby,jdbcType=NVARCHAR},
+      </if>
+      <if test="paytime != null" >
+        PayTime = #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payprice != null" >
+        PayPrice = #{payprice,jdbcType=DECIMAL},
+      </if>
+      <if test="hasuploadticket != null" >
+        HasUploadTicket = #{hasuploadticket,jdbcType=BIT},
+      </if>
+      <if test="ticketurl != null" >
+        TicketUrl = #{ticketurl,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null" >
+        CreateBy = #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="originalorderno != null" >
+        OriginalOrderNo = #{originalorderno,jdbcType=VARCHAR},
+      </if>
+      <if test="wxcodeurl != null" >
+        WxCodeUrl = #{wxcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdpaystatus != null" >
+        ThirdPayStatus = #{thirdpaystatus,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderChild" >
+    update OrderChild
+    set OrderId = #{orderid,jdbcType=INTEGER},
+      ChildId = #{childid,jdbcType=INTEGER},
+      TotalPrice = #{totalprice,jdbcType=DECIMAL},
+      GoodPrice = #{goodprice,jdbcType=DECIMAL},
+      DeliveryPrice = #{deliveryprice,jdbcType=DECIMAL},
+      PayStyle = #{paystyle,jdbcType=SMALLINT},
+      PayType = #{paytype,jdbcType=SMALLINT},
+      PayStatus = #{paystatus,jdbcType=SMALLINT},
+      PayBy = #{payby,jdbcType=NVARCHAR},
+      PayTime = #{paytime,jdbcType=TIMESTAMP},
+      PayPrice = #{payprice,jdbcType=DECIMAL},
+      HasUploadTicket = #{hasuploadticket,jdbcType=BIT},
+      TicketUrl = #{ticketurl,jdbcType=VARCHAR},
+      CreateBy = #{createby,jdbcType=NVARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      OriginalOrderNo = #{originalorderno,jdbcType=VARCHAR},
+      WxCodeUrl = #{wxcodeurl,jdbcType=VARCHAR},
+      ThirdPayStatus = #{thirdpaystatus,jdbcType=SMALLINT}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

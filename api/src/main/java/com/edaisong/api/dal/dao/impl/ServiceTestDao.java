@@ -10,13 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
-import com.edaisong.api.dal.dao.inter.IBusinessBalanceRecord;
+import com.edaisong.api.dal.dao.inter.IServiceTestDao;
 import com.edaisong.entity.BusinessBalanceRecord;
 
 
 @Repository
-public class SessionDaoImpl implements IBusinessBalanceRecord {
+public class ServiceTestDao implements IServiceTestDao {
 //    @Autowired
 //	private SqlSessionFactory superManSqlServerSessionFactory;
     
@@ -36,7 +35,7 @@ public class SessionDaoImpl implements IBusinessBalanceRecord {
 			paramMap.put("OperateTime", OperateTime);
 			List<BusinessBalanceRecord> list = session
 					.selectList(
-							"com.yihaomen.mybatis.models.UserMapper.selectBusinessBalanceByID",
+							"com.edaisong.api.dal.dao.inter.IServiceTestDao.selectBusinessBalanceByID",
 							paramMap);
 			if (list == null) {
 				System.out.println("selectBusinessBalanceByID为null");
@@ -71,7 +70,7 @@ public class SessionDaoImpl implements IBusinessBalanceRecord {
 			paramMap.put("RelationNo", "55555");
 			paramMap.put("Remark", "mybatistest");
 			int result = session
-					.insert("com.yihaomen.mybatis.models.UserMapper.addBusinessBalance",
+					.insert("com.edaisong.api.dal.dao.inter.IServiceTestDao.addBusinessBalance",
 							paramMap);
 			session.commit(); 
 			System.out.println("addBusinessBalance影响行数" + result);
@@ -93,7 +92,7 @@ public class SessionDaoImpl implements IBusinessBalanceRecord {
 			paramMap.put("Amount", 100);
 			paramMap.put("Balance", 100);
 			int result = session
-					.update("com.yihaomen.mybatis.models.UserMapper.updateBusinessBalance",
+					.update("com.edaisong.api.dal.dao.inter.IServiceTestDao.updateBusinessBalance",
 							paramMap);
 			session.commit();
 			System.out.println("updateBusinessBalance影响行数" + result);
@@ -111,7 +110,7 @@ public class SessionDaoImpl implements IBusinessBalanceRecord {
 				.openSession();
 		try {
 			int result = session
-					.delete("com.yihaomen.mybatis.models.UserMapper.deleteBusinessBalance",
+					.delete("com.edaisong.api.dal.dao.inter.IServiceTestDao.deleteBusinessBalance",
 							id);
 			session.commit();
 			System.out.println("deleteBusinessBalance影响行数" + result);

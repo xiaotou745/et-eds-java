@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IChannel_delDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.Channel_del" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="ChannelName" property="channelname" jdbcType="NVARCHAR" />
+    <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="ModifyName" property="modifyname" jdbcType="NVARCHAR" />
+    <result column="ModifyTime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="IsValid" property="isvalid" jdbcType="TINYINT" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, ChannelName, CreateName, CreateTime, ModifyName, ModifyTime, IsValid, Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from channel_del
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from channel_del
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.Channel_del" >
+    insert into channel_del (Id, ChannelName, CreateName, 
+      CreateTime, ModifyName, ModifyTime, 
+      IsValid, Remark)
+    values (#{id,jdbcType=BIGINT}, #{channelname,jdbcType=NVARCHAR}, #{createname,jdbcType=NVARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{modifyname,jdbcType=NVARCHAR}, #{modifytime,jdbcType=TIMESTAMP}, 
+      #{isvalid,jdbcType=TINYINT}, #{remark,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.Channel_del" >
+    insert into channel_del
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="channelname != null" >
+        ChannelName,
+      </if>
+      <if test="createname != null" >
+        CreateName,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="modifyname != null" >
+        ModifyName,
+      </if>
+      <if test="modifytime != null" >
+        ModifyTime,
+      </if>
+      <if test="isvalid != null" >
+        IsValid,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="channelname != null" >
+        #{channelname,jdbcType=NVARCHAR},
+      </if>
+      <if test="createname != null" >
+        #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyname != null" >
+        #{modifyname,jdbcType=NVARCHAR},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isvalid != null" >
+        #{isvalid,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Channel_del" >
+    update channel_del
+    <set >
+      <if test="channelname != null" >
+        ChannelName = #{channelname,jdbcType=NVARCHAR},
+      </if>
+      <if test="createname != null" >
+        CreateName = #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyname != null" >
+        ModifyName = #{modifyname,jdbcType=NVARCHAR},
+      </if>
+      <if test="modifytime != null" >
+        ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isvalid != null" >
+        IsValid = #{isvalid,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Channel_del" >
+    update channel_del
+    set ChannelName = #{channelname,jdbcType=NVARCHAR},
+      CreateName = #{createname,jdbcType=NVARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      ModifyName = #{modifyname,jdbcType=NVARCHAR},
+      ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+      IsValid = #{isvalid,jdbcType=TINYINT},
+      Remark = #{remark,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

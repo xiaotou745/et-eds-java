@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IBusinessRechargeDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.BusinessRecharge" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
+    <result column="PayType" property="paytype" jdbcType="INTEGER" />
+    <result column="OrderNo" property="orderno" jdbcType="VARCHAR" />
+    <result column="payAmount" property="payamount" jdbcType="DECIMAL" />
+    <result column="PayStatus" property="paystatus" jdbcType="INTEGER" />
+    <result column="PayBy" property="payby" jdbcType="NVARCHAR" />
+    <result column="PayTime" property="paytime" jdbcType="TIMESTAMP" />
+    <result column="OriginalOrderNo" property="originalorderno" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, BusinessId, PayType, OrderNo, payAmount, PayStatus, PayBy, PayTime, OriginalOrderNo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from BusinessRecharge
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from BusinessRecharge
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.BusinessRecharge" >
+    insert into BusinessRecharge (Id, BusinessId, PayType, 
+      OrderNo, payAmount, PayStatus, 
+      PayBy, PayTime, OriginalOrderNo
+      )
+    values (#{id,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, #{paytype,jdbcType=INTEGER}, 
+      #{orderno,jdbcType=VARCHAR}, #{payamount,jdbcType=DECIMAL}, #{paystatus,jdbcType=INTEGER}, 
+      #{payby,jdbcType=NVARCHAR}, #{paytime,jdbcType=TIMESTAMP}, #{originalorderno,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.BusinessRecharge" >
+    insert into BusinessRecharge
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="businessid != null" >
+        BusinessId,
+      </if>
+      <if test="paytype != null" >
+        PayType,
+      </if>
+      <if test="orderno != null" >
+        OrderNo,
+      </if>
+      <if test="payamount != null" >
+        payAmount,
+      </if>
+      <if test="paystatus != null" >
+        PayStatus,
+      </if>
+      <if test="payby != null" >
+        PayBy,
+      </if>
+      <if test="paytime != null" >
+        PayTime,
+      </if>
+      <if test="originalorderno != null" >
+        OriginalOrderNo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="paytype != null" >
+        #{paytype,jdbcType=INTEGER},
+      </if>
+      <if test="orderno != null" >
+        #{orderno,jdbcType=VARCHAR},
+      </if>
+      <if test="payamount != null" >
+        #{payamount,jdbcType=DECIMAL},
+      </if>
+      <if test="paystatus != null" >
+        #{paystatus,jdbcType=INTEGER},
+      </if>
+      <if test="payby != null" >
+        #{payby,jdbcType=NVARCHAR},
+      </if>
+      <if test="paytime != null" >
+        #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="originalorderno != null" >
+        #{originalorderno,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.BusinessRecharge" >
+    update BusinessRecharge
+    <set >
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="paytype != null" >
+        PayType = #{paytype,jdbcType=INTEGER},
+      </if>
+      <if test="orderno != null" >
+        OrderNo = #{orderno,jdbcType=VARCHAR},
+      </if>
+      <if test="payamount != null" >
+        payAmount = #{payamount,jdbcType=DECIMAL},
+      </if>
+      <if test="paystatus != null" >
+        PayStatus = #{paystatus,jdbcType=INTEGER},
+      </if>
+      <if test="payby != null" >
+        PayBy = #{payby,jdbcType=NVARCHAR},
+      </if>
+      <if test="paytime != null" >
+        PayTime = #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="originalorderno != null" >
+        OriginalOrderNo = #{originalorderno,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.BusinessRecharge" >
+    update BusinessRecharge
+    set BusinessId = #{businessid,jdbcType=INTEGER},
+      PayType = #{paytype,jdbcType=INTEGER},
+      OrderNo = #{orderno,jdbcType=VARCHAR},
+      payAmount = #{payamount,jdbcType=DECIMAL},
+      PayStatus = #{paystatus,jdbcType=INTEGER},
+      PayBy = #{payby,jdbcType=NVARCHAR},
+      PayTime = #{paytime,jdbcType=TIMESTAMP},
+      OriginalOrderNo = #{originalorderno,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

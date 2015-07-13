@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IBusinessWithdrawLogDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.BusinessWithdrawLog" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="WithwardId" property="withwardid" jdbcType="BIGINT" />
+    <result column="Status" property="status" jdbcType="SMALLINT" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+    <result column="Operator" property="operator" jdbcType="NVARCHAR" />
+    <result column="OperatTime" property="operattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, WithwardId, Status, Remark, Operator, OperatTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from BusinessWithdrawLog
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from BusinessWithdrawLog
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.BusinessWithdrawLog" >
+    insert into BusinessWithdrawLog (Id, WithwardId, Status, 
+      Remark, Operator, OperatTime
+      )
+    values (#{id,jdbcType=BIGINT}, #{withwardid,jdbcType=BIGINT}, #{status,jdbcType=SMALLINT}, 
+      #{remark,jdbcType=NVARCHAR}, #{operator,jdbcType=NVARCHAR}, #{operattime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.BusinessWithdrawLog" >
+    insert into BusinessWithdrawLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="withwardid != null" >
+        WithwardId,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="operator != null" >
+        Operator,
+      </if>
+      <if test="operattime != null" >
+        OperatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="withwardid != null" >
+        #{withwardid,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="operattime != null" >
+        #{operattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.BusinessWithdrawLog" >
+    update BusinessWithdrawLog
+    <set >
+      <if test="withwardid != null" >
+        WithwardId = #{withwardid,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+      <if test="operator != null" >
+        Operator = #{operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="operattime != null" >
+        OperatTime = #{operattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.BusinessWithdrawLog" >
+    update BusinessWithdrawLog
+    set WithwardId = #{withwardid,jdbcType=BIGINT},
+      Status = #{status,jdbcType=SMALLINT},
+      Remark = #{remark,jdbcType=NVARCHAR},
+      Operator = #{operator,jdbcType=NVARCHAR},
+      OperatTime = #{operattime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

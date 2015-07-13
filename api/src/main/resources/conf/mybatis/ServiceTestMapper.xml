@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yihaomen.mybatis.models.UserMapper">
+<mapper namespace="com.edaisong.api.dal.dao.inter.IServiceTestDao">
 	<resultMap type="com.edaisong.entity.BusinessBalanceRecord" id="myResultType">
 		<id column="id" property="id" />
 		<result column="busid" property="BusinessId" />

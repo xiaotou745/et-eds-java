@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IAuthorityMenuClassDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.AuthorityMenuClass" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="ParId" property="parid" jdbcType="INTEGER" />
+    <result column="MenuName" property="menuname" jdbcType="VARCHAR" />
+    <result column="BeLock" property="belock" jdbcType="BIT" />
+    <result column="Url" property="url" jdbcType="VARCHAR" />
+    <result column="IsButton" property="isbutton" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, ParId, MenuName, BeLock, Url, IsButton
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from AuthorityMenuClass
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from AuthorityMenuClass
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.AuthorityMenuClass" >
+    insert into AuthorityMenuClass (Id, ParId, MenuName, 
+      BeLock, Url, IsButton)
+    values (#{id,jdbcType=INTEGER}, #{parid,jdbcType=INTEGER}, #{menuname,jdbcType=VARCHAR}, 
+      #{belock,jdbcType=BIT}, #{url,jdbcType=VARCHAR}, #{isbutton,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.AuthorityMenuClass" >
+    insert into AuthorityMenuClass
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="parid != null" >
+        ParId,
+      </if>
+      <if test="menuname != null" >
+        MenuName,
+      </if>
+      <if test="belock != null" >
+        BeLock,
+      </if>
+      <if test="url != null" >
+        Url,
+      </if>
+      <if test="isbutton != null" >
+        IsButton,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="parid != null" >
+        #{parid,jdbcType=INTEGER},
+      </if>
+      <if test="menuname != null" >
+        #{menuname,jdbcType=VARCHAR},
+      </if>
+      <if test="belock != null" >
+        #{belock,jdbcType=BIT},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="isbutton != null" >
+        #{isbutton,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.AuthorityMenuClass" >
+    update AuthorityMenuClass
+    <set >
+      <if test="parid != null" >
+        ParId = #{parid,jdbcType=INTEGER},
+      </if>
+      <if test="menuname != null" >
+        MenuName = #{menuname,jdbcType=VARCHAR},
+      </if>
+      <if test="belock != null" >
+        BeLock = #{belock,jdbcType=BIT},
+      </if>
+      <if test="url != null" >
+        Url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="isbutton != null" >
+        IsButton = #{isbutton,jdbcType=BIT},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.AuthorityMenuClass" >
+    update AuthorityMenuClass
+    set ParId = #{parid,jdbcType=INTEGER},
+      MenuName = #{menuname,jdbcType=VARCHAR},
+      BeLock = #{belock,jdbcType=BIT},
+      Url = #{url,jdbcType=VARCHAR},
+      IsButton = #{isbutton,jdbcType=BIT}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

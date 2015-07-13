@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IAccountDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.Account" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Password" property="password" jdbcType="NVARCHAR" />
+    <result column="UserName" property="username" jdbcType="NVARCHAR" />
+    <result column="LoginName" property="loginname" jdbcType="NVARCHAR" />
+    <result column="Status" property="status" jdbcType="INTEGER" />
+    <result column="AccountType" property="accounttype" jdbcType="INTEGER" />
+    <result column="FADateTime" property="fadatetime" jdbcType="TIMESTAMP" />
+    <result column="FAUser" property="fauser" jdbcType="NVARCHAR" />
+    <result column="LCDateTime" property="lcdatetime" jdbcType="TIMESTAMP" />
+    <result column="LCUser" property="lcuser" jdbcType="NVARCHAR" />
+    <result column="GroupId" property="groupid" jdbcType="INTEGER" />
+    <result column="RoleId" property="roleid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, Password, UserName, LoginName, Status, AccountType, FADateTime, FAUser, LCDateTime, 
+    LCUser, GroupId, RoleId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from account
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from account
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.Account" >
+    insert into account (Id, Password, UserName, 
+      LoginName, Status, AccountType, 
+      FADateTime, FAUser, LCDateTime, 
+      LCUser, GroupId, RoleId
+      )
+    values (#{id,jdbcType=INTEGER}, #{password,jdbcType=NVARCHAR}, #{username,jdbcType=NVARCHAR}, 
+      #{loginname,jdbcType=NVARCHAR}, #{status,jdbcType=INTEGER}, #{accounttype,jdbcType=INTEGER}, 
+      #{fadatetime,jdbcType=TIMESTAMP}, #{fauser,jdbcType=NVARCHAR}, #{lcdatetime,jdbcType=TIMESTAMP}, 
+      #{lcuser,jdbcType=NVARCHAR}, #{groupid,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.Account" >
+    insert into account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="password != null" >
+        Password,
+      </if>
+      <if test="username != null" >
+        UserName,
+      </if>
+      <if test="loginname != null" >
+        LoginName,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="accounttype != null" >
+        AccountType,
+      </if>
+      <if test="fadatetime != null" >
+        FADateTime,
+      </if>
+      <if test="fauser != null" >
+        FAUser,
+      </if>
+      <if test="lcdatetime != null" >
+        LCDateTime,
+      </if>
+      <if test="lcuser != null" >
+        LCUser,
+      </if>
+      <if test="groupid != null" >
+        GroupId,
+      </if>
+      <if test="roleid != null" >
+        RoleId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=NVARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginname != null" >
+        #{loginname,jdbcType=NVARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="accounttype != null" >
+        #{accounttype,jdbcType=INTEGER},
+      </if>
+      <if test="fadatetime != null" >
+        #{fadatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fauser != null" >
+        #{fauser,jdbcType=NVARCHAR},
+      </if>
+      <if test="lcdatetime != null" >
+        #{lcdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lcuser != null" >
+        #{lcuser,jdbcType=NVARCHAR},
+      </if>
+      <if test="groupid != null" >
+        #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="roleid != null" >
+        #{roleid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Account" >
+    update account
+    <set >
+      <if test="password != null" >
+        Password = #{password,jdbcType=NVARCHAR},
+      </if>
+      <if test="username != null" >
+        UserName = #{username,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginname != null" >
+        LoginName = #{loginname,jdbcType=NVARCHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="accounttype != null" >
+        AccountType = #{accounttype,jdbcType=INTEGER},
+      </if>
+      <if test="fadatetime != null" >
+        FADateTime = #{fadatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fauser != null" >
+        FAUser = #{fauser,jdbcType=NVARCHAR},
+      </if>
+      <if test="lcdatetime != null" >
+        LCDateTime = #{lcdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lcuser != null" >
+        LCUser = #{lcuser,jdbcType=NVARCHAR},
+      </if>
+      <if test="groupid != null" >
+        GroupId = #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="roleid != null" >
+        RoleId = #{roleid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Account" >
+    update account
+    set Password = #{password,jdbcType=NVARCHAR},
+      UserName = #{username,jdbcType=NVARCHAR},
+      LoginName = #{loginname,jdbcType=NVARCHAR},
+      Status = #{status,jdbcType=INTEGER},
+      AccountType = #{accounttype,jdbcType=INTEGER},
+      FADateTime = #{fadatetime,jdbcType=TIMESTAMP},
+      FAUser = #{fauser,jdbcType=NVARCHAR},
+      LCDateTime = #{lcdatetime,jdbcType=TIMESTAMP},
+      LCUser = #{lcuser,jdbcType=NVARCHAR},
+      GroupId = #{groupid,jdbcType=INTEGER},
+      RoleId = #{roleid,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

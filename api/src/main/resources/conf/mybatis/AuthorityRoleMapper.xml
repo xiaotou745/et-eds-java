@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IAuthorityRoleDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.AuthorityRole" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="RoleName" property="rolename" jdbcType="VARCHAR" />
+    <result column="BeLock" property="belock" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, RoleName, BeLock
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from AuthorityRole
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from AuthorityRole
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.AuthorityRole" >
+    insert into AuthorityRole (Id, RoleName, BeLock
+      )
+    values (#{id,jdbcType=INTEGER}, #{rolename,jdbcType=VARCHAR}, #{belock,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.AuthorityRole" >
+    insert into AuthorityRole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="rolename != null" >
+        RoleName,
+      </if>
+      <if test="belock != null" >
+        BeLock,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="rolename != null" >
+        #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="belock != null" >
+        #{belock,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.AuthorityRole" >
+    update AuthorityRole
+    <set >
+      <if test="rolename != null" >
+        RoleName = #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="belock != null" >
+        BeLock = #{belock,jdbcType=BIT},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.AuthorityRole" >
+    update AuthorityRole
+    set RoleName = #{rolename,jdbcType=VARCHAR},
+      BeLock = #{belock,jdbcType=BIT}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

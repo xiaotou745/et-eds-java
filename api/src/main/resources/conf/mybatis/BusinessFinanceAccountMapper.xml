@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IBusinessFinanceAccountDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.BusinessFinanceAccount" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
+    <result column="TrueName" property="truename" jdbcType="NVARCHAR" />
+    <result column="AccountNo" property="accountno" jdbcType="VARCHAR" />
+    <result column="IsEnable" property="isenable" jdbcType="BIT" />
+    <result column="AccountType" property="accounttype" jdbcType="SMALLINT" />
+    <result column="BelongType" property="belongtype" jdbcType="SMALLINT" />
+    <result column="OpenBank" property="openbank" jdbcType="NVARCHAR" />
+    <result column="OpenSubBank" property="opensubbank" jdbcType="NVARCHAR" />
+    <result column="CreateBy" property="createby" jdbcType="NVARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="UpdateBy" property="updateby" jdbcType="NVARCHAR" />
+    <result column="UpdateTime" property="updatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, BusinessId, TrueName, AccountNo, IsEnable, AccountType, BelongType, OpenBank, 
+    OpenSubBank, CreateBy, CreateTime, UpdateBy, UpdateTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from BusinessFinanceAccount
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from BusinessFinanceAccount
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.BusinessFinanceAccount" >
+    insert into BusinessFinanceAccount (Id, BusinessId, TrueName, 
+      AccountNo, IsEnable, AccountType, 
+      BelongType, OpenBank, OpenSubBank, 
+      CreateBy, CreateTime, UpdateBy, 
+      UpdateTime)
+    values (#{id,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, #{truename,jdbcType=NVARCHAR}, 
+      #{accountno,jdbcType=VARCHAR}, #{isenable,jdbcType=BIT}, #{accounttype,jdbcType=SMALLINT}, 
+      #{belongtype,jdbcType=SMALLINT}, #{openbank,jdbcType=NVARCHAR}, #{opensubbank,jdbcType=NVARCHAR}, 
+      #{createby,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updateby,jdbcType=NVARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.BusinessFinanceAccount" >
+    insert into BusinessFinanceAccount
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="businessid != null" >
+        BusinessId,
+      </if>
+      <if test="truename != null" >
+        TrueName,
+      </if>
+      <if test="accountno != null" >
+        AccountNo,
+      </if>
+      <if test="isenable != null" >
+        IsEnable,
+      </if>
+      <if test="accounttype != null" >
+        AccountType,
+      </if>
+      <if test="belongtype != null" >
+        BelongType,
+      </if>
+      <if test="openbank != null" >
+        OpenBank,
+      </if>
+      <if test="opensubbank != null" >
+        OpenSubBank,
+      </if>
+      <if test="createby != null" >
+        CreateBy,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="updateby != null" >
+        UpdateBy,
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="truename != null" >
+        #{truename,jdbcType=NVARCHAR},
+      </if>
+      <if test="accountno != null" >
+        #{accountno,jdbcType=VARCHAR},
+      </if>
+      <if test="isenable != null" >
+        #{isenable,jdbcType=BIT},
+      </if>
+      <if test="accounttype != null" >
+        #{accounttype,jdbcType=SMALLINT},
+      </if>
+      <if test="belongtype != null" >
+        #{belongtype,jdbcType=SMALLINT},
+      </if>
+      <if test="openbank != null" >
+        #{openbank,jdbcType=NVARCHAR},
+      </if>
+      <if test="opensubbank != null" >
+        #{opensubbank,jdbcType=NVARCHAR},
+      </if>
+      <if test="createby != null" >
+        #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.BusinessFinanceAccount" >
+    update BusinessFinanceAccount
+    <set >
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="truename != null" >
+        TrueName = #{truename,jdbcType=NVARCHAR},
+      </if>
+      <if test="accountno != null" >
+        AccountNo = #{accountno,jdbcType=VARCHAR},
+      </if>
+      <if test="isenable != null" >
+        IsEnable = #{isenable,jdbcType=BIT},
+      </if>
+      <if test="accounttype != null" >
+        AccountType = #{accounttype,jdbcType=SMALLINT},
+      </if>
+      <if test="belongtype != null" >
+        BelongType = #{belongtype,jdbcType=SMALLINT},
+      </if>
+      <if test="openbank != null" >
+        OpenBank = #{openbank,jdbcType=NVARCHAR},
+      </if>
+      <if test="opensubbank != null" >
+        OpenSubBank = #{opensubbank,jdbcType=NVARCHAR},
+      </if>
+      <if test="createby != null" >
+        CreateBy = #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.BusinessFinanceAccount" >
+    update BusinessFinanceAccount
+    set BusinessId = #{businessid,jdbcType=INTEGER},
+      TrueName = #{truename,jdbcType=NVARCHAR},
+      AccountNo = #{accountno,jdbcType=VARCHAR},
+      IsEnable = #{isenable,jdbcType=BIT},
+      AccountType = #{accounttype,jdbcType=SMALLINT},
+      BelongType = #{belongtype,jdbcType=SMALLINT},
+      OpenBank = #{openbank,jdbcType=NVARCHAR},
+      OpenSubBank = #{opensubbank,jdbcType=NVARCHAR},
+      CreateBy = #{createby,jdbcType=NVARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IMessageDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.Message" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="PushWay" property="pushway" jdbcType="SMALLINT" />
+    <result column="MessageType" property="messagetype" jdbcType="SMALLINT" />
+    <result column="Content" property="content" jdbcType="NVARCHAR" />
+    <result column="SentStatus" property="sentstatus" jdbcType="SMALLINT" />
+    <result column="PushType" property="pushtype" jdbcType="SMALLINT" />
+    <result column="PushTarget" property="pushtarget" jdbcType="SMALLINT" />
+    <result column="PushCity" property="pushcity" jdbcType="NVARCHAR" />
+    <result column="PushPhone" property="pushphone" jdbcType="NVARCHAR" />
+    <result column="SendType" property="sendtype" jdbcType="SMALLINT" />
+    <result column="SendTime" property="sendtime" jdbcType="TIMESTAMP" />
+    <result column="OverTime" property="overtime" jdbcType="TIMESTAMP" />
+    <result column="CreateBy" property="createby" jdbcType="NVARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="UpdateBy" property="updateby" jdbcType="NVARCHAR" />
+    <result column="UpdateTime" property="updatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, PushWay, MessageType, Content, SentStatus, PushType, PushTarget, PushCity, PushPhone, 
+    SendType, SendTime, OverTime, CreateBy, CreateTime, UpdateBy, UpdateTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from Message
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from Message
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.Message" >
+    insert into Message (Id, PushWay, MessageType, 
+      Content, SentStatus, PushType, 
+      PushTarget, PushCity, PushPhone, 
+      SendType, SendTime, OverTime, 
+      CreateBy, CreateTime, UpdateBy, 
+      UpdateTime)
+    values (#{id,jdbcType=BIGINT}, #{pushway,jdbcType=SMALLINT}, #{messagetype,jdbcType=SMALLINT}, 
+      #{content,jdbcType=NVARCHAR}, #{sentstatus,jdbcType=SMALLINT}, #{pushtype,jdbcType=SMALLINT}, 
+      #{pushtarget,jdbcType=SMALLINT}, #{pushcity,jdbcType=NVARCHAR}, #{pushphone,jdbcType=NVARCHAR}, 
+      #{sendtype,jdbcType=SMALLINT}, #{sendtime,jdbcType=TIMESTAMP}, #{overtime,jdbcType=TIMESTAMP}, 
+      #{createby,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updateby,jdbcType=NVARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.Message" >
+    insert into Message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="pushway != null" >
+        PushWay,
+      </if>
+      <if test="messagetype != null" >
+        MessageType,
+      </if>
+      <if test="content != null" >
+        Content,
+      </if>
+      <if test="sentstatus != null" >
+        SentStatus,
+      </if>
+      <if test="pushtype != null" >
+        PushType,
+      </if>
+      <if test="pushtarget != null" >
+        PushTarget,
+      </if>
+      <if test="pushcity != null" >
+        PushCity,
+      </if>
+      <if test="pushphone != null" >
+        PushPhone,
+      </if>
+      <if test="sendtype != null" >
+        SendType,
+      </if>
+      <if test="sendtime != null" >
+        SendTime,
+      </if>
+      <if test="overtime != null" >
+        OverTime,
+      </if>
+      <if test="createby != null" >
+        CreateBy,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="updateby != null" >
+        UpdateBy,
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="pushway != null" >
+        #{pushway,jdbcType=SMALLINT},
+      </if>
+      <if test="messagetype != null" >
+        #{messagetype,jdbcType=SMALLINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=NVARCHAR},
+      </if>
+      <if test="sentstatus != null" >
+        #{sentstatus,jdbcType=SMALLINT},
+      </if>
+      <if test="pushtype != null" >
+        #{pushtype,jdbcType=SMALLINT},
+      </if>
+      <if test="pushtarget != null" >
+        #{pushtarget,jdbcType=SMALLINT},
+      </if>
+      <if test="pushcity != null" >
+        #{pushcity,jdbcType=NVARCHAR},
+      </if>
+      <if test="pushphone != null" >
+        #{pushphone,jdbcType=NVARCHAR},
+      </if>
+      <if test="sendtype != null" >
+        #{sendtype,jdbcType=SMALLINT},
+      </if>
+      <if test="sendtime != null" >
+        #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overtime != null" >
+        #{overtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createby != null" >
+        #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Message" >
+    update Message
+    <set >
+      <if test="pushway != null" >
+        PushWay = #{pushway,jdbcType=SMALLINT},
+      </if>
+      <if test="messagetype != null" >
+        MessageType = #{messagetype,jdbcType=SMALLINT},
+      </if>
+      <if test="content != null" >
+        Content = #{content,jdbcType=NVARCHAR},
+      </if>
+      <if test="sentstatus != null" >
+        SentStatus = #{sentstatus,jdbcType=SMALLINT},
+      </if>
+      <if test="pushtype != null" >
+        PushType = #{pushtype,jdbcType=SMALLINT},
+      </if>
+      <if test="pushtarget != null" >
+        PushTarget = #{pushtarget,jdbcType=SMALLINT},
+      </if>
+      <if test="pushcity != null" >
+        PushCity = #{pushcity,jdbcType=NVARCHAR},
+      </if>
+      <if test="pushphone != null" >
+        PushPhone = #{pushphone,jdbcType=NVARCHAR},
+      </if>
+      <if test="sendtype != null" >
+        SendType = #{sendtype,jdbcType=SMALLINT},
+      </if>
+      <if test="sendtime != null" >
+        SendTime = #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overtime != null" >
+        OverTime = #{overtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createby != null" >
+        CreateBy = #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Message" >
+    update Message
+    set PushWay = #{pushway,jdbcType=SMALLINT},
+      MessageType = #{messagetype,jdbcType=SMALLINT},
+      Content = #{content,jdbcType=NVARCHAR},
+      SentStatus = #{sentstatus,jdbcType=SMALLINT},
+      PushType = #{pushtype,jdbcType=SMALLINT},
+      PushTarget = #{pushtarget,jdbcType=SMALLINT},
+      PushCity = #{pushcity,jdbcType=NVARCHAR},
+      PushPhone = #{pushphone,jdbcType=NVARCHAR},
+      SendType = #{sendtype,jdbcType=SMALLINT},
+      SendTime = #{sendtime,jdbcType=TIMESTAMP},
+      OverTime = #{overtime,jdbcType=TIMESTAMP},
+      CreateBy = #{createby,jdbcType=NVARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

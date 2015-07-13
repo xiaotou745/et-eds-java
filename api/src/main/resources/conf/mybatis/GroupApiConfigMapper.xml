@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IGroupApiConfigDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.GroupApiConfig" >
+    <id column="AppId" property="appid" jdbcType="INTEGER" />
+    <result column="AppKey" property="appkey" jdbcType="VARCHAR" />
+    <result column="AppSecret" property="appsecret" jdbcType="VARCHAR" />
+    <result column="AppVersion" property="appversion" jdbcType="VARCHAR" />
+    <result column="GroupId" property="groupid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    AppId, AppKey, AppSecret, AppVersion, GroupId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from GroupApiConfig
+    where AppId = #{appid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from GroupApiConfig
+    where AppId = #{appid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.GroupApiConfig" >
+    insert into GroupApiConfig (AppId, AppKey, AppSecret, 
+      AppVersion, GroupId)
+    values (#{appid,jdbcType=INTEGER}, #{appkey,jdbcType=VARCHAR}, #{appsecret,jdbcType=VARCHAR}, 
+      #{appversion,jdbcType=VARCHAR}, #{groupid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.GroupApiConfig" >
+    insert into GroupApiConfig
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="appid != null" >
+        AppId,
+      </if>
+      <if test="appkey != null" >
+        AppKey,
+      </if>
+      <if test="appsecret != null" >
+        AppSecret,
+      </if>
+      <if test="appversion != null" >
+        AppVersion,
+      </if>
+      <if test="groupid != null" >
+        GroupId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="appid != null" >
+        #{appid,jdbcType=INTEGER},
+      </if>
+      <if test="appkey != null" >
+        #{appkey,jdbcType=VARCHAR},
+      </if>
+      <if test="appsecret != null" >
+        #{appsecret,jdbcType=VARCHAR},
+      </if>
+      <if test="appversion != null" >
+        #{appversion,jdbcType=VARCHAR},
+      </if>
+      <if test="groupid != null" >
+        #{groupid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.GroupApiConfig" >
+    update GroupApiConfig
+    <set >
+      <if test="appkey != null" >
+        AppKey = #{appkey,jdbcType=VARCHAR},
+      </if>
+      <if test="appsecret != null" >
+        AppSecret = #{appsecret,jdbcType=VARCHAR},
+      </if>
+      <if test="appversion != null" >
+        AppVersion = #{appversion,jdbcType=VARCHAR},
+      </if>
+      <if test="groupid != null" >
+        GroupId = #{groupid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where AppId = #{appid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GroupApiConfig" >
+    update GroupApiConfig
+    set AppKey = #{appkey,jdbcType=VARCHAR},
+      AppSecret = #{appsecret,jdbcType=VARCHAR},
+      AppVersion = #{appversion,jdbcType=VARCHAR},
+      GroupId = #{groupid,jdbcType=BIGINT}
+    where AppId = #{appid,jdbcType=INTEGER}
+  </update>
+</mapper>

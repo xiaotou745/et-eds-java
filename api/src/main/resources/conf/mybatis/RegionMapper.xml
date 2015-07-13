@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.IRegionDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.Region" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Code" property="code" jdbcType="NVARCHAR" />
+    <result column="Name" property="name" jdbcType="NVARCHAR" />
+    <result column="ChnName" property="chnname" jdbcType="NVARCHAR" />
+    <result column="BriefName" property="briefname" jdbcType="NVARCHAR" />
+    <result column="EnName" property="enname" jdbcType="NVARCHAR" />
+    <result column="Creator" property="creator" jdbcType="NVARCHAR" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="ModifyUser" property="modifyuser" jdbcType="NVARCHAR" />
+    <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP" />
+    <result column="Fid" property="fid" jdbcType="INTEGER" />
+    <result column="Provinceid" property="provinceid" jdbcType="INTEGER" />
+    <result column="Cityid" property="cityid" jdbcType="INTEGER" />
+    <result column="Depth" property="depth" jdbcType="INTEGER" />
+    <result column="Isbroad" property="isbroad" jdbcType="INTEGER" />
+    <result column="QPing" property="qping" jdbcType="NVARCHAR" />
+    <result column="JPing" property="jping" jdbcType="NVARCHAR" />
+    <result column="BriefQPing" property="briefqping" jdbcType="NVARCHAR" />
+    <result column="BriefJPing" property="briefjping" jdbcType="NVARCHAR" />
+    <result column="IsGov" property="isgov" jdbcType="BIT" />
+    <result column="Host" property="host" jdbcType="NVARCHAR" />
+    <result column="BaiduLat" property="baidulat" jdbcType="NVARCHAR" />
+    <result column="BaiduLong" property="baidulong" jdbcType="NVARCHAR" />
+    <result column="NationalCode" property="nationalcode" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, Code, Name, ChnName, BriefName, EnName, Creator, CreateDate, ModifyUser, ModifyDate, 
+    Fid, Provinceid, Cityid, Depth, Isbroad, QPing, JPing, BriefQPing, BriefJPing, IsGov, 
+    Host, BaiduLat, BaiduLong, NationalCode
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from region
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from region
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.Region" >
+    insert into region (Id, Code, Name, 
+      ChnName, BriefName, EnName, 
+      Creator, CreateDate, ModifyUser, 
+      ModifyDate, Fid, Provinceid, 
+      Cityid, Depth, Isbroad, 
+      QPing, JPing, BriefQPing, 
+      BriefJPing, IsGov, Host, 
+      BaiduLat, BaiduLong, NationalCode
+      )
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=NVARCHAR}, #{name,jdbcType=NVARCHAR}, 
+      #{chnname,jdbcType=NVARCHAR}, #{briefname,jdbcType=NVARCHAR}, #{enname,jdbcType=NVARCHAR}, 
+      #{creator,jdbcType=NVARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{modifyuser,jdbcType=NVARCHAR}, 
+      #{modifydate,jdbcType=TIMESTAMP}, #{fid,jdbcType=INTEGER}, #{provinceid,jdbcType=INTEGER}, 
+      #{cityid,jdbcType=INTEGER}, #{depth,jdbcType=INTEGER}, #{isbroad,jdbcType=INTEGER}, 
+      #{qping,jdbcType=NVARCHAR}, #{jping,jdbcType=NVARCHAR}, #{briefqping,jdbcType=NVARCHAR}, 
+      #{briefjping,jdbcType=NVARCHAR}, #{isgov,jdbcType=BIT}, #{host,jdbcType=NVARCHAR}, 
+      #{baidulat,jdbcType=NVARCHAR}, #{baidulong,jdbcType=NVARCHAR}, #{nationalcode,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.Region" >
+    insert into region
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="code != null" >
+        Code,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="chnname != null" >
+        ChnName,
+      </if>
+      <if test="briefname != null" >
+        BriefName,
+      </if>
+      <if test="enname != null" >
+        EnName,
+      </if>
+      <if test="creator != null" >
+        Creator,
+      </if>
+      <if test="createdate != null" >
+        CreateDate,
+      </if>
+      <if test="modifyuser != null" >
+        ModifyUser,
+      </if>
+      <if test="modifydate != null" >
+        ModifyDate,
+      </if>
+      <if test="fid != null" >
+        Fid,
+      </if>
+      <if test="provinceid != null" >
+        Provinceid,
+      </if>
+      <if test="cityid != null" >
+        Cityid,
+      </if>
+      <if test="depth != null" >
+        Depth,
+      </if>
+      <if test="isbroad != null" >
+        Isbroad,
+      </if>
+      <if test="qping != null" >
+        QPing,
+      </if>
+      <if test="jping != null" >
+        JPing,
+      </if>
+      <if test="briefqping != null" >
+        BriefQPing,
+      </if>
+      <if test="briefjping != null" >
+        BriefJPing,
+      </if>
+      <if test="isgov != null" >
+        IsGov,
+      </if>
+      <if test="host != null" >
+        Host,
+      </if>
+      <if test="baidulat != null" >
+        BaiduLat,
+      </if>
+      <if test="baidulong != null" >
+        BaiduLong,
+      </if>
+      <if test="nationalcode != null" >
+        NationalCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=NVARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="chnname != null" >
+        #{chnname,jdbcType=NVARCHAR},
+      </if>
+      <if test="briefname != null" >
+        #{briefname,jdbcType=NVARCHAR},
+      </if>
+      <if test="enname != null" >
+        #{enname,jdbcType=NVARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=NVARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null" >
+        #{modifyuser,jdbcType=NVARCHAR},
+      </if>
+      <if test="modifydate != null" >
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="provinceid != null" >
+        #{provinceid,jdbcType=INTEGER},
+      </if>
+      <if test="cityid != null" >
+        #{cityid,jdbcType=INTEGER},
+      </if>
+      <if test="depth != null" >
+        #{depth,jdbcType=INTEGER},
+      </if>
+      <if test="isbroad != null" >
+        #{isbroad,jdbcType=INTEGER},
+      </if>
+      <if test="qping != null" >
+        #{qping,jdbcType=NVARCHAR},
+      </if>
+      <if test="jping != null" >
+        #{jping,jdbcType=NVARCHAR},
+      </if>
+      <if test="briefqping != null" >
+        #{briefqping,jdbcType=NVARCHAR},
+      </if>
+      <if test="briefjping != null" >
+        #{briefjping,jdbcType=NVARCHAR},
+      </if>
+      <if test="isgov != null" >
+        #{isgov,jdbcType=BIT},
+      </if>
+      <if test="host != null" >
+        #{host,jdbcType=NVARCHAR},
+      </if>
+      <if test="baidulat != null" >
+        #{baidulat,jdbcType=NVARCHAR},
+      </if>
+      <if test="baidulong != null" >
+        #{baidulong,jdbcType=NVARCHAR},
+      </if>
+      <if test="nationalcode != null" >
+        #{nationalcode,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Region" >
+    update region
+    <set >
+      <if test="code != null" >
+        Code = #{code,jdbcType=NVARCHAR},
+      </if>
+      <if test="name != null" >
+        Name = #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="chnname != null" >
+        ChnName = #{chnname,jdbcType=NVARCHAR},
+      </if>
+      <if test="briefname != null" >
+        BriefName = #{briefname,jdbcType=NVARCHAR},
+      </if>
+      <if test="enname != null" >
+        EnName = #{enname,jdbcType=NVARCHAR},
+      </if>
+      <if test="creator != null" >
+        Creator = #{creator,jdbcType=NVARCHAR},
+      </if>
+      <if test="createdate != null" >
+        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null" >
+        ModifyUser = #{modifyuser,jdbcType=NVARCHAR},
+      </if>
+      <if test="modifydate != null" >
+        ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fid != null" >
+        Fid = #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="provinceid != null" >
+        Provinceid = #{provinceid,jdbcType=INTEGER},
+      </if>
+      <if test="cityid != null" >
+        Cityid = #{cityid,jdbcType=INTEGER},
+      </if>
+      <if test="depth != null" >
+        Depth = #{depth,jdbcType=INTEGER},
+      </if>
+      <if test="isbroad != null" >
+        Isbroad = #{isbroad,jdbcType=INTEGER},
+      </if>
+      <if test="qping != null" >
+        QPing = #{qping,jdbcType=NVARCHAR},
+      </if>
+      <if test="jping != null" >
+        JPing = #{jping,jdbcType=NVARCHAR},
+      </if>
+      <if test="briefqping != null" >
+        BriefQPing = #{briefqping,jdbcType=NVARCHAR},
+      </if>
+      <if test="briefjping != null" >
+        BriefJPing = #{briefjping,jdbcType=NVARCHAR},
+      </if>
+      <if test="isgov != null" >
+        IsGov = #{isgov,jdbcType=BIT},
+      </if>
+      <if test="host != null" >
+        Host = #{host,jdbcType=NVARCHAR},
+      </if>
+      <if test="baidulat != null" >
+        BaiduLat = #{baidulat,jdbcType=NVARCHAR},
+      </if>
+      <if test="baidulong != null" >
+        BaiduLong = #{baidulong,jdbcType=NVARCHAR},
+      </if>
+      <if test="nationalcode != null" >
+        NationalCode = #{nationalcode,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Region" >
+    update region
+    set Code = #{code,jdbcType=NVARCHAR},
+      Name = #{name,jdbcType=NVARCHAR},
+      ChnName = #{chnname,jdbcType=NVARCHAR},
+      BriefName = #{briefname,jdbcType=NVARCHAR},
+      EnName = #{enname,jdbcType=NVARCHAR},
+      Creator = #{creator,jdbcType=NVARCHAR},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      ModifyUser = #{modifyuser,jdbcType=NVARCHAR},
+      ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
+      Fid = #{fid,jdbcType=INTEGER},
+      Provinceid = #{provinceid,jdbcType=INTEGER},
+      Cityid = #{cityid,jdbcType=INTEGER},
+      Depth = #{depth,jdbcType=INTEGER},
+      Isbroad = #{isbroad,jdbcType=INTEGER},
+      QPing = #{qping,jdbcType=NVARCHAR},
+      JPing = #{jping,jdbcType=NVARCHAR},
+      BriefQPing = #{briefqping,jdbcType=NVARCHAR},
+      BriefJPing = #{briefjping,jdbcType=NVARCHAR},
+      IsGov = #{isgov,jdbcType=BIT},
+      Host = #{host,jdbcType=NVARCHAR},
+      BaiduLat = #{baidulat,jdbcType=NVARCHAR},
+      BaiduLong = #{baidulong,jdbcType=NVARCHAR},
+      NationalCode = #{nationalcode,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

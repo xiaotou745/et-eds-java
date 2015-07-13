@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dal.dao.inter.ICommissionTypeDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.CommissionType" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="CommissionName" property="commissionname" jdbcType="NVARCHAR" />
+    <result column="IsValid" property="isvalid" jdbcType="TINYINT" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, CommissionName, IsValid, Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from commissiontype
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from commissiontype
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.CommissionType" >
+    insert into commissiontype (Id, CommissionName, IsValid, 
+      Remark)
+    values (#{id,jdbcType=INTEGER}, #{commissionname,jdbcType=NVARCHAR}, #{isvalid,jdbcType=TINYINT}, 
+      #{remark,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.CommissionType" >
+    insert into commissiontype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="commissionname != null" >
+        CommissionName,
+      </if>
+      <if test="isvalid != null" >
+        IsValid,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="commissionname != null" >
+        #{commissionname,jdbcType=NVARCHAR},
+      </if>
+      <if test="isvalid != null" >
+        #{isvalid,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.CommissionType" >
+    update commissiontype
+    <set >
+      <if test="commissionname != null" >
+        CommissionName = #{commissionname,jdbcType=NVARCHAR},
+      </if>
+      <if test="isvalid != null" >
+        IsValid = #{isvalid,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.CommissionType" >
+    update commissiontype
+    set CommissionName = #{commissionname,jdbcType=NVARCHAR},
+      IsValid = #{isvalid,jdbcType=TINYINT},
+      Remark = #{remark,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
