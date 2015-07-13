@@ -15,6 +15,16 @@
     from AuthorityAccountMenuSet
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="getMenuListByUserID" resultType="com.edaisong.entity.MenuEntity" parameterType="java.util.Map" >
+	SELECT AccoutId,MenuId,ParId,MenuName,isnull(Url,'') as Url,amc.IsButton FROM dbo.AuthorityAccountMenuSet  aam (nolock)
+	JOIN AuthorityMenuClass amc(nolock) ON aam.MenuId = amc.Id
+	WHERE aam.AccoutId=#{accountId}  and  amc.BeLock=CAST(0 as bit)
+	UNION ALL
+	
+	SELECT #{accountId} AS AccoutId,id AS MenuId,ParId,MenuName,isnull(Url,'') as Url,IsButton FROM AuthorityMenuClass WHERE ParId=0 AND id IN(SELECT ParId FROM dbo.AuthorityAccountMenuSet  aam (nolock)
+	JOIN AuthorityMenuClass amc(nolock) ON aam.MenuId = amc.Id
+	WHERE aam.AccoutId=#{accountId} and  amc.BeLock=CAST(0 as bit)) and BeLock=CAST(0 as bit)
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from AuthorityAccountMenuSet
     where id = #{id,jdbcType=INTEGER}

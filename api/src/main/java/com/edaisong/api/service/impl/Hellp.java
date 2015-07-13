@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.business.SqlSessionFactoryPool;
+import com.edaisong.api.service.inter.IAuthorityMenuClassService;
 import com.edaisong.api.service.inter.ITestService;
 import com.edaisong.entity.BusinessBalanceRecord;
+import com.edaisong.entity.req.AuthorityMenuReq;
 import com.edaisong.entity.req.TestServiceReq;
 import com.edaisong.entity.resp.TestServiceResp;
 
@@ -16,6 +18,12 @@ public class Hellp {
 	public static void main(String[] args) {
 		ITestService testService = SqlSessionFactoryPool
 				.getCustomBeanByType(ITestService.class);
+		
+		IAuthorityMenuClassService menuService = SqlSessionFactoryPool
+				.getCustomBeanByType(IAuthorityMenuClassService.class);
+		AuthorityMenuReq req2=new AuthorityMenuReq();
+		req2.setAccountId("14");
+		menuService.getMenuListByUserID(req2);
 
 		TestServiceReq req = new TestServiceReq();
 		req.setRecordType(9);
