@@ -1,5 +1,7 @@
 package com.edaisong.api.dal.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.Group;
 
 public interface IGroupDao {
@@ -14,4 +16,6 @@ public interface IGroupDao {
     int updateByPrimaryKeySelective(Group record);
 
     int updateByPrimaryKey(Group record);
+    
+    List<Group> getGroupListByID(Long id);
 }
