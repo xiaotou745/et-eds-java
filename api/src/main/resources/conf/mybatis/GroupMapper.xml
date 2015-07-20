@@ -20,10 +20,16 @@
     from group
     where Id = #{id,jdbcType=BIGINT}
   </select>
-   <select id="getGroupListByID" resultType="com.edaisong.entity.Group" parameterType="java.util.Map" >
-   
+   <select id="getGroupListByID" resultType="com.edaisong.entity.Group" parameterType="java.util.Map" >   
    SELECT Id,GroupName,CreateName,CreateTime,ModifyName,ModifyTime,IsValid,IsModifyBind FROM dbo.[group] (nolock)
    WHERE dbo.[group].Id=#{id}
+  </select>
+     <select id="getGroupList" resultType="com.edaisong.entity.Group" parameterType="java.util.Map" >   
+   SELECT Id,GroupName,CreateName,CreateTime,ModifyName,ModifyTime,IsValid,IsModifyBind FROM dbo.[group] (nolock) where 1=1
+    <if test="groupname != null" >
+       and  dbo.[group].groupname=#{groupname}
+    </if>   
+   
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from group

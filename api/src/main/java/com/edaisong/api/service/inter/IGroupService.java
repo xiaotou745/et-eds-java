@@ -7,4 +7,6 @@ import com.edaisong.entity.resp.GroupResp;
 public interface IGroupService {
 	public GroupResp   getGroupListByID(GroupReq req) ;	
 	
+	public GroupResp  getGroupList(GroupReq req); 
+	
 }

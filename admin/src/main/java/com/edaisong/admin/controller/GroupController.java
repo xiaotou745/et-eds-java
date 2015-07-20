@@ -23,15 +23,38 @@ public class GroupController {
 	@RequestMapping("list")
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response){
 		
-		GroupReq req = new GroupReq();
-		req.setId(1);		
-	
-		GroupResp resp =groupService.getGroupListByID(req);
+//		long num=1;
+//		GroupReq req = new GroupReq();
+//		req.setId(num);	
+//	
+//		GroupResp resp =groupService.getGroupListByID(req);
+//		
+////		ModelAndView model = new ModelAndView("Group/list");
+////		model.addObject("subtitle", "管理员");
+////		model.addObject("currenttitle", "集团管理");
+////		model.addObject("listData", resp.getGroupList());
+////		return model;
+//		
+//		ModelAndView model = new ModelAndView("adminView");
+//		model.addObject("subtitle", "管理员");
+//		model.addObject("currenttitle", "集团管理");
+//		model.addObject("listData", resp.getGroupList());
+//		model.addObject("viewPath", "group/list");
+//		return model;
 		
-		ModelAndView model = new ModelAndView("Group/list");
+		
+		GroupReq req=new GroupReq();		
+		req.setGroupName("全时");
+		
+		GroupResp resp =groupService.getGroupList(req);		
+
+		
+		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "集团管理");
 		model.addObject("listData", resp.getGroupList());
+		model.addObject("viewPath", "group/list");
 		return model;
+
 	}
 }

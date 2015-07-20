@@ -25,5 +25,14 @@ public class GroupService implements IGroupService {
 		resp.setGroupList(listData);
 		return resp;
 	}
-
+	
+	@Override
+	public GroupResp  getGroupList(GroupReq req) {
+		GroupResp resp = new GroupResp();
+		List<Group> listData = dao.getGroupList(
+				req);
+		resp.setGroupList(listData);
+		return resp;
+	}
+   
 }
