@@ -1,6 +1,6 @@
-package com.edaisong.entity.domain;
+package com.edaisong.entity.domain.testuser;
 
-public class TestUserDM {
+public class TestUserRecord {
     private int id;
     private String phoneNo;
     private boolean isC;

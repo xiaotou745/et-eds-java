@@ -55,4 +55,11 @@
     set PhoneNo = #{phoneno,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 获取测试账号列表 -->
+  <select id="selectAllTestUsers" resultType="com.edaisong.entity.domain.testuser.TestUserDM">
+  	SELECT T.Id,T.PhoneNo,CASE ISNULL(C.Id,0) WHEN 0 THEN 0 ELSE 1 END AS IsC
+    ,CASE ISNULL(B.Id,0) WHEN 0 THEN 0 ELSE 1 END AS IsB
+      FROM  dbo.TestUserTbl(nolock) T left JOIN dbo.clienter(nolock) C ON T.PhoneNo=C.PhoneNo 
+     left JOIN dbo.business(nolock) B ON T.PhoneNo=B.PhoneNo
+  </select>
 </mapper>
