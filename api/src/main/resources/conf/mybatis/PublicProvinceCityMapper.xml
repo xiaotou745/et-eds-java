@@ -90,4 +90,20 @@
       JiBie = #{jibie,jdbcType=INTEGER}
     where code = #{code,jdbcType=INTEGER}
   </update>
+  <!--获取开放城市列表（非分页） add by caoheyang 20150720  -->
+  <select id="getOpenCityList"  resultType="com.edaisong.entity.domain.OpenCityModel" 
+    parameterType="java.lang.String" >
+	select  p.code ProvinceCode,
+	        p.name ProvinceName,
+	        c.code CityCode,
+	        c.name CityName,
+	        d.code DistrictCode,
+	        d.name DistrictName,
+	        d.IsPublic
+	from    PublicProvinceCity d with ( nolock )
+	        join PublicProvinceCity c with ( nolock ) on d.parentid = c.code
+	        join PublicProvinceCity p with ( nolock ) on c.parentid = p.code
+	where   1 = 1
+  </select>
+  
 </mapper>
