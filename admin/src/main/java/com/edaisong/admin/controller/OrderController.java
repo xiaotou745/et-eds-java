@@ -2,6 +2,8 @@ package com.edaisong.admin.controller;
 
 import java.util.List;
 
+import javassist.expr.NewArray;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 
 
 
@@ -36,6 +39,7 @@ public class OrderController {
 		model.addObject("subtitle", "骑士管理");
 		model.addObject("currenttitle", "骑士提现");
 		model.addObject("listData", resp.getResultList());
+		
 		return model;
 	}
 }
