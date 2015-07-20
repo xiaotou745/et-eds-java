@@ -1,4 +1,6 @@
 package com.edaisong.api.dal.dao.inter;
+import java.util.List;
+
 
 import com.edaisong.entity.PublicProvinceCity;
 
@@ -14,4 +16,11 @@ public interface IPublicProvinceCityDao {
     int updateByPrimaryKeySelective(PublicProvinceCity record);
 
     int updateByPrimaryKey(PublicProvinceCity record);
+    
+	/**
+	 * 获取开放城市列表（非分页）
+	 * @author CaoHeYang 
+	 */
+
+    List<PublicProvinceCity> getOpenCityList(String  cityName);
 }
