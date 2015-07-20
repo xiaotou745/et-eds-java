@@ -1,4 +1,4 @@
-package com.edaisong.domain.testuser;
+package com.edaisong.entity.domain;
 
 public class TestUserDM {
     private int id;
@@ -30,3 +30,4 @@ public class TestUserDM {
 		this.isB = isB;
 	}
 }
+
