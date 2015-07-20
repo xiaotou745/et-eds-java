@@ -10,9 +10,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-@RequestMapping("OpenCityManager")
+@RequestMapping("openCityManager")
 public class OpenCityManagerController {
-	@RequestMapping("OpenCityManager")
+	@RequestMapping("openCityManager")
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse response) {
 		ModelAndView model = new ModelAndView("adminView");
