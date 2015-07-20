@@ -15,37 +15,16 @@
 
 	<!-- 引入配置文件 -->
 	<import resource="classpath:conf/core/spring-context.xml" />
-
-	<!-- <mvc:default-servlet-handler/> -->
-	<!-- <context:annotation-config/> -->
-
-
-	<!--<start id="spring_component_scan" /> -->
-	 <context:component-scan base-package="com.edaisong.entity.*" /> 
-	 <context:component-scan base-package="com.edaisong.core.*" /> 
- <context:component-scan base-package="com.edaisong.api.*" /> 
-  <context:component-scan base-package="com.edaisong.admin.*" /> 
-	<!--<end id="spring_component_scan" /> -->
+	<context:component-scan base-package="com.edaisong.admin.*" />
 	<mvc:annotation-driven />
-<!-- 	<context:component-scan base-package="com.edaisong"> -->
-<!-- 		<context:include-filter type="annotation" -->
-<!-- 			expression="org.springframework.stereotype.Controller" /> -->
-<!-- 	</context:component-scan> -->
 	<mvc:resources mapping="/**" location="/resources/" />
-	<!--<start id="mvc_resources"/> -->
-	<!-- <mvc:resources mapping="/css/**" location="/css/" /> -->
-	<!-- <mvc:resources mapping="/js/**" location="/js/" /> -->
-	<!-- <mvc:resources mapping="/img/**" location="/img/" /> -->
-	<!-- <mvc:resources mapping="/font-awesome/**" location="/font-awesome/" 
-		/> -->
-	<!--<end id="mvc_resources"/> -->
-    <bean id="exceptionResolver" class="com.edaisong.admin.common.handler.GlobalExceptionHandler"/> 
+
+	<bean id="exceptionResolver"
+		class="com.edaisong.admin.common.handler.GlobalExceptionHandler" />
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="definitions">
 			<list>
 				<value>/WEB-INF/tile-defs/layout.xml</value>
-				<!-- <value>/WEB-INF/tile-defs/order.xml</value> -->
-				<!-- <value>/WEB-INF/tile-defs/bi.xml</value> -->
 			</list>
 		</property>
 	</bean>
