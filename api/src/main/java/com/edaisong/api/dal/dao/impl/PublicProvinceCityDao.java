@@ -1,16 +1,20 @@
 package com.edaisong.api.dal.dao.impl;
 
 
+import com.edaisong.entity.Group;
 import com.edaisong.entity.PublicProvinceCity;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao;;
 
 
@@ -19,6 +23,7 @@ import com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao;;
  * @author CaoHeYang
  *
  */
+@Repository
 public class PublicProvinceCityDao implements IPublicProvinceCityDao{
 	@Autowired
 	private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
@@ -64,6 +69,21 @@ public class PublicProvinceCityDao implements IPublicProvinceCityDao{
 	 */
 	@Override
 	public  List<PublicProvinceCity> getOpenCityList(String  cityName) {
-		return null;
+		SqlSession session = superManReadOnlySqlServerSessionFactory
+				.openSession();
+		try {
+			Map<String, Object> paramMap = new HashMap<>();
+			paramMap.put("cityName", cityName);
+			List<PublicProvinceCity> list = session
+					.selectList(
+							"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.getOpenCityList",
+							paramMap);
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
 	};
 }
