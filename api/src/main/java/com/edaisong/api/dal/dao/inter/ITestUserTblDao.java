@@ -8,7 +8,7 @@ import com.edaisong.entity.domain.testuser.TestUserRecord;
 public interface ITestUserTblDao {
 	int deleteByPrimaryKey(Integer id);
 
-	int insert(TestUserTbl record);
+	int insert(String phoneNo);
 
 	int insertSelective(TestUserTbl record);
 

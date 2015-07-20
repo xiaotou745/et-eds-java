@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dal.dao.inter.ITestUserTblDao;
 import com.edaisong.api.service.inter.ITestUserTblService;
+import com.edaisong.entity.TestUserTbl;
 import com.edaisong.entity.domain.testuser.TestUserRecord;
 
 @Service
@@ -19,4 +20,19 @@ public class TestUserTblService implements ITestUserTblService {
 		return dao.selectAllTestUsers();
 	}
 
+	public int deleteByPrimaryKey(Integer id) {
+		return dao.deleteByPrimaryKey(id);
+	}
+	
+	public int insert(String phoneNo){
+		return dao.insert(phoneNo);
+	}
+	
+	public TestUserTbl selectByPrimaryKey(Integer id) {
+		return dao.selectByPrimaryKey(id);
+	}
+	
+	public int updateByPrimaryKey(TestUserTbl record) {
+		return dao.updateByPrimaryKey(record);
+	}
 }

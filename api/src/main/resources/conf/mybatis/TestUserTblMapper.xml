@@ -8,19 +8,22 @@
   <sql id="Base_Column_List" >
     Id, PhoneNo
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <!-- 根据指定id查询账号 -->
+  <select id="selectByPrimaryKey" resultMap="com.edaisong.entity.TestUserTbl" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from TestUserTbl
     where Id = #{id,jdbcType=INTEGER}
   </select>
+  <!-- 删除指定账号 -->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from TestUserTbl
     where Id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.edaisong.entity.TestUserTbl" >
-    insert into TestUserTbl (Id, PhoneNo)
-    values (#{id,jdbcType=INTEGER}, #{phoneno,jdbcType=VARCHAR})
+  <!-- 插入测试账号 -->
+  <insert id="insert" parameterType="java.lang.String" >
+    insert into TestUserTbl (PhoneNo)
+    values (#{phoneno,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.TestUserTbl" >
     insert into TestUserTbl
@@ -50,6 +53,7 @@
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 更新账号 -->
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.TestUserTbl" >
     update TestUserTbl
     set PhoneNo = #{phoneno,jdbcType=VARCHAR}
