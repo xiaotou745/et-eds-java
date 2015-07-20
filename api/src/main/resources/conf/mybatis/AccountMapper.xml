@@ -19,6 +19,11 @@
     Id, Password, UserName, LoginName, Status, AccountType, FADateTime, FAUser, LCDateTime, 
     LCUser, GroupId, RoleId
   </sql>
+  
+  <select id="query">
+  	SELECT Id,UserName,LoginName,Status FROM dbo.account a(nolock)
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
