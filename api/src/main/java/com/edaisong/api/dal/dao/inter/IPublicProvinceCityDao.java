@@ -3,6 +3,7 @@ import java.util.List;
 
 
 import com.edaisong.entity.PublicProvinceCity;
+import com.edaisong.entity.domain.OpenCityModel;
 
 public interface IPublicProvinceCityDao {
     int deleteByPrimaryKey(Integer code);
@@ -21,6 +22,5 @@ public interface IPublicProvinceCityDao {
 	 * 获取开放城市列表（非分页）
 	 * @author CaoHeYang 
 	 */
-
-    List<PublicProvinceCity> getOpenCityList(String  cityName);
+    List<OpenCityModel> getOpenCityList(String  cityName);
 }

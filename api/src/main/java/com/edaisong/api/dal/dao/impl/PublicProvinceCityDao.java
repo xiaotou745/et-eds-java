@@ -3,6 +3,7 @@ package com.edaisong.api.dal.dao.impl;
 
 import com.edaisong.entity.Group;
 import com.edaisong.entity.PublicProvinceCity;
+import com.edaisong.entity.domain.OpenCityModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao;;
+
+
 
 
 /**
@@ -68,13 +71,13 @@ public class PublicProvinceCityDao implements IPublicProvinceCityDao{
 	 * @author CaoHeYang 
 	 */
 	@Override
-	public  List<PublicProvinceCity> getOpenCityList(String  cityName) {
+	public  List<OpenCityModel> getOpenCityList(String  cityName) {
 		SqlSession session = superManReadOnlySqlServerSessionFactory
 				.openSession();
 		try {
 			Map<String, Object> paramMap = new HashMap<>();
 			paramMap.put("cityName", cityName);
-			List<PublicProvinceCity> list = session
+			List<OpenCityModel> list = session
 					.selectList(
 							"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.getOpenCityList",
 							paramMap);
