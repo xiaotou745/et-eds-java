@@ -93,16 +93,15 @@ public class PublicProvinceCityDao implements IPublicProvinceCityDao{
 	};
 	
 	
-	 /**
-	  * 修改绑定城市    
-	  * @author CaoHeYang 
-	  * @param openCityCodeList 开放城市
-	  * @param closeCityCodeList 关闭城市
-	  * @Date 20150721
-	  */
+	  /**
+		  * 绑定开放城市    
+		  * @author CaoHeYang 
+		  * @param openCityCodeList 开放城市
+		  * @Date 20150721
+		  */
 	@Override
-   public boolean ModifyOpenCityByCode(String openCityCodeList, String closeCityCodeList)
-   {		
+  public boolean updateOpen(String openCityCodeList)
+  {		
 		SqlSession session = superManReadOnlySqlServerSessionFactory
 		.openSession();
 		try {
@@ -112,6 +111,35 @@ public class PublicProvinceCityDao implements IPublicProvinceCityDao{
 			int count = session
 					.update(
 							"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateOpen",
+							paramMap);
+			return count>0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			session.close();
+		}
+  }
+	
+	
+	/**
+	  * 关闭开放城市    
+	  * @author CaoHeYang 
+	  * @param closeCityCodeList 关闭城市
+	  * @Date 20150721
+	  */
+	@Override
+   public boolean updateClose(String closeCityCodeList)
+   {		
+		SqlSession session = superManReadOnlySqlServerSessionFactory
+		.openSession();
+		try {
+			Map<String, Object> paramMap = new HashMap<>();
+			paramMap.put("OpenCityCodeList", closeCityCodeList);
+			paramMap.put("MainCode", closeCityCodeList.substring(0,closeCityCodeList.indexOf(',')));
+			int count = session
+					.update(
+							"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateClose",
 							paramMap);
 			return count>0;
 		} catch (Exception e) {

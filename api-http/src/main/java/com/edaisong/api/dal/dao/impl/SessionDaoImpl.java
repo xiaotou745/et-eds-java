@@ -57,7 +57,7 @@ public class SessionDaoImpl implements IBusinessBalanceRecord {
 			
 		SqlSession session = superManReadOnlySqlServerSessionFactory
 				.openSession();
-		try {
+		try {			
 			Map<String, Object> paramMap = new HashMap<>();
 			paramMap.put("BusinessId", "902");
 			paramMap.put("Amount", 500);

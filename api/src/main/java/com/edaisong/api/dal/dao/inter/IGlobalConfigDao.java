@@ -18,5 +18,5 @@ public interface IGlobalConfigDao {
 
     int updateByPrimaryKey(GlobalConfig record);
     
-    public List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) ;
+     List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) ;
 }

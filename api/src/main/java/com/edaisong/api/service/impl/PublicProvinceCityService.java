@@ -38,6 +38,13 @@ public class PublicProvinceCityService implements IPublicProvinceCityService
 	@Override
     public boolean ModifyOpenCityByCode(String openCityCodeList, String closeCityCodeList)
     {
-        return publicProvinceCityDao.ModifyOpenCityByCode(openCityCodeList, closeCityCodeList);
+		boolean result=true;
+		if (openCityCodeList!=null&&!openCityCodeList.isEmpty()) {
+	        return publicProvinceCityDao.updateOpen(openCityCodeList);
+		}
+		if (closeCityCodeList!=null&&!closeCityCodeList.isEmpty()) {
+	        return publicProvinceCityDao.updateClose(closeCityCodeList);
+		}
+		return result;
     }
 }
