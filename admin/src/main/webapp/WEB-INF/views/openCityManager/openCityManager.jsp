@@ -8,30 +8,20 @@
 <link rel="stylesheet"
 	href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
 <div class="wrapper wrapper-content animated fadeInRight">
+
+	<div class="row">
+	    <div class="col-lg-12">
+	        <div class="input-group" style="margin-bottom:5px;">
+	            <input type="text" placeholder="请输入城市" class="input-sm form-control" id="InputCity" style="width:250px;height:34px;" value="<%=request.getAttribute("cityname") %>"/>
+	            <button type="button" class="btn btn-w-m btn-primary" id=btnSearch style="margin-left:3px;">查询</button>
+	            <button type="button" class="btn btn-w-m btn-primary" id="btnSave" style="margin-left:3px;">保存修改</button>
+	        </div>
+	    </div>
+	   
+	</div>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
-				<div class="ibox-title">
-					<h5>
-						基本 <small>分类，查找</small>
-					</h5>
-					<div class="ibox-tools">
-						<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
-						</a> <a class="dropdown-toggle" data-toggle="dropdown"
-							href="table_data_tables.html#"
-							tppabs="http://www.zi-han.net/theme/hplus/table_data_tables.html#">
-							<i class="fa fa-wrench"></i>
-						</a> <a class="close-link"> <i class="fa fa-times"></i>
-						</a>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="dataTables_length" id="DataTables_Table_0_length">
-							 <input type="button" value="保存修改" class="searchBtn" id="btnSave" />
-						</div>
-					</div>
-				</div>
 				<div class="ibox-content">
 					<table
 						class="table table-striped table-bordered table-hover dataTables-example">
@@ -44,7 +34,7 @@
 								<th>市编名称</th>
 								<th>区县编号</th>
 								<th>区县名称</th>
-								<th>是否开放<input type="checkbox" name="checkAll"
+								<th>是否开放<input type="checkbox" name="checkAll" style="margin-top:2px;"
 									id="selectAll" onclick="checkAll()" />全选/取消
 								</th>
 							</tr>
@@ -85,7 +75,6 @@
 <script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script>
 <script
 	src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<!-- Custom and plugin javascript -->
 <script src="<%=basePath%>/js/hplus.js"></script>
 <!-- Page-Level Scripts -->
 <script>
@@ -96,6 +85,11 @@
 </script>
 
 <script>
+  $("#btnSearch").click(function(){
+	  var cityname=$("#InputCity").val();
+	  window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;
+  });
+    //提交绑定
 	$("#btnSave").click(
 			function() {
 				if (confirm("确定要提交更改吗？")) {
@@ -127,15 +121,10 @@
 						type : 'POST',
 						url : url,
 						data : paramaters,
-						success : function(result) {
-							
-						   alert(result);	
-							if (result.IsSuccess) {
-								alert("设置成功!");
-								//window.location.href = "/OpenCityManager/OpenCityManager";
-							} else {
-								alert(result.Message);
-							}
+						success : function(result) {		
+							alert("设置成功!");
+							var cityname=$("#InputCity").val();
+							window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;
 						},
 						error:function(result){
 							alert(result.responseText);
