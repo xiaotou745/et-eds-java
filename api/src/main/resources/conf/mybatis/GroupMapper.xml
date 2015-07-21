@@ -36,10 +36,10 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.Group" >
-    insert into group (Id, GroupName, CreateName, 
+    insert into dbo.[group] (GroupName, CreateName, 
       CreateTime, ModifyName, ModifyTime, 
       IsValid, IsModifyBind)
-    values (#{id,jdbcType=BIGINT}, #{groupname,jdbcType=NVARCHAR}, #{createname,jdbcType=NVARCHAR}, 
+    values (#{groupname,jdbcType=NVARCHAR}, #{createname,jdbcType=NVARCHAR}, 
       #{createtime,jdbcType=TIMESTAMP}, #{modifyname,jdbcType=NVARCHAR}, #{modifytime,jdbcType=TIMESTAMP}, 
       #{isvalid,jdbcType=TINYINT}, #{ismodifybind,jdbcType=INTEGER})
   </insert>
@@ -99,7 +99,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Group" >
-    update group
+    update dbo.[group]
     <set >
       <if test="groupname != null" >
         GroupName = #{groupname,jdbcType=NVARCHAR},
