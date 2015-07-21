@@ -1,15 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-  CACACACA 
-</body>
-</html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
@@ -23,7 +11,7 @@
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
 					<h5>
-						»ù±¾ <small>·ÖÀà£¬²éÕÒ</small>
+						åŸºæœ¬ <small>åˆ†ç±»ï¼ŒæŸ¥æ‰¾</small>
 					</h5>
 					<div class="ibox-tools">
 						<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -34,10 +22,10 @@
 						</a>
 						<ul class="dropdown-menu dropdown-user">
 							<li><a href="table_data_tables.html#"
-								tppabs="http://www.zi-han.net/theme/hplus/table_data_tables.html#">Ñ¡Ïî1</a>
+								tppabs="http://www.zi-han.net/theme/hplus/table_data_tables.html#">é€‰é¡¹1</a>
 							</li>
 							<li><a href="table_data_tables.html#"
-								tppabs="http://www.zi-han.net/theme/hplus/table_data_tables.html#">Ñ¡Ïî2</a>
+								tppabs="http://www.zi-han.net/theme/hplus/table_data_tables.html#">é€‰é¡¹2</a>
 							</li>
 						</ul>
 						<a class="close-link"> <i class="fa fa-times"></i>
@@ -51,20 +39,20 @@
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="dataTables_length" id="DataTables_Table_0_length">
-									<label>Ã¿Ò³ <select name="DataTables_Table_0_length"
+									<label>æ¯é¡µ <select name="DataTables_Table_0_length"
 										aria-controls="DataTables_Table_0"
 										class="form-control input-sm">
 											<option value="10">10</option>
 											<option value="25">25</option>
 											<option value="50">50</option>
 											<option value="100">100</option>
-									</select> Ìõ¼ÇÂ¼
+									</select> æ¡è®°å½•
 									</label>
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div id="DataTables_Table_0_filter" class="dataTables_filter">
-									<label>²éÕÒ£º<input type="search"
+									<label>æŸ¥æ‰¾ï¼š<input type="search"
 										class="form-control input-sm"
 										aria-controls="DataTables_Table_0"></label>
 								</div>
@@ -78,20 +66,20 @@
 								<tr role="row">
 									<th class="sorting_asc" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-sort="ascending" aria-label="äÖÈ¾ÒýÇæ£º¼¤»îÅÅÐòÁÐÉýÐò"
-										style="width: 214px;">äÖÈ¾ÒýÇæ</th>
+										aria-sort="ascending" aria-label="æ¸²æŸ“å¼•æ“Žï¼šæ¿€æ´»æŽ’åºåˆ—å‡åº"
+										style="width: 214px;">æ¸²æŸ“å¼•æ“Ž</th>
 									<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="ä¯ÀÀÆ÷£º¼¤»îÅÅÐòÁÐÉýÐò" style="width: 382px;">ä¯ÀÀÆ÷</th>
+										aria-label="æµè§ˆå™¨ï¼šæ¿€æ´»æŽ’åºåˆ—å‡åº" style="width: 382px;">æµè§ˆå™¨</th>
 									<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Æ½Ì¨£º¼¤»îÅÅÐòÁÐÉýÐò" style="width: 353px;">Æ½Ì¨</th>
+										aria-label="å¹³å°ï¼šæ¿€æ´»æŽ’åºåˆ—å‡åº" style="width: 353px;">å¹³å°</th>
 									<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="ÒýÇæ°æ±¾£º¼¤»îÅÅÐòÁÐÉýÐò" style="width: 156px;">ÒýÇæ°æ±¾</th>
+										aria-label="å¼•æ“Žç‰ˆæœ¬ï¼šæ¿€æ´»æŽ’åºåˆ—å‡åº" style="width: 156px;">å¼•æ“Žç‰ˆæœ¬</th>
 									<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="CSSµÈ¼¶£º¼¤»îÅÅÐòÁÐÉýÐò" style="width: 157px;">CSSµÈ¼¶</th>
+										aria-label="CSSç­‰çº§ï¼šæ¿€æ´»æŽ’åºåˆ—å‡åº" style="width: 157px;">CSSç­‰çº§</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -168,19 +156,19 @@
 							</tbody>
 							<tfoot>
 								<tr>
-									<th rowspan="1" colspan="1">äÖÈ¾ÒýÇæ</th>
-									<th rowspan="1" colspan="1">ä¯ÀÀÆ÷</th>
-									<th rowspan="1" colspan="1">Æ½Ì¨</th>
-									<th rowspan="1" colspan="1">ÒýÇæ°æ±¾</th>
-									<th rowspan="1" colspan="1">CSSµÈ¼¶</th>
+									<th rowspan="1" colspan="1">æ¸²æŸ“å¼•æ“Ž</th>
+									<th rowspan="1" colspan="1">æµè§ˆå™¨</th>
+									<th rowspan="1" colspan="1">å¹³å°</th>
+									<th rowspan="1" colspan="1">å¼•æ“Žç‰ˆæœ¬</th>
+									<th rowspan="1" colspan="1">CSSç­‰çº§</th>
 								</tr>
 							</tfoot>
 						</table>
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="dataTables_info" id="DataTables_Table_0_info"
-									role="alert" aria-live="polite" aria-relevant="all">ÏÔÊ¾ 1
-									µ½ 10 Ïî£¬¹² 57 Ïî</div>
+									role="alert" aria-live="polite" aria-relevant="all">æ˜¾ç¤º 1
+									åˆ° 10 é¡¹ï¼Œå…± 57 é¡¹</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="dataTables_paginate paging_simple_numbers"
@@ -188,7 +176,7 @@
 									<ul class="pagination">
 										<li class="paginate_button previous disabled"
 											aria-controls="DataTables_Table_0" tabindex="0"
-											id="DataTables_Table_0_previous"><a href="#">ÉÏÒ»Ò³</a></li>
+											id="DataTables_Table_0_previous"><a href="#">ä¸Šä¸€é¡µ</a></li>
 										<li class="paginate_button active"
 											aria-controls="DataTables_Table_0" tabindex="0"><a
 											href="#">1</a></li>
@@ -209,7 +197,7 @@
 											href="#">6</a></li>
 										<li class="paginate_button next"
 											aria-controls="DataTables_Table_0" tabindex="0"
-											id="DataTables_Table_0_next"><a href="#">ÏÂÒ»Ò³</a></li>
+											id="DataTables_Table_0_next"><a href="#">ä¸‹ä¸€é¡µ</a></li>
 									</ul>
 								</div>
 							</div>
