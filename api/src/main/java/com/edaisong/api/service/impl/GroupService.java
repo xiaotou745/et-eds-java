@@ -15,10 +15,12 @@ import com.edaisong.entity.resp.GroupResp;
 
 @Service
 public class GroupService implements IGroupService {
+
 	@Autowired
 	private IGroupDao dao;
 	@Override
-	public GroupResp  getGroupListByID(GroupReq req) {
+	public GroupResp getGroupListByID(GroupReq req) {
+		// TODO Auto-generated method stub
 		GroupResp resp = new GroupResp();
 		List<Group> listData = dao.getGroupListByID(
 				req.getId());
@@ -26,4 +28,27 @@ public class GroupService implements IGroupService {
 		return resp;
 	}
 
+	@Override
+	public GroupResp getGroupList(GroupReq req) {
+		// TODO Auto-generated method stub
+		GroupResp resp = new GroupResp();
+		List<Group> listData = dao.getGroupList(
+				req);
+		resp.setGroupList(listData);
+		return resp;
+	}
+
+	@Override
+	public int Add(Group record) {
+		// TODO Auto-generated method stub
+		return dao.insert(record);
+	}
+	
+	@Override
+	public int  Update(Group record) 
+	{
+		return dao.updateByPrimaryKeySelective(record);
+	}
+
+   
 }
