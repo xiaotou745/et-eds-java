@@ -44,8 +44,15 @@ public class TestUserController {
 			resp.setMessage("电话号码不能为空");
 			resp.setData(false);
 		} else {
-			resp.setMessage("成功");
-			resp.setData(true);
+			int ret = service.insert(phoneNo);
+			if(ret > 0){
+				resp.setMessage("成功");
+				resp.setData(true);
+			}else {
+				resp.setMessage("新增失败,请重试");
+				resp.setData(false);
+			}
+			
 		}
 		return resp;
 	}
@@ -58,6 +65,7 @@ public class TestUserController {
 			resp.setMessage("电话号码不能为空");
 			resp.setData(false);
 		} else {
+			service.deleteByPhoneNo(phoneNo);
 			resp.setMessage("成功");
 			resp.setData(true);
 		}

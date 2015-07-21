@@ -8,5 +8,5 @@ import com.edaisong.entity.resp.AuthorityMenuResp;
 
 public interface IAdminToolsService {
 
-	public List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) ;
+	 List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) ;
 }

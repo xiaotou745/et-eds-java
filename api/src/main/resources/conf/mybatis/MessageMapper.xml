@@ -220,4 +220,24 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="getMessageList" parameterType="java.util.Map" resultType="com.edaisong.entity.Message">
+     SELECT  [Id]
+      		,[PushWay]
+      		,[MessageType]
+      		,[Content]
+      		,[SentStatus]
+      		,[PushType]
+      		,[PushTarget]
+      		,[PushCity]
+      		,[PushPhone]
+      		,[SendType]
+      		,[SendTime]
+      		,[OverTime]
+      		,[CreateBy]
+      		,[CreateTime]
+      		,[UpdateBy]
+      		,[UpdateTime]
+  FROM Message msg WITH(NOLOCK)
+  </select>
+  
 </mapper>
