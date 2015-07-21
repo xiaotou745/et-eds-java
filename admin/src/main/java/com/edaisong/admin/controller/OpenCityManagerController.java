@@ -15,7 +15,7 @@ import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.entity.domain.*;
 
 @Controller
-@RequestMapping("openCityManager")
+@RequestMapping("opencitymanager")
 public class OpenCityManagerController {
 	
 	/**
@@ -24,7 +24,7 @@ public class OpenCityManagerController {
 	@Autowired
     private IPublicProvinceCityService publicProvinceCityService;
 	
-	@RequestMapping("openCityManager")
+	@RequestMapping("opencitymanager")
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse response) {
 		
