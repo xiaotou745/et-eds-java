@@ -1,5 +1,8 @@
 package com.edaisong.admin.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,14 +21,14 @@ public class AccountController {
 	private IAccountService accountService;
 
 	@RequestMapping("list")
-	public ModelAndView list(AccountReq request, AccountResp response) {
+	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) {
 		AccountReq req = new AccountReq();
 		AccountResp resp = accountService.queryAccount(req);
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "管理后台用户管理");
 		view.addObject("currenttitle", "管理后台用户管理");
-		view.addObject("viewPath", "/account/list");
-		view.addObject("listData", resp);
+		view.addObject("viewPath", "account/list");
+		view.addObject("listData", resp.getResultList());
 		return view;
 	}
 }
