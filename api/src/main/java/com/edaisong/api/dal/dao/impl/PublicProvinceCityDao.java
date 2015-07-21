@@ -11,6 +11,8 @@ import java.util.Map;
 
 
 
+
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,4 +91,34 @@ public class PublicProvinceCityDao implements IPublicProvinceCityDao{
 			session.close();
 		}
 	};
+	
+	
+	 /**
+	  * 修改绑定城市    
+	  * @author CaoHeYang 
+	  * @param openCityCodeList 开放城市
+	  * @param closeCityCodeList 关闭城市
+	  * @Date 20150721
+	  */
+	@Override
+   public boolean ModifyOpenCityByCode(String openCityCodeList, String closeCityCodeList)
+   {		
+		SqlSession session = superManReadOnlySqlServerSessionFactory
+		.openSession();
+		try {
+			Map<String, Object> paramMap = new HashMap<>();
+			paramMap.put("OpenCityCodeList", openCityCodeList);
+			paramMap.put("MainCode", openCityCodeList.substring(0,openCityCodeList.indexOf(',')));
+			int count = session
+					.update(
+							"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateOpen",
+							paramMap);
+			return count>0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			session.close();
+		}
+   }
 }
