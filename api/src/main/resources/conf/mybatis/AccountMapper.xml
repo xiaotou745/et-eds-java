@@ -20,7 +20,7 @@
     LCUser, GroupId, RoleId
   </sql>
   
-  <select id="query">
+  <select id="query" resultMap="BaseResultMap">
   	SELECT Id,UserName,LoginName,Status FROM dbo.account a(nolock)
   </select>
   

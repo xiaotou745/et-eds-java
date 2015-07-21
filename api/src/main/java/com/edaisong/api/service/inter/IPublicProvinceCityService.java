@@ -3,6 +3,7 @@ package com.edaisong.api.service.inter;
 import java.util.List;
 
 import com.edaisong.entity.PublicProvinceCity;
+import com.edaisong.entity.domain.OpenCityModel;
 
 
 /**
@@ -17,5 +18,5 @@ public interface IPublicProvinceCityService {
 	 * @author CaoHeYang 
 	 * @param cityName 城市名称
 	 */
-	 List<PublicProvinceCity> getOpenCityList(String  cityName);
+	 List<OpenCityModel> getOpenCityList(String  cityName);
 }

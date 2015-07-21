@@ -20,7 +20,7 @@
     <!-- 系统启动日志输出文件 -->
     <appender name="webAppender" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="Encoding" value="UTF-8"/>
-        <param name="File" value="d:/log/web/web.log"/>
+        <param name="File" value="c:/log/web/web.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
                <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
@@ -31,7 +31,7 @@
     </appender>
         <appender name="apiAppender" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="Encoding" value="UTF-8"/>
-        <param name="File" value="d:/log/api/api.log"/>
+        <param name="File" value="c:/log/api/api.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
                <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
@@ -42,7 +42,7 @@
     </appender>
     <appender name="globalExceptionAppender" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="Encoding" value="UTF-8"/>
-        <param name="File" value="d:/log/global/global.log"/>
+        <param name="File" value="c:/log/global/global.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
                <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>

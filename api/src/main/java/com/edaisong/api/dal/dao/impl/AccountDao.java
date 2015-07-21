@@ -25,7 +25,7 @@ public class AccountDao implements IAccountDao {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		List<Account> list = session.selectList(
-				"com.edaisong.api.dal.dao.inter.IAccountDao", map);
+				"com.edaisong.api.dal.dao.inter.IAccountDao.query", map);
 		return list;
 	}
 

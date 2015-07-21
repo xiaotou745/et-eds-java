@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.entity.PublicProvinceCity;
+import com.edaisong.entity.domain.OpenCityModel;
 import com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao;
 
 
@@ -22,7 +23,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService
 	 * @author CaoHeYang 
 	 */
 	@Override
-	public  List<PublicProvinceCity> getOpenCityList(String  cityName) {
+	public  List<OpenCityModel> getOpenCityList(String  cityName) {
 		return publicProvinceCityDao.getOpenCityList(cityName);
 	};
 }

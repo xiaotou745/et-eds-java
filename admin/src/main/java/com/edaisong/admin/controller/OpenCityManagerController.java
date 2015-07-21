@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
-import com.edaisong.entity.*;
+import com.edaisong.entity.domain.*;
 
 @Controller
 @RequestMapping("openCityManager")
@@ -27,13 +27,15 @@ public class OpenCityManagerController {
 	@RequestMapping("openCityManager")
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse response) {
+		
 	    String city="北京";
-		List<PublicProvinceCity> citys=  publicProvinceCityService.getOpenCityList(city);
+		List<OpenCityModel> citys=  publicProvinceCityService.getOpenCityList(city);
 		
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "开通城市管理");
-		model.addObject("viewPath", "opencityManager/openCityManager");
+		model.addObject("listData",citys);
+		model.addObject("viewPath", "openCityManager/openCityManager");
 		return model;
 	}
 }
