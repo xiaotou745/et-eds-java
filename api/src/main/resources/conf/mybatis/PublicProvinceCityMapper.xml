@@ -123,6 +123,43 @@
   
   <!--关闭开放城市  add by caoheyang 20150721  -->
   <update id="updateClose" parameterType="java.util.Map"  >
- 	UPDATE PublicProvinceCity SET IsPublic=0 WHERE code IN({0});
+ 	UPDATE PublicProvinceCity SET IsPublic=0 WHERE code IN(${OpenCityCodeList});   
+ 	
+ 	update  PublicProvinceCity
+	set     IsPublic = 0
+	where   code = ( select parentid
+	                 from   PublicProvinceCity
+	                 where  code = #{MainCode,jdbcType=TINYINT}
+	               )
+	        and ( select    COUNT(1)
+	              from      PublicProvinceCity
+	              where     parentid = ( select parentid
+	                                     from   PublicProvinceCity
+	                                     where  code = 12
+	                                   )
+	                        and IsPublic = 1
+	            ) = 0;
+	            
+	            
+	update  PublicProvinceCity
+	set     IsPublic = 0
+	where   code = ( select parentid
+	                 from   PublicProvinceCity
+	                 where  code = ( select parentid
+	                                 from   PublicProvinceCity
+	                                 where  code = #{MainCode,jdbcType=TINYINT}
+	                               )
+	               )
+	        and ( select    COUNT(1)
+	              from      PublicProvinceCity
+	              where     parentid = ( select parentid
+	                                     from   PublicProvinceCity
+	                                     where  code = ( select parentid
+	                                                     from   PublicProvinceCity
+	                                                     where  code = #{MainCode,jdbcType=TINYINT}
+	                                                   )
+	                                   )
+	                        and IsPublic = 1
+	            ) = 0            
   </update>
 </mapper>
