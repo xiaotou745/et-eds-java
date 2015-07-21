@@ -17,10 +17,10 @@ public class AccountController {
 	@Autowired
 	private IAccountService accountService;
 
-	@RequestMapping("listtest")
+	@RequestMapping("list")
 	public ModelAndView list(AccountReq request, AccountResp response) {
 		AccountReq req = new AccountReq();
-		AccountResp resp = accountService.queryAccount();
+		AccountResp resp = accountService.queryAccount(req);
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "管理后台用户管理");
 		view.addObject("currenttitle", "管理后台用户管理");
