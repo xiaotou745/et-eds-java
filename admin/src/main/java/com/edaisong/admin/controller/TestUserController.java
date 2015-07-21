@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.ITestUserTblService;
-import com.edaisong.entity.domain.testuser.TestUserRecord;
+import com.edaisong.entity.domain.TestUserRecord;
 import com.edaisong.entity.resp.BooleanResp;
 
 @Controller
