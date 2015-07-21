@@ -109,4 +109,20 @@
      </if>
   </select>
   
+  
+  <!--开放城市  add by caoheyang 20150721  -->
+  <update id="updateOpen" parameterType="java.util.Map"  >
+  UPDATE PublicProvinceCity SET IsPublic=1 WHERE code IN(${OpenCityCodeList});
+  
+  UPDATE PublicProvinceCity SET IsPublic=1  WHERE code=( SELECT parentid FROM PublicProvinceCity WHERE code= #{MainCode,jdbcType=TINYINT});
+  
+  UPDATE PublicProvinceCity SET IsPublic=1  WHERE code=(SELECT c.parentid  FROM  PublicProvinceCity d WITH(NOLOCK)
+                                        JOIN PublicProvinceCity c ON c.code=d.parentid
+                                        WHERE d.code=#{MainCode,jdbcType=TINYINT});
+  </update>
+  
+  <!--关闭开放城市  add by caoheyang 20150721  -->
+  <update id="updateClose" parameterType="java.util.Map"  >
+ 	UPDATE PublicProvinceCity SET IsPublic=0 WHERE code IN({0});
+  </update>
 </mapper>

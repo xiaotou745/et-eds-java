@@ -2,6 +2,7 @@ package com.edaisong.api.dal.dao.inter;
 import java.util.List;
 
 
+
 import com.edaisong.entity.PublicProvinceCity;
 import com.edaisong.entity.domain.OpenCityModel;
 
@@ -23,4 +24,13 @@ public interface IPublicProvinceCityDao {
 	 * @author CaoHeYang 
 	 */
     List<OpenCityModel> getOpenCityList(String  cityName);
+    
+    /**
+	  * 修改绑定城市    
+	  * @author CaoHeYang 
+	  * @param openCityCodeList 开放城市
+	  * @param closeCityCodeList 关闭城市
+	  * @Date 20150721
+	  */
+	 boolean ModifyOpenCityByCode(String openCityCodeList, String closeCityCodeList);
 }
