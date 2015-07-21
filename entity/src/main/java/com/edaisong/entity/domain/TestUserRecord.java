@@ -1,4 +1,4 @@
-package com.edaisong.entity.domain.testuser;
+package com.edaisong.entity.domain;
 
 public class TestUserRecord {
     private int id;
