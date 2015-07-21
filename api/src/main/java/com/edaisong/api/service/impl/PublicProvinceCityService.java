@@ -26,4 +26,25 @@ public class PublicProvinceCityService implements IPublicProvinceCityService
 	public  List<OpenCityModel> getOpenCityList(String  cityName) {
 		return publicProvinceCityDao.getOpenCityList(cityName);
 	};
+
+  
+	 /**
+	  * 修改绑定城市    
+	  * @author CaoHeYang 
+	  * @param openCityCodeList 开放城市
+	  * @param closeCityCodeList 关闭城市
+	  * @Date 20150721
+	  */
+	@Override
+    public boolean ModifyOpenCityByCode(String openCityCodeList, String closeCityCodeList)
+    {
+		boolean result=true;
+		if (openCityCodeList!=null&&!openCityCodeList.isEmpty()) {
+	        return publicProvinceCityDao.updateOpen(openCityCodeList);
+		}
+		if (closeCityCodeList!=null&&!closeCityCodeList.isEmpty()) {
+	        return publicProvinceCityDao.updateClose(closeCityCodeList);
+		}
+		return result;
+    }
 }

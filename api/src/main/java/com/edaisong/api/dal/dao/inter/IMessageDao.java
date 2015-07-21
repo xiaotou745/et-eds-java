@@ -1,5 +1,7 @@
 package com.edaisong.api.dal.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.Message;
 
 public interface IMessageDao {
@@ -14,4 +16,6 @@ public interface IMessageDao {
     int updateByPrimaryKeySelective(Message record);
 
     int updateByPrimaryKey(Message record);
+    
+    List<Message> getMessageList();
 }

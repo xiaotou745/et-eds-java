@@ -20,20 +20,26 @@
     from group
     where Id = #{id,jdbcType=BIGINT}
   </select>
-   <select id="getGroupListByID" resultType="com.edaisong.entity.Group" parameterType="java.util.Map" >
-   
+   <select id="getGroupListByID" resultType="com.edaisong.entity.Group" parameterType="java.util.Map" >   
    SELECT Id,GroupName,CreateName,CreateTime,ModifyName,ModifyTime,IsValid,IsModifyBind FROM dbo.[group] (nolock)
    WHERE dbo.[group].Id=#{id}
+  </select>
+     <select id="getGroupList" resultType="com.edaisong.entity.Group" parameterType="java.util.Map" >   
+   SELECT Id,GroupName,CreateName,CreateTime,ModifyName,ModifyTime,IsValid,IsModifyBind FROM dbo.[group] (nolock) where 1=1
+    <if test="groupname != null" >
+       and  dbo.[group].groupname=#{groupname}
+    </if>   
+   
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from group
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.Group" >
-    insert into group (Id, GroupName, CreateName, 
+    insert into dbo.[group] (GroupName, CreateName, 
       CreateTime, ModifyName, ModifyTime, 
       IsValid, IsModifyBind)
-    values (#{id,jdbcType=BIGINT}, #{groupname,jdbcType=NVARCHAR}, #{createname,jdbcType=NVARCHAR}, 
+    values (#{groupname,jdbcType=NVARCHAR}, #{createname,jdbcType=NVARCHAR}, 
       #{createtime,jdbcType=TIMESTAMP}, #{modifyname,jdbcType=NVARCHAR}, #{modifytime,jdbcType=TIMESTAMP}, 
       #{isvalid,jdbcType=TINYINT}, #{ismodifybind,jdbcType=INTEGER})
   </insert>
@@ -93,7 +99,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Group" >
-    update group
+    update dbo.[group]
     <set >
       <if test="groupname != null" >
         GroupName = #{groupname,jdbcType=NVARCHAR},

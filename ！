@@ -1,0 +1,44 @@
+Merge branch 'master' of ssh://10.8.8.5:8118/ets/eds/Public/eds.java
+
+Conflicts:
+	admin/.settings/org.eclipse.core.resources.prefs
+	admin/src/main/webapp/WEB-INF/views/opencityManager/openCityManager.jsp
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 7 different commits each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# All conflicts fixed but you are still merging.
+#   (use "git commit" to conclude merge)
+#
+# Changes to be committed:
+#
+#	modified:   admin/.settings/org.eclipse.core.resources.prefs
+#	new file:   admin/src/main/java/com/edaisong/admin/controller/AccountController.java
+#	new file:   admin/src/main/java/com/edaisong/admin/controller/TestUserController.java
+#	new file:   admin/src/main/java/com/edaisong/admin/controller/XiaoController.java
+#	new file:   admin/src/main/webapp/WEB-INF/views/Xiao.jsp
+#	new file:   admin/src/main/webapp/WEB-INF/views/account/list.jsp
+#	renamed:    admin/src/main/webapp/WEB-INF/views/openCityManager/openCityManager.jsp -> admin/src/main/webapp/WEB-INF/views/opencityManager/openCityManager.jsp
+#	new file:   admin/src/main/webapp/WEB-INF/views/testUser/list.jsp
+#	new file:   api/src/main/java/com/edaisong/api/dal/dao/impl/AccountDao.java
+#	modified:   api/src/main/java/com/edaisong/api/dal/dao/inter/IAccountDao.java
+#	new file:   api/src/main/java/com/edaisong/api/service/impl/AccountService.java
+#	new file:   api/src/main/java/com/edaisong/api/service/inter/IAccountService.java
+#	modified:   api/src/main/resources/conf/mybatis/AccountMapper.xml
+#	modified:   core/src/main/resources/conf/core/log4j.xml
+#	new file:   entity/src/main/java/com/edaisong/entity/req/AccountReq.java
+#	new file:   entity/src/main/java/com/edaisong/entity/resp/AccountResp.java
+#	new file:   entity/src/main/java/com/edaisong/entity/resp/BooleanResp.java
+#	new file:   entity/src/main/java/com/edaisong/entity/resp/StringReq.java
+#	modified:   open/.settings/org.eclipse.core.resources.prefs
+#
