@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.domain.GlobalConfigModel;
+import com.edaisong.entity.param.ConfigSavePram;
 
 public interface IGlobalConfigDao {
     int deleteByPrimaryKey(Integer id);
@@ -19,4 +20,5 @@ public interface IGlobalConfigDao {
     int updateByPrimaryKey(GlobalConfig record);
     
      List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) ;
+     Boolean SaveConfig(ConfigSavePram par);
 }
