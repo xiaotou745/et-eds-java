@@ -18,8 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 
+
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.entity.domain.*;
+import com.edaisong.entity.resp.ModifyOpenCityResp;
 
 @Controller
 @RequestMapping("opencitymanager")
@@ -57,11 +59,11 @@ public class OpenCityManagerController {
 	 */
 	@RequestMapping("modifyopencity")
 	@ResponseBody
-	 public OpenCityModel ModifyOpenCity(HttpServletRequest request,HttpServletResponse response)
+	 public ModifyOpenCityResp ModifyOpenCity(HttpServletRequest request,HttpServletResponse response)
      {
 		String openCityCodeList=request.getParameter("openCityCodeList"); //开放城市
 		String closeCityCodeList=request.getParameter("closeCityCodeList"); //关闭城市
-		publicProvinceCityService.ModifyOpenCityByCode(openCityCodeList,closeCityCodeList);
-        return new OpenCityModel();
+		ModifyOpenCityResp resp= publicProvinceCityService.ModifyOpenCityByCode(openCityCodeList,closeCityCodeList);
+        return resp;
      }
 }
