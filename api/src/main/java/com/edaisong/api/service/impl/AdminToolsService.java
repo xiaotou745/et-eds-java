@@ -34,5 +34,10 @@ public class AdminToolsService implements IAdminToolsService {
 		// TODO Auto-generated method stub
 		return iGlobalConfigDao.saveConfig(par);
 	}
+	@Override
+	public String getConfigValueByKey(String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
