@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+
 import com.edaisong.api.dal.dao.inter.IGroupDao;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.entity.Group;
+import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.resp.GroupResp;
 
@@ -22,7 +24,7 @@ public class GroupService implements IGroupService {
 	public GroupResp getGroupListByID(GroupReq req) {
 		// TODO Auto-generated method stub
 		GroupResp resp = new GroupResp();
-		List<Group> listData = dao.getGroupListByID(
+		List<GroupModel> listData = dao.getGroupListByID(
 				req.getId());
 		resp.setGroupList(listData);
 		return resp;
@@ -32,7 +34,7 @@ public class GroupService implements IGroupService {
 	public GroupResp getGroupList(GroupReq req) {
 		// TODO Auto-generated method stub
 		GroupResp resp = new GroupResp();
-		List<Group> listData = dao.getGroupList(
+		List<GroupModel> listData = dao.getGroupList(
 				req);
 		resp.setGroupList(listData);
 		return resp;
