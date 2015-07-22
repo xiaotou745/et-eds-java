@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IAdminToolsService;
 import com.edaisong.api.service.inter.ITestService;
 import com.edaisong.entity.domain.GlobalConfigModel;
+import com.edaisong.entity.param.ConfigSavePram;
 import com.edaisong.entity.req.TestServiceReq;
 import com.edaisong.entity.resp.TestServiceResp;
 /*
@@ -38,6 +40,14 @@ public class AdminToolsController {
 		model.addObject("viewPath", "admintools/globalconfigmanager");
 		model.addObject("DataList",data);
 		return model;
+	}
+	/*保存修改全局变量值*/
+	@RequestMapping("saveconfig")
+	@ResponseBody
+	public Boolean SaveConfig(ConfigSavePram par)
+	{
+		Boolean b= adminToolsService.SaveConfig(par);
+		return b;
 	}
 
 }

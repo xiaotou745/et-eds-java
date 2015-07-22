@@ -13,10 +13,13 @@ import com.edaisong.api.dal.dao.inter.IGlobalConfigDao;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.MenuEntity;
 import com.edaisong.entity.domain.GlobalConfigModel;
+import com.edaisong.entity.param.ConfigSavePram;
+
 @Repository
-public class GlobalConfigDao implements IGlobalConfigDao{
+public class GlobalConfigDao implements IGlobalConfigDao {
 	@Autowired
 	private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
+
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
@@ -52,23 +55,47 @@ public class GlobalConfigDao implements IGlobalConfigDao{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	/*
 	 * 获取全局配置
-	 * */
+	 */
 	@Override
 	public List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) {
 		// TODO Auto-generated method stub
 		SqlSession session = superManReadOnlySqlServerSessionFactory
 				.openSession();
 		try {
-			String statement ="com.edaisong.api.dal.dao.inter.IGlobalConfigDao.getGlobalGroupConfig";
+			String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.getGlobalGroupConfig";
 			Map<String, Object> paramMap = new HashMap<>();
 			paramMap.put("groupid", id);
-			List<GlobalConfigModel> model = session.selectList(statement, paramMap);
+			List<GlobalConfigModel> model = session.selectList(statement,
+					paramMap);
 			return model;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	/*
+	 * 保存全局变量的值
+	 * */
+	@Override
+	public Boolean SaveConfig(ConfigSavePram par) {
+		// TODO Auto-generated method stub
+		SqlSession session = superManReadOnlySqlServerSessionFactory
+				.openSession();
+		try {
+			String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.saveConfigValue";
+			Map<String, Object> paramMap = new HashMap<>();
+			paramMap.put("id", par.getId());
+			paramMap.put("parvalue", par.getConfigValue());
+			return session.update(statement, paramMap)>0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		} finally {
 			session.close();
 		}
