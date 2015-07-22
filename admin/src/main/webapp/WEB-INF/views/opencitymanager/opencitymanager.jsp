@@ -100,16 +100,10 @@
 			function() {
 				
 				//询问框
-				layer.confirm('您是如何看待前端开发？', {
-				    btn: ['重要','奇葩'], //按钮
-				    shade: false //不显示遮罩
+				layer.confirm('您确认要提交修改吗？？', {
+				    btn: ['确认','取消'], //按钮
+				    shade: false //显示遮罩
 				}, function(){
-				    layer.msg('的确很重要', {icon: 1});
-				}, function(){
-				    layer.msg('奇葩么么哒', {shift: 6});
-				});
-				
-				if (confirm("确定要提交更改吗？")) {
 					var OpenCityCodeList = "";
 					var CloseCityCodeList = "";
 					$("input[name='checkMenus']").each(
@@ -139,7 +133,9 @@
 						url : url,
 						data : paramaters,
 						success : function(result) {		
-							alert("设置成功!");
+							layer.alert('操作成功！', {
+							    skin: 'layui-layer-molv' //样式类名
+							});s
 							var cityname=$("#InputCity").val();
 							window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;
 						},
@@ -147,6 +143,8 @@
 							alert(result.responseText);
 						}
 					});
-				}
-			});
+				}, function(){
+				    
+				});
+	    });
 </script>
