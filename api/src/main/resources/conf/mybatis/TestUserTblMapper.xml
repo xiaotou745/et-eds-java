@@ -8,19 +8,27 @@
   <sql id="Base_Column_List" >
     Id, PhoneNo
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <!-- 根据指定id查询账号 -->
+  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.TestUserTbl" parameterType="java.util.Map" >
     select 
     <include refid="Base_Column_List" />
     from TestUserTbl
     where Id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <!-- 删除指定账号 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.util.Map" >
     delete from TestUserTbl
     where Id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.edaisong.entity.TestUserTbl" >
-    insert into TestUserTbl (Id, PhoneNo)
-    values (#{id,jdbcType=INTEGER}, #{phoneno,jdbcType=VARCHAR})
+  <!-- 根据电话号码删除指定账号 -->
+  <delete id="deleteByPhoneNo" parameterType="java.util.Map" >
+    delete from TestUserTbl
+    where phoneNo = #{phoneNo,jdbcType=VARCHAR}
+  </delete>
+    <!-- 插入测试账号 -->
+  <insert id="insert" parameterType="java.util.Map" >
+    insert into TestUserTbl (phoneNo)
+    values (#{phoneNo})
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.TestUserTbl" >
     insert into TestUserTbl
@@ -50,9 +58,17 @@
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 更新账号 -->
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.TestUserTbl" >
     update TestUserTbl
     set PhoneNo = #{phoneno,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 获取测试账号列表 -->
+  <select id="selectAllTestUsers" resultType="com.edaisong.entity.domain.TestUserRecord">
+  	SELECT T.Id,T.PhoneNo,CASE ISNULL(C.Id,0) WHEN 0 THEN 0 ELSE 1 END AS IsC
+    ,CASE ISNULL(B.Id,0) WHEN 0 THEN 0 ELSE 1 END AS IsB
+      FROM  dbo.TestUserTbl(nolock) T left JOIN dbo.clienter(nolock) C ON T.PhoneNo=C.PhoneNo 
+     left JOIN dbo.business(nolock) B ON T.PhoneNo=B.PhoneNo
+  </select>
 </mapper>

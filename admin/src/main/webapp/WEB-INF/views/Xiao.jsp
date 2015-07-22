@@ -1,0 +1,4 @@
+
+<%=request.getAttribute("AAA")%>
+
+AAAAAAAAAAAAA

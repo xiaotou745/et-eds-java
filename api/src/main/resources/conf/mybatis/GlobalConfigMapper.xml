@@ -1,117 +1,140 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IGlobalConfigDao" >
-  <resultMap id="BaseResultMap" type="com.edaisong.entity.GlobalConfig" >
-    <id column="Id" property="id" jdbcType="INTEGER" />
-    <result column="KeyName" property="keyname" jdbcType="NVARCHAR" />
-    <result column="Value" property="value" jdbcType="NVARCHAR" />
-    <result column="LastUpdateTime" property="lastupdatetime" jdbcType="TIMESTAMP" />
-    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
-    <result column="GroupId" property="groupid" jdbcType="INTEGER" />
-    <result column="StrategyId" property="strategyid" jdbcType="INTEGER" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    Id, KeyName, Value, LastUpdateTime, Remark, GroupId, StrategyId
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from GlobalConfig
-    where Id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from GlobalConfig
-    where Id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.edaisong.entity.GlobalConfig" >
-    insert into GlobalConfig (Id, KeyName, Value, 
-      LastUpdateTime, Remark, GroupId, 
-      StrategyId)
-    values (#{id,jdbcType=INTEGER}, #{keyname,jdbcType=NVARCHAR}, #{value,jdbcType=NVARCHAR}, 
-      #{lastupdatetime,jdbcType=TIMESTAMP}, #{remark,jdbcType=NVARCHAR}, #{groupid,jdbcType=INTEGER}, 
-      #{strategyid,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.GlobalConfig" >
-    insert into GlobalConfig
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="keyname != null" >
-        KeyName,
-      </if>
-      <if test="value != null" >
-        Value,
-      </if>
-      <if test="lastupdatetime != null" >
-        LastUpdateTime,
-      </if>
-      <if test="remark != null" >
-        Remark,
-      </if>
-      <if test="groupid != null" >
-        GroupId,
-      </if>
-      <if test="strategyid != null" >
-        StrategyId,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="keyname != null" >
-        #{keyname,jdbcType=NVARCHAR},
-      </if>
-      <if test="value != null" >
-        #{value,jdbcType=NVARCHAR},
-      </if>
-      <if test="lastupdatetime != null" >
-        #{lastupdatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=NVARCHAR},
-      </if>
-      <if test="groupid != null" >
-        #{groupid,jdbcType=INTEGER},
-      </if>
-      <if test="strategyid != null" >
-        #{strategyid,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.GlobalConfig" >
-    update GlobalConfig
-    <set >
-      <if test="keyname != null" >
-        KeyName = #{keyname,jdbcType=NVARCHAR},
-      </if>
-      <if test="value != null" >
-        Value = #{value,jdbcType=NVARCHAR},
-      </if>
-      <if test="lastupdatetime != null" >
-        LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remark != null" >
-        Remark = #{remark,jdbcType=NVARCHAR},
-      </if>
-      <if test="groupid != null" >
-        GroupId = #{groupid,jdbcType=INTEGER},
-      </if>
-      <if test="strategyid != null" >
-        StrategyId = #{strategyid,jdbcType=INTEGER},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GlobalConfig" >
-    update GlobalConfig
-    set KeyName = #{keyname,jdbcType=NVARCHAR},
-      Value = #{value,jdbcType=NVARCHAR},
-      LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
-      Remark = #{remark,jdbcType=NVARCHAR},
-      GroupId = #{groupid,jdbcType=INTEGER},
-      StrategyId = #{strategyid,jdbcType=INTEGER}
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
+<mapper namespace="com.edaisong.api.dal.dao.inter.IGlobalConfigDao">
+	<resultMap id="BaseResultMap" type="com.edaisong.entity.GlobalConfig">
+		<id column="Id" property="id" jdbcType="INTEGER" />
+		<result column="KeyName" property="keyname" jdbcType="NVARCHAR" />
+		<result column="Value" property="value" jdbcType="NVARCHAR" />
+		<result column="LastUpdateTime" property="lastupdatetime"
+			jdbcType="TIMESTAMP" />
+		<result column="Remark" property="remark" jdbcType="NVARCHAR" />
+		<result column="GroupId" property="groupid" jdbcType="INTEGER" />
+		<result column="StrategyId" property="strategyid" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		Id, KeyName, Value, LastUpdateTime, Remark, GroupId,
+		StrategyId
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from GlobalConfig
+		where Id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		GlobalConfig
+		where Id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.edaisong.entity.GlobalConfig">
+		insert into GlobalConfig (Id,
+		KeyName, Value,
+		LastUpdateTime, Remark, GroupId,
+		StrategyId)
+		values
+		(#{id,jdbcType=INTEGER}, #{keyname,jdbcType=NVARCHAR},
+		#{value,jdbcType=NVARCHAR},
+		#{lastupdatetime,jdbcType=TIMESTAMP},
+		#{remark,jdbcType=NVARCHAR}, #{groupid,jdbcType=INTEGER},
+		#{strategyid,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.edaisong.entity.GlobalConfig">
+		insert into GlobalConfig
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				Id,
+			</if>
+			<if test="keyname != null">
+				KeyName,
+			</if>
+			<if test="value != null">
+				Value,
+			</if>
+			<if test="lastupdatetime != null">
+				LastUpdateTime,
+			</if>
+			<if test="remark != null">
+				Remark,
+			</if>
+			<if test="groupid != null">
+				GroupId,
+			</if>
+			<if test="strategyid != null">
+				StrategyId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="keyname != null">
+				#{keyname,jdbcType=NVARCHAR},
+			</if>
+			<if test="value != null">
+				#{value,jdbcType=NVARCHAR},
+			</if>
+			<if test="lastupdatetime != null">
+				#{lastupdatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=NVARCHAR},
+			</if>
+			<if test="groupid != null">
+				#{groupid,jdbcType=INTEGER},
+			</if>
+			<if test="strategyid != null">
+				#{strategyid,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.GlobalConfig">
+		update GlobalConfig
+		<set>
+			<if test="keyname != null">
+				KeyName = #{keyname,jdbcType=NVARCHAR},
+			</if>
+			<if test="value != null">
+				Value = #{value,jdbcType=NVARCHAR},
+			</if>
+			<if test="lastupdatetime != null">
+				LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				Remark = #{remark,jdbcType=NVARCHAR},
+			</if>
+			<if test="groupid != null">
+				GroupId = #{groupid,jdbcType=INTEGER},
+			</if>
+			<if test="strategyid != null">
+				StrategyId = #{strategyid,jdbcType=INTEGER},
+			</if>
+		</set>
+		where Id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GlobalConfig">
+		update
+		GlobalConfig
+		set KeyName = #{keyname,jdbcType=NVARCHAR},
+		Value =
+		#{value,jdbcType=NVARCHAR},
+		LastUpdateTime =
+		#{lastupdatetime,jdbcType=TIMESTAMP},
+		Remark =
+		#{remark,jdbcType=NVARCHAR},
+		GroupId = #{groupid,jdbcType=INTEGER},
+		StrategyId = #{strategyid,jdbcType=INTEGER}
+		where Id =
+		#{id,jdbcType=INTEGER}
+	</update>
+	<select id="getGlobalGroupConfig" parameterType="java.util.Map"
+		resultType="com.edaisong.entity.domain.GlobalConfigModel">
+		SELECT Id ,Remark ,KeyName ,Value ,Remark FROM GlobalConfig
+		(NOLOCK) WHERE
+		Groupid = #{groupid}
+	</select>
+	<update id="saveConfigValue" parameterType="java.util.Map">
+		UPDATE GlobalConfig set Value = #{parvalue,jdbcType=NVARCHAR}
+		where Id = #{id,jdbcType=INTEGER}
+	</update>
 </mapper>
