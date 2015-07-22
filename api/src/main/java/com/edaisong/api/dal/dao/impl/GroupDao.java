@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IGroupDao;
 import com.edaisong.entity.Group;
+import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
 
 @Repository
@@ -25,14 +26,14 @@ public class GroupDao implements IGroupDao {
 		return 0;
 	}
 
-	@Override
+	//@Override
 	public int insert(Group record) {		
 		SqlSession session = superManReadOnlySqlServerSessionFactory
 				.openSession();
 		try {			
 			Map<String, Object> paramMap = new HashMap<>();
 			paramMap.put("groupname", record.getGroupname());
-			paramMap.put("createname", "admin");
+			paramMap.put("createname", record.getCreatename());
 			paramMap.put("createtime", new Date());
 			paramMap.put("modifyname", "");
 			paramMap.put("modifytime",  new Date());
@@ -74,7 +75,10 @@ public class GroupDao implements IGroupDao {
 		try {
 			Map<String, Object> paramMap = new HashMap<>();
 			paramMap.put("id", record.getId());
-			paramMap.put("groupname", record.getGroupname());
+			if(record.getGroupname()!="" && record.getGroupname()!=null)
+				paramMap.put("groupname", record.getGroupname());
+			if(record.getIsvalid()!=null)
+				paramMap.put("isvalid", record.getIsvalid());
 			
 			int result = session
 					.update("com.edaisong.api.dal.dao.inter.IGroupDao.updateByPrimaryKeySelective",
@@ -96,14 +100,14 @@ public class GroupDao implements IGroupDao {
 	}		
 	
 	@Override
-	public List<Group> getGroupListByID(Long id)
+	public List<GroupModel> getGroupListByID(Long id)
 	{
 		SqlSession session = superManReadOnlySqlServerSessionFactory
 				.openSession();
 		try {
 			Map<String, Object> paramMap = new HashMap<>();
 			paramMap.put("id", id);
-			List<Group> list = session
+			List<GroupModel> list = session
 					.selectList(
 							"com.edaisong.api.dal.dao.inter.IGroupDao.getGroupListByID",
 							paramMap);
@@ -117,16 +121,16 @@ public class GroupDao implements IGroupDao {
 	}
 	
 	@Override
-	public List<Group> getGroupList(GroupReq req)
+	public List<GroupModel> getGroupList(GroupReq req)
 	{
 		SqlSession session = superManReadOnlySqlServerSessionFactory
 				.openSession();
 		try {
 			Map<String, Object> paramMap = new HashMap<>();
-			//paramMap.put("id", id);
-			if(req.getGroupName()!="")
-				paramMap.put("groupname", req.getGroupName());
-			List<Group> list = session
+			//paramMap.put("id", id);			
+			paramMap.put("groupname", req.getGroupName());
+			paramMap.put("appkey", req.getAppKey());
+			List<GroupModel> list = session
 					.selectList(
 							"com.edaisong.api.dal.dao.inter.IGroupDao.getGroupList",
 							paramMap);
