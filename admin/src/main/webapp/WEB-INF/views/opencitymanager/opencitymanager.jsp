@@ -95,6 +95,13 @@
 	  var cityname=$("#InputCity").val();
 	  window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;
   });
+  //注册添加回车事件
+  document.onkeydown=function(event){
+      var e = event || window.event || arguments.callee.caller.arguments[0];
+       if(e && e.keyCode==13){ // enter 键
+    	   $("#btnSearch").click();
+      }
+  }; 
     //提交绑定
 	$("#btnSave").click(
 			function() {
