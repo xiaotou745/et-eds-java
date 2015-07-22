@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
@@ -7,12 +8,13 @@
 <%@page import="com.edaisong.entity.domain.OpenCityModel"%>
 <link rel="stylesheet"
 	href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
+
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">
 	    <div class="col-lg-12">
 	        <div class="input-group" style="margin-bottom:5px;">
-	            <input type="text" placeholder="请输入城市" class="input-sm form-control" id="InputCity" style="width:250px;height:34px;" value="<%=request.getAttribute("cityname") %>"/>
+	            <input type="text" placeholder="请输入城市" class="input-sm form-control" id="InputCity" style="width:250px;height:34px;" value="<%=request.getAttribute("cityname")==null?"":request.getAttribute("cityname")%>"/>
 	            <button type="button" class="btn btn-w-m btn-primary" id=btnSearch style="margin-left:3px;">查询</button>
 	            <button type="button" class="btn btn-w-m btn-primary" id="btnSave" style="margin-left:3px;">保存修改</button>
 	        </div>
@@ -42,7 +44,11 @@
 						<tbody>
 							<%
 								List<OpenCityModel> data=(List<OpenCityModel>)request.getAttribute("listData");
-																			 for (int i = 0; i < data.size(); i++) {
+								 if(data==null){
+									 data=new ArrayList<OpenCityModel>();
+								 }
+							    for (int i = 0; i < data.size(); i++) {
+					        
 							%>
 							<tr>
 								<td><%=i%></td>
@@ -92,6 +98,17 @@
     //提交绑定
 	$("#btnSave").click(
 			function() {
+				
+				//询问框
+				layer.confirm('您是如何看待前端开发？', {
+				    btn: ['重要','奇葩'], //按钮
+				    shade: false //不显示遮罩
+				}, function(){
+				    layer.msg('的确很重要', {icon: 1});
+				}, function(){
+				    layer.msg('奇葩么么哒', {shift: 6});
+				});
+				
 				if (confirm("确定要提交更改吗？")) {
 					var OpenCityCodeList = "";
 					var CloseCityCodeList = "";

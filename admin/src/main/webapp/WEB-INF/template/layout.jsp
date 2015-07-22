@@ -25,7 +25,7 @@
    
 
     <!-- Mainly scripts -->
-	<script src="<%=basePath%>/js/jquery-2.1.1.js"></script>
+	<script src="<%=basePath%>/js/jquery-2.1.1.js"></script>	
 	<script src="<%=basePath%>/js/bootstrap.min.js"></script>
 	<script src="<%=basePath%>/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 	<script
@@ -66,6 +66,7 @@
 	<script src="<%=basePath%>/js/plugins/toastr/toastr.min.js"></script>
 
 
+	
 <tiles:insertAttribute name="header_js" ignore="true"></tiles:insertAttribute>
 <tiles:insertAttribute name="header_css" ignore="true"></tiles:insertAttribute>
 </head>
