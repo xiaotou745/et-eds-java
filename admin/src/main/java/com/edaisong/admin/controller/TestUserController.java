@@ -17,12 +17,12 @@ import com.edaisong.entity.domain.TestUserRecord;
 import com.edaisong.entity.resp.BooleanResp;
 
 @Controller
-@RequestMapping("testUser")
+@RequestMapping("testuser")
 public class TestUserController {
 	@Autowired
 	private ITestUserTblService service;
 
-	private final static String LIST_VIEW = "testUser/list";
+	private final static String LIST_VIEW = "testuser/list";
 
 	@RequestMapping("list")
 	public ModelAndView list(HttpServletRequest request,
