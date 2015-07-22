@@ -24,12 +24,15 @@
    SELECT Id,GroupName,CreateName,CreateTime,ModifyName,ModifyTime,IsValid,IsModifyBind FROM dbo.[group] (nolock)
    WHERE dbo.[group].Id=#{id}
   </select>
-     <select id="getGroupList" resultType="com.edaisong.entity.Group" parameterType="java.util.Map" >   
-   SELECT Id,GroupName,CreateName,CreateTime,ModifyName,ModifyTime,IsValid,IsModifyBind FROM dbo.[group] (nolock) where 1=1
+     <select id="getGroupList" resultType="com.edaisong.entity.domain.GroupModel" parameterType="java.util.Map" >      
+   select  g.id as id,g.GroupName,g.CreateName,g.CreateTime,g.IsValid,isnull(gc.AppKey,'') AppKey,isnull(gc.AppSecret,'') AppSecret,isnull(gc.AppVersion,'') AppVersion 
+ from  [group] g with(nolock) left join GroupApiConfig gc with(nolock) on g.Id = gc.GroupId where 1=1
     <if test="groupname != null" >
-       and  dbo.[group].groupname=#{groupname}
+       and  g.groupname=#{groupname}
     </if>   
-   
+     <if test="appkey != null" >
+       and  gc.AppKey=#{appkey}
+    </if>   
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from group

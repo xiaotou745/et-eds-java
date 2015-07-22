@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@page import="java.util.List"%>         
-<%@page import="com.edaisong.entity.Group"%> 
+<%@page import="com.edaisong.entity.domain.GroupModel"%> 
 <%
 	String basePath = request.getContextPath();
 %>
@@ -32,33 +32,43 @@
 			<tbody>
 	
 		<%
-		List<Group> data=	(List<Group>)request.getAttribute("listData");
+		List<GroupModel> data=	(List<GroupModel>)request.getAttribute("listData");
 		 for (int i = 0; i < data.size(); i++) {
 			 %>  
 			 <tr>
 				<td><%=data.get(i).getId() %></td>
 				<td><%=data.get(i).getGroupname() %></td>
 				<td><%=data.get(i).getCreatetime() %></td>
-				<td><%=data.get(i).getCreatetime() %></td>	
-				<td><%=data.get(i).getIsvalid() %></td>
-				<td><%=data.get(i).getIsvalid() %></td>
-				<td><%=data.get(i).getIsvalid() %></td>					
-	
-				<%--<%
-				if(data.get(i).getIsvalid()==1)
-				%>		
-				<td ><a href="javascript:void(0);">启用</a></td>
+				<td><%=data.get(i).getAppkey() %></td>
+				<td><%=data.get(i).getAppsecret() %></td>					
+				<td><%=data.get(i).getAppversion() %></td>				
+	            
 				<%
+				if (data.get(i).getIsvalid().toString().equals("1"))
+				{
+				%>		
+				<td ><a href="javascript:void(0)" onclick="SetGourpStatus('<%=data.get(i).getId() %>','<%=data.get(i).getIsvalid() %>')">启用</a></td>
+				<%
+				}
 				else
+				{
 				%>
-				<td ><a href="javascript:void(0);">未启用</a></td>
-				 
-				<td><%=data.get(i).getCreatetime() %></td>
+				<td ><a href="javascript:void(0);" onclick="SetGourpStatus('<%=data.get(i).getId() %>','<%=data.get(i).getIsvalid() %>')">未启用</a></td>
+				<%
+				}
+				%>			
 					
-				--%>			
-				<td><%=data.get(i).getIsvalid() %></td>	
+				<td><%=data.get(i).getCreatename() %></td>	
 				<td>
 				<a href="javascript:void(0)" onclick="funcGShowView('<%=data.get(i).getId() %>','<%=data.get(i).getGroupname() %>')">修改</a>
+				<% 
+				if (data.get(i).getAppkey()==null || data.get(i).getAppkey().equals(""))
+				{
+				%>
+				<a href="javascript:void(0)" onclick="funcAShowView('<%=data.get(i).getId() %>','<%=data.get(i).getGroupname() %>')">设置AppKey</a>
+				<%
+				}
+				%>
 				</td>				
 			</tr>
 		 <%}
@@ -74,6 +84,29 @@
     	   $("#hiduGroupID").val(gid);
            $('#txtuGroupName').val(gname);
            adminjs.openwinbox('#GroupUpdateDivShow');
+    }
+    //显示设置config弹出层
+    function funcAShowView(gid,gname) {
+        $("#HidGroupID").val(gid); 
+        $("#statusFinApp").text("配置-" + gname+"-AppConfig");
+        adminjs.openwinbox('#GroupAppConfig');
+    }
+    
+    function SetGourpStatus(id, status) {
+        if (confirm("确定要更新此状态吗？")) {
+            var pars = { "id": id, "status": status };
+            var url = "<%=basePath%>/group/updatestatus";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: pars,
+                success: function(result) {
+                	if(result=="ok")
+                    	window.location.href = "<%=basePath%>/group/list";   
+                }
+        });
+        }
+        return false;
     }
     </script>
 	
