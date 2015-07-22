@@ -1,7 +1,0 @@
-package edaisong.entity.resp;
-
-import edaisong.entity.common.ResponseBase;
-
-public class TestServiceResp extends ResponseBase{
-
-}
