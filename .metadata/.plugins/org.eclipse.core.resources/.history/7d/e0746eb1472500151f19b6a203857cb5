@@ -1,7 +1,0 @@
-package edaisong.entity.req;
-
-import edaisong.entity.common.RequestBase;
-
-public class TestServiceReq extends RequestBase{
-
-}
