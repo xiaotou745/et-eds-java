@@ -5,7 +5,6 @@
 
 <%String basePath = request.getContextPath(); %>
 
-<%-- <script src="<%=basePath%>/js/jquery-2.1.1.js"></script> --%>
 <script src="http://res.layui.com/lay/lib/layer/src/layer.js?v=1.93"></script>
 <div class="row">
 	<div class="col-lg-12">
@@ -19,7 +18,10 @@
 							class="btn btn-primary btn-xs" id="showCreateNewLayer">创建新账号</a>
 					</div>
 				</div>
-				<div class="ibox-content">
+				<%if(request.getAttribute("testUsers") == null){ %>
+					<h3>当前没有测试账户</h3>
+				<%}else{ %>
+									<div class="ibox-content">
 					<!-- <div class="">
                                     <a onclick="fnClickAddRow();" href="javascript:void(0);" class="btn btn-primary ">添加行</a>
                                 </div> -->
@@ -55,6 +57,7 @@
 						</table>
 					</div>
 				</div>
+				<%} %>
 			</div>
 		</div>
 	</div>
