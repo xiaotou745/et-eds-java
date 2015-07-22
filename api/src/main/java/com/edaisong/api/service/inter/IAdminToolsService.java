@@ -10,5 +10,6 @@ import com.edaisong.entity.resp.AuthorityMenuResp;
 public interface IAdminToolsService {
 
 	 List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) ;
-	 Boolean SaveConfig(ConfigSavePram par);
+	 Boolean saveConfig(ConfigSavePram par);
+	 String getConfigValueByKey(String key);
 }

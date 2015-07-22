@@ -30,9 +30,9 @@ public class AdminToolsService implements IAdminToolsService {
 	 * 修改全局变量参数
 	 * */
 	@Override
-	public Boolean SaveConfig(ConfigSavePram par) {
+	public Boolean saveConfig(ConfigSavePram par) {
 		// TODO Auto-generated method stub
-		return iGlobalConfigDao.SaveConfig(par);
+		return iGlobalConfigDao.saveConfig(par);
 	}
 
 }

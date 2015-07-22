@@ -83,7 +83,7 @@ public class GlobalConfigDao implements IGlobalConfigDao {
 	 * 保存全局变量的值
 	 * */
 	@Override
-	public Boolean SaveConfig(ConfigSavePram par) {
+	public Boolean saveConfig(ConfigSavePram par) {
 		// TODO Auto-generated method stub
 		SqlSession session = superManReadOnlySqlServerSessionFactory
 				.openSession();
@@ -99,6 +99,14 @@ public class GlobalConfigDao implements IGlobalConfigDao {
 		} finally {
 			session.close();
 		}
+	}
+	/*
+	 * 通过某个字段获取值
+	 * */
+	@Override
+	public String getConfigValueByKey(String key) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

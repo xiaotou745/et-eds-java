@@ -46,7 +46,7 @@ public class AdminToolsController {
 	@ResponseBody
 	public Boolean SaveConfig(ConfigSavePram par)
 	{
-		Boolean b= adminToolsService.SaveConfig(par);
+		Boolean b= adminToolsService.saveConfig(par);
 		return b;
 	}
 
