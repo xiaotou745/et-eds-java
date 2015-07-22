@@ -112,7 +112,7 @@ public class PublicProvinceCityDao implements IPublicProvinceCityDao{
 					.update(
 							"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateOpen",
 							paramMap);
-			return count>0;
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -141,7 +141,7 @@ public class PublicProvinceCityDao implements IPublicProvinceCityDao{
 					.update(
 							"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateClose",
 							paramMap);
-			return count>0;
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

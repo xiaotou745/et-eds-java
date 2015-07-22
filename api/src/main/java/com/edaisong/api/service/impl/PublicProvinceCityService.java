@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.entity.PublicProvinceCity;
+import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.OpenCityModel;
+import com.edaisong.entity.resp.ModifyOpenCityResp;
 import com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao;
 
 
@@ -36,15 +38,19 @@ public class PublicProvinceCityService implements IPublicProvinceCityService
 	  * @Date 20150721
 	  */
 	@Override
-    public boolean ModifyOpenCityByCode(String openCityCodeList, String closeCityCodeList)
+    public ModifyOpenCityResp ModifyOpenCityByCode(String openCityCodeList, String closeCityCodeList)
     {
-		boolean result=true;
+		boolean result1=true,result2=true;
 		if (openCityCodeList!=null&&!openCityCodeList.isEmpty()) {
-	        return publicProvinceCityDao.updateOpen(openCityCodeList);
+			result1= publicProvinceCityDao.updateOpen(openCityCodeList);
 		}
 		if (closeCityCodeList!=null&&!closeCityCodeList.isEmpty()) {
-	        return publicProvinceCityDao.updateClose(closeCityCodeList);
+			result2= publicProvinceCityDao.updateClose(closeCityCodeList);
 		}
-		return result;
+		ModifyOpenCityResp modifyOpenCityResp=new ModifyOpenCityResp();
+		if (result1==false||result2==false) {
+			modifyOpenCityResp.setResponseCode(ResponseCode.SYSTEM_ERROR);
+		}
+	    return modifyOpenCityResp; 
     }
 }

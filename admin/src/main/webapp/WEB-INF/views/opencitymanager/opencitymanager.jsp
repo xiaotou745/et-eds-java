@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
@@ -7,12 +8,13 @@
 <%@page import="com.edaisong.entity.domain.OpenCityModel"%>
 <link rel="stylesheet"
 	href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
+
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">
 	    <div class="col-lg-12">
 	        <div class="input-group" style="margin-bottom:5px;">
-	            <input type="text" placeholder="请输入城市" class="input-sm form-control" id="InputCity" style="width:250px;height:34px;" value="<%=request.getAttribute("cityname") %>"/>
+	            <input type="text" placeholder="请输入城市" class="input-sm form-control" id="InputCity" style="width:250px;height:34px;" value="<%=request.getAttribute("cityname")==null?"":request.getAttribute("cityname")%>"/>
 	            <button type="button" class="btn btn-w-m btn-primary" id=btnSearch style="margin-left:3px;">查询</button>
 	            <button type="button" class="btn btn-w-m btn-primary" id="btnSave" style="margin-left:3px;">保存修改</button>
 	        </div>
@@ -42,7 +44,11 @@
 						<tbody>
 							<%
 								List<OpenCityModel> data=(List<OpenCityModel>)request.getAttribute("listData");
-																			 for (int i = 0; i < data.size(); i++) {
+								 if(data==null){
+									 data=new ArrayList<OpenCityModel>();
+								 }
+							    for (int i = 0; i < data.size(); i++) {
+					        
 							%>
 							<tr>
 								<td><%=i%></td>
@@ -89,10 +95,22 @@
 	  var cityname=$("#InputCity").val();
 	  window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;
   });
+  //注册添加回车事件
+  document.onkeydown=function(event){
+      var e = event || window.event || arguments.callee.caller.arguments[0];
+       if(e && e.keyCode==13){ // enter 键
+    	   $("#btnSearch").click();
+      }
+  }; 
     //提交绑定
 	$("#btnSave").click(
 			function() {
-				if (confirm("确定要提交更改吗？")) {
+				
+				//询问框
+				layer.confirm('您确认要提交修改吗？？', {
+				    btn: ['确认','取消'], //按钮
+				    shade: false //显示遮罩
+				}, function(){
 					var OpenCityCodeList = "";
 					var CloseCityCodeList = "";
 					$("input[name='checkMenus']").each(
@@ -122,14 +140,28 @@
 						url : url,
 						data : paramaters,
 						success : function(result) {		
-							alert("设置成功!");
-							var cityname=$("#InputCity").val();
-							window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;
+							if(result.responseCode==0){
+								layer.alert('操作成功！', {
+								    skin: 'layui-layer-molv' //样式类名
+								});
+								var cityname=$("#InputCity").val();
+								window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;s
+							}else
+							{
+								layer.alert('操作失败，请联系管理员！', {
+								    skin: 'layui-layer-lan' //样式类名
+								});
+						     }
+							
 						},
 						error:function(result){
-							alert(result.responseText);
+							layer.alert('操作失败！', {
+							    skin: 'layui-layer-lan' //样式类名
+							});
 						}
 					});
-				}
-			});
+				}, function(){
+				    
+				});
+	    });
 </script>
