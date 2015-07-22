@@ -1,5 +1,7 @@
 package com.edaisong.admin.controller;
 
+import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+
 
 
 
@@ -28,16 +32,18 @@ public class OpenCityManagerController {
     private IPublicProvinceCityService publicProvinceCityService;
 	
 	@RequestMapping("opencitymanager")
-	public ModelAndView index(HttpServletRequest request,
-			HttpServletResponse response) {
+	public ModelAndView index(String cityname,HttpServletRequest request,HttpServletResponse response) {
 		
-	    String city="北京";
-		List<OpenCityModel> citys=  publicProvinceCityService.getOpenCityList(city);
+		List<OpenCityModel> citys=new ArrayList<OpenCityModel>();
+	    if (cityname!=null&&!cityname.isEmpty()) {
+		   citys=  publicProvinceCityService.getOpenCityList(cityname);
+		}
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "开通城市管理");
 		model.addObject("listData",citys);
-		model.addObject("viewPath", "openCityManager/openCityManager");
+		model.addObject("cityname",cityname);
+		model.addObject("viewPath", "opencitymanager/opencitymanager");
 		model.addObject("listData", citys);
 		return model;
 	}
