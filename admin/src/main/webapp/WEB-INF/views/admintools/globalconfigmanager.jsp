@@ -64,8 +64,8 @@
 	function SaveConfig(id) {
 		var newvalue = $('#show' + id).val();
 		var oldvalue = $('#hid' + id).attr('value');
-		alert(newvalue);
-		alert(oldvalue);
+		console.log(newvalue);
+		console.log(oldvalue);
 		if (newvalue == oldvalue) {
 			alert('未修改');
 		} else {
