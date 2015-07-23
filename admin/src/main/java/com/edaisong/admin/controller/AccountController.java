@@ -28,6 +28,15 @@ public class AccountController {
 		view.addObject("subtitle", "管理后台用户管理");
 		view.addObject("currenttitle", "管理后台用户管理");
 		view.addObject("viewPath", "account/list");
+//		view.addObject("listData", resp.getResultList());
+		return view;
+	}
+	@RequestMapping("listdo")
+	public ModelAndView listdo(HttpServletRequest request, HttpServletResponse response) {
+		AccountReq req = new AccountReq();
+		AccountResp resp = accountService.queryAccount(req);
+		ModelAndView view = new ModelAndView();
+		view.addObject("viewPath", "account/listdo");
 		view.addObject("listData", resp.getResultList());
 		return view;
 	}
