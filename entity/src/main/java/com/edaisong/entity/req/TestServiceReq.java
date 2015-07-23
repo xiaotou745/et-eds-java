@@ -1,7 +1,9 @@
 package com.edaisong.entity.req;
 
-import com.edaisong.entity.common.RequestBase;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import com.edaisong.entity.common.RequestBase;
+@XmlRootElement(name = "TestServiceReq")  
 public class TestServiceReq extends RequestBase{
 private	int RecordType;
 private String OperateTime;

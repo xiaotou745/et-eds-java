@@ -4,27 +4,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IAccountDao;
 import com.edaisong.entity.Account;
 
-@Repository
-public class AccountDao implements IAccountDao {
-	@Autowired
-	private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
 
-	//查询所有管理后台用户列表
+@Repository
+public class AccountDao extends DaoBase implements IAccountDao {
+	// 查询所有管理后台用户列表
 	@Override
 	public List<Account> query() {
-		SqlSession session = superManReadOnlySqlServerSessionFactory
-				.openSession();
 		Map<String, Object> map = new HashMap<String, Object>();
-		
-		List<Account> list = session.selectList(
+		List<Account> list = getReadOnlySqlSessionUtil().selectList(
 				"com.edaisong.api.dal.dao.inter.IAccountDao.query", map);
 		return list;
 	}

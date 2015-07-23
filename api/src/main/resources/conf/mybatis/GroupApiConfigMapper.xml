@@ -22,9 +22,9 @@
     where AppId = #{appid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.GroupApiConfig" >
-    insert into GroupApiConfig (AppId, AppKey, AppSecret, 
+    insert into GroupApiConfig ( AppKey, AppSecret, 
       AppVersion, GroupId)
-    values (#{appid,jdbcType=INTEGER}, #{appkey,jdbcType=VARCHAR}, #{appsecret,jdbcType=VARCHAR}, 
+    values (#{appkey,jdbcType=VARCHAR}, #{appsecret,jdbcType=VARCHAR}, 
       #{appversion,jdbcType=VARCHAR}, #{groupid,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.GroupApiConfig" >
