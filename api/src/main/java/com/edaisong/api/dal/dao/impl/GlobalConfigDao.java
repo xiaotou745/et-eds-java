@@ -13,7 +13,7 @@ import com.edaisong.api.dal.dao.inter.IGlobalConfigDao;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.MenuEntity;
 import com.edaisong.entity.domain.GlobalConfigModel;
-import com.edaisong.entity.param.ConfigSavePram;
+import com.edaisong.entity.req.ConfigSaveReq;
 
 @Repository
 public class GlobalConfigDao implements IGlobalConfigDao {
@@ -83,7 +83,7 @@ public class GlobalConfigDao implements IGlobalConfigDao {
 	 * 保存全局变量的值
 	 * */
 	@Override
-	public Boolean saveConfig(ConfigSavePram par) {
+	public Boolean saveConfig(ConfigSaveReq par) {
 		// TODO Auto-generated method stub
 		SqlSession session = superManReadOnlySqlServerSessionFactory
 				.openSession();

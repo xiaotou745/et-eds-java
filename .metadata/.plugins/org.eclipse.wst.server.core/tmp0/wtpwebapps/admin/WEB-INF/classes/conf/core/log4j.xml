@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <!-- 控制台输出 -->
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %p [%c] - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+        </filter>
+    </appender>
+
+    <!-- 系统启动日志输出文件 -->
+    <appender name="fileAppender" class="com.elong.common.util.log.ElongDailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="${catalina.home}/logs/system/system.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %p [%c] - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+        </filter>
+    </appender>
+    <!--actionLogEntity appender -->
+    <appender name="actionLogEntityAppender" class="com.elong.common.util.log.ElongDailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="${catalina.home}/logs/actionlogs/actionlogentity.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH-mm"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+        </filter>
+    </appender>
+
+    <appender name="globalExceptionAppender" class="com.elong.common.util.log.ElongDailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="${catalina.home}/logs/globalexceptions/globalexception.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH-mm"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+        </filter>
+    </appender>
+
+    <!-- 2014/9/3 Peng.Huang 添加 begin -->
+    <appender name="apiDebugAppender" class="com.elong.common.util.log.ElongDailyRollingFileAppender">
+        <!--指定消息输出的最底层次-->
+        <!--<param name="Threshold" value="DEBUG" />-->
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="${catalina.home}/logs/hotel-product/debug/api_debug.log"/>
+        <!--<param name="Append" value="true" />-->
+        <!--每小时产生一个新文件-->
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
+        </layout>
+        <!--若将value更改为OFF，则表示关掉该日志开关-->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="DEBUG"/>
+            <param name="LevelMax" value="DEBUG"/>
+        </filter>
+    </appender>
+
+    <appender name="apiInfoAppender" class="com.elong.common.util.log.ElongDailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="${catalina.home}/logs/hotel-product/info/api_info.log"/>
+        <!--<param name="Append" value="true" />-->
+        <!--每小时产生一个新文件-->
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
+        </layout>
+        <!--若将value更改为OFF，则表示关掉该日志开关-->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+            <param name="LevelMax" value="INFO"/>
+        </filter>
+    </appender>
+
+    <appender name="apiWarnAppender" class="com.elong.common.util.log.ElongDailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="${catalina.home}/logs/hotel-product/warn/api_warn.log"/>
+        <!--<param name="Append" value="true" />-->
+        <!--每小时产生一个新文件-->
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
+        </layout>
+        <!--若将value更改为OFF，则表示关掉该日志开关-->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="WARN"/>
+            <param name="LevelMax" value="WARN"/>
+        </filter>
+    </appender>
+
+    <appender name="apiErrorAppender" class="com.elong.common.util.log.ElongDailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="${catalina.home}/logs/hotel-product/error/api_error.log"/>
+        <!--<param name="Append" value="true" />-->
+        <!--每小时产生一个新文件-->
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
+        </layout>
+        <!--若将value更改为OFF，则表示关掉该日志开关-->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="ERROR"/>
+            <param name="LevelMax" value="ERROR"/>
+        </filter>
+    </appender>
+    <!-- 2014/9/3 Peng.Huang 添加 end -->
+
+
+    <category name="actionLogEntityLogger" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="actionLogEntityAppender"/>
+    </category>
+
+    <category name="globalExceptionLogger" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="globalExceptionAppender"/>
+    </category>
+
+    <!-- 2014/9/3 Peng.Huang 添加 begin -->
+    <category name="apiLogger" additivity="false">
+        <!--若将level的value更改为OFF，则表示关掉该下的所有日志-->
+        <level value="DEBUG"/>
+        <appender-ref ref="apiDebugAppender"/>
+        <appender-ref ref="apiInfoAppender"/>
+        <appender-ref ref="apiWarnAppender"/>
+        <appender-ref ref="apiErrorAppender"/>
+    </category>
+    <!-- 2014/9/3 Peng.Huang 添加 end -->
+
+    <root>
+        <level value="DEBUG"/>
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="fileAppender"/>
+    </root>
+
+</log4j:configuration>

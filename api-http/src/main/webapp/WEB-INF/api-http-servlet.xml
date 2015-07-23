@@ -1,42 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
-		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-		http://www.springframework.org/schema/beans 
-		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/util 
-		http://www.springframework.org/schema/util/spring-util-3.0.xsd
-		http://www.springframework.org/schema/context 
-		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-
-	<!-- 引入配置文件 -->
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+	 http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd 
+	 http://camel.apache.org/schema/spring 
+	 http://camel.apache.org/schema/cxf 
+	 		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	 ">
 
 
 
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	<import resource="classpath:conf/core/spring-context.xml" />
-	<!-- <mvc:default-servlet-handler/> -->
-	<!-- <context:annotation-config/> -->
 
+	<context:component-scan base-package="com.edaisong.api_http.service.impl" />
 
-	<!--<start id="spring_component_scan" /> -->
- <context:component-scan base-package="com.edaisong.*" /> 
-	<!--<end id="spring_component_scan" /> -->
-	<mvc:annotation-driven />
-<!-- 	<context:component-scan base-package="com.edaisong"> -->
-<!-- 		<context:include-filter type="annotation" -->
-<!-- 			expression="org.springframework.stereotype.Controller" /> -->
-<!-- 	</context:component-scan> -->
-	<mvc:resources mapping="/**" location="/resources/" />
-	<!--<start id="mvc_resources"/> -->
-	<!-- <mvc:resources mapping="/css/**" location="/css/" /> -->
-	<!-- <mvc:resources mapping="/js/**" location="/js/" /> -->
-	<!-- <mvc:resources mapping="/img/**" location="/img/" /> -->
-	<!-- <mvc:resources mapping="/font-awesome/**" location="/font-awesome/" 
-		/> -->
-	<!--<end id="mvc_resources"/> -->
-   
+	<jaxrs:server id="myService" address="/">
+		<jaxrs:serviceBeans>
+			<ref bean="testHttpService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:inInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+		</jaxrs:outInterceptors>
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+			<entry key="xml" value="application/xml" />
+		</jaxrs:extensionMappings>
+		<jaxrs:languageMappings>
+			<entry key="en" value="en-gb" />
+		</jaxrs:languageMappings>
+		<jaxrs:providers>
+<!-- 			<ref bean="jsonProvider" /> -->
+			 <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" /> 
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<!-- <property name="produceMediaTypes" ref="jsonTypes" /> -->
+	<!-- <property name="consumeMediaTypes" ref="jsonTypes" /> -->
+	<!-- 返回值中会自动删除值为null的属性 -->
+		<!--<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+		<property name="serializeAsArray" value="true" />
+		<property name="ignoreNamespaces" value="true" />
+		<property name="dropRootElement" value="true" />
+		<property name="ignoreMixedContent" value="true" />
+		<property name="supportUnwrapped" value="true" />
+		<property name="attributesToElements" value="true" />
+	</bean>-->
 </beans>
