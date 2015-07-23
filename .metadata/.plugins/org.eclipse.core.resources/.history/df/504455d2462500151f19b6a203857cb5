@@ -1,0 +1,5 @@
+package edaisong.entity.common;
+
+public class ResponseCode {
+
+}

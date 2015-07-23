@@ -1,0 +1,13 @@
+package com.edaisong.api.service.inter;
+
+
+import java.util.List;
+
+import com.edaisong.api.dal.dao.inter.IBusinessBalanceRecord;
+
+import edaisong.entity.BusinessBalanceRecord;
+
+
+public interface ITestService {
+	 public List<BusinessBalanceRecord> selectBusinessBalanceByID(int RecordType,String OperateTime);
+}

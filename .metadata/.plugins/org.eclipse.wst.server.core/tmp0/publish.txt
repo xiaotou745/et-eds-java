@@ -1,0 +1,5 @@
+#Tomcat publish data
+#Thu Jul 09 13:58:27 CST 2015
+org.eclipse.jst.j2ee.server\:core=WEB-INF/lib/core-0.0.1-SNAPSHOT.jar
+org.eclipse.jst.jee.server\:/binary\:D\:\\repository\\org\\springframework\\spring-web\\4.1.1.RELEASE\\spring-web-4.1.1.RELEASE.jar=WEB-INF/lib/spring-web-4.1.1.RELEASE.jar
+org.eclipse.jst.j2ee.server\:api=WEB-INF/lib/api-0.0.1-SNAPSHOT.jar

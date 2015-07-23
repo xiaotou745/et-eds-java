@@ -4,20 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.edaisong.api.dal.dao.inter.IServiceTestDao;
-import com.edaisong.core.util.SqlSessionUtil;
 import com.edaisong.entity.BusinessBalanceRecord;
 
 @Repository
-public class ServiceTestDao implements IServiceTestDao {
-	@Autowired
-	private SqlSessionFactory superManSqlServerSessionFactory;
-
-	@Autowired
-	private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
+public class ServiceTestDao extends DaoBase implements IServiceTestDao {
 
 	@Override
 	public List<BusinessBalanceRecord> selectBusinessBalanceByID(
@@ -25,8 +18,7 @@ public class ServiceTestDao implements IServiceTestDao {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("RecordType", RecordType);
 		paramMap.put("OperateTime", OperateTime);
-		List<BusinessBalanceRecord> list = SqlSessionUtil
-				.wapperSession(superManReadOnlySqlServerSessionFactory)
+		List<BusinessBalanceRecord> list = getReadOnlySqlSessionUtil()
 				.selectList(
 						"com.edaisong.api.dal.dao.inter.IServiceTestDao.selectBusinessBalanceByID",
 						paramMap);
@@ -47,8 +39,7 @@ public class ServiceTestDao implements IServiceTestDao {
 		paramMap.put("WithwardId", "123");
 		paramMap.put("RelationNo", "55555");
 		paramMap.put("Remark", "mybatistest");
-		return SqlSessionUtil
-				.wapperSession(superManSqlServerSessionFactory)
+		return getMasterSqlSessionUtil()
 				.insert("com.edaisong.api.dal.dao.inter.IServiceTestDao.addBusinessBalance",
 						paramMap);
 	}
@@ -59,16 +50,14 @@ public class ServiceTestDao implements IServiceTestDao {
 		paramMap.put("id", 164);
 		paramMap.put("Amount", 100);
 		paramMap.put("Balance", 100);
-		return SqlSessionUtil
-				.wapperSession(superManSqlServerSessionFactory)
+		return getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dal.dao.inter.IServiceTestDao.updateBusinessBalance",
 						paramMap);
 	}
 
 	@Override
 	public int deleteBusinessBalance(int id) {
-		return SqlSessionUtil
-				.wapperSession(superManSqlServerSessionFactory)
+		return getMasterSqlSessionUtil()
 				.delete("com.edaisong.api.dal.dao.inter.IServiceTestDao.deleteBusinessBalance",
 						id);
 	}

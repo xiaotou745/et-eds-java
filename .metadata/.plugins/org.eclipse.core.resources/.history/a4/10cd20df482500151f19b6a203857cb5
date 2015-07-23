@@ -1,0 +1,8 @@
+package com.edaisong.api.service.inter;
+
+
+import com.edaisong.api.dal.dao.inter.IBusinessBalanceRecord;
+
+
+public interface ITestService extends IBusinessBalanceRecord{
+}

@@ -12,9 +12,8 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="input-group" style="margin-bottom: 5px;">
-				<!-- <button type="button" class="btn btn-w-m btn-primary" id="btnaddboxshow"
-					style="margin-left: 3px;">添加</button> -->
-				<a id="modal-477982" href="#addconfig" role="button" class="btn" data-toggle="modal">添加</a>
+			<button type="button" class="btn btn-w-m btn-primary" id="btnaddboxshow"
+					style="margin-left: 3px;">添加</button> 
 			</div>
 		</div>
 
@@ -68,26 +67,26 @@
 		</div>
 	</div>
 
-	<div id="addconfig" class="modal hide fade" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true">×</button>
-			<h3 id="myModalLabel">添加全局公共配置</h3>
-		</div>
-		<div class="modal-body">
-			<p>
-				键名:<input type="text" value="" id="keyname" /><span style="color: red">键名一旦保存不可修改<span /><br /> 
-				描述:<input type="text" value="" id="keyremark" /><span style="color: red">描述一旦保存不可修改<span /><br />
-				值:<input type="text" value="" id="keyvalue" /><br /> 
-				正则:<input type="text" value="" id="keyregx" /><br />
-			</p>
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true" id="boxcancle">取消</button>
-			<button class="btn btn-primary">保存</button>
-		</div>
-	</div>
+	
+	 <div class="modal inmodal" id="addconfig" tabindex="-1" role="dialog" aria-hidden="true">
+                                   <div class="modal-dialog">
+                                       <div class="modal-content animated bounceInRight">
+                                           <div class="modal-header">
+                                               <h4 class="modal-title">添加全局公共配置</h4>
+                                       	</div>
+                                        <div class="modal-body">
+						                                           键名:<input type="text" value="" id="keyname" /><font style="color:red">键名一旦保存不可修改</font><br /> 
+										描述:<input type="text" value="" id="keyremark" /><font style="color:red">描述一旦保存不可修改</font><br />
+										键值:<input type="text" value="" id="keyvalue" /><br /> 
+										正则:<input type="text" value="" id="keyregx" /><br />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-white" data-dismiss="modal" id="boxcancle">关闭</button>
+                                            <button type="button" class="btn btn-primary" id="btnaddconfig">保存</button>
+                                        </div>
+                                   	</div>
+     								</div>
+      </div>
 </div>
 <script>
 	$(function() {
@@ -103,9 +102,13 @@
 			$('#mengban').show();
 		});
 		//添加框取消事件
-		/* $('#boxcancle').click(function(){
+		 $('#boxcancle').click(function(){
 			ClaenBox();
-		}); */
+		}); 
+		//添加新的配置
+		$('#btnaddconfig').click(function(){
+			 Addconfig();
+		});
 	});
 	//编辑事件
 	function EditConfig(id) {
@@ -168,12 +171,47 @@
 	};
 	
 	function Addconfig(){
-		//获取参数
-		//ajax保存
-		//清空box数据
-		ClaenBox();
+		var keyname=$('#keyname').val();
+		var keyvalue=$('#keyvalue').val();
+		var keyremark=$('#keyremark').val();
+		if(keyname==''||keyname==null||keyname==undefined){
+			 alert('键名不能为空');
+			 return;
+			}
+		if(keyvalue==''||keyname==null||keyname==undefined){
+			 alert('键值不能为空');
+			 return;
+			}
+		if(keyremark==''||keyname==null||keyname==undefined){
+			 alert('描述不能为空');
+			 return;
+			}
 		
+		//获取参数
+		$.ajax({
+				type : 'Post',
+				url : '/admin/admintools/addconfig',
+				data : {
+					keyname : keyname,
+					value : keyvalue,
+					remark:keyremark
+				},
+				success : function(data) {
+					if (data) {
+						console.log(data);
+						alert('添加成功');
+						ClaenBox();
+						window.location.reload();
+					} else {
+						alert('保存失败');
+					}
+				},
+				error : function(myErrorData) {
+					alert(myErrorData.responseText);
+				}
+			});
 	};
+	//清空添加框
 	function ClaenBox(){
 		$('#addconfig [type="text"]').each(function(){
 			$(this).val('');

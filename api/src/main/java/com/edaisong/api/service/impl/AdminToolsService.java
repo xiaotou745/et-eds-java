@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dal.dao.inter.IGlobalConfigDao;
 import com.edaisong.api.service.inter.IAdminToolsService;
+import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
 /*
@@ -38,6 +39,14 @@ public class AdminToolsService implements IAdminToolsService {
 	public String getConfigValueByKey(String key) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	/*
+	 * 添加新的全局配置
+	 * */
+	@Override
+	public Boolean addConfig(GlobalConfig par) {
+		// TODO Auto-generated method stub
+		return iGlobalConfigDao.addConfig(par);
 	}
 
 }

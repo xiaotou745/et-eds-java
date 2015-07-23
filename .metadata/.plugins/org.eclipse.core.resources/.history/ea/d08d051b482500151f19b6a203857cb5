@@ -1,0 +1,11 @@
+package edaisong.entity.resp;
+
+import java.util.List;
+
+import com.edaisong.api.dal.model.BusinessBalanceRecord;
+
+import edaisong.entity.common.ResponseBase;
+
+public class TestServiceResp extends ResponseBase{
+ private	List<BusinessBalanceRecord> ResultList;
+}
