@@ -137,8 +137,9 @@
 	}
 	
 	function addUserTr(phoneNo){
-		var tr = document.createElement("tr");
+/* 		var tr = document.createElement("tr");
 		tr.innerHTML = "aaaaaaaaaaaaaaaaaaaaaaaaa";
-		document.getElementById("tableData").appendChild(tr);
+		document.getElementById("tableData").appendChild(tr); */
+		window.location.href = "/testuser/list";
 	}
 </script>
