@@ -23,15 +23,15 @@
 			 for (int i = 0; i < data.size(); i++) {
 				 %> 
 		<tr id="<%=data.get(i).getId() %>">
-            <td><%=i%></td>
+            <td><%=i+1%></td>
             <td>
-            	<%=data.get(i).getPushway() %> 
+            	<%=data.get(i).getPushway()==1?"短信" :data.get(i).getPushway()==2?"app通知":"短信和app"%> 
             </td>
             <td>
-            	<%=data.get(i).getMessagetype() %>
+            	<%=data.get(i).getMessagetype()==1?"通知" :data.get(i).getMessagetype()==2?"策略调整":"活动" %>
             </td>
             <td>
-                <%=data.get(i).getSendtype() %>
+                <%=data.get(i).getSendtype()==1?"实时发布":"定时发布" %>
             </td>
             <td>
             	<%=data.get(i).getContent().length()>15?data.get(i).getContent().substring(0, 15):data.get(i).getContent() %>
