@@ -67,11 +67,35 @@
             </p>
     </div>
 </div>	
+<div class="GroupAppConfig">
+    <div class="add-openbox add-form" id="GroupAppConfig" style="width:500px">
+        <h2>
+            <p id="statusFinApp">设置集团AppConfig</p>
+        </h2>
+        <fieldset>
+            <input type="hidden" id="HidGroupID" value="0"/>
+            <div class="control-group">
+                <label >AppKey</label> 
+                <input  name="txtAppKeys" id="txtAppKeys" type="text"><label style="color: red">建议为"appkey_"+集团名称小写全拼</label>
+            </div>  
+            <div class="control-group">
+                <label >App版本</label> 
+                <input  name="txtAppVersion" value="1.0" title="1.0"  id="txtAppVersion" type="text"/>默认1.0
+            </div> 
+            <div class="control-group"> 
+                <label style="color:red">AppSecret会自动生成</label>
+            </div>
+        </fieldset>
+        <p class="btnbox">
+            <input value="确认" type="button" id="btnAddGroupConfig" class="yesBtn" />                
+            <input value="关闭" type="button" class="J_closebox qxBtn" />
+        </p>
+    </div>
+</div>
 	 
 	<script>		
-	var adminjs = new adminglass(); //实例化后台类	
+	var adminjs = new adminglass(); //实例化后台类		
 	
-	//查询集团
 	 $(document).ready(function() {    	
 	        //$("#btnSearch").on('click', Search())
 	        
@@ -81,10 +105,11 @@
 	        //window.location.hash = '';
 	    });
 	    
+	//查询集团
 	 $("#btnSearch").on('click', function () {
-	        var txtGroupName = $("#txtGroupName").val(); //集团名称	        
-	        var pars = { "groupname": txtGroupName };
-	        alert(txtGroupName);
+	        var txtGroupName = $("#txtGroupName").val(); //集团名称
+	        var txtAppkey = $("#txtAppkey").val(); 	        
+	        var pars = { "groupname": txtGroupName, "appkey":txtAppkey};	        
 	        var url = "<%=basePath%>/group/selectlist";
 	        $.ajax({
 	            type: 'POST',
@@ -123,15 +148,8 @@
         	alert(err.responseText);
         }
         });
-    });    
-   
-    //关闭弹层
-    $('.J_closebox').click(function () {
-        adminjs.closewinbox('.add-openbox');
-        return false;
-    });   
+    });     
 
-    
     //修改集团
     $("#btnuGroup").on('click', function () {
         var txtGroupName = $("#txtuGroupName").val(); //集团名称
@@ -156,6 +174,39 @@
             }
         });
     });
+    
+    
+    //添加集团api配置
+    $("#btnAddGroupConfig").on('click',function() {
+        var groupid = $("#HidGroupID").val(); 
+        var appkey=$('#txtAppKeys').val();
+        var appversion=$('#txtAppVersion').val(); 
+        if (appkey == "") {
+            alert("集团AppKey不能为空!");
+            return;
+        }
+        if (appversion == "") {
+            alert("集团AppVersion不能为空!");
+            return;
+        }
+        var pars = { "appkey":appkey,"appversion":appversion,"groupid":groupid};
+        var url = "<%=basePath%>/group/addgroupapiconfig";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: pars,
+            success: function (result) {           
+                    window.location.href = "<%=basePath%>/group/list";             
+            }
+        });
+    });
+    
+    //关闭弹层
+    $('.J_closebox').click(function () {
+        adminjs.closewinbox('.add-openbox');
+        return false;
+    });   
+
     </script>
     
 	

@@ -3,6 +3,7 @@ package com.edaisong.api.dal.dao.inter;
 import java.util.List;
 
 import com.edaisong.entity.Group;
+import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
 
 public interface IGroupDao {
@@ -18,7 +19,7 @@ public interface IGroupDao {
 
     int updateByPrimaryKey(Group record);
     
-    List<Group> getGroupListByID(Long id);
+    List<GroupModel> getGroupListByID(Long id);
     
-    List<Group> getGroupList(GroupReq req);
+    List<GroupModel> getGroupList(GroupReq req);
 }

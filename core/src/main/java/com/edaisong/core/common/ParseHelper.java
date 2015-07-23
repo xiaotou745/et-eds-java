@@ -1,24 +1,48 @@
 package com.edaisong.core.common;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ParseHelper {
-	public static int ToInt(Object o, int defaultValue){
+	public static int ToInt(Object o, int defaultValue) {
 		int result = defaultValue;
-		try	{
-		    result = Integer.parseInt(o.toString());
-		}catch(Exception e){
-			
+		try {
+			result = Integer.parseInt(o.toString());
+		} catch (Exception e) {
+
 		}
 		return result;
-    }
-	
-	public static long ToLong(Object o,long defaultValue){
+	}
+
+	public static long ToLong(Object o, long defaultValue) {
 		long result = defaultValue;
-		try{
+		try {
 			result = Long.parseLong(o.toString());
-		}catch(Exception e){
-			
+		} catch (Exception e) {
+
 		}
 		return result;
+	}
+
+	public static Date ToDate(String o, String strFormat)
+			throws ParseException {
+		if (strFormat == null || strFormat.isEmpty()) {
+			strFormat = "yyyy-MM-dd hh:MM:ss";
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat(strFormat);
+		Date defaultDate = sdf.parse(o);
+		return defaultDate;
+	}
+
+	public static String ToDateString(Date o, String strFormat) {
+		if (strFormat == null || strFormat.isEmpty()) {
+			strFormat = "yyyy-MM-dd hh:MM:ss";
+		}
+		DateFormat sdf = new SimpleDateFormat(strFormat);
+		String defaultDate = "";
+		defaultDate = sdf.format(o);
+		return defaultDate;
 	}
 }

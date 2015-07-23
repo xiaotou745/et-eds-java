@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.edaisong.entity.PublicProvinceCity;
 import com.edaisong.entity.domain.OpenCityModel;
+import com.edaisong.entity.resp.ModifyOpenCityResp;
 
 
 /**
@@ -27,5 +28,5 @@ public interface IPublicProvinceCityService {
 	  * @param closeCityCodeList 关闭城市
 	  * @Date 20150721
 	  */
-	 boolean ModifyOpenCityByCode(String openCityCodeList, String closeCityCodeList);
+	 ModifyOpenCityResp ModifyOpenCityByCode(String openCityCodeList, String closeCityCodeList);
 }
