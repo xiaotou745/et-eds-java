@@ -137,4 +137,19 @@
 		UPDATE GlobalConfig set Value = #{parvalue,jdbcType=NVARCHAR}
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
+	<insert id="insertConifg" parameterType="java.util.Map">
+		INSERT INTO dbo.GlobalConfig
+		        ( KeyName ,
+		          Value ,
+		          Remark ,
+		          GroupId ,
+		          StrategyId
+		        )
+		VALUES  ( #{keyname} , 
+		          #{value} , 
+		          #{remark} , 
+		          0 , 
+		          -1  
+		        )
+	</insert>
 </mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yihaomen.mybatis.models.UserMapper">
+	<resultMap type="com.edaisong.api.dal.model.BusinessBalanceRecord" id="myResultType">
+		<id column="id" property="id" />
+		<result column="busid" property="BusinessId" />
+		<result column="mount2" property="Amount" />
+		<result column="mystatus" property="Status" />
+	</resultMap>
+	<select id="selectBusinessBalanceByID" parameterType="java.util.Map"
+		resultType="com.edaisong.api.dal.model.BusinessBalanceRecord">
+		SELECT 	id,BusinessId,Amount,Status,Balance,RecordType,Operator,OperateTime,WithwardId,RelationNo,Remark
+		FROM BusinessBalanceRecord WHERE
+		RecordType=#{RecordType} and
+		OperateTime>=#{OperateTime}
+	</select>
+	<select id="selectBusinessBalanceByID2" parameterType="java.util.Map"
+		resultMap="myResultType">
+		SELECT
+		id,BusinessId,Amount,Status,Balance,RecordType,Operator,OperateTime,WithwardId,RelationNo,Remark
+		FROM BusinessBalanceRecord WHERE
+		RecordType=#{RecordType} and
+		OperateTime>=#{OperateTime}
+	</select>
+
+	<insert id="addBusinessBalance" parameterType="java.util.Map"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		BusinessBalanceRecord(BusinessId,Amount,Status,Balance,RecordType,Operator,OperateTime,WithwardId,RelationNo,Remark)
+		values(#{BusinessId},#{Amount},#{Status},#{Balance},#{RecordType},#{Operator},#{OperateTime},#{WithwardId},#{RelationNo},#{Remark})
+	</insert>
+	<delete id="deleteBusinessBalance" parameterType="int">
+		delete from
+		BusinessBalanceRecord where id=#{id}
+	</delete>
+	<update id="updateBusinessBalance" parameterType="java.util.Map">
+		update
+		BusinessBalanceRecord set Amount=#{Amount},Balance=#{Balance} where
+		id=#{id}
+	</update>
+</mapper>

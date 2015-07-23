@@ -1,0 +1,25 @@
+package com.edaisong.api.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.edaisong.api.business.SqlSessionFactoryPool;
+import com.edaisong.api.dal.model.BusinessBalanceRecord;
+import com.edaisong.api.service.inter.ITestService;
+
+
+
+
+public class Hellp {
+    @Autowired
+	private  ITestService testService;
+	public  void main(String[] args) {
+		//ITestService um =SqlSessionFactoryPool.getCustomBeanByType(ITestService.class);
+
+		testService.selectBusinessBalanceByID(9,"2015-1-1");
+		testService.addBusinessBalance(new BusinessBalanceRecord());
+		testService.deleteBusinessBalance(1541);
+		testService.updateBusinessBalance(new BusinessBalanceRecord());
+    	System.exit(0);
+	}
+}

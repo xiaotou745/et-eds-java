@@ -1,0 +1,46 @@
+package com.edaisong.admin;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.edaisong.api.dal.dao.inter.IBusinessBalanceRecord;
+import com.edaisong.api.dal.model.BusinessBalanceRecord;
+import com.edaisong.api.service.inter.ITestService;
+
+@Controller
+@RequestMapping("home")
+public class HomeController {
+	
+	
+    @Autowired
+	private ITestService testService;
+	   @Autowired
+	private IBusinessBalanceRecord interfac2;
+
+	   @Autowired
+		private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
+	   
+	@RequestMapping("index")
+	public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
+
+		List<BusinessBalanceRecord> resList=interfac2.selectBusinessBalanceByID(9,"2015-1-1");
+		superManReadOnlySqlServerSessionFactory.openSession();
+		return new ModelAndView("home");
+	}
+	@RequestMapping("test")
+	public ModelAndView test(HttpServletRequest request, HttpServletResponse response){
+		ModelAndView model=new ModelAndView("adminView");
+		model.addObject("subtitle", "骑士管理");
+		model.addObject("currenttitle", "骑士提现");
+		model.addObject("viewPath", "order/list");
+		return model;
+	}
+}
