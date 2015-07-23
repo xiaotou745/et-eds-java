@@ -95,5 +95,19 @@ public class GlobalConfigDao implements IGlobalConfigDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	/*
+	 * 添加新的全局配置
+	 * */
+	@Override
+	public Boolean addConfig(GlobalConfig par) {
+		// TODO Auto-generated method stub
+		String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.insertConifg";
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("keyname", par.getKeyname());
+		paramMap.put("value", par.getValue());
+		paramMap.put("remark", par.getRemark());
+		return SqlSessionUtil.wapperSession(superManSqlServerSessionFactory)
+				.insert(statement, paramMap) > 0;
+	}
 
 }

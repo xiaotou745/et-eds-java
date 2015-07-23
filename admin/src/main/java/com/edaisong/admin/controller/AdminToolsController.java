@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IAdminToolsService;
 import com.edaisong.api.service.inter.ITestService;
+import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
 import com.edaisong.entity.req.TestServiceReq;
@@ -47,6 +48,13 @@ public class AdminToolsController {
 	public Boolean SaveConfig(ConfigSaveReq par)
 	{
 		Boolean b= adminToolsService.saveConfig(par);
+		return b;
+	}
+	/*添加全局变量值*/
+	@RequestMapping("addconfig")
+	public Boolean AddConfig(GlobalConfig par)
+	{
+		Boolean b= adminToolsService.addConfig(par);
 		return b;
 	}
 
