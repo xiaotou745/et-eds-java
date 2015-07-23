@@ -97,8 +97,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 		paramMap.put("keyname", par.getKeyname());
 		paramMap.put("value", par.getValue());
 		paramMap.put("remark", par.getRemark());
-		return SqlSessionUtil.wapperSession(superManSqlServerSessionFactory)
-				.insert(statement, paramMap) > 0;
+		return getMasterSqlSessionUtil().insert(statement, paramMap) > 0;
 	}
 
 }
