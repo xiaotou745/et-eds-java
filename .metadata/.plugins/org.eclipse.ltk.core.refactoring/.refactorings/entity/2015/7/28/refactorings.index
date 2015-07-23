@@ -1,7 +1,0 @@
-1436342304100	Rename type 'ReqBase'
-1436342431982	Delete element
-1436342760619	Encapsulate field 'ResultList'
-1436343886915	Rename package 'edaisong.entity'
-1436343894414	Rename package 'edaisong.entity.common'
-1436343901072	Rename package 'edaisong.entity.req'
-1436343907235	Rename package 'edaisong.entity.resp'
