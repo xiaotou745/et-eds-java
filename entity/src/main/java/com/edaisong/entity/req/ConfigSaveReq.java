@@ -1,7 +1,6 @@
-package com.edaisong.entity.param;
+package com.edaisong.entity.req;
 
-public class ConfigSavePram {
-
+public class ConfigSaveReq {
 	private String id;
 	private String configValue;
 	public String getId() {
@@ -19,5 +18,4 @@ public class ConfigSavePram {
 	public void setConfigValue(String configValue) {
 		this.configValue = configValue;
 	}
-	
 }

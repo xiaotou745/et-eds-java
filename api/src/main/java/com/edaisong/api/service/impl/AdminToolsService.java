@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.dal.dao.inter.IGlobalConfigDao;
 import com.edaisong.api.service.inter.IAdminToolsService;
 import com.edaisong.entity.domain.GlobalConfigModel;
-import com.edaisong.entity.param.ConfigSavePram;
+import com.edaisong.entity.req.ConfigSaveReq;
 /*
  * 管理员工具 
  * */
@@ -30,7 +30,7 @@ public class AdminToolsService implements IAdminToolsService {
 	 * 修改全局变量参数
 	 * */
 	@Override
-	public Boolean saveConfig(ConfigSavePram par) {
+	public Boolean saveConfig(ConfigSaveReq par) {
 		// TODO Auto-generated method stub
 		return iGlobalConfigDao.saveConfig(par);
 	}
