@@ -26,7 +26,7 @@ public class AccountDao implements IAccountDao {
 
 		List<Account> list = SqlSessionUtil.wapperSession(
 				superManReadOnlySqlServerSessionFactory).selectList(
-				"com.edaisong.api.dal.dao.inter.IAccountDao.query3", map);
+				"com.edaisong.api.dal.dao.inter.IAccountDao.query", map);
 		return list;
 	}
 
