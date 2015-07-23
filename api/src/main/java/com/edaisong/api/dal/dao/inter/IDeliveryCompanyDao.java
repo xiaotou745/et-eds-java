@@ -1,5 +1,7 @@
 package com.edaisong.api.dal.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.DeliveryCompany;
 
 public interface IDeliveryCompanyDao {
@@ -14,4 +16,6 @@ public interface IDeliveryCompanyDao {
     int updateByPrimaryKeySelective(DeliveryCompany record);
 
     int updateByPrimaryKey(DeliveryCompany record);
+    
+    List<DeliveryCompany> GetDeliveryCompanyList();
 }
