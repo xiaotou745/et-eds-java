@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,9 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.edaisong.api.dal.dao.inter.IGlobalConfigDao;
 import com.edaisong.core.util.SqlSessionUtil;
 import com.edaisong.entity.GlobalConfig;
-import com.edaisong.entity.MenuEntity;
 import com.edaisong.entity.domain.GlobalConfigModel;
-import com.edaisong.entity.param.ConfigSavePram;
+import com.edaisong.entity.req.ConfigSaveReq;
 
 @Repository
 public class GlobalConfigDao implements IGlobalConfigDao {
@@ -80,7 +78,7 @@ public class GlobalConfigDao implements IGlobalConfigDao {
 	 * 保存全局变量的值
 	 */
 	@Override
-	public Boolean saveConfig(ConfigSavePram par) {
+	public Boolean saveConfig(ConfigSaveReq par) {
 		String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.saveConfigValue";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", par.getId());
