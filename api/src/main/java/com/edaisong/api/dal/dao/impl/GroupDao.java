@@ -5,26 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IGroupDao;
-import com.edaisong.core.util.SqlSessionUtil;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
 
 @Repository
-public class GroupDao implements IGroupDao {
-
-	@Autowired
-	private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
-
-	@Autowired
-	private SqlSessionFactory superManSqlServerSessionFactory;
-
+public class GroupDao extends DaoBase implements IGroupDao {
 	@Override
 	public int deleteByPrimaryKey(Long id) {
 		// TODO Auto-generated method stub
@@ -42,9 +32,8 @@ public class GroupDao implements IGroupDao {
 		paramMap.put("isvalid", 1);
 		paramMap.put("ismodifybind", 0);
 
-		return SqlSessionUtil.wapperSession(superManSqlServerSessionFactory)
-				.insert("com.edaisong.api.dal.dao.inter.IGroupDao.insert",
-						paramMap);
+		return getMasterSqlSessionUtil().insert(
+				"com.edaisong.api.dal.dao.inter.IGroupDao.insert", paramMap);
 	}
 
 	@Override
@@ -68,8 +57,7 @@ public class GroupDao implements IGroupDao {
 		if (record.getIsvalid() != null)
 			paramMap.put("isvalid", record.getIsvalid());
 
-		return SqlSessionUtil
-				.wapperSession(superManSqlServerSessionFactory)
+		return getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dal.dao.inter.IGroupDao.updateByPrimaryKeySelective",
 						paramMap);
 
@@ -85,8 +73,7 @@ public class GroupDao implements IGroupDao {
 	public List<GroupModel> getGroupListByID(Long id) {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", id);
-		List<GroupModel> list = SqlSessionUtil.wapperSession(
-				superManReadOnlySqlServerSessionFactory).selectList(
+		List<GroupModel> list = getReadOnlySqlSessionUtil().selectList(
 				"com.edaisong.api.dal.dao.inter.IGroupDao.getGroupListByID",
 				paramMap);
 		return list;
@@ -99,8 +86,7 @@ public class GroupDao implements IGroupDao {
 		// paramMap.put("id", id);
 		paramMap.put("groupname", req.getGroupName());
 		paramMap.put("appkey", req.getAppKey());
-		List<GroupModel> list = SqlSessionUtil.wapperSession(
-				superManReadOnlySqlServerSessionFactory).selectList(
+		List<GroupModel> list = getReadOnlySqlSessionUtil().selectList(
 				"com.edaisong.api.dal.dao.inter.IGroupDao.getGroupList",
 				paramMap);
 		return list;
