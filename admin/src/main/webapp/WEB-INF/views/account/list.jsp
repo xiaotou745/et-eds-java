@@ -1,145 +1,71 @@
 <%@page import="com.edaisong.entity.Account"%>
 <%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-    <% %>
-<link href="/admin/css/admin.css" rel="stylesheet" />
-<script type="text/javascript" src="/admin/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="/admin/js/admin.js"></script>
+<%
+	String basePath = request.getContextPath();
+%>
+<link rel="stylesheet"
+	href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
 
-账号名称: 
-<input type="text" />
-<input type="button" value="查询"  class="searchBtn" id="btnSearch"  />
-<input type="button" value="添加用户" class="searchBtn" id="btnAdd" />
+<div class="wrapper wrapper-content animated fadeInRight">
+
+	<div class="row">
+	    <div class="col-lg-12">
+	        <div class="input-group" style="margin-bottom:5px;">
+	            <input type="text" placeholder="请输入账号名称" class="input-sm form-control" id="InputCity" style="width:250px;height:34px;" value="<%=request.getAttribute("cityname")==null?"":request.getAttribute("cityname")%>"/>
+	            <button type="button" class="btn btn-w-m btn-primary" id=btnSearch style="margin-left:3px;">查询</button>
+	            <button type="button" class="btn btn-w-m btn-primary" id="btnSave" style="margin-left:3px;">添加用户</button>
+	        </div>
+	    </div>
+	   
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+					<table
+						class="table table-striped table-bordered table-hover dataTables-example">
+						<thead>
+							<tr>
+								<th width="5%">编号</th>
+								<th>账号名称</th>
+								<th>登录名称</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="content">
+						</tbody>	
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>
+<!-- Data Tables -->
+<script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script
+	src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="<%=basePath%>/js/hplus.js"></script>
+<!-- Page-Level Scripts -->
+
 <div id="content">
 	
 </div>
-<!--添加用户开始-->
-<div class="selectSupplierDish" style="width:540px;height: 500px">
-    <div class="add-openbox add-form" id="AddAccountShow" style="min-width:540px;overflow-y:auto;max-height:500px;">
-        <h2>
-            <p id="statusFin">添加帐号</p>
-            <a class="J_closebox x_close"></a>
-        </h2>
-        <form class="AddAccountfrom" id="AddAccountfrom1">
-            <fieldset>
-                <input type="hidden" name="optionType" id="optionType" value="0">
-                <input type="hidden" name="accountId" id="accountId">
-                <div class="control-group">
-                    <label class="control-label">帐号名称</label>
-                    <div class="controls">
-                        <input placeholder="帐号名称" name="accountName" id="accountName" type="text">
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">登录名</label>
-                    <div class="controls">
-                        <input placeholder="登录名" name="loginName" id="loginName" type="text">
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">密  码</label>
-                    <div class="controls">
-                        <input placeholder="密码" name="password" id="password" type="password">
-                        <label id="modifyRemind" style="font-size: 10px;color: red">不填写，密码保持不变!</label>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">确认密码</label>
-                    <div class="controls">
-                        <input placeholder="确认密码" name="confirmPassword" id="confirmPassword" type="password">
-                    </div>
-                </div>
 
-                <div class="control-group">
-                    <label class="control-label">城市权限类型</label>
-                    <div class="controls">
-                        <select id="selAcountType">
-                            <option value="1">全部城市权限</option>
-                            <option value="2">部分城市权限</option>
-                        </select>
-                    </div>
-                </div>
-
-                @if (ViewBag.txtGroupId == null)
-                {
-                    <div class="control-group">
-                        <label class="control-label">集团</label>
-                        <div class="controls">
-                            @Html.DropDownList("AddGroupId", new SelectList(new BusinessProvider().GetGroups(), "Id", "GroupName"), "--无--", new { @class = "selectw", style = "width:143px" })
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <input name="AddGroupId" id="AddGroupId" type="hidden" value="@ViewBag.txtGroupId" />
-                }
-
-                <div style="width:500px;" id="divCity">
-                    <label class="control-label">城市管理</label>
-                    <a href="javascript:funControlCityList();"><div id="cityNameList">请选择</div></a>
-                    <div id="cityList" style="float: left">
-                        @{
-                            var openCityList = ViewBag.openCityList.Result.AreaModels as List<AreaModel>;
-                            if (openCityList != null && openCityList.Count > 0)
-                            {
-                                <div style="width: 100px;float: left">
-                                    <input type="checkbox" name="All" id="selectAll" onclick="checkAll()" />全选/取消
-                                </div>
-                                foreach (var item in openCityList)
-                                {
-                                    <div style="width: 100px;float: left">
-                                        <input type="checkbox" name="checkMenus" id="@item.Code" value="@item.Code" />
-                                        <label>@item.Name</label>
-                                    </div>
-                                }
-                            }
-                        }
-                    </div>
-                </div>
-                <div style="clear:both;"></div>
-                <div style="width:500px;" id="divDeliveryCompany">
-                    <label class="control-label">物流公司管理</label>
-                    <a href="javascript:funDcChangeList();"><div id="dcChange">请选择</div></a>
-                    <div id="DcItemList" style="float: left;display:none;">
-                        @{
-                            var openDC = ViewBag.openDcList as IList<DeliveryCompanyModel>;
-                            if (openDC != null && openDC.Count > 0)
-                            {
-                                foreach (var item in openDC)
-                                {
-                                    <div style="width: 100px;float: left">
-                                        <input type="checkbox" name="checkDeliveryCompany" id="@item.Id" value="@item.Id" />
-                                        <label>@item.DeliveryCompanyName</label>
-                                    </div>
-                                }
-                            }
-                        }
-                    </div>
-                </div>
-                <div style="float: left;width:500px">
-                    <label class="control-label" for="input01">是否启用</label>
-                    <input name="isEnable" id="isEnableY" type="radio" value="1" checked="checked" /> 启用
-                    <input name="isEnable" id="isEnableN" type="radio" value="0" /> 禁用
-                </div>
-            </fieldset>
-            <p class="btnbox">
-                <input value="确定" type="button" id="btnAddAccount" class="yesBtn" />
-                <input value="关闭" type="button" class="J_closebox qxBtn" />
-            </p>
-        </form>
-    </div>
-</div>
-<div class="selectSupplierDish" id="_AuthorityDiv">
-    <div class="=J_closebox"></div>
-</div>
-<!--添加用户结束-->
 <script>
 
 $(function(){
-	$.post("/admin/account/listdo",{m:Math.random()},function(d){
-		$("#content").html(d);
-	});
+	jss.search('');
+
+	var jss={
+		search:function(keyword){
+			$.post("/admin/account/listdo",{keyword:$("#txtKeyword").val(),m:Math.random()},function(d){
+				$("#content").html(d);
+			});
+		}
+	}
 });
 
     var adminjs = new adminglass(); //实例化后台类

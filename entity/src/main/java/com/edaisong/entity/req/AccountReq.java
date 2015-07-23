@@ -2,21 +2,19 @@ package com.edaisong.entity.req;
 
 public class AccountReq {
 	private int Id;
-	private String Name;
-
+	private String Keyword;
 	public int getId() {
 		return Id;
 	}
-
 	public void setId(int id) {
 		Id = id;
 	}
-
-	public String getName() {
-		return Name;
+	public String getKeyword() {
+		return Keyword;
+	}
+	public void setKeyword(String keyword) {
+		Keyword = keyword;
 	}
 
-	public void setName(String name) {
-		Name = name;
-	}
+	
 }
