@@ -143,21 +143,24 @@
 							if(result.responseCode==0){
 								layer.alert('操作成功！', {
 								    skin: 'layui-layer-molv' //样式类名
+								},function(){
+									var cityname=$("#InputCity").val();
+									window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;
 								});
-								var cityname=$("#InputCity").val();
-								window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;s
 							}else
 							{
 								layer.alert('操作失败，请联系管理员！', {
-								    skin: 'layui-layer-lan' //样式类名
-								});
+								    skin: 'layui-layer-lan', //样式类名
+								    icon: 2
+								},function(){});
 						     }
 							
 						},
 						error:function(result){
 							layer.alert('操作失败！', {
-							    skin: 'layui-layer-lan' //样式类名
-							});
+							    skin: 'layui-layer-lan', //样式类名
+							    icon: 2
+							},function(){});
 						}
 					});
 				}, function(){
