@@ -1,4 +1,4 @@
-package com.edaisong.entity.resp;
+package com.edaisong.entity.req;
 
 import com.edaisong.entity.common.RequestBase;
 
