@@ -10,13 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IMessageDao;
+import com.edaisong.core.util.SqlSessionUtil;
 import com.edaisong.entity.Message;
 import com.edaisong.entity.domain.GlobalConfigModel;
+
 @Repository
 public class MessageDao implements IMessageDao {
 
 	@Autowired
 	private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
+
 	@Override
 	public int deleteByPrimaryKey(Long id) {
 		// TODO Auto-generated method stub
@@ -55,18 +58,10 @@ public class MessageDao implements IMessageDao {
 
 	@Override
 	public List<Message> getMessageList() {
-		SqlSession session = superManReadOnlySqlServerSessionFactory
-				.openSession();
-		try {
-			String statement ="com.edaisong.api.dal.dao.inter.IMessageDao.getMessageList";
-			List<Message> model = session.selectList(statement);
-			return model;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			session.close();
-		}
+		String statement = "com.edaisong.api.dal.dao.inter.IMessageDao.getMessageList";
+		List<Message> model = SqlSessionUtil.wapperSession(
+				superManReadOnlySqlServerSessionFactory).selectList(statement);
+		return model;
 	}
 
 }
