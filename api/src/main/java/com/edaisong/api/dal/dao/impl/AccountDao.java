@@ -10,22 +10,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IAccountDao;
+import com.edaisong.core.util.SqlSessionUtil;
 import com.edaisong.entity.Account;
+import com.edaisong.entity.MenuEntity;
 
 @Repository
 public class AccountDao implements IAccountDao {
 	@Autowired
 	private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
 
-	//查询所有管理后台用户列表
+	// 查询所有管理后台用户列表
 	@Override
 	public List<Account> query() {
-		SqlSession session = superManReadOnlySqlServerSessionFactory
-				.openSession();
 		Map<String, Object> map = new HashMap<String, Object>();
-		
-		List<Account> list = session.selectList(
-				"com.edaisong.api.dal.dao.inter.IAccountDao.query", map);
+
+		List<Account> list = SqlSessionUtil.wapperSession(
+				superManReadOnlySqlServerSessionFactory).selectList(
+				"com.edaisong.api.dal.dao.inter.IAccountDao.query3", map);
 		return list;
 	}
 
