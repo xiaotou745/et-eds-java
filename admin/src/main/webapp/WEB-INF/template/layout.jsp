@@ -69,7 +69,8 @@
 	<script src="<%=basePath%>/js/plugins/toastr/toastr.min.js"></script>
 
 
-
+	<!-- 第三方弹窗js -->
+	<script src="<%=basePath%>/js/layer.js"></script>
 
 <tiles:insertAttribute name="header_js" ignore="true"></tiles:insertAttribute>
 <tiles:insertAttribute name="header_css" ignore="true"></tiles:insertAttribute>
@@ -533,8 +534,7 @@
 	</div>
 
 	
-
-<!-- 	<script> -->
+<script> 
 // 		$(document).ready(
 // 				function() {
 // 					setTimeout(function() {
@@ -663,8 +663,6 @@
 // 							polarOptions);
 
 // 				});
-<!-- 	</script> -->
-<!-- 	<script> -->
 // 		(function(i, s, o, g, r, a, m) {
 // 			i['GoogleAnalyticsObject'] = r;
 // 			i[r] = i[r] || function() {
@@ -679,7 +677,7 @@
 
 // 		ga('create', 'UA-4625583-2', 'webapplayers.com');
 // 		ga('send', 'pageview');
-<!-- 	</script> -->
+</script> 
 
 </body>
 </html>
