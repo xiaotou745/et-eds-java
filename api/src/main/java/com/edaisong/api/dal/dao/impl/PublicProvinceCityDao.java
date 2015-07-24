@@ -1,22 +1,12 @@
 package com.edaisong.api.dal.dao.impl;
 
-import com.edaisong.core.util.SqlSessionUtil;
-import com.edaisong.entity.Group;
 import com.edaisong.entity.PublicProvinceCity;
 import com.edaisong.entity.domain.OpenCityModel;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao;
-
-;
 
 /**
  * 
@@ -24,12 +14,8 @@ import com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao;
  *
  */
 @Repository
-public class PublicProvinceCityDao implements IPublicProvinceCityDao {
-	@Autowired
-	private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
-
-	@Autowired
-	private SqlSessionFactory superManSqlServerSessionFactory;
+public class PublicProvinceCityDao extends DaoBase implements
+		IPublicProvinceCityDao {
 
 	/**
 	 * 
@@ -76,8 +62,7 @@ public class PublicProvinceCityDao implements IPublicProvinceCityDao {
 	public List<OpenCityModel> getOpenCityList(String cityName) {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("cityName", cityName);
-		List<OpenCityModel> list = SqlSessionUtil
-				.wapperSession(superManReadOnlySqlServerSessionFactory)
+		List<OpenCityModel> list = getReadOnlySqlSessionUtil()
 				.selectList(
 						"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.getOpenCityList",
 						paramMap);
@@ -99,8 +84,7 @@ public class PublicProvinceCityDao implements IPublicProvinceCityDao {
 		paramMap.put("OpenCityCodeList", openCityCodeList);
 		paramMap.put("MainCode",
 				openCityCodeList.substring(0, openCityCodeList.indexOf(',')));
-		int count = SqlSessionUtil
-				.wapperSession(superManSqlServerSessionFactory)
+		int count = getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateOpen",
 						paramMap);
 		return count > 0;
@@ -120,8 +104,7 @@ public class PublicProvinceCityDao implements IPublicProvinceCityDao {
 		paramMap.put("OpenCityCodeList", closeCityCodeList);
 		paramMap.put("MainCode",
 				closeCityCodeList.substring(0, closeCityCodeList.indexOf(',')));
-		int count = SqlSessionUtil
-				.wapperSession(superManSqlServerSessionFactory)
+		int count = getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateClose",
 						paramMap);
 		return count > 0;

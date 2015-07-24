@@ -3,107 +3,129 @@ package com.edaisong.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import com.edaisong.entity.common.CustomDateSerializer;
+
 public class BusinessBalanceRecord {
+    private Long id;
 
-	private String id;
-	private String BusinessId;
-	private BigDecimal Amount;
-	private int Status;
-	private BigDecimal Balance;
-	private int RecordType;
-	private String Operator;
+    private Integer businessid;
 
-	public String getId() {
-		return id;
-	}
+    private BigDecimal amount;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    private Short status;
 
-	public String getBusinessId() {
-		return BusinessId;
-	}
+    private BigDecimal balance;
 
-	public void setBusinessId(String businessId) {
-		BusinessId = businessId;
-	}
+    private Short recordtype;
 
-	public BigDecimal getAmount() {
-		return Amount;
-	}
+    private String operator;
 
-	public void setAmount(BigDecimal amount) {
-		Amount = amount;
-	}
+    private Date operatetime;
 
-	public int getStatus() {
-		return Status;
-	}
+    private Long withwardid;
 
-	public void setStatus(int status) {
-		Status = status;
-	}
+    private String relationno;
 
-	public BigDecimal getBalance() {
-		return Balance;
-	}
+    private String remark;
 
-	public void setBalance(BigDecimal balance) {
-		Balance = balance;
-	}
+    private Short isenable;
 
-	public int getRecordType() {
-		return RecordType;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setRecordType(int recordType) {
-		RecordType = recordType;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getOperator() {
-		return Operator;
-	}
+    public Integer getBusinessid() {
+        return businessid;
+    }
 
-	public void setOperator(String operator) {
-		Operator = operator;
-	}
+    public void setBusinessid(Integer businessid) {
+        this.businessid = businessid;
+    }
 
-	public Date getOperateTime() {
-		return OperateTime;
-	}
+    public BigDecimal getAmount() {
+        return amount;
+    }
 
-	public void setOperateTime(Date operateTime) {
-		OperateTime = operateTime;
-	}
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
-	public String getWithwardId() {
-		return WithwardId;
-	}
+    public Short getStatus() {
+        return status;
+    }
 
-	public void setWithwardId(String withwardId) {
-		WithwardId = withwardId;
-	}
+    public void setStatus(Short status) {
+        this.status = status;
+    }
 
-	public String getRelationNo() {
-		return RelationNo;
-	}
+    public BigDecimal getBalance() {
+        return balance;
+    }
 
-	public void setRelationNo(String relationNo) {
-		RelationNo = relationNo;
-	}
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
 
-	public String getRemark() {
-		return Remark;
-	}
+    public Short getRecordtype() {
+        return recordtype;
+    }
 
-	public void setRemark(String remark) {
-		Remark = remark;
-	}
+    public void setRecordtype(Short recordtype) {
+        this.recordtype = recordtype;
+    }
 
-	private Date OperateTime;
-	private String WithwardId;
-	private String RelationNo;
-	private String Remark;
+    public String getOperator() {
+        return operator;
+    }
 
+    public void setOperator(String operator) {
+        this.operator = operator == null ? null : operator.trim();
+    }
+
+    @JsonSerialize(using = CustomDateSerializer.class)  
+    public Date getOperatetime() {
+        return operatetime;
+    }
+    @JsonSerialize(using = CustomDateSerializer.class)  
+    public void setOperatetime(Date operatetime) {
+        this.operatetime = operatetime;
+    }
+
+    public Long getWithwardid() {
+        return withwardid;
+    }
+
+    public void setWithwardid(Long withwardid) {
+        this.withwardid = withwardid;
+    }
+
+    public String getRelationno() {
+        return relationno;
+    }
+
+    public void setRelationno(String relationno) {
+        this.relationno = relationno == null ? null : relationno.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Short getIsenable() {
+        return isenable;
+    }
+
+    public void setIsenable(Short isenable) {
+        this.isenable = isenable;
+    }
 }

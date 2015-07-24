@@ -1,27 +1,16 @@
 package com.edaisong.api.dal.dao.impl;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IGroupApiConfigDao;
-import com.edaisong.core.util.SqlSessionUtil;
 import com.edaisong.entity.GroupApiConfig;
 
 @Repository
-public class GroupApiConfigDao implements IGroupApiConfigDao {
-
-	@Autowired
-	private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
-
-	@Autowired
-	private SqlSessionFactory superManSqlServerSessionFactory;
+public class GroupApiConfigDao extends DaoBase implements IGroupApiConfigDao {
 
 	@Override
 	public int deleteByPrimaryKey(Integer appid) {
@@ -37,8 +26,7 @@ public class GroupApiConfigDao implements IGroupApiConfigDao {
 		paramMap.put("appversion", record.getAppversion());
 		paramMap.put("groupid", record.getGroupid());
 
-		return SqlSessionUtil
-				.wapperSession(superManSqlServerSessionFactory)
+		return getMasterSqlSessionUtil()
 				.insert("com.edaisong.api.dal.dao.inter.IGroupApiConfigDao.insert",
 						paramMap);
 	}

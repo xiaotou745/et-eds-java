@@ -5,13 +5,13 @@ import java.util.List;
 import com.edaisong.entity.Account;
 
 public class AccountResp {
-	private List<Account>  ResultList;
-
 	public List<Account> getResultList() {
-		return ResultList;
+		return resultList;
 	}
 
 	public void setResultList(List<Account> resultList) {
-		ResultList = resultList;
+		this.resultList = resultList;
 	}
+
+	private List<Account>  resultList;
 }

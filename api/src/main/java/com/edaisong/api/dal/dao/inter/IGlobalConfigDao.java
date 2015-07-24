@@ -24,4 +24,6 @@ public interface IGlobalConfigDao {
 	Boolean saveConfig(ConfigSaveReq par);
 	
 	String getConfigValueByKey(String key);
+
+	Boolean addConfig(GlobalConfig par);
 }
