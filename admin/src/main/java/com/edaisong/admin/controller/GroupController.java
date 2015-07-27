@@ -8,8 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,7 +42,7 @@ public class GroupController {
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "集团管理");
 		model.addObject("listData", resp.getGroupList());
-		model.addObject("viewPath", "group/GroupManager");
+		model.addObject("viewPath", "group/groupmanager");
 		return model;		
 	}
 	
@@ -60,38 +63,29 @@ public class GroupController {
 		//map.put("list", resp);		
 		//ModelAndView model = new ModelAndView("group/GroupManagerList",map);
 		
-		ModelAndView model = new ModelAndView("group/GroupManagerList");
+		ModelAndView model = new ModelAndView("group/groupmanagerlist");
 		model.addObject("listData", resp.getGroupList());
 		return model;		
-	}
+	}	
 	
-	@RequestMapping("addgroup")
+	@RequestMapping("addgroup")		
+	//@RequestMapping(method = RequestMethod.POST) 
+	//@RequestMapping(value="addgroup",method = RequestMethod.POST)
 	@ResponseBody
-	public String addgroup(HttpServletRequest request, HttpServletResponse response){
-
-		String groupName=request.getParameter("groupname");		
-		Group record=new Group();		
-		record.setGroupname(groupName);
-		record.setCreatename("admin");		
-		groupService.Add(record);				
-
+	public String addgroup(@ModelAttribute("group") Group group){		
+	
+		Group record=group;		
+		record.setCreatename("admin");			
+		groupService.Add(record);			
 		return "ok";  
 	}
-	
 	@RequestMapping("updategroup")
 	@ResponseBody
-	public String updategroup(HttpServletRequest request, HttpServletResponse response){
+	public String updategroup(@ModelAttribute("group") Group group){
 
-		Long id=Long.parseLong(request.getParameter("id"));	
-		String groupName=request.getParameter("groupname");		
-		Group record=new Group();
-		record.setId(id);;	
-		record.setGroupname(groupName);		
-		groupService.Update(record);				
-
+		groupService.Update(group);			
 		return "ok";  
 	}
-	
 	
 	@RequestMapping("updatestatus")
 	@ResponseBody
@@ -119,18 +113,10 @@ public class GroupController {
 
 	@RequestMapping("addgroupapiconfig")
 	@ResponseBody
-	public String addgroupapiconfig(HttpServletRequest request, HttpServletResponse response){
-
-		String appkey=request.getParameter("appkey");
-		String appversion=request.getParameter("appversion");		
-		long groupid=Long.parseLong(request.getParameter("groupid"));		
+	public String addgroupapiconfig(@ModelAttribute("groupapiconfig") GroupApiConfig groupapiconfig){
 		
-		GroupApiConfig record=new GroupApiConfig();		
-		record.setAppkey(appkey);
+		GroupApiConfig record=groupapiconfig;
 		record.setAppsecret("");
-		record.setAppversion(appversion);
-		record.setGroupid(groupid);
-		
 		groupApiConfigService.Add(record);				
 
 		return "ok";  

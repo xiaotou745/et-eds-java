@@ -9,7 +9,7 @@ public class PropertyUtils {
 	private static final Properties prop = new Properties();
 
 	static {
-		InputStream inputStream = ConfigHelper.class.getClassLoader().getResourceAsStream("conf.properties");
+		InputStream inputStream = ConfigHelper.class.getClassLoader().getResourceAsStream("/conf/custom/conf.properties");
 		try {
 			prop.load(inputStream);
 		} catch (Exception ex) {
@@ -19,5 +19,9 @@ public class PropertyUtils {
 	
 	public static String getProperty(String key, String defaultValue){
 		return prop.getProperty(key, defaultValue);
+	}
+
+	public static String getProperty(String key){
+		return prop.getProperty(key);
 	}
 }

@@ -29,7 +29,7 @@
         </table>  
         
         <div id="groupList">     
-        <jsp:include page="GroupManagerList.jsp"/>
+        <jsp:include page="groupmanagerlist.jsp"/>
         </div>
 
 <div class="GroupAddDish">

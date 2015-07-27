@@ -63,6 +63,7 @@ public class OpenCityManagerController {
      {
 		String openCityCodeList=request.getParameter("openCityCodeList"); //开放城市
 		String closeCityCodeList=request.getParameter("closeCityCodeList"); //关闭城市
+
 		ModifyOpenCityResp resp= publicProvinceCityService.ModifyOpenCityByCode(openCityCodeList,closeCityCodeList);
         return resp;
      }
