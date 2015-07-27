@@ -4,7 +4,9 @@ import java.util.List;
 
 
 
+
 import com.edaisong.entity.PublicProvinceCity;
+import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OpenCityModel;
 
 public interface IPublicProvinceCityDao {
@@ -41,4 +43,13 @@ public interface IPublicProvinceCityDao {
 	  * @Date 20150721
 	  */
    boolean updateClose(String closeCityCodeList);
+   
+	/**
+	 * 获取开通城市的省市区 
+	 * @author CaoHeYang
+	 * @Date 20150727
+	 * @return 
+	 */
+	
+    List<AreaModel> getOpenCitySql();
 }
