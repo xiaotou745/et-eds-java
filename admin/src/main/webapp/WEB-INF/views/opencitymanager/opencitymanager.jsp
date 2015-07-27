@@ -105,7 +105,6 @@
     //提交绑定
 	$("#btnSave").click(
 			function() {
-				
 				//询问框
 				layer.confirm('您确认要提交修改吗？？', {
 				    btn: ['确认','取消'], //按钮

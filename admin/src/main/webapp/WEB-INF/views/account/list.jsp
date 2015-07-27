@@ -4,8 +4,8 @@
     pageEncoding="utf-8"%>
     <% %>
 <link href="/admin/css/admin.css" rel="stylesheet" />
-<script type="text/javascript" src="/admin/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="/admin/js/admin.js"></script>
+<!-- <script type="text/javascript" src="/admin/js/jquery-1.11.1.min.js"></script> -->
+ <script type="text/javascript" src="/admin/js/admin.js"></script> 
 
 账号名称: 
 <input type="text" />

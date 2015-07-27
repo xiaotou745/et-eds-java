@@ -37,20 +37,26 @@
 			<entry key="en" value="en-gb" />
 		</jaxrs:languageMappings>
 		<jaxrs:providers>
-<!-- 			<ref bean="jsonProvider" /> -->
-			 <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" /> 
+		 <!-- <ref bean="customJsonProvider" />-->
+			<ref bean="jsonProvider" />
+			<!-- <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" /> -->
 		</jaxrs:providers>
 	</jaxrs:server>
 
-	<!-- <property name="produceMediaTypes" ref="jsonTypes" /> -->
-	<!-- <property name="consumeMediaTypes" ref="jsonTypes" /> -->
+<!-- 	<bean id="customJsonProvider" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">   -->
+<!--          <property name="objectMapper" ref="customObjectMapper"></property>   -->
+<!--     </bean>   -->
+    <bean id="customObjectMapper" class="com.edaisong.api_http.service.CustomDateMapper"></bean> 
+
 	<!-- 返回值中会自动删除值为null的属性 -->
-		<!--<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+	<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+		<!-- <property name="produceMediaTypes" ref="jsonTypes" /> -->
+		<!-- <property name="consumeMediaTypes" ref="jsonTypes" /> -->
 		<property name="serializeAsArray" value="true" />
 		<property name="ignoreNamespaces" value="true" />
 		<property name="dropRootElement" value="true" />
 		<property name="ignoreMixedContent" value="true" />
 		<property name="supportUnwrapped" value="true" />
 		<property name="attributesToElements" value="true" />
-	</bean>-->
+	</bean>
 </beans>
