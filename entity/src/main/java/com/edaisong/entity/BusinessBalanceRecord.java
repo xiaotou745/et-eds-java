@@ -3,10 +3,6 @@ package com.edaisong.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
-import com.edaisong.entity.common.CustomDateSerializer;
-
 public class BusinessBalanceRecord {
     private Long id;
 
@@ -88,11 +84,9 @@ public class BusinessBalanceRecord {
         this.operator = operator == null ? null : operator.trim();
     }
 
-    @JsonSerialize(using = CustomDateSerializer.class)  
     public Date getOperatetime() {
         return operatetime;
     }
-    @JsonSerialize(using = CustomDateSerializer.class)  
     public void setOperatetime(Date operatetime) {
         this.operatetime = operatetime;
     }
