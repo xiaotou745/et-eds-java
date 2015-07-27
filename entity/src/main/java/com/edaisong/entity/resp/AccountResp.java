@@ -3,8 +3,9 @@ package com.edaisong.entity.resp;
 import java.util.List;
 
 import com.edaisong.entity.Account;
+import com.edaisong.entity.common.ResponseBase;
 
-public class AccountResp {
+public class AccountResp  extends ResponseBase{
 	public List<Account> getResultList() {
 		return resultList;
 	}

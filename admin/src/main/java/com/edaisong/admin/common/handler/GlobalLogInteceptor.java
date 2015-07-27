@@ -41,8 +41,8 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 
 			String exceptionMsg = "";
 			String stackTrace = "";
-			boolean hasException = (boolean) request.getAttribute("hasException");
-			if (hasException) {
+			Object obj=request.getAttribute("hasException");
+			if (obj!=null) {
 				exceptionMsg = (String) request.getAttribute("exception");
 				stackTrace = (String) request.getAttribute("stackTrace");
 //				System.out.println("异常信息：" + exceptionMsg);
