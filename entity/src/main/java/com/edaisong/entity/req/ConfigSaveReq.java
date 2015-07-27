@@ -1,6 +1,8 @@
 package com.edaisong.entity.req;
 
-public class ConfigSaveReq {
+import com.edaisong.entity.common.RequestBase;
+
+public class ConfigSaveReq extends RequestBase{
 	private String id;
 	private String configValue;
 	public String getId() {

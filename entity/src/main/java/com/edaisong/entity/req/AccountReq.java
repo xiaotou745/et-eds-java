@@ -1,6 +1,8 @@
 package com.edaisong.entity.req;
 
-public class AccountReq {
+import com.edaisong.entity.common.RequestBase;
+
+public class AccountReq extends RequestBase{
 	private int Id;
 	private String Name;
 

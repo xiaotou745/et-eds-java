@@ -7,15 +7,14 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IDeliveryCompanyDao;
 import com.edaisong.entity.DeliveryCompany;
 
-public class DeliveryCompanyDao implements IDeliveryCompanyDao {
+@Repository
+public class DeliveryCompanyDao extends DaoBase implements IDeliveryCompanyDao {
 
-	@Autowired
-	private SqlSessionFactory superManReadOnlySqlServerSessionFactory;
-	
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
@@ -54,22 +53,15 @@ public class DeliveryCompanyDao implements IDeliveryCompanyDao {
 
 	@Override
 	public List<DeliveryCompany> GetDeliveryCompanyList() {
-		SqlSession session = superManReadOnlySqlServerSessionFactory
-				.openSession();
-		try {
-			Map<String, Object> paramMap = new HashMap<>();
-			paramMap.put("DeliveryCompanyName", "");
-			List<DeliveryCompany> list = session
-					.selectList(
-							"com.edaisong.api.dal.dao.inter.IDeliveryCompanyDao.getDeliveryCompanyList",
-							paramMap);
-			return list;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			session.close();
-		}
+
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("DeliveryCompanyName", "");
+		List<DeliveryCompany> list = getReadOnlySqlSessionUtil()
+				.selectList(
+						"com.edaisong.api.dal.dao.inter.IDeliveryCompanyDao.getDeliveryCompanyList",
+						paramMap);
+		return list;
+
 	}
-	
+
 }
