@@ -2,7 +2,6 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-<<<<<<< HEAD
 <%
 	String basePath = request.getContextPath();
 %>
@@ -45,10 +44,7 @@
 
 <script>
 
-jss.search();
-$("#btnSearch").click(function(){
-	jss.search(1);
-});
+
 var jss={
 		search:function(currentPage){
 			var keyword=$("#txtKeyword").val();
@@ -57,4 +53,9 @@ var jss={
 			});
 		}
 	}
+	
+jss.search(1);
+$("#btnSearch").click(function(){
+	jss.search(1);
+});
 </script>

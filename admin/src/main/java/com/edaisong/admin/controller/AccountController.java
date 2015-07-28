@@ -16,7 +16,7 @@ import com.edaisong.entity.resp.TestServiceResp;
 @Controller
 @RequestMapping("account")
 public class AccountController {
- 
+
 	@Autowired
 	private IAccountService accountService;
 
@@ -26,6 +26,7 @@ public class AccountController {
 		view.addObject("viewPath", "account/list");
 		return view;
 	}
+
 	@RequestMapping("listdo")
 	public ModelAndView list(AccountReq req) {
 		AccountResp resp = accountService.queryAccount(req);
