@@ -4,15 +4,16 @@ import java.util.List;
 
 import com.edaisong.entity.Business;
 import com.edaisong.entity.common.ResponseBase;
+import com.edaisong.entity.domain.BusinessModel;
 
 public class BusinessResp extends ResponseBase{
-private List<Business> ResultList;
+private List<BusinessModel> ResultList;
 
-public List<Business> getResultList() {
+public List<BusinessModel> getResultList() {
 	return ResultList;
 }
 
-public void setResultList(List<Business> resultList) {
+public void setResultList(List<BusinessModel> resultList) {
 	ResultList = resultList;
 }
 }

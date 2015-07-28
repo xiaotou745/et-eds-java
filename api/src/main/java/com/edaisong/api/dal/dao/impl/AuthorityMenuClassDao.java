@@ -56,7 +56,7 @@ public class AuthorityMenuClassDao extends DaoBase implements
 		paramMap.put("accountId", accountId);
 		List<MenuEntity> list = getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dal.dao.inter.IAuthorityAccountMenuSetDao.getMenuListByUserID",
+						"com.edaisong.api.dal.dao.inter.IAuthorityMenuClassDao.getMenuListByUserID",
 						paramMap);
 		return list;
 	}

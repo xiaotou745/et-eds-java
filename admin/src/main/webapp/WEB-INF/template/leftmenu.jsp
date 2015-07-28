@@ -68,7 +68,7 @@
 										<%
 								for (MenuEntity submenu : data) {
 									%>
-									<li class=""><a href="<%=basePath%>/order/list"><%=submenu.getMenuname()%></a></li>
+									<li class=""><a href="<%=basePath+submenu.getJavaUrl()%>"><%=submenu.getMenuname()%></a></li>
 
 									<%	
 								}

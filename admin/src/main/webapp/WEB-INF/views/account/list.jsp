@@ -51,7 +51,7 @@
 确认密码：<input type="password" id="txtConfirmPwd"/><br/><br/>
 城市选项：<select id="selCity"><option value="1">全部城市权限</option><option value="2">部分城市权限</option></select>
 <%
-List<AreaModel> listArea=new PublicProvinceCityService().GettOpenCity();
+List<AreaModel> listArea=new PublicProvinceCityService().getOpenCityListFromRedis();
 for(AreaModel item:listArea)
 {
 	%>

@@ -72,32 +72,29 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	 * @author CaoHeYang
 	 * @Date 20150727
 	 */
-	public void ResetOpenCityListRedis() {
+	public List<AreaModel> ResetOpenCityListRedis() {
 		List<AreaModel> opencitys = publicProvinceCityDao.getOpenCitySql();
 		if (opencitys != null) {
 			AreaModelList areaList = new AreaModelList();
 			areaList.setAreaModels(opencitys);
 			areaList.setVersion(ConfigHelper.getApiVersion());
-
-			// Object vaObject=JsonUtil.obj2string(areaList);
 			redisService.set(
 					RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
-					areaList);
-
-			Object o = redisService.get(
-					RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
-					Object.class);
-
-			System.out.println(o);
+					JsonUtil.obj2string(areaList));
 		}
+		return opencitys;
 	}
 
-	/**
-	 * 获取开通城市 窦海超 2015年7月28日 17:37:30
-	 * 
-	 * @return
-	 */
-	public List<AreaModel> GettOpenCity() {
-		return publicProvinceCityDao.getOpenCitySql();
+	@Override
+	public List<AreaModel> getOpenCityListFromRedis() {
+		String jsonData = redisService.get(
+				RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
+				String.class);
+		if (jsonData == null || jsonData.isEmpty()) {
+			return ResetOpenCityListRedis();
+		}
+		AreaModelList areaList = JsonUtil
+				.str2obj(jsonData, AreaModelList.class);
+		return areaList.getAreaModels();
 	}
 }

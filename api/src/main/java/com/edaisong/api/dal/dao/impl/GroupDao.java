@@ -83,6 +83,7 @@ public class GroupDao extends DaoBase implements IGroupDao {
 	@Override
 	public List<GroupModel> getGroupList(GroupReq req) {
 		Map<String, Object> paramMap = new HashMap<>();
+		 paramMap.put("isvalid", req.getIsValid());
 		paramMap.put("groupname", req.getGroupName());
 		paramMap.put("appkey", req.getAppKey());
 		List<GroupModel> list = getMasterSqlSessionUtil().selectList(

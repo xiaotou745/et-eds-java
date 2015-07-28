@@ -1,5 +1,7 @@
 package com.edaisong.api.dal.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.BusinessGroup;
 
 public interface IBusinessGroupDao {
@@ -14,4 +16,6 @@ public interface IBusinessGroupDao {
     int updateByPrimaryKeySelective(BusinessGroup record);
 
     int updateByPrimaryKey(BusinessGroup record);
+    
+    List<BusinessGroup> getBusinessGroupList();
 }

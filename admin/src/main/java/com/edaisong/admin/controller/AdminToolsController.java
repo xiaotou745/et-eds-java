@@ -31,7 +31,7 @@ import com.edaisong.entity.resp.TestServiceResp;
 public class AdminToolsController {
 	@Autowired
 	private IAdminToolsService adminToolsService;
-	@RequestMapping("globalconfigmanager")
+	@RequestMapping("list")
 	public ModelAndView GlobalConfigManager(HttpServletRequest request, HttpServletResponse res)
 	{
 		List<GlobalConfigModel> data= adminToolsService.getGlobalConfigByGroupId(0);

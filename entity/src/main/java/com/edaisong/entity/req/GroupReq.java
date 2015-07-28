@@ -5,26 +5,35 @@ import com.edaisong.entity.common.RequestBase;
 
 public class GroupReq extends RequestBase{
 	
-private Long Id;
-private String GroupName;
-private String AppKey;
+private Long id;
+private String groupName;
+private String appKey;
+private int isValid;
+
+
+public int getIsValid() {
+	return isValid;
+}
+public void setIsValid(int isValid) {
+	this.isValid = isValid;
+}
 public Long getId() {
-	return Id;
+	return id;
 }
 public void setId(Long id) {
-	Id = id;
+	this.id = id;
 }
 public String getGroupName() {
-	return GroupName;
+	return groupName;
 }
 public void setGroupName(String groupName) {
-	GroupName = groupName;
+	this.groupName = groupName;
 }
 public String getAppKey() {
-	return AppKey;
+	return appKey;
 }
 public void setAppKey(String appKey) {
-	AppKey = appKey;
+	this.appKey = appKey;
 }
 
 }

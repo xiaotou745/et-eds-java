@@ -26,6 +26,8 @@ public class AccountController {
 	@RequestMapping("list")
 	public ModelAndView list() {
 		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "用户设置");
+		view.addObject("currenttitle", "用户管理");
 		view.addObject("viewPath", "account/list");
 		return view;
 	}
