@@ -1,13 +1,11 @@
-package com.edaisong.api.dal.dao.inter;
+package com.edaisong.api.service.inter;
 
 import java.util.List;
 
-import com.edaisong.entity.Order;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.OrderSearchWeb;
 
-public interface IOrderDao {
-
+public interface IOrderService {
 	/**
 	 * 后台订单列表页面 
 	 * @author CaoHeYang
@@ -16,5 +14,4 @@ public interface IOrderDao {
 	 * @return
 	 */
     List<OrderListModel> GetOrders(OrderSearchWeb search);
-	
 }
