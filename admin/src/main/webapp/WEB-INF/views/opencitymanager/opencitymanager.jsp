@@ -93,7 +93,7 @@
 <script>
   $("#btnSearch").click(function(){
 	  var cityname=$("#InputCity").val();
-	  window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;
+	  window.location="<%=basePath%>/opencitymanager/list?cityname=" +cityname;
   });
   //注册添加回车事件
   document.onkeydown=function(event){
@@ -144,7 +144,7 @@
 								    skin: 'layui-layer-molv' //样式类名
 								},function(){
 									var cityname=$("#InputCity").val();
-									window.location="<%=basePath%>/opencitymanager/opencitymanager?cityname=" +cityname;
+									window.location="<%=basePath%>/opencitymanager/list?cityname=" +cityname;
 								});
 							}else
 							{
