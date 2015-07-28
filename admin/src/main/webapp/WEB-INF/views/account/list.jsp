@@ -1,3 +1,5 @@
+<%@page import="com.edaisong.api.service.impl.PublicProvinceCityService"%>
+<%@page import="com.edaisong.entity.domain.AreaModel"%>
 <%@page import="com.edaisong.entity.Account"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
@@ -47,10 +49,18 @@
 登录名称：<input id="txtLoginName"/><br/><br/>
 登录密码：<input type="password" id="txtPwd"/><br/><br/>
 确认密码：<input type="password" id="txtConfirmPwd"/><br/><br/>
-城市选项：<select id="selCity"><option value="-1"></option></select>
-
+城市选项：<select id="selCity"><option value="1">全部城市权限</option><option value="2">部分城市权限</option></select>
+<%
+List<AreaModel> listArea=new PublicProvinceCityService().GettOpenCity();
+for(AreaModel item:listArea)
+{
+	%>
+	<input type="checkbox" value="<%=item.getCode()%>"/><%=item.getName() %> &nbsp;
+	<%	
+}
+%>
 <br/><br/>
-物流公司：<select id="selLogistics"><option value="1">全部城市权限</option><option value="2">部分城市权限</option></select><br/><br/>
+物流公司：<a href="javascript:void(0)">请选择</a>
 是否启用：<input type="radio" value="1"/>启用  <input type="radio" value="0"/>不启用
 	   
 </div>
