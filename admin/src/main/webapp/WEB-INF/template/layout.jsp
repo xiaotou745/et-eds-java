@@ -24,6 +24,7 @@
 	href="<%=basePath%>/js/plugins/gritter/jquery.gritter.css" />
 <link rel="stylesheet" href="<%=basePath%>/css/animate.css" />
 <link rel="stylesheet" href="<%=basePath%>/css/style.css" />
+<link rel="stylesheet" href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
 
    
 

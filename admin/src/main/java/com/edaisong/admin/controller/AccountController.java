@@ -22,17 +22,16 @@ public class AccountController {
 
 	@RequestMapping("list")
 	public ModelAndView list() {
-		ModelAndView view = new ModelAndView();
+		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("viewPath", "account/list");
 		return view;
 	}
 	@RequestMapping("listdo")
 	public ModelAndView list(AccountReq req) {
-		req = new AccountReq();
 		AccountResp resp = accountService.queryAccount(req);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "account/listdo");
-		view.addObject("listData", resp.getResultList());
+		view.addObject("listData", resp);
 		return view;
 	}
 }

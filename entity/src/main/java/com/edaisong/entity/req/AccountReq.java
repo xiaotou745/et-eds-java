@@ -1,8 +1,6 @@
 package com.edaisong.entity.req;
 
 public class AccountReq {
-	private int Id;
-	private String Keyword;
 	public int getId() {
 		return Id;
 	}
@@ -15,6 +13,15 @@ public class AccountReq {
 	public void setKeyword(String keyword) {
 		Keyword = keyword;
 	}
-
+	public int getCurrentPage() {
+		return CurrentPage;
+	}
+	public void setCurrentPage(int currentPage) {
+		CurrentPage = currentPage;
+	}
+	private int Id;
+	private String Keyword;
+	private int CurrentPage;
+	
 	
 }
