@@ -2,7 +2,6 @@ package com.edaisong.api.dal.dao.inter;
 
 import java.util.List;
 
-import com.edaisong.entity.Order;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.OrderSearchWeb;
 
