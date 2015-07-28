@@ -47,8 +47,8 @@
     from clienter
     where Id = #{id,jdbcType=INTEGER}
   </select>  
-  <!-- 
-  <select id="query" resultMap="com.edaisong.entity.domain.ClienterModel" parameterType="java.util.Map" statementType="CALLABLE">
+
+  <select id="query" resultType="com.edaisong.entity.domain.ClienterModel" parameterType="java.util.Map" statementType="CALLABLE">
 <![CDATA[  
 {call Sp_CustomPage2015_V1(
 ' c.id desc ',
@@ -56,7 +56,7 @@
       c.insertTime,c.workStatus,c.allowWithdrawPrice,c.status,
       isnull(g.groupName,'') as groupName,
       dc.Id as deliveryCompanyId,isnull(dc.deliveryCompanyName,'') as deliveryCompanyName,
-      cl.PhoneNo as recommendPhone, isnull(cl.TrueName+'/'+cl.PhoneNo,'') as recommendName ',
+      cl.PhoneNo as recommendPhone ',
 ' dbo.clienter c   with(nolock)
    left join dbo.[Group] g   with(nolock) on c.GroupId=g.id
    left join dbo.DeliveryCompany dc with(nolock) on c.DeliveryCompanyId=dc.id
@@ -70,15 +70,15 @@
 )}
 	]]>  
   </select>
-   -->
+
   
   <select id="getClienterList" resultType="com.edaisong.entity.domain.ClienterModel" parameterType="java.util.Map" >     
-    select c.id,c.trueName,c.phoneNo,c.idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
+  select c.id,c.trueName,c.phoneNo,c.idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
       c.insertTime,c.workStatus,c.allowWithdrawPrice,c.status,
       isnull(g.groupName,'') as groupName,
       dc.Id as deliveryCompanyId,isnull(dc.deliveryCompanyName,'') as deliveryCompanyName,
       cl.PhoneNo as recommendPhone, isnull(cl.TrueName+'/'+cl.PhoneNo,'') as recommendName
-   from   dbo.clienter c   with(nolock)
+   from    dbo.clienter c   with(nolock)
    left join dbo.[Group] g   with(nolock) on c.GroupId=g.id
    left join dbo.DeliveryCompany dc with(nolock) on c.DeliveryCompanyId=dc.id
    left join  dbo.clienter cl with(nolock) on c.recommendPhone=cl.PhoneNo   

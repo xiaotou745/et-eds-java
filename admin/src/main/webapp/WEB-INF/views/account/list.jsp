@@ -80,6 +80,7 @@ var jss={
 		search:function(currentPage){
 			var keyword=$("#txtKeyword").val();
 			$.post("<%=basePath%>/account/listdo",{CurrentPage:currentPage,Keyword:keyword,m:Math.random()},function(d){
+				alert(d);
 				$("#content").html(d);
 			});
 		}
