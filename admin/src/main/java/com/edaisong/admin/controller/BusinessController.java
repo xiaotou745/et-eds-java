@@ -41,7 +41,7 @@ public class BusinessController {
 	 @Autowired
 	 private IGroupService  iGroupService;
 	 
-	 @RequestMapping("business")
+	 @RequestMapping("list")
 		public ModelAndView index(HttpServletRequest request, HttpServletResponse res) {
 			BusinessReq req=null;
 			req.setStatus(-1);
@@ -70,7 +70,7 @@ public class BusinessController {
 			model.addObject("viewPath", "business/index");
 			return model;
 	 }
-	 @RequestMapping("list")
+	 @RequestMapping("selectlist")
 		public ModelAndView list(HttpServletRequest request, HttpServletResponse res) {
 			BusinessReq req=new BusinessReq();	
 			BusinessResp resp =iBusinessService.GetBusinessList(req);		
