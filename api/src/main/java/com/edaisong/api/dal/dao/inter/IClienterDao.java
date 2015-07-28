@@ -6,6 +6,7 @@ import com.edaisong.entity.Clienter;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
+import com.edaisong.entity.resp.ClienterResp;
 
 public interface IClienterDao {
     int deleteByPrimaryKey(Integer id);
@@ -23,4 +24,6 @@ public interface IClienterDao {
     List<ClienterModel> getClienterList(ClienterReq req);
     
     int updateMoneyById(ClienterOptionReq req) ;
+    
+    ClienterResp query(ClienterReq req) ;
 }

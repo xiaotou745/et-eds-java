@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class ClienterModel {
-    private Long id;
+    private Integer id;
 
     private String trueName;    
 
@@ -21,17 +21,27 @@ public class ClienterModel {
 
     private  Date  insertTime;
     
-    private int workStatus;      
+    private Integer workStatus;      
     
     private  BigDecimal allowWithdrawPrice;//可提现余额
     
-    private int status;//审核状态     
+    private Byte status;//审核状态       
+    
+    private String groupName;
+    
+    private Integer deliveryCompanyId;
+    
+    private String deliveryCompanyName;
+    
+    private String recommendPhone;
+    
+    private String recommendName;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -91,11 +101,11 @@ public class ClienterModel {
 		this.insertTime = insertTime;
 	}
 
-	public int getWorkStatus() {
+	public Integer getWorkStatus() {
 		return workStatus;
 	}
 
-	public void setWorkStatus(int workStatus) {
+	public void setWorkStatus(Integer workStatus) {
 		this.workStatus = workStatus;
 	}
 
@@ -107,12 +117,53 @@ public class ClienterModel {
 		this.allowWithdrawPrice = allowWithdrawPrice;
 	}
 
-	public int getStatus() {
+	public Byte getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(Byte status) {
 		this.status = status;
 	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public Integer getDeliveryCompanyId() {
+		return deliveryCompanyId;
+	}
+
+	public void setDeliveryCompanyId(Integer deliveryCompanyId) {
+		this.deliveryCompanyId = deliveryCompanyId;
+	}
+
+	public String getDeliveryCompanyName() {
+		return deliveryCompanyName;
+	}
+
+	public void setDeliveryCompanyName(String deliveryCompanyName) {
+		this.deliveryCompanyName = deliveryCompanyName;
+	}
+
+	public String getRecommendPhone() {
+		return recommendPhone;
+	}
+
+	public void setRecommendPhone(String recommendPhone) {
+		this.recommendPhone = recommendPhone;
+	}
+
+	public String getRecommendName() {
+		return recommendName;
+	}
+
+	public void setRecommendName(String recommendName) {
+		this.recommendName = recommendName;
+	}    
+    
     
 }
