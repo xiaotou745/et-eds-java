@@ -25,7 +25,6 @@
     </definition>
        <definition name="adminView" extends="defaultTemplate">
     	<put-attribute name="title" value="首页"></put-attribute>
-<!--     	<put-attribute name="breadcrumbs" value=""></put-attribute> -->
         <put-attribute name="body" expression="/WEB-INF/views/${viewPath}.jsp" />	
    </definition>
 </tiles-definitions>

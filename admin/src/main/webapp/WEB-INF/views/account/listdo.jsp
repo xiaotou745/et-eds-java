@@ -16,7 +16,7 @@
 			<th>操作</th>
 		</tr>
 	</thead>
-	<tbody id="content">
+	<tbody>
 
 		<%
 			ResponsePageList<Account> data = (ResponsePageList<Account>) request

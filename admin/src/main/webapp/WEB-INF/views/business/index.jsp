@@ -8,6 +8,7 @@
 	String basePath = request.getContextPath();
 %>
 <link href="<%=basePath%>/css/admin.css" rel="stylesheet" />
+
 <div class="SearchMd">
 	<%
 		List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");

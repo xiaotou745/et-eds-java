@@ -33,7 +33,7 @@ public class OpenCityManagerController {
 	@Autowired
     private IPublicProvinceCityService publicProvinceCityService;
 	
-	@RequestMapping("opencitymanager")
+	@RequestMapping("list")
 	public ModelAndView index(String cityname,HttpServletRequest request,HttpServletResponse response) {
 		
 		List<OpenCityModel> citys=new ArrayList<OpenCityModel>();
