@@ -116,6 +116,3 @@
 							%>
 						</tbody>	
 					</table>
-<%=PageHelper.GetPage(data.getPageSize(),
-					data.getCurrentPage(), data.getTotalRecord(),
-					data.getTotalPage())%>
