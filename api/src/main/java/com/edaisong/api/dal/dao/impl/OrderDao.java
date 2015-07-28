@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IOrderDao;
+import com.edaisong.entity.Account;
+import com.edaisong.entity.common.ResponsePageList;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.OrderSearchWebReq;
 
@@ -21,12 +23,16 @@ public class OrderDao  extends DaoBase implements IOrderDao {
 	 * @return
 	 */
 	@Override
-    public List<OrderListModel> GetOrders(OrderSearchWebReq search){
-		List<OrderListModel> list = getReadOnlySqlSessionUtil()
+    public ResponsePageList<OrderListModel> GetOrders(OrderSearchWebReq search){
+		search.setCurrentPage(1);
+		search.setPageSize(15);
+
+		ResponsePageList<OrderListModel> result=new ResponsePageList<OrderListModel>();
+		result.setResultList(getReadOnlySqlSessionUtil()
 				.selectList(
 						"com.edaisong.api.dal.dao.inter.IOrderDao.GetOrders",
-						search);
-		return list;
+						search));
+		return result;
     }
 
 }
