@@ -16,28 +16,23 @@ import com.edaisong.entity.resp.TestServiceResp;
 @Controller
 @RequestMapping("account")
 public class AccountController {
- 
+
 	@Autowired
 	private IAccountService accountService;
 
 	@RequestMapping("list")
-	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) {
-		AccountReq req = new AccountReq();
-		AccountResp resp = accountService.queryAccount(req);
+	public ModelAndView list() {
 		ModelAndView view = new ModelAndView("adminView");
-		view.addObject("subtitle", "管理后台用户管理");
-		view.addObject("currenttitle", "管理后台用户管理");
 		view.addObject("viewPath", "account/list");
-//		view.addObject("listData", resp.getResultList());
 		return view;
 	}
+
 	@RequestMapping("listdo")
-	public ModelAndView listdo(HttpServletRequest request, HttpServletResponse response) {
-		AccountReq req = new AccountReq();
+	public ModelAndView list(AccountReq req) {
 		AccountResp resp = accountService.queryAccount(req);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "account/listdo");
-		view.addObject("listData", resp.getResultList());
+		view.addObject("listData", resp);
 		return view;
 	}
 }

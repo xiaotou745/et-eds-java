@@ -31,6 +31,10 @@
     <result column="IsBind" property="isbind" jdbcType="SMALLINT" />
     <result column="DeliveryCompanyId" property="deliverycompanyid" jdbcType="INTEGER" />
   </resultMap>
+     <resultMap id="PageResultMap" type="com.edaisong.entity.Page" >
+    <result column="TotalRecord" property="totalRecord" jdbcType="INTEGER" />
+    <result column="TotalPage" property="totalPage" jdbcType="INTEGER" />
+  </resultMap>
   <sql id="Base_Column_List" >
     Id, PhoneNo, LoginName, recommendPhone, Password, TrueName, IDCard, PicWithHandUrl, 
     PicUrl, Status, AccountBalance, InsertTime, InviteCode, City, CityId, GroupId, HealthCardID, 
@@ -42,6 +46,48 @@
     <include refid="Base_Column_List" />
     from clienter
     where Id = #{id,jdbcType=INTEGER}
+  </select>  
+  <!-- 
+  <select id="query" resultMap="com.edaisong.entity.domain.ClienterModel" parameterType="java.util.Map" statementType="CALLABLE">
+<![CDATA[  
+{call Sp_CustomPage2015_V1(
+' c.id desc ',
+' c.id,c.trueName,c.phoneNo,c.idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
+      c.insertTime,c.workStatus,c.allowWithdrawPrice,c.status,
+      isnull(g.groupName,'') as groupName,
+      dc.Id as deliveryCompanyId,isnull(dc.deliveryCompanyName,'') as deliveryCompanyName,
+      cl.PhoneNo as recommendPhone, isnull(cl.TrueName+'/'+cl.PhoneNo,'') as recommendName ',
+' dbo.clienter c   with(nolock)
+   left join dbo.[Group] g   with(nolock) on c.GroupId=g.id
+   left join dbo.DeliveryCompany dc with(nolock) on c.DeliveryCompanyId=dc.id
+   left join  dbo.clienter cl with(nolock) on c.recommendPhone=cl.PhoneNo ',
+#{Where,mode=IN,jdbcType=VARCHAR},
+#{PageSize,mode=IN,jdbcType=INTEGER},
+#{CurrentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
+#{TotalPage,mode=OUT,jdbcType=VARCHAR}
+)}
+	]]>  
+  </select>
+   -->
+  
+  <select id="getClienterList" resultType="com.edaisong.entity.domain.ClienterModel" parameterType="java.util.Map" >     
+    select c.id,c.trueName,c.phoneNo,c.idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
+      c.insertTime,c.workStatus,c.allowWithdrawPrice,c.status,
+      isnull(g.groupName,'') as groupName,
+      dc.Id as deliveryCompanyId,isnull(dc.deliveryCompanyName,'') as deliveryCompanyName,
+      cl.PhoneNo as recommendPhone, isnull(cl.TrueName+'/'+cl.PhoneNo,'') as recommendName
+   from   dbo.clienter c   with(nolock)
+   left join dbo.[Group] g   with(nolock) on c.GroupId=g.id
+   left join dbo.DeliveryCompany dc with(nolock) on c.DeliveryCompanyId=dc.id
+   left join  dbo.clienter cl with(nolock) on c.recommendPhone=cl.PhoneNo   
+    <if test="trueName != null" >
+       and  g.trueName=#{trueName}
+    </if>   
+     <if test="phoneNo != null" >
+       and  gc.phoneNo=#{phoneNo}
+    </if>   
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from clienter
@@ -361,5 +407,16 @@
       IsBind = #{isbind,jdbcType=SMALLINT},
       DeliveryCompanyId = #{deliverycompanyid,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateMoneyById" parameterType="com.edaisong.entity.req.ClienterOptionReq" >
+update b
+set    b.AccountBalance=ISNULL(b.AccountBalance, 0)+#{rechargeAmount,jdbcType=DECIMAL},
+       b.AllowWithdrawPrice=ISNULL(b.AllowWithdrawPrice,0)+#{rechargeAmount,jdbcType=DECIMAL}
+OUTPUT
+  Inserted.Id,  #{rechargeAmount,jdbcType=DECIMAL},   Inserted.AccountBalance, #{recordType,jdbcType=SMALLINT}, #{optName,jdbcType=NVARCHAR},  #{withwardId,jdbcType=BIGINT}, #{remark,jdbcType=NVARCHAR}
+INTO ClienterBalanceRecord
+  ( [ClienterId],[Amount],[Balance],[RecordType],[Operator],[WithwardId]  ,[Remark])
+from clienter b WITH ( ROWLOCK )
+where b.Id=#{clienterId,jdbcType=INTEGER};
   </update>
 </mapper>

@@ -16,6 +16,10 @@ public class ParseHelper {
 		return result;
 	}
 
+	public static int ToInt(Object o) {
+		return ToInt(o, 0);
+	}
+
 	public static long ToLong(Object o, long defaultValue) {
 		long result = defaultValue;
 		try {
@@ -26,8 +30,7 @@ public class ParseHelper {
 		return result;
 	}
 
-	public static Date ToDate(String o, String strFormat)
-			throws ParseException {
+	public static Date ToDate(String o, String strFormat) throws ParseException {
 		if (strFormat == null || strFormat.isEmpty()) {
 			strFormat = "yyyy-MM-dd hh:MM:ss";
 		}
