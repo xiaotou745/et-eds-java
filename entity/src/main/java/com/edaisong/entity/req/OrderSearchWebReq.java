@@ -8,17 +8,17 @@ import com.edaisong.entity.common.RequestBase;
  * @author CaoHeYang
  * @Date 20150728
  */
-public class OrderSearchWeb extends RequestBase{
+public class OrderSearchWebReq extends RequestBase{
      private String superManPhone ; 
      private String businessPhone ;
      private String orderId ;          
      private String originalOrderNo ; 
      private String superManName ; 
      private String businessName ; 
-     private int orderStatus;  
+     private Integer orderStatus;  
      private String orderPubStart ;
      private String orderPubEnd ;
-     private int groupId ;
+     private Integer groupId ;
      private String businessCity ;  
      private String hidDaochu ;  
      private String deliveryCompany ;
@@ -98,7 +98,7 @@ public class OrderSearchWeb extends RequestBase{
 	/**
      * 订单状态
      */
-	public int getOrderStatus() {
+	public Integer getOrderStatus() {
 		return orderStatus;
 	}
 	/**
@@ -134,7 +134,7 @@ public class OrderSearchWeb extends RequestBase{
 	/**
      * 集团
      */
-	public int getGroupId() {
+	public Integer getGroupId() {
 		return groupId;
 	}
 	/**

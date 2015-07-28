@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.entity.domain.OrderListModel;
-import com.edaisong.entity.req.OrderSearchWeb;
+import com.edaisong.entity.req.OrderSearchWebReq;
 
 @Service
 public class OrderService implements IOrderService {
@@ -23,7 +23,7 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	public List<OrderListModel> GetOrders(OrderSearchWeb search) {
+	public List<OrderListModel> GetOrders(OrderSearchWebReq search) {
 		return orderDao.GetOrders(search);
 	}
 

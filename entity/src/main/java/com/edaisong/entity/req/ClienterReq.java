@@ -10,7 +10,8 @@ public class ClienterReq extends RequestBase{
 	
 	private String clienterName;
 	private String clienterPhoneNo;
-	
+	private int CurrentPage;	
+
 	public String getClienterName() {
 		return clienterName;
 	}
@@ -23,6 +24,13 @@ public class ClienterReq extends RequestBase{
 	}
 	public void setClienterPhoneNo(String clienterPhoneNo) {
 		this.clienterPhoneNo = clienterPhoneNo;
+	}
+	
+	public int getCurrentPage() {
+		return CurrentPage;
+	}
+	public void setCurrentPage(int currentPage) {
+		CurrentPage = currentPage;
 	}
 }
 
