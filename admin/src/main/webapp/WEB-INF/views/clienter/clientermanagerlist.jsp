@@ -26,6 +26,7 @@
 						<th width="%5">申请时间</th>
 						<th width="%5">帐户余额</th>
 						<th width="%5">可提现余额</th>
+						<th width="%5">集团名称</th>
 						<th width="%5">物流公司名称</th>
 						<th width="%5">审核状态</th>
 						<th width="%5">推荐人</th>
@@ -62,8 +63,8 @@
 				<td><%=data.get(i).getInsertTime() %></td>				
 				<td style="color:red;font-weight:600"><a href="/SuperManManager/ClienterDetail?clienterId=@item.Id ">￥  <%=data.get(i).getAccountBalance() %></a></td>
 				<td><%=data.get(i).getAllowWithdrawPrice() %></td>
-				<td>集团</td>
-				<td>物流公司</td>
+				<td><%=data.get(i).getGroupName()%>  </td>
+				<td><%=data.get(i).getDeliveryCompanyName()%>  </td>
 				<%
 				if (data.get(i).getStatus()== 0)
 				{
@@ -90,6 +91,7 @@
 				<%
 				}
 				%>			
+				<td><%=data.get(i).getRecommendName()%>  </td>
 				
 				<%
 				if (data.get(i).getStatus()== 1)

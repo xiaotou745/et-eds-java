@@ -13,13 +13,19 @@ import java.util.Map;
 
 
 
+
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IClienterDao;
+import com.edaisong.core.common.ParseHelper;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.domain.ClienterModel;
+import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
+import com.edaisong.entity.resp.AccountResp;
+import com.edaisong.entity.resp.ClienterResp;
 
 
 @Repository
@@ -94,5 +100,33 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 						paramMap);
 	}	
 	
+	@Override
+	public ClienterResp query(ClienterReq req) {
+
+		Map<String, Object> map = new HashMap<String, Object>();		
+		String Where = " 1=1 ";
+//		if (req.getKeyword() != null && req.getKeyword() != "") {
+//			Where = " UserName like '%" + req.getKeyword() + "%'";
+//
+//		}
+		int PageSize = 10;
+		int CurrentPage = req.getCurrentPage();
+		map.put("Where", Where);
+		map.put("TotalRecord", 0);
+		map.put("TotalPage", 0);
+		map.put("PageSize", PageSize);
+		map.put("CurrentPage", CurrentPage);
+		List<ClienterModel> list = getMasterSqlSessionUtil()
+				.selectList("com.edaisong.api.dal.dao.inter.IClienterDao.query",
+						map);
+
+		ClienterResp resp = new ClienterResp();
+		resp.setClienterList(list);
+		resp.setPageSize(PageSize);
+		resp.setCurrentPage(CurrentPage);
+		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
+		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
+		return resp;
+	}
 
 }

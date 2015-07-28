@@ -18,12 +18,28 @@
    <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>
-                    <span class="">骑士名称: </span>
-                    <input id="txtGroupName" type="text" name="GroupName" />
-                    <span class="">骑士电话: </span> 
-                    <input id="txtAppkey" type="text" name="Appkey" />
-                    <input type="button" value="查询" class="searchBtn" id="btnSearch"  />                    
+                  <span class="">审核状态: </span>
+                        <select name="status" class="selectw" id="superManStatus" style="width:143px">
+                            <option value="-1">全部</option>
+                            <option value="1">审核通过</option>
+                            <option value="0">被拒绝</option>
+                            <option value="2">未审核</option>
+                            <option value="3">审核中</option>
+                        </select>
+                        <span class="">骑士电话: </span>
+                        <input id="txtSuperManPhone" type="text" name="clienterPhone" value="" />
+                        <span class="">推荐人手机: </span>
+                        <input id="recommonPhone" type="text" name="recommonPhone" value="" />
+                                
                 </td>
+            </tr>
+            <tr>
+            <td>
+               <span class="">筛选城市: </span>                        
+              <span class="">物流公司: </span>                       
+                      
+             <input type="submit" value="查询" class="searchBtn" id="btnSearch" />
+            </td>
             </tr>
         </table>  
         
