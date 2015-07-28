@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.entity.common.ResponsePageList"%>
 <%@page import="com.edaisong.entity.resp.AccountResp"%>
 <%@page import="com.edaisong.core.common.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
@@ -18,7 +19,8 @@
 	<tbody id="content">
 
 		<%
-			AccountResp data = (AccountResp) request.getAttribute("listData");
+			ResponsePageList<Account> data = (ResponsePageList<Account>) request
+					.getAttribute("listData");
 			List<Account> list = data.getResultList();
 			if (list == null) {
 				list = new ArrayList<Account>();
@@ -29,10 +31,13 @@
 			<td><%=list.get(i).getId()%></td>
 			<td><%=list.get(i).getUsername()%></td>
 			<td><%=list.get(i).getLoginname()%></td>
-			<td><%=list.get(i).getStatus()==1?"√":"×"%></td>
-			<td>编辑</td>
+			<td><%=list.get(i).getStatus() == 1 ? "√" : "×"%></td>
+			<td><a data-toggle="modal" data-target="#myModal"
+				href="javascript:void(0)">编辑</a></td>
 		</tr>
-		<%}%>
+		<%
+			}
+		%>
 	</tbody>
 </table>
 <%=PageHelper.GetPage(data.getPageSize(),

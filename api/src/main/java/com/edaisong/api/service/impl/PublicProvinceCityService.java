@@ -79,8 +79,8 @@ public class PublicProvinceCityService implements IPublicProvinceCityService
 	          areaList.setAreaModels(opencitys);
 	          areaList.setVersion(ConfigHelper.getApiVersion());
 	          
-	           Object vaObject=JsonUtil.obj2string(areaList);
-	          redisService.set(RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,vaObject);
+//	           Object vaObject=JsonUtil.obj2string(areaList);
+	          redisService.set(RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,areaList);
 	          
 	          Object  o=  redisService.get(RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,Object.class);
 	          

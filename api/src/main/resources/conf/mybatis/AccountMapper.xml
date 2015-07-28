@@ -16,10 +16,6 @@
     <result column="RoleId" property="roleid" jdbcType="INTEGER" />
   </resultMap>
   
-   <resultMap id="PageResultMap" type="com.edaisong.entity.Page" >
-    <result column="TotalRecord" property="totalRecord" jdbcType="INTEGER" />
-    <result column="TotalPage" property="totalPage" jdbcType="INTEGER" />
-  </resultMap>
   <sql id="Base_Column_List" >
     Id, Password, UserName, LoginName, Status, AccountType, FADateTime, FAUser, LCDateTime, 
     LCUser, GroupId, RoleId
@@ -27,7 +23,7 @@
    
   </sql>
   
-<select id="query" resultMap="BaseResultMap,PageResultMap" parameterType="java.util.Map" statementType="CALLABLE">
+<select id="query" resultType="com.edaisong.entity.Account" parameterType="java.util.Map" statementType="CALLABLE">
 <![CDATA[  
 {call Sp_CustomPage2015_V1(
 ' Id desc ',
