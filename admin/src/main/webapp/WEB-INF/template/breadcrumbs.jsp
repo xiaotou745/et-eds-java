@@ -6,7 +6,7 @@
 %>
 <div class="row wrapper border-bottom white-bg page-heading">
 	<div class="col-lg-10">
-		<h2>${currenttitle}</h2>
+		<h3>${currenttitle}</h3>
 		<ol class="breadcrumb">
 			<li><a href="<%=basePath%>/home/index">首页</a></li>
 			<li><a>${subtitle}</a></li>

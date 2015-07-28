@@ -16,10 +16,21 @@ public class ParseHelper {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param o
+	 * @return
+	 */
 	public static int ToInt(Object o) {
 		return ToInt(o, 0);
 	}
 
+	/**
+	 * 
+	 * @param o
+	 * @param defaultValue
+	 * @return
+	 */
 	public static long ToLong(Object o, long defaultValue) {
 		long result = defaultValue;
 		try {
@@ -30,6 +41,13 @@ public class ParseHelper {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param o
+	 * @param strFormat
+	 * @return
+	 * @throws ParseException
+	 */
 	public static Date ToDate(String o, String strFormat) throws ParseException {
 		if (strFormat == null || strFormat.isEmpty()) {
 			strFormat = "yyyy-MM-dd hh:MM:ss";
@@ -39,6 +57,12 @@ public class ParseHelper {
 		return defaultDate;
 	}
 
+	/**
+	 * 
+	 * @param o
+	 * @param strFormat
+	 * @return
+	 */
 	public static String ToDateString(Date o, String strFormat) {
 		if (strFormat == null || strFormat.isEmpty()) {
 			strFormat = "yyyy-MM-dd hh:MM:ss";
@@ -47,5 +71,14 @@ public class ParseHelper {
 		String defaultDate = "";
 		defaultDate = sdf.format(o);
 		return defaultDate;
+	}
+	
+	/**
+	 * 
+	 * @param o
+	 * @return
+	 */
+	public static String ToDateString(Date o) {
+		return ToDateString(o,null);
 	}
 }

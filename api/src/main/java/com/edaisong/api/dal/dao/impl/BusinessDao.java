@@ -1,11 +1,16 @@
 package com.edaisong.api.dal.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IBusinessDao;
 import com.edaisong.entity.Business;
+import com.edaisong.entity.domain.BusinessModel;
+import com.edaisong.entity.domain.GlobalConfigModel;
+import com.edaisong.entity.req.BusinessReq;
 @Repository
 public class BusinessDao extends DaoBase implements IBusinessDao{
 
@@ -46,9 +51,12 @@ public class BusinessDao extends DaoBase implements IBusinessDao{
 	}
 
 	@Override
-	public List<Business> getBusinessList() {
-		IBusinessDao iBusinessDao=getReadOnlySqlSessionUtil().getMapper(IBusinessDao.class);
-		return iBusinessDao.getBusinessList();
+	public List<BusinessModel> getBusinessList(BusinessReq req) {
+//		Map<String, Object> paramMap = new HashMap<>();
+//		paramMap.put("groupid", id);
+		List<BusinessModel> model = getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessList", req);
+		return model;
 	}
 
 }

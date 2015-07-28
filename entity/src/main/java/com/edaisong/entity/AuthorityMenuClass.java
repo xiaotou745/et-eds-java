@@ -12,6 +12,7 @@ public class AuthorityMenuClass {
     private String url;
 
     private Boolean isbutton;
+    private String javaUrl;
 
     public Integer getId() {
         return id;
@@ -60,4 +61,12 @@ public class AuthorityMenuClass {
     public void setIsbutton(Boolean isbutton) {
         this.isbutton = isbutton;
     }
+
+	public String getJavaUrl() {
+		return javaUrl;
+	}
+
+	public void setJavaUrl(String javaUrl) {
+		this.javaUrl = javaUrl;
+	}
 }

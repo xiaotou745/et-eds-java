@@ -2,6 +2,9 @@ package com.edaisong.entity.domain;
 
 import java.util.List;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+@JsonSerialize
 public class AreaModelList {
 
 	private List<AreaModel> areaModels;

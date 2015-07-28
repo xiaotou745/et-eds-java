@@ -3,6 +3,7 @@ package com.edaisong.api.service.inter;
 import java.util.List;
 
 import com.edaisong.entity.PublicProvinceCity;
+import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OpenCityModel;
 import com.edaisong.entity.resp.ModifyOpenCityResp;
 
@@ -21,6 +22,13 @@ public interface IPublicProvinceCityService {
 	 */
 	 List<OpenCityModel> getOpenCityList(String  cityName);
 	 
+	/**
+	 * 从Redis获取开放城市列表（非分页）
+	 * @author zhaohailong
+	 * @param cityName 城市名称
+	 */
+	 List<AreaModel> getOpenCityListFromRedis();
+	 
 	 /**
 	  * 修改绑定城市    
 	  * @author CaoHeYang 
@@ -35,5 +43,5 @@ public interface IPublicProvinceCityService {
 	  * @author CaoHeYang
 	  * @Date 20150727
 	  */
-	 void ResetOpenCityListRedis();
+	 List<AreaModel> ResetOpenCityListRedis();
 }

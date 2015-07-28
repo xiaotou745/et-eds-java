@@ -23,7 +23,7 @@ public class BusinessService implements IBusinessService {
 			resp.setMessage("请求的参数不能为null");
 			return resp;
 		}
-		resp.setResultList(iBusinessDao.getBusinessList());
+		resp.setResultList(iBusinessDao.getBusinessList(req));
 		return resp;
 	}
 

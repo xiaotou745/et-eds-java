@@ -685,7 +685,7 @@
   
    <!--后台订单列表页面 ） add by caoheyang 20150728  -->
   <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel" 
-    parameterType="com.edaisong.entity.req.OrderSearchWeb" >
+    parameterType="com.edaisong.entity.req.OrderSearchWebReq" >
 	select  o.[Id] ,o.[OrderNo] , o.[PickUpAddress] ,o.[PubDate] ,o.[ReceviceName] ,o.[RecevicePhoneNo] ,o.[ReceviceAddress] ,
         o.[ActualDoneDate] ,o.[IsPay] , o.[Amount] , o.[OrderCommission] , o.[RealOrderCommission] , o.[DistribSubsidy] , o.[WebsiteSubsidy] ,o.[Remark] ,
         o.[Status] , o.[clienterId] , o.[businessId] , o.[ReceviceCity] , o.[ReceviceLongitude] , o.[ReceviceLatitude] , o.[OrderFrom] , 
@@ -742,7 +742,7 @@
 	      #{orderPubEnd}
      </if>
        <if test="groupId != null">
-	     and o.OrderFrom= #{groupId}
+	     and o.OrderFrom = #{groupId}
       </if>
        <if test="businessCity != null">
 	     and b.City= #{businessCity}
