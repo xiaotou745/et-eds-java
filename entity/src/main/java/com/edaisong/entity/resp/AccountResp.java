@@ -11,9 +11,9 @@ public class AccountResp  extends ResponseBase{
 	}
 	public void setResultList(List<Account> resultList) {
 		this.resultList = resultList;
-	}
+		}
 	public int getTotalRecord() {
-		return TotalRecord;
+		return TotalRecord;	
 	}
 	public void setTotalRecord(int totalRecord) {
 		TotalRecord = totalRecord;
