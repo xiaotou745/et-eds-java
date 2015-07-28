@@ -2,14 +2,13 @@ package com.edaisong.api.dal.dao.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IOrderDao;
-import com.edaisong.core.util.SqlSessionUtil;
-import com.edaisong.entity.Order;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.OrderSearchWeb;
+
+
 @Repository
 public class OrderDao  extends DaoBase implements IOrderDao {
 
@@ -23,8 +22,11 @@ public class OrderDao  extends DaoBase implements IOrderDao {
 	 */
 	@Override
     public List<OrderListModel> GetOrders(OrderSearchWeb search){
-    	
-    	return null;
+		List<OrderListModel> list = getReadOnlySqlSessionUtil()
+				.selectList(
+						"com.edaisong.api.dal.dao.inter.IOrderDao.GetOrders",
+						search);
+		return list;
     }
 
 }

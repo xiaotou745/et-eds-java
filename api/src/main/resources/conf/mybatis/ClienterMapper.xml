@@ -42,6 +42,17 @@
     <include refid="Base_Column_List" />
     from clienter
     where Id = #{id,jdbcType=INTEGER}
+  </select>  
+  <select id="getClienterList" resultType="com.edaisong.entity.domain.ClienterModel" parameterType="java.util.Map" >     
+  select c.id,c.trueName,c.phoneNo,c.idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
+      c.insertTime,c.workStatus,c.allowWithdrawPrice,c.status
+   from   dbo.clienter c   with(nolock)
+    <if test="trueName != null" >
+       and  g.trueName=#{trueName}
+    </if>   
+     <if test="phoneNo != null" >
+       and  gc.phoneNo=#{phoneNo}
+    </if>   
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from clienter
@@ -361,5 +372,16 @@
       IsBind = #{isbind,jdbcType=SMALLINT},
       DeliveryCompanyId = #{deliverycompanyid,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateMoneyById" parameterType="com.edaisong.entity.req.ClienterOptionReq" >
+update b
+set    b.AccountBalance=ISNULL(b.AccountBalance, 0)+#{rechargeAmount,jdbcType=DECIMAL},
+       b.AllowWithdrawPrice=ISNULL(b.AllowWithdrawPrice,0)+#{rechargeAmount,jdbcType=DECIMAL}
+OUTPUT
+  Inserted.Id,  #{rechargeAmount,jdbcType=DECIMAL},   Inserted.AccountBalance, #{recordType,jdbcType=SMALLINT}, #{optName,jdbcType=NVARCHAR},  #{withwardId,jdbcType=BIGINT}, #{remark,jdbcType=NVARCHAR}
+INTO ClienterBalanceRecord
+  ( [ClienterId],[Amount],[Balance],[RecordType],[Operator],[WithwardId]  ,[Remark])
+from clienter b WITH ( ROWLOCK )
+where b.Id=#{clienterId,jdbcType=INTEGER};
   </update>
 </mapper>

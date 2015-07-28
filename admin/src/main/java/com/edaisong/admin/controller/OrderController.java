@@ -48,21 +48,21 @@ public class OrderController {
 	 private IOrderService orderService;
 	 
 	 
-	@RequestMapping("list")
-	public ModelAndView list(){
-		TestServiceReq req = new TestServiceReq();
-		req.setRecordType(9);
-		req.setOperateTime("2015-01-01");
-		TestServiceResp resp = testService.selectBusinessBalanceByID(req);
-		
-		ModelAndView model = new ModelAndView("orderlist");
-		model.addObject("subtitle", "骑士管理");
-		model.addObject("currenttitle", "骑士提现");
-		model.addObject("listData", resp.getResultList());
-		
-		return model;
-	}
-	
+//	@RequestMapping("list")
+//	public ModelAndView list(){
+//		TestServiceReq req = new TestServiceReq();
+//		req.setRecordType(9);
+//		req.setOperateTime("2015-01-01");
+//		TestServiceResp resp = testService.selectBusinessBalanceByID(req);
+//		
+//		ModelAndView model = new ModelAndView("orderlist");
+//		model.addObject("subtitle", "骑士管理");
+//		model.addObject("currenttitle", "骑士提现");
+//		model.addObject("listData", resp.getResultList());
+//		
+//		return model;
+//	}
+//	
 	
 	/**
 	 * 订单列表页面 
@@ -70,14 +70,14 @@ public class OrderController {
 	 * @Date 20150728
 	 * @return
 	 */
-	@RequestMapping("order")
+	@RequestMapping("list")
 	public ModelAndView order(){
 		ModelAndView model = new ModelAndView("order");
 		model.addObject("subtitle", "订单管理");
 		model.addObject("currenttitle", "订单管理");
 		List<OrderListModel> orders=orderService.GetOrders(new OrderSearchWeb());
 		model.addObject(orders);
-		model.addObject("viewPath", "order/order");
+		model.addObject("viewPath", "order/list");
 		return model;
 	}
 	
