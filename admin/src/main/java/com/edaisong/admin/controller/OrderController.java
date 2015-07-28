@@ -31,7 +31,7 @@ import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.ITestService;
 import com.edaisong.entity.domain.OpenCityModel;
 import com.edaisong.entity.domain.OrderListModel;
-import com.edaisong.entity.req.OrderSearchWeb;
+import com.edaisong.entity.req.OrderSearchWebReq;
 import com.edaisong.entity.req.TestServiceReq;
 import com.edaisong.entity.resp.TestServiceResp;
 
@@ -72,11 +72,11 @@ public class OrderController {
 	 */
 	@RequestMapping("list")
 	public ModelAndView order(){
-		ModelAndView model = new ModelAndView("order");
+		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "订单管理");
 		model.addObject("currenttitle", "订单管理");
-		List<OrderListModel> orders=orderService.GetOrders(new OrderSearchWeb());
-		model.addObject(orders);
+		List<OrderListModel> orders=orderService.GetOrders(new OrderSearchWebReq());
+		model.addObject("listData",orders);
 		model.addObject("viewPath", "order/list");
 		return model;
 	}

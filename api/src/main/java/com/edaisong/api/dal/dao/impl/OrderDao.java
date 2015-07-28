@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.entity.domain.OrderListModel;
-import com.edaisong.entity.req.OrderSearchWeb;
+import com.edaisong.entity.req.OrderSearchWebReq;
 
 
 @Repository
@@ -21,7 +21,7 @@ public class OrderDao  extends DaoBase implements IOrderDao {
 	 * @return
 	 */
 	@Override
-    public List<OrderListModel> GetOrders(OrderSearchWeb search){
+    public List<OrderListModel> GetOrders(OrderSearchWebReq search){
 		List<OrderListModel> list = getReadOnlySqlSessionUtil()
 				.selectList(
 						"com.edaisong.api.dal.dao.inter.IOrderDao.GetOrders",

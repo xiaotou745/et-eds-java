@@ -1,8 +1,10 @@
 package com.edaisong.api.service.inter;
 
+import com.edaisong.entity.Account;
+import com.edaisong.entity.common.ResponsePageList;
 import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.resp.AccountResp;
 
 public interface IAccountService {
-	public AccountResp queryAccount(AccountReq req);
+	public  ResponsePageList<Account>  queryAccount(AccountReq req);
 }
