@@ -29,11 +29,10 @@
 			<td><%=list.get(i).getId()%></td>
 			<td><%=list.get(i).getUsername()%></td>
 			<td><%=list.get(i).getLoginname()%></td>
+			<td><%=list.get(i).getStatus()==1?"√":"×"%></td>
 			<td>编辑</td>
 		</tr>
-		<%
-			}
-		%>
+		<%}%>
 	</tbody>
 </table>
 <%=PageHelper.GetPage(data.getPageSize(),
