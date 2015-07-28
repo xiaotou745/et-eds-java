@@ -3,6 +3,8 @@ package com.edaisong.api.dal.dao.inter;
 import java.util.List;
 
 import com.edaisong.entity.Business;
+import com.edaisong.entity.domain.BusinessModel;
+import com.edaisong.entity.req.BusinessReq;
 
 public interface IBusinessDao {
     int deleteByPrimaryKey(Integer id);
@@ -17,5 +19,5 @@ public interface IBusinessDao {
 
     int updateByPrimaryKey(Business record);
     
-	List<Business> getBusinessList();
+	List<BusinessModel> getBusinessList(BusinessReq req);
 }

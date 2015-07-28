@@ -35,6 +35,7 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
 		request.setAttribute("hasException", true);
 		request.setAttribute("exception", msg);
 		request.setAttribute("stackTrace", stackTrace);
+
 		
 		if (handler instanceof HandlerMethod) {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -45,7 +46,7 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
 		ext.put("methodName", methodName);
 		ext.put("param", param);
 		ext.put("exception", msg);
-		ext.put("stackTrace", stackTrace);
+		ext.put("stackTrace", stackTrace.replace("\r\n\t", "<br/>"));
 		return new ModelAndView("common/exception", ext);
 	}
 }
