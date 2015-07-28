@@ -1,22 +1,30 @@
 package com.edaisong.entity.req;
 
-public class AccountReq {
-	private int Id;
-	private String Name;
+import com.edaisong.entity.common.RequestBase;
+
+public class AccountReq extends RequestBase{
 
 	public int getId() {
 		return Id;
 	}
-
 	public void setId(int id) {
 		Id = id;
 	}
-
-	public String getName() {
-		return Name;
+	public String getKeyword() {
+		return Keyword;
 	}
-
-	public void setName(String name) {
-		Name = name;
+	public void setKeyword(String keyword) {
+		Keyword = keyword;
 	}
+	public int getCurrentPage() {
+		return CurrentPage;
+	}
+	public void setCurrentPage(int currentPage) {
+		CurrentPage = currentPage;
+	}
+	private int Id;
+	private String Keyword;
+	private int CurrentPage;
+	
+	
 }

@@ -19,9 +19,10 @@ public class AccountService implements IAccountService{
 	
 	@Override
 	public AccountResp queryAccount(AccountReq req) {
-		AccountResp response=new AccountResp();
-		List<Account> list= accountDao.query();
-		response.setResultList(list);
-		return response;
+//		AccountResp response=new AccountResp();
+		return  accountDao.query(req);
+//		List<Account> list= accountDao.query(req).getResultList();
+//		response.setResultList(list);
+//		return response;
 	}
 }

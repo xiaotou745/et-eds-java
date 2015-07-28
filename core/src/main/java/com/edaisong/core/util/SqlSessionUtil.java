@@ -129,4 +129,7 @@ public class SqlSessionUtil {
 			innerSession.close();
 		}
 	}
+	public <T> T getMapper(Class<T> type) {
+		return innerSession.getMapper(type);
+	}
 }

@@ -1,17 +1,20 @@
 package com.edaisong.api.dal.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.Order;
+import com.edaisong.entity.domain.OrderListModel;
+import com.edaisong.entity.req.OrderSearchWeb;
 
 public interface IOrderDao {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(Order record);
-
-    int insertSelective(Order record);
-
-    Order selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Order record);
-
-    int updateByPrimaryKey(Order record);
+	/**
+	 * 后台订单列表页面 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @param search 查询条件实体
+	 * @return
+	 */
+    List<OrderListModel> GetOrders(OrderSearchWeb search);
+	
 }
