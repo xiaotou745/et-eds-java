@@ -13,7 +13,7 @@ import com.edaisong.entity.req.TestServiceReq;
 import com.edaisong.entity.resp.TestServiceResp;
 
 @Controller
-@RequestMapping("deliveryCompany")
+@RequestMapping("deliverycompany")
 public class DeliveryCompanyController {
 	 @Autowired
 	//private DeliveryCompanyProvider deliveryCompanyProvider = new DeliveryCompanyProvider();

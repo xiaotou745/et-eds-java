@@ -43,7 +43,7 @@ public class BusinessController {
 	 
 	 @RequestMapping("list")
 		public ModelAndView index(HttpServletRequest request, HttpServletResponse res) {
-			BusinessReq req=null;
+			BusinessReq req=new BusinessReq();
 			req.setStatus(-1);
 			req.setGroupId(0);
 			req.setMealsSettleMode(-1);
