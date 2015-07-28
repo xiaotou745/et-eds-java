@@ -34,8 +34,8 @@
 ' Id,UserName,LoginName,Status ',
 ' account(nolock) ',
 #{Where,mode=IN,jdbcType=VARCHAR},
-#{PageSize,mode=IN,jdbcType=INT},
-#{CurrentPage,mode=IN,jdbcType=INT},
+#{PageSize,mode=IN,jdbcType=INTEGER},
+#{CurrentPage,mode=IN,jdbcType=INTEGER},
 1,
 #{TotalRecord,mode=OUT,jdbcType=VARCHAR},
 #{TotalPage,mode=OUT,jdbcType=VARCHAR}

@@ -2,7 +2,6 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-<<<<<<< HEAD
 <%
 	String basePath = request.getContextPath();
 %>
@@ -19,16 +18,6 @@
 	            <button type="button" class="btn btn-w-m btn-primary" id="intSave" style="margin-left:3px;">添加用户</button>
 	        </div>
 	    </div>
-	   
-	</div>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="ibox float-e-margins">
-				<div class="ibox-content">
-					
-				</div>
-			</div>
-		</div>
 	</div>
 </div>
 <script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>
@@ -45,10 +34,7 @@
 
 <script>
 
-jss.search();
-$("#btnSearch").click(function(){
-	jss.search(1);
-});
+
 var jss={
 		search:function(currentPage){
 			var keyword=$("#txtKeyword").val();
@@ -57,4 +43,9 @@ var jss={
 			});
 		}
 	}
+	
+jss.search(1);
+$("#btnSearch").click(function(){
+	jss.search(1);
+});
 </script>
