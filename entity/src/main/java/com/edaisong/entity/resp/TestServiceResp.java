@@ -7,15 +7,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.ResponseBase;
 
-@XmlRootElement(name = "Response")  
+@XmlRootElement(name = "testServiceResp")  
 public class TestServiceResp extends ResponseBase{
- private	List<BusinessBalanceRecord> ResultList;
+ public List<BusinessBalanceRecord> getResultList() {
+		return resultList;
+	}
 
-public List<BusinessBalanceRecord> getResultList() {
-	return ResultList;
-}
+	public void setResultList(List<BusinessBalanceRecord> resultList) {
+		this.resultList = resultList;
+	}
 
-public void setResultList(List<BusinessBalanceRecord> resultList) {
-	ResultList = resultList;
-}
+private	List<BusinessBalanceRecord> resultList;
+
+
 }

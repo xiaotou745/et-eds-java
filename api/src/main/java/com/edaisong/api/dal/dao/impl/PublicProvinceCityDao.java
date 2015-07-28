@@ -1,11 +1,15 @@
 package com.edaisong.api.dal.dao.impl;
 
 import com.edaisong.entity.PublicProvinceCity;
+import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OpenCityModel;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Repository;
+
 import com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao;
 
 /**
@@ -55,7 +59,6 @@ public class PublicProvinceCityDao extends DaoBase implements
 
 	/**
 	 * 获取开放城市列表（非分页）
-	 * 
 	 * @author CaoHeYang
 	 */
 	@Override
@@ -87,7 +90,7 @@ public class PublicProvinceCityDao extends DaoBase implements
 		int count = getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateOpen",
 						paramMap);
-		return count > 0;
+		return true;
 	}
 
 	/**
@@ -107,7 +110,22 @@ public class PublicProvinceCityDao extends DaoBase implements
 		int count = getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateClose",
 						paramMap);
-		return count > 0;
+		return true;
 
+	}
+	
+	/**
+	 * 获取开通城市的省市区 
+	 * @author CaoHeYang
+	 * @Date 20150727
+	 * @return 
+	 */
+	@Override
+	public List<AreaModel> getOpenCitySql(){
+		List<AreaModel> list = getReadOnlySqlSessionUtil()
+				.selectList(
+						"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.getOpenCitySql"
+						);
+		return list;
 	}
 }

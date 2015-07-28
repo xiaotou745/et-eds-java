@@ -3,20 +3,21 @@ package com.edaisong.entity.req;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.edaisong.entity.common.RequestBase;
-@XmlRootElement(name = "TestServiceReq")  
+@XmlRootElement(name = "testServiceReq")  
 public class TestServiceReq extends RequestBase{
-private	int RecordType;
-private String OperateTime;
+private	int recordType;
 public int getRecordType() {
-	return RecordType;
+	return recordType;
 }
 public void setRecordType(int recordType) {
-	RecordType = recordType;
+	this.recordType = recordType;
 }
 public String getOperateTime() {
-	return OperateTime;
+	return operateTime;
 }
 public void setOperateTime(String operateTime) {
-	OperateTime = operateTime;
+	this.operateTime = operateTime;
 }
+private String operateTime;
+
 }

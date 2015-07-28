@@ -24,4 +24,15 @@ public class TestService implements ITestService {
 		resp.setResultList(listData);
 		return resp;
 	}
+
+	@Override
+	public TestServiceResp getList() {
+		TestServiceResp resp = new TestServiceResp();
+		TestServiceReq req = new TestServiceReq();
+		req.setRecordType(9);
+		req.setOperateTime("2015-1-1");
+		List<BusinessBalanceRecord> listData = dao.selectBusinessBalanceByID(req.getRecordType(), req.getOperateTime());
+		resp.setResultList(listData);
+		return resp;
+	}
 }

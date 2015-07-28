@@ -36,16 +36,16 @@ public class Hellp {
 		List<BusinessBalanceRecord> listData = resp.getResultList();
 		for (int i = 0; i < listData.size(); i++) {
 			System.out.println(listData.get(i).getId() + "--"
-					+ listData.get(i).getBusinessId() + "--"
+					+ listData.get(i).getBusinessid() + "--"
 					+ listData.get(i).getOperator() + "--"
-					+ listData.get(i).getRecordType() + "--"
-					+ listData.get(i).getRelationNo() + "--"
+					+ listData.get(i).getRecordtype() + "--"
+					+ listData.get(i).getRelationno() + "--"
 					+ listData.get(i).getRemark() + "--"
 					+ listData.get(i).getStatus() + "--"
-					+ listData.get(i).getWithwardId() + "--"
+					+ listData.get(i).getWithwardid() + "--"
 					+ listData.get(i).getAmount() + "--"
 					+ listData.get(i).getBalance() + "--"
-					+ listData.get(i).getOperateTime());
+					+ listData.get(i).getOperatetime());
 		}
 
 		System.exit(0);

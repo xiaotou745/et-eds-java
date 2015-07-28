@@ -26,7 +26,7 @@
 			 %>  
 			 <tr>
 				<td><%=data.get(i).getId() %></td>
-				<td><%=data.get(i).getBusinessId() %></td>
+				<td><%=data.get(i).getBusinessid() %></td>
 				<td><%=data.get(i).getOperator() %></td>
 			</tr>
 		 <%}
