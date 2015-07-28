@@ -15,7 +15,7 @@
 			<th>操作</th>
 		</tr>
 	</thead>
-	<tbody id="content">
+	<tbody>
 
 		<%
 			AccountResp data = (AccountResp) request.getAttribute("listData");

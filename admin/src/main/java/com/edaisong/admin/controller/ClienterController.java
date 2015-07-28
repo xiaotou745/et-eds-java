@@ -19,8 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.Group;
+import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
+import com.edaisong.entity.resp.AccountResp;
 import com.edaisong.entity.resp.ClienterResp;
 
 @Controller
@@ -32,16 +34,30 @@ public class ClienterController {
 	@RequestMapping("list")
 	public ModelAndView list(){
 		
-		ClienterReq req=new ClienterReq();	
-		ClienterResp resp =clienterService.getClienterList(req);		
+//		ClienterReq req=new ClienterReq();	
+//		ClienterResp resp =clienterService.getClienterList(req);		
+//		
+//		ModelAndView model = new ModelAndView("adminView");
+//		model.addObject("subtitle", "管理员");
+//		model.addObject("currenttitle", "骑士管理");
+//		model.addObject("listData", resp.getClienterList());
+//		model.addObject("viewPath", "clienter/clientermanager");
+//		return model;		
 		
-		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "管理员");
-		model.addObject("currenttitle", "骑士管理");
-		model.addObject("listData", resp.getClienterList());
-		model.addObject("viewPath", "clienter/clientermanager");
-		return model;		
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("viewPath", "clienter/clientermanager");
+		return view;
 	}	
+	
+	@RequestMapping("clientermanagerlist")
+	public ModelAndView list(ClienterReq req) {
+		ClienterResp resp = clienterService.queryClienter(req);
+		ModelAndView view = new ModelAndView();
+		view.addObject("viewPath", "clienter/clientermanagerlist");
+		view.addObject("listData", resp);
+		return view;
+	}
+	
 	
 	@RequestMapping("auditok")
 	@ResponseBody
