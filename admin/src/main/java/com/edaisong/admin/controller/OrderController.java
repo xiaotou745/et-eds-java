@@ -1,11 +1,13 @@
 package com.edaisong.admin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javassist.expr.NewArray;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Context;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 
+
+
+
+
+
+
+import com.edaisong.api.service.impl.OrderService;
+import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.ITestService;
+import com.edaisong.entity.domain.OpenCityModel;
+import com.edaisong.entity.domain.OrderListModel;
+import com.edaisong.entity.req.OrderSearchWeb;
 import com.edaisong.entity.req.TestServiceReq;
 import com.edaisong.entity.resp.TestServiceResp;
 
@@ -27,9 +40,16 @@ import com.edaisong.entity.resp.TestServiceResp;
 public class OrderController {
 	 @Autowired
 	 private ITestService testService;
+	 @Context
+	 private HttpServletRequest  request;
+	 @Context
+	 private HttpServletResponse response;
+	 @Autowired
+	 private IOrderService orderService;
+	 
 	 
 	@RequestMapping("list")
-	public ModelAndView list(HttpServletRequest request, HttpServletResponse response){
+	public ModelAndView list(){
 		TestServiceReq req = new TestServiceReq();
 		req.setRecordType(9);
 		req.setOperateTime("2015-01-01");
@@ -42,4 +62,23 @@ public class OrderController {
 		
 		return model;
 	}
+	
+	
+	/**
+	 * 订单列表页面 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @return
+	 */
+	@RequestMapping("order")
+	public ModelAndView order(){
+		ModelAndView model = new ModelAndView("order");
+		model.addObject("subtitle", "订单管理");
+		model.addObject("currenttitle", "订单管理");
+		List<OrderListModel> orders=orderService.GetOrders(new OrderSearchWeb());
+		model.addObject(orders);
+		model.addObject("viewPath", "order/order");
+		return model;
+	}
+	
 }
