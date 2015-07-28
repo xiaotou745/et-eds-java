@@ -758,16 +758,18 @@
   </sql>
   
    <!--后台订单列表页面 ） add by caoheyang 20150728  -->
-  <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   parameterType="com.edaisong.entity.req.OrderSearchWebReq" >
+  <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   parameterType="com.edaisong.entity.req.OrderSearchWebReq" 
+  statementType="CALLABLE" >
 {call Sp_CustomPage2015_V1(
 ' o.Status asc , o.Id desc ',
 ' <include refid="GetOrdersColums" />',
 ' <include refid="GetOrdersFrom" /> ',
 ' <include refid="GetOrdersColumsWhere"/> ',
-20,1,1,2000,
-200
-<!-- #{pageSize,mode=IN,jdbcType=INTEGER}, -->
-<!-- #{currentPage,mode=IN,jdbcType=INTEGER}, -->
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER}
+,1,
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
 <!-- 1, -->
 <!-- #{totalRecord,mode=OUT,jdbcType=VARCHAR}, -->
 <!-- #{totalPage,mode=OUT,jdbcType=VARCHAR} -->
