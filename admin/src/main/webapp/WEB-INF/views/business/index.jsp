@@ -7,7 +7,6 @@
 <%
 	String basePath = request.getContextPath();
 %>
-<link href="<%=basePath%>/css/admin.css" rel="stylesheet" />
 
 <div class="SearchMd">
 	<%
@@ -224,7 +223,7 @@
 <div tabindex="-1" class="modal inmodal" id="BusinessAddDiv"
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
-		<div class="modal-content">
+		<div class="modal-content animated bounceInRight">
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
@@ -312,7 +311,7 @@
 <div tabindex="-1" class="modal inmodal" id="BusinessRechargeShow"
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
-		<div class="modal-content ">
+		<div class="modal-content animated bounceInRight">
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
@@ -360,7 +359,7 @@
 <div tabindex="-1" class="modal inmodal" id="BusinessWithdraw"
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
-		<div class="modal-content">
+		<div class="modal-content animated bounceInRight">
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>

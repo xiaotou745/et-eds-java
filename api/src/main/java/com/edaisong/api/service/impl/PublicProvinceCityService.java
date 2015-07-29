@@ -48,7 +48,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	 * @Date 20150721
 	 */
 	@Override
-	public ModifyOpenCityResp ModifyOpenCityByCode(String openCityCodeList,
+	public ModifyOpenCityResp modifyOpenCityByCode(String openCityCodeList,
 			String closeCityCodeList) {
 		boolean result1 = true, result2 = true;
 		if (openCityCodeList != null && !openCityCodeList.isEmpty()) {
@@ -61,7 +61,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 		if (result1 == false || result2 == false) {
 			modifyOpenCityResp.setResponseCode(ResponseCode.SYSTEM_ERROR);
 		} else {
-			ResetOpenCityListRedis(); // 都更新成功时 更新redis缓存
+			resetOpenCityListRedis(); // 都更新成功时 更新redis缓存
 		}
 		return modifyOpenCityResp;
 	}
@@ -72,7 +72,8 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	 * @author CaoHeYang
 	 * @Date 20150727
 	 */
-	public List<AreaModel> ResetOpenCityListRedis() {
+	@Override
+	public List<AreaModel> resetOpenCityListRedis() {
 		List<AreaModel> opencitys = publicProvinceCityDao.getOpenCitySql();
 		if (opencitys != null) {
 			AreaModelList areaList = new AreaModelList();
@@ -87,12 +88,11 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 
 	@Override
 	public List<AreaModel> getOpenCityListFromRedis() {
-		return publicProvinceCityDao.getOpenCitySql();
 //		String jsonData = redisService.get(
 //				RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
 //				String.class);
 //		if (jsonData == null || jsonData.isEmpty()) {
-//			return ResetOpenCityListRedis();
+			return resetOpenCityListRedis();
 //		}
 //		AreaModelList areaList = JsonUtil
 //				.str2obj(jsonData, AreaModelList.class);

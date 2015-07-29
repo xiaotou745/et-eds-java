@@ -5,7 +5,7 @@ import com.edaisong.entity.GroupApiConfig;
 
 public interface IGroupApiConfigService {
 	
-	public int  Add(GroupApiConfig record) ;
+	public int  add(GroupApiConfig record) ;
 
 	
 }

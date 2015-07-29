@@ -7,8 +7,6 @@
 <%
 	String basePath = request.getContextPath();
 %>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
@@ -22,14 +20,7 @@
 	    </div>
 	</div>
 </div>
-<script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>
-<!-- Data Tables -->
-<script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script
-	src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<script src="<%=basePath%>/js/hplus.js"></script>
-<!-- Page-Level Scripts -->
-
+ 
 <div id="content">
 	
 </div>
@@ -51,7 +42,8 @@
 确认密码：<input type="password" id="txtConfirmPwd"/><br/><br/>
 城市选项：<select id="selCity"><option value="1">全部城市权限</option><option value="2">部分城市权限</option></select>
 <%
-List<AreaModel> listArea=new PublicProvinceCityService().getOpenCityListFromRedis();
+
+List<AreaModel> listArea = (List<AreaModel>) request.getAttribute("listArea");
 for(AreaModel item:listArea)
 {
 	%>
@@ -80,7 +72,7 @@ var jss={
 		search:function(currentPage){
 			var keyword=$("#txtKeyword").val();
 			$.post("<%=basePath%>/account/listdo",{CurrentPage:currentPage,Keyword:keyword,m:Math.random()},function(d){
-				alert(d);
+				//alert(d);
 				$("#content").html(d);
 			});
 		}

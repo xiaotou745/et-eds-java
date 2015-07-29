@@ -62,7 +62,7 @@ input.error { border:1px dotted #e80505 !important;}
     -webkit-transform: rotate(0deg);
 }
 /*µ×²¿*/
-.footer{border-top:2px solid #dcdcdc;height:40px;line-height:40px;text-align:center;color:#7c7c7c;margin:385px 100px 0 20px }
+.footer{border-top:2px solid #dcdcdc;height:40px;line-height:40px;text-align:center;color:#7c7c7c;}
 
 /*·ÖÒ³old
 .pagebox{ float:right; margin:20px 0 15px 0;}

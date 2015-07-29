@@ -4,7 +4,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.edaisong.core.util.SqlSessionUtil;
+
 @Repository
 public class DaoBase {
 	@Autowired
