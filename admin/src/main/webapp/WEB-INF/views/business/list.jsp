@@ -4,7 +4,9 @@
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.BusinessModel"%>
-<%@page import="com.edaisong.core.common.ParseHelper"%> 
+<%@page import="com.edaisong.core.common.ParseHelper"%>
+<%@page import="com.edaisong.core.common.PageHelper"%>
+<%@page import="com.edaisong.entity.common.ResponsePageList"%>
 <%
 	String basePath = request.getContextPath();
 %>
@@ -35,31 +37,30 @@
 		<tbody>
 
 			<%
-				Object obj=request.getAttribute("listData");
-							if(obj!=null)
-							{
-						List<BusinessModel> data=	(List<BusinessModel>)obj;
-							 for (int i = 0; i < data.size(); i++) {
-							    String status=""; 
-							    String statusStyle="";
-							    String statusStyle2="style=\"color:gray\"";
-						 switch(data.get(i).getStatus())
-						 {
-						 case 0:status="未审核";
-						 break;
-						 case 1:status="已通过";
-						 statusStyle="style=\"color:gray\"";
-						 statusStyle2="";
-						 break;
-						 case 2:status="未审核且未添加地址";
-						 break;
-						 case 3:status="审核中";
-						 break;
-						 case 4:status="审核被拒绝";
-						 break;
-						 }
-                 int checkAddress = data.get(i).getAddress()==null||data.get(i).getAddress().isEmpty()?0:1;
-                 int checkImage = data.get(i).getCheckpicurl()==null||data.get(i).getCheckpicurl().isEmpty()?0:1;
+				ResponsePageList<BusinessModel> responsePageList = (ResponsePageList<BusinessModel>)request.getAttribute("listData");
+					List<BusinessModel> data=responsePageList.getResultList();
+										
+								 for (int i = 0; i < data.size(); i++) {
+								    String status=""; 
+								    String statusStyle="";
+								    String statusStyle2="style=\"color:gray\"";
+							 switch(data.get(i).getStatus())
+							 {
+							 case 0:status="未审核";
+							 break;
+							 case 1:status="已通过";
+							 statusStyle="style=\"color:gray\"";
+							 statusStyle2="";
+							 break;
+							 case 2:status="未审核且未添加地址";
+							 break;
+							 case 3:status="审核中";
+							 break;
+							 case 4:status="审核被拒绝";
+							 break;
+							 }
+			                 int checkAddress = data.get(i).getAddress()==null||data.get(i).getAddress().isEmpty()?0:1;
+			                 int checkImage = data.get(i).getCheckpicurl()==null||data.get(i).getCheckpicurl().isEmpty()?0:1;
 			%>
 			<tr>
 				<td><%=data.get(i).getId()%></td>
@@ -88,21 +89,25 @@
 
 					<a
 					href="/BusinessManager/QueryBusinessDetail?businessId=<%=data.get(i).getId()%>">修改信息</a>
-					<a href="javascript:void(0)" data-toggle="modal" data-target="#BusinessRechargeShow"
+					<a href="javascript:void(0)" data-toggle="modal"
+					data-target="#BusinessRechargeShow"
 					onclick="funcBusinessRecharge(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">充值</a>
 					<a
 					href="/BusinessManager/ClienterBindManage?businessId=<%=data.get(i).getId()%>">骑士绑定</a>
-					<a href="javascript:void(0)" data-toggle="modal" data-target="#BusinessWithdraw"
+					<a href="javascript:void(0)" data-toggle="modal"
+					data-target="#BusinessWithdraw"
 					onclick="funcBusinessWithdraw(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">提款申请</a>
 				</td>
 			</tr>
 			<%
 				}
-							}
 			%>
 
 		</tbody>
 	</table>
+	<%=PageHelper.GetPage(responsePageList.getPageSize(),
+		responsePageList.getCurrentPage(), responsePageList.getTotalRecord(),
+		responsePageList.getTotalPage())%>
 </div>
 <script type="text/javascript">
     var currentId;

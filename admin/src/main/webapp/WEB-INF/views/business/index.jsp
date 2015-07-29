@@ -80,9 +80,15 @@
 	</table>
 </div>
 
-<div id="groupList">
-	<jsp:include page="list.jsp" />
-</div>
+<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content" id="content">
+			
+				</div>
+			</div>
+		</div>
+	</div>
 
 <div class="add-openbox add-form" id="BusinessCommissionDiv"
 	style="width: 500px">
@@ -420,8 +426,19 @@
 	</div>
 	<small class="font-bold"> </small>
 </div>
-
 <script>
+var jss={
+		search:function(currentPage){
+			$.post("<%=basePath%>/business/selectlist",{CurrentPage:currentPage,m:Math.random()},function(d){
+				$("#content").html(d);
+			});
+		}
+	}
+jss.search(1);
+$("#btnSearch").click(function(){
+	jss.search(1);
+});
+
     var adminjs = new adminglass(); //实例化后台类
     $(document).ready(function () {
         //GetOpenProvince(); 
