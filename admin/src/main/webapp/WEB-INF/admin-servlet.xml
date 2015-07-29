@@ -23,8 +23,8 @@
 	</mvc:interceptors>
 
 	<!-- 全局异常 -->
-	<bean id="exceptionResolver"
-		class="com.edaisong.admin.common.handler.GlobalExceptionHandler" />
+<!-- 	<bean id="exceptionResolver" -->
+<!-- 		class="com.edaisong.admin.common.handler.GlobalExceptionHandler" /> -->
 		 
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="definitions">

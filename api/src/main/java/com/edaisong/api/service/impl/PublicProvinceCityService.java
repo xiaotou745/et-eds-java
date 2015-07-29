@@ -87,14 +87,15 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 
 	@Override
 	public List<AreaModel> getOpenCityListFromRedis() {
-		String jsonData = redisService.get(
-				RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
-				String.class);
-		if (jsonData == null || jsonData.isEmpty()) {
-			return ResetOpenCityListRedis();
-		}
-		AreaModelList areaList = JsonUtil
-				.str2obj(jsonData, AreaModelList.class);
-		return areaList.getAreaModels();
+		return publicProvinceCityDao.getOpenCitySql();
+//		String jsonData = redisService.get(
+//				RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
+//				String.class);
+//		if (jsonData == null || jsonData.isEmpty()) {
+//			return ResetOpenCityListRedis();
+//		}
+//		AreaModelList areaList = JsonUtil
+//				.str2obj(jsonData, AreaModelList.class);
+//		return areaList.getAreaModels();
 	}
 }

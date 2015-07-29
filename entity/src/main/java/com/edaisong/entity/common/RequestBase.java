@@ -33,4 +33,6 @@ public class RequestBase {
 	public void setUserType(int userType) {
 		this.userType = userType;
 	}
+	
+	
 }
