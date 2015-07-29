@@ -64,6 +64,9 @@ public class ParseHelper {
 	 * @return
 	 */
 	public static String ToDateString(Date o, String strFormat) {
+		if (o==null) {
+			return "";
+		}
 		if (strFormat == null || strFormat.isEmpty()) {
 			strFormat = "yyyy-MM-dd hh:MM:ss";
 		}

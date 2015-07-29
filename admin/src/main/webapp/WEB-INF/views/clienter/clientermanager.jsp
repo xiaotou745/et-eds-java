@@ -1,15 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@page import="java.util.List"%>         
+<%@page import="java.util.List"%>         
 <%@page import="com.edaisong.entity.Group"%> 
+<%@page import="com.edaisong.entity.domain.AreaModel"%>
+<%@page import="com.edaisong.entity.DeliveryCompany"%>
+
 <%
 	String basePath = request.getContextPath();
 %>
-<div style="height:500%"></div>
-  
+
+
+<script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/admin.js""></script>
+<script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>
+<!-- Data Tables -->
+<script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script	src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="<%=basePath%>/js/hplus.js"></script>
+<link rel="stylesheet"
+	href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />	
+ <link href="<%=basePath%>/css/admin.css" rel="stylesheet" />
+
+<%
+	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
+    List<DeliveryCompany> dCListData=	(List<DeliveryCompany>)request.getAttribute("dCListData");
+%>
+
    <table border="0" cellspacing="0" cellpadding="0">
             <tr>
-                <td>
+                 <span class="">骑士名称: </span>
+                 <input id="txtClienterName" type="tel" name="txtClienterName" />
                   <span class="">审核状态: </span>
                         <select name="status" class="selectw" id="superManStatus" style="width:143px">
                             <option value="-1">全部</option>
@@ -19,16 +39,37 @@
                             <option value="3">审核中</option>
                         </select>
                         <span class="">骑士电话: </span>
-                        <input id="txtSuperManPhone" type="text" name="clienterPhone" value="" />
+                        <input id="txtClienterPhone" type="text" name="txtClienterPhone" value="" />
                         <span class="">推荐人手机: </span>
-                        <input id="recommonPhone" type="text" name="recommonPhone" value="" />
+                        <input id="txtRecommonPhone" type="text" name="txtRecommonPhone" value="" />
                                 
                 </td>
             </tr>
             <tr>
             <td>
-               <span class="">筛选城市: </span>                        
-              <span class="">物流公司: </span>                       
+               <span class="">筛选城市: </span><select name="businessCityId"
+				id="businessCityId" style="width: 155px">
+					<option value="" selected="selected">--无--</option>
+					<%
+						for (int i = 0; i < areaListData.size(); i++) {
+					%>
+					<option value="<%=areaListData.get(i).getCode()%>"><%=areaListData.get(i).getName()%></option>
+					<%
+						}
+					%>
+			</select>
+			                     
+              <span class="">物流公司: </span><select name="deliveryCompanyId"
+				id="deliveryCompanyId" style="width: 155px">
+					<option value="" selected="selected">--无--</option>
+					<%
+						for (int i = 0; i < dCListData.size(); i++) {
+					%>
+					<option value="<%=dCListData.get(i).getId()%>"><%=dCListData.get(i).getDeliverycompanyname()%></option>
+					<%
+						}
+					%>
+			</select>                   
                       
              <input type="submit" value="查询" class="searchBtn" id="btnSearch" />
             </td>
@@ -75,11 +116,45 @@
 	<script>		
 	var jss={
 			search:function(currentPage){	
-				$.post("<%=basePath%>/clienter/clientermanagerlist",{CurrentPage:currentPage,m:Math.random()},function(d){					
-					$("#content").html(d);
-				});
+
+                 var trueName = $("#txtClienterName").val();
+                 var phoneNo = $("#txtClienterPhone").val();
+                 var recommendPhone = $("#txtRecommonPhone").val(); 
+                 var status=$("#superManStatus").val();           
+                 var code=$("#businessCityId").val();       
+                 var deliveryCompanyId=$("#deliveryCompanyId").val();   
+                 if (code==null || code=="")
+                	 {
+                	  code=-1;             
+                	 }
+                 if (deliveryCompanyId==null || deliveryCompanyId=="")
+            	 {
+                	 deliveryCompanyId=-1;             
+            	 }                
+               
+                 //参数不能为""值
+				 var paramaters = { 
+						 "CurrentPage":currentPage,
+						 "trueName": trueName,
+						 "phoneNo": phoneNo,
+						 "recommendPhone": recommendPhone,
+						 "status": status,
+						 "code": code,
+						 "deliveryCompanyId": deliveryCompanyId		
+						 };        
+			        var url = "<%=basePath%>/clienter/clientermanagerlist";
+			        $.ajax({
+			            type: 'POST',
+			            url: url,
+			            data: paramaters,
+			            success: function (result) {            
+			            	$("#content").html(result);               
+			            }
+			        });
 			}
 		}
+	
+
 		
 	jss.search(1);
 	$("#btnSearch").click(function(){

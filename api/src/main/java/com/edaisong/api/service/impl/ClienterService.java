@@ -31,16 +31,7 @@ public class ClienterService implements IClienterService {
 	{
 		return clienterDao.updateByPrimaryKeySelective(record);
 	}
-	
-	@Override
-	public ClienterResp getClienterList(ClienterReq record) {
-		// TODO Auto-generated method stub
-		ClienterResp resp = new ClienterResp();
-		List<ClienterModel> listData = clienterDao.getClienterList(
-				record);
-		resp.setClienterList(listData);
-		return resp;
-	}
+
 	
 	public int modifyMoneyById(ClienterOptionReq record)
 	{

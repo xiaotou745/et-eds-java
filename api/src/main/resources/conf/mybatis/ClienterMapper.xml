@@ -52,10 +52,10 @@
 <![CDATA[  
 {call Sp_CustomPage2015_V1(
 ' c.id desc ',
-' c.id,isnull(c.trueName.''''),c.phoneNo,c.idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
+' c.id,isnull(c.trueName,'''') as trueName ,c.phoneNo,isnull(c.idCard,'''') as idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
       c.insertTime,c.workStatus,c.allowWithdrawPrice,c.status,
       isnull(g.groupName,'''') as groupName,
-      dc.Id as deliveryCompanyId,isnull(dc.deliveryCompanyName,'''') as deliveryCompanyName,
+      isnull(dc.deliveryCompanyName,'''') as deliveryCompanyName,
       isnull(cl.PhoneNo,'''') as recommendPhone,isnull(cl.TrueName,'''') as recommendName ',
 ' dbo.clienter c   with(nolock)
    left join dbo.[Group] g   with(nolock) on c.GroupId=g.id

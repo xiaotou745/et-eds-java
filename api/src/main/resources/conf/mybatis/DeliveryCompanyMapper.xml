@@ -242,8 +242,8 @@
         dc.IsDisplay ,
         dc.BusinessQuantity
  from   dbo.DeliveryCompany dc ( nolock ) 
- where 1 = 1 
-	 <if test="DeliveryCompanyName != null" >
+ where IsEnable=1 
+	 <if test="DeliveryCompanyName != null and DeliveryCompanyName!=''" >
 	     AND DeliveryCompanyName='${DeliveryCompanyName}'
      </if>
   </select>

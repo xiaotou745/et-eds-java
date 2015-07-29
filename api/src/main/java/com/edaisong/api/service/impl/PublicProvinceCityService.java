@@ -1,5 +1,6 @@
 package com.edaisong.api.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,32 @@ import com.edaisong.core.util.PropertyUtils;
 @Service
 public class PublicProvinceCityService implements IPublicProvinceCityService {
 
+	 
+	
+
 	@Autowired
 	private IPublicProvinceCityDao publicProvinceCityDao;
 	@Autowired
 	private RedisService redisService;
 
+	 /**
+	  * 获取开通市
+	  * 窦海超
+	  * 2015年7月29日 10:40:36
+	  * */
+	@Override
+	public List<AreaModel> getOpenCity() {
+		List<AreaModel> list = getOpenCityListFromRedis();
+		List<AreaModel> listnew = new ArrayList<AreaModel>();
+		for (AreaModel item : list) {
+			if (item.getJiBie() == 1) {
+				// AreaModel model=new AreaModel();
+				listnew.add(item);
+			}
+		}
+		return listnew;
+	}
+	
 	/**
 	 * 获取开放城市列表（非分页）
 	 * 
@@ -88,14 +110,14 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 
 	@Override
 	public List<AreaModel> getOpenCityListFromRedis() {
-//		String jsonData = redisService.get(
-//				RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
-//				String.class);
-//		if (jsonData == null || jsonData.isEmpty()) {
+		String jsonData = redisService.get(
+				RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
+				String.class);
+		if (jsonData == null || jsonData.isEmpty()) {
 			return resetOpenCityListRedis();
-//		}
-//		AreaModelList areaList = JsonUtil
-//				.str2obj(jsonData, AreaModelList.class);
-//		return areaList.getAreaModels();
+		}
+		AreaModelList areaList = JsonUtil
+				.str2obj(jsonData, AreaModelList.class);
+		return areaList.getAreaModels();
 	}
 }
