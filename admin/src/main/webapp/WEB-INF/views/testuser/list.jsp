@@ -7,7 +7,6 @@
 	String basePath = request.getContextPath();
 %>
 
-<script src="http://res.layui.com/lay/lib/layer/src/layer.js?v=1.93"></script>
 <div class="row">
 	<div class="col-lg-12">
 		<div class="wrapper wrapper-content animated fadeInUp">

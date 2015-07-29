@@ -5,8 +5,7 @@
 <%
 	String basePath = request.getContextPath();
 %>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
+
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">

@@ -6,8 +6,7 @@
 %>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.OpenCityModel"%>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
+
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
@@ -76,13 +75,7 @@
 		</div>
 	</div>
 </div>
-<script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>
-<!-- Data Tables -->
-<script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script
-	src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<script src="<%=basePath%>/js/hplus.js"></script>
-<!-- Page-Level Scripts -->
+
 <script>
 	function checkAll() {
 		var checkedOfAll = $("#selectAll").prop("checked");

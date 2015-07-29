@@ -48,6 +48,8 @@ public class ClienterController {
 //		return model;		
 		
 		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "管理员");
+		view.addObject("currenttitle", "骑士管理");
 		view.addObject("viewPath", "clienter/clientermanager");
 		return view;
 	}	

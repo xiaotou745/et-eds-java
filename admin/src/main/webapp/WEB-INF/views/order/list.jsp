@@ -9,9 +9,6 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
-
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">
@@ -34,12 +31,7 @@
 		</div>
 	</div>
 </div>
-<script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>
-<!-- Data Tables -->
-<script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script
-	src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<script src="<%=basePath%>/js/hplus.js"></script>
+
 <script>
 var jss={
 		search:function(currentPage){
