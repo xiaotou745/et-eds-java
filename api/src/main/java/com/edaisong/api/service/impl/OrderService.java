@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.api.service.inter.IOrderService;
-import com.edaisong.entity.Account;
 import com.edaisong.entity.common.ResponsePageList;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.OrderSearchWebReq;
@@ -17,6 +16,7 @@ public class OrderService implements IOrderService {
 
 	@Autowired 
 	private IOrderDao orderDao;
+
 	/**
 	 * 后台订单列表页面 
 	 * @author CaoHeYang
@@ -25,8 +25,8 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	public ResponsePageList<OrderListModel> GetOrders(OrderSearchWebReq search) {
-		return orderDao.GetOrders(search);
+	public ResponsePageList<OrderListModel> getOrders(OrderSearchWebReq search) {
+		return orderDao.getOrders(search);
 	}
 
 }

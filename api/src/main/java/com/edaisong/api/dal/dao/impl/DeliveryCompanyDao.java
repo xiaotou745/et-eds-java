@@ -52,14 +52,13 @@ public class DeliveryCompanyDao extends DaoBase implements IDeliveryCompanyDao {
 	}
 
 	@Override
-	public List<DeliveryCompany> GetDeliveryCompanyList() {
+	public List<DeliveryCompany> getDeliveryCompanyList() {
 
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("DeliveryCompanyName", "");
+//		Map<String, Object> paramMap = new HashMap<>();
+//		paramMap.put("DeliveryCompanyName", "");
 		List<DeliveryCompany> list = getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dal.dao.inter.IDeliveryCompanyDao.getDeliveryCompanyList",
-						paramMap);
+						"com.edaisong.api.dal.dao.inter.IDeliveryCompanyDao.getDeliveryCompanyList"	);
 		return list;
 
 	}

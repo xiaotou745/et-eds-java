@@ -8,5 +8,5 @@ import com.edaisong.entity.resp.BusinessResp;
 
 
 public interface IBusinessService {
-	BusinessResp GetBusinessList(BusinessReq req);
+	BusinessResp getBusinessList(BusinessReq req);
 }

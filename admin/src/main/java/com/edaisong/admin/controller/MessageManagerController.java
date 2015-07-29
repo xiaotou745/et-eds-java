@@ -20,7 +20,7 @@ public class MessageManagerController {
 	@Autowired
 	private IMessageService messageService;
 	@RequestMapping("list")
-	public ModelAndView MessageManager(HttpServletRequest request, HttpServletResponse res)
+	public ModelAndView messageManager(HttpServletRequest request, HttpServletResponse res)
 	{
 		List<Message> data= messageService.getMessageList();
 		ModelAndView model = new ModelAndView("adminView");

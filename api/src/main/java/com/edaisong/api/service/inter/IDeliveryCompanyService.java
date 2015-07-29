@@ -6,5 +6,5 @@ import com.edaisong.entity.DeliveryCompany;
 
 public interface IDeliveryCompanyService {
 	//获取物流公司
-	List<DeliveryCompany> GetDeliveryCompanyList();
+	List<DeliveryCompany> getDeliveryCompanyList();
 }

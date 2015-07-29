@@ -15,11 +15,16 @@ import java.util.Map;
 
 
 
+
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IClienterDao;
 import com.edaisong.core.common.ParseHelper;
+import com.edaisong.core.util.StringUtils;
+import com.edaisong.entity.Account;
 import com.edaisong.entity.Clienter;
+import com.edaisong.entity.common.ResponsePageList;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.req.ClienterOptionReq;
@@ -72,17 +77,6 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	@Override
-	public List<ClienterModel> getClienterList(ClienterReq record) {
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("clientername", record.getClienterName());
-		paramMap.put("clienterPhoneNo", record.getClienterPhoneNo());
-		List<ClienterModel> list = getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dal.dao.inter.IClienterDao.getClienterList",
-				paramMap);
-		return list;
-	}
 	
 	@Override
 	public int updateMoneyById(ClienterOptionReq record) {
@@ -101,14 +95,31 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	}	
 	
 	@Override
-	public ClienterResp query(ClienterReq req) {
+	public ResponsePageList<ClienterModel> query(ClienterReq req) {
 
 		Map<String, Object> map = new HashMap<String, Object>();		
-		String Where = " 1=1 ";
-//		if (req.getKeyword() != null && req.getKeyword() != "") {
-//			Where = " UserName like '%" + req.getKeyword() + "%'";
-//
-//		}
+		String Where = " 1=1 ";		
+		
+		if (!StringUtils.isEmpty(req.getTrueName())) {
+			Where += " and c.trueName like '%" + req.getTrueName() + "%'";
+		}
+		if (req.getStatus() !=null && req.getStatus().intValue()>-1) {
+			Where += " and c.status= '" + req.getStatus() + "'";
+		}		
+		if (!StringUtils.isEmpty(req.getPhoneNo())) {
+			Where += " and c.phoneNo like '%" + req.getPhoneNo() + "%'";
+		}
+		if (!StringUtils.isEmpty(req.getRecommendPhone())) {
+			Where += " and cl.PhoneNo like '%" + req.getRecommendPhone() + "%'";
+		}
+		if (req.getDeliveryCompanyId() >0) {
+			Where += " and c.DeliveryCompanyId = '" + req.getDeliveryCompanyId() + "'";
+		}
+		if(req.getCode()>0) {
+			Where += " and c.CityId = '" + req.getCode() + "'";
+		}
+			
+		
 		int PageSize = 10;
 		int CurrentPage = req.getCurrentPage();
 		map.put("Where", Where);
@@ -119,9 +130,9 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		List<ClienterModel> list = getMasterSqlSessionUtil()
 				.selectList("com.edaisong.api.dal.dao.inter.IClienterDao.query",
 						map);
-
-		ClienterResp resp = new ClienterResp();
-		resp.setClienterList(list);
+		
+		ResponsePageList<ClienterModel> resp = new ResponsePageList<ClienterModel>();		
+		resp.setResultList(list);
 		resp.setPageSize(PageSize);
 		resp.setCurrentPage(CurrentPage);
 		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
