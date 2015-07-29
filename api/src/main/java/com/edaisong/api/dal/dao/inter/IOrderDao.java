@@ -1,8 +1,5 @@
 package com.edaisong.api.dal.dao.inter;
 
-import java.util.List;
-
-import com.edaisong.entity.Account;
 import com.edaisong.entity.common.ResponsePageList;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.OrderSearchWebReq;

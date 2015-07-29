@@ -21,7 +21,7 @@ public class OrderDao  extends DaoBase implements IOrderDao {
 	 * @return
 	 */
 	@Override
-    public ResponsePageList<OrderListModel> GetOrders(OrderSearchWebReq search){
+    public ResponsePageList<OrderListModel> getOrders(OrderSearchWebReq search){
 		
 		ResponsePageList<OrderListModel> result=new ResponsePageList<OrderListModel>();
 		result=getReadOnlySqlSessionUtil()
