@@ -84,4 +84,17 @@ public class ParseHelper {
 	public static String ToDateString(Date o) {
 		return ToDateString(o,null);
 	}
+	
+	/**
+	 * 
+	 * @param o
+	 * @return
+	 */
+	public static String ShowString(Object o) {
+		if (o==null) {
+			return "";
+		}else {
+			return o.toString();
+		}
+	}
 }

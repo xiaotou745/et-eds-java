@@ -65,14 +65,14 @@
 			<td><%=i + 1%></td>
 			<td>
 			<%=data.get(i).getOrderNo()%> <br /> 
-				来源:<%=data.get(i).getGroupName()%><br/>原单号:<%=data.get(i).getOriginalOrderNo()%>
+				来源:<%=ParseHelper.ShowString(data.get(i).getGroupName())%><br/>原单号:<%=ParseHelper.ShowString(data.get(i).getOriginalOrderNo())%>
 		    </td>
-			<td><%=data.get(i).getBusinessName()%> <br /> <%=data.get(i).getBusinessPhoneNo()%>
-				<br /><%=data.get(i).getPickUpAddress()%></td>
-			<td><%=data.get(i).getClienterName()%> <br /> <%=data.get(i).getClienterPhoneNo()%>
+			<td><%=ParseHelper.ShowString(data.get(i).getBusinessName())%> <br /> <%=data.get(i).getBusinessPhoneNo()%>
+				<br /><%=ParseHelper.ShowString(data.get(i).getPickUpAddress())%></td>
+			<td><%=ParseHelper.ShowString(data.get(i).getClienterName())%> <br /> <%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%>
 			</td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getPubDate())%></td>
-			<td><%=data.get(i).getReceviceAddress()%></td>
+			<td><%=ParseHelper.ShowString(data.get(i).getReceviceAddress())%></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getActualDoneDate())%></td>
 			<td>数量：<%=data.get(i).getOrderCount()%><br /> 金额： <font
 				style="color: red; font-weight: 600"><%=data.get(i).getAmount()%></font>

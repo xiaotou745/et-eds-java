@@ -722,40 +722,40 @@
 	 <if test="businessName != null">
 	      and b.Name=#{businessName}
      </if>
-      <if test="businessPhone != null">
-	      and  b.PhoneNo=#{businessPhone}
-     </if>
-      <if test="orderId != null">
-	      and  o.OrderNo=#{orderId}
-     </if>
-      <if test="originalOrderNo != null">
-	      and o.OriginalOrderNo=#{originalOrderNo}
-     </if>
-      <if test="orderStatus != null">
-	      and o.Status==#{orderStatus}
-     </if>
-      <if test="superManName != null">
-	     and c.TrueName=#{superManName}
-     </if>
-      <if test="superManPhone != null">
-	     and c.PhoneNo=#{superManPhone}
-     </if>
-      <if test="orderPubStart != null">
-	     and o.PubDate>= #{orderPubStart}
-     </if>
-     <if test="orderPubEnd != null">
-         <![CDATA[ and o.PubDate<=]]> 
-	      #{orderPubEnd}
-     </if>
-       <if test="groupId != null">
-	     and o.OrderFrom = #{groupId}
-      </if>
-       <if test="businessCity != null">
-	     and b.City= #{businessCity}
-      </if>
-       <if test="authorityCityNameListStr != null">
-	     and b.City in  ${authorityCityNameListStr}
-      </if>
+<!--       <if test="businessPhone != null"> -->
+<!-- 	      and  b.PhoneNo=#{businessPhone} -->
+<!--      </if> -->
+<!--       <if test="orderId != null"> -->
+<!-- 	      and  o.OrderNo=#{orderId} -->
+<!--      </if> -->
+<!--       <if test="originalOrderNo != null"> -->
+<!-- 	      and o.OriginalOrderNo=#{originalOrderNo} -->
+<!--      </if> -->
+<!--       <if test="orderStatus != null"> -->
+<!-- 	      and o.Status==#{orderStatus} -->
+<!--      </if> -->
+<!--       <if test="superManName != null"> -->
+<!-- 	     and c.TrueName=#{superManName} -->
+<!--      </if> -->
+<!--       <if test="superManPhone != null"> -->
+<!-- 	     and c.PhoneNo=#{superManPhone} -->
+<!--      </if> -->
+<!--       <if test="orderPubStart != null"> -->
+<!-- 	     and o.PubDate>= #{orderPubStart} -->
+<!--      </if> -->
+<!--      <if test="orderPubEnd != null"> -->
+<!--          <![CDATA[ and o.PubDate<=]]>  -->
+<!-- 	      #{orderPubEnd} -->
+<!--      </if> -->
+<!--        <if test="groupId != null"> -->
+<!-- 	     and o.OrderFrom = #{groupId} -->
+<!--       </if> -->
+<!--        <if test="businessCity != null"> -->
+<!-- 	     and b.City= #{businessCity} -->
+<!--       </if> -->
+<!--        <if test="authorityCityNameListStr != null"> -->
+<!-- 	     and b.City in  ${authorityCityNameListStr} -->
+<!--       </if> -->
   </sql>
   
    <!--后台订单列表页面 ） add by caoheyang 20150728  -->
