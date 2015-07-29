@@ -683,10 +683,9 @@
     where Id = #{id,jdbcType=INTEGER}
   </update>
   
-   <!--后台订单列表页面 ） add by caoheyang 20150728  -->
-  <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel" 
-    parameterType="com.edaisong.entity.req.OrderSearchWebReq" >
-	select  o.[Id] ,o.[OrderNo] , o.[PickUpAddress] ,o.[PubDate] ,o.[ReceviceName] ,o.[RecevicePhoneNo] ,o.[ReceviceAddress] ,
+  
+  <sql id="GetOrdersColums" >
+  o.[Id] ,o.[OrderNo] , o.[PickUpAddress] ,o.[PubDate] ,o.[ReceviceName] ,o.[RecevicePhoneNo] ,o.[ReceviceAddress] ,
         o.[ActualDoneDate] ,o.[IsPay] , o.[Amount] , o.[OrderCommission] , o.[RealOrderCommission] , o.[DistribSubsidy] , o.[WebsiteSubsidy] ,o.[Remark] ,
         o.[Status] , o.[clienterId] , o.[businessId] , o.[ReceviceCity] , o.[ReceviceLongitude] , o.[ReceviceLatitude] , o.[OrderFrom] , 
         o.[OriginalOrderId] ,o.[OriginalOrderNo] , o.[Quantity] ,o.[Weight] ,
@@ -694,7 +693,7 @@
         o.[SongCanDate] , o.[OrderCount] ,o.[CommissionRate] ,c.TrueName ClienterName ,
         c.PhoneNo ClienterPhoneNo , b.Name BusinessName ,b.PhoneNo BusinessPhoneNo ,
 	    b.Address BusinessAddress ,
-        CASE when o.OrderFrom = 0 then '客户端'
+        CASE when o.OrderFrom = 0 then ''客户端''
              else g.GroupName
         end GroupName ,
         o.[Adjustment] ,
@@ -707,12 +706,18 @@
                end
         end as GrabToCompleteDistance ,
         o.BusinessCommission ,oo.IsNotRealOrder
-		from    [order] o with ( nolock )
+  </sql>
+  
+  <sql id="GetOrdersFrom" >
+   [order] o with ( nolock )
 		        left join clienter c with ( nolock ) on c.Id = o.clienterId
 		        join business b with ( nolock ) on b.Id = o.businessId
 		        left join [group] g with ( nolock ) on g.id = o.OrderFrom
 		        join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
-		where 1=1  
+  </sql>
+   
+  <sql id="GetOrdersColumsWhere">
+     1=1  
 	 <if test="businessName != null">
 	      and b.Name=#{businessName}
      </if>
@@ -750,7 +755,96 @@
        <if test="authorityCityNameListStr != null">
 	     and b.City in  ${authorityCityNameListStr}
       </if>
-     	order by o.Status asc ,
-		        o.Id desc
-  </select>
+  </sql>
+  
+   <!--后台订单列表页面 ） add by caoheyang 20150728  -->
+  <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   parameterType="com.edaisong.entity.req.OrderSearchWebReq" 
+  statementType="CALLABLE" >
+{call Sp_CustomPage2015_V1(
+' o.Status asc , o.Id desc ',
+' <include refid="GetOrdersColums" />',
+' <include refid="GetOrdersFrom" /> ',
+' <include refid="GetOrdersColumsWhere"/> ',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER}
+,1,
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
+<!-- 1, -->
+<!-- #{totalRecord,mode=OUT,jdbcType=VARCHAR}, -->
+<!-- #{totalPage,mode=OUT,jdbcType=VARCHAR} -->
+)}
+ </select>
+  
+  
+  <!--后台订单列表页面 ） add by caoheyang 20150728  --> 
+<!--   <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"  -->
+<!--     parameterType="com.edaisong.entity.req.OrderSearchWebReq" > -->
+<!-- 	select  o.[Id] ,o.[OrderNo] , o.[PickUpAddress] ,o.[PubDate] ,o.[ReceviceName] ,o.[RecevicePhoneNo] ,o.[ReceviceAddress] , -->
+<!--         o.[ActualDoneDate] ,o.[IsPay] , o.[Amount] , o.[OrderCommission] , o.[RealOrderCommission] , o.[DistribSubsidy] , o.[WebsiteSubsidy] ,o.[Remark] , -->
+<!--         o.[Status] , o.[clienterId] , o.[businessId] , o.[ReceviceCity] , o.[ReceviceLongitude] , o.[ReceviceLatitude] , o.[OrderFrom] ,  -->
+<!--         o.[OriginalOrderId] ,o.[OriginalOrderNo] , o.[Quantity] ,o.[Weight] , -->
+<!--         o.[ReceiveProvince] , o.[ReceiveArea] , o.[ReceiveProvinceCode] ,o.[ReceiveCityCode] ,o.[ReceiveAreaCode] , -->
+<!--         o.[SongCanDate] , o.[OrderCount] ,o.[CommissionRate] ,c.TrueName ClienterName , -->
+<!--         c.PhoneNo ClienterPhoneNo , b.Name BusinessName ,b.PhoneNo BusinessPhoneNo , -->
+<!-- 	    b.Address BusinessAddress , -->
+<!--         CASE when o.OrderFrom = 0 then '客户端' -->
+<!--              else g.GroupName -->
+<!--         end GroupName , -->
+<!--         o.[Adjustment] , -->
+<!--         ISNULL(oo.HadUploadCount, 0) HadUploadCount , -->
+<!--         CASE ISNULL(oo.GrabLatitude, 0) -->
+<!--           when 0 then -1 -->
+<!--           else CASE ISNULL(oo.CompleteLatitude, 0) -->
+<!--                  when 0 then -1 -->
+<!--                  else oo.GrabToCompleteDistance -->
+<!--                end -->
+<!--         end as GrabToCompleteDistance , -->
+<!--         o.BusinessCommission ,oo.IsNotRealOrder -->
+<!-- 		from    [order] o with ( nolock ) -->
+<!-- 		        left join clienter c with ( nolock ) on c.Id = o.clienterId -->
+<!-- 		        join business b with ( nolock ) on b.Id = o.businessId -->
+<!-- 		        left join [group] g with ( nolock ) on g.id = o.OrderFrom -->
+<!-- 		        join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId -->
+<!-- 		where 1=1   -->
+<!-- 	 <if test="businessName != null"> -->
+<!-- 	      and b.Name=#{businessName} -->
+<!--      </if> -->
+<!--       <if test="businessPhone != null"> -->
+<!-- 	      and  b.PhoneNo=#{businessPhone} -->
+<!--      </if> -->
+<!--       <if test="orderId != null"> -->
+<!-- 	      and  o.OrderNo=#{orderId} -->
+<!--      </if> -->
+<!--       <if test="originalOrderNo != null"> -->
+<!-- 	      and o.OriginalOrderNo=#{originalOrderNo} -->
+<!--      </if> -->
+<!--       <if test="orderStatus != null"> -->
+<!-- 	      and o.Status==#{orderStatus} -->
+<!--      </if> -->
+<!--       <if test="superManName != null"> -->
+<!-- 	     and c.TrueName=#{superManName} -->
+<!--      </if> -->
+<!--       <if test="superManPhone != null"> -->
+<!-- 	     and c.PhoneNo=#{superManPhone} -->
+<!--      </if> -->
+<!--       <if test="orderPubStart != null"> -->
+<!-- 	     and o.PubDate>= #{orderPubStart} -->
+<!--      </if> -->
+<!--      <if test="orderPubEnd != null"> -->
+<!--          <![CDATA[ and o.PubDate<=]]>  -->
+<!-- 	      #{orderPubEnd} -->
+<!--      </if> -->
+<!--        <if test="groupId != null"> -->
+<!-- 	     and o.OrderFrom = #{groupId} -->
+<!--       </if> -->
+<!--        <if test="businessCity != null"> -->
+<!-- 	     and b.City= #{businessCity} -->
+<!--       </if> -->
+<!--        <if test="authorityCityNameListStr != null"> -->
+<!-- 	     and b.City in  ${authorityCityNameListStr} -->
+<!--       </if> -->
+<!--      	order by o.Status asc , -->
+<!-- 		        o.Id desc -->
+<!--   </select> -->
 </mapper>

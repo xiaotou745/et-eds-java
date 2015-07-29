@@ -12,6 +12,13 @@
 
     <script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="<%=basePath%>/js/admin.js""></script>
+    <script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>
+<!-- Data Tables -->
+<script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script
+	src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="<%=basePath%>/js/hplus.js"></script>
+
 
 <div style="height:500%"></div>
   
@@ -43,9 +50,9 @@
             </tr>
         </table>  
         
-        <div id="groupList">     
-        <jsp:include page="clientermanagerlist.jsp"/>
-        </div>
+   <div id="content">
+	
+   </div>
 
 <div>
     <div class="add-openbox add-form" id="ClienterRechargeShow" style="width:500px">
@@ -81,6 +88,19 @@
     </div>
 </div>
 	<script>		
+	var jss={
+			search:function(currentPage){	
+				$.post("<%=basePath%>/clienter/clientermanagerlist",{CurrentPage:currentPage,m:Math.random()},function(d){					
+					$("#content").html(d);
+				});
+			}
+		}
+		
+	jss.search(1);
+	$("#btnSearch").click(function(){
+		jss.search(1);
+	});
+	
 	var adminjs = new adminglass(); //实例化后台类	
 	 //骑士充值
     $("#btnRechargeCommit").on('click', function () {
