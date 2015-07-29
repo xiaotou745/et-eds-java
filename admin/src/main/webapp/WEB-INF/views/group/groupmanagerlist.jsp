@@ -4,15 +4,7 @@
 <%@page import="com.edaisong.entity.Group"%> 
 <%
 	String basePath = request.getContextPath();
-%>
-
-
-    <link href="<%=basePath%>/css/admin.css" rel="stylesheet" /> 
-
-    <script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>/js/admin.js""></script>
-
-        
+%>        
 <div class="ibox-content">		
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"  class="table">
 			<thead>

@@ -5,21 +5,6 @@
 <%
 	String basePath = request.getContextPath();
 %>
-
-
-    <link href="<%=basePath%>/css/admin.css" rel="stylesheet" />
- 
-
-    <script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>/js/admin.js""></script>
-    <script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>
-<!-- Data Tables -->
-<script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script
-	src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<script src="<%=basePath%>/js/hplus.js"></script>
-
-
 <div style="height:500%"></div>
   
    <table border="0" cellspacing="0" cellpadding="0">
