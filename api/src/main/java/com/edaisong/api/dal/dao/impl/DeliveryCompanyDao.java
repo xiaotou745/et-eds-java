@@ -52,7 +52,7 @@ public class DeliveryCompanyDao extends DaoBase implements IDeliveryCompanyDao {
 	}
 
 	@Override
-	public List<DeliveryCompany> GetDeliveryCompanyList() {
+	public List<DeliveryCompany> getDeliveryCompanyList() {
 
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("DeliveryCompanyName", "");

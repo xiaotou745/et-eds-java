@@ -6,7 +6,7 @@ public interface IActionLogDao {
 	/*
 	 * 系统级，记录方法的ActionLog（写入db）
 	 * */
-	void WriteActionLog(ActionLog logEngity);
+	void writeActionLog(ActionLog logEngity);
 
-	void WriteLog2DB(String msg);
+	void writeLog2DB(String msg);
 }

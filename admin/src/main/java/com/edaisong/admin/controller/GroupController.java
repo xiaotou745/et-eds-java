@@ -48,7 +48,7 @@ public class GroupController {
 	
 	@RequestMapping("selectlist")
 	@ResponseBody
-	public ModelAndView Selectlist(HttpServletRequest request, HttpServletResponse response){
+	public ModelAndView selectlist(HttpServletRequest request, HttpServletResponse response){
 				
 		String groupName=request.getParameter("groupname");
 		String appkey=request.getParameter("appkey");
@@ -76,14 +76,14 @@ public class GroupController {
 	
 		Group record=group;		
 		record.setCreatename("admin");			
-		groupService.Add(record);			
+		groupService.add(record);	
 		return "ok";  
 	}
 	@RequestMapping("updategroup")
 	@ResponseBody
 	public String updategroup(@ModelAttribute("group") Group group){
 
-		groupService.Update(group);			
+		groupService.update(group);			
 		return "ok";  
 	}
 	
@@ -106,7 +106,7 @@ public class GroupController {
 		Group record=new Group();
 		record.setId(id);;	
 		record.setIsvalid(bstatus);;		
-		groupService.Update(record);				
+		groupService.update(record);				
 
 		return "ok";  
 	}	
@@ -117,7 +117,7 @@ public class GroupController {
 		
 		GroupApiConfig record=groupapiconfig;
 		record.setAppsecret("");
-		groupApiConfigService.Add(record);				
+		groupApiConfigService.add(record);				
 
 		return "ok";  
 	}

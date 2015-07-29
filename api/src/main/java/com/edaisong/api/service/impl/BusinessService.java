@@ -16,7 +16,7 @@ public class BusinessService implements IBusinessService {
 	private IBusinessDao iBusinessDao;
 
 	@Override
-	public BusinessResp GetBusinessList(BusinessReq req) {
+	public BusinessResp getBusinessList(BusinessReq req) {
 		BusinessResp resp = new BusinessResp();
 		if (req==null) {
 			resp.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
