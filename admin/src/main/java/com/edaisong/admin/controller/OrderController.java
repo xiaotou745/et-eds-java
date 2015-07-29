@@ -26,11 +26,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 
+
 import com.edaisong.api.service.impl.OrderService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.ITestService;
+import com.edaisong.entity.Account;
+import com.edaisong.entity.common.ResponsePageList;
 import com.edaisong.entity.domain.OpenCityModel;
 import com.edaisong.entity.domain.OrderListModel;
+import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.req.OrderSearchWebReq;
 import com.edaisong.entity.req.TestServiceReq;
 import com.edaisong.entity.resp.TestServiceResp;
@@ -75,10 +79,27 @@ public class OrderController {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "订单管理");
 		model.addObject("currenttitle", "订单管理");
-		List<OrderListModel> orders=orderService.GetOrders(new OrderSearchWebReq()).getResultList();
-		model.addObject("listData",orders);
+//		List<OrderListModel> orders=orderService.GetOrders(new OrderSearchWebReq()).getResultList();
+//		model.addObject("listData",orders);
 		model.addObject("viewPath", "order/list");
 		return model;
 	}
+	
+	/**
+	 * 订单列表页面 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @return
+	 */
+	@RequestMapping("listdo")
+	public ModelAndView order(OrderSearchWebReq searchWebReq){
+		ResponsePageList<OrderListModel> resp = orderService.GetOrders(searchWebReq);
+		ModelAndView view = new ModelAndView();
+		view.addObject("viewPath", "order/listdo");
+		view.addObject("listData", resp);
+		return view;
+	}
+	
+	
 	
 }

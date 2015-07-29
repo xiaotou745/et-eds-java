@@ -1,9 +1,12 @@
-package com.edaisong.core.util;
+package com.edaisong.api.dal.dao.impl;
 
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+
+import com.edaisong.entity.common.RequestBase;
+import com.edaisong.entity.common.ResponsePageList;
 
 public class SqlSessionUtil {
 
@@ -27,6 +30,8 @@ public class SqlSessionUtil {
 			innerSession.close();
 		}
 	}
+	
+	
 
 	public <E> List<E> selectList(String statement) {
 		try {
@@ -38,6 +43,38 @@ public class SqlSessionUtil {
 		}
 	}
 
+	/**
+	 * 分页查询  
+	 * @param statement
+	 * @param parameter
+	 * @author CaoHeYang
+	 * @Date 20150729  
+	 * @return
+	 */
+	public <E> ResponsePageList<E> selectPageList(String statement, Object parameter) {
+		try {
+			RequestBase basemodel=  (RequestBase)parameter;
+			if (basemodel.getCurrentPage()==0) {
+				basemodel.setCurrentPage(1);  //默认第一页
+			}
+			if(basemodel.getPageSize()==0){
+				basemodel.setPageSize(15);  //默认页容量
+			}
+			ResponsePageList<E> result=new ResponsePageList<E>();
+			result.setResultList(innerSession.selectList(statement, parameter));
+			result.setCurrentPage(basemodel.getCurrentPage());
+			result.setPageSize(basemodel.getPageSize());
+			result.setTotalPage(basemodel.getTotalPage());
+			result.setTotalRecord(basemodel.getTotalRecord());
+			return result;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			innerSession.close();
+		}
+	}
+	
+		
 	public <T> T selectOne(String statement, Object parameter) {
 		try {
 			return innerSession.selectOne(statement, parameter);

@@ -13,8 +13,6 @@ import com.edaisong.entity.req.OrderSearchWebReq;
 
 @Repository
 public class OrderDao  extends DaoBase implements IOrderDao {
-
-
 	/**
 	 * 后台订单列表页面 
 	 * @author CaoHeYang
@@ -24,14 +22,12 @@ public class OrderDao  extends DaoBase implements IOrderDao {
 	 */
 	@Override
     public ResponsePageList<OrderListModel> GetOrders(OrderSearchWebReq search){
-		search.setCurrentPage(1);
-		search.setPageSize(15);
 		
 		ResponsePageList<OrderListModel> result=new ResponsePageList<OrderListModel>();
-		result.setResultList(getReadOnlySqlSessionUtil()
-				.selectList(
+		result=getReadOnlySqlSessionUtil()
+				.selectPageList(
 						"com.edaisong.api.dal.dao.inter.IOrderDao.GetOrders",
-						search));
+						search);
 		return result;
     }
 
