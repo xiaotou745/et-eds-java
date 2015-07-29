@@ -19,7 +19,7 @@ public class DeliveryCompanyService implements IDeliveryCompanyService {
 	private  IDeliveryCompanyDao iDeliveryCompDao;
 	
 	@Override
-	public List<DeliveryCompany> GetDeliveryCompanyList(){
-		return iDeliveryCompDao.GetDeliveryCompanyList();
+	public List<DeliveryCompany> getDeliveryCompanyList(){
+		return iDeliveryCompDao.getDeliveryCompanyList();		
 	}
 }

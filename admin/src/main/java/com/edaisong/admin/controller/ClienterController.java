@@ -48,7 +48,7 @@ public class ClienterController {
 	public ModelAndView list(){		
 	
 		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();
-		List<DeliveryCompany> dCListData=deliveryCompanyService.GetDeliveryCompanyList();
+		List<DeliveryCompany> dCListData=deliveryCompanyService.getDeliveryCompanyList();
 		
 		
 		ModelAndView model = new ModelAndView("adminView");

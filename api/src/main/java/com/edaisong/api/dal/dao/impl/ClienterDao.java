@@ -120,7 +120,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		}
 			
 		
-		int PageSize = 10;
+		int PageSize = 15;
 		int CurrentPage = req.getCurrentPage();
 		map.put("Where", Where);
 		map.put("TotalRecord", 0);

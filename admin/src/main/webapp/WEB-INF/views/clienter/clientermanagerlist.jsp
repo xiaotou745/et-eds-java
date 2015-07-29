@@ -102,32 +102,30 @@
 				 -->		
 				<td><%=list.get(i).getRecommendPhone()%> </td>
 				 			
-				
+				<td>
 				<%
 				if (list.get(i).getStatus()== 1)
 				{
 				%>				
-				<td>
 				<a href="javascript:void(0)" style="color:gray"  onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
 				<a href="javascript:void(0)"  onclick="clientCancel('<%=list.get(i).getId() %>')" >审核拒绝</a>
-				<a href="javascript:void(0)" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
-				</td>	
+		
 				<%
 				}
 				else
 				{
-				%>
-				<td>				  
-				  <a href="javascript:void(0)"   onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
-                     <a href="javascript:void(0)" style="color:gray" onclick="clientCancel('<%=list.get(i).getId() %>')" >审核拒绝</a>
-                     <a href="javascript:void(0)" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
-				</td>
+				%>								  
+				<a href="javascript:void(0)"   onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
+                 <a href="javascript:void(0)" style="color:gray" onclick="clientCancel('<%=list.get(i).getId() %>')" >审核拒绝</a>
+
 				<%
 				}
-				%>	
-				<td>
-				
-				</td>
+				%>
+				<a href="javascript:void(0)" data-toggle="modal" data-target="#BusinessWithdraw" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
+				<a href="/SuperManManager/GetRelationByClienterId?ClienterId=@item.Id&Name=@item.TrueName&Phone=@item.PhoneNo">查看绑定商家</a>
+				<a href="/SuperManManager/QueryClienterDetail?clienterId=@item.Id">修改信息</a>
+					
+			</td>
 				
 			</tr>
 		 <%}
@@ -141,6 +139,8 @@
 
 	
 <script type="text/javascript">
+
+   //审核通过
    function clientOk(clientId, idCard, trueName, picUrl, picWithHandUrl) {
         if (!window.confirm("是否审核通过？")) {
             return;
@@ -160,6 +160,7 @@
             }
         });
     }
+   //审核拒绝
    function clientCancel(clientId) {
      
        var paramaters = { "id": clientId };        
