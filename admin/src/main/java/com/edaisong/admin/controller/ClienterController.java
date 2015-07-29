@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IClienterService;
+import com.edaisong.entity.Account;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.Group;
+import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
@@ -50,8 +53,9 @@ public class ClienterController {
 	}	
 	
 	@RequestMapping("clientermanagerlist")
-	public ModelAndView list(ClienterReq req) {
-		ClienterResp resp = clienterService.queryClienter(req);
+	public ModelAndView list(ClienterReq req) {		
+		
+		ResponsePageList<ClienterModel> resp = clienterService.queryClienter(req);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "clienter/clientermanagerlist");
 		view.addObject("listData", resp);

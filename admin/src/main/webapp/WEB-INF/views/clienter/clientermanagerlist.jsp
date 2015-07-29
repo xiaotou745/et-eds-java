@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@page import="java.util.List"%>    
-	<%@page import="com.edaisong.core.common.PageHelper"%>     
+<%@page import="java.util.List"%>    
+<%@page import="com.edaisong.core.common.PageHelper"%>     
 <%@page import="com.edaisong.entity.domain.ClienterModel"%> 
 <%@page import="com.edaisong.entity.resp.ClienterResp"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.edaisong.entity.common.ResponsePageList"%>
+
 <%
 	String basePath = request.getContextPath();
 %>
@@ -15,7 +17,7 @@
     <script type="text/javascript" src="<%=basePath%>/js/admin.js""></script>
         
 	
-		<table id="content">
+		<table class="table table-striped table-bordered table-hover dataTables-example">
 			<thead>
 				<tr class="tdbg">
 						<th width="%5">序号</th>
@@ -38,9 +40,10 @@
 			<tbody>                           
 
 		<%		
-		ClienterResp data = (ClienterResp) request.getAttribute("listData");
-		
-		List<ClienterModel> list = data.getClienterList();
+		//ClienterResp data = (ClienterResp) request.getAttribute("listData");
+		ResponsePageList<ClienterModel> data = (ResponsePageList<ClienterModel>) request
+				.getAttribute("listData");
+		List<ClienterModel> list = data.getResultList();
 		if (list == null) {
 			list = new ArrayList<ClienterModel>();
 		}		
@@ -96,8 +99,11 @@
 				<td>审核中</td>
 				<%
 				}
-				%>	
-				 <td><%=list.get(i).getRecommendName()%>  </td>
+				%>			
+				<!-- 
+				<td><%=list.get(i).getRecommendName()%> /<%=list.get(i).getRecommendPhone()%> </td>
+				 -->		
+				<td><%=list.get(i).getRecommendPhone()%> </td>
 				 			
 				
 				<%
@@ -107,6 +113,7 @@
 				<td>
 				<a href="javascript:void(0)" style="color:gray"  onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
 				<a href="javascript:void(0)"  onclick="clientCancel('<%=list.get(i).getId() %>')" >审核拒绝</a>
+				<a href="javascript:void(0)" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
 				</td>	
 				<%
 				}
@@ -116,12 +123,13 @@
 				<td>				  
 				  <a href="javascript:void(0)"   onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
                      <a href="javascript:void(0)" style="color:gray" onclick="clientCancel('<%=list.get(i).getId() %>')" >审核拒绝</a>
+                     <a href="javascript:void(0)" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
 				</td>
 				<%
 				}
 				%>	
 				<td>
-				<a href="javascript:void(0)" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
+				
 				</td>
 				
 			</tr>

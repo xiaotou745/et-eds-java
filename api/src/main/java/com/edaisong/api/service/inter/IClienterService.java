@@ -1,6 +1,9 @@
 package com.edaisong.api.service.inter;
 
+import com.edaisong.entity.Account;
 import com.edaisong.entity.Clienter;
+import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
@@ -18,5 +21,7 @@ public interface IClienterService {
 	
 	int modifyMoneyById(ClienterOptionReq record);		
 	
-	ClienterResp queryClienter(ClienterReq req);
+	//ClienterResp queryClienter(ClienterReq req);
+	
+	ResponsePageList<ClienterModel> queryClienter(ClienterReq req);
 }
