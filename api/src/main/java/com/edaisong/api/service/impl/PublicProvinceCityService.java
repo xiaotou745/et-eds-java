@@ -114,7 +114,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 				RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
 				String.class);
 		if (jsonData == null || jsonData.isEmpty()) {
-			return ResetOpenCityListRedis();
+			return resetOpenCityListRedis();
 		}
 		AreaModelList areaList = JsonUtil
 				.str2obj(jsonData, AreaModelList.class);

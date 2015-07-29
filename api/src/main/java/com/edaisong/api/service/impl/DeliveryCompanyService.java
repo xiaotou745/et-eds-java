@@ -19,11 +19,10 @@ public class DeliveryCompanyService implements IDeliveryCompanyService {
 	private IDeliveryCompanyDao iDeliveryCompDao;
 
 	/**
-	 * 获取配送公司列表
-	 * 2015年7月29日 13:14:41
+	 * 获取配送公司列表 2015年7月29日 13:14:41
 	 * */
 	@Override
-	public List<DeliveryCompany> GetDeliveryCompanyList() {
-		return iDeliveryCompDao.GetDeliveryCompanyList();
+	public List<DeliveryCompany> getDeliveryCompanyList() {
+		return iDeliveryCompDao.getDeliveryCompanyList();
 	}
 }

@@ -42,8 +42,8 @@ public class AccountController {
 
 		List<AreaModel> listArea = publicProvinceCityService.getOpenCity();
 		List<DeliveryCompany> listDc = deliveryCompanyService
-				.GetDeliveryCompanyList();
-		
+				.getDeliveryCompanyList();
+
 		view.addObject("listArea", listArea);
 		view.addObject("listDc", listDc);
 		view.addObject("viewPath", "account/list");
