@@ -21,12 +21,11 @@ public class OrderDao  extends DaoBase implements IOrderDao {
 	 * @return
 	 */
 	@Override
-    public List<OrderListModel> GetOrders(OrderSearchWebReq search){
+    public List<OrderListModel> getOrders(OrderSearchWebReq search){
 		List<OrderListModel> list = getReadOnlySqlSessionUtil()
 				.selectList(
 						"com.edaisong.api.dal.dao.inter.IOrderDao.GetOrders",
 						search);
 		return list;
     }
-
 }

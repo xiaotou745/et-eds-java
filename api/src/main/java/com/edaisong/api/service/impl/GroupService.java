@@ -41,13 +41,13 @@ public class GroupService implements IGroupService {
 	}
 
 	@Override
-	public int Add(Group record) {
+	public int add(Group record) {
 		// TODO Auto-generated method stub
 		return dao.insert(record);
 	}
 	
 	@Override
-	public int  Update(Group record) 
+	public int  update(Group record) 
 	{
 		return dao.updateByPrimaryKeySelective(record);
 	}

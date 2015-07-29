@@ -9,7 +9,7 @@ import com.edaisong.entity.domain.ActionLog;
 public class ActionLogDao extends DaoBase implements IActionLogDao {
 
 	@Override
-	public void WriteActionLog(ActionLog logEngity) {
+	public void writeActionLog(ActionLog logEngity) {
 		getMasterSqlSessionUtil().insert(
 				"com.edaisong.api.dal.dao.inter.IActionLogDao.WriteActionLog",
 				logEngity);
@@ -17,7 +17,7 @@ public class ActionLogDao extends DaoBase implements IActionLogDao {
 	}
 
 	@Override
-	public void WriteLog2DB(String msg) {
+	public void writeLog2DB(String msg) {
 		getMasterSqlSessionUtil().insert(
 				"com.edaisong.api.dal.dao.inter.IActionLogDao.WriteActionLog",
 				msg);

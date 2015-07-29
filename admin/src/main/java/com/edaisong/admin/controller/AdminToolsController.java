@@ -32,7 +32,7 @@ public class AdminToolsController {
 	@Autowired
 	private IAdminToolsService adminToolsService;
 	@RequestMapping("list")
-	public ModelAndView GlobalConfigManager(HttpServletRequest request, HttpServletResponse res)
+	public ModelAndView globalConfigManager(HttpServletRequest request, HttpServletResponse res)
 	{
 		List<GlobalConfigModel> data= adminToolsService.getGlobalConfigByGroupId(0);
 		ModelAndView model = new ModelAndView("adminView");
@@ -45,14 +45,14 @@ public class AdminToolsController {
 	/*保存修改全局变量值*/
 	@RequestMapping("saveconfig")
 	@ResponseBody
-	public Boolean SaveConfig(ConfigSaveReq par)
+	public Boolean saveConfig(ConfigSaveReq par)
 	{
 		Boolean b= adminToolsService.saveConfig(par);
 		return b;
 	}
 	/*添加全局变量值*/
 	@RequestMapping("addconfig")
-	public Boolean AddConfig(GlobalConfig par)
+	public Boolean addConfig(GlobalConfig par)
 	{
 		Boolean b= adminToolsService.addConfig(par);
 		return b;

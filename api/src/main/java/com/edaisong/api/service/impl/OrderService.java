@@ -15,6 +15,7 @@ public class OrderService implements IOrderService {
 
 	@Autowired 
 	private IOrderDao orderDao;
+
 	/**
 	 * 后台订单列表页面 
 	 * @author CaoHeYang
@@ -23,8 +24,8 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	public List<OrderListModel> GetOrders(OrderSearchWebReq search) {
-		return orderDao.GetOrders(search);
+	public List<OrderListModel> getOrders(OrderSearchWebReq search) {
+		return orderDao.getOrders(search);
 	}
 
 }

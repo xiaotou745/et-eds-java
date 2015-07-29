@@ -75,7 +75,7 @@ public class OrderController {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "订单管理");
 		model.addObject("currenttitle", "订单管理");
-		List<OrderListModel> orders=orderService.GetOrders(new OrderSearchWebReq());
+		List<OrderListModel> orders=orderService.getOrders(new OrderSearchWebReq());
 		model.addObject("listData",orders);
 		model.addObject("viewPath", "order/list");
 		return model;

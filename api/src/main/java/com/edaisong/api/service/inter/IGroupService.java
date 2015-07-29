@@ -10,8 +10,8 @@ public interface IGroupService {
 	
 	public GroupResp  getGroupList(GroupReq req); 
 	
-	public int  Add(Group record) ;
+	public int  add(Group record) ;
 	
-	public int  Update(Group record) ;
+	public int  update(Group record) ;
 	
 }

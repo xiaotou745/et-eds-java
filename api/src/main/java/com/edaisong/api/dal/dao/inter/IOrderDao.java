@@ -14,6 +14,6 @@ public interface IOrderDao {
 	 * @param search 查询条件实体
 	 * @return
 	 */
-    List<OrderListModel> GetOrders(OrderSearchWebReq search);
+    List<OrderListModel> getOrders(OrderSearchWebReq search);
 	
 }

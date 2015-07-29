@@ -48,7 +48,7 @@ public class BusinessController {
 			req.setGroupId(0);
 			req.setMealsSettleMode(-1);
 			req.setCityAuthType(1);
-			BusinessResp resp =iBusinessService.GetBusinessList(req);	
+			BusinessResp resp =iBusinessService.getBusinessList(req);	
 			
 			GroupReq groupReq=new GroupReq();
 			groupReq.setIsValid(1);
@@ -73,7 +73,7 @@ public class BusinessController {
 	 @RequestMapping("selectlist")
 		public ModelAndView list(HttpServletRequest request, HttpServletResponse res) {
 			BusinessReq req=new BusinessReq();	
-			BusinessResp resp =iBusinessService.GetBusinessList(req);		
+			BusinessResp resp =iBusinessService.getBusinessList(req);		
 			
 			ModelAndView model = new ModelAndView("business/list");
 			model.addObject("listData", resp.getResultList());

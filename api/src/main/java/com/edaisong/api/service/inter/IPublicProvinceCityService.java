@@ -36,12 +36,12 @@ public interface IPublicProvinceCityService {
 	  * @param closeCityCodeList 关闭城市
 	  * @Date 20150721
 	  */
-	 ModifyOpenCityResp ModifyOpenCityByCode(String openCityCodeList, String closeCityCodeList);
+	 ModifyOpenCityResp modifyOpenCityByCode(String openCityCodeList, String closeCityCodeList);
 	 
 	 /**
 	  * 修改开发城市后更新Redis缓存
 	  * @author CaoHeYang
 	  * @Date 20150727
 	  */
-	 List<AreaModel> ResetOpenCityListRedis();
+	 List<AreaModel> resetOpenCityListRedis();
 }

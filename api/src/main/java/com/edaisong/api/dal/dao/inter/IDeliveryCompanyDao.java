@@ -17,5 +17,5 @@ public interface IDeliveryCompanyDao {
 
     int updateByPrimaryKey(DeliveryCompany record);
     
-    List<DeliveryCompany> GetDeliveryCompanyList();
+    List<DeliveryCompany> getDeliveryCompanyList();
 }

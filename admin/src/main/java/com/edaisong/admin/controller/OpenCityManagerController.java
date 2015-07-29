@@ -59,12 +59,12 @@ public class OpenCityManagerController {
 	 */
 	@RequestMapping("modifyopencity")
 	@ResponseBody
-	 public ModifyOpenCityResp ModifyOpenCity(HttpServletRequest request,HttpServletResponse response)
+	 public ModifyOpenCityResp modifyOpenCity(HttpServletRequest request,HttpServletResponse response)
      {
 		String openCityCodeList=request.getParameter("openCityCodeList"); //开放城市
 		String closeCityCodeList=request.getParameter("closeCityCodeList"); //关闭城市
 
-		ModifyOpenCityResp resp= publicProvinceCityService.ModifyOpenCityByCode(openCityCodeList,closeCityCodeList);
+		ModifyOpenCityResp resp= publicProvinceCityService.modifyOpenCityByCode(openCityCodeList,closeCityCodeList);
         return resp;
      }
 }
