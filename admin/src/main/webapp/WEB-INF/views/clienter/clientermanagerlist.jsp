@@ -6,6 +6,7 @@
 <%@page import="com.edaisong.entity.resp.ClienterResp"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.common.ResponsePageList"%>
+<%@page import="com.edaisong.core.common.ParseHelper"%> 
 
 <%
 	String basePath = request.getContextPath();
@@ -68,8 +69,8 @@
 				%>		
 				<td><%=list.get(i).getPhoneNo() %></td>
 				<td><%=list.get(i).getIdCard() %></td>
-				<td><a href="javascript:void(0)" class="businessOk" onclick="">查看</a></td>			
-				<td><%=list.get(i).getInsertTime() %></td>				
+				<td><a href="javascript:void(0)" class="businessOk" onclick="">查看</a></td>		
+				<td><%=ParseHelper.ToDateString(list.get(i).getInsertTime(), "")%>		</td>		
 				<td style="color:red;font-weight:600"><a href="/SuperManManager/ClienterDetail?clienterId=@item.Id ">￥  <%=list.get(i).getAccountBalance() %></a></td>
 				<td><%=list.get(i).getAllowWithdrawPrice() %></td>
 				<td><%=list.get(i).getGroupName()%>  </td>

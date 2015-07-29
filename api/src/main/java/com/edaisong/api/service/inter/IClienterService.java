@@ -14,14 +14,10 @@ import com.edaisong.entity.resp.ClienterResp;
 
 
 public interface IClienterService {
-	
-	ClienterResp  getClienterList(ClienterReq record); 		
 		
 	int modifyStatusById(Clienter record) ;
 	
-	int modifyMoneyById(ClienterOptionReq record);		
-	
-	//ClienterResp queryClienter(ClienterReq req);
+	int modifyMoneyById(ClienterOptionReq record);	
 	
 	ResponsePageList<ClienterModel> queryClienter(ClienterReq req);
 }

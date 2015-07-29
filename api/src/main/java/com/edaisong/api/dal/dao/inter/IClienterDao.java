@@ -20,9 +20,8 @@ public interface IClienterDao {
 
     int updateByPrimaryKeySelective(Clienter record);
 
-    int updateByPrimaryKey(Clienter record);
+    int updateByPrimaryKey(Clienter record);    
     
-    List<ClienterModel> getClienterList(ClienterReq req);
     
     int updateMoneyById(ClienterOptionReq req) ;    
     
