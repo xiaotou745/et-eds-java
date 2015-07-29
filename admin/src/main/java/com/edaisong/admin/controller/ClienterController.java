@@ -17,10 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IClienterService;
+import com.edaisong.api.service.inter.IDeliveryCompanyService;
+import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.Clienter;
+import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.req.ClienterOptionReq;
@@ -34,34 +38,36 @@ public class ClienterController {
 	 @Autowired
 	 private IClienterService  clienterService;
 	 
+	 @Autowired
+	 private IPublicProvinceCityService  publicProvinceCityService;
+	 
+	 @Autowired
+	 private IDeliveryCompanyService  deliveryCompanyService;
+	 
 	@RequestMapping("list")
-	public ModelAndView list(){
+	public ModelAndView list(){		
+	
+		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();
+		List<DeliveryCompany> dCListData=deliveryCompanyService.getDeliveryCompanyList();
 		
-//		ClienterReq req=new ClienterReq();	
-//		ClienterResp resp =clienterService.getClienterList(req);		
-//		
-//		ModelAndView model = new ModelAndView("adminView");
-//		model.addObject("subtitle", "管理员");
-//		model.addObject("currenttitle", "骑士管理");
-//		model.addObject("listData", resp.getClienterList());
-//		model.addObject("viewPath", "clienter/clientermanager");
-//		return model;		
 		
-		ModelAndView view = new ModelAndView("adminView");
-		view.addObject("subtitle", "管理员");
-		view.addObject("currenttitle", "骑士管理");
-		view.addObject("viewPath", "clienter/clientermanager");
-		return view;
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "管理员");
+		model.addObject("currenttitle", "骑士管理");
+		model.addObject("areaListData", areaListData);
+		model.addObject("dCListData", dCListData);
+		model.addObject("viewPath", "clienter/clientermanager");
+		return model;
 	}	
 	
 	@RequestMapping("clientermanagerlist")
 	public ModelAndView list(ClienterReq req) {		
 		
 		ResponsePageList<ClienterModel> resp = clienterService.queryClienter(req);
-		ModelAndView view = new ModelAndView();
-		view.addObject("viewPath", "clienter/clientermanagerlist");
-		view.addObject("listData", resp);
-		return view;
+		ModelAndView model = new ModelAndView();
+		model.addObject("viewPath", "clienter/clientermanagerlist");
+		model.addObject("listData", resp);
+		return model;
 	}
 	
 	

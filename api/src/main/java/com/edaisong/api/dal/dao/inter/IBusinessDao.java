@@ -1,23 +1,10 @@
 package com.edaisong.api.dal.dao.inter;
 
-import java.util.List;
 
-import com.edaisong.entity.Business;
+import com.edaisong.entity.common.ResponsePageList;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.req.BusinessReq;
 
 public interface IBusinessDao {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(Business record);
-
-    int insertSelective(Business record);
-
-    Business selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Business record);
-
-    int updateByPrimaryKey(Business record);
-    
-	List<BusinessModel> getBusinessList(BusinessReq req);
+    ResponsePageList<BusinessModel> getBusinessList(BusinessReq req);
 }
