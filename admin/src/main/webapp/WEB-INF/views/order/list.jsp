@@ -127,9 +127,9 @@
 <script>
 	var jss = {
 		search : function(currentPage) {
-		//var data=$("#searchForm").serialize();
+		 var data=$("#searchForm").serialize();
 // 			data.CurrentPage=currentPage;
-			$.post("<%=basePath%>/order/listdo",{}, function(d) {
+			$.post("<%=basePath%>/order/listdo",data, function(d) {
 				$("#content").html(d);
 			});
 		}
