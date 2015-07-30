@@ -58,8 +58,7 @@ public class ClienterController {
 	public ModelAndView list(){		
 	
 		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();
-		List<DeliveryCompany> dCListData=deliveryCompanyService.getDeliveryCompanyList();
-		
+		List<DeliveryCompany> dCListData=deliveryCompanyService.getDeliveryCompanyList();	
 		
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
@@ -78,11 +77,11 @@ public class ClienterController {
 	 * @return
 	 */	
 	@RequestMapping("listdo")
-	public ModelAndView list(ClienterReq req) {		
+	public ModelAndView listdo(ClienterReq req) {		
 		
 		PagedResponse<ClienterModel> resp = clienterService.query(req);
-		ModelAndView model = new ModelAndView();
-		model.addObject("viewPath", "clienter/listdo");
+		ModelAndView model = new ModelAndView();//默认listdo.jsp
+		//ModelAndView model = new ModelAndView("clienter/listdo");
 		model.addObject("listData", resp);
 		return model;
 	}	
@@ -97,12 +96,12 @@ public class ClienterController {
 	@RequestMapping("clienterbalancerecordlist")
 	public ModelAndView clienterbalancerecordlist(HttpServletRequest request){			
 
-		int clienterid=Integer.parseInt(request.getParameter("clienterId"));
+		int clienterId=Integer.parseInt(request.getParameter("clienterId"));
 		
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "骑士管理/收支记录");
-		model.addObject("clienterid", clienterid);		
+		model.addObject("clienterId", clienterId);		
 		model.addObject("viewPath", "clienterbalancerecord/list");
 		return model;
 	}	
@@ -115,11 +114,10 @@ public class ClienterController {
 	 * @return
 	 */	
 	@RequestMapping("clienterbalancerecordlistdo")
-	public ModelAndView clienterbalancerecordlistdo(ClienterBalanceRecordReq req) {		
+	public ModelAndView clienterbalancerecordlist(ClienterBalanceRecordReq req) {		
 		
 		PagedResponse<ClienterBalanceRecord> resp = clienterBalanceRecordService.query(req);
-		ModelAndView model = new ModelAndView();
-		model.addObject("viewPath", "clienterbalancerecord/listdo");
+		ModelAndView model = new ModelAndView("clienterbalancerecord/listdo");		
 		model.addObject("listData", resp);
 		return model;
 	}	
