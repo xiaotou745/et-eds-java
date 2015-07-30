@@ -24,6 +24,30 @@
     from ClienterBalanceRecord
     where Id = #{id,jdbcType=BIGINT}
   </select>
+   <select id="getRecordListByCId" resultMap="BaseResultMap" parameterType="java.util.Map" >   
+    select 
+    <include refid="Base_Column_List" />
+    from ClienterBalanceRecord
+    where ClienterId =#{clienterid,jdbcType=INTEGER}
+  </select>
+  
+  <select id="query" resultType="com.edaisong.entity.ClienterBalanceRecord" parameterType="java.util.Map" statementType="CALLABLE">
+<![CDATA[  
+{call Sp_CustomPage2015_V1(
+' id desc ',
+' id,clienterid,amount,status,balance,recordtype,
+ operator,operatetime, withwardid, relationno, remark ',
+' dbo.ClienterBalanceRecord ',
+#{Where,mode=IN,jdbcType=VARCHAR},
+#{PageSize,mode=IN,jdbcType=INTEGER},
+#{CurrentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
+#{TotalPage,mode=OUT,jdbcType=VARCHAR}
+)}
+	]]>  
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from ClienterBalanceRecord
     where Id = #{id,jdbcType=BIGINT}

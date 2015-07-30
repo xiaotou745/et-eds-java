@@ -3,7 +3,6 @@
 <%@page import="java.util.List"%>    
 <%@page import="com.edaisong.core.common.PageHelper"%>     
 <%@page import="com.edaisong.entity.domain.ClienterModel"%> 
-<%@page import="com.edaisong.entity.resp.ClienterResp"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%> 
@@ -67,7 +66,7 @@
 				<td><%=list.get(i).getIdCard() %></td>
 				<td><a href="javascript:void(0)" class="businessOk" onclick="">查看</a></td>		
 				<td><%=ParseHelper.ToDateString(list.get(i).getInsertTime(), "")%>		</td>		
-				<td style="color:red;font-weight:600"><a href="/SuperManManager/ClienterDetail?clienterId=@item.Id ">￥  <%=list.get(i).getAccountBalance() %></a></td>
+				<td style="color:red;font-weight:600"><a href="<%=basePath%>/clienter/clienterbalancerecordlist?clienterId=<%=list.get(i).getId() %> ">￥  <%=list.get(i).getAccountBalance() %></a></td>
 				<td><%=list.get(i).getAllowWithdrawPrice() %></td>
 				<td><%=list.get(i).getGroupName()%>  </td>
 				<td><%=list.get(i).getDeliveryCompanyName()%>  </td>			
@@ -102,32 +101,30 @@
 				 -->		
 				<td><%=list.get(i).getRecommendPhone()%> </td>
 				 			
-				
+				<td>
 				<%
 				if (list.get(i).getStatus()== 1)
 				{
 				%>				
-				<td>
 				<a href="javascript:void(0)" style="color:gray"  onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
 				<a href="javascript:void(0)"  onclick="clientCancel('<%=list.get(i).getId() %>')" >审核拒绝</a>
-				<a href="javascript:void(0)" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
-				</td>	
+		
 				<%
 				}
 				else
 				{
-				%>
-				<td>				  
-				  <a href="javascript:void(0)"   onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
-                     <a href="javascript:void(0)" style="color:gray" onclick="clientCancel('<%=list.get(i).getId() %>')" >审核拒绝</a>
-                     <a href="javascript:void(0)" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
-				</td>
+				%>								  
+				<a href="javascript:void(0)"   onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
+                 <a href="javascript:void(0)" style="color:gray" onclick="clientCancel('<%=list.get(i).getId() %>')" >审核拒绝</a>
+
 				<%
 				}
-				%>	
-				<td>
-				
-				</td>
+				%>
+				<a href="javascript:void(0)" data-toggle="modal" data-target="#BusinessWithdraw" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
+				<a href="/SuperManManager/GetRelationByClienterId?ClienterId=@item.Id&Name=@item.TrueName&Phone=@item.PhoneNo">查看绑定商家</a>
+				<a href="/SuperManManager/QueryClienterDetail?clienterId=@item.Id">修改信息</a>
+					
+			</td>
 				
 			</tr>
 		 <%}
@@ -141,6 +138,8 @@
 
 	
 <script type="text/javascript">
+
+   //审核通过
    function clientOk(clientId, idCard, trueName, picUrl, picWithHandUrl) {
         if (!window.confirm("是否审核通过？")) {
             return;
@@ -160,6 +159,7 @@
             }
         });
     }
+   //审核拒绝
    function clientCancel(clientId) {
      
        var paramaters = { "id": clientId };        
