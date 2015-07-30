@@ -95,7 +95,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">原订单号:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control">
+								<input type="text" class="form-control" name="originalOrderNo" />
 							</div>
 						</div>
 					</div>
@@ -103,10 +103,11 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">订单号:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control">
+								<input type="text" class="form-control" name="orderId" />
 							</div>
 						</div>
 					</div>
+					<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
 					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 							style="margin-left: 3px;">查询</button>
@@ -127,6 +128,7 @@
 <script>
 	var jss = {
 		search : function(currentPage) {
+		$("#_hiddenCurrentPage").val(currentPage);
 		 var data=$("#searchForm").serialize();
 // 			data.CurrentPage=currentPage;
 			$.post("<%=basePath%>/order/listdo",data, function(d) {
