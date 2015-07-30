@@ -67,9 +67,9 @@
         <level value="INFO"/>
         <appender-ref ref="webAppender"/>
     </category>
-    <root>
-        <level value="ALL"/>
-        <appender-ref ref="stdout"/>
-    </root>
+<!--     <root> -->
+<!--         <level value="ALL"/> -->
+<!--         <appender-ref ref="stdout"/> -->
+<!--     </root> -->
 
 </log4j:configuration>
