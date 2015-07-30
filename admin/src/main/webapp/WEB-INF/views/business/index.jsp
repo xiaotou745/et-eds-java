@@ -6,20 +6,20 @@
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%
 	String basePath = request.getContextPath();
+List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
+List<BusinessGroup> businessGroupListData=	(List<BusinessGroup>)request.getAttribute("businessGroupListData");
+List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
+int groupId=(int)request.getAttribute("groupId");
 %>
 
 <div class="SearchMd">
-	<%
-		List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
-		List<BusinessGroup> businessGroupListData=	(List<BusinessGroup>)request.getAttribute("businessGroupListData");
-		List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
-		int groupId=(int)request.getAttribute("groupId");
-	%>
+	<form method="POST" action="#" class="form-horizontal" id="searchForm">
+	<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
 	<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td><span class="">商户名称: </span> <input id="txtBusinessName"
-				name="BusinessName" type="tel" /> <span class="">审核状态: </span> <select
-				name="status" class="selectw" id="businessStatus"
+			<td><span class="">商户名称: </span> <input id="businessName"
+				name="businessName" type="tel" /> <span class="">审核状态: </span> <select
+				name="status" class="selectw" id="status"
 				style="width: 143px">
 					<option value="-1" selected="selected">全部</option>
 					<option value="1">审核通过</option>
@@ -27,9 +27,9 @@
 					<option value="2">未审核且未添加地址</option>
 					<option value="3">审核中</option>
 					<option value="4">审核被拒绝</option>
-			</select> <span class="">商户电话: </span> <input id="txtBusinessPhone"
-				type="text" name="BusinessPhone" /> <span class="">结算比例: </span> <input
-				id="txtBusinessCommission" type="text" name="BusinessCommission" />
+			</select> <span class="">商户电话: </span> <input id="businessPhone"
+				type="text" name="businessPhone" /> <span class="">结算比例: </span> <input
+				id="businessSettlementRatio" type="text" name="businessSettlementRatio" />
 
 			</td>
 		</tr>
@@ -44,11 +44,11 @@
 					<%
 						}
 					%>
-			</select> <input id="txtGroupId" type="hidden" value="<%=groupId%>"
-				name="GroupId" /> <span class="">商家分组:</span> <select
-				name="BusinessGroupId" id="BusinessGroupId" class="selectw"
+			</select> <input id="groupId" type="hidden" value="<%=groupId%>"
+				name="groupId" /> <span class="">商家分组:</span> <select
+				name="businessGroupId" id="businessGroupId" class="selectw"
 				style="width: 143px">
-					<option value="" selected="selected">全部</option>
+					<option value="0" selected="selected">全部</option>
 					<%
 						for (int i = 0; i < businessGroupListData.size(); i++) {
 					%>
@@ -57,20 +57,20 @@
 						}
 					%>
 			</select> <span class="">结算类型: </span> <select name="commissionType"
-				class="selectw" id="CommissionMold" style="width: 143px">
+				class="selectw" id="commissionType" style="width: 143px">
 					<option value="-1" selected="selected">全部</option>
 					<option value="1">固定比例</option>
 					<option value="2">固定金额</option>
-			</select> <span class="">餐费结算方式: </span> <select name="MealsSettleMode"
-				class="selectw" id="MealsSettleMode" style="width: 143px">
+			</select> <span class="">餐费结算方式: </span> <select name="mealsSettleMode"
+				class="selectw" id="mealsSettleMode" style="width: 143px">
 					<option value="-1" selected="selected">-请选择-</option>
 					<option value="0">线下结算</option>
 					<option value="1">线上结算</option>
 			</select></td>
 		</tr>
 		<tr>
-			<td><span class="">推荐人电话: </span> <input id="txtRecommendPhone"
-				type="text" name="RecommendPhone" /> <input type="submit"
+			<td><span class="">推荐人电话: </span> <input id="recommendPhone"
+				type="text" name="recommendPhone" /> <input type="button"
 				value="查询" class="searchBtn" id="btnSearch" /> @if
 				(SuperMan.App_Start.UserContext.Current.HasAuthority(40)) { <input
 				type="submit" value="添加商户" data-toggle="modal"
@@ -78,6 +78,7 @@
 				}</td>
 		</tr>
 	</table>
+</form>
 </div>
 
 <div class="row">
@@ -429,7 +430,9 @@
 <script>
 var jss={
 		search:function(currentPage){
-			$.post("<%=basePath%>/business/selectlist",{CurrentPage:currentPage,m:Math.random()},function(d){
+			$("#_hiddenCurrentPage").val(currentPage);
+			 var data=$("#searchForm").serialize();
+			$.post("<%=basePath%>/business/selectlist",data,function(d){
 				$("#content").html(d);
 			});
 		}

@@ -335,34 +335,34 @@
 
 <!--      <trim prefix="WHERE" prefixOverrides="AND|OR"> -->
        1=1  
-			<if test="recommendPhone != null">
+			<if test="recommendPhone != null and recommendPhone!=''">
 				and b.recommendPhone=''${recommendPhone}''
 			</if>
-			<if test="businessName != null">
+			<if test="businessName != null and businessName!=''">
 				and b.name=''${businessName}''
 			</if>
-			<if test="businessPhone != null">
+			<if test="businessPhone != null and businessPhone!=''">
 				and b.PhoneNo=''${businessPhone}''
 			</if>
-			<if test="status != null and status!=-1">
+			<if test="status!=null and status!=-1">
 				and b.status=${status}
 			</if>
-			<if test="mealsSettleMode != null and mealsSettleMode!=-1">
+			<if test="mealsSettleMode!=null and mealsSettleMode!=-1">
 				and ISNULL(b.mealsSettleMode,0)=${mealsSettleMode}
 			</if>
-			<if test="businessSettlementRatio != null and businessSettlementRatio>0">
-				and b.businessCommission=#{businessCommission}
+			<if test="businessSettlementRatio!=null and businessSettlementRatio>0">
+				and b.businessCommission=#{businessSettlementRatio}
 			</if>
-			<if test="groupId != null and groupId!=0">
-				and b.groupId=#{groupId}
+			<if test="groupId!=null and groupId!=0">
+				and b.groupId=${groupId}
 			</if>
-			<if test="businessGroupId != null and businessGroupId>0">
-				and b.businessGroupId=#{businessGroupId}
+			<if test="businessGroupId!=null and businessGroupId>0">
+				and b.businessGroupId=${businessGroupId}
 			</if>
-			<if test="commissionType != null and commissionType>0">
-				and b.commissionType>=#{commissionType}
+			<if test="commissionType!=null and commissionType>0">
+				and b.commissionType=${commissionType}
 			</if>
-			<if test="businessCity != null">
+			<if test="businessCity != null and businessCity!=''">
 				and b.city=''${businessCity}''
 			</if>
 			<if test="authorityCityNameList != null">
