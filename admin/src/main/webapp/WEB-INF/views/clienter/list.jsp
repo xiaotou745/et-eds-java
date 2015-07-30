@@ -7,12 +7,11 @@
 
 <%
 	String basePath = request.getContextPath();
+	
+	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
+	List<DeliveryCompany> dCListData=	(List<DeliveryCompany>)request.getAttribute("dCListData");
 %>
 
-<%
-	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
-    List<DeliveryCompany> dCListData=	(List<DeliveryCompany>)request.getAttribute("dCListData");
-%>
 
    <table border="0" cellspacing="0" cellpadding="0">
             <tr>

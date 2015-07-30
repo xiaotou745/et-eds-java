@@ -10,7 +10,7 @@ import com.edaisong.api.dal.dao.inter.IClienterBalanceRecordDao;
 import com.edaisong.core.common.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.ClienterBalanceRecord;
-import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.ClienterBalanceRecordReq;
@@ -56,7 +56,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	}
 	
 	@Override
-	public ResponsePageList<ClienterBalanceRecord> query(ClienterBalanceRecordReq req) {
+	public PagedResponse<ClienterBalanceRecord> query(ClienterBalanceRecordReq req) {
 
 		Map<String, Object> map = new HashMap<String, Object>();		
 		String Where = " 1=1 ";				
@@ -76,7 +76,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 				.selectList("com.edaisong.api.dal.dao.inter.IClienterBalanceRecordDao.query",
 						map);
 		
-		ResponsePageList<ClienterBalanceRecord> resp = new ResponsePageList<ClienterBalanceRecord>();		
+		PagedResponse<ClienterBalanceRecord> resp = new PagedResponse<ClienterBalanceRecord>();		
 		resp.setResultList(list);
 		resp.setPageSize(PageSize);
 		resp.setCurrentPage(CurrentPage);

@@ -80,7 +80,7 @@ public class ClienterController {
 	@RequestMapping("listdo")
 	public ModelAndView list(ClienterReq req) {		
 		
-		ResponsePageList<ClienterModel> resp = clienterService.query(req);
+		PagedResponse<ClienterModel> resp = clienterService.query(req);
 		ModelAndView model = new ModelAndView();
 		model.addObject("viewPath", "clienter/listdo");
 		model.addObject("listData", resp);
@@ -117,7 +117,7 @@ public class ClienterController {
 	@RequestMapping("clienterbalancerecordlistdo")
 	public ModelAndView clienterbalancerecordlistdo(ClienterBalanceRecordReq req) {		
 		
-		ResponsePageList<ClienterBalanceRecord> resp = clienterBalanceRecordService.query(req);
+		PagedResponse<ClienterBalanceRecord> resp = clienterBalanceRecordService.query(req);
 		ModelAndView model = new ModelAndView();
 		model.addObject("viewPath", "clienterbalancerecord/listdo");
 		model.addObject("listData", resp);

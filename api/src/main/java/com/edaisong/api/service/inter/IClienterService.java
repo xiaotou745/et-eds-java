@@ -18,5 +18,5 @@ public interface IClienterService {
 	
 	int modifyMoneyById(ClienterOptionReq record);	
 	
-	ResponsePageList<ClienterModel> query(ClienterReq req);
+	PagedResponse<ClienterModel> query(ClienterReq req);
 }

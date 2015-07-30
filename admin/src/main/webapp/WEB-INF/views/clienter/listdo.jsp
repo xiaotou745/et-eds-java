@@ -3,7 +3,6 @@
 <%@page import="java.util.List"%>    
 <%@page import="com.edaisong.core.common.PageHelper"%>     
 <%@page import="com.edaisong.entity.domain.ClienterModel"%> 
-<%@page import="com.edaisong.entity.resp.ClienterResp"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%> 
