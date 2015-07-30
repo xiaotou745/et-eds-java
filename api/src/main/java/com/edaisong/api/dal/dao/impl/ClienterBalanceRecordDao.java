@@ -62,7 +62,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 		String Where = " 1=1 ";				
 
 		if (req.getClienterId()>0) {
-			Where += " and clienterid=like '" + req.getClienterId() + "'";
+			Where += " and clienterid='" + req.getClienterId() + "'";
 		}
 		
 		int PageSize = 15;

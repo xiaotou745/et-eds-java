@@ -17,9 +17,7 @@ public class PagedBusinessReq extends PagedRequestBase {
 	private int businessGroupId;
 	private int commissionType;
 	private String businessCity;
-	private List<String> authorityCityNameList;
 	
-	private int cityAuthType;
 	private int searchType;
 	private String provinceCode;
 	private String cityCode;
@@ -59,24 +57,6 @@ public class PagedBusinessReq extends PagedRequestBase {
 	 */
 	public void setMealsSettleMode(int mealsSettleMode) {
 		this.mealsSettleMode = mealsSettleMode;
-	}
-
-	/**
-	 * 城市权限类型（1：全部城市权限 2：部分城市权限）
-	 * 
-	 * @return the userType
-	 */
-	public int getCityAuthType() {
-		return cityAuthType;
-	}
-
-	/**
-	 * 城市权限类型（1：全部城市权限 2：部分城市权限）
-	 * 
-	 * @param userType
-	 */
-	public void setCityAuthType(int cityAuthType) {
-		this.cityAuthType = cityAuthType;
 	}
 
 	public String getBusinessName() {
@@ -220,21 +200,5 @@ public class PagedBusinessReq extends PagedRequestBase {
 	 */
 	public void setRecommendPhone(String recommendPhone) {
 		this.recommendPhone = recommendPhone;
-	}
-
-	/**
-	 * 用户所有权限城市名称集合
-	 * @return the authorityCityNameList
-	 */
-	public List<String> getAuthorityCityNameList() {
-		return authorityCityNameList;
-	}
-
-	/**
-	 * 用户所有权限城市名称集合
-	 * @param authorityCityNameList the authorityCityNameList to set
-	 */
-	public void setAuthorityCityNameList(List<String> authorityCityNameList) {
-		this.authorityCityNameList = authorityCityNameList;
 	}
 }

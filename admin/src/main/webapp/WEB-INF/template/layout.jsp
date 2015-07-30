@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="<%=basePath%>/css/animate.css" />
 <link rel="stylesheet" href="<%=basePath%>/css/style.css" />
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
-<%--  <link href="<%=basePath%>/css/admin.css" rel="stylesheet" />  --%>
+ <link href="<%=basePath%>/css/admin.css" rel="stylesheet" />  
 
     <!-- Mainly scripts -->
 	<script src="<%=basePath%>/js/jquery-2.1.1.js"></script>
@@ -73,10 +73,10 @@
 	<script src="<%=basePath%>/js/layer.js"></script>
 
 <!-- 分页相关js -->
-    <script type="text/javascript" src="<%=basePath%>/js/admin.js"></script>
-<script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script> 
-<script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<%--     <script type="text/javascript" src="<%=basePath%>/js/admin.js"></script> --%>
+<%-- <script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>  --%>
+<%-- <script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script> --%>
+<%-- <script src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script> --%>
 <%-- <script src="<%=basePath%>/js/hplus.js"></script> --%>
 
 <tiles:insertAttribute name="header_js" ignore="true"></tiles:insertAttribute>

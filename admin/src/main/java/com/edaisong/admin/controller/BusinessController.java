@@ -30,49 +30,49 @@ import com.edaisong.entity.req.GroupReq;
 @Controller
 @RequestMapping("business")
 public class BusinessController {
-	 @Autowired
-	 private IBusinessService  iBusinessService;
-	 
-	 @Autowired
-	 private IPublicProvinceCityService  iPublicProvinceCityService;
-	 
-	 @Autowired
-	 private IBusinessGroupService  iBusinessGroupService;
-	 
-	 @Autowired
-	 private IGroupService  iGroupService;
-	 
-	 @RequestMapping("list")
-		public ModelAndView index(HttpServletRequest request, HttpServletResponse res) {
+	@Autowired
+	private IBusinessService iBusinessService;
 
-			GroupReq groupReq=new GroupReq();
-			groupReq.setIsValid(1);
-			List<GroupModel> resultList=iGroupService.getGroupList(groupReq);
-			
-			List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityListFromRedis();
-			List<BusinessGroup> businessGroupListData=iBusinessGroupService.getBusinessGroupList();
-			
-			ModelAndView model = new ModelAndView("adminView");
-			model.addObject("subtitle", "商户");
-			model.addObject("currenttitle", "商户管理");
-			model.addObject("groupId", 0);
-			model.addObject("groupListData", resultList);
-			model.addObject("areaListData", areaListData);
-			model.addObject("businessGroupListData", businessGroupListData);
-			model.addObject("viewPath", "business/index");
-			return model;
-	 }
-	 @RequestMapping("selectlist")
-		public ModelAndView list(HttpServletRequest request, HttpServletResponse res) {
-			PagedBusinessReq req=new PagedBusinessReq();	
-			req.setStatus(-1);
-			req.setGroupId(0);
-			req.setMealsSettleMode(-1);
-			req.setCityAuthType(1);
-			PagedResponse<BusinessModel> resp =iBusinessService.getBusinessList(req);		
-			
-			ModelAndView model = new ModelAndView("business/list");
-			model.addObject("listData", resp);
-			return model;
-	 }
+	@Autowired
+	private IPublicProvinceCityService iPublicProvinceCityService;
+
+	@Autowired
+	private IBusinessGroupService iBusinessGroupService;
+
+	@Autowired
+	private IGroupService iGroupService;
+
+	@RequestMapping("list")
+	public ModelAndView index(HttpServletRequest request,
+			HttpServletResponse res) {
+
+		GroupReq groupReq = new GroupReq();
+		groupReq.setIsValid(1);
+		List<GroupModel> resultList = iGroupService.getGroupList(groupReq);
+
+		List<AreaModel> areaListData = iPublicProvinceCityService
+				.getOpenCityListFromRedis();
+		List<BusinessGroup> businessGroupListData = iBusinessGroupService
+				.getBusinessGroupList();
+
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "商户");
+		model.addObject("currenttitle", "商户管理");
+		model.addObject("groupId", 0);
+		model.addObject("groupListData", resultList);
+		model.addObject("areaListData", areaListData);
+		model.addObject("businessGroupListData", businessGroupListData);
+		model.addObject("viewPath", "business/index");
+		return model;
+	}
+
+	@RequestMapping("selectlist")
+	public ModelAndView list(PagedBusinessReq req) {
+		PagedResponse<BusinessModel> resp = iBusinessService
+				.getBusinessList(req);
+
+		ModelAndView model = new ModelAndView("business/list");
+		model.addObject("listData", resp);
+		return model;
+	}
 }

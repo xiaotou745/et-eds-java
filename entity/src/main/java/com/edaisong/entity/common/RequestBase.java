@@ -1,44 +1,44 @@
 package com.edaisong.entity.common;
 
+import java.util.List;
+
 public class RequestBase {
 
-	private String authorityCityNameListStr;
+	private List<String> authorityCityNameList;
 
-	private int userType;
+	private int cityAuthType;
 
 	/**
-	 * 用户所有权限城市名称集合串
+	 * 用户权限类型（1：全部城市权限 2：部分城市权限）
 	 * 
 	 * @return
 	 */
-	public String getAuthorityCityNameListStr() {
-		return authorityCityNameListStr;
+	public int getCityAuthType() {
+		return cityAuthType;
 	}
 
 	/**
-	 * 用户所有权限城市名称集合串
+	 * 用户权限类型（1：全部城市权限 2：部分城市权限）
 	 * 
-	 * @param authorityCityNameListStr
+	 * @param cityAuthType
 	 */
-	public void setAuthorityCityNameListStr(String authorityCityNameListStr) {
-		this.authorityCityNameListStr = authorityCityNameListStr;
+	public void setCityAuthType(int cityAuthType) {
+		this.cityAuthType = cityAuthType;
 	}
 
 	/**
-	 * 用户类型（1：全部城市权限 2：部分城市权限）
-	 * 
-	 * @return
+	 * 用户所有权限城市名称集合
+	 * @return the authorityCityNameList
 	 */
-	public int getUserType() {
-		return userType;
+	public List<String> getAuthorityCityNameList() {
+		return authorityCityNameList;
 	}
 
 	/**
-	 * 用户类型（1：全部城市权限 2：部分城市权限）
-	 * 
-	 * @param userType
+	 * 用户所有权限城市名称集合
+	 * @param authorityCityNameList the authorityCityNameList to set
 	 */
-	public void setUserType(int userType) {
-		this.userType = userType;
+	public void setAuthorityCityNameList(List<String> authorityCityNameList) {
+		this.authorityCityNameList = authorityCityNameList;
 	}
 }
