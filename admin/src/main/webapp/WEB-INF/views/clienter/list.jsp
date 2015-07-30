@@ -7,24 +7,11 @@
 
 <%
 	String basePath = request.getContextPath();
-%>
-
-
-<script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/admin.js""></script>
-<script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>
-<!-- Data Tables -->
-<script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script	src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<script src="<%=basePath%>/js/hplus.js"></script>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />	
- <link href="<%=basePath%>/css/admin.css" rel="stylesheet" />
-
-<%
+	
 	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
-    List<DeliveryCompany> dCListData=	(List<DeliveryCompany>)request.getAttribute("dCListData");
+	List<DeliveryCompany> dCListData=	(List<DeliveryCompany>)request.getAttribute("dCListData");
 %>
+
 
    <table border="0" cellspacing="0" cellpadding="0">
             <tr>
@@ -113,6 +100,7 @@
         </p>
     </div>
 </div>
+
 	<script>		
 	var jss={
 			search:function(currentPage){	
@@ -142,7 +130,7 @@
 						 "code": code,
 						 "deliveryCompanyId": deliveryCompanyId		
 						 };        
-			        var url = "<%=basePath%>/clienter/clientermanagerlist";
+			        var url = "<%=basePath%>/clienter/listdo";
 			        $.ajax({
 			            type: 'POST',
 			            url: url,
@@ -160,6 +148,7 @@
 	$("#btnSearch").click(function(){
 		jss.search(1);
 	});
+	
 	
 	var adminjs = new adminglass(); //实例化后台类	
 	 //骑士充值

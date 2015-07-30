@@ -10,13 +10,6 @@ import com.edaisong.entity.req.ClienterReq;
 
 
 public interface IClienterDao {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(Clienter record);
-
-    int insertSelective(Clienter record);
-
-    Clienter selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Clienter record);
 
