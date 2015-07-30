@@ -6,7 +6,7 @@
 <%@page import="com.edaisong.entity.domain.BusinessModel"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%>
 <%@page import="com.edaisong.core.common.PageHelper"%>
-<%@page import="com.edaisong.entity.common.ResponsePageList"%>
+<%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%
 	String basePath = request.getContextPath();
 %>
@@ -37,30 +37,30 @@
 		<tbody>
 
 			<%
-				ResponsePageList<BusinessModel> responsePageList = (ResponsePageList<BusinessModel>)request.getAttribute("listData");
-					List<BusinessModel> data=responsePageList.getResultList();
-										
-								 for (int i = 0; i < data.size(); i++) {
-								    String status=""; 
-								    String statusStyle="";
-								    String statusStyle2="style=\"color:gray\"";
-							 switch(data.get(i).getStatus())
-							 {
-							 case 0:status="未审核";
-							 break;
-							 case 1:status="已通过";
-							 statusStyle="style=\"color:gray\"";
-							 statusStyle2="";
-							 break;
-							 case 2:status="未审核且未添加地址";
-							 break;
-							 case 3:status="审核中";
-							 break;
-							 case 4:status="审核被拒绝";
-							 break;
-							 }
-			                 int checkAddress = data.get(i).getAddress()==null||data.get(i).getAddress().isEmpty()?0:1;
-			                 int checkImage = data.get(i).getCheckpicurl()==null||data.get(i).getCheckpicurl().isEmpty()?0:1;
+				PagedResponse<BusinessModel> responsePageList = (PagedResponse<BusinessModel>)request.getAttribute("listData");
+						List<BusinessModel> data=responsePageList.getResultList();
+											
+									 for (int i = 0; i < data.size(); i++) {
+									    String status=""; 
+									    String statusStyle="";
+									    String statusStyle2="style=\"color:gray\"";
+								 switch(data.get(i).getStatus())
+								 {
+								 case 0:status="未审核";
+								 break;
+								 case 1:status="已通过";
+								 statusStyle="style=\"color:gray\"";
+								 statusStyle2="";
+								 break;
+								 case 2:status="未审核且未添加地址";
+								 break;
+								 case 3:status="审核中";
+								 break;
+								 case 4:status="审核被拒绝";
+								 break;
+								 }
+				                 int checkAddress = data.get(i).getAddress()==null||data.get(i).getAddress().isEmpty()?0:1;
+				                 int checkImage = data.get(i).getCheckpicurl()==null||data.get(i).getCheckpicurl().isEmpty()?0:1;
 			%>
 			<tr>
 				<td><%=data.get(i).getId()%></td>

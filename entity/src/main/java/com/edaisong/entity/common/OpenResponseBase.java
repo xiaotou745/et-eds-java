@@ -1,7 +1,7 @@
 package com.edaisong.entity.common;
 
-public class ResponseBase {
-	private int responseCode = ResponseCode.SUCESS;
+public class OpenResponseBase {
+    private int responseCode = ResponseCode.SUCESS;
     private String message;
     private String processServerIp;
 

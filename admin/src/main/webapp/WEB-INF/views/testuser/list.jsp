@@ -102,7 +102,7 @@
             url: url,
             data: paramaters,
             success: function (result) {
-                if (result.data) {
+                if (result.responseCode==0) {
                 	layer.msg('删除成功', {icon: 1});
                 	tr.remove();
                 } else {
@@ -121,7 +121,7 @@
             url: url,
             data: paramaters,
             success: function (result) {
-                if (result.data) {
+            	if (result.responseCode==0) {
                 	layer.msg(result.message, {shift: 6});
                     window.reload();
                 } else {

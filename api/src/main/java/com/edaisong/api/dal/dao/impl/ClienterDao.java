@@ -1,36 +1,22 @@
 package com.edaisong.api.dal.dao.impl;
 
-import java.math.BigDecimal;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
-
-
-
-
-
-
-
-
-
 
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IClienterDao;
 import com.edaisong.core.common.ParseHelper;
 import com.edaisong.core.util.StringUtils;
-import com.edaisong.entity.Account;
 import com.edaisong.entity.Clienter;
-import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.ClienterModel;
-import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
-import com.edaisong.entity.resp.AccountResp;
-import com.edaisong.entity.resp.ClienterResp;
+
+
 
 
 @Repository
@@ -95,7 +81,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	}	
 	
 	@Override
-	public ResponsePageList<ClienterModel> query(ClienterReq req) {
+	public PagedResponse<ClienterModel> query(ClienterReq req) {
 
 		Map<String, Object> map = new HashMap<String, Object>();		
 		String Where = " 1=1 ";		
@@ -131,7 +117,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 				.selectList("com.edaisong.api.dal.dao.inter.IClienterDao.query",
 						map);
 		
-		ResponsePageList<ClienterModel> resp = new ResponsePageList<ClienterModel>();		
+		PagedResponse<ClienterModel> resp = new PagedResponse<ClienterModel>();		
 		resp.setResultList(list);
 		resp.setPageSize(PageSize);
 		resp.setCurrentPage(CurrentPage);

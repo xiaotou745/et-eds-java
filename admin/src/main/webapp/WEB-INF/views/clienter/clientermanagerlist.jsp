@@ -5,12 +5,12 @@
 <%@page import="com.edaisong.entity.domain.ClienterModel"%> 
 <%@page import="com.edaisong.entity.resp.ClienterResp"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.edaisong.entity.common.ResponsePageList"%>
+<%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%> 
 
 <%
-	String basePath = request.getContextPath();
-%>
+ 	String basePath = request.getContextPath();
+ %>
 
         
 	
@@ -36,16 +36,16 @@
 			
 			<tbody>                           
 
-		<%		
-		//ClienterResp data = (ClienterResp) request.getAttribute("listData");
-		ResponsePageList<ClienterModel> data = (ResponsePageList<ClienterModel>) request
-				.getAttribute("listData");
-		List<ClienterModel> list = data.getResultList();
-		if (list == null) {
-			list = new ArrayList<ClienterModel>();
-		}		
-		 for (int i = 0; i < list.size(); i++) {
-			 %>  
+		<%
+                           			//ClienterResp data = (ClienterResp) request.getAttribute("listData");
+                           				PagedResponse<ClienterModel> data = (PagedResponse<ClienterModel>) request
+                           				.getAttribute("listData");
+                           				List<ClienterModel> list = data.getResultList();
+                           				if (list == null) {
+                           			list = new ArrayList<ClienterModel>();
+                           				}		
+                           				 for (int i = 0; i < list.size(); i++) {
+                           		%>  
 			 <tr>
 				<td><%=list.get(i).getId() %></td>
 				<td><%=list.get(i).getTrueName() %></td>

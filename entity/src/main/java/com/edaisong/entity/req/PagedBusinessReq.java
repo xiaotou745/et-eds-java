@@ -3,9 +3,10 @@ package com.edaisong.entity.req;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.edaisong.entity.common.PagedRequestBase;
 import com.edaisong.entity.common.RequestBase;
 
-public class BusinessReq extends RequestBase {
+public class PagedBusinessReq extends PagedRequestBase {
 	private String recommendPhone;
 	private String businessName;
 	private String businessPhone;

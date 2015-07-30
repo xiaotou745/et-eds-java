@@ -1,5 +1,5 @@
 <%@page import="java.sql.Date"%>
-<%@page import="com.edaisong.entity.common.ResponsePageList"%>
+<%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="com.edaisong.core.common.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
@@ -31,7 +31,7 @@
 	</thead>
 	<tbody>
 		<%
-			ResponsePageList<OrderListModel> responsePageList = (ResponsePageList<OrderListModel>) request
+			PagedResponse<OrderListModel> responsePageList = (PagedResponse<OrderListModel>) request
 					.getAttribute("listData");
 			List<OrderListModel> data = responsePageList.getResultList();
 			if (data == null) {

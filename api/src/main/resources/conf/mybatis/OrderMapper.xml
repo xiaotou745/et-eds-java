@@ -759,7 +759,7 @@
   </sql>
   
    <!--后台订单列表页面 ） add by caoheyang 20150728  -->
-  <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   parameterType="com.edaisong.entity.req.OrderSearchWebReq" 
+  <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   parameterType="com.edaisong.entity.req.PagedOrderSearchReq" 
   statementType="CALLABLE" >
 	{call Sp_CustomPage2015_V1(
 	' o.Status asc , o.Id desc ',
