@@ -747,10 +747,10 @@
          <![CDATA[ and o.PubDate<=]]> 
 	      ''${orderPubEnd}''
      </if>
-       <if test="groupId != null">
-	     and o.OrderFrom = #{groupId}
+       <if test="groupId != null and groupId != -1">
+	     and o.OrderFrom = ${groupId}
       </if>
-       <if test="businessCity != null and businessCity!='' ">
+       <if test="businessCity != null and businessCity!='' and businessCity!='-1'">
 	     and b.City= ''${businessCity}''
       </if>
       <if test="authorityCityNameList != null">
