@@ -1,12 +1,12 @@
 package com.edaisong.api.service.inter;
 
-import java.util.List;
+import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.domain.BusinessModel;
 
-import com.edaisong.entity.Business;
 import com.edaisong.entity.req.BusinessReq;
-import com.edaisong.entity.resp.BusinessResp;
+
 
 
 public interface IBusinessService {
-	BusinessResp getBusinessList(BusinessReq req);
+	ResponsePageList<BusinessModel> getBusinessList(BusinessReq req);
 }

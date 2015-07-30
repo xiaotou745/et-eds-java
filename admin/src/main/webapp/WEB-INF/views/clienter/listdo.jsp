@@ -67,7 +67,7 @@
 				<td><%=list.get(i).getIdCard() %></td>
 				<td><a href="javascript:void(0)" class="businessOk" onclick="">查看</a></td>		
 				<td><%=ParseHelper.ToDateString(list.get(i).getInsertTime(), "")%>		</td>		
-				<td style="color:red;font-weight:600"><a href="/SuperManManager/ClienterDetail?clienterId=@item.Id ">￥  <%=list.get(i).getAccountBalance() %></a></td>
+				<td style="color:red;font-weight:600"><a href="<%=basePath%>/clienter/clienterbalancerecordlist?clienterId=<%=list.get(i).getId() %> ">￥  <%=list.get(i).getAccountBalance() %></a></td>
 				<td><%=list.get(i).getAllowWithdrawPrice() %></td>
 				<td><%=list.get(i).getGroupName()%>  </td>
 				<td><%=list.get(i).getDeliveryCompanyName()%>  </td>			

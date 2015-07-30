@@ -37,30 +37,6 @@ import com.edaisong.entity.resp.ClienterResp;
 public class ClienterDao extends DaoBase implements IClienterDao {
 
 	@Override
-	public int deleteByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insert(Clienter record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertSelective(Clienter record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Clienter selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int updateByPrimaryKeySelective(Clienter record) {
 		// TODO Auto-generated method stub
 		Map<String, Object> paramMap = new HashMap<>();

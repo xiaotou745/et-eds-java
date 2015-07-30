@@ -44,4 +44,11 @@ public interface IPublicProvinceCityService {
 	  * @Date 20150727
 	  */
 	 List<AreaModel> resetOpenCityListRedis();
+	 
+	 /**
+	  * 获取开通市
+	  * 窦海超
+	  * 2015年7月29日 10:40:36
+	  * */
+	 List<AreaModel> getOpenCity();
 }

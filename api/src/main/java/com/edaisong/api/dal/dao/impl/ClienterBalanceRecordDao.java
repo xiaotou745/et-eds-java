@@ -54,23 +54,16 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 		// TODO Auto-generated method stub
 		return 0;
 	}
-//	
-//	@Override
-//	public List<ClienterBalanceRecord> getRecordListByCId(Long cid) {
-//		Map<String, Object> paramMap = new HashMap<>();
-//		paramMap.put("clienterid", cid);
-//		List<ClienterBalanceRecord> list = getMasterSqlSessionUtil().selectList(
-//				"com.edaisong.api.dal.dao.inter.IClienterBalanceRecordDao.getRecordListByCId",
-//				paramMap);
-//		return list;
-//
-//	}
 	
+	@Override
 	public ResponsePageList<ClienterBalanceRecord> query(ClienterBalanceRecordReq req) {
 
 		Map<String, Object> map = new HashMap<String, Object>();		
-		String Where = " 1=1 ";		
-		
+		String Where = " 1=1 ";				
+
+		if (req.getClienterId()>0) {
+			Where += " and clienterid=like '" + req.getClienterId() + "'";
+		}
 		
 		int PageSize = 15;
 		int CurrentPage = req.getCurrentPage();
@@ -79,15 +72,15 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 		map.put("TotalPage", 0);
 		map.put("PageSize", PageSize);
 		map.put("CurrentPage", CurrentPage);
-		List<ClienterModel> list = getMasterSqlSessionUtil()
-				.selectList("com.edaisong.api.dal.dao.inter.IClienterDao.query",
+		List<ClienterBalanceRecord> list = getMasterSqlSessionUtil()
+				.selectList("com.edaisong.api.dal.dao.inter.IClienterBalanceRecordDao.query",
 						map);
 		
 		ResponsePageList<ClienterBalanceRecord> resp = new ResponsePageList<ClienterBalanceRecord>();		
-		//resp.setResultList(list);
+		resp.setResultList(list);
 		resp.setPageSize(PageSize);
 		resp.setCurrentPage(CurrentPage);
-		//resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
+		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
 		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
 		return resp;
 	}

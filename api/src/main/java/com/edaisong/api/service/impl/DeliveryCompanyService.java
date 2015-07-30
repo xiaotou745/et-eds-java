@@ -16,8 +16,11 @@ import com.edaisong.entity.DeliveryCompany;
 @Service
 public class DeliveryCompanyService implements IDeliveryCompanyService {
 	@Autowired
-	private  IDeliveryCompanyDao iDeliveryCompDao;
-	
+	private IDeliveryCompanyDao iDeliveryCompDao;
+
+	/**
+	 * 获取配送公司列表 2015年7月29日 13:14:41
+	 * */
 	@Override
 	public List<DeliveryCompany> getDeliveryCompanyList(){
 		return iDeliveryCompDao.getDeliveryCompanyList();		

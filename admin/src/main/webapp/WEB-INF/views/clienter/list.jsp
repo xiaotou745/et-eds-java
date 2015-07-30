@@ -131,7 +131,7 @@
 						 "code": code,
 						 "deliveryCompanyId": deliveryCompanyId		
 						 };        
-			        var url = "<%=basePath%>/clienter/clientermanagerlist";
+			        var url = "<%=basePath%>/clienter/listdo";
 			        $.ajax({
 			            type: 'POST',
 			            url: url,

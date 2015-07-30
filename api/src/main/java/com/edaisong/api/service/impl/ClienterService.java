@@ -40,7 +40,7 @@ public class ClienterService implements IClienterService {
 
 	
 	@Override
-	public ResponsePageList<ClienterModel> queryClienter(ClienterReq req) {
+	public ResponsePageList<ClienterModel> query(ClienterReq req) {
 		return  clienterDao.query(req);
 	}
 }
