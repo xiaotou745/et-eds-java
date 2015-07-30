@@ -22,7 +22,7 @@ public class HtmlHelper {
 	public static <T> String getSelect(String name, List<T> list,
 			String textName, String valueName) {
 		StringBuffer htmlStrBuffer = new StringBuffer();
-		htmlStrBuffer.append(" <select class=\"form-control\" name=\""+name+"\"> <option value=\"-1\">全部</option>");
+		htmlStrBuffer.append(" <select class=\"form-control\" name=\""+name+"\" id=\"_"+name+"\" > <option value=\"-1\">全部</option>");
 		try {
 			if (list != null && list.size() > 0) {
 				for (int i = 0; i < list.size(); i++) {
