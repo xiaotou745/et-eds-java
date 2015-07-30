@@ -13,36 +13,25 @@ import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
-import com.edaisong.entity.resp.GroupResp;
-
 @Service
 public class GroupService implements IGroupService {
 
 	@Autowired
 	private IGroupDao dao;
 	@Override
-	public GroupResp getGroupListByID(GroupReq req) {
-		// TODO Auto-generated method stub
-		GroupResp resp = new GroupResp();
-		List<GroupModel> listData = dao.getGroupListByID(
+	public List<GroupModel> getGroupListByID(GroupReq req) {
+		return dao.getGroupListByID(
 				req.getId());
-		resp.setGroupList(listData);
-		return resp;
 	}
 
 	@Override
-	public GroupResp getGroupList(GroupReq req) {
-		// TODO Auto-generated method stub
-		GroupResp resp = new GroupResp();
-		List<GroupModel> listData = dao.getGroupList(
+	public List<GroupModel> getGroupList(GroupReq req) {
+		return dao.getGroupList(
 				req);
-		resp.setGroupList(listData);
-		return resp;
 	}
 
 	@Override
 	public int add(Group record) {
-		// TODO Auto-generated method stub
 		return dao.insert(record);
 	}
 	

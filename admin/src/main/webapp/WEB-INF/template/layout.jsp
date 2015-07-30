@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="<%=basePath%>/css/animate.css" />
 <link rel="stylesheet" href="<%=basePath%>/css/style.css" />
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
- <link href="<%=basePath%>/css/admin.css" rel="stylesheet" /> 
+<%--  <link href="<%=basePath%>/css/admin.css" rel="stylesheet" />  --%>
 
     <!-- Mainly scripts -->
 	<script src="<%=basePath%>/js/jquery-2.1.1.js"></script>

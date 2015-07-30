@@ -2,7 +2,7 @@ package com.edaisong.entity.common;
 
 import java.util.List;
 
-public class ResponsePageList<T> extends ResponseBase {
+public class PagedResponse<T>  extends ResponseBase {
 	private List<T> resultList;
 	public List<T> getResultList() {
 		return resultList;

@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.ITestUserTblService;
+import com.edaisong.entity.common.ResponseBase;
+import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.TestUserRecord;
-import com.edaisong.entity.resp.BooleanResp;
+
 
 @Controller
 @RequestMapping("testuser")
@@ -38,19 +40,19 @@ public class TestUserController {
 
 	@ResponseBody
 	@RequestMapping(value = "add", method = { RequestMethod.POST })
-	public BooleanResp add(String phoneNo) {
-		BooleanResp resp = new BooleanResp();
+	public ResponseBase add(String phoneNo) {
+		ResponseBase resp = new ResponseBase();
 		if (phoneNo == null || phoneNo.length() <= 0) {
 			resp.setMessage("电话号码不能为空");
-			resp.setData(false);
+			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 		} else {
 			int ret = 0;//service.insert(phoneNo);
 			if(ret > 0){
 				resp.setMessage("成功");
-				resp.setData(true);
+				resp.setResponseCode(ResponseCode.SUCESS);
 			}else {
 				resp.setMessage("新增失败,请重试");
-				resp.setData(false);
+				resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 			}
 			
 		}
@@ -59,15 +61,15 @@ public class TestUserController {
 	
 	@ResponseBody
 	@RequestMapping(value = "delete", method = { RequestMethod.POST })
-	public BooleanResp delete(String phoneNo) {
-		BooleanResp resp = new BooleanResp();
+	public ResponseBase delete(String phoneNo) {
+		ResponseBase resp = new ResponseBase();
 		if (phoneNo == null || phoneNo.length() <= 0) {
 			resp.setMessage("电话号码不能为空");
-			resp.setData(false);
+			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 		} else {
 			//service.deleteByPhoneNo(phoneNo);
 			resp.setMessage("成功");
-			resp.setData(true);
+			resp.setResponseCode(ResponseCode.SUCESS);
 		}
 		return resp;
 	}

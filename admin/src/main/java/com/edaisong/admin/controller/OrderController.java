@@ -14,11 +14,11 @@ import com.edaisong.api.service.impl.OrderService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.ITestService;
 import com.edaisong.entity.Account;
-import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.OpenCityModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.AccountReq;
-import com.edaisong.entity.req.OrderSearchWebReq;
+import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.TestServiceReq;
 import com.edaisong.entity.resp.TestServiceResp;
 
@@ -56,8 +56,8 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("listdo")
-	public ModelAndView order(OrderSearchWebReq searchWebReq){
-		ResponsePageList<OrderListModel> resp = orderService.getOrders(searchWebReq);
+	public ModelAndView order(PagedOrderSearchReq searchWebReq){
+		PagedResponse<OrderListModel> resp = orderService.getOrders(searchWebReq);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "order/listdo");
 		view.addObject("listData", resp);

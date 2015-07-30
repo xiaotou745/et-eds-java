@@ -77,7 +77,7 @@
 		IsAllowOverdraft, IsEmployerTask, RecommendPhone
 	</sql>
 	<select id="getBusinessList2" resultType="com.edaisong.entity.domain.BusinessModel"
-		parameterType="com.edaisong.entity.req.BusinessReq">
+		parameterType="com.edaisong.entity.req.PagedBusinessReq">
 		SELECT b.id ,
 		isnull(b.name,'') as name ,
 		b.city ,
@@ -376,7 +376,7 @@
   </sql>
   
   <select id="getBusinessList"  resultType="com.edaisong.entity.domain.BusinessModel"
-		parameterType="com.edaisong.entity.req.BusinessReq">
+		parameterType="com.edaisong.entity.req.PagedBusinessReq">
   statementType="CALLABLE" >
 	{call Sp_CustomPage2015_V1(
 	' b.Id DESC ',

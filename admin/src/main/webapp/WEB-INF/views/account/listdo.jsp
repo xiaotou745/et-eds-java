@@ -1,4 +1,4 @@
-<%@page import="com.edaisong.entity.common.ResponsePageList"%>
+<%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.entity.resp.AccountResp"%>
 <%@page import="com.edaisong.core.common.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
@@ -19,7 +19,7 @@
 	<tbody>
 
 		<%
-			ResponsePageList<Account> data = (ResponsePageList<Account>) request
+			PagedResponse<Account> data = (PagedResponse<Account>) request
 					.getAttribute("listData");
 			List<Account> list = data.getResultList();
 			if (list == null) {

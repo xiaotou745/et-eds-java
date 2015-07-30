@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.api.service.inter.IOrderService;
-import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.OrderListModel;
-import com.edaisong.entity.req.OrderSearchWebReq;
+import com.edaisong.entity.req.PagedOrderSearchReq;
 
 @Service
 public class OrderService implements IOrderService {
@@ -25,7 +25,7 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	public ResponsePageList<OrderListModel> getOrders(OrderSearchWebReq search) {
+	public PagedResponse<OrderListModel> getOrders(PagedOrderSearchReq search) {
 		return orderDao.getOrders(search);
 	}
 

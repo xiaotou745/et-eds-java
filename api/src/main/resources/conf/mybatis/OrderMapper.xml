@@ -717,49 +717,49 @@
 		        join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
   </sql>
    <!-- 后台订单列表页面  动态查询条件  add by caoheyang 20150728 -->
-  <sql id="GetOrdersColumsWhere">
+  <sql id="GetOrdersColumsWhere" >
      1=1  
-	 <if test="businessName != null">
-	      and b.Name=#{businessName}
+	 <if test="businessName != null and businessName != ''">
+	      and b.Name=''${businessName}''
      </if>
-      <if test="businessPhone != null">
-	      and  b.PhoneNo=#{businessPhone}
+      <if test="businessPhone != null and businessPhone!='' ">
+	      and  b.PhoneNo=''${businessPhone}''
      </if>
-      <if test="orderId != null">
-	      and  o.OrderNo=#{orderId}
+      <if test="orderId != null and orderId!=''">
+	      and  o.OrderNo=''${orderId}''
      </if>
-      <if test="originalOrderNo != null">
-	      and o.OriginalOrderNo=#{originalOrderNo}
+      <if test="originalOrderNo != null and originalOrderNo!=''">
+	      and o.OriginalOrderNo=''${originalOrderNo}''
      </if>
       <if test="orderStatus != null">
-	      and o.Status==#{orderStatus}
+	      and o.Status=${orderStatus}
      </if>
-      <if test="superManName != null">
-	     and c.TrueName=#{superManName}
+      <if test="superManName != null and superManName!=''">
+	     and c.TrueName=''${superManName}''
      </if>
-      <if test="superManPhone != null">
-	     and c.PhoneNo=#{superManPhone}
+      <if test="superManPhone != null and superManPhone!='' ">
+	     and c.PhoneNo=''${superManPhone}''
      </if>
-      <if test="orderPubStart != null">
-	     and o.PubDate>= #{orderPubStart}
+      <if test="orderPubStart != null and orderPubStart!=''">
+	     and o.PubDate>= ''${orderPubStart}''
      </if>
-     <if test="orderPubEnd != null">
+     <if test="orderPubEnd != null and orderPubEnd!=''">
          <![CDATA[ and o.PubDate<=]]> 
-	      #{orderPubEnd}
+	      ''${orderPubEnd}''
      </if>
        <if test="groupId != null">
 	     and o.OrderFrom = #{groupId}
       </if>
-       <if test="businessCity != null">
-	     and b.City= #{businessCity}
+       <if test="businessCity != null and businessCity!='' ">
+	     and b.City= ''${businessCity}''
       </if>
-       <if test="authorityCityNameListStr != null">
-	     and b.City in  ${authorityCityNameListStr}
+       <if test="authorityCityNameListStr != null and authorityCityNameListStr!=''">
+	     and b.City in  ''$${authorityCityNameListStr}''
       </if>
   </sql>
   
    <!--后台订单列表页面 ） add by caoheyang 20150728  -->
-  <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   parameterType="com.edaisong.entity.req.OrderSearchWebReq" 
+  <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   parameterType="com.edaisong.entity.req.PagedOrderSearchReq" 
   statementType="CALLABLE" >
 	{call Sp_CustomPage2015_V1(
 	' o.Status asc , o.Id desc ',
