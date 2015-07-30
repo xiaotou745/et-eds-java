@@ -88,7 +88,7 @@ public class ClienterController {
 		Clienter record=new Clienter();
 		record.setId(id);;	
 		record.setStatus(Byte.parseByte(status));
-		clienterService.modifyStatusById(record);
+	 clienterService.modifyStatusById(record);
 	}	
 	
 	@RequestMapping("modifymoney")

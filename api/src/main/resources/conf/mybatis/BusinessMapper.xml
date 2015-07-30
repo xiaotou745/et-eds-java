@@ -336,19 +336,19 @@
 <!--      <trim prefix="WHERE" prefixOverrides="AND|OR"> -->
        1=1  
 			<if test="recommendPhone != null">
-				and b.recommendPhone=#{recommendPhone}
+				and b.recommendPhone=''${recommendPhone}''
 			</if>
 			<if test="businessName != null">
-				and b.name=#{businessName}
+				and b.name=''${businessName}''
 			</if>
 			<if test="businessPhone != null">
-				and b.PhoneNo=#{businessPhone}
+				and b.PhoneNo=''${businessPhone}''
 			</if>
 			<if test="status != null and status!=-1">
-				and b.status=#{status}
+				and b.status=${status}
 			</if>
 			<if test="mealsSettleMode != null and mealsSettleMode!=-1">
-				and ISNULL(b.mealsSettleMode,0)=#{mealsSettleMode}
+				and ISNULL(b.mealsSettleMode,0)=${mealsSettleMode}
 			</if>
 			<if test="businessSettlementRatio != null and businessSettlementRatio>0">
 				and b.businessCommission=#{businessCommission}
@@ -360,15 +360,15 @@
 				and b.businessGroupId=#{businessGroupId}
 			</if>
 			<if test="commissionType != null and commissionType>0">
-				and b.commissionType>0=#{commissionType>0}
+				and b.commissionType>=#{commissionType}
 			</if>
 			<if test="businessCity != null">
-				and b.city=#{businessCity}
+				and b.city=''${businessCity}''
 			</if>
 			<if test="authorityCityNameList != null">
 				and b.city in
 				<foreach item="item" index="index" collection="authorityCityNameList"
-					open="(" separator="," close=")">
+					open="(''" separator="'',''" close="'')">
 					#{item}
 				</foreach>
 			</if>
@@ -376,7 +376,7 @@
   </sql>
   
   <select id="getBusinessList"  resultType="com.edaisong.entity.domain.BusinessModel"
-		parameterType="com.edaisong.entity.req.PagedBusinessReq">
+		parameterType="com.edaisong.entity.req.PagedBusinessReq" 
   statementType="CALLABLE" >
 	{call Sp_CustomPage2015_V1(
 	' b.Id DESC ',
