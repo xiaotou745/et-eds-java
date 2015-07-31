@@ -76,8 +76,8 @@
 		OneKeyPubOrder,
 		IsAllowOverdraft, IsEmployerTask, RecommendPhone
 	</sql>
-	<select id="getBusinessList" resultType="com.edaisong.entity.domain.BusinessModel"
-		parameterType="com.edaisong.entity.req.BusinessReq">
+	<select id="getBusinessList2" resultType="com.edaisong.entity.domain.BusinessModel"
+		parameterType="com.edaisong.entity.req.PagedBusinessReq">
 		SELECT b.id ,
 		isnull(b.name,'') as name ,
 		b.city ,
@@ -216,380 +216,6 @@
 		#{isemployertask,jdbcType=SMALLINT},
 		#{recommendphone,jdbcType=NVARCHAR})
 	</insert>
-	<insert id="insertSelective" parameterType="com.edaisong.entity.Business">
-		insert into business
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				Id,
-			</if>
-			<if test="name != null">
-				Name,
-			</if>
-			<if test="city != null">
-				City,
-			</if>
-			<if test="district != null">
-				district,
-			</if>
-			<if test="phoneno != null">
-				PhoneNo,
-			</if>
-			<if test="phoneno2 != null">
-				PhoneNo2,
-			</if>
-			<if test="password != null">
-				Password,
-			</if>
-			<if test="checkpicurl != null">
-				CheckPicUrl,
-			</if>
-			<if test="idcard != null">
-				IDCard,
-			</if>
-			<if test="address != null">
-				Address,
-			</if>
-			<if test="landline != null">
-				Landline,
-			</if>
-			<if test="longitude != null">
-				Longitude,
-			</if>
-			<if test="latitude != null">
-				Latitude,
-			</if>
-			<if test="status != null">
-				Status,
-			</if>
-			<if test="inserttime != null">
-				InsertTime,
-			</if>
-			<if test="districtid != null">
-				districtId,
-			</if>
-			<if test="cityid != null">
-				CityId,
-			</if>
-			<if test="groupid != null">
-				GroupId,
-			</if>
-			<if test="originalbusiid != null">
-				OriginalBusiId,
-			</if>
-			<if test="provincecode != null">
-				ProvinceCode,
-			</if>
-			<if test="citycode != null">
-				CityCode,
-			</if>
-			<if test="areacode != null">
-				AreaCode,
-			</if>
-			<if test="province != null">
-				Province,
-			</if>
-			<if test="commissiontypeid != null">
-				CommissionTypeId,
-			</if>
-			<if test="distribsubsidy != null">
-				DistribSubsidy,
-			</if>
-			<if test="businesscommission != null">
-				BusinessCommission,
-			</if>
-			<if test="commissiontype != null">
-				CommissionType,
-			</if>
-			<if test="commissionfixvalue != null">
-				CommissionFixValue,
-			</if>
-			<if test="businessgroupid != null">
-				BusinessGroupId,
-			</if>
-			<if test="balanceprice != null">
-				BalancePrice,
-			</if>
-			<if test="allowwithdrawprice != null">
-				AllowWithdrawPrice,
-			</if>
-			<if test="haswithdrawprice != null">
-				HasWithdrawPrice,
-			</if>
-			<if test="mealssettlemode != null">
-				MealsSettleMode,
-			</if>
-			<if test="contactway != null">
-				ContactWay,
-			</if>
-			<if test="businesslicensepic != null">
-				BusinessLicensePic,
-			</if>
-			<if test="isbind != null">
-				IsBind,
-			</if>
-			<if test="onekeypuborder != null">
-				OneKeyPubOrder,
-			</if>
-			<if test="isallowoverdraft != null">
-				IsAllowOverdraft,
-			</if>
-			<if test="isemployertask != null">
-				IsEmployerTask,
-			</if>
-			<if test="recommendphone != null">
-				RecommendPhone,
-			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				#{id,jdbcType=INTEGER},
-			</if>
-			<if test="name != null">
-				#{name,jdbcType=NVARCHAR},
-			</if>
-			<if test="city != null">
-				#{city,jdbcType=NVARCHAR},
-			</if>
-			<if test="district != null">
-				#{district,jdbcType=NVARCHAR},
-			</if>
-			<if test="phoneno != null">
-				#{phoneno,jdbcType=NVARCHAR},
-			</if>
-			<if test="phoneno2 != null">
-				#{phoneno2,jdbcType=NVARCHAR},
-			</if>
-			<if test="password != null">
-				#{password,jdbcType=NVARCHAR},
-			</if>
-			<if test="checkpicurl != null">
-				#{checkpicurl,jdbcType=NVARCHAR},
-			</if>
-			<if test="idcard != null">
-				#{idcard,jdbcType=NVARCHAR},
-			</if>
-			<if test="address != null">
-				#{address,jdbcType=NVARCHAR},
-			</if>
-			<if test="landline != null">
-				#{landline,jdbcType=NVARCHAR},
-			</if>
-			<if test="longitude != null">
-				#{longitude,jdbcType=DOUBLE},
-			</if>
-			<if test="latitude != null">
-				#{latitude,jdbcType=DOUBLE},
-			</if>
-			<if test="status != null">
-				#{status,jdbcType=TINYINT},
-			</if>
-			<if test="inserttime != null">
-				#{inserttime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="districtid != null">
-				#{districtid,jdbcType=NVARCHAR},
-			</if>
-			<if test="cityid != null">
-				#{cityid,jdbcType=NVARCHAR},
-			</if>
-			<if test="groupid != null">
-				#{groupid,jdbcType=INTEGER},
-			</if>
-			<if test="originalbusiid != null">
-				#{originalbusiid,jdbcType=INTEGER},
-			</if>
-			<if test="provincecode != null">
-				#{provincecode,jdbcType=NVARCHAR},
-			</if>
-			<if test="citycode != null">
-				#{citycode,jdbcType=NVARCHAR},
-			</if>
-			<if test="areacode != null">
-				#{areacode,jdbcType=NVARCHAR},
-			</if>
-			<if test="province != null">
-				#{province,jdbcType=NVARCHAR},
-			</if>
-			<if test="commissiontypeid != null">
-				#{commissiontypeid,jdbcType=INTEGER},
-			</if>
-			<if test="distribsubsidy != null">
-				#{distribsubsidy,jdbcType=NUMERIC},
-			</if>
-			<if test="businesscommission != null">
-				#{businesscommission,jdbcType=DECIMAL},
-			</if>
-			<if test="commissiontype != null">
-				#{commissiontype,jdbcType=INTEGER},
-			</if>
-			<if test="commissionfixvalue != null">
-				#{commissionfixvalue,jdbcType=DECIMAL},
-			</if>
-			<if test="businessgroupid != null">
-				#{businessgroupid,jdbcType=INTEGER},
-			</if>
-			<if test="balanceprice != null">
-				#{balanceprice,jdbcType=DECIMAL},
-			</if>
-			<if test="allowwithdrawprice != null">
-				#{allowwithdrawprice,jdbcType=DECIMAL},
-			</if>
-			<if test="haswithdrawprice != null">
-				#{haswithdrawprice,jdbcType=DECIMAL},
-			</if>
-			<if test="mealssettlemode != null">
-				#{mealssettlemode,jdbcType=INTEGER},
-			</if>
-			<if test="contactway != null">
-				#{contactway,jdbcType=NVARCHAR},
-			</if>
-			<if test="businesslicensepic != null">
-				#{businesslicensepic,jdbcType=NVARCHAR},
-			</if>
-			<if test="isbind != null">
-				#{isbind,jdbcType=SMALLINT},
-			</if>
-			<if test="onekeypuborder != null">
-				#{onekeypuborder,jdbcType=INTEGER},
-			</if>
-			<if test="isallowoverdraft != null">
-				#{isallowoverdraft,jdbcType=INTEGER},
-			</if>
-			<if test="isemployertask != null">
-				#{isemployertask,jdbcType=SMALLINT},
-			</if>
-			<if test="recommendphone != null">
-				#{recommendphone,jdbcType=NVARCHAR},
-			</if>
-		</trim>
-	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Business">
-		update business
-		<set>
-			<if test="name != null">
-				Name = #{name,jdbcType=NVARCHAR},
-			</if>
-			<if test="city != null">
-				City = #{city,jdbcType=NVARCHAR},
-			</if>
-			<if test="district != null">
-				district = #{district,jdbcType=NVARCHAR},
-			</if>
-			<if test="phoneno != null">
-				PhoneNo = #{phoneno,jdbcType=NVARCHAR},
-			</if>
-			<if test="phoneno2 != null">
-				PhoneNo2 = #{phoneno2,jdbcType=NVARCHAR},
-			</if>
-			<if test="password != null">
-				Password = #{password,jdbcType=NVARCHAR},
-			</if>
-			<if test="checkpicurl != null">
-				CheckPicUrl = #{checkpicurl,jdbcType=NVARCHAR},
-			</if>
-			<if test="idcard != null">
-				IDCard = #{idcard,jdbcType=NVARCHAR},
-			</if>
-			<if test="address != null">
-				Address = #{address,jdbcType=NVARCHAR},
-			</if>
-			<if test="landline != null">
-				Landline = #{landline,jdbcType=NVARCHAR},
-			</if>
-			<if test="longitude != null">
-				Longitude = #{longitude,jdbcType=DOUBLE},
-			</if>
-			<if test="latitude != null">
-				Latitude = #{latitude,jdbcType=DOUBLE},
-			</if>
-			<if test="status != null">
-				Status = #{status,jdbcType=TINYINT},
-			</if>
-			<if test="inserttime != null">
-				InsertTime = #{inserttime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="districtid != null">
-				districtId = #{districtid,jdbcType=NVARCHAR},
-			</if>
-			<if test="cityid != null">
-				CityId = #{cityid,jdbcType=NVARCHAR},
-			</if>
-			<if test="groupid != null">
-				GroupId = #{groupid,jdbcType=INTEGER},
-			</if>
-			<if test="originalbusiid != null">
-				OriginalBusiId = #{originalbusiid,jdbcType=INTEGER},
-			</if>
-			<if test="provincecode != null">
-				ProvinceCode = #{provincecode,jdbcType=NVARCHAR},
-			</if>
-			<if test="citycode != null">
-				CityCode = #{citycode,jdbcType=NVARCHAR},
-			</if>
-			<if test="areacode != null">
-				AreaCode = #{areacode,jdbcType=NVARCHAR},
-			</if>
-			<if test="province != null">
-				Province = #{province,jdbcType=NVARCHAR},
-			</if>
-			<if test="commissiontypeid != null">
-				CommissionTypeId = #{commissiontypeid,jdbcType=INTEGER},
-			</if>
-			<if test="distribsubsidy != null">
-				DistribSubsidy = #{distribsubsidy,jdbcType=NUMERIC},
-			</if>
-			<if test="businesscommission != null">
-				BusinessCommission =
-				#{businesscommission,jdbcType=DECIMAL},
-			</if>
-			<if test="commissiontype != null">
-				CommissionType = #{commissiontype,jdbcType=INTEGER},
-			</if>
-			<if test="commissionfixvalue != null">
-				CommissionFixValue =
-				#{commissionfixvalue,jdbcType=DECIMAL},
-			</if>
-			<if test="businessgroupid != null">
-				BusinessGroupId = #{businessgroupid,jdbcType=INTEGER},
-			</if>
-			<if test="balanceprice != null">
-				BalancePrice = #{balanceprice,jdbcType=DECIMAL},
-			</if>
-			<if test="allowwithdrawprice != null">
-				AllowWithdrawPrice =
-				#{allowwithdrawprice,jdbcType=DECIMAL},
-			</if>
-			<if test="haswithdrawprice != null">
-				HasWithdrawPrice = #{haswithdrawprice,jdbcType=DECIMAL},
-			</if>
-			<if test="mealssettlemode != null">
-				MealsSettleMode = #{mealssettlemode,jdbcType=INTEGER},
-			</if>
-			<if test="contactway != null">
-				ContactWay = #{contactway,jdbcType=NVARCHAR},
-			</if>
-			<if test="businesslicensepic != null">
-				BusinessLicensePic =
-				#{businesslicensepic,jdbcType=NVARCHAR},
-			</if>
-			<if test="isbind != null">
-				IsBind = #{isbind,jdbcType=SMALLINT},
-			</if>
-			<if test="onekeypuborder != null">
-				OneKeyPubOrder = #{onekeypuborder,jdbcType=INTEGER},
-			</if>
-			<if test="isallowoverdraft != null">
-				IsAllowOverdraft = #{isallowoverdraft,jdbcType=INTEGER},
-			</if>
-			<if test="isemployertask != null">
-				IsEmployerTask = #{isemployertask,jdbcType=SMALLINT},
-			</if>
-			<if test="recommendphone != null">
-				RecommendPhone = #{recommendphone,jdbcType=NVARCHAR},
-			</if>
-		</set>
-		where Id = #{id,jdbcType=INTEGER}
-	</update>
 	<update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Business">
 		update business
 		set Name = #{name,jdbcType=NVARCHAR},
@@ -661,4 +287,107 @@
 		#{recommendphone,jdbcType=NVARCHAR}
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
+
+  <sql id="getBusinessListColums" >
+  		b.Id ,
+		isnull(b.name,'''') as name ,
+		b.city ,
+		b.district ,
+		b.phoneno ,
+		b.phoneno2 ,
+		b.password ,
+		b.checkPicUrl ,
+		b.idcard ,
+		isnull(b.address,'''') as address ,
+		ISNULL(b.Latitude, 0) latitude ,
+		ISNULL(b.Longitude, 0) longitude ,
+		b.status ,
+		b.inserttime ,
+		b.districtId ,
+		b.cityid ,
+		b.groupid ,
+		b.originalbusiid ,
+		b.provincecode ,
+		b.citycode ,
+		b.areacode ,
+		b.province ,
+		b.commissiontypeid ,
+		ISNULL(b.DistribSubsidy, 0.00) distribsubsidy ,
+		b.businesscommission ,
+		isnull(g.groupname,'''') as groupname ,
+		b.commissiontype ,
+		b.commissionFixvalue ,
+		b.businessgroupid ,
+		bg.Name businessgroupname ,
+		ISNULL(b.MealsSettleMode, 0) mealssettlemode ,
+		ISNULL(b.BalancePrice,0) balanceprice ,
+		ISNULL(b.AllowWithdrawPrice, 0) allowwithdrawprice ,
+		ISNULL(b.RecommendPhone, '''') AS recommendphone
+  </sql>
+
+   <sql id="getBusinessListFrom" >
+        business b WITH (NOLOCK)
+		LEFT JOIN dbo.[group] g WITH ( NOLOCK ) ON g.Id = b.GroupId
+		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON b.BusinessGroupId =bg.Id
+  </sql>
+
+  <sql id="getBusinessListWhere">
+
+<!--      <trim prefix="WHERE" prefixOverrides="AND|OR"> -->
+       1=1  
+			<if test="recommendPhone != null and recommendPhone!=''">
+				and b.recommendPhone=''${recommendPhone}''
+			</if>
+			<if test="businessName != null and businessName!=''">
+				and b.name=''${businessName}''
+			</if>
+			<if test="businessPhone != null and businessPhone!=''">
+				and b.PhoneNo=''${businessPhone}''
+			</if>
+			<if test="status!=null and status!=-1">
+				and b.status=${status}
+			</if>
+			<if test="mealsSettleMode!=null and mealsSettleMode!=-1">
+				and ISNULL(b.mealsSettleMode,0)=${mealsSettleMode}
+			</if>
+			<if test="businessSettlementRatio!=null and businessSettlementRatio>0">
+				and b.businessCommission=#{businessSettlementRatio}
+			</if>
+			<if test="groupId!=null and groupId!=0">
+				and b.groupId=${groupId}
+			</if>
+			<if test="businessGroupId!=null and businessGroupId>0">
+				and b.businessGroupId=${businessGroupId}
+			</if>
+			<if test="commissionType!=null and commissionType>0">
+				and b.commissionType=${commissionType}
+			</if>
+			<if test="businessCity != null and businessCity!=''">
+				and b.city=''${businessCity}''
+			</if>
+			<if test="authorityCityNameList != null">
+				and b.city in
+				<foreach item="item" index="index" collection="authorityCityNameList"
+					open="(''" separator="'',''" close="'')">
+					#{item}
+				</foreach>
+			</if>
+<!-- 		</trim> -->
+  </sql>
+  
+  <select id="getBusinessList"  resultType="com.edaisong.entity.domain.BusinessModel"
+		parameterType="com.edaisong.entity.req.PagedBusinessReq" 
+  statementType="CALLABLE" >
+	{call Sp_CustomPage2015_V1(
+	' b.Id DESC ',
+	' <include refid="getBusinessListColums" />',
+	' <include refid="getBusinessListFrom" /> ',
+	' <include refid="getBusinessListWhere"/> ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER}
+	,1,
+	#{totalRecord,mode=OUT,jdbcType=INTEGER},
+	#{totalPage,mode=OUT,jdbcType=INTEGER}
+	)}
+ </select>
 </mapper>

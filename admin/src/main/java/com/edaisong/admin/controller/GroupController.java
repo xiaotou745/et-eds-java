@@ -1,6 +1,5 @@
 package com.edaisong.admin.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,20 +8,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.edaisong.api.service.impl.GroupApiConfigService;
 import com.edaisong.api.service.inter.IGroupApiConfigService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.GroupApiConfig;
+import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
-import com.edaisong.entity.resp.GroupResp;
+
 
 @Controller
 @RequestMapping("group")
@@ -36,12 +32,12 @@ public class GroupController {
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response){
 		
 		GroupReq req=new GroupReq();	
-		GroupResp resp =groupService.getGroupList(req);		
+		List<GroupModel> resultList =groupService.getGroupList(req);		
 		
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "集团管理");
-		model.addObject("listData", resp.getGroupList());
+		model.addObject("listData", resultList);
 		model.addObject("viewPath", "group/groupmanager");
 		return model;		
 	}
@@ -58,13 +54,13 @@ public class GroupController {
 			req.setGroupName(groupName);		
 		if(appkey!=null && appkey!="")
 			req.setAppKey(appkey);	
-		GroupResp resp =groupService.getGroupList(req);				
+		List<GroupModel> resultList =groupService.getGroupList(req);				
 		//HashMap map = new HashMap();
 		//map.put("list", resp);		
 		//ModelAndView model = new ModelAndView("group/GroupManagerList",map);
 		
 		ModelAndView model = new ModelAndView("group/groupmanagerlist");
-		model.addObject("listData", resp.getGroupList());
+		model.addObject("listData", resultList);
 		return model;		
 	}	
 	

@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.api.service.inter.IOrderService;
-import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.OrderListModel;
-import com.edaisong.entity.req.OrderSearchWebReq;
+import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.req.PagedOrderSearchReq;
 
 @Service
 public class OrderService implements IOrderService {
@@ -25,8 +26,22 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	public ResponsePageList<OrderListModel> getOrders(OrderSearchWebReq search) {
+	public PagedResponse<OrderListModel> getOrders(PagedOrderSearchReq search) {
 		return orderDao.getOrders(search);
+	}
+
+	
+	
+	/**
+	 * 后台订单列表页面 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @param search 查询条件实体
+	 * @return
+	 */
+	@Override
+	public OrderMapDetail getOrderMapDetail(long orderid) {
+		return orderDao.getOrderMapDetail(orderid);
 	}
 
 }

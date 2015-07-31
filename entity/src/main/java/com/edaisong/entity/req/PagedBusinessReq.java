@@ -3,9 +3,10 @@ package com.edaisong.entity.req;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.edaisong.entity.common.PagedRequestBase;
 import com.edaisong.entity.common.RequestBase;
 
-public class BusinessReq extends RequestBase {
+public class PagedBusinessReq extends PagedRequestBase {
 	private String recommendPhone;
 	private String businessName;
 	private String businessPhone;
@@ -16,9 +17,7 @@ public class BusinessReq extends RequestBase {
 	private int businessGroupId;
 	private int commissionType;
 	private String businessCity;
-	private List<String> authorityCityNameList;
 	
-	private int cityAuthType;
 	private int searchType;
 	private String provinceCode;
 	private String cityCode;
@@ -58,24 +57,6 @@ public class BusinessReq extends RequestBase {
 	 */
 	public void setMealsSettleMode(int mealsSettleMode) {
 		this.mealsSettleMode = mealsSettleMode;
-	}
-
-	/**
-	 * 城市权限类型（1：全部城市权限 2：部分城市权限）
-	 * 
-	 * @return the userType
-	 */
-	public int getCityAuthType() {
-		return cityAuthType;
-	}
-
-	/**
-	 * 城市权限类型（1：全部城市权限 2：部分城市权限）
-	 * 
-	 * @param userType
-	 */
-	public void setCityAuthType(int cityAuthType) {
-		this.cityAuthType = cityAuthType;
 	}
 
 	public String getBusinessName() {
@@ -219,21 +200,5 @@ public class BusinessReq extends RequestBase {
 	 */
 	public void setRecommendPhone(String recommendPhone) {
 		this.recommendPhone = recommendPhone;
-	}
-
-	/**
-	 * 用户所有权限城市名称集合
-	 * @return the authorityCityNameList
-	 */
-	public List<String> getAuthorityCityNameList() {
-		return authorityCityNameList;
-	}
-
-	/**
-	 * 用户所有权限城市名称集合
-	 * @param authorityCityNameList the authorityCityNameList to set
-	 */
-	public void setAuthorityCityNameList(List<String> authorityCityNameList) {
-		this.authorityCityNameList = authorityCityNameList;
 	}
 }

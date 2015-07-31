@@ -1,111 +1,44 @@
 package com.edaisong.entity.common;
 
+import java.util.List;
+
 public class RequestBase {
 
-	private String authorityCityNameListStr;
+	private List<String> authorityCityNameList;
 
-	private int userType;
+	private int cityAuthType;
 
 	/**
-	 * 用户所有权限城市名称集合串
+	 * 用户权限类型（1：全部城市权限 2：部分城市权限）
 	 * 
 	 * @return
 	 */
-	public String getAuthorityCityNameListStr() {
-		return authorityCityNameListStr;
+	public int getCityAuthType() {
+		return cityAuthType;
 	}
 
 	/**
-	 * 用户所有权限城市名称集合串
+	 * 用户权限类型（1：全部城市权限 2：部分城市权限）
 	 * 
-	 * @param authorityCityNameListStr
+	 * @param cityAuthType
 	 */
-	public void setAuthorityCityNameListStr(String authorityCityNameListStr) {
-		this.authorityCityNameListStr = authorityCityNameListStr;
+	public void setCityAuthType(int cityAuthType) {
+		this.cityAuthType = cityAuthType;
 	}
 
 	/**
-	 * 用户类型（1：全部城市权限 2：部分城市权限）
-	 * 
-	 * @return
+	 * 用户所有权限城市名称集合
+	 * @return the authorityCityNameList
 	 */
-	public int getUserType() {
-		return userType;
+	public List<String> getAuthorityCityNameList() {
+		return authorityCityNameList;
 	}
 
 	/**
-	 * 用户类型（1：全部城市权限 2：部分城市权限）
-	 * 
-	 * @param userType
+	 * 用户所有权限城市名称集合
+	 * @param authorityCityNameList the authorityCityNameList to set
 	 */
-	public void setUserType(int userType) {
-		this.userType = userType;
-	}
-
-	private int totalRecord;
-	private int totalPage;
-	private int pageSize;
-	private int currentPage;
-
-	/**
-	 * 总记录数
-	 * @return
-	 */
-	public int getTotalRecord() {
-		return totalRecord;
-	}
-   
-	/**
-	 * 总记录数
-	 * @param totalRecord
-	 */
-	public void setTotalRecord(int totalRecord) {
-		this.totalRecord = totalRecord;
-	}
-	/**
-	 * 总页数
-	 * @return
-	 */
-	public int getTotalPage() {
-		return totalPage;
-	}
-	 /**
-     * 总页数
-     * @param totalRecord
-     */
-	public void setTotalPage(int totalPage) {
-		this.totalPage = totalPage;
-	}
-
-	/**
-	 * 页容量
-	 * @return
-	 */
-	public int getPageSize() {
-		return pageSize;
-	}
-
-	/**
-	 * 页容量
-	 * @param pageSize
-	 */
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	/**
-	 * 当前页码
-	 * @return
-	 */
-	public int getCurrentPage() {
-		return currentPage;
-	}
-
-	/**
-	 * 当前页吗
-	 * @param currentPage
-	 */
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
+	public void setAuthorityCityNameList(List<String> authorityCityNameList) {
+		this.authorityCityNameList = authorityCityNameList;
 	}
 }

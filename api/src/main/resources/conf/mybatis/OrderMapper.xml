@@ -717,49 +717,57 @@
 		        join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
   </sql>
    <!-- 后台订单列表页面  动态查询条件  add by caoheyang 20150728 -->
-  <sql id="GetOrdersColumsWhere">
+  <sql id="GetOrdersColumsWhere" >
      1=1  
-	 <if test="businessName != null">
-	      and b.Name=#{businessName}
+	 <if test="businessName != null and businessName != ''">
+	      and b.Name=''${businessName}''
      </if>
-      <if test="businessPhone != null">
-	      and  b.PhoneNo=#{businessPhone}
+      <if test="businessPhone != null and businessPhone!='' ">
+	      and  b.PhoneNo=''${businessPhone}''
      </if>
-      <if test="orderId != null">
-	      and  o.OrderNo=#{orderId}
+      <if test="orderId != null and orderId!=''">
+	      and  o.OrderNo=''${orderId}''
      </if>
-      <if test="originalOrderNo != null">
-	      and o.OriginalOrderNo=#{originalOrderNo}
+      <if test="originalOrderNo != null and originalOrderNo!=''">
+	      and o.OriginalOrderNo=''${originalOrderNo}''
      </if>
       <if test="orderStatus != null">
-	      and o.Status==#{orderStatus}
+	      and o.Status=${orderStatus}
      </if>
-      <if test="superManName != null">
-	     and c.TrueName=#{superManName}
+      <if test="superManName != null and superManName!=''">
+	     and c.TrueName=''${superManName}''
      </if>
-      <if test="superManPhone != null">
-	     and c.PhoneNo=#{superManPhone}
+      <if test="superManPhone != null and superManPhone!='' ">
+	     and c.PhoneNo=''${superManPhone}''
      </if>
-      <if test="orderPubStart != null">
-	     and o.PubDate>= #{orderPubStart}
+      <if test="orderPubStart != null and orderPubStart!=''">
+	     and o.PubDate>= ''${orderPubStart}''
      </if>
-     <if test="orderPubEnd != null">
+     <if test="orderPubEnd != null and orderPubEnd!=''">
          <![CDATA[ and o.PubDate<=]]> 
-	      #{orderPubEnd}
+	      ''${orderPubEnd}''
      </if>
-       <if test="groupId != null">
-	     and o.OrderFrom = #{groupId}
+       <if test="groupId != null and groupId != -1">
+	     and o.OrderFrom = ${groupId}
       </if>
-       <if test="businessCity != null">
-	     and b.City= #{businessCity}
+       <if test="businessCity != null and businessCity!='' and businessCity!='-1'">
+	     and b.City= ''${businessCity}''
       </if>
-       <if test="authorityCityNameListStr != null">
-	     and b.City in  ${authorityCityNameListStr}
-      </if>
+      <if test="authorityCityNameList != null">
+				and b.city in
+				<foreach item="item" index="index" collection="authorityCityNameList"
+					open="(''" separator="'',''" close="'')">
+					#{item}
+				</foreach>
+	 </if>
+<!--        <if test="authorityCityNameListStr != null and authorityCityNameListStr!=''"> -->
+<!-- 	     and b.City in  ''$${authorityCityNameListStr}'' -->
+<!--       </if> -->
   </sql>
   
    <!--后台订单列表页面 ） add by caoheyang 20150728  -->
-  <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   parameterType="com.edaisong.entity.req.OrderSearchWebReq" 
+  <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   
+  parameterType="com.edaisong.entity.req.PagedOrderSearchReq" 
   statementType="CALLABLE" >
 	{call Sp_CustomPage2015_V1(
 	' o.Status asc , o.Id desc ',
@@ -772,6 +780,40 @@
 	#{totalRecord,mode=OUT,jdbcType=INTEGER},
 	#{totalPage,mode=OUT,jdbcType=INTEGER}
 	)}
+ </select>
+  
+  
+   <!--后台订单列表页面 ） add by caoheyang 20150728  -->
+  <select id="getOrderMapDetail"  resultType="com.edaisong.entity.domain.OrderMapDetail"   
+  parameterType="long"  >
+	select  ord.OrderId,
+                                    CASE WHEN ISNULL(PubLongitude, 0) = 0 THEN c.Longitude
+                                         ELSE PubLongitude
+                                    END AS PubLongitude ,
+                                    CASE WHEN ISNULL(PubLatitude, 0) = 0 THEN c.Latitude
+                                         ELSE PubLatitude
+                                    END AS PubLatitude ,
+                                    ISNULL(ab.PubDate, '') AS PubDate,
+                                    ISNULL(GrabLongitude, 0) AS GrabLongitude,
+                                    ISNULL(GrabLatitude, 0) AS GrabLatitude,
+                                    ISNULL(GrabTime, '') AS GrabTime,
+                                    ISNULL(TakeLongitude, 0) AS TakeLongitude ,
+                                    ISNULL(TakeLatitude, 0) AS TakeLatitude,
+                                    ISNULL(TakeTime, '') AS TakeTime,
+                                    ISNULL(CompleteLongitude, 0) AS CompleteLongitude,
+                                    ISNULL(CompleteLatitude, 0) AS CompleteLatitude,
+                                    ISNULL(ab.ActualDoneDate, '') AS ActualDoneDate,
+                                    CASE ISNULL(ord.GrabLatitude, 0)
+                                        WHEN 0 THEN -1
+                                        ELSE CASE ISNULL(ord.CompleteLatitude, 0)
+                                                WHEN 0 THEN -1
+                                                ELSE ord.GrabToCompleteDistance
+                                            END
+                                    END AS GrabToCompleteDistance
+                            FROM  [order] (NOLOCK) ab  
+                                    JOIN OrderOther (NOLOCK) ord ON ord.OrderId = ab.Id
+                                    JOIN business (NOLOCK) c ON c.id = ab.businessId 
+                            WHERE   ab.Id = @orderID
  </select>
   
 </mapper>

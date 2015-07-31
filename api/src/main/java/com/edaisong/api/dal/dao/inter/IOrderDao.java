@@ -1,8 +1,9 @@
 package com.edaisong.api.dal.dao.inter;
 
-import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.OrderListModel;
-import com.edaisong.entity.req.OrderSearchWebReq;
+import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.req.PagedOrderSearchReq;
 
 public interface IOrderDao {
 
@@ -13,6 +14,15 @@ public interface IOrderDao {
 	 * @param search 查询条件实体
 	 * @return
 	 */
-	ResponsePageList<OrderListModel> getOrders(OrderSearchWebReq search);
+	PagedResponse<OrderListModel> getOrders(PagedOrderSearchReq search);
+	
+	 /**
+	  * 根据orderID获取订单地图数据
+	  * @param orderId
+	  * @author CaoHeYang
+	  * @Date 20150730
+	  * @return
+	  */
+	 OrderMapDetail  getOrderMapDetail(long orderId);
 	
 }

@@ -3,9 +3,10 @@ package com.edaisong.api.service.inter;
 import java.util.List;
 
 import com.edaisong.entity.PublicProvinceCity;
+import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OpenCityModel;
-import com.edaisong.entity.resp.ModifyOpenCityResp;
+
 
 
 /**
@@ -36,7 +37,7 @@ public interface IPublicProvinceCityService {
 	  * @param closeCityCodeList 关闭城市
 	  * @Date 20150721
 	  */
-	 ModifyOpenCityResp modifyOpenCityByCode(String openCityCodeList, String closeCityCodeList);
+	 ResponseBase modifyOpenCityByCode(String openCityCodeList, String closeCityCodeList);
 	 
 	 /**
 	  * 修改开发城市后更新Redis缓存

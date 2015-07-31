@@ -16,7 +16,7 @@ import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.DeliveryCompany;
-import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.resp.AccountResp;
@@ -52,7 +52,7 @@ public class AccountController {
 
 	@RequestMapping("listdo")
 	public ModelAndView list(AccountReq req) {
-		ResponsePageList<Account> resp = accountService.queryAccount(req);
+		PagedResponse<Account> resp = accountService.queryAccount(req);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "account/listdo");
 		view.addObject("listData", resp);

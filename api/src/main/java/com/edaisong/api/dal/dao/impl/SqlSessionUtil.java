@@ -5,8 +5,9 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import com.edaisong.entity.common.PagedRequestBase;
 import com.edaisong.entity.common.RequestBase;
-import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.common.PagedResponse;
 
 public class SqlSessionUtil {
 
@@ -51,16 +52,16 @@ public class SqlSessionUtil {
 	 * @Date 20150729  
 	 * @return
 	 */
-	public <E> ResponsePageList<E> selectPageList(String statement, Object parameter) {
+	public <E> PagedResponse<E> selectPageList(String statement, Object parameter) {
 		try {
-			RequestBase basemodel=  (RequestBase)parameter;
+			PagedRequestBase basemodel=  (PagedRequestBase)parameter;
 			if (basemodel.getCurrentPage()==0) {
 				basemodel.setCurrentPage(1);  //默认第一页
 			}
 			if(basemodel.getPageSize()==0){
 				basemodel.setPageSize(15);  //默认页容量
 			}
-			ResponsePageList<E> result=new ResponsePageList<E>();
+			PagedResponse<E> result=new PagedResponse<E>();
 			result.setResultList(innerSession.selectList(statement, parameter));
 			result.setCurrentPage(basemodel.getCurrentPage());
 			result.setPageSize(basemodel.getPageSize());

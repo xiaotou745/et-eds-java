@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.edaisong.api.dal.dao.inter.IAccountDao;
 import com.edaisong.core.common.ParseHelper;
 import com.edaisong.entity.Account;
-import com.edaisong.entity.common.ResponsePageList;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.AccountReq;
 import com.edaisong.entity.resp.AccountResp;
 
@@ -17,7 +17,7 @@ import com.edaisong.entity.resp.AccountResp;
 public class AccountDao extends DaoBase implements IAccountDao {
 	// 查询所有管理后台用户列表
 	@Override
-	public ResponsePageList<Account> query(AccountReq req) {
+	public PagedResponse<Account> query(AccountReq req) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		System.out.println(req.getKeyword());
@@ -37,7 +37,7 @@ public class AccountDao extends DaoBase implements IAccountDao {
 				.selectList("com.edaisong.api.dal.dao.inter.IAccountDao.query",
 						map);
 
-		ResponsePageList<Account> resp = new ResponsePageList<Account>();
+		PagedResponse<Account> resp = new PagedResponse<Account>();
 		resp.setResultList(list);
 		resp.setPageSize(PageSize);
 		resp.setCurrentPage(CurrentPage);

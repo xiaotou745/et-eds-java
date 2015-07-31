@@ -22,7 +22,7 @@ public class DeliveryCompanyService implements IDeliveryCompanyService {
 	 * 获取配送公司列表 2015年7月29日 13:14:41
 	 * */
 	@Override
-	public List<DeliveryCompany> getDeliveryCompanyList() {
-		return iDeliveryCompDao.getDeliveryCompanyList();
+	public List<DeliveryCompany> getDeliveryCompanyList(){
+		return iDeliveryCompDao.getDeliveryCompanyList();		
 	}
 }

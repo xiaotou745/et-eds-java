@@ -5,7 +5,9 @@ import org.apache.log4j.Logger;
 
 
 
+
 import com.edaisong.core.util.StringUtils;
+import com.edaisong.entity.common.OpenResponseBase;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.common.ResponseCode;
 
@@ -41,7 +43,7 @@ public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
 //        StackTraceElement[] trace = new StackTraceElement[1];
 //        trace[0] = ex.getStackTrace()[0];
 //        ex.setStackTrace(trace);
-        ResponseBase rep=new ResponseBase();
+    	OpenResponseBase rep=new OpenResponseBase();
         rep.setResponseCode(ResponseCode.SYSTEM_ERROR);
         rep.setMessage(stackTrace);
         System.out.println("处理自定义的异常");

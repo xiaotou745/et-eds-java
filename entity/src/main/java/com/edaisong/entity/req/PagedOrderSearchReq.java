@@ -1,14 +1,13 @@
 package com.edaisong.entity.req;
 
-import com.edaisong.entity.common.RequestBase;
-
+import com.edaisong.entity.common.PagedRequestBase;
 
 /**
  * web后台 订单查询参数实体
  * @author CaoHeYang
  * @Date 20150728
  */
-public class OrderSearchWebReq extends RequestBase{
+public class PagedOrderSearchReq extends PagedRequestBase{
      private String superManPhone ; 
      private String businessPhone ;
      private String orderId ;          

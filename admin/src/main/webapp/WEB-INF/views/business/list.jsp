@@ -4,106 +4,102 @@
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.BusinessModel"%>
-<%@page import="com.edaisong.core.common.ParseHelper"%> 
+<%@page import="com.edaisong.core.common.ParseHelper"%>
+<%@page import="com.edaisong.core.common.PageHelper"%>
+<%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%
 	String basePath = request.getContextPath();
 %>
-<div class="ibox-content">
-	<table width="100%" border="0" cellspacing="0" cellpadding="0"
-		class="table">
-		<thead>
-			<tr class="tdbg">
-				<th width="%5">编号</th>
-				<th width="%5">商户名称</th>
-				<th width="%5">电话</th>
-				<th width="%10">地址</th>
-				<th width="%50">申请时间</th>
-				<th width="%5">推荐人手机号</th>
-				<th width="%5">所属集团</th>
-				<th width="%5">结算比例</th>
-				<th width="%5">外送费</th>
-				<th width="%5">账户余额</th>
-				<th width="%5">可提现余额</th>
-				<th width="%5">审核状态</th>
-				<th width="%5">分组</th>
-				<th width="%5">结算类型</th>
-				<th width="%5">餐费结算方式</th>
-				<th>操作</th>
-			</tr>
-		</thead>
 
-		<tbody>
+<table
+	class="table table-striped table-bordered table-hover dataTables-example">
+	<thead>
+		<tr class="tdbg">
+			<th width="%5">编号</th>
+			<th width="10%">商户名称</th>
+			<th width="100px">电话</th>
+			<th width="10%">地址</th>
+			<th width="11%">申请时间</th>
+			<th width="%5">推荐人手机号</th>
+			<th width="70px">所属集团</th>
+			<th width="%5">分组</th>
+			<th width="70px">审核状态</th>
+			<th width="120px">余额</th>
+			<th width="150px">结算</th>
+			<th>操作</th>
+		</tr>
+	</thead>
 
-			<%
-				Object obj=request.getAttribute("listData");
-							if(obj!=null)
-							{
-						List<BusinessModel> data=	(List<BusinessModel>)obj;
-							 for (int i = 0; i < data.size(); i++) {
-							    String status=""; 
-							    String statusStyle="";
-							    String statusStyle2="style=\"color:gray\"";
-						 switch(data.get(i).getStatus())
-						 {
-						 case 0:status="未审核";
-						 break;
-						 case 1:status="已通过";
-						 statusStyle="style=\"color:gray\"";
-						 statusStyle2="";
-						 break;
-						 case 2:status="未审核且未添加地址";
-						 break;
-						 case 3:status="审核中";
-						 break;
-						 case 4:status="审核被拒绝";
-						 break;
-						 }
-                 int checkAddress = data.get(i).getAddress()==null||data.get(i).getAddress().isEmpty()?0:1;
-                 int checkImage = data.get(i).getCheckpicurl()==null||data.get(i).getCheckpicurl().isEmpty()?0:1;
-			%>
-			<tr>
-				<td><%=data.get(i).getId()%></td>
-				<td><%=data.get(i).getName()%></td>
-				<td><%=data.get(i).getPhoneno()%></td>
-				<td><%=data.get(i).getAddress()%></td>
-				<td><%=ParseHelper.ToDateString(data.get(i).getInserttime(), "")%></td>
-				<td><%=data.get(i).getRecommendphone()%></td>
+	<tbody>
 
+		<%
+			PagedResponse<BusinessModel> responsePageList = (PagedResponse<BusinessModel>)request.getAttribute("listData");
+						List<BusinessModel> data=responsePageList.getResultList();
+											
+									 for (int i = 0; i < data.size(); i++) {
+									    String status=""; 
+									    String statusStyle="";
+									    String statusStyle2="style=\"color:gray\"";
+								 switch(data.get(i).getStatus())
+								 {
+								 case 0:status="未审核";
+								 break;
+								 case 1:status="已通过";
+								 statusStyle="style=\"color:gray\"";
+								 statusStyle2="";
+								 break;
+								 case 2:status="未审核且未添加地址";
+								 break;
+								 case 3:status="审核中";
+								 break;
+								 case 4:status="审核被拒绝";
+								 break;
+								 }
+				                 int checkAddress = data.get(i).getAddress()==null||data.get(i).getAddress().isEmpty()?0:1;
+				                 int checkImage = data.get(i).getCheckpicurl()==null||data.get(i).getCheckpicurl().isEmpty()?0:1;
+		%>
+		<tr>
+			<td><%=data.get(i).getId()%></td>
+			<td><%=data.get(i).getName()%></td>
+			<td><%=data.get(i).getPhoneno()%></td>
+			<td><%=data.get(i).getAddress()%></td>
+			<td><%=ParseHelper.ToDateString(data.get(i).getInserttime(), "")%></td>
+			<td><%=data.get(i).getRecommendphone()%></td>
+			<td><%=data.get(i).getGroupname()%></td>
+			<td><%=data.get(i).getBusinessgroupName()%></td>
+			<td><%=status%></td>
+			<td>外送费:<%=data.get(i).getDistribsubsidy()%><br> 账户余额:<a
+				href="/BusinessManager/BusinessDetail?businessId=<%=data.get(i).getId()%> ">￥<%=data.get(i).getBalanceprice()%></a><br>
+				可提现余额:<%=data.get(i).getAllowwithdrawprice()%></td>
+			<td>结算比例:<%=data.get(i).getCommissiontype()==1?data.get(i).getBusinesscommission():"￥"+data.get(i).getCommissionfixvalue()%><br>
+				结算类型:<%=data.get(i).getCommissiontype()==1?"结算比例":"固定金额"%><br>
+				餐费结算方式:<%=data.get(i).getMealssettlemode()==0?"线下结算":"线上结算"%>
+			</td>
+			<td><a href="javascript:void(0)" <%=statusStyle%>
+				onclick="businessOk(<%=checkAddress%>,<%=data.get(i).getId()%>,<%=data.get(i).getBusinesscommission()%>,<%=checkImage%>,<%=data.get(i).getCommissiontype()%>,<%=data.get(i).getLatitude()%>,<%=data.get(i).getLongitude()%>)"
+				businessid="<%=data.get(i).getId()%>" class="businessOk">审核通过</a> <a
+				href="javascript:void(0)" <%=statusStyle2%>
+				businessid="<%=data.get(i).getId()%>" class="businessCel">取消资格</a> <a
+				href="/BusinessManager/QueryBusinessDetail?businessId=<%=data.get(i).getId()%>">修改信息</a>
+				<a href="javascript:void(0)" data-toggle="modal"
+				data-target="#BusinessRechargeShow"
+				onclick="funcBusinessRecharge(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">充值</a>
+				<a
+				href="/BusinessManager/ClienterBindManage?businessId=<%=data.get(i).getId()%>">骑士绑定</a>
+				<a href="javascript:void(0)" data-toggle="modal"
+				data-target="#BusinessWithdraw"
+				onclick="funcBusinessWithdraw(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">提款申请</a>
+			</td>
+		</tr>
+		<%
+			}
+		%>
 
-				<td><%=data.get(i).getGroupname()%></td>
-				<td><%=data.get(i).getCommissiontype()==1?data.get(i).getBusinesscommission():"￥"+data.get(i).getCommissionfixvalue()%></td>
-				<td><%=data.get(i).getDistribsubsidy()%></td>
-				<td><a
-					href="/BusinessManager/BusinessDetail?businessId=<%=data.get(i).getId()%> ">￥<%=data.get(i).getBalanceprice()%></a></td>
-				<td><%=data.get(i).getAllowwithdrawprice()%></td>
-				<td><%=status%></td>
-				<td><%=data.get(i).getBusinessgroupName()%></td>
-				<td><%=data.get(i).getCommissiontype()==1?"结算比例":"固定金额"%></td>
-				<td><%=data.get(i).getMealssettlemode()==0?"线下结算":"线上结算"%></td>
-				<td><a href="javascript:void(0)" <%=statusStyle%>
-					onclick="businessOk(<%=checkAddress%>,<%=data.get(i).getId()%>,<%=data.get(i).getBusinesscommission()%>,<%=checkImage%>,<%=data.get(i).getCommissiontype()%>,<%=data.get(i).getLatitude()%>,<%=data.get(i).getLongitude()%>)"
-					businessid="<%=data.get(i).getId()%>" class="businessOk">审核通过</a> <a
-					href="javascript:void(0)" <%=statusStyle2%>
-					businessid="<%=data.get(i).getId()%>" class="businessCel">取消资格</a>
-
-					<a
-					href="/BusinessManager/QueryBusinessDetail?businessId=<%=data.get(i).getId()%>">修改信息</a>
-					<a href="javascript:void(0)" data-toggle="modal" data-target="#BusinessRechargeShow"
-					onclick="funcBusinessRecharge(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">充值</a>
-					<a
-					href="/BusinessManager/ClienterBindManage?businessId=<%=data.get(i).getId()%>">骑士绑定</a>
-					<a href="javascript:void(0)" data-toggle="modal" data-target="#BusinessWithdraw"
-					onclick="funcBusinessWithdraw(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">提款申请</a>
-				</td>
-			</tr>
-			<%
-				}
-							}
-			%>
-
-		</tbody>
-	</table>
-</div>
+	</tbody>
+</table>
+<%=PageHelper.GetPage(responsePageList.getPageSize(),
+		responsePageList.getCurrentPage(), responsePageList.getTotalRecord(),
+		responsePageList.getTotalPage())%>
 <script type="text/javascript">
     var currentId;
     $(document).ready(function () {

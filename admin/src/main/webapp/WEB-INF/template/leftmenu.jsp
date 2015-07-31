@@ -8,8 +8,6 @@
 <%@ page language="java"
 	import="com.edaisong.api.business.SqlSessionFactoryPool"%>
 <%@ page language="java"
-	import="com.edaisong.entity.resp.AuthorityMenuResp"%>
-<%@ page language="java"
 	import="com.edaisong.entity.req.AuthorityMenuReq"%>
 <%@ page language="java" import="com.edaisong.entity.MenuEntity"%>
 <%@ page language="java" import="java.util.List"%>
@@ -21,7 +19,7 @@
 
 	AuthorityMenuReq req = new AuthorityMenuReq();
 	req.setAccountId("1");
-	AuthorityMenuResp resp = menuService.getMenuListByUserID(req);
+	List<MenuEntity> menuList = menuService.getMenuListByUserID(req);
 %>
 <nav class="navbar-default navbar-static-side" role="navigation">
 	<div class="sidebar-collapse">
@@ -49,11 +47,10 @@
 			</li>
 
 			<%
-				if (resp != null) {
-					for (MenuEntity menu : resp.getMenuList()) {
+					for (MenuEntity menu : menuList) {
 						if (menu.getParid() == 0) {
 							List<MenuEntity> data=new ArrayList<>();
-							for (MenuEntity submenu : resp.getMenuList()) {
+							for (MenuEntity submenu : menuList) {
 								if (submenu.getParid() == menu.getMenuid()
 										&& submenu.getIsbutton() == false
 										) {
@@ -80,7 +77,6 @@
 							
 					}
 				}	
-			}
 			%>
 		</ul>
 	</div>
