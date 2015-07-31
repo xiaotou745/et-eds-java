@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
@@ -5,11 +6,11 @@
 <%@page import="com.edaisong.entity.BusinessGroup"%>
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%
-	String basePath = request.getContextPath();
-List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
-List<BusinessGroup> businessGroupListData=	(List<BusinessGroup>)request.getAttribute("businessGroupListData");
-List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
-int groupId=(int)request.getAttribute("groupId");
+	String basePath =new PropertyUtils().getProperty("static.admin.url");
+	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
+	List<BusinessGroup> businessGroupListData=	(List<BusinessGroup>)request.getAttribute("businessGroupListData");
+	List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
+	int groupId=(int)request.getAttribute("groupId");
 %>
 
 <div class="SearchMd">

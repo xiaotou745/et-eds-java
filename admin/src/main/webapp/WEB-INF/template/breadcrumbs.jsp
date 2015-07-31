@@ -1,8 +1,9 @@
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="utf-8"%>
 		<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
 <%
-	String basePath = request.getContextPath();
+	String basePath =new PropertyUtils().getProperty("static.admin.url");
 %>
 <div class="row wrapper border-bottom white-bg page-heading">
 	<div class="col-lg-10">
