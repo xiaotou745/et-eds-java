@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%
-String basePath =new PropertyUtils().getProperty("static.admin.url");
+	String basePath =new PropertyUtils().getProperty("static.admin.url");
 %>
 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
