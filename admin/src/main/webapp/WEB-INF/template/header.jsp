@@ -1,8 +1,9 @@
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%
-	String basePath = request.getContextPath();
+String basePath =new PropertyUtils().getProperty("static.admin.url");
 %>
 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
