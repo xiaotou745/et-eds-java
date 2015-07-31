@@ -36,7 +36,7 @@ public class OrderService implements IOrderService {
 	 * 后台订单列表页面 
 	 * @author CaoHeYang
 	 * @Date 20150728
-	 * @param search 查询条件实体
+	 * @param orderid 订单id
 	 * @return
 	 */
 	@Override
