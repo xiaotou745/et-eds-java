@@ -123,7 +123,7 @@ $("#addUser").click(function(){
 $("#selCity").change(function(){
 	var selCity=$("#selCity").val();
 	if(selCity==1) $("#divcity").hide();
-	else $("#divcity").show();
+	else $("#divcity").show(500);
 });
 //绑定物流公司
 $("#hrefdc").click(function(){
