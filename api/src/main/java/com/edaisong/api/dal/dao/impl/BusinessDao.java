@@ -1,11 +1,14 @@
 package com.edaisong.api.dal.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IBusinessDao;
 import com.edaisong.entity.Business;
+import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
@@ -46,6 +49,19 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		return getMasterSqlSessionUtil().update(
 				"com.edaisong.api.dal.dao.inter.IBusinessDao.modifyBusiness",
 				detailModel);
+	}
+
+	@Override
+	public Business login(String phoneNo, String password) {
+		Map<String, Object> paramMap = new HashedMap();
+		paramMap.put("PhoneNo", phoneNo);
+		paramMap.put("Password", password);
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessByPhoneNoAndPwd",paramMap);
+	}
+
+	@Override
+	public boolean addLoginLog(BusinessLoginLog log) {
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dal.dao.inter.IBusinessDao.addLogingLog",log) > 0;
 	}
 	 
 }
