@@ -12,6 +12,7 @@ import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
+import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.req.BusinessLoginReq;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
