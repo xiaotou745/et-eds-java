@@ -1,4 +1,4 @@
-package com.edaisong.buiness.common.handler;
+package com.edaisong.business.common.handler;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.SystemUtils;
 import com.edaisong.entity.domain.ActionLog;
 /**
- * È«¾Öaction¼ÇÂ¼
+ * È«ï¿½ï¿½actionï¿½ï¿½Â¼
  * 
  * @author zhaohailong
  */
@@ -49,8 +49,8 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			if (obj!=null) {
 				exceptionMsg = (String) request.getAttribute("exception");
 				stackTrace = (String) request.getAttribute("stackTrace");
-//				System.out.println("Òì³£ÐÅÏ¢£º" + exceptionMsg);
-				// System.out.println("Òì³£¶ÑÕ»£º" + stackTrace);
+//				System.out.println("ï¿½ì³£ï¿½ï¿½Ï¢ï¿½ï¿½" + exceptionMsg);
+				// System.out.println("ï¿½ì³£ï¿½ï¿½Õ»ï¿½ï¿½" + stackTrace);
 			}
 			String appServerIP="localhost";
 			List<String> ipinfoList=SystemUtils.GetLocalIpInfo();
@@ -68,9 +68,9 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			logEngity.setExecuteTime((end - start));
 			logServiceBLL.SystemActionLog(logEngity);
 			
-			System.out.println("·½·¨Ãû³Æ£º" + methodName);
-			System.out.println("·½·¨Èë²Î£º" + param);
-			System.out.println("Ö´ÐÐÊ±¼ä,¾«È·µ½ºÁÃë:" + (end - start));
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½" + methodName);
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î£ï¿½" + param);
+			System.out.println("Ö´ï¿½ï¿½Ê±ï¿½ï¿½,ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:" + (end - start));
 		}
 	}
 

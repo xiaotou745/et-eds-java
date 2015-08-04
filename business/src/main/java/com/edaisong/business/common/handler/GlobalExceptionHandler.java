@@ -1,4 +1,4 @@
-package com.edaisong.buiness.common.handler;
+package com.edaisong.business.common.handler;
 
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 全局异常处理
+ * 全锟斤拷锟届常锟斤拷锟斤拷
  * 
  * @author zhaohailong
  */
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
 		String stackTrace = StringUtils.getStackTrace(ex);
 
 		/*
-		 * 全局LogInteceptor中统一记录方法调用的actionlog和异常信息
+		 * 全锟斤拷LogInteceptor锟斤拷统一锟斤拷录锟斤拷锟斤拷锟斤拷锟矫碉拷actionlog锟斤拷锟届常锟斤拷息
 		 * */
 		request.setAttribute("hasException", true);
 		request.setAttribute("exception", msg);
