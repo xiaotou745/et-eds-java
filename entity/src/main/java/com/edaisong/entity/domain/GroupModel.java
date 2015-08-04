@@ -2,85 +2,36 @@ package com.edaisong.entity.domain;
 
 import java.util.Date;
 
-public class GroupModel {
-    private Long id;
+import com.edaisong.entity.Group;
 
-    private String groupname;
+public class GroupModel extends Group{
+    private String appKey;
 
-    private String createname;
+    private String appSecret;
 
-    private Date createtime;
+    private String appVersion;
 
-    private Byte isvalid;    
-    
-    private String appkey;
-    
-    private String appsecret;
-    
-    private String appversion;
-
-	public Long getId() {
-		return id;
+	public String getAppKey() {
+		return appKey;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setAppKey(String appKey) {
+		this.appKey = appKey;
 	}
 
-	public String getGroupname() {
-		return groupname;
+	public String getAppSecret() {
+		return appSecret;
 	}
 
-	public void setGroupname(String groupname) {
-		this.groupname = groupname;
+	public void setAppSecret(String appSecret) {
+		this.appSecret = appSecret;
 	}
 
-	public String getCreatename() {
-		return createname;
+	public String getAppVersion() {
+		return appVersion;
 	}
 
-	public void setCreatename(String createname) {
-		this.createname = createname;
+	public void setAppVersion(String appVersion) {
+		this.appVersion = appVersion;
 	}
-
-	public Date getCreatetime() {
-		return createtime;
-	}
-
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
-
-	public Byte getIsvalid() {
-		return isvalid;
-	}
-
-	public void setIsvalid(Byte isvalid) {
-		this.isvalid = isvalid;
-	}
-
-	public String getAppkey() {
-		return appkey;
-	}
-
-	public void setAppkey(String appkey) {
-		this.appkey = appkey;
-	}
-
-	public String getAppsecret() {
-		return appsecret;
-	}
-
-	public void setAppsecret(String appsecret) {
-		this.appsecret = appsecret;
-	}
-
-	public String getAppversion() {
-		return appversion;
-	}
-
-	public void setAppversion(String appversion) {
-		this.appversion = appversion;
-	}
-    
 }

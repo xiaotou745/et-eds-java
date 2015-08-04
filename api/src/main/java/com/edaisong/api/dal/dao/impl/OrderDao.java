@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
 
@@ -44,6 +46,22 @@ public class OrderDao  extends DaoBase implements IOrderDao {
 					.selectOne(
 							"com.edaisong.api.dal.dao.inter.IOrderDao.getOrderMapDetail",
 							orderId);
+	     return result;
+	 }
+	 
+	 
+	 /**
+	  * 商家后台 订单详情页面基础数据 
+	  * @param para 查询条件
+	  * @author CaoHeYang 
+	  * @Date 20150804
+	  * @return
+	  */
+	 public OrderDetailBusiness  getOrderDetailBusiness(OrderDetailBusinessReq para){
+		 OrderDetailBusiness result=getReadOnlySqlSessionUtil()
+					.selectOne(
+							"com.edaisong.api.dal.dao.inter.IOrderDao.getOrderDetailBusiness",
+							para);
 	     return result;
 	 }
 }

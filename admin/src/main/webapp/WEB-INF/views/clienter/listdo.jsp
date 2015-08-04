@@ -1,4 +1,4 @@
-<%@page import="com.edaisong.core.util.PropertyUtils"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>    
@@ -7,9 +7,10 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%> 
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 
 <%
-String basePath =new PropertyUtils().getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("static.admin.url");
  %>
 
         

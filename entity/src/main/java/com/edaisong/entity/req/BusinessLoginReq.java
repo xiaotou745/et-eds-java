@@ -1,6 +1,13 @@
 package com.edaisong.entity.req;
 
-public class LoginReq {
+import com.edaisong.entity.common.RequestBase;
+
+/**
+ * 商家登录请求参数
+ * @author 彭宜
+ * @date 20150804
+ */
+public class BusinessLoginReq extends RequestBase{
 	private String phoneNo;
 	private String password;
 	//记住我   1:记住我        其他:否

@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="java.sql.Date"%>
 <%@page import="java.math.BigDecimal"%>
@@ -5,16 +7,16 @@
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
 <%@page import="com.edaisong.core.common.HtmlHelper"%>
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%	
-	String basePath =new PropertyUtils().getProperty("static.admin.url");
-	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
-	List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
-%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%>
+
+<%	
+String basePath =PropertyUtils.getProperty("static.admin.url");
+	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
+	List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
+%>
+
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">

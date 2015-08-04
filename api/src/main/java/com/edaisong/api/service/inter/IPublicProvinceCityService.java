@@ -48,8 +48,20 @@ public interface IPublicProvinceCityService {
 	 
 	 /**
 	  * 获取开通市
-	  * 窦海超
+	  * 赵海龙
 	  * 2015年7月29日 10:40:36
 	  * */
-	 List<AreaModel> getOpenCity();
+	 List<AreaModel> getOpenCityByJiBie(int jiBie);
+	 
+	/**
+	 * 按照accountID获取二级开放城市列表
+	 * @author zhaohailong
+	 */
+	 List<AreaModel> getOpenCityListByAccountID(int accountID);
+	 
+	/**
+	 * 根据城市Id获取对应的区县列表
+	 * @author zhaohailong
+	 */
+	 List<AreaModel> getOpenCityDistrict(int cityId);
 }

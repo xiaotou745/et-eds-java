@@ -103,4 +103,17 @@
       AuditStatus = #{auditstatus,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+   <select id="getListByBusinessID" resultType="com.edaisong.entity.domain.BusinessThirdRelationModel" parameterType="java.lang.Integer" >
+    SELECT  btr.[id] ,
+        btr.[businessid] ,
+        btr.[originalbusiid] ,
+        btr.[groupid] ,
+        btr.[groupname] ,
+        btr.[auditstatus] ,
+        ISNULL(g.IsModifyBind, 0) isModifyBind
+FROM    BusinessThirdRelation btr WITH ( NOLOCK )
+        JOIN [group] g WITH ( NOLOCK ) ON btr.GroupId = g.Id
+WHERE   btr.BusinessId = #{businessID}
+ORDER BY btr.Id
+  </select>
 </mapper>

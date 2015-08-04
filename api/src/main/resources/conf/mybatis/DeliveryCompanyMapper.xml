@@ -223,28 +223,9 @@
       IsDisplay = #{isdisplay,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="getDeliveryCompanyList"  resultType="com.edaisong.entity.DeliveryCompany" 
-    parameterType="java.util.Map" >
-	 select dc.Id ,
-        dc.DeliveryCompanyName ,
-        dc.DeliveryCompanyCode ,
-        dc.IsEnable ,
-        dc.SettleType ,
-        dc.ClienterFixMoney ,
-        dc.ClienterSettleRatio ,
-        dc.DeliveryCompanySettleMoney ,
-        dc.DeliveryCompanyRatio ,
-        dc.ClienterQuantity ,
-        dc.CreateTime ,
-        dc.CreateName ,
-        dc.ModifyName ,
-        dc.ModifyTime ,
-        dc.IsDisplay ,
-        dc.BusinessQuantity
+  <select id="getDeliveryCompanyList"  resultMap="BaseResultMap" >
+	 select 
+	  <include refid="Base_Column_List" />
  from   dbo.DeliveryCompany dc ( nolock ) 
- where IsEnable=1 
-	 <if test="DeliveryCompanyName != null and DeliveryCompanyName!=''" >
-	     AND DeliveryCompanyName='${DeliveryCompanyName}'
-     </if>
   </select>
 </mapper>
