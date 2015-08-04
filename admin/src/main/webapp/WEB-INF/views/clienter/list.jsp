@@ -5,7 +5,7 @@
 <%@page import="com.edaisong.entity.Group"%> 
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
 <%@page import="com.edaisong.entity.DeliveryCompany"%>
-
+<%@page import="com.edaisong.core.common.HtmlHelper"%>
 <%
 	String basePath =new PropertyUtils().getProperty("static.admin.url");
 	
@@ -35,7 +35,14 @@
             </tr>
             <tr>
             <td>
-               <span class="">筛选城市: </span><select name="businessCityId"
+               <span class="">筛选城市: </span>
+               		  <%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "code") %>
+               	                     
+              <span class="">物流公司: </span>
+              <%=HtmlHelper.getSelect("deliveryCompanyId", dCListData, "deliverycompanyname", "id") %>
+              
+               <!-- 		  
+               <select name="businessCityId"
 				id="businessCityId" style="width: 155px">
 					<option value="" selected="selected">--无--</option>
 					<%
@@ -45,9 +52,9 @@
 					<%
 						}
 					%>
-			</select>
-			                     
-              <span class="">物流公司: </span><select name="deliveryCompanyId"
+			</select>			
+			          
+              <select name="deliveryCompanyId"
 				id="deliveryCompanyId" style="width: 155px">
 					<option value="" selected="selected">--无--</option>
 					<%
@@ -57,7 +64,9 @@
 					<%
 						}
 					%>
-			</select>                   
+			</select>         			
+			 -->		
+              
                       
              <input type="submit" value="查询" class="searchBtn" id="btnSearch" />
             </td>
