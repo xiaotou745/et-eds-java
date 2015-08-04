@@ -83,8 +83,8 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 			Where += "  AND (RecordType=9 OR RecordType=1) AND bbr.RelationNo='"+par.getNumString()+"' ";
 		}
 		//过滤商户可以看得流水
-		Where +=" AND bbr.BusinessId="+"172"+" AND RecordType IN (1,2,6,8,9,11) ";
-			
+		//Where +=" AND bbr.BusinessId="+"1791"+" AND RecordType IN (1,2,6,8,9,11) ";
+		Where +=" AND RecordType IN (1,2,6,8,9,11) ";
 		
 		int PageSize = 15;
 		int CurrentPage = par.getCurrentPage();
@@ -93,7 +93,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 		map.put("TotalPage", 0);
 		map.put("PageSize", PageSize);
 		map.put("CurrentPage", CurrentPage);
-		List<BusinessBalanceRecord> list = getMasterSqlSessionUtil()
+		List<BusinessBalanceRecord> list = getReadOnlySqlSessionUtil()
 				.selectList("com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao.getTransDetailList",
 						map);
 		
