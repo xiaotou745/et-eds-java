@@ -783,7 +783,7 @@
  </select>
   
   
-   <!--后台订单列表页面 ） add by caoheyang 20150728  -->
+   <!--后台订单列表百度地图打点基础数据   add by caoheyang 20150728  -->
   <select id="getOrderMapDetail"  resultType="com.edaisong.entity.domain.OrderMapDetail"   
   parameterType="long"  >
 	select  ord.OrderId,
@@ -816,4 +816,15 @@
                             WHERE   ab.Id = @orderID
  </select>
   
+  <!--商家后台 订单详情页面基础数据    add by caoheyang 20150804  -->
+  <select id="getOrderDetailBusiness"  resultType="com.edaisong.entity.domain.OrderDetailBusiness"   
+  parameterType="com.edaisong.entity.req.OrderDetailBusinessReq"  >
+select a.Id,a.OrderNo,a.Status,a.OrderFrom,a.OriginalOrderNo,'未知' CanelReason,a.PubDate, 
+b.GrabTime,b.TakeTime,a.ActualDoneDate,RecevicePhoneNo,ReceviceAddress,c.TrueName,c.PhoneNo,
+a.Amount,a.OrderCommission,a.IsPay
+ from dbo.[order] ( nolock ) a
+ join dbo.OrderOther ( nolock ) b on a.Id=b.OrderId
+ LEFT join dbo.clienter  ( nolock ) c on a.clienterId=b.Id 
+ where a.OrderNo=#{OrderNo,jdbcType=NVARCHAR} and a.BusinessId= #{BusinessId,jdbcType=INTEGER} 
+   </select>
 </mapper>
