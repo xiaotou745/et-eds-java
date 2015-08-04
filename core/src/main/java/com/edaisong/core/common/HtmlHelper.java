@@ -41,7 +41,7 @@ public class HtmlHelper {
 		if (styleString != null) {
 			style = "style=\"" + styleString + "\"";
 		}
-		htmlStrBuffer.append(" <select " + style
+		htmlStrBuffer.append(" <select class=\"selectw\" " + style
 				+ " id=\"" + selectName + "\" name=\"" + selectName + "\"> ");
 		if (defaultValue != null){
 			if(selectedValue != null&& 

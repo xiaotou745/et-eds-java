@@ -1,6 +1,3 @@
-<%@page import="com.edaisong.core.util.PropertyUtils"%>
-<%@page import="java.math.BigDecimal"%>
-<%@page import="org.apache.jasper.tagplugins.jstl.core.If"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
@@ -8,8 +5,10 @@
 <%@page import="com.edaisong.core.common.ParseHelper"%>
 <%@page import="com.edaisong.core.common.PageHelper"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="java.math.BigDecimal"%>
 <%
-	String basePath =new PropertyUtils().getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("static.admin.url");
 %>
 
 <table

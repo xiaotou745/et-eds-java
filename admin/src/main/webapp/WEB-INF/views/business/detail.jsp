@@ -12,8 +12,9 @@
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%@page import="com.edaisong.entity.BusinessOptionLog"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
-	String basePath = request.getContextPath();
+String basePath =PropertyUtils.getProperty("static.admin.url");
 String subsidyConfig=request.getAttribute("subsidyConfig").toString();
 
 String finalCheckPicUrl=request.getAttribute("finalCheckPicUrl").toString();

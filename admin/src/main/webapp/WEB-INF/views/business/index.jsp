@@ -4,8 +4,9 @@
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
 <%@page import="com.edaisong.entity.BusinessGroup"%>
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
-	String basePath = request.getContextPath();
+String basePath =PropertyUtils.getProperty("static.admin.url");
 List<AreaModel> openCityList=	(List<AreaModel>)request.getAttribute("openCityList");
 List<BusinessGroup> businessGroupListData=	(List<BusinessGroup>)request.getAttribute("businessGroupListData");
 List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
