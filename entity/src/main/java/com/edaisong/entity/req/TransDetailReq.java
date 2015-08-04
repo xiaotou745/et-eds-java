@@ -33,18 +33,33 @@ public class TransDetailReq extends RequestBase {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
+	/**
+	 * 交易类型 
+	 *  1：发布订单  订单号
+	 *  2：取消订单  订单号
+	 *  6：系统奖励  空
+	 *  8：订单菜品费 订单号 
+	 *  9：充值  流水
+	 *  11 手续费) 流水
+	 * */
 	public String getTransType() {
 		return TransType;
 	}
 	public void setTransType(String transType) {
 		TransType = transType;
 	}
+	/**
+	 * 单号类型,1订单号 2 流水单号
+	 * */
 	public String getNumType() {
 		return NumType;
 	}
 	public void setNumType(String numType) {
 		NumType = numType;
 	}
+	/**
+	 *订单号/流水单号 
+	 */
 	public String getNumString() {
 		return NumString;
 	}

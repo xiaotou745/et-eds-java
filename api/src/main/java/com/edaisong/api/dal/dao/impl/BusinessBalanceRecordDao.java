@@ -1,7 +1,5 @@
 package com.edaisong.api.dal.dao.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +7,10 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao;
-import com.edaisong.api.dal.dao.inter.IBusinessDao;
 import com.edaisong.core.common.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.TransDetailReq;
 @Repository
 public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanceRecordDao {
@@ -62,7 +58,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
  * 
  * */
 	@Override
-	public List<BusinessBalanceRecord> getTransDetailList(TransDetailReq par) {
+	public PagedResponse<BusinessBalanceRecord> getTransDetailList(TransDetailReq par) {
 		Map<String, Object> map = new HashMap<String, Object>();	
 		
 		String Where = " 1=1 ";		
@@ -107,7 +103,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 		resp.setCurrentPage(CurrentPage);
 		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
 		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
-		return null;
+		return resp;
 	}
 
 }
