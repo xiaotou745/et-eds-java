@@ -259,4 +259,57 @@
 		WHERE BusinessId = #{businessID}
 		ORDER BY Id DESC
 	</select>
+	
+	<select id="getBusinessByPhoneNoAndPwd" resultType="com.edaisong.entity.domain.Business"
+		parameterType="java.util.Map">
+		SELECT
+		b.id ,
+		b.name ,
+		b.city ,
+		b.district ,
+		b.phoneno ,
+		b.phoneno2 ,
+		b.idcard ,
+		b.[address] ,
+		isnull(b.landline,'') as  landline,
+		b.longitude ,
+		b.latitude ,
+		b.[status] ,
+		b.inserttime ,
+		b.districtid ,
+		b.cityid ,
+		b.provincecode ,
+		b.citycode ,
+		b.areacode ,
+		b.province ,
+		ISNULL(b.DistribSubsidy, 0.00) distribsubsidy ,
+		b.businesscommission ,
+		b.commissiontype ,
+		b.commissionfixvalue ,
+		b.businessgroupId ,
+		b.balanceprice ,
+		b.allowwithdrawprice ,
+		b.haswithdrawprice ,
+		b.checkpicurl ,
+		b.businesslicensepic ,
+		b.mealssettlemode ,
+		isnull(b.groupid,0) as groupid ,
+		b.originalbusiid ,
+		ISNULL(g.IsModifyBind, 0) isModifyBind ,
+		ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
+		b.isallowoverdraft ,
+		b.isemployertask ,
+		ISNULL(b.RecommendPhone, '') AS recommendphone
+		FROM business b WITH ( NOLOCK )
+		WHERE b.PhoneNo = #{PhoneNo,jdbcType=NVARCHAR}
+		AND Password = #{Password,jdbcType=NVARCHAR} 
+	</select>
+	
+	<insert id="addLogingLog" parameterType="com.edaisong.entity.BusinessLoginLog">
+		insert into BusinessLoginLog([PhoneNo],[Description],[IsSuccess])
+		values(#{PhoneNo,jdbcType=NVARCHAR},#{Description,jdbcType=NVARCHAR},#{IsSuccess,jdbcType=SMALLINT})
+		<selectKey resultType="java.lang.Long">
+			select @@identity as id
+		</selectKey>
+	</insert>
 </mapper>
