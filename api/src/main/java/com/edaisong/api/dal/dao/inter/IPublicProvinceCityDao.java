@@ -5,23 +5,12 @@ import java.util.List;
 
 
 
+
 import com.edaisong.entity.PublicProvinceCity;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OpenCityModel;
 
-public interface IPublicProvinceCityDao {
-    int deleteByPrimaryKey(Integer code);
-
-    int insert(PublicProvinceCity record);
-
-    int insertSelective(PublicProvinceCity record);
-
-    PublicProvinceCity selectByPrimaryKey(Integer code);
-
-    int updateByPrimaryKeySelective(PublicProvinceCity record);
-
-    int updateByPrimaryKey(PublicProvinceCity record);
-    
+public interface IPublicProvinceCityDao {    
 	/**
 	 * 获取开放城市列表（非分页）
 	 * @author CaoHeYang 
@@ -52,4 +41,9 @@ public interface IPublicProvinceCityDao {
 	 */
 	
     List<AreaModel> getOpenCitySql();
+	/**
+	 * 按照accountID获取二级开放城市列表
+	 * @author zhaohailong
+	 */
+    List<AreaModel> getOpenCityListByAccountID(int accountID);
 }

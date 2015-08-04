@@ -6,9 +6,10 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%> 
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 
 <%
-	String basePath = request.getContextPath();
+String basePath =PropertyUtils.getProperty("static.admin.url");
 %>       
 	
 		<table class="table table-striped table-bordered table-hover dataTables-example">

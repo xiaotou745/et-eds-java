@@ -1,295 +1,146 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edaisong.api.dal.dao.inter.IBusinessDao">
-	<resultMap id="BaseResultMap" type="com.edaisong.entity.Business">
-		<id column="Id" property="id" jdbcType="INTEGER" />
-		<result column="Name" property="name" jdbcType="NVARCHAR" />
-		<result column="City" property="city" jdbcType="NVARCHAR" />
-		<result column="district" property="district" jdbcType="NVARCHAR" />
-		<result column="PhoneNo" property="phoneno" jdbcType="NVARCHAR" />
-		<result column="PhoneNo2" property="phoneno2" jdbcType="NVARCHAR" />
-		<result column="Password" property="password" jdbcType="NVARCHAR" />
-		<result column="CheckPicUrl" property="checkpicurl" jdbcType="NVARCHAR" />
-		<result column="IDCard" property="idcard" jdbcType="NVARCHAR" />
-		<result column="Address" property="address" jdbcType="NVARCHAR" />
-		<result column="Landline" property="landline" jdbcType="NVARCHAR" />
-		<result column="Longitude" property="longitude" jdbcType="DOUBLE" />
-		<result column="Latitude" property="latitude" jdbcType="DOUBLE" />
-		<result column="Status" property="status" jdbcType="TINYINT" />
-		<result column="InsertTime" property="inserttime" jdbcType="TIMESTAMP" />
-		<result column="districtId" property="districtid" jdbcType="NVARCHAR" />
-		<result column="CityId" property="cityid" jdbcType="NVARCHAR" />
-		<result column="GroupId" property="groupid" jdbcType="INTEGER" />
-		<result column="OriginalBusiId" property="originalbusiid"
-			jdbcType="INTEGER" />
-		<result column="ProvinceCode" property="provincecode" jdbcType="NVARCHAR" />
-		<result column="CityCode" property="citycode" jdbcType="NVARCHAR" />
-		<result column="AreaCode" property="areacode" jdbcType="NVARCHAR" />
-		<result column="Province" property="province" jdbcType="NVARCHAR" />
-		<result column="CommissionTypeId" property="commissiontypeid"
-			jdbcType="INTEGER" />
-		<result column="DistribSubsidy" property="distribsubsidy"
-			jdbcType="NUMERIC" />
-		<result column="BusinessCommission" property="businesscommission"
-			jdbcType="DECIMAL" />
-		<result column="CommissionType" property="commissiontype"
-			jdbcType="INTEGER" />
-		<result column="CommissionFixValue" property="commissionfixvalue"
-			jdbcType="DECIMAL" />
-		<result column="BusinessGroupId" property="businessgroupid"
-			jdbcType="INTEGER" />
-		<result column="BalancePrice" property="balanceprice" jdbcType="DECIMAL" />
-		<result column="AllowWithdrawPrice" property="allowwithdrawprice"
-			jdbcType="DECIMAL" />
-		<result column="HasWithdrawPrice" property="haswithdrawprice"
-			jdbcType="DECIMAL" />
-		<result column="MealsSettleMode" property="mealssettlemode"
-			jdbcType="INTEGER" />
-		<result column="ContactWay" property="contactway" jdbcType="NVARCHAR" />
-		<result column="BusinessLicensePic" property="businesslicensepic"
-			jdbcType="NVARCHAR" />
-		<result column="IsBind" property="isbind" jdbcType="SMALLINT" />
-		<result column="OneKeyPubOrder" property="onekeypuborder"
-			jdbcType="INTEGER" />
-		<result column="IsAllowOverdraft" property="isallowoverdraft"
-			jdbcType="INTEGER" />
-		<result column="IsEmployerTask" property="isemployertask"
-			jdbcType="SMALLINT" />
-		<result column="RecommendPhone" property="recommendphone"
-			jdbcType="NVARCHAR" />
-	</resultMap>
-	<sql id="Base_Column_List">
-		Id, Name, City, district, PhoneNo, PhoneNo2, Password,
-		CheckPicUrl,
-		IDCard, Address,
-		Landline, Longitude, Latitude, Status,
-		InsertTime, districtId, CityId, GroupId,
-		OriginalBusiId,
-		ProvinceCode,
-		CityCode, AreaCode, Province, CommissionTypeId, DistribSubsidy,
-		BusinessCommission,
-		CommissionType, CommissionFixValue,
-		BusinessGroupId, BalancePrice,
-		AllowWithdrawPrice,
-		HasWithdrawPrice,
-		MealsSettleMode, ContactWay, BusinessLicensePic, IsBind,
-		OneKeyPubOrder,
-		IsAllowOverdraft, IsEmployerTask, RecommendPhone
-	</sql>
-	<select id="getBusinessList2" resultType="com.edaisong.entity.domain.BusinessModel"
-		parameterType="com.edaisong.entity.req.PagedBusinessReq">
-		SELECT b.id ,
-		isnull(b.name,'') as name ,
+	<select id="getBusinessDetailByID" resultType="com.edaisong.entity.domain.BusinessDetailModel"
+		parameterType="java.lang.Long">
+		SELECT
+		b.id ,
+		b.name ,
 		b.city ,
 		b.district ,
 		b.phoneno ,
 		b.phoneno2 ,
-		b.password ,
-		b.checkPicUrl ,
 		b.idcard ,
-		isnull(b.address,'') as address ,
-		ISNULL(b.Latitude, 0) latitude ,
-		ISNULL(b.Longitude, 0) longitude ,
-		b.status ,
+		b.[address] ,
+		isnull(b.landline,'') as  landline,
+		b.longitude ,
+		b.latitude ,
+		b.[status] ,
 		b.inserttime ,
-		b.districtId ,
+		b.districtid ,
 		b.cityid ,
-		b.groupid ,
-		b.originalbusiid ,
 		b.provincecode ,
 		b.citycode ,
 		b.areacode ,
 		b.province ,
-		b.commissiontypeid ,
 		ISNULL(b.DistribSubsidy, 0.00) distribsubsidy ,
 		b.businesscommission ,
-		isnull(g.groupname,'') as groupname ,
 		b.commissiontype ,
-		b.commissionFixvalue ,
-		b.businessgroupid ,
-		bg.Name businessgroupname ,
-		ISNULL(b.MealsSettleMode, 0) mealssettlemode ,
-		ISNULL(b.BalancePrice,0) balanceprice ,
-		ISNULL(b.AllowWithdrawPrice, 0) allowwithdrawprice ,
+		b.commissionfixvalue ,
+		b.businessgroupId ,
+		b.balanceprice ,
+		b.allowwithdrawprice ,
+		b.haswithdrawprice ,
+		b.checkpicurl ,
+		b.businesslicensepic ,
+		b.mealssettlemode ,
+		isnull(b.groupid,0) as groupid ,
+		b.originalbusiid ,
+		bfa.trueName ,
+		bfa.accountNo ,
+		bfa.accountType ,
+		bfa.openBank ,
+		bfa.openSubBank ,
+		g.groupName ,
+		ISNULL(g.IsModifyBind, 0) isModifyBind ,
+		ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
+		b.isallowoverdraft ,
+		b.isemployertask ,
 		ISNULL(b.RecommendPhone, '') AS recommendphone
-		FROM business b WITH (NOLOCK)
-		LEFT JOIN dbo.[group] g WITH ( NOLOCK ) ON g.Id = b.GroupId
-		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON b.BusinessGroupId =bg.Id
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="recommendPhone != null">
-				b.recommendPhone=#{recommendPhone}
-			</if>
-			<if test="businessName != null">
-				and b.name=#{businessName}
-			</if>
-			<if test="businessPhone != null">
-				and b.PhoneNo=#{businessPhone}
-			</if>
-			<if test="status != null and status!=-1">
-				and b.status=#{status}
-			</if>
-			<if test="mealsSettleMode != null and mealsSettleMode!=-1">
-				and ISNULL(b.mealsSettleMode,0)=#{mealsSettleMode}
-			</if>
-			<if test="businessSettlementRatio != null and businessSettlementRatio>0">
-				and b.businessCommission=#{businessCommission}
-			</if>
-			<if test="groupId != null and groupId!=0">
-				and b.groupId=#{groupId}
-			</if>
-			<if test="businessGroupId != null and businessGroupId>0">
-				and b.businessGroupId=#{businessGroupId}
-			</if>
-			<if test="commissionType != null and commissionType>0">
-				and b.commissionType>0=#{commissionType>0}
-			</if>
-			<if test="businessCity != null">
-				and b.city=#{businessCity}
-			</if>
-			<if test="authorityCityNameList != null">
-				and b.city in
-				<foreach item="item" index="index" collection="authorityCityNameList"
-					open="(" separator="," close=")">
-					#{item}
-				</foreach>
-			</if>
-		</trim>
+		FROM business b WITH ( NOLOCK )
+		LEFT JOIN BusinessFinanceAccount bfa WITH ( NOLOCK ) ON b.Id =
+		bfa.BusinessId
+		AND bfa.IsEnable = 1
+		LEFT JOIN [group] g WITH ( NOLOCK ) ON g.Id = b.GroupId
+		WHERE b.Id = #{businessID}
 	</select>
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from
-		business
-		where Id = #{id,jdbcType=INTEGER}
-	</delete>
-	<insert id="insert" parameterType="com.edaisong.entity.Business">
-		insert into business (Id,
-		Name, City,
-		district, PhoneNo, PhoneNo2,
-		Password, CheckPicUrl, IDCard,
-		Address, Landline, Longitude,
-		Latitude, Status, InsertTime,
-		districtId,
-		CityId, GroupId,
-		OriginalBusiId, ProvinceCode, CityCode,
-		AreaCode,
-		Province, CommissionTypeId,
-		DistribSubsidy, BusinessCommission,
-		CommissionType,
-		CommissionFixValue, BusinessGroupId, BalancePrice,
-		AllowWithdrawPrice, HasWithdrawPrice, MealsSettleMode,
-		ContactWay,
-		BusinessLicensePic, IsBind,
-		OneKeyPubOrder, IsAllowOverdraft,
-		IsEmployerTask,
-		RecommendPhone)
-		values (#{id,jdbcType=INTEGER},
-		#{name,jdbcType=NVARCHAR},
-		#{city,jdbcType=NVARCHAR},
-		#{district,jdbcType=NVARCHAR}, #{phoneno,jdbcType=NVARCHAR},
-		#{phoneno2,jdbcType=NVARCHAR},
-		#{password,jdbcType=NVARCHAR},
-		#{checkpicurl,jdbcType=NVARCHAR},
-		#{idcard,jdbcType=NVARCHAR},
-		#{address,jdbcType=NVARCHAR}, #{landline,jdbcType=NVARCHAR},
-		#{longitude,jdbcType=DOUBLE},
-		#{latitude,jdbcType=DOUBLE},
-		#{status,jdbcType=TINYINT},
-		#{inserttime,jdbcType=TIMESTAMP},
-		#{districtid,jdbcType=NVARCHAR}, #{cityid,jdbcType=NVARCHAR},
-		#{groupid,jdbcType=INTEGER},
-		#{originalbusiid,jdbcType=INTEGER},
-		#{provincecode,jdbcType=NVARCHAR},
-		#{citycode,jdbcType=NVARCHAR},
-		#{areacode,jdbcType=NVARCHAR}, #{province,jdbcType=NVARCHAR},
-		#{commissiontypeid,jdbcType=INTEGER},
-		#{distribsubsidy,jdbcType=NUMERIC},
-		#{businesscommission,jdbcType=DECIMAL},
-		#{commissiontype,jdbcType=INTEGER},
-		#{commissionfixvalue,jdbcType=DECIMAL},
-		#{businessgroupid,jdbcType=INTEGER}, #{balanceprice,jdbcType=DECIMAL},
-		#{allowwithdrawprice,jdbcType=DECIMAL},
-		#{haswithdrawprice,jdbcType=DECIMAL},
-		#{mealssettlemode,jdbcType=INTEGER},
-		#{contactway,jdbcType=NVARCHAR},
-		#{businesslicensepic,jdbcType=NVARCHAR}, #{isbind,jdbcType=SMALLINT},
-		#{onekeypuborder,jdbcType=INTEGER},
-		#{isallowoverdraft,jdbcType=INTEGER},
-		#{isemployertask,jdbcType=SMALLINT},
-		#{recommendphone,jdbcType=NVARCHAR})
-	</insert>
-	<update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Business">
+
+	<update id="modifyBusiness" parameterType="com.edaisong.entity.domain.BusinessModifyModel">
 		update business
-		set Name = #{name,jdbcType=NVARCHAR},
-		City = #{city,jdbcType=NVARCHAR},
-		district = #{district,jdbcType=NVARCHAR},
-		PhoneNo =
-		#{phoneno,jdbcType=NVARCHAR},
-		PhoneNo2 = #{phoneno2,jdbcType=NVARCHAR},
-		Password = #{password,jdbcType=NVARCHAR},
-		CheckPicUrl =
-		#{checkpicurl,jdbcType=NVARCHAR},
-		IDCard = #{idcard,jdbcType=NVARCHAR},
-		Address = #{address,jdbcType=NVARCHAR},
-		Landline =
-		#{landline,jdbcType=NVARCHAR},
-		Longitude =
-		#{longitude,jdbcType=DOUBLE},
-		Latitude = #{latitude,jdbcType=DOUBLE},
-		Status = #{status,jdbcType=TINYINT},
-		InsertTime =
-		#{inserttime,jdbcType=TIMESTAMP},
-		districtId =
-		#{districtid,jdbcType=NVARCHAR},
-		CityId = #{cityid,jdbcType=NVARCHAR},
-		GroupId = #{groupid,jdbcType=INTEGER},
-		OriginalBusiId =
-		#{originalbusiid,jdbcType=INTEGER},
-		ProvinceCode =
-		#{provincecode,jdbcType=NVARCHAR},
-		CityCode =
-		#{citycode,jdbcType=NVARCHAR},
-		AreaCode =
-		#{areacode,jdbcType=NVARCHAR},
-		Province =
-		#{province,jdbcType=NVARCHAR},
-		CommissionTypeId =
-		#{commissiontypeid,jdbcType=INTEGER},
-		DistribSubsidy =
-		#{distribsubsidy,jdbcType=NUMERIC},
-		BusinessCommission =
-		#{businesscommission,jdbcType=DECIMAL},
-		CommissionType =
-		#{commissiontype,jdbcType=INTEGER},
-		CommissionFixValue =
-		#{commissionfixvalue,jdbcType=DECIMAL},
-		BusinessGroupId =
-		#{businessgroupid,jdbcType=INTEGER},
-		BalancePrice =
-		#{balanceprice,jdbcType=DECIMAL},
-		AllowWithdrawPrice =
-		#{allowwithdrawprice,jdbcType=DECIMAL},
-		HasWithdrawPrice =
-		#{haswithdrawprice,jdbcType=DECIMAL},
-		MealsSettleMode =
-		#{mealssettlemode,jdbcType=INTEGER},
-		ContactWay =
-		#{contactway,jdbcType=NVARCHAR},
-		BusinessLicensePic =
-		#{businesslicensepic,jdbcType=NVARCHAR},
-		IsBind =
-		#{isbind,jdbcType=SMALLINT},
-		OneKeyPubOrder =
-		#{onekeypuborder,jdbcType=INTEGER},
-		IsAllowOverdraft =
-		#{isallowoverdraft,jdbcType=INTEGER},
-		IsEmployerTask =
-		#{isemployertask,jdbcType=SMALLINT},
-		RecommendPhone =
-		#{recommendphone,jdbcType=NVARCHAR}
-		where Id = #{id,jdbcType=INTEGER}
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=NVARCHAR},
+			</if>
+			<if test="landline != null">
+				landline = #{landline,jdbcType=NVARCHAR},
+			</if>
+			<if test="phoneno2 != null">
+				phoneno2 = #{phoneno2,jdbcType=NVARCHAR},
+			</if>
+			<if test="distribsubsidy != null">
+				distribsubsidy = #{distribsubsidy,jdbcType=NUMERIC},
+			</if>
+			<if test="cityid != null">
+				cityid = #{cityid,jdbcType=NVARCHAR},
+			</if>
+			<if test="city != null">
+				city = #{city,jdbcType=NVARCHAR},
+			</if>
+			<if test="district != null">
+				district = #{district,jdbcType=NVARCHAR},
+			</if>
+			<if test="districtid != null">
+				districtid = #{districtid,jdbcType=NVARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=NVARCHAR},
+			</if>
+			<if test="latitude != null">
+				latitude = #{latitude,jdbcType=DOUBLE},
+			</if>
+			<if test="longitude != null">
+				longitude = #{longitude,jdbcType=DOUBLE},
+			</if>
+			<if test="commissiontype != null">
+				commissiontype = #{commissiontype,jdbcType=INTEGER},
+			</if>
+			<if test="businesscommission != null">
+				businesscommission = #{businesscommission,jdbcType=DECIMAL},
+			</if>
+			<if test="commissionfixvalue != null">
+				commissionfixvalue = #{commissionfixvalue,jdbcType=DECIMAL},
+			</if>
+			<if test="businessgroupid != null">
+				businessgroupid = #{businessgroupid,jdbcType=INTEGER},
+			</if>
+			<if test="mealssettlemode != null">
+				mealssettlemode = #{mealssettlemode,jdbcType=INTEGER},
+			</if>
+			<if test="groupid != null">
+				groupid = #{groupid,jdbcType=INTEGER},
+			</if>
+			<if test="originalbusiid != null">
+				originalbusiid = #{originalbusiid,jdbcType=INTEGER},
+			</if>
+			<if test="onekeypuborder != null">
+				onekeypuborder = #{onekeypuborder,jdbcType=INTEGER},
+			</if>
+			<if test="isemployertask != null">
+				isemployertask = #{isemployertask,jdbcType=SMALLINT},
+			</if>
+			<if test="isallowoverdraft != null">
+				isallowoverdraft = #{isallowoverdraft,jdbcType=INTEGER},
+			</if>
+		</set>
+		OUTPUT
+                        Inserted.Id,
+                        #{optId,jdbcType=NVARCHAR},
+                        #{optName,jdbcType=NVARCHAR},
+                        GETDATE(),
+                        3,
+                        #{remark,jdbcType=NVARCHAR}
+                    INTO BusinessOptionLog
+                        (BusinessId,
+                        OptId,
+                        OptName,
+                        InsertTime,
+                        Platform,
+                        Remark)
+		where Id = #{id,jdbcType=BIGINT}
 	</update>
 
-  <sql id="getBusinessListColums" >
-  		b.Id ,
+	<sql id="getBusinessListColums">
+		b.Id ,
 		isnull(b.name,'''') as name ,
 		b.city ,
 		b.district ,
@@ -321,73 +172,91 @@
 		bg.Name businessgroupname ,
 		ISNULL(b.MealsSettleMode, 0) mealssettlemode ,
 		ISNULL(b.BalancePrice,0) balanceprice ,
-		ISNULL(b.AllowWithdrawPrice, 0) allowwithdrawprice ,
+		ISNULL(b.AllowWithdrawPrice, 0)
+		allowwithdrawprice ,
 		ISNULL(b.RecommendPhone, '''') AS recommendphone
-  </sql>
+	</sql>
 
-   <sql id="getBusinessListFrom" >
-        business b WITH (NOLOCK)
-		LEFT JOIN dbo.[group] g WITH ( NOLOCK ) ON g.Id = b.GroupId
-		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON b.BusinessGroupId =bg.Id
-  </sql>
+	<sql id="getBusinessListFrom">
+		business b WITH (NOLOCK)
+		LEFT JOIN dbo.[group] g WITH ( NOLOCK ) ON g.Id =
+		b.GroupId
+		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON
+		b.BusinessGroupId =bg.Id
+	</sql>
 
-  <sql id="getBusinessListWhere">
+	<sql id="getBusinessListWhere">
 
-<!--      <trim prefix="WHERE" prefixOverrides="AND|OR"> -->
-       1=1  
-			<if test="recommendPhone != null and recommendPhone!=''">
-				and b.recommendPhone=''${recommendPhone}''
-			</if>
-			<if test="businessName != null and businessName!=''">
-				and b.name=''${businessName}''
-			</if>
-			<if test="businessPhone != null and businessPhone!=''">
-				and b.PhoneNo=''${businessPhone}''
-			</if>
-			<if test="status!=null and status!=-1">
-				and b.status=${status}
-			</if>
-			<if test="mealsSettleMode!=null and mealsSettleMode!=-1">
-				and ISNULL(b.mealsSettleMode,0)=${mealsSettleMode}
-			</if>
-			<if test="businessSettlementRatio!=null and businessSettlementRatio>0">
-				and b.businessCommission=#{businessSettlementRatio}
-			</if>
-			<if test="groupId!=null and groupId!=0">
-				and b.groupId=${groupId}
-			</if>
-			<if test="businessGroupId!=null and businessGroupId>0">
-				and b.businessGroupId=${businessGroupId}
-			</if>
-			<if test="commissionType!=null and commissionType>0">
-				and b.commissionType=${commissionType}
-			</if>
-			<if test="businessCity != null and businessCity!=''">
-				and b.city=''${businessCity}''
-			</if>
-			<if test="authorityCityNameList != null">
-				and b.city in
-				<foreach item="item" index="index" collection="authorityCityNameList"
-					open="(''" separator="'',''" close="'')">
-					#{item}
-				</foreach>
-			</if>
-<!-- 		</trim> -->
-  </sql>
-  
-  <select id="getBusinessList"  resultType="com.edaisong.entity.domain.BusinessModel"
-		parameterType="com.edaisong.entity.req.PagedBusinessReq" 
-  statementType="CALLABLE" >
-	{call Sp_CustomPage2015_V1(
-	' b.Id DESC ',
-	' <include refid="getBusinessListColums" />',
-	' <include refid="getBusinessListFrom" /> ',
-	' <include refid="getBusinessListWhere"/> ',
-	#{pageSize,mode=IN,jdbcType=INTEGER},
-	#{currentPage,mode=IN,jdbcType=INTEGER}
-	,1,
-	#{totalRecord,mode=OUT,jdbcType=INTEGER},
-	#{totalPage,mode=OUT,jdbcType=INTEGER}
-	)}
- </select>
+		<!-- <trim prefix="WHERE" prefixOverrides="AND|OR"> -->
+		1=1
+		<if test="recommendPhone != null and recommendPhone!=''">
+			and b.recommendPhone=''${recommendPhone}''
+		</if>
+		<if test="businessName != null and businessName!=''">
+			and b.name=''${businessName}''
+		</if>
+		<if test="businessPhone != null and businessPhone!=''">
+			and b.PhoneNo=''${businessPhone}''
+		</if>
+		<if test="status!=null and status!=-1">
+			and b.status=${status}
+		</if>
+		<if test="mealsSettleMode!=null and mealsSettleMode!=-1">
+			and ISNULL(b.mealsSettleMode,0)=${mealsSettleMode}
+		</if>
+		<if test="businessSettlementRatio!=null and businessSettlementRatio>0">
+			and b.businessCommission=#{businessSettlementRatio}
+		</if>
+		<if test="groupId!=null and groupId!=0">
+			and b.groupId=${groupId}
+		</if>
+		<if test="businessGroupId!=null and businessGroupId>0">
+			and b.businessGroupId=${businessGroupId}
+		</if>
+		<if test="commissionType!=null and commissionType>0">
+			and b.commissionType=${commissionType}
+		</if>
+		<if test="businessCity != null and businessCity!=''">
+			and b.city=''${businessCity}''
+		</if>
+		<if test="authorityCityNameList != null">
+			and b.city in
+			<foreach item="item" index="index" collection="authorityCityNameList"
+				open="(''" separator="'',''" close="'')">
+				#{item}
+			</foreach>
+		</if>
+		<!-- </trim> -->
+	</sql>
+
+	<select id="getBusinessList" resultType="com.edaisong.entity.domain.BusinessModel"
+		parameterType="com.edaisong.entity.req.PagedBusinessReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' b.Id DESC ',
+		'
+		<include refid="getBusinessListColums" />
+		',
+		'
+		<include refid="getBusinessListFrom" />
+		',
+		'
+		<include refid="getBusinessListWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+	<select id="getOpLogByBusinessID" resultType="com.edaisong.entity.BusinessOptionLog"
+		parameterType="java.lang.Long">
+		SELECT optname ,
+		inserttime ,
+		remark
+		FROM dbo.BusinessOptionLog(NOLOCK)
+		WHERE BusinessId = #{businessID}
+		ORDER BY Id DESC
+	</select>
 </mapper>

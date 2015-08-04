@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@page import="java.sql.Date"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="java.math.BigDecimal"%>
@@ -6,8 +8,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%>
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>

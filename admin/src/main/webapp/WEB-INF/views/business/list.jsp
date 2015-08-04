@@ -1,6 +1,3 @@
-<%@page import="com.edaisong.core.util.PropertyUtils"%>
-<%@page import="java.math.BigDecimal"%>
-<%@page import="org.apache.jasper.tagplugins.jstl.core.If"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
@@ -8,8 +5,10 @@
 <%@page import="com.edaisong.core.common.ParseHelper"%>
 <%@page import="com.edaisong.core.common.PageHelper"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="java.math.BigDecimal"%>
 <%
-	String basePath =new PropertyUtils().getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("static.admin.url");
 %>
 
 <table
@@ -72,7 +71,7 @@
 			<td>外送费:<%=data.get(i).getDistribsubsidy()%><br> 账户余额:<a
 				href="/BusinessManager/BusinessDetail?businessId=<%=data.get(i).getId()%> ">￥<%=data.get(i).getBalanceprice()%></a><br>
 				可提现余额:<%=data.get(i).getAllowwithdrawprice()%></td>
-			<td>结算比例:<%=data.get(i).getCommissiontype()==1?data.get(i).getBusinesscommission():"￥"+data.get(i).getCommissionfixvalue()%><br>
+			<td><%=data.get(i).getCommissiontype()==1?"结算比例:"+data.get(i).getBusinesscommission():"结算金额:￥"+data.get(i).getCommissionfixvalue()%><br>
 				结算类型:<%=data.get(i).getCommissiontype()==1?"结算比例":"固定金额"%><br>
 				餐费结算方式:<%=data.get(i).getMealssettlemode()==0?"线下结算":"线上结算"%>
 			</td>
@@ -81,7 +80,7 @@
 				businessid="<%=data.get(i).getId()%>" class="businessOk">审核通过</a> <a
 				href="javascript:void(0)" <%=statusStyle2%>
 				businessid="<%=data.get(i).getId()%>" class="businessCel">取消资格</a> <a
-				href="/BusinessManager/QueryBusinessDetail?businessId=<%=data.get(i).getId()%>">修改信息</a>
+				href="<%=basePath%>/business/detail?businessID=<%=data.get(i).getId()%>">修改信息</a>
 				<a href="javascript:void(0)" data-toggle="modal"
 				data-target="#BusinessRechargeShow"
 				onclick="funcBusinessRecharge(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">充值</a>

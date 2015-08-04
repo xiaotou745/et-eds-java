@@ -22,42 +22,6 @@ public class PublicProvinceCityDao extends DaoBase implements
 		IPublicProvinceCityDao {
 
 	/**
-	 * 
-	 */
-	@Override
-	public int deleteByPrimaryKey(Integer code) {
-		return 0;
-	}
-
-	@Override
-	public int insert(PublicProvinceCity record) {
-		return 0;
-	}
-
-	@Override
-	public int insertSelective(PublicProvinceCity record) {
-		return 0;
-	}
-
-	@Override
-	public PublicProvinceCity selectByPrimaryKey(Integer code) {
-		return new PublicProvinceCity();
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(PublicProvinceCity record) {
-		return 0;
-	}
-
-	/**
-	 * 
-	 */
-	@Override
-	public int updateByPrimaryKey(PublicProvinceCity record) {
-		return 0;
-	};
-
-	/**
 	 * 获取开放城市列表（非分页）
 	 * @author CaoHeYang
 	 */
@@ -128,4 +92,17 @@ public class PublicProvinceCityDao extends DaoBase implements
 						);
 		return list;
 	}
+	/**
+	 * 按照accountID获取二级开放城市列表
+	 * @author zhaohailong
+	 */
+	@Override
+	public List<AreaModel> getOpenCityListByAccountID(int accountID) {
+		List<AreaModel> list = getReadOnlySqlSessionUtil()
+				.selectList(
+						"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.getOpenCityListByAccountID",
+						accountID);
+		return list;
+
+	};
 }
