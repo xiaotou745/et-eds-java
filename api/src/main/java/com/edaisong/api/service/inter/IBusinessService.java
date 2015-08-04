@@ -2,7 +2,6 @@ package com.edaisong.api.service.inter;
 
 import java.util.List;
 
-import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
@@ -26,4 +25,6 @@ public interface IBusinessService {
 	BusinessDetailModel getBusinessDetailByID(int businessID);
 	List<BusinessOptionLog> getOpLogByBusinessID(int businessID);
 	int modifyBusiness(BusinessModifyModel detailModel);
+	void setLoginStatus(String key,Object value,int maxAge);
+	Object getLoginStatus(String key);
 }
