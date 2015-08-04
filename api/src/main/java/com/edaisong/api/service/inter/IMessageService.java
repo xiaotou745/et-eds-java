@@ -6,4 +6,6 @@ import com.edaisong.entity.Message;
 
 public interface IMessageService {
 	List<Message> getMessageList();
+	
+	List<Message> getMessageList(Message message);
 }

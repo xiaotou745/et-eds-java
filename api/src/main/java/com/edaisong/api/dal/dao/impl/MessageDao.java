@@ -55,4 +55,11 @@ public class MessageDao extends DaoBase implements IMessageDao {
 		return model;
 	}
 
+	@Override
+	public List<Message> getMessageList(Message message) {
+		String statement = "com.edaisong.api.dal.dao.inter.IMessageDao.getMessageListByMessage";
+		List<Message> model = getReadOnlySqlSessionUtil().selectList(statement);
+		return model;
+	}
+
 }
