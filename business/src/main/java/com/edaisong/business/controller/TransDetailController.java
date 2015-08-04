@@ -31,7 +31,10 @@ public class TransDetailController {
 	 * */
 	@RequestMapping("list")
 	public ModelAndView transdetail() {
-		ModelAndView view = new ModelAndView("adminView");
+		ModelAndView view = new ModelAndView();
+		TransDetailReq par=new TransDetailReq();
+		PagedResponse<BusinessBalanceRecord> result=businessFinanceService.getTransDetailList(par);
+		view.addObject("Data", result);
 		return view;
 	}
 	/**

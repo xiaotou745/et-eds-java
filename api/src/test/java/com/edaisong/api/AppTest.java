@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 import com.edaisong.api.business.SqlSessionFactoryPool;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 
 
@@ -64,11 +66,22 @@ public class AppTest
     public void testOrder()
     {
     	OrderDetailBusinessReq para=new OrderDetailBusinessReq();
-    	para.setBusinessId(11);
-    	para.setOrderNo("201");
+    	para.setBusinessId(2008);
+    	para.setOrderNo("2008150630165417002");
         OrderDetailBusinessResp res= testService.getOrderDetailBusiness(para);
     	System.out.println(JsonUtil.obj2string(res));
         assertTrue( true );
       
     }
+
+    public void testCanelOrder()
+    {
+    	CancelOrderBusinessReq cancelOrderBusinessReq=new CancelOrderBusinessReq();
+    	cancelOrderBusinessReq.setBusinessId(2008);
+    	cancelOrderBusinessReq.setOrderId(11);
+    	cancelOrderBusinessReq.setOrderNo("2008150630165417002");
+    	
+        CancelOrderBusinessResp res= testService.cancelOrderBusiness(cancelOrderBusinessReq);	
+    }
+    
 }

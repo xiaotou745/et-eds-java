@@ -259,7 +259,7 @@
 		WHERE BusinessId = #{businessID}
 		ORDER BY Id DESC
 	</select>
-	
+
 	<select id="getBusinessByPhoneNoAndPwd" resultType="com.edaisong.entity.Business"
 		parameterType="java.util.Map">
 		SELECT
@@ -312,4 +312,11 @@
 			select @@identity as id
 		</selectKey>
 	</insert>
+
+   <!-- 更新 商户 余额，可提现余额   add by caoheyang 20150804  -->	
+	<update id="updateForWithdraw" parameterType="java.util.Map">
+		update  business
+		set  BalancePrice=BalancePrice+@Money,AllowWithdrawPrice=AllowWithdrawPrice+@Money
+		where  Id=@Id
+	</update>
 </mapper>

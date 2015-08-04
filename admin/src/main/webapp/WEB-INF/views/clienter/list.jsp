@@ -41,35 +41,8 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
                		  <%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "code") %>
                	                     
               <span class="">物流公司: </span>
-              <%=HtmlHelper.getSelect("deliveryCompanyId", dCListData, "deliverycompanyname", "id") %>
-              
-               <!-- 		  
-               <select name="businessCityId"
-				id="businessCityId" style="width: 155px">
-					<option value="" selected="selected">--无--</option>
-					<%
-						for (int i = 0; i < areaListData.size(); i++) {
-					%>
-					<option value="<%=areaListData.get(i).getCode()%>"><%=areaListData.get(i).getName()%></option>
-					<%
-						}
-					%>
-			</select>			
-			          
-              <select name="deliveryCompanyId"
-				id="deliveryCompanyId" style="width: 155px">
-					<option value="" selected="selected">--无--</option>
-					<%
-						for (int i = 0; i < dCListData.size(); i++) {
-					%>
-					<option value="<%=dCListData.get(i).getId()%>"><%=dCListData.get(i).getDeliverycompanyname()%></option>
-					<%
-						}
-					%>
-			</select>         			
-			 -->		
-              
-                      
+              <%=HtmlHelper.getSelect("deliveryCompanyId", dCListData, "deliverycompanyname", "id") %>            
+      
              <input type="submit" value="查询" class="searchBtn" id="btnSearch" />
             </td>
             </tr>
@@ -78,39 +51,53 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
    <div id="content">
 	
    </div>
+   
+   
+   <div tabindex="-1" class="modal inmodal" id="ClienterRechargeShow"
+	role="dialog" aria-hidden="true" style="display: none;">		
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">骑士余额变更</h4>				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+						<br>
+						  <div class="control-group">
+		                <label>骑士名称：</label>
+		                <input name="clienterName" id="clienterName" disabled="disabled" type="text">
+		                <input name="clienterId" id="clienterId" type="hidden">
+		            	</div>
+			            <div class="control-group">
+			                <label>骑士电话：</label>
+			                <input name="clienterPhone" id="clienterPhone" disabled="disabled" type="text">
+			            </div>
+			            <div class="control-group">
+			                <label>余额增减：</label>
+			                <input name="clienterRechargeAmount" id="clienterRechargeAmount" type="text">元
+			            </div>
+			            <div class="control-group">
+			                <label>备注：</label>
+			                <div class="controls">
+			                    <textarea cols="45" rows="5" id="rechargeLog"></textarea>
+			                </div>
+			            </div>
+					</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button" id="btnRechargeCommit">确认</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>
 
-<div>
-    <div class="add-openbox add-form" id="ClienterRechargeShow" style="width:500px">
-        <h2>
-            <p id="statusFin">骑士余额变更</p>
-        </h2>
-        <fieldset>
-            <br>
-            <div class="control-group">
-                <label>骑士名称：</label>
-                <input name="clienterName" id="clienterName" disabled="disabled" type="text">
-                <input name="clienterId" id="clienterId" type="hidden">
-            </div>
-            <div class="control-group">
-                <label>骑士电话：</label>
-                <input name="clienterPhone" id="clienterPhone" disabled="disabled" type="text">
-            </div>
-            <div class="control-group">
-                <label>余额增减：</label>
-                <input name="clienterRechargeAmount" id="clienterRechargeAmount" type="text">元
-            </div>
-            <div class="control-group">
-                <label>备注：</label>
-                <div class="controls">
-                    <textarea cols="45" rows="5" id="rechargeLog"></textarea>
-                </div>
-            </div>
-        </fieldset>
-        <p class="btnbox">
-            <input value="确认" type="button" id="btnRechargeCommit" class="yesBtn" />
-            <input value="关闭" type="button" class="J_closebox qxBtn" />
-        </p>
-    </div>
 </div>
 
 	<script>		
@@ -152,17 +139,14 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 			            }
 			        });
 			}
-		}
-	
-
+		}	
 		
 	jss.search(1);
 	$("#btnSearch").click(function(){
 		jss.search(1);
-	});
+	});	
 	
 	
-	var adminjs = new adminglass(); //实例化后台类	
 	 //骑士充值
     $("#btnRechargeCommit").on('click', function () {
         var clienterId = $("#clienterId").val(); //骑士id
@@ -195,10 +179,6 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
             });
         }
     });
-    //关闭弹层
-    $('.J_closebox').click(function () {
-        adminjs.closewinbox('.add-openbox');
-        return false;
-    });
+
 	</script>		
 	

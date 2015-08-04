@@ -1,6 +1,7 @@
 package com.edaisong.api.dal.dao.inter;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.edaisong.entity.Business;
@@ -19,4 +20,14 @@ public interface IBusinessDao {
 	int modifyBusiness(BusinessModifyModel detailModel);
 	Business login(String phoneNo,String password);
 	boolean addLoginLog(BusinessLoginLog log);
-}
+	
+
+	/**
+	 * 更新 商户 余额，可提现余额   
+	 * @param money  金额
+	 * @param businessId  商户id
+	 * @Date 20150804
+	 * @param business
+	 * @return
+	 */
+	 int updateForWithdraw(BigDecimal money,int businessId);}
