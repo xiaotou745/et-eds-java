@@ -53,9 +53,6 @@ public class DeliveryCompanyDao extends DaoBase implements IDeliveryCompanyDao {
 
 	@Override
 	public List<DeliveryCompany> getDeliveryCompanyList() {
-
-//		Map<String, Object> paramMap = new HashMap<>();
-//		paramMap.put("DeliveryCompanyName", "");
 		List<DeliveryCompany> list = getReadOnlySqlSessionUtil()
 				.selectList(
 						"com.edaisong.api.dal.dao.inter.IDeliveryCompanyDao.getDeliveryCompanyList"	);

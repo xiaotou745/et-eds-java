@@ -27,24 +27,6 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	@Autowired
 	private RedisService redisService;
 
-	 /**
-	  * 获取开通市
-	  * 窦海超
-	  * 2015年7月29日 10:40:36
-	  * */
-	@Override
-	public List<AreaModel> getOpenCity() {
-		List<AreaModel> list = getOpenCityListFromRedis();
-		List<AreaModel> listnew = new ArrayList<AreaModel>();
-		for (AreaModel item : list) {
-			if (item.getJiBie() == 1) {
-				// AreaModel model=new AreaModel();
-				listnew.add(item);
-			}
-		}
-		return listnew;
-	}
-	
 	/**
 	 * 获取开放城市列表（非分页）
 	 * 
@@ -97,23 +79,65 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 			AreaModelList areaList = new AreaModelList();
 			areaList.setAreaModels(opencitys);
 			areaList.setVersion(ConfigHelper.getApiVersion());
-//			redisService.set(
-//					RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
-//					JsonUtil.obj2string(areaList));
+			// redisService.set(
+			// RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
+			// JsonUtil.obj2string(areaList));
 		}
 		return opencitys;
 	}
 
 	@Override
 	public List<AreaModel> getOpenCityListFromRedis() {
-//		String jsonData = redisService.get(
-//				RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
-//				String.class);
-//		if (jsonData == null || jsonData.isEmpty()) {
-			return resetOpenCityListRedis();
-//		}
-//		AreaModelList areaList = JsonUtil
-//				.str2obj(jsonData, AreaModelList.class);
-//		return areaList.getAreaModels();
+		// String jsonData = redisService.get(
+		// RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
+		// String.class);
+		// if (jsonData == null || jsonData.isEmpty()) {
+		return resetOpenCityListRedis();
+		// }
+		// AreaModelList areaList = JsonUtil
+		// .str2obj(jsonData, AreaModelList.class);
+		// return areaList.getAreaModels();
+	}
+	@Override
+	public List<AreaModel> getOpenCityByJiBie(int jiBie)
+	{
+		List<AreaModel> list = getOpenCityListFromRedis();
+		List<AreaModel> listnew = new ArrayList<AreaModel>();
+
+		for (AreaModel item : list) {
+			if (item.getJiBie() == jiBie) {
+				listnew.add(item);
+			}
+		}
+		return listnew;
+	}
+	/**
+	 * 按照accountID获取二级开放城市列表
+	 * @author zhaohailong
+	 */
+	@Override
+	public List<AreaModel> getOpenCityListByAccountID(int accountID) {
+		
+		if (accountID == 0) {
+			return getOpenCityByJiBie(2);
+		}else {
+			return publicProvinceCityDao.getOpenCityListByAccountID(accountID);	
+		}
+	}
+	/**
+	 * 根据城市Id获取对应的区县列表
+	 * @author zhaohailong
+	 */
+	@Override
+	public List<AreaModel> getOpenCityDistrict(int cityId) {
+		List<AreaModel> list = getOpenCityListFromRedis();
+		List<AreaModel> listnew = new ArrayList<AreaModel>();
+
+		for (AreaModel item : list) {
+			if (item.getJiBie() == 3&&item.getParentId()==cityId) {
+				listnew.add(item);
+			}
+		}
+		return listnew;
 	}
 }

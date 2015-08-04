@@ -1,14 +1,13 @@
-<%@page import="com.edaisong.core.util.PropertyUtils"%>
-<%@page import="java.util.ArrayList"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	String basePath =new PropertyUtils().getProperty("static.admin.url");
-%>
+	<%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.OpenCityModel"%>
-
-
+<%
+String basePath =PropertyUtils.getProperty("static.admin.url");
+%>
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">
