@@ -190,4 +190,14 @@ public class BusinessService implements IBusinessService {
 		iBusinessDao.addLoginLog(log);
 	}
 
+	@Override
+	/**
+	 * 根据商户Id获取商户信息
+	 * @param businessId 商户Id
+	 * @return Business
+	 */
+	public Business getBusinessById(int businessId) { 
+		return iBusinessDao.getBusinessById(businessId);
+	}
+
 }

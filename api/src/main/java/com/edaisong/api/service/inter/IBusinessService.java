@@ -26,4 +26,10 @@ public interface IBusinessService {
 	BusinessDetailModel getBusinessDetailByID(int businessID);
 	List<BusinessOptionLog> getOpLogByBusinessID(int businessID);
 	int modifyBusiness(BusinessModifyModel detailModel);
+	/**
+	 * 根据商户Id获取商户信息
+	 * @param businessId 商户Id
+	 * @return Business
+	 */
+	Business getBusinessById(int businessId);
 }

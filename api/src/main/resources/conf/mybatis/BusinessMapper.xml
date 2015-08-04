@@ -172,9 +172,9 @@
 		bg.Name businessgroupname ,
 		ISNULL(b.MealsSettleMode, 0) mealssettlemode ,
 		ISNULL(b.BalancePrice,0) balanceprice ,
-		ISNULL(b.AllowWithdrawPrice, 0)
-		allowwithdrawprice ,
-		ISNULL(b.RecommendPhone, '''') AS recommendphone
+		ISNULL(b.AllowWithdrawPrice, 0) allowwithdrawprice ,
+		ISNULL(b.RecommendPhone, '''') AS recommendphone ,
+	    b.LastLoginTime 
 	</sql>
 
 	<sql id="getBusinessListFrom">
@@ -260,7 +260,7 @@
 		ORDER BY Id DESC
 	</select>
 	
-	<select id="getBusinessByPhoneNoAndPwd" resultType="com.edaisong.entity.domain.Business"
+	<select id="getBusinessByPhoneNoAndPwd" resultType="com.edaisong.entity.Business"
 		parameterType="java.util.Map">
 		SELECT
 		b.id ,
@@ -312,4 +312,10 @@
 			select @@identity as id
 		</selectKey>
 	</insert>
+	
+	<select id="getBusinessById" resultType="com.edaisong.entity.Business" parameterType="java.lang.Integer" statementType="CALLABLE">
+	  select 
+	  <include refid="getBusinessListColums" /> 
+	  from dbo.business b WITH (NOLOCK) where b.Id = #{businessId,jdbcType=INTEGER} 
+	</select>
 </mapper>

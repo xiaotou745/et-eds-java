@@ -63,5 +63,10 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public boolean addLoginLog(BusinessLoginLog log) {
 		return getMasterSqlSessionUtil().insert("com.edaisong.api.dal.dao.inter.IBusinessDao.addLogingLog",log) > 0;
 	}
+
+	@Override
+	public Business getBusinessById(int businessId) { 
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessById",businessId);
+	}
 	 
 }

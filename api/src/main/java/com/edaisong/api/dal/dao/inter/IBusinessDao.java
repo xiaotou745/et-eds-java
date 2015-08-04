@@ -19,4 +19,10 @@ public interface IBusinessDao {
 	int modifyBusiness(BusinessModifyModel detailModel);
 	Business login(String phoneNo,String password);
 	boolean addLoginLog(BusinessLoginLog log);
+	/**
+	 * 根据商户Id获取商户信息
+	 * @param businessId 商户Id
+	 * @return Business
+	 */
+	Business getBusinessById(int businessId);
 }
