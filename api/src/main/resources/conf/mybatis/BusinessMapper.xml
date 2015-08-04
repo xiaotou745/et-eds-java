@@ -260,7 +260,7 @@
 		ORDER BY Id DESC
 	</select>
 
-	<select id="getBusinessByPhoneNoAndPwd" resultType="com.edaisong.entity.domain.Business"
+	<select id="getBusinessByPhoneNoAndPwd" resultType="com.edaisong.entity.Business"
 		parameterType="java.util.Map">
 		SELECT
 		b.id ,
