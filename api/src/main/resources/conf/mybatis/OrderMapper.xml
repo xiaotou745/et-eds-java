@@ -817,8 +817,8 @@
  </select>
   
   <!--商家后台 订单详情页面基础数据    add by caoheyang 20150804  -->
-  <select id="getOrderDetailBusiness"  resultType="com.edaisong.entity.domain.OrderMapDetail"   
-  parameterType="com.edaisong.entity.req。OrderDetailBusinessReq"  >
+  <select id="getOrderDetailBusiness"  resultType="com.edaisong.entity.domain.OrderDetailBusiness"   
+  parameterType="com.edaisong.entity.req.OrderDetailBusinessReq"  >
 select a.Id,a.OrderNo,a.Status,a.OrderFrom,a.OriginalOrderNo,'未知' CanelReason,a.PubDate, 
 b.GrabTime,b.TakeTime,a.ActualDoneDate,RecevicePhoneNo,ReceviceAddress,c.TrueName,c.PhoneNo,
 a.Amount,a.OrderCommission,a.IsPay
