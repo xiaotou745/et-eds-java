@@ -1,5 +1,7 @@
 package com.edaisong.api.dal.dao.impl;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,10 +65,29 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public boolean addLoginLog(BusinessLoginLog log) {
 		return getMasterSqlSessionUtil().insert("com.edaisong.api.dal.dao.inter.IBusinessDao.addLogingLog",log) > 0;
 	}
+/**
+	 * 更新 商户 余额，可提现余额
+	 * 
+	 * @param money
+	 *            金额
+	 * @param businessId
+	 *            商户id
+	 * @Date 20150804
+	 * @param business
+	 * @return
+	 */
+	@Override
+	public int updateForWithdraw(BigDecimal money, int businessId) {
+		Map<String, Object> parasMap = new HashMap();
+		parasMap.put("Money", money);
+		parasMap.put("Id", businessId);
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dal.dao.inter.IBusinessDao.updateForWithdraw",
+						parasMap);
 
+	}
 	@Override
 	public Business getBusinessById(int businessId) { 
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessById",businessId);
 	}
-	 
 }
