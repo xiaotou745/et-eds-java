@@ -83,8 +83,8 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 			Where += "  AND (RecordType=9 OR RecordType=1) AND bbr.RelationNo='"+par.getNumString()+"' ";
 		}
 		//过滤商户可以看得流水
-		//Where +=" AND bbr.BusinessId="+"1791"+" AND RecordType IN (1,2,6,8,9,11) ";
-		Where +=" AND RecordType IN (1,2,6,8,9,11) ";
+		Where +=" AND bbr.BusinessId="+par.getBusinessid()+" AND RecordType IN (1,2,6,8,9,11) ";
+		//Where +=" AND RecordType IN (1,2,6,8,9,11) ";
 		
 		int PageSize = 15;
 		int CurrentPage = par.getCurrentPage();
