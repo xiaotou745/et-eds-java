@@ -24,4 +24,7 @@ public interface IBusinessBalanceRecordDao {
      *茹化肖
      * */
     PagedResponse<BusinessBalanceRecord> getTransDetailList(TransDetailReq par);
+    
+    
+    
 }

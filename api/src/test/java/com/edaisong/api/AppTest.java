@@ -64,8 +64,8 @@ public class AppTest
     public void testOrder()
     {
     	OrderDetailBusinessReq para=new OrderDetailBusinessReq();
-    	para.setBusinessId(11);
-    	para.setOrderNo("201");
+    	para.setBusinessId(2008);
+    	para.setOrderNo("2008150630165417002");
         OrderDetailBusinessResp res= testService.getOrderDetailBusiness(para);
     	System.out.println(JsonUtil.obj2string(res));
         assertTrue( true );
