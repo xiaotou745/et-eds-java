@@ -161,4 +161,19 @@
       Remark = #{remark,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+    <select id="getTransDetailList" resultType="com.edaisong.entity.BusinessBalanceRecord" parameterType="java.util.Map" statementType="CALLABLE">
+<![CDATA[  
+{call Sp_CustomPage2015_V1(
+' bbr.id DESC ',
+' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,bbr.Amount,bbr.Balance,bbr.Status,OperateTime ',
+' BusinessBalanceRecord AS bbr (nolock) ',
+#{Where,mode=IN,jdbcType=VARCHAR},
+#{PageSize,mode=IN,jdbcType=INTEGER},
+#{CurrentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
+#{TotalPage,mode=OUT,jdbcType=VARCHAR}
+)}
+	]]>  
+  </select>
 </mapper>
