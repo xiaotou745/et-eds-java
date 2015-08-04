@@ -15,6 +15,13 @@ public class TransDetailReq extends RequestBase {
 	private String NumType;
 	private String NumString;
 	private int currentPage;
+	private int businessid;
+	public int getBusinessid() {
+		return businessid;
+	}
+	public void setBusinessid(int businessid) {
+		this.businessid = businessid;
+	}
 	public int getCurrentPage() {
 		return currentPage;
 	}
