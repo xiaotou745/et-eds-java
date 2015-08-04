@@ -8,6 +8,7 @@ import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.OrderListModel;
+import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
 
@@ -31,4 +32,18 @@ public class OrderDao  extends DaoBase implements IOrderDao {
 		return result;
     }
 
+	 /**
+	  * 根据orderID获取订单地图数据
+	  * @param orderId
+	  * @author CaoHeYang
+	  * @Date 20150730
+	  * @return
+	  */
+	 public OrderMapDetail  getOrderMapDetail(long orderId){
+		 OrderMapDetail result=getReadOnlySqlSessionUtil()
+					.selectOne(
+							"com.edaisong.api.dal.dao.inter.IOrderDao.getOrderMapDetail",
+							orderId);
+	     return result;
+	 }
 }

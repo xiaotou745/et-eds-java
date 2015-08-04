@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.entity.DeliveryCompany"%>
 <%@page import="com.edaisong.api.service.impl.PublicProvinceCityService"%>
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
@@ -6,7 +7,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%
-	String basePath = request.getContextPath();
+	String basePath =new PropertyUtils().getProperty("static.admin.url");
 %>
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -122,7 +123,7 @@ $("#addUser").click(function(){
 $("#selCity").change(function(){
 	var selCity=$("#selCity").val();
 	if(selCity==1) $("#divcity").hide();
-	else $("#divcity").show();
+	else $("#divcity").show(500);
 });
 //绑定物流公司
 $("#hrefdc").click(function(){

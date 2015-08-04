@@ -9,6 +9,7 @@ import javax.ws.rs.core.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IGroupService;
@@ -71,6 +72,19 @@ public class OrderController {
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "order/listdo");
 		view.addObject("listData", resp);
+		return view;
+	}
+	
+	/**
+	 * 
+	 * @param searchWebReq
+	 * @return
+	 */
+	@RequestMapping(value="ordermap",method= {RequestMethod.POST})
+	public ModelAndView ordermap(long orderid){
+		ModelAndView view = new ModelAndView();
+		view.addObject("model", orderService.getOrderMapDetail(orderid));
+		view.addObject("viewPath", "order/ordermap");
 		return view;
 	}
 	
