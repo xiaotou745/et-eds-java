@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.edaisong.entity.Business;
+import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
@@ -17,7 +18,10 @@ public interface IBusinessDao {
 	BusinessDetailModel getBusinessDetailByID(int businessID);
 	List<BusinessOptionLog> getOpLogByBusinessID(int businessID);
 	int modifyBusiness(BusinessModifyModel detailModel);
+	Business login(String phoneNo,String password);
+	boolean addLoginLog(BusinessLoginLog log);
 	
+
 	/**
 	 * 更新 商户 余额，可提现余额   
 	 * @param money  金额
@@ -26,5 +30,4 @@ public interface IBusinessDao {
 	 * @param business
 	 * @return
 	 */
-	 int updateForWithdraw(BigDecimal money,int businessId);
-}
+	 int updateForWithdraw(BigDecimal money,int businessId);}
