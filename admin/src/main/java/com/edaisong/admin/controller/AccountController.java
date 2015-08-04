@@ -40,7 +40,7 @@ public class AccountController {
 		view.addObject("subtitle", "用户设置");
 		view.addObject("currenttitle", "用户管理");
 
-		List<AreaModel> listArea = publicProvinceCityService.getOpenCity();
+		List<AreaModel> listArea = publicProvinceCityService.getOpenCityByJiBie(1);
 		List<DeliveryCompany> listDc = deliveryCompanyService
 				.getDeliveryCompanyList();
 

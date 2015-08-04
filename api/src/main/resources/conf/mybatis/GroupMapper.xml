@@ -25,8 +25,18 @@
    WHERE dbo.[group].Id=#{id}
   </select>
      <select id="getGroupList" resultType="com.edaisong.entity.domain.GroupModel" parameterType="java.util.Map" >      
-   select  g.id as id,g.GroupName,g.CreateName,g.CreateTime,g.IsValid,isnull(gc.AppKey,'') AppKey,isnull(gc.AppSecret,'') AppSecret,isnull(gc.AppVersion,'') AppVersion 
- from  [group] g with(nolock) left join GroupApiConfig gc with(nolock) on g.Id = gc.GroupId where 1=1
+   SELECT   g.id ,
+            g.groupname ,
+            g.createname ,
+            g.createtime ,
+            g.isvalid ,
+            g.ismodifybind,
+            ISNULL(gc.AppKey, '') appKey ,
+            ISNULL(gc.AppSecret, '') appSecret ,
+            ISNULL(gc.AppVersion, '') appVersion
+   FROM     [group] g WITH ( NOLOCK )
+            LEFT JOIN GroupApiConfig gc WITH ( NOLOCK ) ON g.Id = gc.GroupId
+   WHERE    1 = 1
     <if test="groupname != null" >
        and  g.groupname=#{groupname}
     </if>   

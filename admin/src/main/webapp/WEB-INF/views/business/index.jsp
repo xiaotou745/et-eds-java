@@ -6,7 +6,7 @@
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%
 	String basePath = request.getContextPath();
-List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
+List<AreaModel> openCityList=	(List<AreaModel>)request.getAttribute("openCityList");
 List<BusinessGroup> businessGroupListData=	(List<BusinessGroup>)request.getAttribute("businessGroupListData");
 List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
 int groupId=(int)request.getAttribute("groupId");
@@ -38,9 +38,9 @@ int groupId=(int)request.getAttribute("groupId");
 				id="businessCity" style="width: 155px">
 					<option value="" selected="selected">--无--</option>
 					<%
-						for (int i = 0; i < areaListData.size(); i++) {
+						for (int i = 0; i < openCityList.size(); i++) {
 					%>
-					<option value="<%=areaListData.get(i).getCode()%>"><%=areaListData.get(i).getName()%></option>
+					<option value="<%=openCityList.get(i).getCode()%>"><%=openCityList.get(i).getName()%></option>
 					<%
 						}
 					%>
@@ -71,11 +71,7 @@ int groupId=(int)request.getAttribute("groupId");
 		<tr>
 			<td><span class="">推荐人电话: </span> <input id="recommendPhone"
 				type="text" name="recommendPhone" /> <input type="button"
-				value="查询" class="searchBtn" id="btnSearch" /> @if
-				(SuperMan.App_Start.UserContext.Current.HasAuthority(40)) { <input
-				type="submit" value="添加商户" data-toggle="modal"
-				data-target="#BusinessAddDiv" class="searchBtn" id="btnAddShop" />
-				}</td>
+				value="查询" class="searchBtn" id="btnSearch" /> </td>
 		</tr>
 	</table>
 </form>
@@ -227,94 +223,7 @@ int groupId=(int)request.getAttribute("groupId");
 	</p>
 </div>
 
-<div tabindex="-1" class="modal inmodal" id="BusinessAddDiv"
-	role="dialog" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
-		<div class="modal-content animated bounceInRight">
-			<div class="modal-header">
-				<button class="close" type="button" data-dismiss="modal">
-					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
-				</button>
-				<h4 class="modal-title">添加商户</h4>
-				<!-- 				<small class="font-bold">这里可以显示副标题。 </small> -->
-			</div>
-			<small class="font-bold">
-				<div class="modal-body">
-					<fieldset>
-						<div class="control-group">
-							<label>商家名称</label> <input name="businessName" id="businessName"
-								type="text">
-						</div>
-						<div class="control-group">
-							<label>电话</label> <input name="businessphoneNo"
-								id="businessphoneNo" type="text">
-						</div>
-						<div class="control-group">
-							<label>结算比例</label> <input name="businessCommission"
-								id="businessCommission" type="text">%
-						</div>
-						<div class="control-group">
-							<label>外送费</label> <input name="businessWaisong"
-								id="businessWaisong" type="text">
-						</div>
-						<div class="control-group">
-							<label>地址</label> <input name="businessaddr" id="businessaddr"
-								style="width: 200px;" type="text">
-						</div>
-						<div class="control-group">
-							<label>城市</label> <select name="businesscity" id="businesscity"
-								style="width: 155px">
-								<option value="" selected="selected">--无--</option>
-								<%
-									for (int i = 0; i < areaListData.size(); i++) {
-								%>
-								<option value="<%=areaListData.get(i).getCode()%>"><%=areaListData.get(i).getName()%></option>
-								<%
-									}
-								%>
-							</select>
 
-						</div>
-						<%
-							if(groupId>0)
-													{
-						%>
-						<input type="hidden" id="addbusinessGroupID" value="<%=groupId%>" />
-						%><%
-							}else {
-						%>
-						<div class="control-group">
-							<label class="control-label" for="InternalDepart">集团信息</label> <select
-								name="addbusinessGroupID" id="addbusinessGroupID"
-								class="selectw" style="width: 143px">
-								<option value="" selected="selected">--无--</option>
-								<%
-									for (int i = 0; i < groupListData.size(); i++) {
-								%>
-								<option value="<%=groupListData.get(i).getId()%>"><%=groupListData.get(i).getGroupname()%></option>
-								<%
-									}
-								%>
-							</select>
-							<%
-								}
-							%>
-
-						</div>
-
-
-					</fieldset>
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button">保存</button>
-				</div>
-			</small>
-		</div>
-		<small class="font-bold"> </small>
-	</div>
-	<small class="font-bold"> </small>
-</div>
 <div tabindex="-1" class="modal inmodal" id="BusinessRechargeShow"
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
@@ -593,74 +502,6 @@ $("#btnSearch").click(function(){
             success: function (result) {
                 if (result.IsSuccess) {
                     alert("修改成功!");
-                    window.location.href = "/BusinessManager/BusinessManager";
-                } else {
-                    alert(result.Message);
-                }
-            }
-        });
-    });
-    //添加商户
-    $("#btnAddBusiness").on('click', function () {
-        var businessName = $("#businessName").val(); //商户
-        var businessCommission = $("#businessCommission").val(); ////商户结算比例
-        var businessphoneNo = $("#businessphoneNo").val(); ////商户手机号
-        var businessaddr = $("#businessaddr").val(); ////商户地址
-        var businesspassWord = $("#businesspassWord").val(); ////商户密码
-        var businesscityid = $("#businesscity").val(); ////商户城市id
-        var businesscity = $("#businesscity").find("option:selected").text(); ////商户城市
-        var txtGroupId = $("#addbusinessGroupID").val(); ////商户集团
-        var businessWaisong = $("#businessWaisong").val(); ////商户外送费
-
-        if (businessName == null || businessName == "") {
-            alert("请输入商户名!");
-            return;
-        }
-        if (businessphoneNo == null || businessphoneNo == "") {
-            alert("请输入商户手机号!");
-            return;
-        }
-        if (businessaddr == null || businessaddr == "") {
-            alert("请输入商户地址!");
-            return;
-        }
-        if (businesspassWord == null || businesspassWord == "") {
-            alert("请输入商户密码!");
-            return;
-        }
-        if (businesscityid == null || businesscityid == "") {
-            alert("请选择商户城市!");
-            return;
-        }
-        if (txtGroupId == null || txtGroupId == "") {
-            txtGroupId = 0;
-        }
-
-        if (isNaN(businessCommission)) {
-            alert("请输入正确的数字!");
-            return;
-        }
-        if (businessCommission < 0) {
-            alert("请输入大于零的值!");
-            return;
-        }
-        if (isNaN(businessWaisong)) {
-            alert("请输入正确的数字!");
-            return;
-        }
-        if (businessWaisong < 0) {
-            alert("请输入大于零的值!");
-            return;
-        }
-        var paramaters = { "GroupId": txtGroupId, "businessaddr": businessaddr, "businessWaisong": businessWaisong, "businessCommission": businessCommission, "passWord": businesspassWord, "city": businesscity, "CityId": businesscityid, "businessName": businessName, "phoneNo": businessphoneNo };
-        var url = "/BusinessManager/AddBusiness";
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: paramaters,
-            success: function (result) {
-                if (result.IsSuccess) {
-                    alert("设置成功!");
                     window.location.href = "/BusinessManager/BusinessManager";
                 } else {
                     alert(result.Message);
