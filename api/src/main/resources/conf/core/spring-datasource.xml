@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
@@ -10,12 +11,12 @@
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd
 		http://www.springframework.org/schema/aop
 		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
     	">
 		<context:property-placeholder location="classpath:conf/custom/env.properties"
 		ignore-unresolvable="true" />
 		
-	<!-- org.apache.commons.dbcp.BasicDataSource -->
-	<!-- org.springframework.jdbc.datasource.DriverManagerDataSource -->
 	<bean id="superManSqlServerDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="${jdbc.sqlserver.driver}" />
 		<property name="url" value="${jdbc.sqlserver.url}" />
@@ -29,19 +30,11 @@
 		<property name="password" value="${jdbc.readonlysqlserver.password}" />
 	</bean>
 	<bean id="superManSqlServerSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<!--dataSource属性指定要用到的连接池 -->
 		<property name="dataSource" ref="superManSqlServerDataSource" />
-		<!--configLocation属性指定mybatis的核心配置文件 -->
-<!-- 		<property name="configLocation" value="classpath:conf/core/mybatis-config.xml" /> -->
-		<!-- 所有配置的sqlmapper文件，自动注入时使用 -->
 		<property name="mapperLocations" value="classpath:conf/mybatis/*.xml" /> 
 	</bean>
 	<bean id="superManReadOnlySqlServerSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<!--dataSource属性指定要用到的连接池 -->
 		<property name="dataSource" ref="superManReadOnlySqlServerDataSource" />
-		<!--configLocation属性指定mybatis的核心配置文件 -->
-<!-- 		<property name="configLocation" value="classpath:conf/core/mybatis-config.xml" /> -->
-		<!-- 所有配置的sqlmapper文件，自动注入时使用 -->
 		 <property name="mapperLocations" value="classpath:conf/mybatis/*.xml" /> 
 	</bean>
 
@@ -50,5 +43,5 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="superManSqlServerDataSource" />
 	</bean>
-
+    <tx:annotation-driven transaction-manager="transactionManager" />
 </beans>

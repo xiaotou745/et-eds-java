@@ -1,32 +1,25 @@
 package com.edaisong.entity.req;
 
-import com.edaisong.entity.common.RequestBase;
+import com.edaisong.entity.common.PagedRequestBase;
 /**
  * 交易明细列表 请求参数
  * 2015年8月4日10:23:51
  * 茹化肖
  * 
  * */
-public class TransDetailReq extends RequestBase {
+public class TransDetailReq extends PagedRequestBase {
 
 	private String startDate;
 	private String endDate;
 	private String transType;
 	private String numType;
 	private String numString;
-	private int currentPage;
 	private int businessid;
 	public int getBusinessid() {
 		return businessid;
 	}
 	public void setBusinessid(int businessid) {
 		this.businessid = businessid;
-	}
-	public int getCurrentPage() {
-		return currentPage;
-	}
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
 	}
 	public String getStartDate() {
 		return startDate;
@@ -53,7 +46,7 @@ public class TransDetailReq extends RequestBase {
 		return transType;
 	}
 	public void setTransType(String transType) {
-		transType = transType;
+		this.transType = transType;
 	}
 	/**
 	 * 单号类型,1订单号 2 流水单号
@@ -62,7 +55,7 @@ public class TransDetailReq extends RequestBase {
 		return numType;
 	}
 	public void setNumType(String numType) {
-		numType = numType;
+		this.numType = numType;
 	}
 	/**
 	 *订单号/流水单号 
@@ -71,7 +64,7 @@ public class TransDetailReq extends RequestBase {
 		return numString;
 	}
 	public void setNumString(String numString) {
-		numString = numString;
+		this.numString = numString;
 	}
 	
 }
