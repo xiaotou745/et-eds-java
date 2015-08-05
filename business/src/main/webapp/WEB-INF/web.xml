@@ -47,7 +47,7 @@
 	</filter-mapping>
 	<filter>
 		<filter-name>PermissionFilter</filter-name>
-		<filter-class>com.edaisong.admin.common.filter.PermissionFilter</filter-class>
+		<filter-class>com.edaisong.business.common.filter.PermissionFilter</filter-class>
 		<init-param>
 			<param-name>targetBeanName</param-name>
 			<param-value>PermissionFilter</param-value>

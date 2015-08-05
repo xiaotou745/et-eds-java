@@ -1,39 +1,6 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="java.util.List"%>         
-<%@page import="com.edaisong.entity.BusinessBalanceRecord"%> 
 <div class="row  border-bottom white-bg dashboard-header">
-	<div class="col-sm-12">
-		<blockquote class="text-danger">
-			<h1>此功能还未实现，更多精品敬请期待…………</h1>
-			<h2>亲，先随便看看吧....</h2>
-		</blockquote>
-	</div>
-	<div>
-		充值流水记录列表：
-		<table width="100%" border="0" cellspacing="0" cellpadding="0">
-			<thead>
-				<tr class="tdbg">
-					<th width="%5">id</th>
-						<th width="%5">BusinessId</th>
-						<th width="%5">Operator</th>
-				</tr>
-			</thead>
-			<tbody>
-		<%
-		List<BusinessBalanceRecord> data=	(List<BusinessBalanceRecord>)request.getAttribute("listData");
-		 for (int i = 0; i < data.size(); i++) {
-			 %>  
-			 <tr>
-				<td><%=data.get(i).getId() %></td>
-				<td><%=data.get(i).getBusinessid() %></td>
-				<td><%=data.get(i).getOperator() %></td>
-			</tr>
-		 <%}
-		%> 
-			</tbody>
-		</table>
-	</div>
 	<div class="col-sm-12">
 		<blockquote class="text-warning" style="font-size: 14px">
 			<h3>
