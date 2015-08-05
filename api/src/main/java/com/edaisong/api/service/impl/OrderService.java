@@ -103,8 +103,7 @@ public class OrderService implements IOrderService {
 			return resp;
 		}
 
-		// 查询条件
-		Order orderSearch = new Order();
+		Order orderSearch = new Order();//查询取消的订单的基础数据
 		orderSearch.setId(req.getOrderId());
 		orderSearch.setOrderno(req.getOrderNo());
 		orderSearch.setBusinessid(req.getBusinessId());
@@ -115,6 +114,7 @@ public class OrderService implements IOrderService {
 			resp.setMessage("参数bug");
 			return resp;
 		}
+		
 		boolean result=false;
 		// 更新订单为 取消状态 参数
 		Order updateModel = new Order();
@@ -141,7 +141,7 @@ public class OrderService implements IOrderService {
 			businessBalanceRecord.setWithwardid((long) req.getOrderId());
 			businessBalanceRecord.setRelationno(req.getOrderNo());
 			businessBalanceRecord.setRemark("商户取消订单返回配送费");
-			businessBalanceRecordDao.insert(businessBalanceRecord);
+		    businessBalanceRecordDao.insert(businessBalanceRecord);
 
 			// businessBalanceRecord BusinessId = paramodel.BusinessId,//商户Id
 			// Amount = order.SettleMoney,//流水金额 结算金额

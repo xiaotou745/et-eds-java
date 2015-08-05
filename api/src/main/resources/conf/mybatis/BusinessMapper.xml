@@ -321,7 +321,7 @@
    <!-- 更新 商户 余额，可提现余额   add by caoheyang 20150804  -->	
 	<update id="updateForWithdraw" parameterType="java.util.Map">
 		update  business
-		set  BalancePrice=BalancePrice+@Money,AllowWithdrawPrice=AllowWithdrawPrice+@Money
-		where  Id=@Id
+		set  BalancePrice=BalancePrice+ #{Money,jdbcType=DECIMAL} ,AllowWithdrawPrice=AllowWithdrawPrice+#{Money,jdbcType=DECIMAL}
+		where  Id=#{Id,jdbcType=INTEGER}
 	</update>
 </mapper>

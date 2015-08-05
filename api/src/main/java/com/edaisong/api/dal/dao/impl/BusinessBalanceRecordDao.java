@@ -21,16 +21,23 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 		return 0;
 	}
 
+	/**
+	 * 新增流水
+	 * @author CaoHeYang
+	 */
 	@Override
 	public int insert(BusinessBalanceRecord record) {
-		// TODO Auto-generated method stub
-		return 0;
+		int id=getMasterSqlSessionUtil().insert("com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao.insert", record);
+		return id;
 	}
 
+	/**
+	 * 新增  动态 sql 动态插入列
+	 */
 	@Override
 	public int insertSelective(BusinessBalanceRecord record) {
-		// TODO Auto-generated method stub
-		return 0;
+		int id=getMasterSqlSessionUtil().insert("com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao.insertSelective", record);
+		return id;
 	}
 
 	@Override
