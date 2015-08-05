@@ -5,6 +5,7 @@
 <%@page import="com.edaisong.entity.BusinessGroup"%>
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="com.edaisong.core.common.HtmlHelper"%>
 <%
 String basePath =PropertyUtils.getProperty("static.admin.url");
 List<AreaModel> openCityList=	(List<AreaModel>)request.getAttribute("openCityList");
@@ -35,36 +36,19 @@ int groupId=(int)request.getAttribute("groupId");
 			</td>
 		</tr>
 		<tr>
-			<td><span class="">筛选城市: </span><select name="businessCity"
-				id="businessCity" style="width: 155px">
-					<option value="" selected="selected">--无--</option>
-					<%
-						for (int i = 0; i < openCityList.size(); i++) {
-					%>
-					<option value="<%=openCityList.get(i).getCode()%>"><%=openCityList.get(i).getName()%></option>
-					<%
-						}
-					%>
-			</select> <input id="groupId" type="hidden" value="<%=groupId%>"
-				name="groupId" /> <span class="">商家分组:</span> <select
-				name="businessGroupId" id="businessGroupId" class="selectw"
-				style="width: 143px">
-					<option value="0" selected="selected">全部</option>
-					<%
-						for (int i = 0; i < businessGroupListData.size(); i++) {
-					%>
-					<option value="<%=businessGroupListData.get(i).getId()%>"><%=businessGroupListData.get(i).getName()%></option>
-					<%
-						}
-					%>
-			</select> <span class="">结算类型: </span> <select name="commissionType"
+			<td><span class="">筛选城市: </span>
+				<%=HtmlHelper.getSelect("businessCity", openCityList, "name", "code",null,"","全部","width:155px")%>
+			<input id="groupId" type="hidden" value="<%=groupId%>"
+				name="groupId" /> <span class="">商家分组:</span> 
+				<%=HtmlHelper.getSelect("businessGroupId", businessGroupListData, "name", "id",0,"0","全部","width:143px")%>
+				 <span class="">结算类型: </span> <select name="commissionType"
 				class="selectw" id="commissionType" style="width: 143px">
 					<option value="-1" selected="selected">全部</option>
 					<option value="1">固定比例</option>
 					<option value="2">固定金额</option>
 			</select> <span class="">餐费结算方式: </span> <select name="mealsSettleMode"
 				class="selectw" id="mealsSettleMode" style="width: 143px">
-					<option value="-1" selected="selected">-请选择-</option>
+					<option value="-1" selected="selected">全部</option>
 					<option value="0">线下结算</option>
 					<option value="1">线上结算</option>
 			</select></td>
@@ -142,16 +126,9 @@ int groupId=(int)request.getAttribute("groupId");
 			<label id="labGlobalConfig"></label>
 		</div>
 		<div class="control-group" style="margin-left: 30px">
-			<label>补贴策略：</label> <select name="businessGroupID"
-				id="businessGroupID" class="selectw" style="width: 143px">
-				<%
-					for (int i = 0; i < businessGroupListData.size(); i++) {
-				%>
-				<option value="<%=businessGroupListData.get(i).getId()%>"><%=businessGroupListData.get(i).getName()%></option>
-				<%
-					}
-				%>
-			</select> <input name="oldStrategyID" id="oldStrategyID" type="hidden">
+			<label>补贴策略：</label> 
+				<%=HtmlHelper.getSelect("businessGroupID", businessGroupListData, "name", "id",null,null,"全部","width:143px")%>
+			<input name="oldStrategyID" id="oldStrategyID" type="hidden">
 		</div>
 	</fieldset>
 	<p class="btnbox">
@@ -203,18 +180,8 @@ int groupId=(int)request.getAttribute("groupId");
 			<label>绑定第三方ID：</label> <input name="busiSourceId" id="busiSourceId"
 				type="text"> <input type="hidden" name="oldBusiSourceId"
 				id="oldBusiSourceId"> <input type="hidden"
-				name="oldBusGroupId" id="oldBusGroupId"> <select
-				name="busGroupId" id="busGroupId" class="selectw"
-				style="width: 100px">
-				<option value="">--请选择--</option>
-				<%
-					for (int i = 0; i < groupListData.size(); i++) {
-				%>
-				<option value="<%=groupListData.get(i).getId()%>"><%=groupListData.get(i).getGroupname()%></option>
-				<%
-					}
-				%>
-			</select>
+				name="oldBusGroupId" id="oldBusGroupId"> 
+				<%=HtmlHelper.getSelect("busGroupId", groupListData, "groupname", "id",null,"","全部","width:100px")%>
 		</div>
 	</fieldset>
 	<p class="btnbox">
@@ -352,7 +319,7 @@ $("#btnSearch").click(function(){
 	jss.search(1);
 });
 
-    var adminjs = new adminglass(); //实例化后台类
+   // var adminjs = new adminglass(); //实例化后台类
     $(document).ready(function () {
         //GetOpenProvince(); 
         window.location.hash = '';

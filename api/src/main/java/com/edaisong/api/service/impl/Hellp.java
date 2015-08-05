@@ -22,16 +22,25 @@ public class Hellp {
 		ITestService testService = SqlSessionFactoryPool
 				.getCustomBeanByType(ITestService.class);
 		
-		IAuthorityMenuClassService menuService = SqlSessionFactoryPool
-				.getCustomBeanByType(IAuthorityMenuClassService.class);
-		AuthorityMenuReq req2=new AuthorityMenuReq();
-		req2.setAccountId("14");
-		menuService.getMenuListByUserID(req2);
+//		IAuthorityMenuClassService menuService = SqlSessionFactoryPool
+//				.getCustomBeanByType(IAuthorityMenuClassService.class);
+//		AuthorityMenuReq req2=new AuthorityMenuReq();
+//		req2.setAccountId("14");
+//		menuService.getMenuListByUserID(req2);
 
 		TestServiceReq req = new TestServiceReq();
 		req.setRecordType(9);
 		req.setOperateTime("2015-01-01");
-		TestServiceResp resp = testService.selectBusinessBalanceByID(req);
+		TestServiceResp resp=null;
+		try {
+			resp = testService.selectBusinessBalanceByID(req);
+		} catch (Exception e) {
+			if ((RuntimeException)e!=null) {
+				System.out.println("事务回滚了，insert没有成功");
+			}
+			System.exit(0);
+		}
+		
 
 		List<BusinessBalanceRecord> listData = resp.getResultList();
 		for (int i = 0; i < listData.size(); i++) {
