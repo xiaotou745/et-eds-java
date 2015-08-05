@@ -172,9 +172,9 @@
 		bg.Name businessgroupname ,
 		ISNULL(b.MealsSettleMode, 0) mealssettlemode ,
 		ISNULL(b.BalancePrice,0) balanceprice ,
-		ISNULL(b.AllowWithdrawPrice, 0)
-		allowwithdrawprice ,
-		ISNULL(b.RecommendPhone, '''') AS recommendphone
+		ISNULL(b.AllowWithdrawPrice, 0) allowwithdrawprice ,
+		ISNULL(b.RecommendPhone, '''') AS recommendphone ,
+	    b.LastLoginTime 
 	</sql>
 
 	<sql id="getBusinessListFrom">
@@ -259,4 +259,69 @@
 		WHERE BusinessId = #{businessID}
 		ORDER BY Id DESC
 	</select>
+
+	<select id="getBusinessByPhoneNoAndPwd" resultType="com.edaisong.entity.Business"
+		parameterType="java.util.Map">
+		SELECT
+		b.id ,
+		b.name ,
+		b.city ,
+		b.district ,
+		b.phoneno ,
+		b.phoneno2 ,
+		b.idcard ,
+		b.[address] ,
+		isnull(b.landline,'') as  landline,
+		b.longitude ,
+		b.latitude ,
+		b.[status] ,
+		b.inserttime ,
+		b.districtid ,
+		b.cityid ,
+		b.provincecode ,
+		b.citycode ,
+		b.areacode ,
+		b.province ,
+		ISNULL(b.DistribSubsidy, 0.00) distribsubsidy ,
+		b.businesscommission ,
+		b.commissiontype ,
+		b.commissionfixvalue ,
+		b.businessgroupId ,
+		b.balanceprice ,
+		b.allowwithdrawprice ,
+		b.haswithdrawprice ,
+		b.checkpicurl ,
+		b.businesslicensepic ,
+		b.mealssettlemode ,
+		isnull(b.groupid,0) as groupid ,
+		b.originalbusiid ,
+		ISNULL(g.IsModifyBind, 0) isModifyBind ,
+		ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
+		b.isallowoverdraft ,
+		b.isemployertask ,
+		ISNULL(b.RecommendPhone, '') AS recommendphone
+		FROM business b WITH ( NOLOCK )
+		WHERE b.PhoneNo = #{PhoneNo,jdbcType=NVARCHAR}
+		AND Password = #{Password,jdbcType=NVARCHAR} 
+	</select>
+	
+	<insert id="addLogingLog" parameterType="com.edaisong.entity.BusinessLoginLog">
+		insert into BusinessLoginLog([PhoneNo],[Description],[IsSuccess])
+		values(#{PhoneNo,jdbcType=NVARCHAR},#{Description,jdbcType=NVARCHAR},#{IsSuccess,jdbcType=SMALLINT})
+		<selectKey resultType="java.lang.Long">
+			select @@identity as id
+		</selectKey>
+	</insert>
+	<select id="getBusinessById" resultType="com.edaisong.entity.Business" parameterType="java.lang.Integer" statementType="CALLABLE">
+	  select 
+	  <include refid="getBusinessListColums" /> 
+	  from dbo.business b WITH (NOLOCK) where b.Id = #{businessId,jdbcType=INTEGER} 
+	</select>
+
+   <!-- 更新 商户 余额，可提现余额   add by caoheyang 20150804  -->	
+	<update id="updateForWithdraw" parameterType="java.util.Map">
+		update  business
+		set  BalancePrice=BalancePrice+@Money,AllowWithdrawPrice=AllowWithdrawPrice+@Money
+		where  Id=@Id
+	</update>
 </mapper>

@@ -18,4 +18,8 @@ public class MessageService implements IMessageService {
 		return iMessageDao.getMessageList();
 	}
 
+	@Override
+	public List<Message> getMessageList(Message message) { 
+		return iMessageDao.getMessageList(message);
+	} 
 }

@@ -36,7 +36,7 @@ public class Hellp {
 			resp = testService.selectBusinessBalanceByID(req);
 		} catch (Exception e) {
 			if ((RuntimeException)e!=null) {
-				System.out.println("浜嬪姟鍥炴粴浜嗭紝insert娌℃湁鎴愬姛");
+				System.out.println("事务回滚了，insert没有成功");
 			}
 			System.exit(0);
 		}

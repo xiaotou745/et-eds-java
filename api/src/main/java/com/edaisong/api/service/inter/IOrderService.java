@@ -1,11 +1,12 @@
 package com.edaisong.api.service.inter;
-
-import java.util.List;
-
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.req.CancelOrderBusinessReq;
+import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.resp.CancelOrderBusinessResp;
+import com.edaisong.entity.resp.OrderDetailBusinessResp;
 
 public interface IOrderService {
 	/**
@@ -25,4 +26,23 @@ public interface IOrderService {
 	  * @return
 	  */
 	 OrderMapDetail  getOrderMapDetail(long orderId);
+	 
+	 
+	 /**
+	  * 商家后台 订单详情页面完整数据 
+	  * @param para 查询条件
+	  * @author CaoHeYang 
+	  * @Date 20150804
+	  * @return
+	  */
+	OrderDetailBusinessResp  getOrderDetailBusiness(OrderDetailBusinessReq para);
+	 
+	/**
+	 * 商户取消订单功能 
+	 * @param req 参数
+	 * @author CaoHeYang
+	 * @Date 20150804
+	 * @return
+	 */
+	CancelOrderBusinessResp cancelOrderBusiness(CancelOrderBusinessReq req);
 }

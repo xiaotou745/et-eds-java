@@ -11,4 +11,5 @@ public class RedissCacheKey {
     /// 获取开通城市缓存key
     /// </summary>
     public static final String Ets_Service_Provider_Common_GetOpenCity_New = "Ets_Service_Provider_Common_GetOpenCity_New_java";
+    public static final String LOGIN_COUNT_B = "LoginCount_B_";//商家登录次数
 }

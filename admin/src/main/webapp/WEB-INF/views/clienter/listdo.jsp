@@ -38,8 +38,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 			<tbody>                           
 
 		<%
-                           			//ClienterResp data = (ClienterResp) request.getAttribute("listData");
-                           				PagedResponse<ClienterModel> data = (PagedResponse<ClienterModel>) request
+       PagedResponse<ClienterModel> data = (PagedResponse<ClienterModel>) request
                            				.getAttribute("listData");
                            				List<ClienterModel> list = data.getResultList();
                            				if (list == null) {
@@ -122,7 +121,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 				<%
 				}
 				%>
-				<a href="javascript:void(0)" data-toggle="modal" data-target="#BusinessWithdraw" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
+				<a href="javascript:void(0)" data-toggle="modal" data-target="#ClienterRechargeShow" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
 				<a href="/SuperManManager/GetRelationByClienterId?ClienterId=@item.Id&Name=@item.TrueName&Phone=@item.PhoneNo">查看绑定商家</a>
 				<a href="/SuperManManager/QueryClienterDetail?clienterId=@item.Id">修改信息</a>
 					

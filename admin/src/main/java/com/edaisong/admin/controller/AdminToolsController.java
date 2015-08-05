@@ -1,9 +1,5 @@
 package com.edaisong.admin.controller;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javassist.compiler.ast.Variable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,12 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IAdminToolsService;
-import com.edaisong.api.service.inter.ITestService;
+import com.edaisong.api.service.inter.IBusinessFinanceService;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
-import com.edaisong.entity.req.TestServiceReq;
-import com.edaisong.entity.resp.TestServiceResp;
+import com.edaisong.entity.req.TransDetailReq;
 /*
  * 管理员工具
  * 茹化肖
@@ -31,9 +26,20 @@ import com.edaisong.entity.resp.TestServiceResp;
 public class AdminToolsController {
 	@Autowired
 	private IAdminToolsService adminToolsService;
+//	@Autowired
+//	private IBusinessFinanceService businessFinanceService;
 	@RequestMapping("list")
 	public ModelAndView globalConfigManager(HttpServletRequest request, HttpServletResponse res)
 	{
+//		TransDetailReq par=new TransDetailReq();
+//		par.setBusinessid(1791);
+//		par.setCurrentPage(1);
+//		par.setEndDate("");
+//		par.setStartDate("");
+//		par.setNumType("1");
+//		par.setTransType("");
+//		par.setNumString("1791150522202221066");
+//		businessFinanceService.getTransDetailList(par);
 		List<GlobalConfigModel> data= adminToolsService.getGlobalConfigByGroupId(0);
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");

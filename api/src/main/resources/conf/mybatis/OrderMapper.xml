@@ -69,12 +69,26 @@
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展  CaoHeYang 20150804 -->
+  <select id="getOneByCriteria" resultMap="BaseResultMap" parameterType="com.edaisong.entity.Order" >
     select 
     <include refid="Base_Column_List" />
-    from order
-    where Id = #{id,jdbcType=INTEGER}
+    from [order]
+    where 1=1 
+    <if test="id != null" >
+        and id= #{id,jdbcType=INTEGER}  
+    </if>
+    <if test="orderno != null" >
+        and orderno= #{orderno,jdbcType=NVARCHAR} 
+    </if>
+     <if test="businessid != null" >
+        and businessid= #{businessid,jdbcType=INTEGER} 
+    </if>
+    <if test="status != null" >
+        and status= #{status,jdbcType=INTEGER} 
+    </if>
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from order
     where Id = #{id,jdbcType=INTEGER}
@@ -783,7 +797,7 @@
  </select>
   
   
-   <!--后台订单列表页面 ） add by caoheyang 20150728  -->
+   <!--后台订单列表百度地图打点基础数据   add by caoheyang 20150728  -->
   <select id="getOrderMapDetail"  resultType="com.edaisong.entity.domain.OrderMapDetail"   
   parameterType="long"  >
 	select  ord.OrderId,
@@ -816,4 +830,23 @@
                             WHERE   ab.Id = @orderID
  </select>
   
+  <!--商家后台 订单详情页面基础数据    add by caoheyang 20150804  -->
+  <select id="getOrderDetailBusiness"  resultType="com.edaisong.entity.domain.OrderDetailBusiness"   
+  parameterType="com.edaisong.entity.req.OrderDetailBusinessReq"  >
+select a.Id,a.OrderNo,a.Status,a.OrderFrom,a.OriginalOrderNo,'未知' CanelReason,a.PubDate, 
+b.GrabTime,b.TakeTime,a.ActualDoneDate,a.RecevicePhoneNo,a.ReceviceAddress,c.TrueName,c.PhoneNo,
+a.Amount,a.OrderCommission,a.IsPay
+ from dbo.[order] ( nolock ) a
+ join dbo.OrderOther ( nolock ) b on a.Id=b.OrderId
+ LEFT join dbo.clienter  ( nolock ) c on a.clienterId=b.Id 
+ where a.OrderNo=#{orderNo,jdbcType=NVARCHAR} and a.BusinessId= #{businessId,jdbcType=INTEGER} 
+   </select>
+   <!-- 商户取消订单功能   add by caoheyang 20150804 -->
+   <update id="cancelOrderBusiness" parameterType="com.edaisong.entity.Order"  >
+   UPDATE dbo.[order]
+ SET  [Status] =3,OtherCancelReason= #{othercancelreason,jdbcType=NVARCHAR}
+ output Inserted.Id,#{amount,jdbcType=INTEGER},GETDATE(),'商家',#{othercancelreason,jdbcType=NVARCHAR},Inserted.businessId,Inserted.[Status],0
+ into dbo.OrderSubsidiesLog(OrderId,Price,InsertTime,OptName,Remark,OptId,OrderStatus,[Platform])
+ WHERE  OrderNo= #{orderno,jdbcType=NVARCHAR}  and Status= #{status,jdbcType=INTEGER} 
+   </update>
 </mapper>

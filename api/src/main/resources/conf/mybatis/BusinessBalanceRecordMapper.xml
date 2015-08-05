@@ -28,15 +28,15 @@
     delete from BusinessBalanceRecord
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.edaisong.entity.BusinessBalanceRecord" >
-    insert into BusinessBalanceRecord (Id, BusinessId, Amount, 
-      Status, Balance, RecordType, 
-      Operator, OperateTime, WithwardId, 
-      RelationNo, Remark)
-    values (#{id,jdbcType=BIGINT}, #{businessid,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
-      #{status,jdbcType=SMALLINT}, #{balance,jdbcType=DECIMAL}, #{recordtype,jdbcType=SMALLINT}, 
-      #{operator,jdbcType=NVARCHAR}, #{operatetime,jdbcType=TIMESTAMP}, #{withwardid,jdbcType=BIGINT}, 
-      #{relationno,jdbcType=VARCHAR}, #{remark,jdbcType=NVARCHAR})
+  <insert id="insert" parameterType="com.edaisong.entity.BusinessBalanceRecord">
+		insert into
+		BusinessBalanceRecord
+		(BusinessId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark)
+		select #{businessid,jdbcType=INTEGER},
+		#{amount,jdbcType=DECIMAL},#{status,jdbcType=SMALLINT},b.BalancePrice,#{recordtype,jdbcType=SMALLINT},#{operator,jdbcType=NVARCHAR}
+		,#{withwardid,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
+		from dbo.business as b where Id=#{businessid,jdbcType=INTEGER} ;
+		select @@IDENTITY
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.BusinessBalanceRecord" >
     insert into BusinessBalanceRecord
@@ -161,4 +161,41 @@
       Remark = #{remark,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  <!-- 获取交易明细的Where条件 -->
+  <sql id="getTransDetailListWhere">
+    	1=1  
+	 <if test="startDate != null and startDate != ''">
+	      AND bbr.OperateTime >''${startDate}''
+     </if>
+     <if test="endDate != null and endDate != ''">
+	      AND ''${endDate}'' > bbr.OperateTime 
+     </if>
+     <if test="transType != null and transType != '' and transType != 0">
+	      AND bbr.RecordType =${transType}
+     </if>
+     <if test="numType == 1 and numString != null and numString != ''">
+	      AND (RecordType=1 OR RecordType=2 OR RecordType=8) AND bbr.RelationNo=''${numString}''
+     </if>
+     <if test="numType == 2 and numString != null and numString != ''">
+	      AND (RecordType=9 OR RecordType=11) AND bbr.RelationNo=''${numString}''
+     </if>
+     <if test="businessid !=null">
+	       AND bbr.BusinessId=${businessid} AND RecordType IN (1,2,6,8,9,11)
+     </if>
+  </sql>
+   <!-- 获取收支明细的分页存储过程 -->
+  <select id="getTransDetailList" resultType="com.edaisong.entity.BusinessBalanceRecord" 
+  parameterType="com.edaisong.entity.req.TransDetailReq" statementType="CALLABLE">  
+{call Sp_CustomPage2015_V1(
+' bbr.id DESC ',
+' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,bbr.Amount,bbr.Balance,bbr.Status,OperateTime ',
+' BusinessBalanceRecord AS bbr (nolock) ',
+' <include refid="getTransDetailListWhere"/> ',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+#{totalPage,mode=OUT,jdbcType=VARCHAR}
+)} 
+  </select>
 </mapper>

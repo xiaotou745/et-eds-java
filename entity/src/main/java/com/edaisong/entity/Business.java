@@ -83,6 +83,8 @@ public class Business {
     private Short isemployertask;
 
     private String recommendphone;
+    
+    private Date lastlogintime;
 
     public Integer getId() {
         return id;
@@ -402,5 +404,12 @@ public class Business {
 
     public void setRecommendphone(String recommendphone) {
         this.recommendphone = recommendphone == null ? null : recommendphone.trim();
+    }
+    public Date getLastLoginTime() {
+        return lastlogintime;
+    }
+
+    public void setLastLoginTime(Date lastlogintime) {
+        this.lastlogintime = lastlogintime;
     }
 }
