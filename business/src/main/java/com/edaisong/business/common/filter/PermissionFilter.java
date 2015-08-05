@@ -40,11 +40,11 @@ public class PermissionFilter implements Filter {
 		// }
 		
 		//是否已登录
-		boolean isLogin = checkLogin(request);
+/*		boolean isLogin = checkLogin(request);
 		if (isLogin) {
 			request.getRequestDispatcher(loginUri).forward(request, response);
 			return;
-		}
+		}*/
 
 		String failUri = "";
 		Object misUser = null;
