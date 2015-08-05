@@ -1,4 +1,4 @@
-package com.edaisong.api_http.service;
+package com.edaisong.api_http.common;
 
 import org.apache.log4j.Logger;
 
@@ -6,23 +6,19 @@ import org.apache.log4j.Logger;
 
 
 
+
+
+
+import com.edaisong.api_http.entity.OpenResponseBase;
 import com.edaisong.core.util.StringUtils;
-import com.edaisong.entity.common.OpenResponseBase;
-import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.common.ResponseCode;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * 全局异常处理

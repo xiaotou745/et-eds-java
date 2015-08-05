@@ -14,7 +14,7 @@ import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.SystemUtils;
 import com.edaisong.entity.domain.ActionLog;
 /**
- * ???action???
+ * 全局action记录
  * 
  * @author zhaohailong
  */
@@ -49,8 +49,8 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			if (obj!=null) {
 				exceptionMsg = (String) request.getAttribute("exception");
 				stackTrace = (String) request.getAttribute("stackTrace");
-//				System.out.println("???????" + exceptionMsg);
-				// System.out.println("???????" + stackTrace);
+//				System.out.println("异常信息" + exceptionMsg);
+				// System.out.println("堆栈" + stackTrace);
 			}
 			String appServerIP="localhost";
 			List<String> ipinfoList=SystemUtils.GetLocalIpInfo();
@@ -68,9 +68,9 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			logEngity.setExecuteTime((end - start));
 			logServiceBLL.SystemActionLog(logEngity);
 			
-			System.out.println("?????????" + methodName);
-			System.out.println("??????��?" + param);
-			System.out.println("??????,?????????:" + (end - start));
+			System.out.println("方法名称" + methodName);
+			System.out.println("方法入参" + param);
+			System.out.println("执行时间(ms):" + (end - start));
 		}
 	}
 
