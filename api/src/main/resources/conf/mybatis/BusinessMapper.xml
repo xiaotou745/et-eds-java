@@ -172,9 +172,9 @@
 		bg.Name businessgroupname ,
 		ISNULL(b.MealsSettleMode, 0) mealssettlemode ,
 		ISNULL(b.BalancePrice,0) balanceprice ,
-		ISNULL(b.AllowWithdrawPrice, 0)
-		allowwithdrawprice ,
-		ISNULL(b.RecommendPhone, '''') AS recommendphone
+		ISNULL(b.AllowWithdrawPrice, 0) allowwithdrawprice ,
+		ISNULL(b.RecommendPhone, '''') AS recommendphone ,
+	    b.LastLoginTime 
 	</sql>
 
 	<sql id="getBusinessListFrom">
@@ -306,8 +306,14 @@
 	
 	<insert id="addLogingLog" parameterType="com.edaisong.entity.BusinessLoginLog" useGeneratedKeys="true" keyProperty="id">
 		insert into BusinessLoginLog([PhoneNo],[Description],[IsSuccess])
+		values(#{PhoneNo,jdbcType=NVARCHAR},#{Description,jdbcType=NVARCHAR},#{IsSuccess,jdbcType=SMALLINT})
 		values(#{phoneNo,jdbcType=NVARCHAR},#{description,jdbcType=NVARCHAR},#{isSuccess,jdbcType=SMALLINT})
 	</insert>
+	<select id="getBusinessById" resultType="com.edaisong.entity.Business" parameterType="java.lang.Integer" statementType="CALLABLE">
+	  select 
+	  <include refid="getBusinessListColums" /> 
+	  from dbo.business b WITH (NOLOCK) where b.Id = #{businessId,jdbcType=INTEGER} 
+	</select>
 
    <!-- 更新 商户 余额，可提现余额   add by caoheyang 20150804  -->	
 	<update id="updateForWithdraw" parameterType="java.util.Map">

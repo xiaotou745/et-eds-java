@@ -18,4 +18,6 @@ public interface IMessageDao {
     int updateByPrimaryKey(Message record);
     
     List<Message> getMessageList();
+    
+    List<Message> getMessageList(Message message);
 }

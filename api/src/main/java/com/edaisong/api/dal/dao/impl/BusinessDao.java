@@ -56,8 +56,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	@Override
 	public Business login(String phoneNo, String password) {
 		Map<String, Object> paramMap = new HashedMap();
-		paramMap.put("phoneNo", phoneNo);
-		paramMap.put("password", password);
+
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessByPhoneNoAndPwd",paramMap);
 	}
 
@@ -86,5 +85,8 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 						parasMap);
 
 	}
-
+	@Override
+	public Business getBusinessById(int businessId) { 
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessById",businessId);
+}
 }

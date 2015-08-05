@@ -30,4 +30,11 @@ public interface IBusinessDao {
 	 * @param business
 	 * @return
 	 */
-	 int updateForWithdraw(BigDecimal money,int businessId);}
+	 int updateForWithdraw(BigDecimal money,int businessId);
+	/**
+	 * 根据商户Id获取商户信息
+	 * @param businessId 商户Id
+	 * @return Business
+	 */
+	Business getBusinessById(int businessId);
+}

@@ -14,7 +14,7 @@ import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.SystemUtils;
 import com.edaisong.entity.domain.ActionLog;
 /**
- * ȫ��action��¼
+ * ???action???
  * 
  * @author zhaohailong
  */
@@ -49,8 +49,8 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			if (obj!=null) {
 				exceptionMsg = (String) request.getAttribute("exception");
 				stackTrace = (String) request.getAttribute("stackTrace");
-//				System.out.println("�쳣��Ϣ��" + exceptionMsg);
-				// System.out.println("�쳣��ջ��" + stackTrace);
+//				System.out.println("???????" + exceptionMsg);
+				// System.out.println("???????" + stackTrace);
 			}
 			String appServerIP="localhost";
 			List<String> ipinfoList=SystemUtils.GetLocalIpInfo();
@@ -68,9 +68,9 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			logEngity.setExecuteTime((end - start));
 			logServiceBLL.SystemActionLog(logEngity);
 			
-			System.out.println("�������ƣ�" + methodName);
-			System.out.println("������Σ�" + param);
-			System.out.println("ִ��ʱ��,��ȷ������:" + (end - start));
+			System.out.println("?????????" + methodName);
+			System.out.println("??????��?" + param);
+			System.out.println("??????,?????????:" + (end - start));
 		}
 	}
 

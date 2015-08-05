@@ -78,10 +78,11 @@ public class AppTest
     {
     	CancelOrderBusinessReq cancelOrderBusinessReq=new CancelOrderBusinessReq();
     	cancelOrderBusinessReq.setBusinessId(2008);
-    	cancelOrderBusinessReq.setOrderId(11);
+    	cancelOrderBusinessReq.setOrderId(143525);
     	cancelOrderBusinessReq.setOrderNo("2008150630165417002");
     	
         CancelOrderBusinessResp res= testService.cancelOrderBusiness(cancelOrderBusinessReq);	
     }
+    
     
 }

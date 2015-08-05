@@ -15,8 +15,8 @@ import com.edaisong.core.web.CookieUtils;
 import java.io.IOException;
 
 public class PermissionFilter implements Filter {
-	@Autowired
-	private RedisService redisService;
+	//@Autowired
+	//private RedisService redisService;
 	private final String loginUri = "/account/login";
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletReponse, FilterChain filterChain)
@@ -32,14 +32,14 @@ public class PermissionFilter implements Filter {
 			uri = uri.substring(0, uri.length() - 1);
 		}
 
-		// 判断该uri是否需要权限验证
+		// �жϸ�uri�Ƿ���ҪȨ����֤
 		// int permissionCode = this.getPermissionCode_MutiLevel(uri);
 		// if (permissionCode== PermissionConfig.UNDEFINE) {
 		// filterChain.doFilter(request, response);
 		// return;
 		// }
 		
-		//是否已登录
+		//�Ƿ��ѵ�¼
 /*		boolean isLogin = checkLogin(request);
 		if (isLogin) {
 			request.getRequestDispatcher(loginUri).forward(request, response);
@@ -49,19 +49,19 @@ public class PermissionFilter implements Filter {
 		String failUri = "";
 		Object misUser = null;
 		// if(null==misUser){
-		// request.setAttribute("message", "亲，无法获取你的权限信息，请重新登录mis！");
+		// request.setAttribute("message", "�ף��޷���ȡ���Ȩ����Ϣ�������µ�¼mis��");
 		// request.getRequestDispatcher(failUri).forward(request,response);
 		// return;
 		// }
-		// 权限认证判定
+		// Ȩ����֤�ж�
 
 		// if (!misUser.isIllegal(permissionCode)) {
-		// 权限未通过
-		// request.setAttribute("message", "亲，您没有权限访问该信息，请更换合适的账户登录mis！");
+		// Ȩ��δͨ��
+		// request.setAttribute("message", "�ף���û��Ȩ�޷��ʸ���Ϣ����������ʵ��˻���¼mis��");
 		// request.getRequestDispatcher(failUri).forward(request, response);
 		// return;
 		// }
-		filterChain.doFilter(request, response);// 权限通过
+		filterChain.doFilter(request, response);// Ȩ��ͨ��
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class PermissionFilter implements Filter {
 
 	}
 	
-	private boolean checkLogin(HttpServletRequest request){
+	/*private boolean checkLogin(HttpServletRequest request){
 		boolean isLogin = false;
 		final String cookieKey = WebConst.LOGIN_COOKIE_NAME; 
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
@@ -89,5 +89,5 @@ public class PermissionFilter implements Filter {
 			}
 		}
 		return isLogin;
-	}
+	}*/
 }
