@@ -1,5 +1,10 @@
 package com.edaisong.api;
 
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -83,6 +88,34 @@ public class AppTest
     	
         CancelOrderBusinessResp res= testService.cancelOrderBusiness(cancelOrderBusinessReq);	
     }
+   
     
+    public void testenum()
+    {
+    	
+
+    	
+
+    	
+    }
     
+    @Documented
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Person{
+        String name();
+    }
+    
+	@Person(name="sdasddasda")
+    public enum Cs{
+    	@Person(name="sssssssss")
+    	ss,
+    	@Person(name="xxxxxx")
+    	xxx,
+    }
+	
+	@Person(name="Css")
+	public   class  Css{
+		
+		
+	}
 }
