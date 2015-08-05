@@ -98,7 +98,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public int cancelOrderBusiness(Order order) {
 		int res = getMasterSqlSessionUtil()
 				.update(
-						"com.edaisong.api.dal.dao.inter.IOrderDao.getOneByCriteria",
+						"com.edaisong.api.dal.dao.inter.IOrderDao.cancelOrderBusiness",
 						order);
 		return res;
 	}

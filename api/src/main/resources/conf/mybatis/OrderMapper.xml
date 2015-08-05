@@ -73,7 +73,7 @@
   <select id="getOneByCriteria" resultMap="BaseResultMap" parameterType="com.edaisong.entity.Order" >
     select 
     <include refid="Base_Column_List" />
-    from order
+    from [order]
     where 1=1 
     <if test="id != null" >
         and id= #{id,jdbcType=INTEGER}  
@@ -844,7 +844,7 @@ a.Amount,a.OrderCommission,a.IsPay
    <!-- 商户取消订单功能   add by caoheyang 20150804 -->
    <update id="cancelOrderBusiness" parameterType="com.edaisong.entity.Order"  >
    UPDATE dbo.[order]
- SET  [Status] =,OtherCancelReason= #{othercancelreason,jdbcType=NVARCHAR}
+ SET  [Status] =3,OtherCancelReason= #{othercancelreason,jdbcType=NVARCHAR}
  output Inserted.Id,#{amount,jdbcType=INTEGER},GETDATE(),'商家',#{othercancelreason,jdbcType=NVARCHAR},Inserted.businessId,Inserted.[Status],0
  into dbo.OrderSubsidiesLog(OrderId,Price,InsertTime,OptName,Remark,OptId,OrderStatus,[Platform])
  WHERE  OrderNo= #{orderno,jdbcType=NVARCHAR}  and Status= #{status,jdbcType=INTEGER} 
