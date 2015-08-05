@@ -73,7 +73,15 @@ public class BusinessService implements IBusinessService {
 			addLoginLog(req.getPhoneNo(),"用户名或密码错误",false);
 			return resp;
 		}
+		//审核未通过
+		if(b.getStatus() != 1){
+			resp.setLoginSuccess(false);
+			resp.setMessage("您的商铺尚未验证通过");
+			addLoginLog(req.getPhoneNo(),"账号未审核通过",false);
+			return resp;
+		}
 		resp.setLoginSuccess(true);
+		resp.setBid(b.getId());
 		resp.setMessage("登录成功");
 		// 登录成功
 		// 设置登录次数+1
@@ -103,6 +111,19 @@ public class BusinessService implements IBusinessService {
 		}
 		detailModel.setRemark(remark);
 		return iBusinessDao.modifyBusiness(detailModel);
+	}
+	
+	/**
+	 * 设置登录状态(将登录状态存入redis中)
+	 */
+	@Override
+	public void setLoginStatus(String key, Object value, int maxAge) {
+		redisService.set(key, value,maxAge);
+	}
+	
+	@Override
+	public Object getLoginStatus(String key){
+		return redisService.get(key, Object.class);
 	}
 
 	private String GetRemark(BusinessDetailModel brm, BusinessModifyModel model) {
@@ -188,6 +209,16 @@ public class BusinessService implements IBusinessService {
 		log.setIsSuccess(isSuccess ? (short) 1 : (short) 0);
 		log.setPhoneNo(phoneNo);
 		iBusinessDao.addLoginLog(log);
+	}
+
+	@Override
+	/**
+	 * 根据商户Id获取商户信息
+	 * @param businessId 商户Id
+	 * @return Business
+	 */
+	public Business getBusinessById(int businessId) { 
+		return iBusinessDao.getBusinessById(businessId);
 	}
 
 }
