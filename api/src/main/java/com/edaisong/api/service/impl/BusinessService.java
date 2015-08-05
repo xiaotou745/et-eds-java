@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.dal.dao.inter.IBusinessDao;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.consts.GlobalConfig;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.entity.Business;
@@ -58,15 +59,15 @@ public class BusinessService implements IBusinessService {
 		String loginCountCacheKey = RedissCacheKey.LOGIN_COUNT_B + req.getPhoneNo();
 		Integer loginCount = redisService.get(loginCountCacheKey, Integer.class);
 		loginCount = loginCount == null ? 0 : loginCount;
-		if (loginCount >= MAX_LOING_COUNT) {
+		/*		if (loginCount >= MAX_LOING_COUNT) {
 			resp.setLoginSuccess(false);
 			resp.setMessage("您当前登录的次数大于10，请5分钟后重试");
 			addLoginLog(req.getPhoneNo(),"5分钟内登录次数超过5次",false);
 			return resp;
-		}
+		}*/
 		// 验证用户名密码是否正确
-		String pwd = MD5Util.MD5(req.getPassword());
-		Business b = iBusinessDao.login(req.getPhoneNo(), req.getPassword());
+		String pwd = MD5Util.MD5(GlobalConfig.PWD_SALT+req.getPassword());
+		Business b = iBusinessDao.login(req.getPhoneNo(), pwd);
 		if (b == null) {
 			resp.setLoginSuccess(false);
 			resp.setMessage("您输入的用户名或密码错误");
@@ -111,19 +112,6 @@ public class BusinessService implements IBusinessService {
 		}
 		detailModel.setRemark(remark);
 		return iBusinessDao.modifyBusiness(detailModel);
-	}
-	
-	/**
-	 * 设置登录状态(将登录状态存入redis中)
-	 */
-	@Override
-	public void setLoginStatus(String key, Object value, int maxAge) {
-		redisService.set(key, value,maxAge);
-	}
-	
-	@Override
-	public Object getLoginStatus(String key){
-		return redisService.get(key, Object.class);
 	}
 
 	private String GetRemark(BusinessDetailModel brm, BusinessModifyModel model) {
@@ -203,7 +191,7 @@ public class BusinessService implements IBusinessService {
 		return "";
 	}
 
-	private void addLoginLog(String phoneNo, String description, boolean isSuccess) {
+	public void addLoginLog(String phoneNo, String description, boolean isSuccess) {
 		BusinessLoginLog log = new BusinessLoginLog();
 		log.setDescription(description);
 		log.setIsSuccess(isSuccess ? (short) 1 : (short) 0);

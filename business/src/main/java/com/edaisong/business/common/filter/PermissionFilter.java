@@ -1,61 +1,93 @@
 package com.edaisong.business.common.filter;
 
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.edaisong.business.config.WebConst;
+import com.edaisong.business.entity.CookieModel;
+import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.util.JsonUtil;
+import com.edaisong.core.web.CookieUtils;
+
 import java.io.IOException;
 
 public class PermissionFilter implements Filter {
+	@Autowired
+	private RedisService redisService;
+	private final String loginUri = "/account/login";
+	@Override
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletReponse, FilterChain filterChain)
+			throws IOException, ServletException {
 
+		HttpServletRequest request = (HttpServletRequest) servletRequest;
+		HttpServletResponse response = (HttpServletResponse) servletReponse;
 
-    @Override
-    public void doFilter(ServletRequest servletRequest,
-                         ServletResponse servletReponse, FilterChain filterChain)
-            throws IOException, ServletException {
+		// MisUser misUser = MisUserUtil.getCurrentMisUser(request);
 
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletReponse;
+		String uri = request.getServletPath().split("\\.")[0];
+		if (uri.endsWith("/")) {
+			uri = uri.substring(0, uri.length() - 1);
+		}
 
-        //MisUser misUser = MisUserUtil.getCurrentMisUser(request);
+		// åˆ¤æ–­è¯¥uriæ˜¯å¦éœ€è¦æƒé™éªŒè¯
+		// int permissionCode = this.getPermissionCode_MutiLevel(uri);
+		// if (permissionCode== PermissionConfig.UNDEFINE) {
+		// filterChain.doFilter(request, response);
+		// return;
+		// }
+		
+		//æ˜¯å¦å·²ç™»å½•
+		boolean isLogin = checkLogin(request);
+		if (isLogin) {
+			request.getRequestDispatcher(loginUri).forward(request, response);
+			return;
+		}
 
-        String uri=request.getServletPath().split("\\.")[0];
-        if(uri.endsWith("/")) 
-        	{
-        	uri = uri.substring(0, uri.length()-1);
-        	}
+		String failUri = "";
+		Object misUser = null;
+		// if(null==misUser){
+		// request.setAttribute("message", "äº²ï¼Œæ— æ³•è·å–ä½ çš„æƒé™ä¿¡æ¯ï¼Œè¯·é‡æ–°ç™»å½•misï¼");
+		// request.getRequestDispatcher(failUri).forward(request,response);
+		// return;
+		// }
+		// æƒé™è®¤è¯åˆ¤å®š
 
-        //ÅĞ¶Ï¸ÃuriÊÇ·ñĞèÒªÈ¨ÏŞÑéÖ¤
-//        int permissionCode = this.getPermissionCode_MutiLevel(uri);
-//        if (permissionCode== PermissionConfig.UNDEFINE) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+		// if (!misUser.isIllegal(permissionCode)) {
+		// æƒé™æœªé€šè¿‡
+		// request.setAttribute("message", "äº²ï¼Œæ‚¨æ²¡æœ‰æƒé™è®¿é—®è¯¥ä¿¡æ¯ï¼Œè¯·æ›´æ¢åˆé€‚çš„è´¦æˆ·ç™»å½•misï¼");
+		// request.getRequestDispatcher(failUri).forward(request, response);
+		// return;
+		// }
+		filterChain.doFilter(request, response);// æƒé™é€šè¿‡
+	}
 
-        String failUri = "";
-      Object  misUser=null;
-       // if(null==misUser){
-            //request.setAttribute("message", "Ç×£¬ÎŞ·¨»ñÈ¡ÄãµÄÈ¨ÏŞĞÅÏ¢£¬ÇëÖØĞÂµÇÂ¼mis£¡");
-            //request.getRequestDispatcher(failUri).forward(request,response);
-            //return;
-        //}
-        // È¨ÏŞÈÏÖ¤ÅĞ¶¨
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
+	}
 
-        //if (!misUser.isIllegal(permissionCode)) {
-            // È¨ÏŞÎ´Í¨¹ı
-            //request.setAttribute("message", "Ç×£¬ÄúÃ»ÓĞÈ¨ÏŞ·ÃÎÊ¸ÃĞÅÏ¢£¬Çë¸ü»»ºÏÊÊµÄÕË»§µÇÂ¼mis£¡");
-            //request.getRequestDispatcher(failUri).forward(request, response);
-            //return;
-        //}
-        filterChain.doFilter(request, response);// È¨ÏŞÍ¨¹ı
-    }
+	@Override
+	public void destroy() {
 
-    @Override
-    public void init(FilterConfig arg0) throws ServletException {
-    }
-
-    @Override
-    public void destroy() {
-
-    }
+	}
+	
+	private boolean checkLogin(HttpServletRequest request){
+		boolean isLogin = false;
+		final String cookieKey = WebConst.LOGIN_COOKIE_NAME; 
+		String cookieValue = CookieUtils.getCookie(request, cookieKey);
+		if(cookieValue != null){
+			CookieModel cookieModel = JsonUtil.str2obj(cookieValue, CookieModel.class);
+			if(cookieModel != null){
+				if(cookieModel.getVersion() == request.getServletContext().getInitParameter("cookieVersion")){
+					Object loginStatusValue = redisService.get(cookieModel.getValue(),Object.class);
+					if(loginStatusValue != null){
+						isLogin = true;
+					}
+				}
+			}
+		}
+		return isLogin;
+	}
 }

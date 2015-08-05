@@ -25,6 +25,5 @@ public interface IBusinessService {
 	BusinessDetailModel getBusinessDetailByID(int businessID);
 	List<BusinessOptionLog> getOpLogByBusinessID(int businessID);
 	int modifyBusiness(BusinessModifyModel detailModel);
-	void setLoginStatus(String key,Object value,int maxAge);
-	Object getLoginStatus(String key);
+	void addLoginLog(String phoneNo, String description, boolean isSuccess);
 }
