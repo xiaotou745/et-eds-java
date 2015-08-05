@@ -1,182 +1,202 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao">
-	<resultMap id="BaseResultMap" type="com.edaisong.entity.BusinessBalanceRecord">
-		<id column="Id" property="id" jdbcType="BIGINT" />
-		<result column="BusinessId" property="businessid" jdbcType="INTEGER" />
-		<result column="Amount" property="amount" jdbcType="DECIMAL" />
-		<result column="Status" property="status" jdbcType="SMALLINT" />
-		<result column="Balance" property="balance" jdbcType="DECIMAL" />
-		<result column="RecordType" property="recordtype" jdbcType="SMALLINT" />
-		<result column="Operator" property="operator" jdbcType="NVARCHAR" />
-		<result column="OperateTime" property="operatetime" jdbcType="TIMESTAMP" />
-		<result column="WithwardId" property="withwardid" jdbcType="BIGINT" />
-		<result column="RelationNo" property="relationno" jdbcType="VARCHAR" />
-		<result column="Remark" property="remark" jdbcType="NVARCHAR" />
-	</resultMap>
-	<sql id="Base_Column_List">
-		Id, BusinessId, Amount, Status, Balance, RecordType, Operator,
-		OperateTime, WithwardId,
-		RelationNo, Remark
-	</sql>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-		parameterType="java.lang.Long">
-		select
-		<include refid="Base_Column_List" />
-		from BusinessBalanceRecord
-		where Id = #{id,jdbcType=BIGINT}
-	</select>
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-		delete from BusinessBalanceRecord
-		where Id = #{id,jdbcType=BIGINT}
-	</delete>
-	<insert id="insert" parameterType="com.edaisong.entity.BusinessBalanceRecord">
-		insert into
-		BusinessBalanceRecord
-		(BusinessId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark)
-		select #{businessid,jdbcType=INTEGER},
-		#{amount,jdbcType=DECIMAL},#{status,jdbcType=SMALLINT},b.BalancePrice,#{recordtype,jdbcType=SMALLINT},#{operator,jdbcType=NVARCHAR}
-		,#{withwardid,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
-		from dbo.business as b where Id=#{businessid,jdbcType=INTEGER} ;
-		select @@IDENTITY
-	</insert>
-	<insert id="insertSelective" parameterType="com.edaisong.entity.BusinessBalanceRecord">
-		insert into BusinessBalanceRecord
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				Id,
-			</if>
-			<if test="businessid != null">
-				BusinessId,
-			</if>
-			<if test="amount != null">
-				Amount,
-			</if>
-			<if test="status != null">
-				Status,
-			</if>
-			<if test="balance != null">
-				Balance,
-			</if>
-			<if test="recordtype != null">
-				RecordType,
-			</if>
-			<if test="operator != null">
-				Operator,
-			</if>
-			<if test="operatetime != null">
-				OperateTime,
-			</if>
-			<if test="withwardid != null">
-				WithwardId,
-			</if>
-			<if test="relationno != null">
-				RelationNo,
-			</if>
-			<if test="remark != null">
-				Remark,
-			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				#{id,jdbcType=BIGINT},
-			</if>
-			<if test="businessid != null">
-				#{businessid,jdbcType=INTEGER},
-			</if>
-			<if test="amount != null">
-				#{amount,jdbcType=DECIMAL},
-			</if>
-			<if test="status != null">
-				#{status,jdbcType=SMALLINT},
-			</if>
-			<if test="balance != null">
-				#{balance,jdbcType=DECIMAL},
-			</if>
-			<if test="recordtype != null">
-				#{recordtype,jdbcType=SMALLINT},
-			</if>
-			<if test="operator != null">
-				#{operator,jdbcType=NVARCHAR},
-			</if>
-			<if test="operatetime != null">
-				#{operatetime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="withwardid != null">
-				#{withwardid,jdbcType=BIGINT},
-			</if>
-			<if test="relationno != null">
-				#{relationno,jdbcType=VARCHAR},
-			</if>
-			<if test="remark != null">
-				#{remark,jdbcType=NVARCHAR},
-			</if>
-		</trim>
-	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.BusinessBalanceRecord">
-		update BusinessBalanceRecord
-		<set>
-			<if test="businessid != null">
-				BusinessId = #{businessid,jdbcType=INTEGER},
-			</if>
-			<if test="amount != null">
-				Amount = #{amount,jdbcType=DECIMAL},
-			</if>
-			<if test="status != null">
-				Status = #{status,jdbcType=SMALLINT},
-			</if>
-			<if test="balance != null">
-				Balance = #{balance,jdbcType=DECIMAL},
-			</if>
-			<if test="recordtype != null">
-				RecordType = #{recordtype,jdbcType=SMALLINT},
-			</if>
-			<if test="operator != null">
-				Operator = #{operator,jdbcType=NVARCHAR},
-			</if>
-			<if test="operatetime != null">
-				OperateTime = #{operatetime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="withwardid != null">
-				WithwardId = #{withwardid,jdbcType=BIGINT},
-			</if>
-			<if test="relationno != null">
-				RelationNo = #{relationno,jdbcType=VARCHAR},
-			</if>
-			<if test="remark != null">
-				Remark = #{remark,jdbcType=NVARCHAR},
-			</if>
-		</set>
-		where Id = #{id,jdbcType=BIGINT}
-	</update>
-	<update id="updateByPrimaryKey" parameterType="com.edaisong.entity.BusinessBalanceRecord">
-		update BusinessBalanceRecord
-		set BusinessId = #{businessid,jdbcType=INTEGER},
-		Amount = #{amount,jdbcType=DECIMAL},
-		Status = #{status,jdbcType=SMALLINT},
-		Balance = #{balance,jdbcType=DECIMAL},
-		RecordType = #{recordtype,jdbcType=SMALLINT},
-		Operator = #{operator,jdbcType=NVARCHAR},
-		OperateTime = #{operatetime,jdbcType=TIMESTAMP},
-		WithwardId = #{withwardid,jdbcType=BIGINT},
-		RelationNo = #{relationno,jdbcType=VARCHAR},
-		Remark = #{remark,jdbcType=NVARCHAR}
-		where Id = #{id,jdbcType=BIGINT}
-	</update>
-	<select id="getTransDetailList" resultType="com.edaisong.entity.BusinessBalanceRecord"
-		parameterType="java.util.Map" statementType="CALLABLE">
-<![CDATA[  
+<mapper namespace="com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.BusinessBalanceRecord" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
+    <result column="Amount" property="amount" jdbcType="DECIMAL" />
+    <result column="Status" property="status" jdbcType="SMALLINT" />
+    <result column="Balance" property="balance" jdbcType="DECIMAL" />
+    <result column="RecordType" property="recordtype" jdbcType="SMALLINT" />
+    <result column="Operator" property="operator" jdbcType="NVARCHAR" />
+    <result column="OperateTime" property="operatetime" jdbcType="TIMESTAMP" />
+    <result column="WithwardId" property="withwardid" jdbcType="BIGINT" />
+    <result column="RelationNo" property="relationno" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, BusinessId, Amount, Status, Balance, RecordType, Operator, OperateTime, WithwardId, 
+    RelationNo, Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from BusinessBalanceRecord
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from BusinessBalanceRecord
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.BusinessBalanceRecord" >
+    insert into BusinessBalanceRecord (Id, BusinessId, Amount, 
+      Status, Balance, RecordType, 
+      Operator, OperateTime, WithwardId, 
+      RelationNo, Remark)
+    values (#{id,jdbcType=BIGINT}, #{businessid,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
+      #{status,jdbcType=SMALLINT}, #{balance,jdbcType=DECIMAL}, #{recordtype,jdbcType=SMALLINT}, 
+      #{operator,jdbcType=NVARCHAR}, #{operatetime,jdbcType=TIMESTAMP}, #{withwardid,jdbcType=BIGINT}, 
+      #{relationno,jdbcType=VARCHAR}, #{remark,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.BusinessBalanceRecord" >
+    insert into BusinessBalanceRecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="businessid != null" >
+        BusinessId,
+      </if>
+      <if test="amount != null" >
+        Amount,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="balance != null" >
+        Balance,
+      </if>
+      <if test="recordtype != null" >
+        RecordType,
+      </if>
+      <if test="operator != null" >
+        Operator,
+      </if>
+      <if test="operatetime != null" >
+        OperateTime,
+      </if>
+      <if test="withwardid != null" >
+        WithwardId,
+      </if>
+      <if test="relationno != null" >
+        RelationNo,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="recordtype != null" >
+        #{recordtype,jdbcType=SMALLINT},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="operatetime != null" >
+        #{operatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="withwardid != null" >
+        #{withwardid,jdbcType=BIGINT},
+      </if>
+      <if test="relationno != null" >
+        #{relationno,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.BusinessBalanceRecord" >
+    update BusinessBalanceRecord
+    <set >
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        Amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="balance != null" >
+        Balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="recordtype != null" >
+        RecordType = #{recordtype,jdbcType=SMALLINT},
+      </if>
+      <if test="operator != null" >
+        Operator = #{operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="operatetime != null" >
+        OperateTime = #{operatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="withwardid != null" >
+        WithwardId = #{withwardid,jdbcType=BIGINT},
+      </if>
+      <if test="relationno != null" >
+        RelationNo = #{relationno,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.BusinessBalanceRecord" >
+    update BusinessBalanceRecord
+    set BusinessId = #{businessid,jdbcType=INTEGER},
+      Amount = #{amount,jdbcType=DECIMAL},
+      Status = #{status,jdbcType=SMALLINT},
+      Balance = #{balance,jdbcType=DECIMAL},
+      RecordType = #{recordtype,jdbcType=SMALLINT},
+      Operator = #{operator,jdbcType=NVARCHAR},
+      OperateTime = #{operatetime,jdbcType=TIMESTAMP},
+      WithwardId = #{withwardid,jdbcType=BIGINT},
+      RelationNo = #{relationno,jdbcType=VARCHAR},
+      Remark = #{remark,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- 获取交易明细的Where条件 -->
+  <sql id="getTransDetailListWhere">
+   		1=1  
+	 <if test="startDate != null and startDate != ''">
+	      AND bbr.OperateTime >''${startDate}''
+     </if>
+     <if test="endDate != null and endDate != ''">
+	      AND ''${endDate}'' > bbr.OperateTime 
+     </if>
+     <if test="transType != null and transType != '' and transType != '0'">
+	      AND bbr.RecordType =${transType}
+     </if>
+     <if test="numType == '1' and numString != null and numString != ''">
+	      AND (RecordType=1 OR RecordType=2 OR RecordType=8) AND bbr.RelationNo=''${numString}''
+     </if>
+     <if test="numType == '1' and numString != null and numString != ''">
+	      AND (RecordType=9 OR RecordType=11) AND bbr.RelationNo=''${numString}''
+     </if>
+     <if test="businessid !=null">
+	       AND bbr.BusinessId=${businessid} AND RecordType IN (1,2,6,8,9,11)
+     </if>
+      
+  </sql>
+   <!-- 获取收支明细的分页存储过程 -->
+  <select id="getTransDetailList" resultType="com.edaisong.entity.BusinessBalanceRecord" 
+  parameterType="com.edaisong.entity.req.TransDetailReq" statementType="CALLABLE">  
 {call Sp_CustomPage2015_V1(
 ' bbr.id DESC ',
 ' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,bbr.Amount,bbr.Balance,bbr.Status,OperateTime ',
 ' BusinessBalanceRecord AS bbr (nolock) ',
-#{Where,mode=IN,jdbcType=VARCHAR},
-#{PageSize,mode=IN,jdbcType=INTEGER},
-#{CurrentPage,mode=IN,jdbcType=INTEGER},
+' <include refid="getTransDetailListWhere"/> ',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
 1,
-#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
-#{TotalPage,mode=OUT,jdbcType=VARCHAR}
-)}
-	]]>
-	</select>
+#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+#{totalPage,mode=OUT,jdbcType=VARCHAR}
+)} 
+  </select>
 </mapper>

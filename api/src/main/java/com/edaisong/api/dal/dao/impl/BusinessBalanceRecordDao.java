@@ -21,23 +21,16 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 		return 0;
 	}
 
-	/**
-	 * 新增流水
-	 * @author CaoHeYang
-	 */
 	@Override
 	public int insert(BusinessBalanceRecord record) {
-		int id=getMasterSqlSessionUtil().insert("com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao.insert", record);
-		return id;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
-	/**
-	 * 新增  动态 sql 动态插入列
-	 */
 	@Override
 	public int insertSelective(BusinessBalanceRecord record) {
-		int id=getMasterSqlSessionUtil().insert("com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao.insertSelective", record);
-		return id;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
@@ -66,50 +59,10 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
  * */
 	@Override
 	public PagedResponse<BusinessBalanceRecord> getTransDetailList(TransDetailReq par) {
-		Map<String, Object> map = new HashMap<String, Object>();	
-		
-		String Where = " 1=1 ";		
-		//开始时间
-		if (!StringUtils.isEmpty(par.getStartDate())) {
-			Where += "  AND bbr.OperateTime >'"+par.getStartDate()+"' ";
-		}
-		//结束时间
-		if (!StringUtils.isEmpty(par.getEndDate())) {
-			Where += "  AND bbr.OperateTime <'"+par.getStartDate()+"' ";
-		}
-		//交易类型
-		if (par.getTransType()!="0") {
-			Where += "  AND bbr.RecordType ="+par.getTransType()+" ";
-		}	
-		//选择订单号 
-		if (par.getNumType()=="1"&&!StringUtils.isEmpty(par.getNumString())) {
-			Where += "  AND (RecordType=1 OR RecordType=2 OR RecordType=8) AND bbr.RelationNo='"+par.getNumString()+"' ";
-		}
-		//选择流水号
-		if (par.getNumType()=="2"&&!StringUtils.isEmpty(par.getNumString())) {
-			Where += "  AND (RecordType=9 OR RecordType=1) AND bbr.RelationNo='"+par.getNumString()+"' ";
-		}
-		//过滤商户可以看得流水
-		Where +=" AND bbr.BusinessId="+par.getBusinessid()+" AND RecordType IN (1,2,6,8,9,11) ";
-		//Where +=" AND RecordType IN (1,2,6,8,9,11) ";
-		
-		int PageSize = 15;
-		int CurrentPage = par.getCurrentPage();
-		map.put("Where", Where);
-		map.put("TotalRecord", 0);
-		map.put("TotalPage", 0);
-		map.put("PageSize", PageSize);
-		map.put("CurrentPage", CurrentPage);
-		List<BusinessBalanceRecord> list = getReadOnlySqlSessionUtil()
-				.selectList("com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao.getTransDetailList",
-						map);
-		
-		PagedResponse<BusinessBalanceRecord> resp = new PagedResponse<BusinessBalanceRecord>();		
-		resp.setResultList(list);
-		resp.setPageSize(PageSize);
-		resp.setCurrentPage(CurrentPage);
-		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
-		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
+		PagedResponse<BusinessBalanceRecord> resp = new PagedResponse<BusinessBalanceRecord>();
+		resp= getReadOnlySqlSessionUtil()
+				.selectPageList("com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao.getTransDetailList",
+						par);
 		return resp;
 	}
 
