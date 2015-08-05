@@ -11,7 +11,7 @@
 	<select id="selectBusinessBalanceByID" parameterType="java.util.Map"
 		resultType="com.edaisong.entity.BusinessBalanceRecord">
 		SELECT 	id,BusinessId,Amount,Status,Balance,RecordType,Operator,OperateTime,WithwardId,RelationNo,Remark
-		FROM BusinessBalanceRecord WHERE
+		FROM BusinessBalanceRecord (nolock) WHERE
 		RecordType=#{RecordType} and
 		OperateTime>=#{OperateTime}
 	</select>
