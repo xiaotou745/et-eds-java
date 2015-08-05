@@ -15,17 +15,10 @@ public class HomeController {
 	@RequestMapping("index")
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse response) {
-		//throw new Exception("这是全局异常啊");
-		return new ModelAndView("home");
-	}
-
-	@RequestMapping("test")
-	public ModelAndView test(HttpServletRequest request,
-			HttpServletResponse response) {
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "骑士管理");
-		model.addObject("currenttitle", "骑士提现");
-		model.addObject("viewPath", "order/list");
+		model.addObject("subtitle", "welcome");
+		model.addObject("currenttitle", "welcome");
+		model.addObject("viewPath", "home/history");
 		return model;
 	}
 }

@@ -142,7 +142,7 @@ public class BusinessController {
 		String bigFileNameb = relativePath + "/nopic.jpg";
 		String checkPicUrl = relativePath + "/nopic.jpg";
 		String businessLicensePic = relativePath + "/nopic.jpg";
-		if (!detail.getCheckpicurl().isEmpty()) {
+		if (detail.getCheckpicurl()!=null&&!detail.getCheckpicurl().isEmpty()) {
 			int fileLastDot = detail.getCheckpicurl().lastIndexOf('.');
 			String fileHandHouZhui = detail.getCheckpicurl()
 					.substring(fileLastDot,detail.getCheckpicurl().length());
@@ -153,7 +153,7 @@ public class BusinessController {
 			checkPicUrl = parentRelativePath + "/"
 					+ fileUploadFolderNameBusiness + detail.getCheckpicurl();
 		}
-		if (!detail.getBusinesslicensepic().isEmpty()) {
+		if (detail.getBusinesslicensepic()!=null&&!detail.getBusinesslicensepic().isEmpty()) {
 			int fileLastDotb = detail.getBusinesslicensepic().lastIndexOf('.');
 			String fileHandHouZhuib = detail.getBusinesslicensepic().substring(fileLastDotb,detail.getBusinesslicensepic().length());
 			bigFileNameb = parentRelativePath + "/"

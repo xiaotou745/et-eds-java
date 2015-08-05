@@ -18,7 +18,7 @@ public class TestService implements ITestService {
 	@Autowired
 	private IServiceTestDao dao;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class,timeout=30)
 	@Override
 	public TestServiceResp selectBusinessBalanceByID(TestServiceReq req) {
     	dao.addBusinessBalance(null);
@@ -26,8 +26,8 @@ public class TestService implements ITestService {
 //    		if (res==1) {
 //   			 throw new RuntimeException(); 
 //			}
-    		
-     		TestServiceResp resp = new TestServiceResp();
+
+TestServiceResp resp = new TestServiceResp();
      		List<BusinessBalanceRecord> listData = dao.selectBusinessBalanceByID(
      				req.getRecordType(), req.getOperateTime());
     		resp.setResultList(listData);
