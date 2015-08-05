@@ -11,9 +11,9 @@ public class TransDetailReq extends RequestBase {
 
 	private String startDate;
 	private String endDate;
-	private String TransType;
-	private String NumType;
-	private String NumString;
+	private String transType;
+	private String numType;
+	private String numString;
 	private int currentPage;
 	private int businessid;
 	public int getBusinessid() {
@@ -50,28 +50,28 @@ public class TransDetailReq extends RequestBase {
 	 *  11 手续费) 流水
 	 * */
 	public String getTransType() {
-		return TransType;
+		return transType;
 	}
 	public void setTransType(String transType) {
-		TransType = transType;
+		transType = transType;
 	}
 	/**
 	 * 单号类型,1订单号 2 流水单号
 	 * */
 	public String getNumType() {
-		return NumType;
+		return numType;
 	}
 	public void setNumType(String numType) {
-		NumType = numType;
+		numType = numType;
 	}
 	/**
 	 *订单号/流水单号 
 	 */
 	public String getNumString() {
-		return NumString;
+		return numString;
 	}
 	public void setNumString(String numString) {
-		NumString = numString;
+		numString = numString;
 	}
 	
 }
