@@ -103,8 +103,7 @@ public class OrderService implements IOrderService {
 			return resp;
 		}
 
-		// 查询条件
-		Order orderSearch = new Order();
+		Order orderSearch = new Order();//查询取消的订单的基础数据
 		orderSearch.setId(req.getOrderId());
 		orderSearch.setOrderno(req.getOrderNo());
 		orderSearch.setBusinessid(req.getBusinessId());
@@ -115,6 +114,7 @@ public class OrderService implements IOrderService {
 			resp.setMessage("参数bug");
 			return resp;
 		}
+		
 		boolean result=false;
 		// 更新订单为 取消状态 参数
 		Order updateModel = new Order();
@@ -137,37 +137,14 @@ public class OrderService implements IOrderService {
 			businessBalanceRecord.setStatus((short) 1); // (int)BusinessBalanceRecordStatus.Success,
 														// //流水状态(1、交易成功 2、交易中）
 			businessBalanceRecord.setRecordtype((short) 2); // 取消订单
-			businessBalanceRecord.setOperator("商家:" + req.getBusinessId());
-			businessBalanceRecord.setWithwardid((long) req.getOrderId());
-			businessBalanceRecord.setRelationno(req.getOrderNo());
-			businessBalanceRecord.setRemark("商户取消订单返回配送费");
-			businessBalanceRecordDao.insert(businessBalanceRecord);
-
-			// businessBalanceRecord BusinessId = paramodel.BusinessId,//商户Id
-			// Amount = order.SettleMoney,//流水金额 结算金额
-			// Status = (int)BusinessBalanceRecordStatus.Success, //流水状态(1、交易成功
-			// 2、交易中）
-			// RecordType = (int)BusinessBalanceRecordRecordType.CancelOrder,
-			// Operator = string.Format("商家:{0}", paramodel.BusinessId),
-			// WithwardId = paramodel.OrderId,
-			// RelationNo = paramodel.OrderNo,
-			// Remark = "商户取消订单返回配送费"
+			businessBalanceRecord.setOperator("商家:" + req.getBusinessId());  //商家id
+			businessBalanceRecord.setWithwardid((long) req.getOrderId()); //订单id
+			businessBalanceRecord.setRelationno(req.getOrderNo()); //关联单号
+			businessBalanceRecord.setRemark("商户取消订单返回配送费");  //注释
+		    businessBalanceRecordDao.insert(businessBalanceRecord);  //记录
 		}
 
 		return resp;
 	}
 
-
-//	/**
-//	 * 商户取消订单功能  验证参数合法性，已经当前订单是否允许取消 
-//	 * @param para
-//	 * @param orderRe out 参数
-//	 * @author CaoHeYang
-//	 * @Date 20150804
-//	 * @return
-//	 */
-//    private boolean checkCancelOrderBusiness(CancelOrderBusinessReq para, Order orderRe)
-//    {
-//      
-//    }
 }
