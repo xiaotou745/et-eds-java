@@ -23,8 +23,8 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 
 	@Override
 	public int insert(BusinessBalanceRecord record) {
-		// TODO Auto-generated method stub
-		return 0;
+	   int result=	getMasterSqlSessionUtil().insert("com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao.insert",record);
+		return result;
 	}
 
 	@Override
