@@ -74,7 +74,29 @@
 <%-- <script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script> --%>
 <%-- <script src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script> --%>
 <%-- <script src="<%=basePath%>/js/hplus.js"></script> --%>
-
+<script>
+    $(document).ajaxError( function(event, jqXHR, options, errorMsg){
+    	 var start=jqXHR.responseText.indexOf("<body>");
+    	 var end=jqXHR.responseText.indexOf("</body>");
+    	 var content=jqXHR.responseText.substring(start+6,end);
+    	 content=content.replace("h1","h4");
+    	 $("#gloablErrorParam").html(options.url+"调用出错了！");
+    	 $("#gloablErrorContent").html("<pre>param:"+options.data+"</pre>"+content);
+    	 $('#gloablErrorDiv').modal('show');
+    });
+    
+	$(document).ready(function() {
+		$("#gloablShowError").click(function() {
+			if ($("#gloablShowError").html() == "显示详细信息") {
+				$("#gloablShowError").html("隐藏详细信息");
+				$("#gloablErrorContent").slideDown(2000);
+			} else {
+				$("#gloablShowError").html("显示详细信息");
+				$("#gloablErrorContent").slideUp(500);
+			}
+		});
+	});
+</script>
 <tiles:insertAttribute name="header_js" ignore="true"></tiles:insertAttribute>
 <tiles:insertAttribute name="header_css" ignore="true"></tiles:insertAttribute>
 </head>
@@ -98,6 +120,31 @@
 					<tiles:insertAttribute name="footer" ignore="true"></tiles:insertAttribute>
 				</div>
 			</div>
+		</div>
+		<div tabindex="-1" class="modal inmodal" id="gloablErrorDiv" role="dialog"
+			aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content animated bounceInRight">
+					<div class="modal-header">
+						<button class="close" type="button" data-dismiss="modal">
+							<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+						</button>
+						<h4 class="modal-title">服务器异常</h4>
+					</div>
+					<small class="font-bold">
+						<div class="modal-body">
+						<div id="gloablErrorParam"></div>
+						<div><a id="gloablShowError">显示详细信息</a></div>
+						<pre id="gloablErrorContent" style="width: 560px;display: none; "></pre>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+						</div>
+					</small>
+				</div>
+				<small class="font-bold"> </small>
+			</div>
+			<small class="font-bold"> </small>
 		</div>
 		<div class="small-chat-box fadeInRight animated">
 

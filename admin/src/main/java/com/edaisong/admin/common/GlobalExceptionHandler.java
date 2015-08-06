@@ -32,13 +32,16 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
 		/*
 		 * 全局LogInteceptor中统一记录方法调用的actionlog和异常信息
 		 * */
-		request.setAttribute("hasException", true);
 		request.setAttribute("exception", msg);
 		request.setAttribute("stackTrace", stackTrace);
 
-		
 		if (handler instanceof HandlerMethod) {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			//如果Controller中的方法返回值不是ModelAndView，则认为该方法是ajax调用，
+			//此时抛出RuntimeException，触发ajax的error处理函数,否则返回自定义错误页面
+			if (handlerMethod.getMethod().getReturnType()!=ModelAndView.class) {
+				throw (RuntimeException)ex;
+			}
 			methodName = handlerMethod.getMethod().toString();
 			param = JsonUtil.obj2string(request.getParameterMap());
 		}		

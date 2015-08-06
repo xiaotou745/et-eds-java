@@ -35,7 +35,6 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 		<%
 			PagedResponse<BusinessModel> responsePageList = (PagedResponse<BusinessModel>)request.getAttribute("listData");
 						List<BusinessModel> data=responsePageList.getResultList();
-											
 									 for (int i = 0; i < data.size(); i++) {
 									    String status=""; 
 									    String statusStyle="";

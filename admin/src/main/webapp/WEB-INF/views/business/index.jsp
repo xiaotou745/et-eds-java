@@ -324,6 +324,9 @@ $("#btnSearch").click(function(){
         //GetOpenProvince(); 
         window.location.hash = '';
     });
+
+
+
     //获取省市
     function GetOpenProvince() {
         var paramaters = {
