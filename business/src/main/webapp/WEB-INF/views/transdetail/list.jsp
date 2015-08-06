@@ -29,3 +29,9 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 </form>
 <div id="dataList">
 </div>
+<script>
+$(function(){
+	
+});
+
+</script>
