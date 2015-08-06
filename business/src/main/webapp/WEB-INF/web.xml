@@ -53,7 +53,7 @@
     <!--   add by pengyi 20150804 -->
     <filter>
 		<filter-name>LoginFilter</filter-name>
-		<filter-class>com.edaisong.business.common.filter.LoginFilter</filter-class>
+		<filter-class>com.edaisong.business.common.LoginFilter</filter-class>
 		<init-param>
 			<param-name>maxLoginCount</param-name>
 			<param-value>5</param-value>

@@ -13,7 +13,7 @@ import junit.framework.TestSuite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.edaisong.api.business.SqlSessionFactoryPool;
+import com.edaisong.api.business.SpringBeanHelper;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.util.JsonUtil;
@@ -31,7 +31,7 @@ public class AppTest extends TestCase {
 	IOrderService testService;
 
 	public AppTest() {
-		testService = SqlSessionFactoryPool
+		testService = SpringBeanHelper
 				.getCustomBeanByType(IOrderService.class);
 	}
 
