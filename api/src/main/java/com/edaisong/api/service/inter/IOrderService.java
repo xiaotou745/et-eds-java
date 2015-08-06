@@ -4,9 +4,11 @@ import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
+import com.edaisong.entity.resp.OrderResp;
 
 public interface IOrderService {
 	/**
@@ -45,4 +47,13 @@ public interface IOrderService {
 	 * @return
 	 */
 	CancelOrderBusinessResp cancelOrderBusiness(CancelOrderBusinessReq req);
+	
+	/**
+	 * 商户发布订单
+	 * @param req 参数
+	 * @author 胡灵波
+	 * @Date 2015年8月6日 09:51:47
+	 * @return
+	 */
+	OrderResp AddOrder(OrderReq  req);
 }
