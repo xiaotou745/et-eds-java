@@ -1,4 +1,4 @@
-package com.edaisong.business.common.handler;
+package com.edaisong.business.common;
 
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;

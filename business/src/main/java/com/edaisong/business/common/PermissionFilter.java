@@ -1,4 +1,4 @@
-package com.edaisong.business.common.filter;
+package com.edaisong.business.common;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.edaisong.business.config.WebConst;
 import com.edaisong.business.entity.CookieModel;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.util.JsonUtil;

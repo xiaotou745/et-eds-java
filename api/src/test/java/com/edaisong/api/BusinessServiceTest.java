@@ -1,6 +1,6 @@
 package com.edaisong.api;
 
-import com.edaisong.api.business.SqlSessionFactoryPool;
+import com.edaisong.api.business.SpringBeanHelper;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.entity.req.BusinessLoginReq;
 
@@ -17,7 +17,7 @@ public class BusinessServiceTest extends TestCase{
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		testService =  SqlSessionFactoryPool
+		testService =  SpringBeanHelper
 				.getCustomBeanByType(IBusinessService.class);
 	}
 	

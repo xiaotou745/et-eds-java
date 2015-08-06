@@ -1,4 +1,4 @@
-package com.edaisong.admin.common.filter;
+package com.edaisong.admin.common;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

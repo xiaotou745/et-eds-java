@@ -1,4 +1,4 @@
-package com.edaisong.admin.common.handler;
+package com.edaisong.admin.common;
 
 import org.apache.log4j.Logger;
 import org.springframework.web.method.HandlerMethod;

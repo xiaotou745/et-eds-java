@@ -1,4 +1,4 @@
-package com.edaisong.business.common.handler;
+package com.edaisong.business.common;
 
 import java.util.List;
 

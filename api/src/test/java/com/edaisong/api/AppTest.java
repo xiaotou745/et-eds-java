@@ -13,7 +13,7 @@ import junit.framework.TestSuite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.edaisong.api.business.SqlSessionFactoryPool;
+import com.edaisong.api.business.SpringBeanHelper;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
@@ -30,7 +30,7 @@ public class AppTest extends TestCase {
 	IOrderService testService;
 
 	public AppTest() {
-		testService = SqlSessionFactoryPool
+		testService = SpringBeanHelper
 				.getCustomBeanByType(IOrderService.class);
 	}
 
