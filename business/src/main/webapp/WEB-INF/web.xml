@@ -63,6 +63,7 @@
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/account/login</url-pattern>
     </filter-mapping>
+    
 	<!-- Disables Servlet Container welcome file handling. Needed for compatibility 
 		with Servlet 3.0 and Tomcat 7.0 -->
 	<welcome-file-list>

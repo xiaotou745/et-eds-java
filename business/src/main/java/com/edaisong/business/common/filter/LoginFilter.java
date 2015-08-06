@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.edaisong.api.service.impl.BusinessService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.business.config.WebConst;
 import com.edaisong.business.entity.CookieModel;
@@ -28,13 +30,13 @@ import com.edaisong.entity.resp.BusinessLoginResp;
  * @date 20150804
  */
 public class LoginFilter implements Filter{
-	@Autowired
-	private IBusinessService businessService;
-	@Autowired
 	private RedisService redisService;
+	private IBusinessService businessService;
 	private int maxLoginCount;//5分钟内最大登录次数
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
+		redisService = new RedisService();
+		businessService = new BusinessService();
 		maxLoginCount = Integer.parseInt(filterConfig.getInitParameter("maxLoginCount"));
 	}
 
@@ -43,28 +45,9 @@ public class LoginFilter implements Filter{
 			ServletException {
 		HttpServletRequest request = (HttpServletRequest)servletRequest;
 		HttpServletResponse response = (HttpServletResponse)servletReponse;
-		boolean isLogin = false;
-		final String cookieKey = WebConst.LOGIN_COOKIE_NAME; 
-		String cookieValue = CookieUtils.getCookie(request, cookieKey);
-		if(cookieValue!=null){
-			CookieModel cookieModel = JsonUtil.str2obj(cookieValue, CookieModel.class);
-			if(cookieModel != null){
-				Object loginStatusValue = redisService.get(cookieModel.getValue(),Object.class);
-				if(loginStatusValue != null){
-					isLogin = true;
-				}
-			}
-		}
-
-		//如果已登录,直接返回已登录
-		if(isLogin){
-			BusinessLoginResp resp = new BusinessLoginResp();
-			resp.setMessage("已登录");
-			resp.setLoginSuccess(true);
-			response.getWriter().write(JsonUtil.obj2string(resp));
-			return;
-		}else{
-			String phoneNo = request.getParameter("phoneNo");
+		
+		String phoneNo = request.getParameter("phoneNo");
+		if(phoneNo != null){
 			String loginCountCacheKey = RedissCacheKey.LOGIN_COUNT_B + phoneNo;
 			Integer loginCount = redisService.get(loginCountCacheKey, Integer.class);
 			loginCount = loginCount == null ? 0 : loginCount;
@@ -77,6 +60,7 @@ public class LoginFilter implements Filter{
 				return;
 			}
 		}
+		
 		chain.doFilter(request, response);
 	}
 
