@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.edaisong.api.business.SpringBeanHelper;
 import com.edaisong.api.service.impl.BusinessService;
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.business.entity.CookieModel;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
@@ -34,8 +36,8 @@ public class LoginFilter implements Filter{
 	private int maxLoginCount;//5分钟内最大登录次数
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		redisService = new RedisService();
-		businessService = new BusinessService();
+		redisService = SpringBeanHelper.getCustomBeanByType(RedisService.class);
+		businessService = SpringBeanHelper.getCustomBeanByType(IBusinessService.class);
 		maxLoginCount = Integer.parseInt(filterConfig.getInitParameter("maxLoginCount"));
 	}
 
@@ -46,18 +48,19 @@ public class LoginFilter implements Filter{
 		HttpServletResponse response = (HttpServletResponse)servletReponse;
 		
 		String phoneNo = request.getParameter("phoneNo");
-		if(phoneNo != null){
-			String loginCountCacheKey = RedissCacheKey.LOGIN_COUNT_B + phoneNo;
-			Integer loginCount = redisService.get(loginCountCacheKey, Integer.class);
-			loginCount = loginCount == null ? 0 : loginCount;
-			if (loginCount >= maxLoginCount) {
-				BusinessLoginResp resp = new BusinessLoginResp();
-				resp.setLoginSuccess(false);
-				resp.setMessage("您当前登录的次数大于10，请5分钟后重试");
-				businessService.addLoginLog(phoneNo,"5分钟内登录次数超过10次",false);
-				response.getWriter().write(JsonUtil.obj2string(resp));
-				return;
-			}
+		if(phoneNo == null){
+			phoneNo = "";
+		}
+		String loginCountCacheKey = RedissCacheKey.LOGIN_COUNT_B + phoneNo;
+		Integer loginCount = redisService.get(loginCountCacheKey, Integer.class);
+		loginCount = loginCount == null ? 0 : loginCount;
+		if (loginCount >= maxLoginCount) {
+			BusinessLoginResp resp = new BusinessLoginResp();
+			resp.setLoginSuccess(false);
+			resp.setMessage("您当前登录的次数大于10，请5分钟后重试");
+			businessService.addLoginLog(phoneNo,"5分钟内登录次数超过10次",false);
+			response.getWriter().write(JsonUtil.obj2string(resp));
+			return;
 		}
 		
 		chain.doFilter(request, response);

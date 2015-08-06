@@ -50,7 +50,7 @@ public class AccountController {
 	 * @return
 	 */
 	@RequestMapping(value = "login", method = { RequestMethod.POST })
-	public @ResponseBody BusinessLoginResp login(@RequestBody BusinessLoginReq req, HttpServletRequest request,
+	public @ResponseBody BusinessLoginResp login(HttpServletRequest request,
 			HttpServletResponse response) {
 		boolean isLogin = false;
 		BusinessLoginResp resp = new BusinessLoginResp();
@@ -72,6 +72,11 @@ public class AccountController {
 			resp.setLoginSuccess(true);
 			return resp;
 		}
+		String phoneNo = request.getParameter("phoneNo");
+		String password = request.getParameter("password");
+		BusinessLoginReq req = new BusinessLoginReq();
+		req.setPassword(password);
+		req.setPhoneNo(phoneNo);
 
 		resp = businessService.login(req);
 		// 登录成功,写cookie
@@ -81,7 +86,7 @@ public class AccountController {
 			if (req.getRememberMe() == 1) {
 				cookieMaxAge = 60 * 60 * 24;
 			}
-			String key = UUID.fromString(req.getPhoneNo()).toString();
+			String key = UUID.randomUUID().toString();
 			CookieModel cookieModel = new CookieModel();
 			cookieModel.setValue(key);
 			cookieModel.setVersion(request.getServletContext().getInitParameter("cookieVersion"));
