@@ -8,6 +8,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.BusinessBalanceRecord"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%>
+<%@page import="com.edaisong.core.enums.BusinessBalanceRecordRecordType"%>
 
 <%
 PagedResponse<BusinessBalanceRecord> responsePageList = (PagedResponse<BusinessBalanceRecord>) request.getAttribute("result");
@@ -17,7 +18,7 @@ PagedResponse<BusinessBalanceRecord> responsePageList = (PagedResponse<BusinessB
 	for(int i=0;i<responsePageList.getResultList().size();i++)
 	{%>
 		
-		<%=responsePageList.getResultList().get(i).getRecordtype() %>
+		<%=BusinessBalanceRecordRecordType.getEnum((int)responsePageList.getResultList().get(i).getRecordtype()).desc() %>
 		<%=responsePageList.getResultList().get(i).getRelationno() %>
 		<%=responsePageList.getResultList().get(i).getAmount() %>
 		<%=responsePageList.getResultList().get(i).getBalance() %>

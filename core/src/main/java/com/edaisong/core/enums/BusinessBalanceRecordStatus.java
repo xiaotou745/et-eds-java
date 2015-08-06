@@ -17,11 +17,11 @@ public enum BusinessBalanceRecordStatus {
 	 */
 	Tradeing(2, "交易中");
 	private int value = 0;
-	private String text;
+	private String desc;
 
-	private BusinessBalanceRecordStatus(int value, String text) { // 必须是private的，否则编译错误
+	private BusinessBalanceRecordStatus(int value, String desc) { // 必须是private的，否则编译错误
 		this.value = value;
-		this.text = text;
+		this.desc = desc;
 	}
 
 	public int value() {
@@ -29,7 +29,7 @@ public enum BusinessBalanceRecordStatus {
 	}
 
 	public String desc() {
-		return this.text;
+		return this.desc;
 	}
 
 	public static BusinessBalanceRecordStatus getEnum(int index) {
