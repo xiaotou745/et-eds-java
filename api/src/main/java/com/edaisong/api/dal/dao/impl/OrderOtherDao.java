@@ -22,7 +22,8 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao   {
 	@Override
 	public int insert(OrderOther record) {
 		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().insert(
+				"com.edaisong.api.dal.dao.inter.IOrderOther.insert", record);
 	}
 
 	@Override
