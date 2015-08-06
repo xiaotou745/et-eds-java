@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.edaisong.entity.Business;
+import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
@@ -37,4 +38,10 @@ public interface IBusinessDao {
 	 * @return Business
 	 */
 	Business getBusinessById(int businessId);
+	/**
+	 * 修改商家绑定的物流公司
+	 * @param 
+	 * @return 
+	 */
+	int modifyExpress(List<BusinessExpressRelation> listData);
 }
