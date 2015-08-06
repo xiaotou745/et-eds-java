@@ -1,4 +1,4 @@
-package com.edaisong.api_http.service;
+package com.edaisong.api_http.common;
 
 import java.io.IOException;
 

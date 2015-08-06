@@ -1,4 +1,4 @@
-package com.edaisong.api_http.service;
+package com.edaisong.api_http.common;
 
 import java.util.Date;
 import org.codehaus.jackson.map.JsonSerializer;

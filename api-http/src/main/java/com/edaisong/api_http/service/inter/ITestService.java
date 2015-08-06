@@ -1,12 +1,10 @@
-package com.edaisong.api.service.inter;
+package com.edaisong.api_http.service.inter;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.edaisong.entity.req.TestServiceReq;
-import com.edaisong.entity.resp.TestServiceResp;
+import com.edaisong.api_http.entity.TestServiceReq;
+import com.edaisong.api_http.entity.TestServiceResp;
 
 @Path("/urlService")
 public interface ITestService {
@@ -20,7 +18,7 @@ public interface ITestService {
 	//加上@FormParam("")，只能接收application/x-www-form-urlencoded的数据
 	//去掉@FormParam("")，支持json和xml
 	//TestServiceReq和TestServiceResp中添加@XmlRootElement(name = "testServiceReq")，只是为了支持xml（json不需要加）
-	 public TestServiceResp selectBusinessBalanceByID(TestServiceReq req);
+	 public TestServiceResp selectByID(TestServiceReq req);
 	
 	@GET
 	@Path("/getlist")

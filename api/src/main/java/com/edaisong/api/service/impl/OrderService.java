@@ -4,6 +4,7 @@ import javax.ws.rs.core.NewCookie;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dal.dao.inter.IBusinessDao;
@@ -11,6 +12,9 @@ import com.edaisong.api.dal.dao.inter.IOrderChildDao;
 import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.api.dal.dao.inter.IOrderOtherDao;
 import com.edaisong.api.service.inter.IOrderService;
+import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
+import com.edaisong.core.enums.BusinessBalanceRecordStatus;
+import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.common.PagedResponse;
@@ -93,13 +97,14 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class,timeout=30)
 	public CancelOrderBusinessResp cancelOrderBusiness(
 			CancelOrderBusinessReq req) {
 		CancelOrderBusinessResp resp = new CancelOrderBusinessResp();
 		if (req.getOrderId() <= 0 || req.getOrderNo().isEmpty()
 				|| req.getOrderNo() == null || req.getBusinessId() <= 0) {
 			resp.setResponseCode(ResponseCode.PARAMETER_FORMAT_ERROR);
-			resp.setMessage("参数bug");
+			resp.setMessage("取消失败");
 			return resp;
 		}
 
@@ -107,11 +112,11 @@ public class OrderService implements IOrderService {
 		orderSearch.setId(req.getOrderId());
 		orderSearch.setOrderno(req.getOrderNo());
 		orderSearch.setBusinessid(req.getBusinessId());
-		orderSearch.setStatus((byte) 0); // 查询状态属于待接单的
+		orderSearch.setStatus((byte) OrderStatus.New.value()); // 查询状态属于待接单的
 		Order orderRe = orderDao.getOneByCriteria(orderSearch); // 查询取消的订单的基础数据
 		if (orderRe == null) {
 			resp.setResponseCode(ResponseCode.PARAMETER_FORMAT_ERROR);
-			resp.setMessage("参数bug");
+			resp.setMessage("取消订单失败,订单已被抢或订单不存在！");
 			return resp;
 		}
 		
@@ -121,7 +126,7 @@ public class OrderService implements IOrderService {
 		updateModel.setId(req.getOrderId());
 		updateModel.setOrderno(req.getOrderNo());
 		updateModel.setBusinessid(req.getBusinessId());
-		updateModel.setStatus((byte) 0); // 查询状态属于待接单的
+		updateModel.setStatus((byte) OrderStatus.New.value()); // 查询状态属于待接单的
 		updateModel.setOthercancelreason("商家取消订单");
 		updateModel.setAmount(orderRe.getSettlemoney()); // 取消订单涉及到的金额数目此处取到的当前订单的 结算费 即商家应付
 
@@ -134,9 +139,8 @@ public class OrderService implements IOrderService {
 			BusinessBalanceRecord businessBalanceRecord = new BusinessBalanceRecord();
 			businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
 			businessBalanceRecord.setAmount(orderRe.getSettlemoney());
-			businessBalanceRecord.setStatus((short) 1); // (int)BusinessBalanceRecordStatus.Success,
-														// //流水状态(1、交易成功 2、交易中）
-			businessBalanceRecord.setRecordtype((short) 2); // 取消订单
+			businessBalanceRecord.setStatus((short)BusinessBalanceRecordStatus.Success.value()); // 流水状态(1、交易成功 2、交易中）
+			businessBalanceRecord.setRecordtype((short)BusinessBalanceRecordRecordType.CancelOrder.value()); // 取消订单
 			businessBalanceRecord.setOperator("商家:" + req.getBusinessId());  //商家id
 			businessBalanceRecord.setWithwardid((long) req.getOrderId()); //订单id
 			businessBalanceRecord.setRelationno(req.getOrderNo()); //关联单号
