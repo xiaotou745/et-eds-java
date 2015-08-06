@@ -1,5 +1,9 @@
 package com.edaisong.api.service.impl;
 
+import java.math.BigDecimal;
+
+import javax.ws.rs.core.NewCookie;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +24,11 @@ import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
+import com.edaisong.entity.resp.OrderResp;
 
 @Service
 public class OrderService implements IOrderService {
@@ -94,7 +100,6 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	@Transactional(rollbackFor = Exception.class,timeout=30)
 	public CancelOrderBusinessResp cancelOrderBusiness(
 			CancelOrderBusinessReq req) {
 		CancelOrderBusinessResp resp = new CancelOrderBusinessResp();
@@ -104,7 +109,6 @@ public class OrderService implements IOrderService {
 			resp.setMessage("取消失败");
 			return resp;
 		}
-
 		Order orderSearch = new Order();//查询取消的订单的基础数据
 		orderSearch.setId(req.getOrderId());
 		orderSearch.setOrderno(req.getOrderNo());
@@ -116,8 +120,21 @@ public class OrderService implements IOrderService {
 			resp.setMessage("取消订单失败,订单已被抢或订单不存在！");
 			return resp;
 		}
-		
-		boolean result=false;
+        cancelOrderBusinessTrans(req,orderRe);  //事务代码
+        resp.setResponseCode(ResponseCode.SUCESS);
+		resp.setMessage("取消订单成功！");
+		return resp;
+	}
+	
+	/**
+	 * 商户取消订单功能事务单元
+	 * @author CaoHeYang
+	 * @param req  请求参数
+	 * @param orderRe  当前要取消的订单的基础数据
+	 * @Date 20150806
+	 */
+	@Transactional(rollbackFor = Exception.class,timeout=30)
+	public void cancelOrderBusinessTrans(CancelOrderBusinessReq req,Order orderRe) {
 		// 更新订单为 取消状态 参数
 		Order updateModel = new Order();
 		updateModel.setId(req.getOrderId());
@@ -127,12 +144,8 @@ public class OrderService implements IOrderService {
 		updateModel.setOthercancelreason("商家取消订单");
 		updateModel.setAmount(orderRe.getSettlemoney()); // 取消订单涉及到的金额数目此处取到的当前订单的 结算费 即商家应付
 
-		result = orderDao.cancelOrderBusiness(updateModel) > 0; // 取消订单 针对订单表的逻辑
-
-		if (result) { // 取消成功
-			businessDao.updateForWithdraw(orderRe.getSettlemoney(),
-					req.getBusinessId()); // orderRe.getSettlemoney()
-
+		if (orderDao.cancelOrderBusiness(updateModel) > 0 /*取消订单 针对订单表的逻辑*/ 
+				&& businessDao.updateForWithdraw(orderRe.getSettlemoney(),req.getBusinessId())>0  /*更新商户余额*/ ){ // 取消成功
 			BusinessBalanceRecord businessBalanceRecord = new BusinessBalanceRecord();
 			businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
 			businessBalanceRecord.setAmount(orderRe.getSettlemoney());
@@ -143,9 +156,78 @@ public class OrderService implements IOrderService {
 			businessBalanceRecord.setRelationno(req.getOrderNo()); //关联单号
 			businessBalanceRecord.setRemark("商户取消订单返回配送费");  //注释
 		    businessBalanceRecordDao.insert(businessBalanceRecord);  //记录
+		}else {
+			throw new RuntimeException("更新订单状态为取消失败");
 		}
-
-		return resp;
 	}
+	
+	/**
+	 * 商户发布订单功能
+	 * 
+	 * @param req
+	 *            参数
+	 * @author 胡灵波
+	 * @Date 2015年8月6日 09:56:25
+	 * @return
+	 */
+	public OrderResp AddOrder(OrderReq  req)
+	{
 
+
+//        dbParameters.AddWithValue("@SongCanDate", order.SongCanDate);		
+//        dbParameters.AddWithValue("@Weight1", order.Weight);
+//        dbParameters.AddWithValue("@Quantity1", order.Quantity);		
+//        dbParameters.AddWithValue("@ReceiveProvince", order.ReceiveProvince);
+//        dbParameters.AddWithValue("@ReceiveProvinceCode", order.ReceiveProvinceCode);
+		
+//        dbParameters.AddWithValue("@ReceiveCityCode", order.ReceiveCityCode);
+//        dbParameters.AddWithValue("@ReceiveArea", order.ReceiveArea);
+//        dbParameters.AddWithValue("@ReceiveAreaCode", order.ReceiveAreaCode);
+//        dbParameters.AddWithValue("@OriginalOrderNo", order.OriginalOrderNo);
+  
+      
+
+		OrderResp resp=new OrderResp();
+		
+		//订单主表
+		Order order=new Order();		
+		order.setOrderno("no11111111");//临时
+		//获取商家信息
+		order.setPickupaddress("北京市朝阳区东坝乡朝新嘉园东里五区18号楼");//临时 通过商家获取
+		order.setBusinessid(2053);
+		order.setRecevicecity("北京市");
+		order.setCommissionformulamode(0);		
+		order.setBusinesscommission(BigDecimal.valueOf(10));
+		order.setBusinessgroupid(1);
+		order.setCommissiontype(1);
+		order.setCommissionfixvalue(BigDecimal.valueOf(0));
+		order.setMealssettlemode(0);	
+		 
+		order.setRecevicename("测试");
+		order.setRecevicephoneno("18301222651");
+		order.setReceviceaddress("北京市朝阳区百子湾11");
+		order.setIspay(true);		
+		order.setAmount(BigDecimal.valueOf(193.00));
+		order.setRemark("配送说明");
+		order.setOrderfrom(0);//订单来源
+		order.setStatus(Byte.parseByte("0"));
+		order.setRecevicelongitude(0.0);
+		order.setRecevicelatitude(0.0);
+		order.setOrdercount(1);
+		order.setTimespan("1");		
+		
+		order.setOrdercommission(BigDecimal.valueOf(21.30));
+		order.setDistribsubsidy(BigDecimal.valueOf(0));		
+		order.setWebsitesubsidy(BigDecimal.valueOf(2));
+		order.setCommissionrate(BigDecimal.valueOf(0.1));
+		order.setSettlemoney(BigDecimal.valueOf(19.30));	   
+		order.setAdjustment(BigDecimal.valueOf(0));		
+		order.setBusinessreceivable(BigDecimal.valueOf(0));//退还商家金额	
+		
+		orderDao.insert(order);		
+		
+		return resp;
+	}	
+	
 }
+
