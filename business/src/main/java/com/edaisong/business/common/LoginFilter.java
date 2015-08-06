@@ -1,4 +1,4 @@
-package com.edaisong.business.common.filter;
+package com.edaisong.business.common;
 
 import java.io.IOException;
 
@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.edaisong.api.service.inter.IBusinessService;
-import com.edaisong.business.config.WebConst;
 import com.edaisong.business.entity.CookieModel;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;

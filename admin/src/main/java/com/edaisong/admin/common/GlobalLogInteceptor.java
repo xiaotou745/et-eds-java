@@ -1,4 +1,4 @@
-package com.edaisong.admin.common.handler;
+package com.edaisong.admin.common;
 
 import java.util.List;
 
