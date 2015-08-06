@@ -23,17 +23,21 @@ public class GroupDao extends DaoBase implements IGroupDao {
 
 	 @Override
 	public int insert(Group record) {
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("groupname", record.getGroupname());
-		paramMap.put("createname", record.getCreatename());
-		paramMap.put("createtime", new Date());
-		paramMap.put("modifyname", "");
-		paramMap.put("modifytime", new Date());
-		paramMap.put("isvalid", 1);
-		paramMap.put("ismodifybind", 0);
+//		Map<String, Object> paramMap = new HashMap<>();
+//		paramMap.put("groupname", record.getGroupname());
+//		paramMap.put("createname", record.getCreatename());
+//		paramMap.put("createtime", new Date());
+//		paramMap.put("modifyname", "");
+//		paramMap.put("modifytime", new Date());
+//		paramMap.put("isvalid", 1);
+//		paramMap.put("ismodifybind", 0);
+//
+//		return getMasterSqlSessionUtil().insert(
+//				"com.edaisong.api.dal.dao.inter.IGroupDao.insert", record);
+		 
 
-		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dal.dao.inter.IGroupDao.insert", paramMap);
+			return getMasterSqlSessionUtil().insert(
+					"com.edaisong.api.dal.dao.inter.IGroupDao.insert", record);
 	}
 
 	@Override
@@ -83,9 +87,9 @@ public class GroupDao extends DaoBase implements IGroupDao {
 	@Override
 	public List<GroupModel> getGroupList(GroupReq req) {
 		Map<String, Object> paramMap = new HashMap<>();
-		 paramMap.put("isvalid", req.getIsValid());
-		paramMap.put("groupname", req.getGroupName());
-		paramMap.put("appkey", req.getAppKey());
+//		 paramMap.put("isvalid", req.getIsValid());
+//		paramMap.put("groupname", req.getGroupName());
+//		paramMap.put("appkey", req.getAppKey());
 		List<GroupModel> list = getMasterSqlSessionUtil().selectList(
 				"com.edaisong.api.dal.dao.inter.IGroupDao.getGroupList",
 				paramMap);

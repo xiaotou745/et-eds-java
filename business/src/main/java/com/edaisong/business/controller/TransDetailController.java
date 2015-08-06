@@ -40,8 +40,9 @@ public class TransDetailController {
 	 * */
 	@RequestMapping("listdo")
 	public ModelAndView listdo(TransDetailReq par) {
-		ModelAndView view = new ModelAndView("adminView");
-		businessFinanceService.getTransDetailList(par);
+		ModelAndView view = new ModelAndView("transdetail/listdo");
+		PagedResponse<BusinessBalanceRecord> result=businessFinanceService.getTransDetailList(par);
+		view.addObject("result", result);
 		return view;
 	}
 }

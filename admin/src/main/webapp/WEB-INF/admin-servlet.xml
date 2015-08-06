@@ -19,12 +19,12 @@
 	<mvc:annotation-driven />
 	<mvc:resources mapping="/**" location="/resources/" />
 	<mvc:interceptors>
-			<bean class="com.edaisong.admin.common.handler.GlobalLogInteceptor" />
+			<bean class="com.edaisong.admin.common.GlobalLogInteceptor" />
 	</mvc:interceptors>
 
 	<!-- 全局异常 -->
 	<bean id="exceptionResolver"
-		class="com.edaisong.admin.common.handler.GlobalExceptionHandler" />
+		class="com.edaisong.admin.common.GlobalExceptionHandler" />
 		 
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="definitions">
