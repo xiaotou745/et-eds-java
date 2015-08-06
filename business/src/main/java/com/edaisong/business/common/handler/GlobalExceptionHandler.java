@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ?????????
+ * 全局异常处理
  * 
  * @author zhaohailong
  */
@@ -28,9 +28,6 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
 		String msg = ex.getMessage();
 		String stackTrace = StringUtils.getStackTrace(ex);
 
-		/*
-		 * ???LogInteceptor????????????????actionlog???????
-		 * */
 		request.setAttribute("hasException", true);
 		request.setAttribute("exception", msg);
 		request.setAttribute("stackTrace", stackTrace);

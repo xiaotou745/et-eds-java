@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.business.config.WebConst;
+import com.edaisong.business.entity.CookieModel;
+import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.web.CookieUtils;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.req.BusinessLoginReq;
@@ -24,7 +28,8 @@ import com.edaisong.entity.resp.BusinessLoginResp;
 public class AccountController {
 	@Autowired
 	private IBusinessService businessService;
-	private final String cookieKey = "ltoken"; 
+	@Autowired
+	private RedisService redisService;
 	/**
 	 * 登录
 	 * 
@@ -38,14 +43,14 @@ public class AccountController {
 	public @ResponseBody BusinessLoginResp login(@RequestBody BusinessLoginReq req, HttpServletRequest request,
 			HttpServletResponse response) {
 		BusinessLoginResp resp = new BusinessLoginResp();
-		//如果已登录,直接返回
+/*		//如果已登录,直接返回
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
 		Object loginStatusValue = businessService.getLoginStatus(cookieValue);
 		if(loginStatusValue != null){
 			resp.setMessage("登录成功");
 			resp.setLoginSuccess(true);
 			return resp;
-		}
+		}*/
 		resp = businessService.login(req);
 		// 登录成功,写cookie
 		if (resp.isLoginSuccess()) {
@@ -54,9 +59,12 @@ public class AccountController {
 			if (req.getRememberMe() == 1) {
 				cookieMaxAge = 60 * 60 * 24;
 			}
-			String key = UUID.randomUUID().toString();
-			businessService.setLoginStatus(key, resp.getBid(), cookieMaxAge);
-			CookieUtils.setCookie(response, cookieKey, key, cookieMaxAge, true);
+			String key = UUID.fromString(req.getPhoneNo()).toString();
+			CookieModel cookieModel = new CookieModel();
+			cookieModel.setValue(key);
+			cookieModel.setVersion(request.getServletContext().getInitParameter("cookieVersion"));
+			redisService.set(key, resp.getBid(), cookieMaxAge);
+			CookieUtils.setCookie(response, WebConst.LOGIN_COOKIE_NAME, JsonUtil.obj2string(cookieModel), cookieMaxAge, true);
 		}
 		return resp;
 	}
@@ -72,10 +80,10 @@ public class AccountController {
 	@RequestMapping(value = "logoff", method = { RequestMethod.POST })
 	public @ResponseBody ResponseBase logoff(HttpServletRequest request, HttpServletResponse response) {
 		// 删除登录cookie
-		Cookie cookie = CookieUtils.getCookieByName(cookieKey,request);
+		Cookie cookie = CookieUtils.getCookieByName(WebConst.LOGIN_COOKIE_NAME,request);
 		if(cookie != null){
 			CookieUtils.deleteCookie(request, response, cookie);
-			businessService.setLoginStatus(cookieKey, null, -1);
+			redisService.set(WebConst.LOGIN_COOKIE_NAME, null, -1);
 		}
 		return new ResponseBase();
 	}

@@ -10,6 +10,10 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/business-servlet.xml	</param-value>
 	</context-param>	
+	<context-param>
+		<param-name>cookieVersion</param-name>
+		<param-value>0.1.0</param-value>
+	</context-param>
     <listener>
         <listener-class>
             org.springframework.web.util.IntrospectorCleanupListener
@@ -45,17 +49,19 @@
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<filter>
-		<filter-name>PermissionFilter</filter-name>
-		<filter-class>com.edaisong.admin.common.filter.PermissionFilter</filter-class>
+
+    <!--   add by pengyi 20150804 -->
+    <filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>com.edaisong.business.common.filter.LoginFilter</filter-class>
 		<init-param>
-			<param-name>targetBeanName</param-name>
-			<param-value>PermissionFilter</param-value>
+			<param-name>maxLoginCount</param-name>
+			<param-value>5</param-value>
 		</init-param>
 	</filter>
     <filter-mapping>
-        <filter-name>PermissionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/account/login</url-pattern>
     </filter-mapping>
 	<!-- Disables Servlet Container welcome file handling. Needed for compatibility 
 		with Servlet 3.0 and Tomcat 7.0 -->

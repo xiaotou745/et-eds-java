@@ -5,7 +5,6 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import com.edaisong.api.business.SqlSessionFactoryPool;
-import com.edaisong.api.service.inter.ITestService;
 import com.edaisong.api.service.inter.ITestUserTblService;
 import com.edaisong.entity.domain.TestUserRecord;
 
