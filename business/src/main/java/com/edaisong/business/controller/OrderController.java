@@ -7,19 +7,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.edaisong.api.service.impl.OrderService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
-import com.edaisong.entity.resp.BusinessLoginResp;
+import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
+import com.edaisong.entity.resp.OrderResp;
 
 @Controller
 @RequestMapping("order")
 public class OrderController {
-	
-	@Autowired
-	IOrderService orderService;
+	 //订单
+	 @Autowired
+	 private IOrderService  orderService;
+
 	/**
 	 * 订单详情 
 	 * @author CaoHeYang
@@ -46,6 +47,24 @@ public class OrderController {
 	@ResponseBody
 	public CancelOrderBusinessResp login(@RequestBody CancelOrderBusinessReq req) {
 		CancelOrderBusinessResp resp=orderService.cancelOrderBusiness(req);
+		return resp;
+	}
+	
+	
+	
+	/**
+	 * 商户后台发布订单
+	 * @author 胡灵波
+	 * @Date 2015年8月6日 13:37:00
+	 * @return
+	 */
+	@RequestMapping(value = "publish")
+	@ResponseBody
+	public OrderResp publish() {
+		OrderResp resp=new OrderResp();
+		OrderReq req=new OrderReq();
+		resp=orderService.AddOrder(req);
+		
 		return resp;
 	}
 }

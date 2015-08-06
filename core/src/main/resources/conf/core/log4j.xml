@@ -18,9 +18,9 @@
         </filter>
     </appender> 
     <!-- 系统启动日志输出文件 -->
-    <appender name="webAppender" class="org.apache.log4j.DailyRollingFileAppender">
+    <appender name="adminAppender" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="Encoding" value="UTF-8"/>
-        <param name="File" value="c:/log/web/web.log"/>
+        <param name="File" value="c:/log/admin/admin.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
                <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
@@ -29,9 +29,9 @@
             <param name="LevelMin" value="INFO"/>
         </filter>
     </appender>
-        <appender name="apiAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <appender name="businessAppender" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="Encoding" value="UTF-8"/>
-        <param name="File" value="c:/log/api/api.log"/>
+        <param name="File" value="c:/log/business/business.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
                <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
@@ -40,9 +40,9 @@
             <param name="LevelMin" value="INFO"/>
         </filter>
     </appender>
-    <appender name="globalExceptionAppender" class="org.apache.log4j.DailyRollingFileAppender">
+    <appender name="apiHttpAppender" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="Encoding" value="UTF-8"/>
-        <param name="File" value="c:/log/global/global.log"/>
+        <param name="File" value="c:/log/apiHttp/apiHttp.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
                <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
@@ -51,21 +51,20 @@
             <param name="LevelMin" value="INFO"/>
         </filter>
     </appender>
-
-    <category name="globalExceptionLogger" additivity="true">
-        <level value="INFO"/>
-        <appender-ref ref="globalExceptionAppender"/>
-    </category>
-
-    <category name="apiLogger" additivity="false">
+    <category name="businessLogger" additivity="false">
         <!--若将level的value更改为OFF，则表示关掉该下的所有日志-->
         <level value="INFO"/>
-        <appender-ref ref="apiAppender"/>
+        <appender-ref ref="businessAppender"/>
     </category>
-    <category name="webLogger" additivity="false">
+    <category name="adminLogger" additivity="false">
         <!--若将level的value更改为OFF，则表示关掉该下的所有日志-->
         <level value="INFO"/>
-        <appender-ref ref="webAppender"/>
+        <appender-ref ref="adminAppender"/>
+    </category>
+    <category name="apiHttpLogger" additivity="false">
+        <!--若将level的value更改为OFF，则表示关掉该下的所有日志-->
+        <level value="INFO"/>
+        <appender-ref ref="apiHttpAppender"/>
     </category>
 <!--     <root> -->
 <!--         <level value="ALL"/> -->

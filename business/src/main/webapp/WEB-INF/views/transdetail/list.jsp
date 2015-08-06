@@ -9,6 +9,7 @@
 <%	
 String basePath =PropertyUtils.getProperty("static.admin.url");
 %>
+<script src="<%=basePath%>/js/jquery-2.1.1.js"></script>
 <form>
 日期:<input type="text" name="txtstartDate" id="startDate">到<input type="text" name="txtendDate" id="endDate"><br/>
 交易类型:<select id="transTypeSelect">
@@ -31,7 +32,51 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 </div>
 <script>
 $(function(){
-	
+	//设置文本框不可用
+	$('#numString').attr('disabled','disabled');
+	//单号类型改变事件
+	$('#numTypeSelect').change(function(){
+		var numtype=$('#numTypeSelect option:selected').val();
+		if(numtype==0){
+			$('#numString').attr('disabled','disabled');
+		}
+		else{
+			$('#numString').removeAttr('disabled');
+		}
+	});
+	$('#btnSerach').click(function(){
+		PostData(1);
+	});
+	PostData(1);
 });
+var jss = {
+		search : function(currentPage) {
+		$("#_hiddenCurrentPage").val(currentPage);
+		 var data=$("#searchForm").serialize();
+			$.post('<%=basePath%>/transdetail/listdo',data, function(d) {
+				$("#content").html(d);
+			});
+		}
+	}
+//获取页面数据
+function PostData(currentPage){
+	var url='http://localhost:8080/business/transdetail/listdo'
+	var paramaters={
+			startDate:$('#startDate').val(),
+			endDate:$('#endDate').val(),
+			transType:$('#transTypeSelect option:selected').val(),
+			numType:$('#numTypeSelect option:selected').val(),
+			numString:$('#numString').val(),
+			businessid:1791}
+	$.ajax({
+        type: 'POST',
+        url: url,
+        data: paramaters,
+        success: function (data) {
+        	alert(data);
+        	$('#dataList').html(data);
+        }
+    });
+};
 
 </script>
