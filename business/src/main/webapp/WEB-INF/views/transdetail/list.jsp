@@ -7,7 +7,7 @@
 <%@page import="com.edaisong.core.common.ParseHelper"%>
 
 <%	
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("static.business.url");
 %>
 <script src="<%=basePath%>/js/jquery-2.1.1.js"></script>
 <form>
@@ -32,6 +32,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 </div>
 <script>
 $(function(){
+	//alert(<%=basePath%>);
 	//设置文本框不可用
 	$('#numString').attr('disabled','disabled');
 	//单号类型改变事件
@@ -60,7 +61,7 @@ var jss = {
 	}
 //获取页面数据
 function PostData(currentPage){
-	var url='http://localhost:8080/business/transdetail/listdo'
+	var url='<%=basePath%>/transdetail/listdo'
 	var paramaters={
 			startDate:$('#startDate').val(),
 			endDate:$('#endDate').val(),
@@ -73,7 +74,6 @@ function PostData(currentPage){
         url: url,
         data: paramaters,
         success: function (data) {
-        	alert(data);
         	$('#dataList').html(data);
         }
     });
