@@ -15,7 +15,15 @@ import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
 @Repository
-public class OrderDao extends DaoBase implements IOrderDao {
+public class OrderDao extends DaoBase implements IOrderDao {	
+	
+	@Override
+	public int insert(Order record)
+	{
+		return getMasterSqlSessionUtil().insert(
+				"com.edaisong.api.dal.dao.inter.IOrderDao.insert", record);
+	}
+	
 	/**
 	 * 后台订单列表页面
 	 * 

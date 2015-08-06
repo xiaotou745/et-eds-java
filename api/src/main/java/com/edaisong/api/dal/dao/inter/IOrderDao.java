@@ -1,5 +1,6 @@
 package com.edaisong.api.dal.dao.inter;
 
+import com.edaisong.entity.Group;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.OrderDetailBusiness;
@@ -10,6 +11,7 @@ import com.edaisong.entity.req.PagedOrderSearchReq;
 
 public interface IOrderDao {
 
+	int insert(Order record);
 	/**
 	 * 后台订单列表页面
 	 * 

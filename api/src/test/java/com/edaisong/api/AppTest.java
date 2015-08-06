@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.edaisong.api.business.SpringBeanHelper;
 import com.edaisong.api.service.inter.IOrderService;
+import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
@@ -76,6 +77,7 @@ public class AppTest extends TestCase {
 	}
 
 	public void testCanelOrder() {
+//		BusinessBalanceRecordRecordType ss  =BusinessBalanceRecordRecordType.getEnum(1);
 		CancelOrderBusinessReq cancelOrderBusinessReq = new CancelOrderBusinessReq();
 		cancelOrderBusinessReq.setBusinessId(2008);
 		cancelOrderBusinessReq.setOrderId(143525);

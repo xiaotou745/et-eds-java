@@ -2,6 +2,7 @@ package com.edaisong.api.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dal.dao.inter.IBusinessDao;
@@ -93,13 +94,14 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class,timeout=30)
 	public CancelOrderBusinessResp cancelOrderBusiness(
 			CancelOrderBusinessReq req) {
 		CancelOrderBusinessResp resp = new CancelOrderBusinessResp();
 		if (req.getOrderId() <= 0 || req.getOrderNo().isEmpty()
 				|| req.getOrderNo() == null || req.getBusinessId() <= 0) {
 			resp.setResponseCode(ResponseCode.PARAMETER_FORMAT_ERROR);
-			resp.setMessage("参数bug");
+			resp.setMessage("取消失败");
 			return resp;
 		}
 
@@ -111,7 +113,7 @@ public class OrderService implements IOrderService {
 		Order orderRe = orderDao.getOneByCriteria(orderSearch); // 查询取消的订单的基础数据
 		if (orderRe == null) {
 			resp.setResponseCode(ResponseCode.PARAMETER_FORMAT_ERROR);
-			resp.setMessage("参数bug");
+			resp.setMessage("取消订单失败,订单已被抢或订单不存在！");
 			return resp;
 		}
 		
