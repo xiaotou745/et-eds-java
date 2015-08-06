@@ -3,8 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%
-	String basePath = new PropertyUtils()
-			.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("static.admin.url");
 %>
 <!DOCTYPE html>
 <html>
@@ -66,7 +65,7 @@
 
 
 <!-- 第三方弹窗js -->
-<script src="<%=basePath%>/js/layer.js"></script>
+<%-- <script src="<%=basePath%>/js/layer.js"></script>  --%>
 
 <!-- 分页相关js -->
 <%--     <script type="text/javascript" src="<%=basePath%>/js/admin.js"></script> --%>
@@ -80,8 +79,11 @@
     	 var end=jqXHR.responseText.indexOf("</body>");
     	 var content=jqXHR.responseText.substring(start+6,end);
     	 content=content.replace("h1","h4");
+    	
     	 $("#gloablErrorParam").html(options.url+"调用出错了！");
     	 $("#gloablErrorContent").html("<pre>param:"+options.data+"</pre>"+content);
+    	 $("#gloablShowError").html("显示详细信息");
+    	 $("#gloablErrorContent").hide();
     	 $('#gloablErrorDiv').modal('show');
     });
     
@@ -89,7 +91,11 @@
 		$("#gloablShowError").click(function() {
 			if ($("#gloablShowError").html() == "显示详细信息") {
 				$("#gloablShowError").html("隐藏详细信息");
-				$("#gloablErrorContent").slideDown(2000);
+				var timeSet=2000;
+				if($("#gloablErrorContent").html().length<500){
+					timeSet=500;
+				}
+				$("#gloablErrorContent").slideDown(timeSet);
 			} else {
 				$("#gloablShowError").html("显示详细信息");
 				$("#gloablErrorContent").slideUp(500);

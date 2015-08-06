@@ -86,7 +86,7 @@ public class ParseHelper {
 			return "";
 		}
 		if (strFormat == null || strFormat.isEmpty()) {
-			strFormat = "yyyy-MM-dd hh:MM:ss";
+			strFormat = "yyyy-MM-dd HH:mm:ss";
 		}
 		DateFormat sdf = new SimpleDateFormat(strFormat);
 		String defaultDate = "";
