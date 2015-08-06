@@ -32,16 +32,16 @@ public enum OrderStatus {
 	Wait(30, "待接入")
 	;
 	private int value = 0;
-	private String text;
-	private OrderStatus(int value, String text) { // 必须是private的，否则编译错误
+	private String desc;
+	private OrderStatus(int value, String desc) { // 必须是private的，否则编译错误
 		this.value = value;
-		this.text = text;
+		this.desc = desc;
 	}
 	public int value() {
 		return this.value;
 	}
 	public String desc() {
-		return this.text;
+		return this.desc;
 	}
 
 	public static OrderStatus getEnum(int index) {

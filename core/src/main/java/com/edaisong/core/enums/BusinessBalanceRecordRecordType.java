@@ -56,11 +56,11 @@ public enum BusinessBalanceRecordRecordType {
 	ProcedureFee(11, "手续费");
 
 	private int value = 0;
-	private String text;
+	private String desc;
 
-	private BusinessBalanceRecordRecordType(int value, String text) { // 必须是private的，否则编译错误
+	private BusinessBalanceRecordRecordType(int value, String desc) { // 必须是private的，否则编译错误
 		this.value = value;
-		this.text = text;
+		this.desc = desc;
 	}
 
 	public int value() {
@@ -68,7 +68,7 @@ public enum BusinessBalanceRecordRecordType {
 	}
 
 	public String desc() {
-		return this.text;
+		return this.desc;
 	}
 
 	public static BusinessBalanceRecordRecordType getEnum(int index) {
