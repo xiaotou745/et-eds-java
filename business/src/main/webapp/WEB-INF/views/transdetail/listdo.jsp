@@ -9,6 +9,7 @@
 <%@page import="com.edaisong.entity.BusinessBalanceRecord"%>
 <%@page import="com.edaisong.core.common.ParseHelper"%>
 <%@page import="com.edaisong.core.enums.BusinessBalanceRecordRecordType"%>
+<%@page import="com.edaisong.core.enums.BusinessBalanceRecordStatus"%>
 
 <%
 PagedResponse<BusinessBalanceRecord> responsePageList = (PagedResponse<BusinessBalanceRecord>) request.getAttribute("result");
@@ -22,8 +23,8 @@ PagedResponse<BusinessBalanceRecord> responsePageList = (PagedResponse<BusinessB
 		<%=responsePageList.getResultList().get(i).getRelationno() %>
 		<%=responsePageList.getResultList().get(i).getAmount() %>
 		<%=responsePageList.getResultList().get(i).getBalance() %>
-		<%=responsePageList.getResultList().get(i).getStatus() %>
-		<%=responsePageList.getResultList().get(i).getOperatetime() %>
+		<%=BusinessBalanceRecordStatus.getEnum((int)responsePageList.getResultList().get(i).getStatus()).desc()%>
+		<%= ParseHelper.ToDateString(responsePageList.getResultList().get(i).getOperatetime())  %>
 		<br/>
 	<%}
 %>
