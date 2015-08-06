@@ -97,7 +97,6 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	@Transactional(rollbackFor = Exception.class,timeout=30)
 	public CancelOrderBusinessResp cancelOrderBusiness(
 			CancelOrderBusinessReq req) {
 		CancelOrderBusinessResp resp = new CancelOrderBusinessResp();
@@ -107,7 +106,6 @@ public class OrderService implements IOrderService {
 			resp.setMessage("取消失败");
 			return resp;
 		}
-
 		Order orderSearch = new Order();//查询取消的订单的基础数据
 		orderSearch.setId(req.getOrderId());
 		orderSearch.setOrderno(req.getOrderNo());
@@ -119,8 +117,21 @@ public class OrderService implements IOrderService {
 			resp.setMessage("取消订单失败,订单已被抢或订单不存在！");
 			return resp;
 		}
-		
-		boolean result=false;
+        cancelOrderBusinessTrans(req,orderRe);  //事务代码
+        resp.setResponseCode(ResponseCode.SUCESS);
+		resp.setMessage("取消订单成功！");
+		return resp;
+	}
+	
+	/**
+	 * 商户取消订单功能事务单元
+	 * @author CaoHeYang
+	 * @param req  请求参数
+	 * @param orderRe  当前要取消的订单的基础数据
+	 * @Date 20150806
+	 */
+	@Transactional(rollbackFor = Exception.class,timeout=30)
+	public void cancelOrderBusinessTrans(CancelOrderBusinessReq req,Order orderRe) {
 		// 更新订单为 取消状态 参数
 		Order updateModel = new Order();
 		updateModel.setId(req.getOrderId());
@@ -130,12 +141,8 @@ public class OrderService implements IOrderService {
 		updateModel.setOthercancelreason("商家取消订单");
 		updateModel.setAmount(orderRe.getSettlemoney()); // 取消订单涉及到的金额数目此处取到的当前订单的 结算费 即商家应付
 
-		result = orderDao.cancelOrderBusiness(updateModel) > 0; // 取消订单 针对订单表的逻辑
-
-		if (result) { // 取消成功
-			businessDao.updateForWithdraw(orderRe.getSettlemoney(),
-					req.getBusinessId()); // orderRe.getSettlemoney()
-
+		if (orderDao.cancelOrderBusiness(updateModel) > 0 /*取消订单 针对订单表的逻辑*/ 
+				&& businessDao.updateForWithdraw(orderRe.getSettlemoney(),req.getBusinessId())>0  /*更新商户余额*/ ){ // 取消成功
 			BusinessBalanceRecord businessBalanceRecord = new BusinessBalanceRecord();
 			businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
 			businessBalanceRecord.setAmount(orderRe.getSettlemoney());
@@ -146,9 +153,8 @@ public class OrderService implements IOrderService {
 			businessBalanceRecord.setRelationno(req.getOrderNo()); //关联单号
 			businessBalanceRecord.setRemark("商户取消订单返回配送费");  //注释
 		    businessBalanceRecordDao.insert(businessBalanceRecord);  //记录
+		}else {
+			throw new RuntimeException("更新订单状态为取消失败");
 		}
-
-		return resp;
 	}
-
 }
