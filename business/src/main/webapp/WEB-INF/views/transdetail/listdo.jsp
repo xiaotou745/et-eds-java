@@ -12,7 +12,7 @@
 <%
 PagedResponse<BusinessBalanceRecord> responsePageList = (PagedResponse<BusinessBalanceRecord>) request.getAttribute("result");
 %>
-=================================================
+=================================================<br/>
 <%
 	for(int i=0;i<responsePageList.getResultList().size();i++)
 	{%>

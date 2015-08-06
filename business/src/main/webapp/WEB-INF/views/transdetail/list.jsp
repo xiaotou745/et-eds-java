@@ -44,6 +44,9 @@ $(function(){
 			$('#numString').removeAttr('disabled');
 		}
 	});
+	$('#btnSerach').click(function(){
+		PostData(1);
+	});
 	PostData(1);
 });
 var jss = {
