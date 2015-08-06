@@ -41,7 +41,7 @@ public class RequestCountFilter implements Filter {
 		String uri = request.getRequestURI().replace(request.getContextPath(), "");
 		// 如果请求的地址是需要监测的url
 		if (uri.equals(checkUrl)) {
-			String remoteIp = request.getRemoteAddr();
+			String remoteIp = getIpAddr(request);
 			String remoteHost = request.getRemoteHost();
 			int remotePort = request.getRemotePort();
 			String key = String.format("%s_%s_%s_%d", checkUrl, remoteIp, remoteHost, remotePort);
@@ -65,4 +65,17 @@ public class RequestCountFilter implements Filter {
 
 	}
 
+	public String getIpAddr(HttpServletRequest request) {
+		String ip = request.getHeader("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		return ip;
+	}
 }
