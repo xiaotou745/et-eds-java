@@ -833,9 +833,9 @@
   <!--商家后台 订单详情页面基础数据    add by caoheyang 20150804  -->
   <select id="getOrderDetailBusiness"  resultType="com.edaisong.entity.domain.OrderDetailBusiness"   
   parameterType="com.edaisong.entity.req.OrderDetailBusinessReq"  >
-select a.Id,a.OrderNo,a.Status,a.OrderFrom,a.OriginalOrderNo,OtherCancelReason,a.PubDate, 
+select a.Id,a.OrderNo,a.Status,a.OrderFrom,a.OriginalOrderNo,a.Remark,a.PubDate, 
 b.GrabTime,b.TakeTime,a.ActualDoneDate,a.RecevicePhoneNo,a.ReceviceAddress,c.TrueName,c.PhoneNo,
-a.Amount,a.OrderCommission,a.IsPay
+a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney
  from dbo.[order] ( nolock ) a
  join dbo.OrderOther ( nolock ) b on a.Id=b.OrderId
  LEFT join dbo.clienter  ( nolock ) c on a.clienterId=b.Id 
