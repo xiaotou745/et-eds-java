@@ -27,3 +27,5 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 <input type="text" name="txtnumString" id="numString" /> 
 <button type="button" id="btnSerach" >查询</button>
 </form>
+<div id="dataList">
+</div>
