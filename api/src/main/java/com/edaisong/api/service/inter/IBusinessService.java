@@ -27,6 +27,7 @@ public interface IBusinessService {
 	List<BusinessOptionLog> getOpLogByBusinessID(int businessID);
 	int modifyBusiness(BusinessModifyModel detailModel);
 	void addLoginLog(String phoneNo, String description, boolean isSuccess);
+	Business login(String phoneNo,String password);
 	/**
 	 * 根据商户Id获取商户信息
 	 * @param businessId 商户Id
