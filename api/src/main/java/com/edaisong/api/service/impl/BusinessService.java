@@ -94,6 +94,13 @@ public class BusinessService implements IBusinessService {
 		// web层设置登录cookie
 		return resp;
 	}
+	
+	@Override
+	public Business login(String phoneNo,String password){
+		String pwd = MD5Util.MD5(GlobalConfig.PWD_SALT+password);
+		Business b = iBusinessDao.login(phoneNo, pwd);
+		return b;
+	}
 
 	@Override
 	public BusinessDetailModel getBusinessDetailByID(int businessID) {

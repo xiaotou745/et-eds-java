@@ -54,14 +54,14 @@ public class LoginFilter implements Filter{
 		String loginCountCacheKey = RedissCacheKey.LOGIN_COUNT_B + phoneNo;
 		Integer loginCount = redisService.get(loginCountCacheKey, Integer.class);
 		loginCount = loginCount == null ? 0 : loginCount;
-		if (loginCount >= maxLoginCount) {
+		/*if (loginCount >= maxLoginCount) {
 			BusinessLoginResp resp = new BusinessLoginResp();
 			resp.setLoginSuccess(false);
 			resp.setMessage("您当前登录的次数大于10，请5分钟后重试");
 			businessService.addLoginLog(phoneNo,"5分钟内登录次数超过10次",false);
 			response.getWriter().write(JsonUtil.obj2string(resp));
 			return;
-		}
+		}*/
 		
 		chain.doFilter(request, response);
 	}
