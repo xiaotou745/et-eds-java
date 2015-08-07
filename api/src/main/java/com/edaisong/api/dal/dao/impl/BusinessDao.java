@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IBusinessDao;
 import com.edaisong.entity.Business;
+import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
@@ -91,4 +92,11 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public Business getBusinessById(int businessId) { 
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessById",businessId);
 }
+
+	@Override
+	public int modifyExpress(List<BusinessExpressRelation> listData) {
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dal.dao.inter.IBusinessDao.modifyExpress",
+						listData);
+	}
 }

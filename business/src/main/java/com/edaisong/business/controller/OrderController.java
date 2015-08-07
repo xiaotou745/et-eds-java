@@ -1,4 +1,6 @@
 package com.edaisong.business.controller;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,9 +10,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IOrderService;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
+import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
+import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 
@@ -20,7 +27,31 @@ public class OrderController {
 	 //订单
 	 @Autowired
 	 private IOrderService  orderService;
-
+	 /**
+		 * 订单列表页面 
+		 * @author zhaohailong
+		 * @Date 20150806
+		 * @return
+		 */
+		@RequestMapping("list2")
+		public ModelAndView list(){
+			ModelAndView model = new ModelAndView("order/list");
+			return model;
+		}
+		
+		/**
+		 * 订单列表页面 
+		 * @author zhaohailong
+		 * @Date 20150806
+		 * @return
+		 */
+		@RequestMapping("list")
+		public ModelAndView listdo(PagedOrderSearchReq searchWebReq){
+			PagedResponse<OrderListModel> resp = orderService.getOrders(searchWebReq);
+			ModelAndView view = new ModelAndView("order/listdo");
+			view.addObject("listData", resp);
+			return view;
+		}
 	/**
 	 * 订单详情 
 	 * @author CaoHeYang

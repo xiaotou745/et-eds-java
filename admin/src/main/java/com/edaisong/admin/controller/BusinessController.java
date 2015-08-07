@@ -229,5 +229,27 @@ public class BusinessController {
 	public List<AreaModel> getCityDistrict(int cityID) {
 		return iPublicProvinceCityService.getOpenCityDistrict(cityID);
 	}
-	
+	@RequestMapping("modifyexpress")
+	@ResponseBody
+	public int modifyExpress(int busiId,String deliveryCompanyList) {
+		if (deliveryCompanyList==null||deliveryCompanyList.isEmpty()) {
+			return -1;
+		}
+		List<BusinessExpressRelation> listData=new ArrayList<>();
+		String [] expressList= deliveryCompanyList.split(";");
+		for (String express : expressList) {
+			if (!express.isEmpty()) {
+				String [] itemsStrings= express.split(",");
+				BusinessExpressRelation item=new BusinessExpressRelation();
+				item.setExpressid(ParseHelper.ToInt(itemsStrings[0]));
+				item.setIsenable(ParseHelper.ToShort(itemsStrings[1]));
+				item.setBusinessid(busiId);
+				item.setCreateby("admin");
+				item.setUpdateby("admin");
+				listData.add(item);
+			}
+		}
+
+		return iBusinessService.modifyExpress(listData);
+	}
 }

@@ -306,7 +306,7 @@
 	
 	<insert id="addLogingLog" parameterType="com.edaisong.entity.BusinessLoginLog" useGeneratedKeys="true" keyProperty="id">
 		insert into BusinessLoginLog([PhoneNo],[Description],[IsSuccess])
-		values(#{phoneNo,jdbcType=NVARCHAR},#{description,jdbcType=NVARCHAR},#{isSuccess,jdbcType=SMALLINT})
+		values(#{PhoneNo,jdbcType=NVARCHAR},#{Description,jdbcType=NVARCHAR},#{IsSuccess,jdbcType=SMALLINT})
 	</insert>
 	<select id="getBusinessById" resultType="com.edaisong.entity.Business" parameterType="java.lang.Integer" statementType="CALLABLE">
 	  select 
@@ -319,5 +319,35 @@
 		update  business
 		set  BalancePrice=BalancePrice+ #{Money,jdbcType=DECIMAL} ,AllowWithdrawPrice=AllowWithdrawPrice+ #{Money,jdbcType=DECIMAL}
 		where  Id= #{Id,jdbcType=INTEGER}
+	</update>
+	<update id="modifyExpress" parameterType="java.util.List">
+	 <foreach collection="list" index="index" item="item">    
+MERGE INTO BusinessExpressRelation ber
+    USING ( VALUES
+        ( #{item.businessid,jdbcType=INTEGER} ,
+          #{item.expressid,jdbcType=INTEGER}
+        ) ) AS berNew ( BusinessId, ExpressId )
+    ON ber.BusinessId = berNew.BusinessId
+        AND ber.ExpressId = berNew.ExpressId
+    WHEN MATCHED
+        THEN UPDATE
+          SET       ber.IsEnable = #{item.isenable,jdbcType=SMALLINT} ,
+                    ber.UpdateBy = #{item.updateby,jdbcType=NVARCHAR} ,
+                    ber.UpdateTime = GETDATE()
+    WHEN NOT MATCHED
+        THEN INSERT (
+                      BusinessId ,
+                      ExpressId ,
+                      CreateBy ,
+                      UpdateBy ,
+                      IsEnable
+                    )
+          VALUES    ( #{item.businessid,jdbcType=INTEGER} ,
+                      #{item.expressid,jdbcType=INTEGER} ,
+                      #{item.createby,jdbcType=NVARCHAR} ,
+                      #{item.updateby,jdbcType=NVARCHAR} ,
+                      #{item.isenable,jdbcType=SMALLINT}
+                    );
+     </foreach>
 	</update>
 </mapper>
