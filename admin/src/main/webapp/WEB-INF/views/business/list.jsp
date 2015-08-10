@@ -80,13 +80,11 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 				href="javascript:void(0)" <%=statusStyle2%>
 				businessid="<%=data.get(i).getId()%>" class="businessCel">取消资格</a> <a
 				href="<%=basePath%>/business/detail?businessID=<%=data.get(i).getId()%>">修改信息</a>
-				<a href="javascript:void(0)" data-toggle="modal"
-				data-target="#BusinessRechargeShow"
+				<a href="javascript:void(0)" 
 				onclick="funcBusinessRecharge(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">充值</a>
 				<a
 				href="/BusinessManager/ClienterBindManage?businessId=<%=data.get(i).getId()%>">骑士绑定</a>
-				<a href="javascript:void(0)" data-toggle="modal"
-				data-target="#BusinessWithdraw"
+				<a href="javascript:void(0)" 
 				onclick="funcBusinessWithdraw(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">提款申请</a>
 			</td>
 		</tr>
@@ -277,23 +275,10 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
         $('#busId').val(id);
         $('#busName').val(name);
         $('#busPhone').val(phone);
-        //adminjs.openwinbox('#BusinessRechargeShow');
+        $('#BusinessRechargeShow').modal('show');
     }
     
-    function funcBusinessWithdraw(id, name, phone) {
-        GetBusiFinanceAccount(id);
-        $('#withdrawId').val(0);
-        $('#withdrawName').val('');
-        $('#withdrawPhone').val('');
-        $('#withdrawAmount').val('');
-        $('#withdrawLog').val('');
-        $('#withdrawId').val(id);
-        $('#withdrawName').val(name);
-        $('#withdrawPhone').val(phone);
-        //alert("haha");
-        //adminjs.openwinbox('#BusinessWithdraw');
-    }
-    function GetBusiFinanceAccount(busiId) { 
+    function funcBusinessWithdraw(busiId, name, phone) { 
         var paramaters = {
             "busiId": busiId
         };
@@ -318,8 +303,20 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
                         $("#accountType").val('未知');
                     }
                 }
+                ClearFinanceAccount(busiId, name, phone);
             }
         });
+    }
+    function ClearFinanceAccount(busiId, name, phone) {
+        $('#withdrawId').val(0);
+        $('#withdrawName').val('');
+        $('#withdrawPhone').val('');
+        $('#withdrawAmount').val('');
+        $('#withdrawLog').val('');
+        $('#withdrawId').val(busiId);
+        $('#withdrawName').val(name);
+        $('#withdrawPhone').val(phone);
+        $('#BusinessWithdraw').modal('show');
     }
 </script>
 
