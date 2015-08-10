@@ -26,7 +26,7 @@ $(function(){
 		var flag =  iphone();
 		flag = flag || password();
 		flag = flag || get();
-		
+		alert("aa");
 		if(flag){
 			//请求接口
 			$.ajax({
@@ -96,8 +96,8 @@ $(function(){
       	return true;
 
     };
-	$('.img').click(function(){
+/*	$('.img').click(function(){
 		$('.img').attr("src",'images/ex_over.png?x='+Math.random())
 		
-	})
+	})*/
 });	

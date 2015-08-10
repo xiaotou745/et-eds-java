@@ -18,17 +18,17 @@ import com.edaisong.entity.resp.BusinessLoginResp;
 public interface IBusinessService {
 	PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req);
 	
-	/**
-	 * 商家登录
-	 * @param req
-	 * @return
-	 */
-	public BusinessLoginResp login(BusinessLoginReq req);
 	BusinessDetailModel getBusinessDetailByID(int businessID);
 	List<BusinessOptionLog> getOpLogByBusinessID(int businessID);
 	int modifyBusiness(BusinessModifyModel detailModel);
 	void addLoginLog(String phoneNo, String description, boolean isSuccess);
-	Business login(String phoneNo,String password);
+	/**
+	 * 商家登录
+	 * @param 手机号
+	 * @param 密码
+	 * @return
+	 */
+	BusinessLoginResp login(String phoneNo,String password);
 	/**
 	 * 根据商户Id获取商户信息
 	 * @param businessId 商户Id

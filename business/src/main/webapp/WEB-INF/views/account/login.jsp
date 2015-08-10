@@ -23,7 +23,7 @@
 						<div class="ex_error"><p id="error"><%=request.getAttribute("message")==null?"":request.getAttribute("message") %></p></div>
 						<div class="right_for">
 							<h3>商铺帐号登录</h3>
-							<form method="post" action="<%=basePath %>/account/login">
+							<form action="<%=basePath %>/account/login" method="post">
 								<input type="text" placeholder="输入手机号码" class="ex_iphone" maxlength="11" name="phoneNo">
 								<p><b class="error error1"></b></p>
 								<input type="password" placeholder="输入密码"  class="ex_pord" name="password">
@@ -53,6 +53,11 @@
 						$("#error").hide();
 					}
 				}); */
+				
+				$('.img').click(function(){
+					$('.img').attr("src",'<%=basePath %>/account/code?x=Math.random()');
+					
+				})
 			</script>	
 		</body>
 	</html>	

@@ -50,20 +50,6 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-    <!--   add by pengyi 20150804 -->
-    <filter>
-		<filter-name>loginFilter</filter-name>
-		<filter-class>com.edaisong.business.common.LoginFilter</filter-class>
-		<init-param>
-			<param-name>maxLoginCount</param-name>
-			<param-value>5</param-value>
-		</init-param>
-	</filter>
-    <filter-mapping>
-        <filter-name>loginFilter</filter-name>
-        <url-pattern>/account/login</url-pattern>
-    </filter-mapping>
-    
     <!-- url请求次数限制filter add by pengyi 20150806-->
     <filter>
 		<filter-name>requestCountFilter</filter-name>
