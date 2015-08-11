@@ -10,16 +10,16 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edaisong.api.service.impl.OrderService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
-import com.edaisong.api.service.inter.IClienterService;import com.edaisong.entity.resp.BusinessLoginResp;
+import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderReq;
+import com.edaisong.api.service.inter.IClienterService;
+import com.edaisong.entity.resp.BusinessLoginResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 
 @Controller
 @RequestMapping("order")
 public class OrderController {
-	 //订单
-	 @Autowired
-	 private IOrderService  orderService;
 	
 	@Autowired
 	IOrderService orderService;

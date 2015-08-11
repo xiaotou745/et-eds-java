@@ -94,7 +94,7 @@
     where Id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.Order" >
-    insert into order (Id, OrderNo, PickUpAddress, 
+    insert into dbo.[order] (Id, OrderNo, PickUpAddress, 
       PubDate, ReceviceName, RecevicePhoneNo, 
       ReceviceAddress, ActualDoneDate, IsPay, 
       Amount, OrderCommission, DistribSubsidy, 
@@ -134,7 +134,7 @@
       #{finishall,jdbcType=INTEGER}, #{realordercommission,jdbcType=NUMERIC})
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.Order" >
-    insert into order
+    insert into dbo.[order]
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         Id,
