@@ -74,6 +74,7 @@ public class BusinessService implements IBusinessService {
 		}
 		redisService.set(loginCountCacheKey, loginCount + 1, 5 * 60);
 		resp.setBusiness(b);
+		resp.setLoginSuccess(true);
 		return resp;
 	}
 

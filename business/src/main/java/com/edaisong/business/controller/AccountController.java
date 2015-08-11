@@ -1,5 +1,6 @@
 package com.edaisong.business.controller;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -33,7 +34,12 @@ public class AccountController {
 	private RedisService redisService;
 
 	@RequestMapping(value = "login", method = { RequestMethod.GET })
-	public ModelAndView LoginConfig(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView LoginConfig(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		boolean isLogin = checkIsLogin(request);
+		if(isLogin){
+			response.sendRedirect(request.getContextPath()+"/index.jsp");
+			return null;
+		}
 		ModelAndView mv = new ModelAndView("account/login");
 		return mv;
 	}
@@ -45,31 +51,21 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "login", method = { RequestMethod.POST })
-	public @ResponseBody LoginResp login(HttpServletRequest request, HttpServletResponse response, @RequestParam String phoneNo, 
-			@RequestParam String password, @RequestParam String code, @RequestParam boolean rememberMe) {
+	public @ResponseBody LoginResp login(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
+			@RequestParam boolean rememberMe) {
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
-		boolean isLogin = false;
-		final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
-		String cookieValue = CookieUtils.getCookie(request, cookieKey);
-		if (cookieValue != null) {
-			CookieModel cookieModel = JsonUtil.str2obj(cookieValue, CookieModel.class);
-			if (cookieModel != null) {
-				Object loginStatusValue = redisService.get(cookieModel.getValue(), Object.class);
-				if (loginStatusValue != null) {
-					isLogin = true;
-				}
-			}
-		}
+		boolean isLogin = checkIsLogin(request);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
 			resp.setSuccess(true);
 			return resp;
 		}
-		
+
 		Object sessionCode = request.getSession().getAttribute("code");
-		//验证码不正确
-		if(sessionCode == null || !sessionCode.toString().equals(code)){
+		// 验证码不正确
+		if (sessionCode == null || !sessionCode.toString().equals(code)) {
 			resp.setMessage("验证码不正确");
 			resp.setSuccess(false);
 			return resp;
@@ -114,5 +110,27 @@ public class AccountController {
 			redisService.set(WebConst.LOGIN_COOKIE_NAME, null, -1);
 		}
 		return new ResponseBase();
+	}
+
+	/**
+	 * 是否登录
+	 * @param request
+	 * @return
+	 */
+	private boolean checkIsLogin(HttpServletRequest request) {
+		// 如果已登录,直接返回
+		boolean isLogin = false;
+		final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
+		String cookieValue = CookieUtils.getCookie(request, cookieKey);
+		if (cookieValue != null) {
+			CookieModel cookieModel = JsonUtil.str2obj(cookieValue, CookieModel.class);
+			if (cookieModel != null) {
+				Object loginStatusValue = redisService.get(cookieModel.getValue(), Object.class);
+				if (loginStatusValue != null) {
+					isLogin = true;
+				}
+			}
+		}
+		return isLogin;
 	}
 }
