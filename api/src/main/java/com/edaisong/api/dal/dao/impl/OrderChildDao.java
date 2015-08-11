@@ -23,7 +23,7 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 	public int insert(OrderChild record)
 	{
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dal.dao.inter.IOrderChildDao.insert", record);
+				"com.edaisong.api.dal.dao.inter.IOrderChildDao.insertSelective", record);
 	}	
 	
 }

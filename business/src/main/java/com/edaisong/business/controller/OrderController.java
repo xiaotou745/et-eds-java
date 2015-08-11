@@ -20,13 +20,12 @@ import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
+import com.edaisong.api.service.inter.IClienterService;
+import com.edaisong.entity.resp.BusinessLoginResp;
 
 @Controller
 @RequestMapping("order")
 public class OrderController {
-	 //订单
-	 @Autowired
-	 private IOrderService  orderService;
 	 /**
 		 * 订单列表页面 
 		 * @author zhaohailong
