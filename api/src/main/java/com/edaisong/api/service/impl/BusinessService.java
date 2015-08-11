@@ -10,7 +10,10 @@ import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalConfig;
 import com.edaisong.core.consts.RedissCacheKey;
+import com.edaisong.core.enums.BusinessStatus;
 import com.edaisong.core.security.MD5Util;
+import com.edaisong.core.util.HttpUtil;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
@@ -43,7 +46,8 @@ public class BusinessService implements IBusinessService {
 		BusinessLoginResp resp = new BusinessLoginResp();
 		// 登录次数验证
 		String loginCountCacheKey = RedissCacheKey.LOGIN_COUNT_B + phoneNo;
-		Integer loginCount = redisService.get(loginCountCacheKey, Integer.class);
+		Integer loginCount = redisService
+				.get(loginCountCacheKey, Integer.class);
 		loginCount = loginCount == null ? 0 : loginCount;
 		if (loginCount >= GlobalConfig.MAX_LOGIN_COUNT) {
 			resp.setLoginSuccess(false);
@@ -52,7 +56,8 @@ public class BusinessService implements IBusinessService {
 			return resp;
 		}
 		// 参数验证
-		if (phoneNo == null || phoneNo.isEmpty() || password == null || password.isEmpty()) {
+		if (phoneNo == null || phoneNo.isEmpty() || password == null
+				|| password.isEmpty()) {
 			addLoginLog(phoneNo == null ? "" : phoneNo, "用户名或密码为空", false);
 			resp.setMessage("用户名或密码为空");
 			resp.setLoginSuccess(false);
@@ -90,7 +95,8 @@ public class BusinessService implements IBusinessService {
 
 	@Override
 	public int modifyBusiness(BusinessModifyModel detailModel) {
-		BusinessDetailModel oldModel = iBusinessDao.getBusinessDetailByID(detailModel.getId());
+		BusinessDetailModel oldModel = iBusinessDao
+				.getBusinessDetailByID(detailModel.getId());
 		String remark = GetRemark(oldModel, detailModel);
 		if (remark.isEmpty()) {
 			return -1;
@@ -102,74 +108,110 @@ public class BusinessService implements IBusinessService {
 	private String GetRemark(BusinessDetailModel brm, BusinessModifyModel model) {
 		StringBuffer remark = new StringBuffer();
 		if (brm != null && brm.getId() > 0) {
-			if (brm.getAddress() == null || !brm.getAddress().equals(model.getAddress())) {
-				remark.append(String.format("商户地址原值:%s,修改为%s;", brm.getAddress(), model.getAddress()));
+			if (brm.getAddress() == null
+					|| !brm.getAddress().equals(model.getAddress())) {
+				remark.append(String.format("商户地址原值:%s,修改为%s;",
+						brm.getAddress(), model.getAddress()));
 			}
 			if (brm.getGroupid() != model.getGroupid()) {
-				remark.append(String.format("第三方id原值:%s,修改为%s;", brm.getGroupid(), model.getGroupid()));
+				remark.append(String.format("第三方id原值:%s,修改为%s;",
+						brm.getGroupid(), model.getGroupid()));
 			}
 			if (brm.getName() == null || !brm.getName().equals(model.getName())) {
-				remark.append(String.format("商户名原值:%s,修改为%s;", brm.getName(), model.getName()));
+				remark.append(String.format("商户名原值:%s,修改为%s;", brm.getName(),
+						model.getName()));
 			}
-			if (brm.getPhoneno2() == null || !brm.getPhoneno2().equals(model.getPhoneno2())) {
-				remark.append(String.format("联系电话原值:%s,修改为%s;", brm.getPhoneno2(), model.getPhoneno2()));
+			if (brm.getPhoneno2() == null
+					|| !brm.getPhoneno2().equals(model.getPhoneno2())) {
+				remark.append(String.format("联系电话原值:%s,修改为%s;",
+						brm.getPhoneno2(), model.getPhoneno2()));
 			}
 			// 座机
-			if (brm.getLandline() == null || !brm.getLandline().equals(model.getLandline())) {
-				remark.append(String.format("联系座机原值:%s,修改为%s;", brm.getLandline(), model.getLandline()));
+			if (brm.getLandline() == null
+					|| !brm.getLandline().equals(model.getLandline())) {
+				remark.append(String.format("联系座机原值:%s,修改为%s;",
+						brm.getLandline(), model.getLandline()));
 			}
 			if (brm.getDistribsubsidy().compareTo(model.getDistribsubsidy()) != 0) {
-				remark.append(String.format("配送费原值:%s,修改为%s;", brm.getDistribsubsidy(), model.getDistribsubsidy()));
+				remark.append(String.format("配送费原值:%s,修改为%s;",
+						brm.getDistribsubsidy(), model.getDistribsubsidy()));
 			}
 			if (brm.getCity() == null || !brm.getCity().equals(model.getCity())) {
-				remark.append(String.format("城市原值:%s,修改为%s;", brm.getCity(), model.getCity()));
+				remark.append(String.format("城市原值:%s,修改为%s;", brm.getCity(),
+						model.getCity()));
 			}
-			if (brm.getDistrict() == null || !brm.getDistrict().equals(model.getDistrict())) {
-				remark.append(String.format("区域原值:%s,修改为%s;", brm.getDistrict(), model.getDistrict()));
+			if (brm.getDistrict() == null
+					|| !brm.getDistrict().equals(model.getDistrict())) {
+				remark.append(String.format("区域原值:%s,修改为%s;",
+						brm.getDistrict(), model.getDistrict()));
 			}
 			if (brm.getLongitude().compareTo(model.getLongitude()) != 0) {
-				remark.append(String.format("经度原值:%s,修改为%s;", brm.getLongitude(), model.getLongitude()));
+				remark.append(String.format("经度原值:%s,修改为%s;",
+						brm.getLongitude(), model.getLongitude()));
 			}
 			if (brm.getLatitude().compareTo(model.getLatitude()) != 0) {
-				remark.append(String.format("纬度原值:%s,修改为%s;", brm.getLatitude(), model.getLatitude()));
+				remark.append(String.format("纬度原值:%s,修改为%s;",
+						brm.getLatitude(), model.getLatitude()));
 			}
 			if (brm.getCommissiontype() != model.getCommissiontype()) {
-				remark.append(String.format("结算类型原值:%s,修改为%s;", brm.getCommissiontype(), model.getCommissiontype()));
+				remark.append(String.format("结算类型原值:%s,修改为%s;",
+						brm.getCommissiontype() == 1 ? "结算比例" : "结算金额",
+						model.getCommissiontype() == 1 ? "结算比例" : "结算金额"));
 			}
 			if (model.getCommissiontype() == 1
-					&& brm.getBusinesscommission().compareTo(model.getBusinesscommission()) != 0) {
-				remark.append(String.format("固定比例原值:%s,修改为%s;", brm.getBusinesscommission(),
+					&& brm.getBusinesscommission().compareTo(
+							model.getBusinesscommission()) != 0) {
+				remark.append(String.format("固定比例原值:%s,修改为%s;",
+						brm.getBusinesscommission(),
 						model.getBusinesscommission()));
 			}
 			if (model.getCommissiontype() == 2
-					&& brm.getCommissionfixvalue().compareTo(model.getCommissionfixvalue()) != 0) {
-				remark.append(String.format("固定金额原值:%s,修改为%s;", brm.getCommissionfixvalue(),
+					&& brm.getCommissionfixvalue().compareTo(
+							model.getCommissionfixvalue()) != 0) {
+				remark.append(String.format("固定金额原值:%s,修改为%s;",
+						brm.getCommissionfixvalue(),
 						model.getCommissionfixvalue()));
 			}
 
 			// 补贴策略 BusinessGroupId
 			if (brm.getBusinessgroupid() != model.getBusinessgroupid()) {
-				remark.append(String.format("补贴策略原值:%s,修改为%s;", brm.getBusinessgroupid(), model.getBusinessgroupid()));
+				remark.append(String.format("补贴策略原值:%s,修改为%s;",
+						brm.getBusinessgroupid(), model.getBusinessgroupid()));
 			}
 			// 餐费结算方式
 			if (brm.getMealssettlemode() != model.getMealssettlemode()) {
-				remark.append(String.format("餐费结算方式原值:%s,修改为%s;", brm.getMealssettlemode(), model.getMealssettlemode()));
+				remark.append(String.format("餐费结算方式原值:%s,修改为%s;",
+						brm.getMealssettlemode() == 0 ? "线下" : "线上",
+						model.getMealssettlemode() == 0 ? "线下" : "线上"));
 			}
 			// 一键发单
 			if (brm.getOnekeypuborder() != model.getOnekeypuborder()) {
-				remark.append(String.format("一键发单原值:%s,修改为%s;", brm.getOnekeypuborder(), model.getOnekeypuborder()));
+				remark.append(String.format("一键发单原值:%s,修改为%s;",
+						brm.getOnekeypuborder() == 1 ? "是" : "否",
+						model.getOnekeypuborder() == 1 ? "是" : "否"));
 			}
 			// 余额可以透支
 			if (brm.getIsallowoverdraft() != model.getIsallowoverdraft()) {
-				remark.append(String.format("余额透支原值:%s,修改为%s;", brm.getIsallowoverdraft(), model.getIsallowoverdraft()));
+				remark.append(String.format("余额透支原值:%s,修改为%s;",
+						brm.getIsallowoverdraft() == 1 ? "是" : "否",
+						model.getIsallowoverdraft() == 1 ? "是" : "否"));
 			}
 			// 雇主任务时间限制
 			if (brm.getIsemployertask() != model.getIsemployertask()) {
-				remark.append(String.format("余额透支原值:%s,修改为%s;", brm.getIsemployertask(), model.getIsemployertask()));
+				remark.append(String.format("雇主任务时间限制原值:%s,修改为%s;",
+						brm.getIsemployertask() == 1 ? "是" : "否",
+						model.getIsemployertask() == 1 ? "是" : "否"));
 			}
 			// 第三方Id
 			if (brm.getOriginalbusiid() != model.getOriginalbusiid()) {
-				remark.append(String.format("第三方ID原值:%s,修改为%s;", brm.getOriginalbusiid(), model.getOriginalbusiid()));
+				remark.append(String.format("第三方ID原值:%s,修改为%s;",
+						brm.getOriginalbusiid(), model.getOriginalbusiid()));
+			}
+			// 是否需要审核
+			if (brm.getIsOrderChecked() != model.getIsOrderChecked()) {
+				remark.append(String.format("订单是否需要审核原值:%s,修改为%s;",
+						brm.getIsOrderChecked() == 1 ? "是" : "否",
+						model.getIsOrderChecked() == 1 ? "是" : "否"));
 			}
 		}
 		if (remark.length() > 0) {
@@ -179,7 +221,8 @@ public class BusinessService implements IBusinessService {
 		return "";
 	}
 
-	public void addLoginLog(String phoneNo, String description, boolean isSuccess) {
+	public void addLoginLog(String phoneNo, String description,
+			boolean isSuccess) {
 		BusinessLoginLog log = new BusinessLoginLog();
 		log.setDescription(description);
 		log.setIsSuccess(isSuccess ? (short) 1 : (short) 0);
@@ -200,6 +243,28 @@ public class BusinessService implements IBusinessService {
 	@Override
 	public int modifyExpress(List<BusinessExpressRelation> listData) {
 		return iBusinessDao.modifyExpress(listData);
+	}
+
+	@Override
+	public int updateAuditStatus(int businessID, int status) {
+		if (status != BusinessStatus.AuditPass.value()
+				&& status != BusinessStatus.AuditRefuse.value()) {
+			return -1;
+		}
+		int result = iBusinessDao.updateAuditStatus(businessID, status);
+		if (result > 0) {
+			Business business = iBusinessDao.getBusinessById(businessID);
+			String juWangKeBusiAuditCallBack = PropertyUtils
+					.getProperty("JuWangKeBusiAuditCallBack");
+			// 调用第三方接口 ，聚网客商户审核通过后调用接口
+			// 这里不建议使用 1 数字，而是根据 配置文件中的 appkey来获取 groupid
+			if (business.getGroupid() == 1 && business.getOriginalbusiid() > 0
+					&& status == BusinessStatus.AuditPass.value()) {
+				String str = HttpUtil.sendPost(juWangKeBusiAuditCallBack,
+						"supplier_id=" + business.getOriginalbusiid());
+			}
+		}
+		return result;
 	}
 
 }

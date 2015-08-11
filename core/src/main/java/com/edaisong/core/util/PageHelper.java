@@ -1,4 +1,4 @@
-package com.edaisong.core.common;
+package com.edaisong.core.util;
 
 public class PageHelper {
 

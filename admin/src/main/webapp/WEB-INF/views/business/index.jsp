@@ -5,7 +5,7 @@
 <%@page import="com.edaisong.entity.BusinessGroup"%>
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
-<%@page import="com.edaisong.core.common.HtmlHelper"%>
+<%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%
 String basePath =PropertyUtils.getProperty("static.admin.url");
 List<AreaModel> openCityList=	(List<AreaModel>)request.getAttribute("openCityList");

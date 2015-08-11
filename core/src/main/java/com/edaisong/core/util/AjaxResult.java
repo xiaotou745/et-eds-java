@@ -1,4 +1,4 @@
-package com.edaisong.core.web;
+package com.edaisong.core.util;
 
 /**
  * action返回ajaxresult通用类，封闭了返回成功标记，错误信息，数据对象等

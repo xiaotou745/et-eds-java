@@ -28,7 +28,7 @@ import com.edaisong.entity.resp.BusinessLoginResp;
 @RequestMapping("order")
 public class OrderController {
 	@Autowired
-	OrderService orderService;
+	IOrderService orderService;
 	 /**
 		 * 订单列表页面 
 		 * @author zhaohailong

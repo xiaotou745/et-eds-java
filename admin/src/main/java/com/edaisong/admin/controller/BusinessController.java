@@ -23,7 +23,7 @@ import com.edaisong.api.service.inter.IBusinessThirdRelationService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
-import com.edaisong.core.common.ParseHelper;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessExpressRelation;
@@ -252,4 +252,10 @@ public class BusinessController {
 
 		return iBusinessService.modifyExpress(listData);
 	}
+	@RequestMapping("audit")
+	@ResponseBody
+	 public int businessAudit(int businessID,int status)
+     {
+         return iBusinessService.updateAuditStatus(businessID, status);
+     }
 }

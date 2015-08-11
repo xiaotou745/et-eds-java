@@ -15,11 +15,35 @@ import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.req.PagedBusinessReq;
 
 public interface IBusinessDao {
+	/**
+	 * 获取分页的商家列表
+	 * @return
+	 */
     PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req);
+	/**
+	 * 修改商家信息时，获取商家明细信息
+	 * @return
+	 */
 	BusinessDetailModel getBusinessDetailByID(int businessID);
+	/**
+	 * 获取商家的修改记录
+	 * @return
+	 */
 	List<BusinessOptionLog> getOpLogByBusinessID(int businessID);
+	/**
+	 * 修改商家信息
+	 * @return
+	 */
 	int modifyBusiness(BusinessModifyModel detailModel);
+	/**
+	 * 商家登录
+	 * @return
+	 */
 	Business login(String phoneNo,String password);
+	/**
+	 * 新增商家登录日志
+	 * @return
+	 */
 	boolean addLoginLog(BusinessLoginLog log);
 	
 
@@ -44,4 +68,11 @@ public interface IBusinessDao {
 	 * @return 
 	 */
 	int modifyExpress(List<BusinessExpressRelation> listData);
+	
+	/**
+	 * 修改商家审核状态
+	 * @param 
+	 * @return 
+	 */
+	int updateAuditStatus(int businessID,int status);
 }

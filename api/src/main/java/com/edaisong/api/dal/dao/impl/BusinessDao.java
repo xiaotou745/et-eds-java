@@ -99,4 +99,14 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 				.update("com.edaisong.api.dal.dao.inter.IBusinessDao.modifyExpress",
 						listData);
 	}
+
+	@Override
+	public int updateAuditStatus(int businessID, int status) {
+		Map<String, Object> parasMap = new HashMap();
+		parasMap.put("businessID", businessID);
+		parasMap.put("status", status);
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dal.dao.inter.IBusinessDao.updateAuditStatus",
+						parasMap);
+	}
 }

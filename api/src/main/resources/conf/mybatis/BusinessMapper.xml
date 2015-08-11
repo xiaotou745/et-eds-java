@@ -36,6 +36,7 @@
 		b.mealssettlemode ,
 		isnull(b.groupid,0) as groupid ,
 		b.originalbusiid ,
+		b.isOrderChecked,
 		bfa.trueName ,
 		bfa.accountNo ,
 		bfa.accountType ,
@@ -121,6 +122,10 @@
 			<if test="isallowoverdraft != null">
 				isallowoverdraft = #{isallowoverdraft,jdbcType=INTEGER},
 			</if>
+			<if test="isOrderChecked != null">
+				IsOrderChecked = #{isOrderChecked,jdbcType=INTEGER},
+			</if>
+			
 		</set>
 		OUTPUT
                         Inserted.Id,
@@ -349,5 +354,10 @@ MERGE INTO BusinessExpressRelation ber
                       #{item.isenable,jdbcType=SMALLINT}
                     );
      </foreach>
+	</update>
+   <!-- 更新 商户 余额，可提现余额   add by zhaohailong 20150811  -->	
+	<update id="updateAuditStatus" parameterType="java.util.Map">
+        update business set Status=#{status,jdbcType=INTEGER}
+		where  Id= #{businessID,jdbcType=INTEGER}
 	</update>
 </mapper>

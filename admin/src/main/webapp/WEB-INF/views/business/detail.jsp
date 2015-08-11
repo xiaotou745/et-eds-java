@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="com.edaisong.core.common.HtmlHelper"%>
+<%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
 <%@page import="com.edaisong.entity.BusinessGroup"%>
 <%@page import="com.edaisong.entity.DeliveryCompany"%>
@@ -11,7 +11,7 @@
 <%@page import="com.edaisong.entity.domain.BusinessDetailModel"%>
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%@page import="com.edaisong.entity.BusinessOptionLog"%>
-<%@page import="com.edaisong.core.common.ParseHelper"%>
+<%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
 String basePath =PropertyUtils.getProperty("static.admin.url");
@@ -91,6 +91,11 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 					type="text" value="<%=detail.getLatitude()%>" disabled="disabled">
 				<a id="postion" style="margin-left: 15px"><b>地图定位</b></a>
 			</div>
+			  <div class="control-group" style="margin-bottom: 10px" id="OrderChecked">
+                <label style="margin-left: 5px">订单是否需要审核：</label>
+                <label><input name="IsCheckOrder" type="radio" value="1" <%=detail.getIsOrderChecked()==1?"checked" : ""%> />是 </label>
+                <label><input name="IsCheckOrder" type="radio" value="0" <%=detail.getIsOrderChecked()==0?"checked" : ""%> />否 </label> 
+            </div>	
 		</div>
 		<hr />
 		<div
@@ -571,7 +576,8 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			"originalbusiid" : originalBusiId,
 			"onekeypuborder" : oneKeyPubOrder,
 			"isemployertask" : IsEmployerTask,
-			"isallowoverdraft" : isAllowOverdraft
+			"isallowoverdraft" : isAllowOverdraft,
+			"isOrderChecked":$('#OrderChecked input[name="IsCheckOrder"]:checked ').val()
 		};
 		var url = "<%=basePath%>/business/modifybusiness";
 		$.ajax({

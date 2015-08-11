@@ -1,10 +1,6 @@
 package com.edaisong.core.cache.redis;
 
-import java.io.InputStream;
-import java.util.Properties;
-
-import com.edaisong.core.common.ConfigHelper;
-import com.edaisong.core.common.ParseHelper;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 
 public class RedisConfig {
