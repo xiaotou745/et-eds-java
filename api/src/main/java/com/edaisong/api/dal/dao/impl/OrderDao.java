@@ -21,7 +21,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public int insert(Order record)
 	{
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dal.dao.inter.IOrderDao.insert", record);
+				"com.edaisong.api.dal.dao.inter.IOrderDao.insertSelective", record);
 	}
 	
 	/**

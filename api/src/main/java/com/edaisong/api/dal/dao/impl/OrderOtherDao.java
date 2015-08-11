@@ -23,7 +23,7 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao   {
 	public int insert(OrderOther record) {
 		// TODO Auto-generated method stub
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dal.dao.inter.IOrderOther.insert", record);
+				"com.edaisong.api.dal.dao.inter.IOrderOtherDao.insertSelective", record);		         
 	}
 
 	@Override

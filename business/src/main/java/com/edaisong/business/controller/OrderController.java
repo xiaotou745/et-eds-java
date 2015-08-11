@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.api.service.impl.OrderService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
@@ -20,13 +21,14 @@ import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
+import com.edaisong.api.service.inter.IClienterService;
+import com.edaisong.entity.resp.BusinessLoginResp;
 
 @Controller
 @RequestMapping("order")
 public class OrderController {
-	 //订单
-	 @Autowired
-	 private IOrderService  orderService;
+	@Autowired
+	OrderService orderService;
 	 /**
 		 * 订单列表页面 
 		 * @author zhaohailong
