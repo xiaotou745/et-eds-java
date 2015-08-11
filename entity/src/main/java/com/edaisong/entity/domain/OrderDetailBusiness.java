@@ -14,7 +14,7 @@ public class OrderDetailBusiness {
 	private int status;
 	private int orderFrom;
 	private String originalOrderNo;
-	private String canelReason;
+	private String remark;
 	private Date pubDate;
 	private Date grabTime;
 	private Date takeTime;
@@ -24,8 +24,9 @@ public class OrderDetailBusiness {
 	private String trueName;
 	private String phoneNo;
 	private BigDecimal amount;
-	private int orderCommission;
+	private BigDecimal orderCommission;
 	private int isPay;
+	private BigDecimal settleMoney;
 
 	/**
 	 * ID
@@ -100,15 +101,15 @@ public class OrderDetailBusiness {
 	/**
 	 * 关闭原因
 	 */
-	public String getCanelReason() {
-		return canelReason;
+	public String getRemark() {
+		return remark;
 	}
 
 	/**
 	 * 关闭原因
 	 */
-	public void setCanelReason(String canelReason) {
-		this.canelReason = canelReason;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	/**
@@ -240,14 +241,14 @@ public class OrderDetailBusiness {
 	/**
 	 * 佣金
 	 */
-	public int getOrderCommission() {
+	public BigDecimal getOrderCommission() {
 		return orderCommission;
 	}
 
 	/**
 	 * 佣金
 	 */
-	public void setOrderCommission(int orderCommission) {
+	public void setOrderCommission(BigDecimal orderCommission) {
 		this.orderCommission = orderCommission;
 	}
 
@@ -263,6 +264,22 @@ public class OrderDetailBusiness {
 	 */
 	public void setIsPay(int isPay) {
 		this.isPay = isPay;
+	}
+
+	/**
+	 * 结算金额
+	 * @return
+	 */
+	public BigDecimal getSettleMoney() {
+		return settleMoney;
+	}
+
+	/**
+	 * 结算金额
+	 * @param settleMoney
+	 */
+	public void setSettleMoney(BigDecimal settleMoney) {
+		this.settleMoney = settleMoney;
 	}
 
 }

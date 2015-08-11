@@ -41,27 +41,31 @@ public class HtmlHelper {
 		if (styleString != null) {
 			style = "style=\"" + styleString + "\"";
 		}
-		htmlStrBuffer.append(" <select class=\"selectw\" " + style
-				+ " id=\"" + selectName + "\" name=\"" + selectName + "\"> ");
-		if (defaultValue != null){
-			if(selectedValue != null&& 
-				selectedValue.toString().equals(defaultValue.toString())) {
+		htmlStrBuffer.append(" <select class=\"selectw\" " + style + " id=\""
+				+ selectName + "\" name=\"" + selectName + "\"> ");
+		if (defaultValue != null) {
+			if (selectedValue != null
+					&& selectedValue.toString().equals(defaultValue.toString())) {
 				selected = " selected=\"selected\" ";
-				}
+			}
 			htmlStrBuffer.append("<option " + selected + " value=\""
 					+ defaultValue + "\">" + defaultText + "</option>");
 			selected = "";
 		}
 
 		try {
+
 			if (list != null && list.size() > 0) {
-				List<Field> fields=getFinalFields(list.get(0).getClass(),textName, valueName);
-				if (fields==null) {
+				List<Field> fields = getFinalFields(list.get(0).getClass(),
+						textName, valueName);
+				if (fields == null) {
 					return "";
 				}
 
 				for (int i = 0; i < list.size(); i++) {
-					if (selectedValue != null&& selectedValue.toString().equals(fields.get(1).get(list.get(i)).toString())) {
+					if (selectedValue != null
+							&& selectedValue.toString().equals(
+									fields.get(1).get(list.get(i)).toString())) {
 						selected = " selected=\"selected\" ";
 					}
 					htmlStrBuffer.append(" <option " + selected + " value=\""
@@ -70,35 +74,31 @@ public class HtmlHelper {
 							+ "</option>");
 					selected = "";
 				}
-				return htmlStrBuffer.append("</select>").toString();
-			} else {
-				return "";
 			}
+			return htmlStrBuffer.append("</select>").toString();
 		} catch (Exception e) {
 			return "";
 		}
 	}
-	private static List<Field> getFinalFields(Class type,String textName, String valueName) {
-		List<Field> resultList=new ArrayList<>();
-		Field fieldText =null;
-		Field fieldValue =null;
-		//type.getDeclaredField("");//这种方式只能获取当前类的字段，不能访问基类中的属性
-		//type.getField("");//这种方式只能获取类的所有public属性，包括当前类和基类
+
+	private static List<Field> getFinalFields(Class type, String textName,
+			String valueName) {
+		List<Field> resultList = new ArrayList<>();
+		Field fieldText = null;
+		Field fieldValue = null;
+		// type.getDeclaredField("");//这种方式只能获取当前类的字段，不能访问基类中的属性
+		// type.getField("");//这种方式只能获取类的所有public属性，包括当前类和基类
 		try {
 			try {
-				 fieldText = type
-						.getDeclaredField(textName); // 获取name
+				fieldText = type.getDeclaredField(textName); // 获取name
 			} catch (Exception e) {
-				 fieldText = type.getSuperclass()
-						.getDeclaredField(textName); // 获取name
+				fieldText = type.getSuperclass().getDeclaredField(textName); // 获取name
 			}
 			try {
-				 fieldValue = type
-						.getDeclaredField(valueName); // 获取valueName
+				fieldValue = type.getDeclaredField(valueName); // 获取valueName
 
 			} catch (Exception e) {
-				 fieldValue = type.getSuperclass()
-						.getDeclaredField(valueName); // 获取valueName
+				fieldValue = type.getSuperclass().getDeclaredField(valueName); // 获取valueName
 			}
 		} catch (Exception e) {
 			return null;
@@ -109,6 +109,7 @@ public class HtmlHelper {
 		resultList.add(fieldValue);
 		return resultList;
 	}
+
 	/**
 	 * 
 	 * @param selectName
@@ -126,6 +127,7 @@ public class HtmlHelper {
 		return getSelect(selectName, list, textName, valueName, null, "-1",
 				"全部", null);
 	}
+
 	/**
 	 * 
 	 * @param selectName
@@ -139,7 +141,7 @@ public class HtmlHelper {
 	 * @return
 	 */
 	public static <T> String getSelect(String selectName, List<T> list,
-			String textName, String valueName,String styleString) {
+			String textName, String valueName, String styleString) {
 		return getSelect(selectName, list, textName, valueName, null, "-1",
 				"全部", styleString);
 	}

@@ -6,6 +6,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ParseHelper {
+	public static short ToShort(Object o, short defaultValue) {
+		short result = defaultValue;
+		try {
+			result = Short.parseShort(o.toString());
+		} catch (Exception e) {
+
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param o
+	 * @return
+	 */
+	public static short ToShort(Object o) {
+		return ToShort(o, (short)0);
+	}
 	public static int ToInt(Object o, int defaultValue) {
 		int result = defaultValue;
 		try {
@@ -68,7 +86,7 @@ public class ParseHelper {
 			return "";
 		}
 		if (strFormat == null || strFormat.isEmpty()) {
-			strFormat = "yyyy-MM-dd hh:MM:ss";
+			strFormat = "yyyy-MM-dd HH:mm:ss";
 		}
 		DateFormat sdf = new SimpleDateFormat(strFormat);
 		String defaultDate = "";

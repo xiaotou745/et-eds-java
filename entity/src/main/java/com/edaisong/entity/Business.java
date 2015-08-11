@@ -1,9 +1,10 @@
 package com.edaisong.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Business {
+public class Business implements Serializable{
     private Integer id;
 
     private String name;

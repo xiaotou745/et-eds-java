@@ -40,10 +40,9 @@ for (GroupModel groupModel : groupListData) {
 List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttribute("businessGroupListData");
 %>
 <div>
-	<div id="left"
-		style="float: left; width: 750px; height: auto; border-right: 1px #dcdcdc solid; margin-top: -10px;">
-		<div
-			style="width: 750px; height: auto; border-bottom: solid 0px #dcdcdc; padding-left: 10px;">
+	<div id="left" style="float: left; width: 750px; height: auto; border-right: 1px #dcdcdc solid; margin-top: -10px;">
+	<form id="busForm" action="">
+		<div style="width: 750px; height: auto; border-bottom: solid 0px #dcdcdc; padding-left: 10px;">
 			<div class="control-group" style="margin-top: 10px">
 				<label>注册账号：</label> <label><%=detail.getPhoneno()%></label>
 				<div class="SearchMd"
@@ -195,7 +194,7 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			</div>
 
 		</div>
-
+    </form>
 		<div
 			style="width: 750px; height: auto; overflow: auto; margin-top: 10px; border-bottom: solid 1px #dcdcdc;"
 			id="divDeliveryCompany">
@@ -213,7 +212,7 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 				</div>
 				<%
 					for (DeliveryCompany item : deliveryCompany) {
-								                String check = item.getDeliverycompanycode()==detail.getRecommendphone() ? "checked='checked'" : "";
+					String check = item.getDeliverycompanycode()==detail.getRecommendphone() ? "checked='checked'" : "";
 				%>
 				<div style="width: 110px; height: 25px; float: left">
 					<input type="checkbox" name="checkMenus" id="<%=item.getId()%>"
@@ -314,19 +313,14 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 
 
 <script type="text/javascript">
-	//var adminjs = new adminglass();
-	//实例化后台类
 	$(document).ready(function() {
 		$('#operateTimeStart').datepicker();
 		$('#operateTimeEnd').datepicker();
 		funcCheckExpress();
-		//var hidPushCity = $("#hidPushCity").val();
-		//var cityArr = hidPushCity.split(",");
-		//$.each(cityArr, function (i, n) {
-		//    $(":checkbox[id='" + n + "']").prop("checked", true);
-		//});
-
+	    oldForm=$("#busForm").serialize();
 	});
+	var oldForm="";
+	var oldDic=new ActiveXObject("Scripting.Dictionary");
 
 	function funcCheckExpress() {
 		var businessId = $('#busiId').val();
@@ -343,6 +337,7 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			success : function(businessExpressRef) {
 				if (businessExpressRef.length > 0) {
 					for (var i = 0; i < businessExpressRef.length; i++) {
+						oldDic.Add(businessExpressRef[i].expressid,businessExpressRef[i].isenable);
 						if (businessExpressRef[i].isenable == 1) {
 							$(
 									":checkbox[id='"
@@ -354,58 +349,60 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 											+ businessExpressRef[i].expressid
 											+ "']").prop("checked", false);
 						}
-
 					}
 				}
-			},
-		error:function(d){
-			alert(d.responseText);
-		}
+				//保存商家的物流公司设置
+				$("input[name='checkMenus']").each(function() {
+							if ($(this).is(':checked')) {
+								oldDic.Add(parseInt($(this).val()),1);
+							} else {
+								oldDic.Add(parseInt($(this).val()),0);
+							}
+				});
+			}
 		});
-
 	};
 
 
 	//百度地图
-	$("#postion").click(
-			function() {
-				$('#MapShow').modal('show');
-				var longitude = $('#busiLongitude').val();
-				var latitude = $('#busiLatitude').val();
-				var map = new BMap.Map("map", {
-					enableMapClick : false
-				});
-				map.centerAndZoom(new BMap.Point(longitude, latitude), 13);
-				map.enableScrollWheelZoom();
-				var marker = new BMap.Marker(
-						new BMap.Point(longitude, latitude)); // 创建点
-				map.addOverlay(marker);
-				map.addEventListener("click", function(e) {
-					map.clearOverlays();
-					var markernew = new BMap.Marker(new BMap.Point(e.point.lng,
-							e.point.lat)); // 创建新点
-					map.addOverlay(markernew);
-					var geoc = new BMap.Geocoder();
-					var pt = e.point;
-					geoc.getLocation(pt, function(rs) {
-						var addComp = rs.addressComponents;
-						var address = addComp.province + addComp.city
-								+ addComp.district + addComp.street
-								+ addComp.streetNumber;
-						//TODO..城市是否开通
-						addComp.city
-						//TODO..城区是否存在
-						addComp.district
+	$("#postion").click(function() {
+		$('#MapShow').modal('show');
+		var longitude = $('#busiLongitude').val();
+		var latitude = $('#busiLatitude').val();
+		var map = new BMap.Map("map", {
+			enableMapClick : false
+		});
+		map.centerAndZoom(new BMap.Point(longitude, latitude), 13);
+		map.enableScrollWheelZoom();
+		var marker = new BMap.Marker(
+				new BMap.Point(longitude, latitude)); // 创建点
+		map.addOverlay(marker);
+		map.addEventListener("click", function(e) {
+			map.clearOverlays();
+			var markernew = new BMap.Marker(new BMap.Point(e.point.lng,
+					e.point.lat)); // 创建新点
+			map.addOverlay(markernew);
+			var geoc = new BMap.Geocoder();
+			var pt = e.point;
+			geoc.getLocation(pt, function(rs) {
+				var addComp = rs.addressComponents;
+				var address = addComp.province + addComp.city
+						+ addComp.district + addComp.street
+						+ addComp.streetNumber;
+				//TODO..城市是否开通
+				addComp.city
+				//TODO..城区是否存在
+				addComp.district
 
-						if (confirm("是否使用地址【" + address + "】？")) {
-							$('#busiLongitude').val(e.point.lng);
-							$('#busiLatitude').val(e.point.lat);
-							$('#busiAddr').val(address);
-							$('#MapShow').modal('hide');
-						}
-					});
-				});
+				if (confirm("是否使用地址【" + address + "】？")) {
+					$('#busiLongitude').val(e.point.lng);
+					$('#busiLatitude').val(e.point.lat);
+					$('#busiAddr').val(address);
+					$('#MapShow').modal('hide');
+				}
 			});
+		});
+	});
 	//结算比例选择
 	$('input[name="rCommissionFormulaMode"]').click(function() {
 		var a = $('input[name="rCommissionFormulaMode"]:checked').val();
@@ -419,29 +416,26 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 	});
 	//市区联动
 	$('#busiCity').change(function() {
-						var selDistrictCode = $("#busiDistrict");
-						selDistrictCode.empty(); //清除选择的城市信息
-						selDistrictCode.append('<option value="" >--区域--</option>');
-						if ($(this).val() != null && $(this).val() != "") {
-							var url = "<%=basePath%>/business/getCityDistrict";
-							var paramaters={cityID : $(this).val()};
-							$.ajax({
-								type : 'POST',
-								url : url,
-								data : paramaters,
-								success : function(data) {
-									$.each(data,function(i,item) {
-										selDistrictCode.append('<option  value="' + item.code + '">'
-														+ item.name
-														+ '</option>');
-									});
-								},
-								error : function(d) {
-									alert(d.responseText);
-								}
-							});
-						}
+		var selDistrictCode = $("#busiDistrict");
+		selDistrictCode.empty(); //清除选择的城市信息
+		selDistrictCode.append('<option value="" >--区域--</option>');
+		if ($(this).val() != null && $(this).val() != "") {
+			var url = "<%=basePath%>/business/getCityDistrict";
+			var paramaters={cityID : $(this).val()};
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data : paramaters,
+				success : function(data) {
+					$.each(data,function(i,item) {
+						selDistrictCode.append('<option  value="' + item.code + '">'
+										+ item.name
+										+ '</option>');
 					});
+				}
+			});
+		}
+	});
 	//全选
 	function checkAll() {
 		var checkedOfAll = $("#selectAll").prop("checked");
@@ -450,191 +444,200 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 
 	//保存
 	$("#btnModifyCommit").click(function() {
-						var id = $('#busiId').val();
-						var name = $('#busiName').val();
-						var phoneNo2 = $('#busiPhoneNo2').val();
-						var landline = $('#busiLandline').val();
-						var distribSubsidy = $('#busiWaisong').val();
-						var cityId = $('#busiCity').val();
-						var districtId = $('#busiDistrict').val();
-						var cityName = $('#busiCity option:selected').text();
-						var districtName = $('#busiDistrict option:selected')
-								.text();
-						var adress = $('#busiAddr').val();
-						var latitude = $('#busiLatitude').val();
-						var longitude = $('#busiLongitude').val();
-						var commissionType = $(
-								'input[name="rCommissionFormulaMode"]:checked')
-								.val();
-						var commissionText = $('#busCommissionText').val();
-						var commissionFixValue = $('#CommissionFixValue').val();
-						var businessGroupId = $('#businessGroupID').val();
-						var mealsSettleMode = $('#busiMealsSettleMode').val();
-						var groupId = 0;
-						var originalBusiId = $('#busiSourceId').val();
-						var hidGroupId = $('#hidGroupId').val();
-						var oneKeyPubOrder = $(
-								'input[name="rOneKeyPubOrder"]:checked').val();
-						var IsEmployerTask = $(
-								'input[name="rIsEmployerTask"]:checked').val();
+		 var data=$("#busForm").serialize();
+		 if(oldForm==data){
+			 alert("没有需要更新的信息");
+			 return;
+		 }
+		var id = $('#busiId').val();
+		var name = $('#busiName').val();
+		var phoneNo2 = $('#busiPhoneNo2').val();
+		var landline = $('#busiLandline').val();
+		var distribSubsidy = $('#busiWaisong').val();
+		var cityId = $('#busiCity').val();
+		var districtId = $('#busiDistrict').val();
+		var cityName = $('#busiCity option:selected').text();
+		var districtName = $('#busiDistrict option:selected')
+				.text();
+		var adress = $('#busiAddr').val();
+		var latitude = $('#busiLatitude').val();
+		var longitude = $('#busiLongitude').val();
+		var commissionType = $(
+				'input[name="rCommissionFormulaMode"]:checked')
+				.val();
+		var commissionText = $('#busCommissionText').val();
+		var commissionFixValue = $('#CommissionFixValue').val();
+		var businessGroupId = $('#businessGroupID').val();
+		var mealsSettleMode = $('#busiMealsSettleMode').val();
+		var groupId = 0;
+		var originalBusiId = $('#busiSourceId').val();
+		var hidGroupId = $('#hidGroupId').val();
+		var oneKeyPubOrder = $(
+				'input[name="rOneKeyPubOrder"]:checked').val();
+		var IsEmployerTask = $(
+				'input[name="rIsEmployerTask"]:checked').val();
 
-						var isAllowOverdraft = $(
-								'input[name="rBalanceAllowOverDraft"]:checked')
-								.val();
-						if (hidGroupId == 0) {
-							groupId = $('#busGroupId').val();
-						}
-						if (name.trim().length == 0) {
-							alert("请输入商户名称！");
-							return;
-						}
-						if (name.trim().length > 20) {
-							alert("商户名称长度不超过20！");
-							return;
-						}
-						if (originalBusiId.trim().length
-								&& isNaN(originalBusiId)) {
-							alert("请输入正确的第三方Id!");
-							return;
-						}
-						var reg = /^0?1\d{10}$/;
-						var regLandLine = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
-						var decimalFormat = /^[0-9]*(\.[0-9]{1,2})?$/;
-						if (!reg.test(phoneNo2)) {
-							alert("请输入正确的手机号!");
-							return;
-						}
-						if (!regLandLine.test(landline)
-								&& landline.trim().length > 0) {
-							alert("请输入正确的座机号!");
-							return;
-						}
-						if (!decimalFormat.test(distribSubsidy)
-								|| distribSubsidy == '') {
-							alert("请输入正确的配送费，且不小于0元！");
-							return;
-						}
-						if (cityId == "") {
-							alert("请选择城市！");
-							return;
-						}
+		var isAllowOverdraft = $(
+				'input[name="rBalanceAllowOverDraft"]:checked')
+				.val();
+		if (hidGroupId == 0) {
+			groupId = $('#busGroupId').val();
+		}
+		if (name.trim().length == 0) {
+			alert("请输入商户名称！");
+			return;
+		}
+		if (name.trim().length > 20) {
+			alert("商户名称长度不超过20！");
+			return;
+		}
+		if (originalBusiId.trim().length
+				&& isNaN(originalBusiId)) {
+			alert("请输入正确的第三方Id!");
+			return;
+		}
+		var reg = /^0?1\d{10}$/;
+		var regLandLine = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+		var decimalFormat = /^[0-9]*(\.[0-9]{1,2})?$/;
+		if (!reg.test(phoneNo2)) {
+			alert("请输入正确的手机号!");
+			return;
+		}
+		if (!regLandLine.test(landline)
+				&& landline.trim().length > 0) {
+			alert("请输入正确的座机号!");
+			return;
+		}
+		if (!decimalFormat.test(distribSubsidy)
+				|| distribSubsidy == '') {
+			alert("请输入正确的配送费，且不小于0元！");
+			return;
+		}
+		if (cityId == "") {
+			alert("请选择城市！");
+			return;
+		}
 
-						if (districtId == "") {
-							alert("请选择区域！");
-							return;
-						}
-						if (adress.trim().length == 0) {
-							alert("请输入详细地址！");
-							return;
-						}
-						if (longitude.trim().length == 0) {
-							alert("请输入经度！");
-							return;
-						}
-						if (latitude.trim().length == 0) {
-							alert("请输入纬度！");
-							return;
-						}
-						if (commissionType == 1) {
-							if (commissionText == ''
-									|| Number(commissionText) < 1
-									|| Number(commissionText) > 100) {
-								alert("结算比例的区间为1-100!");
-								return;
-							}
-						} else {
+		if (districtId == "") {
+			alert("请选择区域！");
+			return;
+		}
+		if (adress.trim().length == 0) {
+			alert("请输入详细地址！");
+			return;
+		}
+		if (longitude.trim().length == 0) {
+			alert("请输入经度！");
+			return;
+		}
+		if (latitude.trim().length == 0) {
+			alert("请输入纬度！");
+			return;
+		}
+		if (commissionType == 1) {
+			if (commissionText == ''
+					|| Number(commissionText) < 1
+					|| Number(commissionText) > 100) {
+				alert("结算比例的区间为1-100!");
+				return;
+			}
+		} else {
 
-							if (!decimalFormat.test(commissionFixValue)
-									|| commissionFixValue == '') {
-								alert("请输入正确的固定金额，且不小于0元!");
-								return;
-							}
-						}
-						var paramaters = {
-							"id" : id,
-							"name" : name,
-							"landline" : landline,
-							"phoneno2" : phoneNo2,
-							"distribsubsidy" : distribSubsidy,
-							"cityid" : cityId,
-							"districtid" : districtId,
-							"city" : cityName,
-							"district" : districtName,
-							"address" : adress,
-							"latitude" : latitude,
-							"longitude" : longitude,
-							"commissiontype" : commissionType,
-							"businesscommission" : commissionText,
-							"commissionfixvalue" : commissionFixValue,
-							"businessgroupid" : businessGroupId,
-							"mealssettlemode" : mealsSettleMode,
-							"groupid" : groupId,
-							"originalbusiid" : originalBusiId,
-							"onekeypuborder" : oneKeyPubOrder,
-							"isemployertask" : IsEmployerTask,
-							"isallowoverdraft" : isAllowOverdraft
-						};
-						var url = "<%=basePath%>/business/modifybusiness";
-						$.ajax({
-							type : 'POST',
-							url : url,
-							data : paramaters,
-							success : function(result) {
-								if (result == 1) {
-									alert("修改商户信息成功");
-									window.location.href = "<%=basePath%>/business/detail?businessID=<%=detail.getId()%>";
-								} else if (result == 0) {
-									alert("修改商户信息失败");
-								} else {
-									alert("没有需要更新的信息");
-								}
-							},
-							error : function(d) {
-								alert(d.responseText);
-							}
-						});
-
-					});
-	//保存物流公司配置
-	$("#btnModifyExpress").click(
-			function() {
-				if (confirm("确定要提交保存吗？")) {
-					var busiId = $('#busiId').val();
-					var deliveryCompanyList = "";
-					$("input[name='checkMenus']").each(
-							function() {
-								if ($(this).is(':checked')) {
-									deliveryCompanyList = deliveryCompanyList
-											+ $(this).val() + ",1;";
-								} else {
-									deliveryCompanyList = deliveryCompanyList
-											+ $(this).val() + ",0;";
-								}
-							});
-					var paramaters = {
-						"busiId" : busiId,
-						"deliveryCompanyList" : deliveryCompanyList
-					};
-					var url = "/BusinessManager/ModifyBusinessExpress";
-					$.ajax({
-						type : 'POST',
-						url : url,
-						data : paramaters,
-						success : function(result) {
-							if (result.IsSuccess) {
-								alert(result.Message);
-								window.location.href = window.location.href;
-							} else {
-								alert(result.Message);
-							}
-						},
-						error : function(d) {
-							alert(d.responseText);
-						}
-					});
+			if (!decimalFormat.test(commissionFixValue)
+					|| commissionFixValue == '') {
+				alert("请输入正确的固定金额，且不小于0元!");
+				return;
+			}
+		}
+		var paramaters = {
+			"id" : id,
+			"name" : name,
+			"landline" : landline,
+			"phoneno2" : phoneNo2,
+			"distribsubsidy" : distribSubsidy,
+			"cityid" : cityId,
+			"districtid" : districtId,
+			"city" : cityName,
+			"district" : districtName,
+			"address" : adress,
+			"latitude" : latitude,
+			"longitude" : longitude,
+			"commissiontype" : commissionType,
+			"businesscommission" : commissionText,
+			"commissionfixvalue" : commissionFixValue,
+			"businessgroupid" : businessGroupId,
+			"mealssettlemode" : mealsSettleMode,
+			"groupid" : groupId,
+			"originalbusiid" : originalBusiId,
+			"onekeypuborder" : oneKeyPubOrder,
+			"isemployertask" : IsEmployerTask,
+			"isallowoverdraft" : isAllowOverdraft
+		};
+		var url = "<%=basePath%>/business/modifybusiness";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				if (result == 1) {
+					alert("修改商户信息成功");
+					window.location.href = "<%=basePath%>/business/detail?businessID=<%=detail.getId()%>";
+				} else if (result == 0) {
+					alert("修改商户信息失败");
+				} else {
+					alert("没有需要更新的信息");
 				}
+			}
+		});
 
-			});
+	});
+	//保存物流公司配置
+	$("#btnModifyExpress").click(function() {
+		var busiId = $('#busiId').val();
+		var deliveryCompanyList = "";
+		var newDic=	new ActiveXObject("Scripting.Dictionary");//创建对象   
+		$("input[name='checkMenus']").each(
+				function() {
+					if ($(this).is(':checked')) {
+						newDic.Add(parseInt($(this).val()),1);
+					} else {
+						newDic.Add(parseInt($(this).val()),0);
+					}
+		});
+		
+		var keys = newDic.Keys().toArray();
+		for (var i = 0; i < keys.length; i++) {//发生了改变，才需要提交db
+			if (oldDic.Item(keys[i]) != newDic.Item(keys[i])) {
+				deliveryCompanyList = deliveryCompanyList + keys[i]
+						+ "," + newDic.Item(keys[i]) + ";";
+			}
+		}
+		if(deliveryCompanyList==""){
+			alert("物流公司数据没有发生变更，不需要保存");
+			return;
+		}
+		if (!confirm("确定要提交保存吗？")){
+			return;
+		}
+		var paramaters = {
+			"busiId" : busiId,
+			"deliveryCompanyList" : deliveryCompanyList
+		};
+		var url = "<%=basePath%>/business/modifyexpress";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				if (result > 0) {
+					alert("更新成功");
+					window.location.href = window.location.href;
+				} else {
+					alert("失败");
+				}
+			}
+		});
+});
 </script>
 <script type="text/javascript"
 	src="http://api.map.baidu.com/api?v=2.0&ak=dAeaG6HwIFGlkbqtyKkyFGEC"></script>
