@@ -46,6 +46,9 @@
         int xl = random.nextInt(12);  
         int yl = random.nextInt(12);  
     }  
+    char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',  
+            'K', 'L', 'M', 'N',  'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',  
+            'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }; 
     //随机产生认证码,4位数字  
     String sRand = "";  
     for(int i = 0; i < 4; i++){  
@@ -55,6 +58,7 @@
         g.setColor(new Color(20 + random.nextInt(110),20 + random.nextInt(110),20 + random.nextInt(110)));  
         g.drawString(rand,13*i+6,16);  
     }  
+    System.out.println(sRand);
     session.setAttribute("code",sRand);  
     //图像生效  
     g.dispose();  
