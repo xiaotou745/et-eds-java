@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>         
 <%@page import="com.edaisong.entity.Message"%> 	
-<%@page import="com.edaisong.core.common.ParseHelper"%> 
+<%@page import="com.edaisong.core.util.ParseHelper"%> 
 <form method="get" class="form-horizontal">
 	<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tbstyle">  
 				<thead>

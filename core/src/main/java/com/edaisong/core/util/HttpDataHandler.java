@@ -1,4 +1,4 @@
-package com.edaisong.core.web;
+package com.edaisong.core.util;
 
 /**
  * 处理请求返回结果的回调接口 如果需要返回实体对象，则可以使用Result属性。

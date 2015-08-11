@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IClienterDao;
-import com.edaisong.core.common.ParseHelper;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.common.PagedResponse;

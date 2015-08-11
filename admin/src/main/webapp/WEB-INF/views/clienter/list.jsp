@@ -6,7 +6,7 @@
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
 <%@page import="com.edaisong.entity.DeliveryCompany"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
-<%@page import="com.edaisong.core.common.HtmlHelper"%>
+<%@page import="com.edaisong.core.util.HtmlHelper"%>
 
 <%
 String basePath =PropertyUtils.getProperty("static.admin.url");

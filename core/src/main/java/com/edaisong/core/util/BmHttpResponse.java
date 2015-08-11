@@ -1,4 +1,4 @@
-package com.edaisong.core.web;
+package com.edaisong.core.util;
 
 import java.util.HashMap;
 import java.util.Map;

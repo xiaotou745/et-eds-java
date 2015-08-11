@@ -20,8 +20,8 @@ import com.edaisong.business.common.WebConst;
 import com.edaisong.business.entity.CookieModel;
 import com.edaisong.business.entity.resp.LoginResp;
 import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.JsonUtil;
-import com.edaisong.core.web.CookieUtils;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
