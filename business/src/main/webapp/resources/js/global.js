@@ -64,3 +64,28 @@ function get() {
 	$(".error3").css("display", "none");
 	return true;
 };
+
+/**
+ * 定时确定是否操作,如果在指定时间内没有操作,则退出登录
+ * @param 时间间隔(单位:秒)
+ */
+function timingCheckOperate(seconds){
+	window.setInterval("logoff()",seconds/1000);
+}
+
+/**
+ * 退出
+ */
+function logoff(){
+	$.ajax({
+		url:"",
+		data:[],
+		async:true,
+		success:function(data){
+			window.location.href = "/";
+		},
+		error:function(error){
+			alert(error);
+		}
+	});
+}

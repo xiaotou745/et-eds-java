@@ -65,7 +65,7 @@ public class AccountController {
 
 		Object sessionCode = request.getSession().getAttribute("code");
 		// 验证码不正确
-		if (sessionCode == null || !sessionCode.toString().equals(code)) {
+		if (sessionCode == null || !sessionCode.toString().toLowerCase().equals(code.toLowerCase())) {
 			resp.setMessage("验证码不正确");
 			resp.setSuccess(false);
 			return resp;
@@ -102,14 +102,14 @@ public class AccountController {
 	 * @return
 	 */
 	@RequestMapping(value = "logoff", method = { RequestMethod.POST })
-	public @ResponseBody ResponseBase logoff(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody boolean logoff(HttpServletRequest request, HttpServletResponse response) {
 		// 删除登录cookie
 		Cookie cookie = CookieUtils.getCookieByName(WebConst.LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
 			CookieUtils.deleteCookie(request, response, cookie);
-			redisService.set(WebConst.LOGIN_COOKIE_NAME, null, -1);
+			redisService.remove(WebConst.LOGIN_COOKIE_NAME);
 		}
-		return new ResponseBase();
+		return true;
 	}
 
 	/**
