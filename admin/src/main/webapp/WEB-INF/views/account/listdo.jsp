@@ -2,7 +2,7 @@
 	pageEncoding="utf-8"%>
 	<%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.entity.resp.AccountResp"%>
-<%@page import="com.edaisong.core.common.PageHelper"%>
+<%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.Account"%>
 <%@page import="java.util.List"%>

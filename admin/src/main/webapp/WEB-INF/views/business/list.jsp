@@ -8,7 +8,7 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="java.math.BigDecimal"%>
 <%
-String basePath =PropertyUtils.getProperty("static.admin.url");
+	String basePath =PropertyUtils.getProperty("static.admin.url");
 %>
 
 <table
@@ -72,20 +72,17 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 				可提现余额:<%=data.get(i).getAllowwithdrawprice()%></td>
 			<td><%=data.get(i).getCommissiontype()==1?"结算比例:"+data.get(i).getBusinesscommission():"结算金额:￥"+data.get(i).getCommissionfixvalue()%><br>
 				结算类型:<%=data.get(i).getCommissiontype()==1?"结算比例":"固定金额"%><br>
-				餐费结算方式:<%=data.get(i).getMealssettlemode()==0?"线下结算":"线上结算"%>
-			</td>
+				餐费结算方式:<%=data.get(i).getMealssettlemode()==0?"线下结算":"线上结算"%></td>
 			<td><a href="javascript:void(0)" <%=statusStyle%>
-				onclick="businessOk(<%=checkAddress%>,<%=data.get(i).getId()%>,<%=data.get(i).getBusinesscommission()%>,<%=checkImage%>,<%=data.get(i).getCommissiontype()%>,<%=data.get(i).getLatitude()%>,<%=data.get(i).getLongitude()%>)"
-				businessid="<%=data.get(i).getId()%>" class="businessOk">审核通过</a> <a
-				href="javascript:void(0)" <%=statusStyle2%>
-				businessid="<%=data.get(i).getId()%>" class="businessCel">取消资格</a> <a
-				href="<%=basePath%>/business/detail?businessID=<%=data.get(i).getId()%>">修改信息</a>
-				<a href="javascript:void(0)" 
-				onclick="funcBusinessRecharge(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">充值</a>
-				<a
-				href="/BusinessManager/ClienterBindManage?businessId=<%=data.get(i).getId()%>">骑士绑定</a>
-				<a href="javascript:void(0)" 
-				onclick="funcBusinessWithdraw(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">提款申请</a>
+				onclick="businessOk(<%=checkAddress%>,<%=data.get(i).getId()%>,<%=data.get(i).getBusinesscommission()%>,<%=checkImage%>,<%=data.get(i).getCommissiontype()%>,<%=data.get(i).getLatitude()%>,<%=data.get(i).getLongitude()%>)">审核通过</a>
+				<a href="javascript:void(0)"
+				onclick="businessCancel(<%=data.get(i).getId()%>)" <%=statusStyle2%>>取消资格</a>
+				<a href="<%=basePath%>/business/detail?businessID=<%=data.get(i).getId()%>">修改信息</a>
+				<a href="javascript:void(0)"
+				onclick="businessRecharge(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">充值</a>
+				<a href="/BusinessManager/ClienterBindManage?businessId=<%=data.get(i).getId()%>">骑士绑定</a>
+				<a href="javascript:void(0)"
+				onclick="businessWithdraw(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">提款申请</a>
 			</td>
 		</tr>
 		<%
@@ -98,29 +95,26 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 		responsePageList.getCurrentPage(), responsePageList.getTotalRecord(),
 		responsePageList.getTotalPage())%>
 <script type="text/javascript">
-    var currentId;
-    $(document).ready(function () {
-        $(".businessCel").bind("click", function () {
-            if (!window.confirm("是否取消审核？")) {
-                return;
-            }
-            currentId = $(this).attr("businessId");
-            var paramaters = { "id": currentId };
-            var url = "/BusinessManager/AuditCel";
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: paramaters,
-                success: function (result) {
-                    if (result.IsSuccess) {
-                        window.location.href = "/BusinessManager/BusinessManager";
-                    } else {
-                        alert(result.Message);
-                    }
+    function businessCancel(businessId)
+    {
+    	if (!window.confirm("是否取消审核？")) {
+            return;
+        }
+        var paramaters = { "businessID": businessId,"status":4 };
+        var url = "<%=basePath%>/business/audit";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: paramaters,
+            success: function (result) {
+            	if (result>0) {
+                    window.location.href = "<%=basePath%>/business/list";
+                } else {
+                    alert("操作失败");
                 }
-            });
+            }
         });
-    });
+    }
     ///操作审核验证
     function businessOk(checkAddress, businessId, Proportion, checkImage, commissionType, Latitude, Longitude) {
         if (!window.confirm("是否审核通过？")) {
@@ -145,128 +139,25 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
             alert("该商家地址有误，不能通过审核。")
             return;
         }
-        //currentId = $(this).attr("businessId");
-        var paramaters = { "id": businessId };
-        var url = "/BusinessManager/AuditOK";
+        var paramaters = { "businessID": businessId,"status":1 };
+        var url = "<%=basePath%>/business/audit";
         $.ajax({
             type: 'POST',
             url: url,
             data: paramaters,
             success: function (result) {
-                if (result.IsSuccess) {
-                    window.location.href = "/BusinessManager/BusinessManager";
+                if (result>0) {
+                    window.location.href = "<%=basePath%>/business/list";
                 } else {
-                    alert(result.Message);
+                    alert("操作失败");
                 }
             }
         });
     }
-    function funcPicView(puth, CheckPicUrl) {
-        $('#showBusiImage').attr('src', puth + CheckPicUrl);
-        var originSize = '_0_0';
-        var fileLastDot = CheckPicUrl.lastIndexOf('.');
-        var fileHandHouZhui = CheckPicUrl.substr(fileLastDot, CheckPicUrl.length - fileLastDot);
-        var bigFileName = CheckPicUrl.substring(0, fileLastDot) + originSize + fileHandHouZhui;
-        $('#showBigBusiImage').attr('href', puth + bigFileName);
-        adminjs.openwinbox('#BusiPicShow');
-        if (CheckPicUrl.length == 0) {
-            $('#showBigBusiImage').hide();
-        } else {
-            $('#showBigBusiImage').show();
-        }
-    }
-
-    //弹出结算比例-外送费层
-    function funcComView(id, name, distribSubsidy, phone, businessCommission, commissionType, commissionFixValue, businessGroupId) {
-        if (businessCommission == null || businessCommission == "") {
-            businessCommission = 0;
-        }
-        var strreg = "";
-        var paramaters = { "GroupId": businessGroupId };
-        var url = "/SubsidyFormulaMode/GlobalConfigInfo";
-        $.ajax({
-            type: 'POST',
-            async: false,
-            url: url,
-            data: paramaters,
-            success: function (result) {
-                strreg = result;
-            }
-        });
-
-        var isStarTimeSubsidies = strreg.split(",")[0];
-        var isStartOverStoreSubsidies = strreg.split(",")[1];
-        var subsidyConfig;
-        if (isStarTimeSubsidies == "1" || isStartOverStoreSubsidies == "1") {
-            if (isStartOverStoreSubsidies == "1") {
-                subsidyConfig = "全局补贴：跨店抢单奖励";
-            }
-            if (isStarTimeSubsidies == "1") {
-                if (subsidyConfig == null || subsidyConfig.length == 0) {
-                    subsidyConfig = "全局补贴：动态时间奖励";
-                }
-                else {
-                    subsidyConfig = "全局补贴：跨店抢单奖励和动态时间奖励";
-                }
-            }
-            $('#labGlobalConfig').text(subsidyConfig);
-        }
-        $('#busCommissionHid').val(id);
-        $('#busCommissionName').val(name);
-        $('#busCommissionWaiSong').val(distribSubsidy);
-        $('#oldBusCommissionWaiSong').val(distribSubsidy);
-        $('#busCommissionPhone').val(phone);
-        $('#busCommissionText').val(businessCommission);
-        $('#oldBusCommissionText').val(businessCommission);
-        //$('#statusFin').text("设置[" + name + "]结算比例-外送费");
-        $('#CommissionFixValue').val(commissionFixValue);
-        $('#oldCommissionFixValue').val(commissionFixValue);
-        $('#oldStrategyID').val(businessGroupId);
-        $('#oldCommissionType').val(commissionType);
-        if (commissionType == 2) {
-            $("#rCommissionFormulaMode1").attr("checked", "checked");
-        }
-        else {
-            $("#rCommissionFormulaMode0").attr("checked", "checked");
-        }
-
-        if (businessGroupId > 0) {
-
-            $('#businessGroupID').val(businessGroupId);
-        }
-        else {
-            $('select#businessGroupID option:first').attr('selected', 'true');
-        }
-        var a = $('input[name="rCommissionFormulaMode"]:checked').val();
-        if (a == 1) {
-            $("#divCommissionFixValue").hide();
-            $("#divbusCommissionText").show();
-        }
-        else {
-            $("#divbusCommissionText").hide();
-            $("#divCommissionFixValue").show();
-        }
-        adminjs.openwinbox('#BusinessCommissionDiv');
-    }
-    //修改商家信息
-    function funcUpdateBusinessInfo(id, name, phone, originalbusiId, groupid, mealsSettleMode) {
-        $('#busiId').val(id);
-        $('#busiName').val(name);
-        $('#busiPhone').val(phone);
-        $('#busiSourceId').val(originalbusiId);
-        $('#busiMealsSettleMode').val(mealsSettleMode);
-        if (groupid > 0) {
-            $('#busGroupId').val(groupid);
-        }
-        else {
-            $('select#busGroupId option:first').attr('selected', 'true');
-        }
-        $('#oldBusiSourceId').val(originalbusiId);
-        $('#oldBusGroupId').val(groupid);
-        adminjs.openwinbox('#BusinessInfoUpdateDiv');
-    }
+    
+    
     //商户充值
-    function funcBusinessRecharge(id, name, phone) {
+    function businessRecharge(id, name, phone) {
         $('#busId').val(0);
         $('#busName').val('');
         $('#busPhone').val('');
@@ -277,27 +168,88 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
         $('#busPhone').val(phone);
         $('#BusinessRechargeShow').modal('show');
     }
-    
-    function funcBusinessWithdraw(busiId, name, phone) { 
+  //商户充值
+    $("#btnRechargeCommit").on('click', function () {
+        var busiId = $("#busId").val(); //商户id
+        var busiName = $("#busName").val(); //商户电话
+        var busRechargeType = $('#RechargeType').val();//充值类型
+        var busiRechargeAmount = $("#busRechargeAmount").val(); //商户充值金额
+        var busiRechargeAmountFree = $("#busRechargeAmountFree").val(); //商户赠送金额
+        var rechargeLog = $("#rechargeLog").val(); //充值描述
+        if (rechargeLog.trim().length == 0) {
+            alert("请输入充值操作描述!");
+            return;
+        }
+        var decimalFormat = /^[0-9]*(\.[0-9]{1,2})?$/;
+        if ((busRechargeType == '1' || busRechargeType == '3') && !decimalFormat.test(busiRechargeAmount)) {
+            alert("请输入正确的充值金额！");
+            return;
+        }
+        if ((busRechargeType == '1' || busRechargeType == '3') && (busiRechargeAmount < 1 || busiRechargeAmount > 50000)) {
+            alert("充值金额须在1-50000元之间！");
+            return;
+        }
+        if ((busRechargeType == '2' || busRechargeType == '3') && !decimalFormat.test(busiRechargeAmountFree)) {
+            alert("请输入正确的赠送金额！");
+            return;
+        }
+        if ((busRechargeType == '2' || busRechargeType == '3') && (busiRechargeAmountFree < 1 || busiRechargeAmountFree > 50000)) {
+            alert("赠送金额须在1-50000元之间！");
+            return;
+        }
+        var tipstr = "";
+        switch (busRechargeType) {
+            case "1":
+                tipstr = "确定要为商户：" + busiName + "  充值：" + busiRechargeAmount + "元？"; break;
+            case "2":
+                tipstr = "确定要为商户：" + busiName + "  赠送：" + busiRechargeAmountFree + "元？"; break;
+            case "3":
+                tipstr = "确定要为商户：" + busiName + "  充值：" + busiRechargeAmount + " 元,赠送:" + busiRechargeAmountFree + "元？"; break;
+
+        }
+        if (confirm(tipstr)) {
+            var paramaters = {
+                "businessId": busiId,
+                "rechargeAmount": busiRechargeAmount,
+                "remark": rechargeLog,
+                "rechargeAmountFree": busiRechargeAmountFree,
+                "rechargeType": busRechargeType
+            };
+            var url = "<%=basePath%>/business/recharge";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: paramaters,
+                success: function (result) {
+                    if (result.IsSuccess) {
+                        alert(result.Message);
+                        window.location.href = "<%=basePath%>/business/list";
+                    } else {
+                        alert(result.Message);
+                    }
+                }
+            });
+        }
+    });
+    function businessWithdraw(busiId, name, phone) { 
         var paramaters = {
-            "busiId": busiId
+            "businessID": busiId
         };
         $.ajax({
             type: 'POST',
             async:true,
-            url: '/BusinessManager/GetBusiFinanceAccount',
+            url: '<%=basePath%>/business/getfinanceaccount',
             data: paramaters,
-            success: function (result) {
-                if (result != null) {
-                    var bfa = $.parseJSON(result);
-                    $("#openProvince").val(bfa.OpenProvince);
-                    $("#openProvinceCode").val(bfa.OpenProvinceCode);
-                    $("#openCity").val(bfa.OpenCity);
-                    $("#openCityCode").val(bfa.OpenCityCode);
-                    $("#idCard").val(bfa.IDCard);
-                    if (bfa.BelongType == 0) {
+            success: function (bfa) {
+                if (bfa != null&&bfa!="") {
+                    $("#openProvince").val(bfa.openProvince);
+                    $("#openProvinceCode").val(bfa.openProvinceCode);
+                    $("#openCity").val(bfa.openCity);
+                    $("#openCityCode").val(bfa.openCityCode);
+                    $("#idCard").val(bfa.idcard);
+                    if (bfa.belongtype == 0) {
                         $("#accountType").val('个人账户');
-                    } else if (bfa.BelongType == 1) {
+                    } else if (bfa.belongtype == 1) {
                         $("#accountType").val('公司账户');
                     } else {
                         $("#accountType").val('未知');
@@ -318,6 +270,59 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
         $('#withdrawPhone').val(phone);
         $('#BusinessWithdraw').modal('show');
     }
+  //商户提现
+    $("#btnWithdrawCommit").on('click', function () {
+        var withdrawId = $("#withdrawId").val(); //商户id
+        var busiName = $("#withdrawPhone").val(); //商户电话
+        var withdrawAmount = $("#withdrawAmount").val();
+        var withdrawLog = $("#withdrawLog").val();
+        var selectProvinceName = $("#openProvince").val();
+        var selectProvinceCode = $("#openProvinceCode").val();
+        var selectCityName = $("#openCity").val();
+        var selectCityCode = $("#openCityCode").val();
+        var idCard = $("#idCard").val();
+		if(idCard==""){
+		    alert("身份证号/营业执照为空，不能提现！");
+		    return;
+		} 
+        var decimalFormat = /^[0-9]*(\.[0-9]{1,2})?$/;
+        if (!decimalFormat.test(withdrawAmount)) {
+            alert("请输入正确的金额！");
+            return;
+        }
+        if (withdrawAmount < 1 || withdrawAmount > 1000000) {
+            alert("请输入正确的提款金额，大于1元小于1,000,000！");
+            return;
+        }
+
+        if (confirm("是否确认提款?")) {
+            var paramaters = {
+                "BusinessId": withdrawId,
+                "WithdrawPrice": withdrawAmount,
+                "Remarks": withdrawLog,
+                "OpenProvinceCode": selectProvinceCode,
+                "OpenProvince": selectProvinceName,
+                "selectCityCode": selectCityCode,
+                "OpenCity": selectCityName,
+                "idCard": idCard
+            };
+            var url = "<%=basePath%>/business/withdraw";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: paramaters,
+                success: function (result) {
+
+                    if (result.Status == "1") {
+                        alert(result.Message);
+                        window.location.href = "<%=basePath%>/business/list";
+                    } else {
+                        alert(result.Message);
+                    }
+                }
+            });
+        }
+    });
 </script>
 
 

@@ -5,11 +5,11 @@
 <%@page import="java.math.BigDecimal"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
-<%@page import="com.edaisong.core.common.HtmlHelper"%>
+<%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
-<%@page import="com.edaisong.core.common.ParseHelper"%>
+<%@page import="com.edaisong.core.util.ParseHelper"%>
 
 <%	
 String basePath =PropertyUtils.getProperty("static.business.url");

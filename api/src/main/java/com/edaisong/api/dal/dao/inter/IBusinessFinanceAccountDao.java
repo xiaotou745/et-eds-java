@@ -7,11 +7,6 @@ public interface IBusinessFinanceAccountDao {
 
     int insert(BusinessFinanceAccount record);
 
-    int insertSelective(BusinessFinanceAccount record);
-
-    BusinessFinanceAccount selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(BusinessFinanceAccount record);
-
-    int updateByPrimaryKey(BusinessFinanceAccount record);
+    BusinessFinanceAccount getDetailByBusinesID(Integer businessID);
 }
+

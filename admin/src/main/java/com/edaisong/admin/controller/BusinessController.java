@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IAdminToolsService;
 import com.edaisong.api.service.inter.IBusinessExpressRelationService;
+import com.edaisong.api.service.inter.IBusinessFinanceAccountService;
 import com.edaisong.api.service.inter.IBusinessGroupService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IBusinessThirdRelationService;
@@ -27,11 +28,13 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessExpressRelation;
+import com.edaisong.entity.BusinessFinanceAccount;
 import com.edaisong.entity.BusinessGroup;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.BusinesRechargeModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
@@ -72,6 +75,8 @@ public class BusinessController {
 	@Autowired
 	private IBusinessExpressRelationService businessExpressRelationService;
 
+	@Autowired
+	private IBusinessFinanceAccountService businessFinanceAccountService;
 	@RequestMapping("list")
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse res) {
@@ -257,5 +262,25 @@ public class BusinessController {
 	 public int businessAudit(int businessID,int status)
      {
          return iBusinessService.updateAuditStatus(businessID, status);
+     }
+	@RequestMapping("getfinanceaccount")
+	@ResponseBody
+	 public BusinessFinanceAccount getFinanceAccount(int businessID)
+     {
+		BusinessFinanceAccount resultAccount= businessFinanceAccountService.getDetailByBusinesID(businessID);
+		return resultAccount;
+     }
+	@RequestMapping("recharge")
+	@ResponseBody
+	 public int businessRecharge(BusinesRechargeModel param)
+     {
+		return 0;
+     }
+	@RequestMapping("withdraw")
+	@ResponseBody
+	 public BusinessFinanceAccount businessWithdraw(int businessID)
+     {
+		BusinessFinanceAccount resultAccount= businessFinanceAccountService.getDetailByBusinesID(businessID);
+		return resultAccount;
      }
 }

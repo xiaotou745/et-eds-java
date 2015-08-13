@@ -315,7 +315,7 @@
 	</insert>
 	<select id="getBusinessById" resultType="com.edaisong.entity.Business" parameterType="java.lang.Integer" statementType="CALLABLE">
 	  select 
-	  <include refid="getBusinessListColums" /> 
+	  b.* 
 	  from dbo.business b WITH (NOLOCK) where b.Id = #{businessId,jdbcType=INTEGER} 
 	</select>
 

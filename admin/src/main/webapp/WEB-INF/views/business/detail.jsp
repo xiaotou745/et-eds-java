@@ -325,7 +325,7 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 	    oldForm=$("#busForm").serialize();
 	});
 	var oldForm="";
-	var oldDic=new ActiveXObject("Scripting.Dictionary");
+    var oldValues= new Array();   
 
 	function funcCheckExpress() {
 		var businessId = $('#busiId').val();
@@ -342,7 +342,6 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			success : function(businessExpressRef) {
 				if (businessExpressRef.length > 0) {
 					for (var i = 0; i < businessExpressRef.length; i++) {
-						oldDic.Add(businessExpressRef[i].expressid,businessExpressRef[i].isenable);
 						if (businessExpressRef[i].isenable == 1) {
 							$(
 									":checkbox[id='"
@@ -356,14 +355,14 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 						}
 					}
 				}
-				//保存商家的物流公司设置
-				$("input[name='checkMenus']").each(function() {
-							if ($(this).is(':checked')) {
-								oldDic.Add(parseInt($(this).val()),1);
-							} else {
-								oldDic.Add(parseInt($(this).val()),0);
-							}
-				});
+                //保存商家的物流公司设置
+                $("input[name='checkMenus']").each(function () {
+                    if ($(this).is(':checked')) {
+                        oldValues.push(1);
+                    } else {
+                        oldValues.push(0);
+                    }
+                });
 			}
 		});
 	};
@@ -601,23 +600,25 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 	$("#btnModifyExpress").click(function() {
 		var busiId = $('#busiId').val();
 		var deliveryCompanyList = "";
-		var newDic=	new ActiveXObject("Scripting.Dictionary");//创建对象   
-		$("input[name='checkMenus']").each(
-				function() {
-					if ($(this).is(':checked')) {
-						newDic.Add(parseInt($(this).val()),1);
-					} else {
-						newDic.Add(parseInt($(this).val()),0);
-					}
-		});
-		
-		var keys = newDic.Keys().toArray();
-		for (var i = 0; i < keys.length; i++) {//发生了改变，才需要提交db
-			if (oldDic.Item(keys[i]) != newDic.Item(keys[i])) {
-				deliveryCompanyList = deliveryCompanyList + keys[i]
-						+ "," + newDic.Item(keys[i]) + ";";
-			}
-		}
+		var newKeys = new Array();
+        var newValues = new Array();
+        $("input[name='checkMenus']").each(
+                function () {
+                    newKeys.push($(this).val());
+                    if ($(this).is(':checked')) {
+                        newValues.push(1);
+                    } else {
+                        newValues.push(0);
+                    }
+                });
+
+
+        for (var i = 0; i < newKeys.length; i++) {//发生了改变，才需要提交db
+            if (oldValues[i] != newValues[i]) {
+                deliveryCompanyList = deliveryCompanyList + newKeys[i]
+                        + "," + newValues[i] + ";";
+            }
+        }
 		if(deliveryCompanyList==""){
 			alert("物流公司数据没有发生变更，不需要保存");
 			return;

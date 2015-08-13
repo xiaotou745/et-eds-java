@@ -4,7 +4,7 @@
 <%@page import="java.math.BigDecimal"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="com.edaisong.core.common.ParseHelper"%>
+<%@page import="com.edaisong.core.util.ParseHelper"%>
 
 <%	
 String basePath =PropertyUtils.getProperty("static.business.url");
