@@ -133,7 +133,7 @@ public class BusinessService implements IBusinessService {
 						brm.getLandline(), model.getLandline()));
 			}
 			if (brm.getDistribsubsidy().compareTo(model.getDistribsubsidy()) != 0) {
-				remark.append(String.format("配送费原值:%s,修改为%s;",
+				remark.append(String.format("代收客配原值:%s,修改为%s;",
 						brm.getDistribsubsidy(), model.getDistribsubsidy()));
 			}
 			if (brm.getCity() == null || !brm.getCity().equals(model.getCity())) {
@@ -153,22 +153,16 @@ public class BusinessService implements IBusinessService {
 				remark.append(String.format("纬度原值:%s,修改为%s;",
 						brm.getLatitude(), model.getLatitude()));
 			}
-			if (brm.getCommissiontype() != model.getCommissiontype()) {
-				remark.append(String.format("结算类型原值:%s,修改为%s;",
-						brm.getCommissiontype() == 1 ? "结算比例" : "结算金额",
-						model.getCommissiontype() == 1 ? "结算比例" : "结算金额"));
-			}
-			if (model.getCommissiontype() == 1
-					&& brm.getBusinesscommission().compareTo(
+
+			if (brm.getBusinesscommission().compareTo(
 							model.getBusinesscommission()) != 0) {
-				remark.append(String.format("固定比例原值:%s,修改为%s;",
+				remark.append(String.format("商配比例原值:%s,修改为%s;",
 						brm.getBusinesscommission(),
 						model.getBusinesscommission()));
 			}
-			if (model.getCommissiontype() == 2
-					&& brm.getCommissionfixvalue().compareTo(
+			if (brm.getCommissionfixvalue().compareTo(
 							model.getCommissionfixvalue()) != 0) {
-				remark.append(String.format("固定金额原值:%s,修改为%s;",
+				remark.append(String.format("商配定额原值:%s,修改为%s;",
 						brm.getCommissionfixvalue(),
 						model.getCommissionfixvalue()));
 			}
