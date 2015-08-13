@@ -107,7 +107,7 @@ public class AccountController {
 		Cookie cookie = CookieUtils.getCookieByName(WebConst.LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
 			CookieUtils.deleteCookie(request, response, cookie);
-			redisService.set(WebConst.LOGIN_COOKIE_NAME, null, -1);
+			redisService.remove(WebConst.LOGIN_COOKIE_NAME);
 		}
 		return true;
 	}
