@@ -181,16 +181,6 @@ public class OrderService implements IOrderService {
 	@Transactional(rollbackFor = Exception.class,timeout=30)
 	public OrderResp AddOrder(OrderReq  req)
 	{
-//        dbParameters.AddWithValue("@SongCanDate", order.SongCanDate);		
-//        dbParameters.AddWithValue("@Weight1", order.Weight);
-//        dbParameters.AddWithValue("@Quantity1", order.Quantity);		
-//        dbParameters.AddWithValue("@ReceiveProvince", order.ReceiveProvince);
-//        dbParameters.AddWithValue("@ReceiveProvinceCode", order.ReceiveProvinceCode);		
-//        dbParameters.AddWithValue("@ReceiveCityCode", order.ReceiveCityCode);
-//        dbParameters.AddWithValue("@ReceiveArea", order.ReceiveArea);
-//        dbParameters.AddWithValue("@ReceiveAreaCode", order.ReceiveAreaCode);
-//        dbParameters.AddWithValue("@OriginalOrderNo", order.OriginalOrderNo);  
-		
 		OrderResp resp=new OrderResp();		
 		//订单主表
 		Order order=new Order();						
@@ -208,7 +198,6 @@ public class OrderService implements IOrderService {
 		order.setOrdercount(1);
 		order.setTimespan("1");
 		order.setPubdate(new Date());			
-		//public BusinessModel getBusiness(int id)
 		//1812
 		//获取商家信息
 		int bussid=1812;//通过登陆获取
@@ -260,6 +249,5 @@ public class OrderService implements IOrderService {
 		
 		return resp;
 	}	
-	
 }
 

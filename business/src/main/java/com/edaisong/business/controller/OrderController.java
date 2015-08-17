@@ -1,4 +1,5 @@
 package com.edaisong.business.controller;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,49 +33,56 @@ import com.edaisong.entity.resp.BusinessLoginResp;
 public class OrderController {
 	@Autowired
 	IOrderService orderService;
-	 /**
-		 * 订单列表页面 
-		 * @author zhaohailong
-		 * @Date 20150806
-		 * @return
-		 */
-		@RequestMapping("list2")
-		public ModelAndView list(){
-			ModelAndView model = new ModelAndView("order/list");
-			return model;
-		}
-		
-		/**
-		 * 订单列表页面 
-		 * @author zhaohailong
-		 * @Date 20150806
-		 * @return
-		 */
-		@RequestMapping("list")
-		public ModelAndView listdo(PagedOrderSearchReq searchWebReq){
-			PagedResponse<OrderListModel> resp = orderService.getOrders(searchWebReq);
-			ModelAndView view = new ModelAndView("order/listdo");
-			view.addObject("listData", resp);
-			return view;
-		}
+
 	/**
-	 * 订单详情 
+	 * 订单列表页面
+	 * 
+	 * @author zhaohailong
+	 * @Date 20150806
+	 * @return
+	 */
+	@RequestMapping("list2")
+	public ModelAndView list() {
+		ModelAndView model = new ModelAndView("order/list");
+		return model;
+	}
+
+	/**
+	 * 订单列表页面
+	 * 
+	 * @author zhaohailong
+	 * @Date 20150806
+	 * @return
+	 */
+	@RequestMapping("list")
+	public ModelAndView listdo(PagedOrderSearchReq searchWebReq) {
+		PagedResponse<OrderListModel> resp = orderService
+				.getOrders(searchWebReq);
+		ModelAndView view = new ModelAndView("order/listdo");
+		view.addObject("listData", resp);
+		return view;
+	}
+
+	/**
+	 * 订单详情
+	 * 
 	 * @author CaoHeYang
 	 * @Date 20150805
 	 * @return
 	 */
 	@RequestMapping(value = "detail", method = { RequestMethod.GET })
-	public  ModelAndView detail(OrderDetailBusinessReq req) {
+	public ModelAndView detail(OrderDetailBusinessReq req) {
 		ModelAndView model = new ModelAndView("");
 		model.addObject("subtitle", "订单中心");
 		model.addObject("currenttitle", "订单详情");
 		model.addObject("viewPath", "order/detail");
-		model.addObject("datas",orderService.getOrderDetailBusiness(req));
+		model.addObject("datas", orderService.getOrderDetailBusiness(req));
 		return model;
 	}
-	
+
 	/**
 	 * 商户后台取消订单
+	 * 
 	 * @author CaoHeYang
 	 * @Date 20150805
 	 * @return
@@ -82,29 +90,28 @@ public class OrderController {
 	@RequestMapping(value = "canelorder", method = { RequestMethod.POST })
 	@ResponseBody
 	public CancelOrderBusinessResp login(@RequestBody CancelOrderBusinessReq req) {
-		CancelOrderBusinessResp resp=orderService.cancelOrderBusiness(req);
+		CancelOrderBusinessResp resp = orderService.cancelOrderBusiness(req);
 		return resp;
 	}
-	
-	
-	
+
 	/**
 	 * 商户后台发布订单
+	 * 
 	 * @author 胡灵波
 	 * @Date 2015年8月6日 13:37:00
 	 * @return
 	 */
 	@RequestMapping(value = "publish")
 	public ModelAndView publish(HttpServletRequest request) {
-		
+
 		ModelAndView view = new ModelAndView("order/publish");
 		return view;
-		
-		
+
 	}
-	
+
 	/**
 	 * 确定发布订单
+	 * 
 	 * @author 胡灵波
 	 * @Date 2015年8月11日 14:09:32
 	 * @return
@@ -112,10 +119,10 @@ public class OrderController {
 	@RequestMapping(value = "add", method = { RequestMethod.POST })
 	@ResponseBody
 	public OrderResp add() {
-		OrderResp resp=new OrderResp();
-		OrderReq req=new OrderReq();
-		resp=orderService.AddOrder(req);
-		
+		OrderResp resp = new OrderResp();
+		OrderReq req = new OrderReq();
+		resp = orderService.AddOrder(req);
+
 		return resp;
 	}
 }
