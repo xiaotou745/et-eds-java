@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.edaisong.business.entity.CookieModel;
 import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.JsonUtil;
-import com.edaisong.core.web.CookieUtils;
 
 import java.io.IOException;
 

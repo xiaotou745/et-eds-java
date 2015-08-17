@@ -10,7 +10,10 @@ import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalConfig;
 import com.edaisong.core.consts.RedissCacheKey;
+import com.edaisong.core.enums.BusinessStatus;
 import com.edaisong.core.security.MD5Util;
+import com.edaisong.core.util.HttpUtil;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
@@ -38,68 +41,46 @@ public class BusinessService implements IBusinessService {
 		return iBusinessDao.getBusinessList(req);
 	}
 
-	/**
-	 * 商家登录
-	 * 
-	 * @author pengyi
-	 * @param req
-	 * @return
-	 */
-	public BusinessLoginResp login(BusinessLoginReq req) {
+	@Override
+	public BusinessLoginResp login(String phoneNo, String password) {
 		BusinessLoginResp resp = new BusinessLoginResp();
-		BusinessLoginLog log = new BusinessLoginLog();
-		// 参数验证
-		if (req.getPhoneNo() == null || req.getPhoneNo().isEmpty()
-				|| req.getPassword() == null || req.getPassword().isEmpty()) {
-			resp.setLoginSuccess(false);
-			resp.setMessage("用户名或密码不能为空");
-			addLoginLog(req.getPhoneNo(), "用户名或密码为空", false);
-			return resp;
-		}
-		// 验证登录次数
-		String loginCountCacheKey = RedissCacheKey.LOGIN_COUNT_B
-				+ req.getPhoneNo();
+		// 登录次数验证
+		String loginCountCacheKey = RedissCacheKey.LOGIN_COUNT_B + phoneNo;
 		Integer loginCount = redisService
 				.get(loginCountCacheKey, Integer.class);
 		loginCount = loginCount == null ? 0 : loginCount;
-		/*
-		 * if (loginCount >= MAX_LOING_COUNT) { resp.setLoginSuccess(false);
-		 * resp.setMessage("您当前登录的次数大于10，请5分钟后重试");
-		 * addLoginLog(req.getPhoneNo(),"5分钟内登录次数超过5次",false); return resp; }
-		 */
-		// 验证用户名密码是否正确
-		String pwd = MD5Util.MD5(GlobalConfig.PWD_SALT + req.getPassword());
-		Business b = iBusinessDao.login(req.getPhoneNo(), pwd);
-		if (b == null) {
+		if (loginCount >= GlobalConfig.MAX_LOGIN_COUNT) {
 			resp.setLoginSuccess(false);
-			resp.setMessage("您输入的用户名或密码错误");
-			addLoginLog(req.getPhoneNo(), "用户名或密码错误", false);
+			resp.setMessage("您当前登录的次数大于10，请5分钟后重试");
+			addLoginLog(phoneNo == null ? "" : phoneNo, "5分钟内登录次数超过10次", false);
+			return resp;
+		}
+		// 参数验证
+		if (phoneNo == null || phoneNo.isEmpty() || password == null
+				|| password.isEmpty()) {
+			addLoginLog(phoneNo == null ? "" : phoneNo, "用户名或密码为空", false);
+			resp.setMessage("用户名或密码为空");
+			resp.setLoginSuccess(false);
+			return resp;
+		}
+		String pwd = MD5Util.MD5(GlobalConfig.PWD_SALT + password);
+		Business b = iBusinessDao.login(phoneNo, pwd);
+		if (b == null) {
+			resp.setMessage("用户名或密码错误");
+			resp.setLoginSuccess(false);
 			return resp;
 		}
 		// 审核未通过
 		if (b.getStatus() != 1) {
-			resp.setLoginSuccess(false);
 			resp.setMessage("您的商铺尚未验证通过");
-			addLoginLog(req.getPhoneNo(), "账号未审核通过", false);
+			resp.setLoginSuccess(false);
+			addLoginLog(phoneNo, "商铺尚未验证通过", false);
 			return resp;
 		}
-		resp.setLoginSuccess(true);
-		resp.setBid(b.getId());
-		resp.setMessage("登录成功");
-		// 登录成功
-		// 设置登录次数+1
 		redisService.set(loginCountCacheKey, loginCount + 1, 5 * 60);
-		// 记录登录日志
-		addLoginLog(req.getPhoneNo(), "登录成功", true);
-		// web层设置登录cookie
+		resp.setBusiness(b);
+		resp.setLoginSuccess(true);
 		return resp;
-	}
-	
-	@Override
-	public Business login(String phoneNo,String password){
-		String pwd = MD5Util.MD5(GlobalConfig.PWD_SALT+password);
-		Business b = iBusinessDao.login(phoneNo, pwd);
-		return b;
 	}
 
 	@Override
@@ -152,7 +133,7 @@ public class BusinessService implements IBusinessService {
 						brm.getLandline(), model.getLandline()));
 			}
 			if (brm.getDistribsubsidy().compareTo(model.getDistribsubsidy()) != 0) {
-				remark.append(String.format("配送费原值:%s,修改为%s;",
+				remark.append(String.format("代收客配原值:%s,修改为%s;",
 						brm.getDistribsubsidy(), model.getDistribsubsidy()));
 			}
 			if (brm.getCity() == null || !brm.getCity().equals(model.getCity())) {
@@ -172,21 +153,16 @@ public class BusinessService implements IBusinessService {
 				remark.append(String.format("纬度原值:%s,修改为%s;",
 						brm.getLatitude(), model.getLatitude()));
 			}
-			if (brm.getCommissiontype() != model.getCommissiontype()) {
-				remark.append(String.format("结算类型原值:%s,修改为%s;",
-						brm.getCommissiontype(), model.getCommissiontype()));
-			}
-			if (model.getCommissiontype() == 1
-					&& brm.getBusinesscommission().compareTo(
+
+			if (brm.getBusinesscommission().compareTo(
 							model.getBusinesscommission()) != 0) {
-				remark.append(String.format("固定比例原值:%s,修改为%s;",
+				remark.append(String.format("商配比例原值:%s,修改为%s;",
 						brm.getBusinesscommission(),
 						model.getBusinesscommission()));
 			}
-			if (model.getCommissiontype() == 2
-					&& brm.getCommissionfixvalue().compareTo(
+			if (brm.getCommissionfixvalue().compareTo(
 							model.getCommissionfixvalue()) != 0) {
-				remark.append(String.format("固定金额原值:%s,修改为%s;",
+				remark.append(String.format("商配定额原值:%s,修改为%s;",
 						brm.getCommissionfixvalue(),
 						model.getCommissionfixvalue()));
 			}
@@ -199,27 +175,37 @@ public class BusinessService implements IBusinessService {
 			// 餐费结算方式
 			if (brm.getMealssettlemode() != model.getMealssettlemode()) {
 				remark.append(String.format("餐费结算方式原值:%s,修改为%s;",
-						brm.getMealssettlemode(), model.getMealssettlemode()));
+						brm.getMealssettlemode() == 0 ? "线下" : "线上",
+						model.getMealssettlemode() == 0 ? "线下" : "线上"));
 			}
 			// 一键发单
 			if (brm.getOnekeypuborder() != model.getOnekeypuborder()) {
 				remark.append(String.format("一键发单原值:%s,修改为%s;",
-						brm.getOnekeypuborder(), model.getOnekeypuborder()));
+						brm.getOnekeypuborder() == 1 ? "是" : "否",
+						model.getOnekeypuborder() == 1 ? "是" : "否"));
 			}
 			// 余额可以透支
 			if (brm.getIsallowoverdraft() != model.getIsallowoverdraft()) {
 				remark.append(String.format("余额透支原值:%s,修改为%s;",
-						brm.getIsallowoverdraft(), model.getIsallowoverdraft()));
+						brm.getIsallowoverdraft() == 1 ? "是" : "否",
+						model.getIsallowoverdraft() == 1 ? "是" : "否"));
 			}
 			// 雇主任务时间限制
 			if (brm.getIsemployertask() != model.getIsemployertask()) {
-				remark.append(String.format("余额透支原值:%s,修改为%s;",
-						brm.getIsemployertask(), model.getIsemployertask()));
+				remark.append(String.format("雇主任务时间限制原值:%s,修改为%s;",
+						brm.getIsemployertask() == 1 ? "是" : "否",
+						model.getIsemployertask() == 1 ? "是" : "否"));
 			}
 			// 第三方Id
 			if (brm.getOriginalbusiid() != model.getOriginalbusiid()) {
 				remark.append(String.format("第三方ID原值:%s,修改为%s;",
 						brm.getOriginalbusiid(), model.getOriginalbusiid()));
+			}
+			// 是否需要审核
+			if (brm.getIsOrderChecked() != model.getIsOrderChecked()) {
+				remark.append(String.format("订单是否需要审核原值:%s,修改为%s;",
+						brm.getIsOrderChecked() == 1 ? "是" : "否",
+						model.getIsOrderChecked() == 1 ? "是" : "否"));
 			}
 		}
 		if (remark.length() > 0) {
@@ -250,7 +236,29 @@ public class BusinessService implements IBusinessService {
 
 	@Override
 	public int modifyExpress(List<BusinessExpressRelation> listData) {
-	    return	iBusinessDao.modifyExpress(listData);
+		return iBusinessDao.modifyExpress(listData);
+	}
+
+	@Override
+	public int updateAuditStatus(int businessID, int status) {
+		if (status != BusinessStatus.AuditPass.value()
+				&& status != BusinessStatus.AuditRefuse.value()) {
+			return -1;
+		}
+		int result = iBusinessDao.updateAuditStatus(businessID, status);
+		if (result > 0) {
+			Business business = iBusinessDao.getBusinessById(businessID);
+			String juWangKeBusiAuditCallBack = PropertyUtils
+					.getProperty("JuWangKeBusiAuditCallBack");
+			// 调用第三方接口 ，聚网客商户审核通过后调用接口
+			// 这里不建议使用 1 数字，而是根据 配置文件中的 appkey来获取 groupid
+			if (business.getGroupid() == 1 && business.getOriginalbusiid() > 0
+					&& status == BusinessStatus.AuditPass.value()) {
+				String str = HttpUtil.sendPost(juWangKeBusiAuditCallBack,
+						"supplier_id=" + business.getOriginalbusiid());
+			}
+		}
+		return result;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.edaisong.api.dal.dao.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.entity.Account;
@@ -21,7 +22,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public int insert(Order record)
 	{
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dal.dao.inter.IOrderDao.insert", record);
+				"com.edaisong.api.dal.dao.inter.IOrderDao.insertSelective", record);
 	}
 	
 	/**

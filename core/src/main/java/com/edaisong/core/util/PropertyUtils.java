@@ -3,7 +3,6 @@ package com.edaisong.core.util;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.edaisong.core.common.ConfigHelper;
 
 /*
  * 读取属性文件

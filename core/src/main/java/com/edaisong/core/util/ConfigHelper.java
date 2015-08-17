@@ -1,4 +1,4 @@
-package com.edaisong.core.common;
+package com.edaisong.core.util;
 
 import com.edaisong.core.util.PropertyUtils;
 

@@ -1,12 +1,18 @@
 package com.edaisong.api.service.impl;
 
 import java.math.BigDecimal;
+
+
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.edaisong.api.dal.dao.impl.OrderChildDao;
 import com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dal.dao.inter.IBusinessDao;
+import com.edaisong.api.dal.dao.inter.IOrderChildDao;
 import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.api.dal.dao.inter.IOrderOtherDao;
 import com.edaisong.api.service.inter.IOrderService;
@@ -15,8 +21,11 @@ import com.edaisong.core.enums.BusinessBalanceRecordStatus;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
+import com.edaisong.entity.OrderChild;
+import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
+import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
@@ -25,6 +34,7 @@ import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
+import com.edaisong.entity.resp.OrderOtherResp;
 import com.edaisong.entity.resp.OrderResp;
 
 @Service
@@ -34,6 +44,8 @@ public class OrderService implements IOrderService {
 	private IOrderDao orderDao;
 	@Autowired
 	private IOrderOtherDao orderOtherDao;
+	@Autowired
+	private IOrderChildDao orderChildDao;
 	@Autowired
 	private IBusinessDao businessDao;
 	@Autowired
@@ -162,44 +174,27 @@ public class OrderService implements IOrderService {
 	 * 商户发布订单功能
 	 * 
 	 * @param req
-	 *            参数
-	 * @author 胡灵波
-	 * @Date 2015年8月6日 09:56:25
 	 * @return
+	 * @author 胡灵波
+	 * @Date 2015年8月6日 09:56:25 
 	 */
+	@Transactional(rollbackFor = Exception.class,timeout=30)
 	public OrderResp AddOrder(OrderReq  req)
 	{
-
-
 //        dbParameters.AddWithValue("@SongCanDate", order.SongCanDate);		
 //        dbParameters.AddWithValue("@Weight1", order.Weight);
 //        dbParameters.AddWithValue("@Quantity1", order.Quantity);		
 //        dbParameters.AddWithValue("@ReceiveProvince", order.ReceiveProvince);
-//        dbParameters.AddWithValue("@ReceiveProvinceCode", order.ReceiveProvinceCode);
-		
+//        dbParameters.AddWithValue("@ReceiveProvinceCode", order.ReceiveProvinceCode);		
 //        dbParameters.AddWithValue("@ReceiveCityCode", order.ReceiveCityCode);
 //        dbParameters.AddWithValue("@ReceiveArea", order.ReceiveArea);
 //        dbParameters.AddWithValue("@ReceiveAreaCode", order.ReceiveAreaCode);
-//        dbParameters.AddWithValue("@OriginalOrderNo", order.OriginalOrderNo);
-  
-      
-
-		OrderResp resp=new OrderResp();
+//        dbParameters.AddWithValue("@OriginalOrderNo", order.OriginalOrderNo);  
 		
+		OrderResp resp=new OrderResp();		
 		//订单主表
-		Order order=new Order();		
+		Order order=new Order();						
 		order.setOrderno("no11111111");//临时
-		//获取商家信息
-		order.setPickupaddress("北京市朝阳区东坝乡朝新嘉园东里五区18号楼");//临时 通过商家获取
-		order.setBusinessid(2053);
-		order.setRecevicecity("北京市");
-		order.setCommissionformulamode(0);		
-		order.setBusinesscommission(BigDecimal.valueOf(10));
-		order.setBusinessgroupid(1);
-		order.setCommissiontype(1);
-		order.setCommissionfixvalue(BigDecimal.valueOf(0));
-		order.setMealssettlemode(0);	
-		 
 		order.setRecevicename("测试");
 		order.setRecevicephoneno("18301222651");
 		order.setReceviceaddress("北京市朝阳区百子湾11");
@@ -211,7 +206,22 @@ public class OrderService implements IOrderService {
 		order.setRecevicelongitude(0.0);
 		order.setRecevicelatitude(0.0);
 		order.setOrdercount(1);
-		order.setTimespan("1");		
+		order.setTimespan("1");
+		order.setPubdate(new Date());			
+		//public BusinessModel getBusiness(int id)
+		//1812
+		//获取商家信息
+		int bussid=1812;//通过登陆获取
+		order.setBusinessid(bussid);
+		BusinessModel businessModel= businessDao.getBusiness(bussid);
+		order.setPickupaddress(businessModel.getAddress());//临时 通过商家获取		
+		order.setRecevicecity(businessModel.getCity());
+		order.setCommissionformulamode(businessModel.getStrategyId());		
+		order.setBusinesscommission(businessModel.getBusinesscommission());
+		order.setBusinessgroupid(businessModel.getGroupid());
+		order.setCommissiontype(businessModel.getCommissiontype());
+		order.setCommissionfixvalue(businessModel.getCommissionfixvalue());
+		order.setMealssettlemode(businessModel.getMealssettlemode());		
 		
 		order.setOrdercommission(BigDecimal.valueOf(21.30));
 		order.setDistribsubsidy(BigDecimal.valueOf(0));		
@@ -219,9 +229,34 @@ public class OrderService implements IOrderService {
 		order.setCommissionrate(BigDecimal.valueOf(0.1));
 		order.setSettlemoney(BigDecimal.valueOf(19.30));	   
 		order.setAdjustment(BigDecimal.valueOf(0));		
-		order.setBusinessreceivable(BigDecimal.valueOf(0));//退还商家金额	
-		
+		order.setBusinessreceivable(BigDecimal.valueOf(0));//退还商家金额	//		
 		orderDao.insert(order);		
+        
+		int orderid=order.getId().intValue();
+	   //写入订单Other表
+		OrderOther orderOther=new OrderOther();
+		orderOther.setOrderid(orderid);
+		orderOther.setNeeduploadcount(5);
+		orderOther.setHaduploadcount(5);				
+		orderOther.setPublongitude(0.0);
+		orderOther.setPublatitude(0.0);		
+		orderOtherDao.insert(orderOther);
+		
+		//写入订单child表
+		for(int i=0;i<6;i++)
+		{
+			int num=i+1;
+			OrderChild orderChild=new OrderChild();
+			orderChild.setOrderid(orderid);
+			orderChild.setChildid(num);
+			orderChild.setTotalprice(BigDecimal.valueOf(3.2));
+			orderChild.setGoodprice(BigDecimal.valueOf(2.2));
+			orderChild.setDeliveryprice(BigDecimal.valueOf(1.0));
+			orderChild.setPaystatus((short)1);
+			orderChild.setCreateby("admin");
+			orderChild.setUpdateby("admin");
+			orderChildDao.insert(orderChild);
+		}		
 		
 		return resp;
 	}	

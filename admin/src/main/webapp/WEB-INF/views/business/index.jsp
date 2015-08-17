@@ -5,7 +5,7 @@
 <%@page import="com.edaisong.entity.BusinessGroup"%>
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
-<%@page import="com.edaisong.core.common.HtmlHelper"%>
+<%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%
 String basePath =PropertyUtils.getProperty("static.admin.url");
 List<AreaModel> openCityList=	(List<AreaModel>)request.getAttribute("openCityList");
@@ -72,126 +72,6 @@ int groupId=(int)request.getAttribute("groupId");
 		</div>
 	</div>
 
-<div class="add-openbox add-form" id="BusinessCommissionDiv"
-	style="width: 500px">
-	<h2 style="border: none">
-		<p id="statusFin">商家结算-补贴策略</p>
-	</h2>
-	<fieldset>
-		<input type="hidden" id="busCommissionHid" value="0" />
-		<div class="control-group">
-			<label>商家名称：</label> <input name="busCommissionName"
-				id="busCommissionName" readonly="readonly" type="text">
-		</div>
-		<div class="control-group">
-			<label>商家电话：</label> <input name="busCommissionPhone"
-				id="busCommissionPhone" readonly="readonly" type="text">
-		</div>
-		<div class="control-group">
-			<label>配 送 费：</label> <input name="busCommissionWaiSong"
-				id="busCommissionWaiSong" style="width: 200px;" type="text">
-			<input name="oldBusCommissionWaiSong" id="oldBusCommissionWaiSong"
-				type="hidden">
-		</div>
-		<div class="control-group">
-			<label style="font-size: 15px">结算比例设置(应收)</label>
-		</div>
-		<div class="control-group">
-			<input id="rCommissionFormulaMode0" name="rCommissionFormulaMode"
-				type="radio" value="1"> <label for="rCommissionFormulaMode0">结算比例</label>
-			<input id="rCommissionFormulaMode1" name="rCommissionFormulaMode"
-				type="radio" value="2" style="margin-left: 30px"> <label
-				for="rCommissionFormulaMode1">固定金额</label> <input type="hidden"
-				id="oldCommissionType" name="oldCommissionType">
-		</div>
-		<div class="control-group">
-			<div id="divbusCommissionText">
-				<input name="busCommissionText" id="busCommissionText"
-					style="width: 120px;" type="text">% <input
-					name="oldBusCommissionText" id="oldBusCommissionText" type="hidden">
-			</div>
-			<div id="divCommissionFixValue">
-				<input name="CommissionFixValue" id="CommissionFixValue"
-					style="width: 120px;" type="text">元/单 <input
-					name="oldCommissionFixValue" id="oldCommissionFixValue"
-					type="hidden">
-			</div>
-		</div>
-	</fieldset>
-	<fieldset style="border-top: none">
-		<div class="control-group">
-			<label style="font-size: 15px">补贴策略设置(应付)</label>
-		</div>
-		<div class="control-group" style="margin-left: 30px">
-			<label id="labGlobalConfig"></label>
-		</div>
-		<div class="control-group" style="margin-left: 30px">
-			<label>补贴策略：</label> 
-				<%=HtmlHelper.getSelect("businessGroupID", businessGroupListData, "name", "id",null,null,"全部","width:143px")%>
-			<input name="oldStrategyID" id="oldStrategyID" type="hidden">
-		</div>
-	</fieldset>
-	<p class="btnbox">
-		<input value="确认" type="button" id="btnCommissionConfim"
-			class="yesBtn" /> <input value="关闭" type="button"
-			class="J_closebox qxBtn" />
-	</p>
-</div>
-
-<div class="add-openbox add-form" id="BusiPicShow"
-	style="width: 500px; height: 300px">
-	<h2>
-		<p id="statusFins">查看图片</p>
-	</h2>
-	<form class="form-horizontal" role="form" id="BusiPicForm"
-		method="post">
-		<fieldset>
-			<img id="showBusiImage" /> <a id="showBigBusiImage" href=""
-				target="_blank">查看大图</a>
-		</fieldset>
-		<p class="btnbox">
-			<input value="关闭" type="button" class="J_closebox qxBtn" />
-		</p>
-	</form>
-</div>
-
-<div class="add-openbox add-form" id="BusinessInfoUpdateDiv"
-	style="width: 500px">
-	<h2>
-		<p id="statusFin">修改商家信息</p>
-	</h2>
-	<fieldset>
-		<input type="hidden" id="busiId" value="0" />
-		<div class="control-group">
-			<label>商家名称：</label> <input name="busiName" id="busiName" type="text">
-		</div>
-		<div class="control-group">
-			<label>联系电话：</label> <input name="busiPhone" id="busiPhone"
-				type="text">
-		</div>
-		<div class="control-group">
-			<label>餐费结算方式：</label> <select name="busiMealsSettleMode"
-				class="selectw" id="busiMealsSettleMode" style="width: 143px">
-				<option value="0">线下结算</option>
-				<option value="1">线上结算</option>
-			</select>
-		</div>
-		<div class="control-group">
-			<label>绑定第三方ID：</label> <input name="busiSourceId" id="busiSourceId"
-				type="text"> <input type="hidden" name="oldBusiSourceId"
-				id="oldBusiSourceId"> <input type="hidden"
-				name="oldBusGroupId" id="oldBusGroupId"> 
-				<%=HtmlHelper.getSelect("busGroupId", groupListData, "groupname", "id",null,"","全部","width:100px")%>
-		</div>
-	</fieldset>
-	<p class="btnbox">
-		<input value="确认" type="button" id="btnUpdateBusinessInfo"
-			class="yesBtn" /> <input value="关闭" type="button"
-			class="J_closebox qxBtn" />
-	</p>
-</div>
-
-
 <div tabindex="-1" class="modal inmodal" id="BusinessRechargeShow"
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
@@ -206,32 +86,46 @@ int groupId=(int)request.getAttribute("groupId");
 			<small class="font-bold">
 				<div class="modal-body">
 					<fieldset>
-						<br>
-						<div class="control-group">
-							<label>商家名称：</label> <input name="busName" id="busName"
-								disabled="disabled" type="text"> <input name="busId"
-								id="busId" type="hidden">
-						</div>
-						<div class="control-group">
-							<label>商家电话：</label> <input name="busPhone" id="busPhone"
-								disabled="disabled" type="text">
-						</div>
-						<div class="control-group">
-							<label>充值金额：</label> <input name="busRechargeAmount"
-								id="busRechargeAmount" type="text">元 <label
-								style="font-size: 10px; color: red">（充值金额范围:1.00-50000.00元）</label>
-						</div>
-						<div class="control-group">
-							<label>操作描述：</label>
-							<div class="controls">
-								<textarea cols="45" rows="5" id="rechargeLog"></textarea>
-							</div>
-						</div>
-					</fieldset>
+            <br>
+            <div class="control-group">
+                <label>商家名称：</label>
+                <input name="busName" id="busName" disabled="disabled" type="text">
+                <input name="busId" id="busId" type="hidden">
+            </div>
+            <div class="control-group">
+                <label>商家电话：</label>
+                <input name="busPhone" id="busPhone" disabled="disabled" type="text">
+            </div>
+            <div class="control-group">
+                <label>充值类型：</label> <select id="RechargeType">
+                    <option value="1">充值</option>
+                    <option value="2">赠送</option>
+                    <option value="3">充值+赠送</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <div id="busRechargeAmountDiv">
+                    <label>充值金额：</label>
+                    <input name="busRechargeAmount" id="busRechargeAmount" type="text">元
+                    <label style="font-size: 10px;color: red">（充值金额范围:1.00-50000.00元）</label><br />
+                </div>
+                <div id="busRechargeAmountFreeDiv">
+                    <label>赠送金额：</label>
+                    <input name="busRechargeAmountFree" id="busRechargeAmountFree" type="text">元
+                    <label style="font-size: 10px; color: red">（赠送金额范围:1.00-50000.00元）</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>操作描述：</label>
+                <div class="controls">
+                    <textarea cols="45" rows="5" id="rechargeLog"></textarea>
+                </div>
+            </div>
+        </fieldset>
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button">保存</button>
+					<button class="btn btn-primary" type="button" id="btnRechargeCommit">保存</button>
 				</div>
 			</small>
 		</div>
@@ -296,7 +190,7 @@ int groupId=(int)request.getAttribute("groupId");
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button">保存</button>
+					<button class="btn btn-primary" type="button" id="btnWithdrawCommit">保存</button>
 				</div>
 			</small>
 		</div>
@@ -318,282 +212,4 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
-
-   // var adminjs = new adminglass(); //实例化后台类
-    $(document).ready(function () {
-        //GetOpenProvince(); 
-        window.location.hash = '';
-    });
-
-
-
-    //获取省市
-    function GetOpenProvince() {
-        var paramaters = {
-            "jiBie": 1
-        };
-        var openProvinceInfo = $('#openProvince');
-        //openProvinceInfo.append('<option value="" selected="selected">--省市--</option>');
-        $.ajax({
-            type: 'POST',
-            url: '/BusinessManager/GetOpenProvince',
-            data: paramaters,
-            success: function (result) { 
-                $.each(result, function (i, item) {
-                    openProvinceInfo.append('<option value="' + item.Code + '">' + item.Name + '</option>');
-                });
-            }
-        }); 
-    }
-    //选择省时触发联动
-    $('#openProvince').change(function () {
-        //alert($('#openProvince').val() + ":::" + $('#openProvince').find("option:selected").text());
-        LoadOpenCityInfo();
-    });
-    //获取市区
-    function LoadOpenCityInfo() {
-        //var parrentId = $()
-        var paramaters = {
-            "jiBie": 2,
-            "parrentId": $('#openProvince').val()
-    };
-        var openCityInfo = $('#openCity');
-        openCityInfo.empty();
-        //openCityInfo.append('<option value="" selected="selected">--市区--</option>');
-        $.ajax({
-            type: 'POST',
-            url: '/BusinessManager/GetOpenCity',
-            data: paramaters,
-            success: function (result) {
-                $.each(result, function (i, item) {
-                    openCityInfo.append('<option value="' + item.Code + '">' + item.Name + '</option>');
-                });
-            }
-        });
-    }
-
-    
-    //设置结算比例-外送费
-    $("#btnCommissionConfim").on('click', function () {
-        var busCommissionHid = $("#busCommissionHid").val(); //商户id
-
-        var busCommissionText = $("#busCommissionText").val(); ////商户结算比例
-        var busCommissionWaiSong = $("#busCommissionWaiSong").val(); ////商户外送费
-        var oldBusCommissionText = $("#oldBusCommissionText").val(); ////原来商户结算比例
-        var oldBusCommissionWaiSong = $("#oldBusCommissionWaiSong").val(); ////原来商户外送费
-        var commissionFixValue = $("#CommissionFixValue").val();
-        var oldCommissionFixValue = $("#oldCommissionFixValue").val(); ////原来商户外送费
-        var strategyID = $("#businessGroupID").val();
-        var oldStrategyID = $("#oldStrategyID").val();
-        var commissionType = $('input[name="rCommissionFormulaMode"]:checked').val();
-        var oldBusCommissionWaiSong = $("#oldBusCommissionWaiSong").val();
-        var oldCommissionType = $('#oldCommissionType').val();
-        if (isNaN(busCommissionText)) {
-            alert("请输入正确的数字!");
-            return;
-        }
-        if (busCommissionText < 0) {
-            alert("请输入大于零的值!");
-            return;
-        }
-
-        if (isNaN(busCommissionWaiSong)) {
-            alert("请输入正确的数字!");
-            return;
-        }
-        if (busCommissionWaiSong < 0) {
-            alert("请输入大于零的值!");
-            return;
-        }
-
-        if (busCommissionText == oldBusCommissionText && busCommissionWaiSong == oldBusCommissionWaiSong && commissionFixValue == oldCommissionFixValue && strategyID == oldStrategyID && oldCommissionType == commissionType) {
-            alert("没有需要修改的信息!");
-            return;
-        }
-        if (busCommissionWaiSong.length == 0) {
-            busCommissionWaiSong = 0;
-        }
-        var paramaters = { "id": busCommissionHid, "commission": busCommissionText, "waisongfei": busCommissionWaiSong, "commissionType": commissionType, "commissionFixValue": commissionFixValue, "strategyID": strategyID };
-        var url = "/BusinessManager/SetCommission";
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: paramaters,
-            success: function (result) {
-                if (result.IsSuccess) {
-                    alert("设置成功!");
-                    window.location.href = "/BusinessManager/BusinessManager";
-                } else {
-                    alert(result.Message);
-                }
-            }
-        });
-    });
-    //修改商家信息
-    $("#btnUpdateBusinessInfo").on('click', function () {
-
-        var busiId = $("#busiId").val(); //商户id
-        var busiName = $("#busiName").val(); //商户电话
-        var busiPhone = $("#busiPhone").val(); //商户电话
-        var busiSourceId = $("#busiSourceId").val(); //商户原平台Id
-        var busiMealsSettleMode = $("#busiMealsSettleMode").val(); ////商户集团Id
-        var busGroupId = $("#busGroupId").val(); ////商户集团Id
-        var oldBusiSourceId = $("#oldBusiSourceId").val(); //商户原平台Id
-        var oldBusGroupId = $("#oldBusGroupId").val(); ////商户集团Id
-        if (busiName.trim().length == 0) {
-            alert("请输入商家名称!");
-            return;
-        }
-        var reg = /^0?1\d{10}$/;
-        if (!reg.test(busiPhone)) {
-            alert("请输入正确的手机号!");
-            return;
-        }
-        if (busiSourceId.trim().length == 0) {
-            busiSourceId = 0;
-        }
-        if (busGroupId <= 0) {
-            busGroupId = 0;
-        }
-        var paramaters = {
-            "id": busiId,
-            "businessName": busiName,
-            "businessPhone": busiPhone,
-            "businessSourceId": busiSourceId,
-            "groupId": busGroupId,
-            "oldBusiSourceId": oldBusiSourceId,
-            "oldBusGroupId": oldBusGroupId,
-            "mealsSettleMode": busiMealsSettleMode
-        };
-        var url = "/BusinessManager/ModifyBusiness";
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: paramaters,
-            success: function (result) {
-                if (result.IsSuccess) {
-                    alert("修改成功!");
-                    window.location.href = "/BusinessManager/BusinessManager";
-                } else {
-                    alert(result.Message);
-                }
-            }
-        });
-    });
-
-    function showaddBusiness() {
-        adminjs.openwinbox('#BusinessAddDiv');
-    }
-
-    //商户充值
-    $("#btnRechargeCommit").on('click', function () {
-        var busiId = $("#busId").val(); //商户id
-        var busiName = $("#busName").val(); //商户电话
-        var busiRechargeAmount = $("#busRechargeAmount").val(); //商户充值金额
-        var rechargeLog = $("#rechargeLog").val(); //充值描述
-        if (rechargeLog.trim().length == 0) {
-            alert("请输入充值操作描述!");
-            return;
-        }
-        var decimalFormat = /^[0-9]*(\.[0-9]{1,2})?$/;
-        if (!decimalFormat.test(busiRechargeAmount)) {
-            alert("请输入正确的金额！");
-            return;
-        }
-        if (busiRechargeAmount < 1 || busiRechargeAmount > 50000) {
-            alert("充值金额须在1-50000元之间！");
-            return;
-        }
-        if (confirm("确定要为商户：" + busiName + "  充值：" + busiRechargeAmount + "元？")) {
-            var paramaters = {
-                "BusinessId": busiId,
-                "RechargeAmount": busiRechargeAmount,
-                "Remark": rechargeLog
-            };
-            var url = "/BusinessManager/BusinessRecharge";
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: paramaters,
-                success: function (result) {
-                    if (result.IsSuccess) {
-                        alert(result.Message);
-                        window.location.href = "/BusinessManager/BusinessManager";
-                    } else {
-                        alert(result.Message);
-                    }
-                }
-            });
-        }
-    });
-
-    //商户提现
-    $("#btnWithdrawCommit").on('click', function () {
-        var withdrawId = $("#withdrawId").val(); //商户id
-        var busiName = $("#withdrawPhone").val(); //商户电话
-        var withdrawAmount = $("#withdrawAmount").val();
-        var withdrawLog = $("#withdrawLog").val();
-        var selectProvinceName = $("#openProvince").val();
-        var selectProvinceCode = $("#openProvinceCode").val();
-        var selectCityName = $("#openCity").val();
-        var selectCityCode = $("#openCityCode").val();
-        var idCard = $("#idCard").val();
-        //if (rechargeLog.trim().length == 0) {
-        //    alert("请输入充值操作描述!");
-        //    return;
-        //} 
-        var decimalFormat = /^[0-9]*(\.[0-9]{1,2})?$/;
-        if (!decimalFormat.test(withdrawAmount)) {
-            alert("请输入正确的金额！");
-            return;
-        }
-        if (withdrawAmount < 1 || withdrawAmount > 1000000) {
-            alert("请输入正确的提款金额，大于1元小于1,000,000！");
-            return;
-        }
-
-        if (confirm("是否确认提款?")) {
-            var paramaters = {
-                "BusinessId": withdrawId,
-                "WithdrawPrice": withdrawAmount,
-                "Remarks": withdrawLog,
-                "OpenProvinceCode": selectProvinceCode,
-                "OpenProvince": selectProvinceName,
-                "selectCityCode": selectCityCode,
-                "OpenCity": selectCityName,
-                "idCard": idCard
-            };
-            var url = "/BusinessManager/Withdraw";
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: paramaters,
-                success: function (result) {
-
-                    if (result.Status == "1") {
-                        alert(result.Message);
-                        window.location.href = "/BusinessManager/BusinessManager";
-                    } else {
-                        alert(result.Message);
-                    }
-                }
-            });
-        }
-    });
-    //关闭弹层
-    $('.J_closebox').click(function () {
-        adminjs.closewinbox('.add-openbox');
-        return false;
-    });
-    $('input[name="rCommissionFormulaMode"]').click(function () {
-        var a = $('input[name="rCommissionFormulaMode"]:checked').val();
-        if (a == 1) {
-            $("#divCommissionFixValue").hide();
-            $("#divbusCommissionText").show();
-        } else {
-            $("#divbusCommissionText").hide();
-            $("#divCommissionFixValue").show();
-        }
-    });
-    
 </script>

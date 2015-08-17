@@ -25,8 +25,7 @@ public class BusinessServiceTest extends TestCase{
 		BusinessLoginReq req = new BusinessLoginReq();
 		req.setPhoneNo("18811420350");
 		req.setPassword("123456");
-		req.setRememberMe((byte)1);
-		testService.login(req);
+		testService.login(req.getPhoneNo(),req.getPassword());
 	}
 	
 	public void testAddLoginLog(){

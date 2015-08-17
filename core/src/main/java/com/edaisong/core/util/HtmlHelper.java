@@ -1,4 +1,4 @@
-package com.edaisong.core.common;
+package com.edaisong.core.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

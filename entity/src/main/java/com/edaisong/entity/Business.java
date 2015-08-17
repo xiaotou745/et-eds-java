@@ -86,6 +86,8 @@ public class Business implements Serializable{
     private String recommendphone;
     
     private Date lastlogintime;
+    
+    private Integer isOrderChecked;
 
     public Integer getId() {
         return id;
@@ -413,4 +415,12 @@ public class Business implements Serializable{
     public void setLastLoginTime(Date lastlogintime) {
         this.lastlogintime = lastlogintime;
     }
+
+	public Integer getIsOrderChecked() {
+		return isOrderChecked;
+	}
+
+	public void setIsOrderChecked(Integer isOrderChecked) {
+		this.isOrderChecked = isOrderChecked;
+	}
 }

@@ -13,7 +13,7 @@
 <%@ page language="java" import="java.util.List"%>
 <%@ page language="java" import="java.util.ArrayList"%>
 <%
-	String basePath =new PropertyUtils().getProperty("static.admin.url");
+	String basePath =PropertyUtils.getProperty("static.admin.url");
 	IAuthorityMenuClassService menuService = SpringBeanHelper
 	.getCustomBeanByType(IAuthorityMenuClassService.class);
 

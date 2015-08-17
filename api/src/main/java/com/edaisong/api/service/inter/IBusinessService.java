@@ -16,19 +16,38 @@ import com.edaisong.entity.resp.BusinessLoginResp;
 
 
 public interface IBusinessService {
-	PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req);
-	
 	/**
-	 * 商家登录
-	 * @param req
+	 * 查询商家分页列表
 	 * @return
 	 */
-	public BusinessLoginResp login(BusinessLoginReq req);
+	PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req);
+	/**
+	 * 修改时，获取商家详情
+	 * @return
+	 */
 	BusinessDetailModel getBusinessDetailByID(int businessID);
+	/**
+	 * 获取商家修改记录
+	 * @return
+	 */
 	List<BusinessOptionLog> getOpLogByBusinessID(int businessID);
+	/**
+	 * 修改商家信息
+	 * @return
+	 */
 	int modifyBusiness(BusinessModifyModel detailModel);
+	/**
+	 * 新增商家登录日志
+	 * @return
+	 */
 	void addLoginLog(String phoneNo, String description, boolean isSuccess);
-	Business login(String phoneNo,String password);
+	/**
+	 * 商家登录
+	 * @param 手机号
+	 * @param 密码
+	 * @return
+	 */
+	BusinessLoginResp login(String phoneNo,String password);
 	/**
 	 * 根据商户Id获取商户信息
 	 * @param businessId 商户Id
@@ -41,4 +60,11 @@ public interface IBusinessService {
 	 * @return 
 	 */
 	int modifyExpress(List<BusinessExpressRelation> listData);
+	
+	/**
+	 * 修改商家审核状态
+	 * @param 
+	 * @return 
+	 */
+	int updateAuditStatus(int businessID,int status);
 }

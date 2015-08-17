@@ -5,11 +5,16 @@ import java.util.List;
 import java.util.Map;
 
 
+
+
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.dal.dao.inter.IGlobalConfigDao;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.domain.GlobalConfigModel;
+import com.edaisong.entity.domain.GlobalGroupConfigModel;
+import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.ConfigSaveReq;
 
 @Repository
@@ -100,5 +105,25 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 		
 		return getMasterSqlSessionUtil().insert(statement, paramMap) > 0;
 	}
-
+	
+	/**
+	 * 获取系统默认配置
+	 * @author 胡灵波
+	 * @Date 2015年8月14日 16:08:58
+	 * @return
+	 */
+	@Override
+    public GlobalGroupConfigModel GlobalConfigMethod(int groupId)
+    {
+    	GlobalGroupConfigModel model=null;
+    	
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("GroupId", groupId);
+		model = getMasterSqlSessionUtil().selectOne(
+				"com.edaisong.api.dal.dao.inter.IGlobalConfigDao.query",
+				paramMap);
+		
+		return model;   	
+    }   
+   
 }

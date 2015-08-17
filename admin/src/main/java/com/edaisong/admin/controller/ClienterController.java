@@ -94,7 +94,7 @@ public class ClienterController {
 	 * @return
 	 */	
 	@RequestMapping("clienterbalancerecordlist")
-	public ModelAndView clienterbalancerecordlist(HttpServletRequest request){			
+	public ModelAndView clienterbalancerecordlist(HttpServletRequest request){				
 
 		int clienterId=Integer.parseInt(request.getParameter("clienterId"));
 		
