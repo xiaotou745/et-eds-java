@@ -104,16 +104,17 @@ public class AccountController {
 	 * @param request
 	 * @param response
 	 * @return
+	 * @throws IOException 
 	 */
-	@RequestMapping(value = "logoff", method = { RequestMethod.POST })
-	public @ResponseBody boolean logoff(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "logoff")
+	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
 		Cookie cookie = CookieUtils.getCookieByName(WebConst.LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
 			CookieUtils.deleteCookie(request, response, cookie);
 			redisService.remove(WebConst.LOGIN_COOKIE_NAME);
 		}
-		return true;
+		response.sendRedirect("/");
 	}
 
 	/**
