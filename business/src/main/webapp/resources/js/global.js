@@ -72,20 +72,3 @@ function get() {
 function timingCheckOperate(seconds){
 	window.setInterval("logoff()",seconds/1000);
 }
-
-/**
- * 退出
- */
-function logoff(){
-	$.ajax({
-		url:"",
-		data:[],
-		async:true,
-		success:function(data){
-			window.location.href = "/";
-		},
-		error:function(error){
-			alert(error);
-		}
-	});
-}

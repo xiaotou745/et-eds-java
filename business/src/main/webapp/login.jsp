@@ -108,6 +108,7 @@
 				//以下代码是检测是否有鼠标移动,将用于用户登录后是否有操作
 				var oldX = 0;
 				var oldY = 0;
+				var timeOutSeconds = 5;
 				window.lastMove = 0;
 				var getCoordInDocumentExample = function(){
 				    document.onmousemove = function(e){
@@ -134,8 +135,9 @@
 				     getCoordInDocumentExample();
 				     setInterval(function(){
 				    	 var now = new Date().getTime();
-				    	 if((now - lastMove) > 5000){
+				    	 if((now - lastMove) > (timeOutSeconds * 1000)){
 				    		 //alert("已超时");
+				    		 //window.location.href = "<%=basePath %>/";
 				    	 }
 				     },1000);
 				 };

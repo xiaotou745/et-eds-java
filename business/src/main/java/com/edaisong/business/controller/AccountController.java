@@ -1,6 +1,8 @@
 package com.edaisong.business.controller;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -111,10 +113,13 @@ public class AccountController {
 		// 删除登录cookie
 		Cookie cookie = CookieUtils.getCookieByName(WebConst.LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
+		    CookieModel cookieModel = JsonUtil.str2obj(URLDecoder.decode(cookie.getValue(),"utf-8"), CookieModel.class);
+		    if(cookieModel != null){
+		    	redisService.remove(cookieModel.getValue());
+		    }
 			CookieUtils.deleteCookie(request, response, cookie);
-			redisService.remove(WebConst.LOGIN_COOKIE_NAME);
 		}
-		response.sendRedirect("/");
+		response.sendRedirect(request.getContextPath() + "/");
 	}
 
 	/**
