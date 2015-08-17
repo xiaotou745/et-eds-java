@@ -1,62 +1,70 @@
 package com.edaisong.entity.domain;
 
+import java.math.BigDecimal;
+
+/**
+ * 订单佣金
+ * @author pengyi
+ * @date 20150817
+ *
+ */
 public class OrderCommission {
-	 /// <summary>
-    ///订单金额
-    /// </summary>
-    public float amount;
-    /// <summary>
-    /// 外送费
-    /// </summary>
-    public float distribSubsidy;
+	/**
+	 * 订单金额
+	 */
+    private BigDecimal amount;
+    /**
+     * 外送费
+     */
+    private BigDecimal distribSubsidy;
 
-    /// <summary>
-    /// 订单数量
-    /// </summary>
-    public int orderCount; 
+    /**
+     * 订单数量
+     */
+    private int orderCount; 
 
-    /// <summary>
-    /// 商户结算比例
-    /// </summary>
-    public float businessCommission;
+    /**
+     * 商户结算比例
+     */
+    private BigDecimal businessCommission;
 
-    /// <summary>
-    /// 结算类型
-    /// </summary>
-    public int commissionType ;
+    /**
+     * 结算类型
+     */
+    private int commissionType ;
 
-    /// <summary>
-    /// 固定金额
-    /// </summary>
-    public float commissionFixValue;
+    /**
+     * 固定金额
+     */
+    private BigDecimal commissionFixValue;
 
-    /// <summary>
-    /// 商家分组ID
-    /// </summary>
-    public int businessGroupId;
-    /// <summary>
-    /// 策略ID
-    /// </summary>
-    public int strategyId ;
+    /**
+     * 商家分组ID
+     */
+    private int businessGroupId;
+    /**
+     * 策略ID
+     */
+    private int strategyId ;
 
-    /// <summary>
-    /// 网站补贴
-    /// </summary>
-    public float orderWebSubsidy;
+    /**
+     * 网站补贴
+     */
+    private BigDecimal orderWebSubsidy;
 
-	public float getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(float amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 
-	public float getDistribSubsidy() {
+	public BigDecimal getDistribSubsidy() {
 		return distribSubsidy;
 	}
 
-	public void setDistribSubsidy(float distribSubsidy) {
+	public void setDistribSubsidy(BigDecimal distribSubsidy) {
 		this.distribSubsidy = distribSubsidy;
 	}
 
@@ -68,11 +76,11 @@ public class OrderCommission {
 		this.orderCount = orderCount;
 	}
 
-	public float getBusinessCommission() {
+	public BigDecimal getBusinessCommission() {
 		return businessCommission;
 	}
 
-	public void setBusinessCommission(float businessCommission) {
+	public void setBusinessCommission(BigDecimal businessCommission) {
 		this.businessCommission = businessCommission;
 	}
 
@@ -84,11 +92,11 @@ public class OrderCommission {
 		this.commissionType = commissionType;
 	}
 
-	public float getCommissionFixValue() {
+	public BigDecimal getCommissionFixValue() {
 		return commissionFixValue;
 	}
 
-	public void setCommissionFixValue(float commissionFixValue) {
+	public void setCommissionFixValue(BigDecimal commissionFixValue) {
 		this.commissionFixValue = commissionFixValue;
 	}
 
@@ -108,11 +116,11 @@ public class OrderCommission {
 		this.strategyId = strategyId;
 	}
 
-	public float getOrderWebSubsidy() {
+	public BigDecimal getOrderWebSubsidy() {
 		return orderWebSubsidy;
 	}
 
-	public void setOrderWebSubsidy(float orderWebSubsidy) {
+	public void setOrderWebSubsidy(BigDecimal orderWebSubsidy) {
 		this.orderWebSubsidy = orderWebSubsidy;
 	}
     

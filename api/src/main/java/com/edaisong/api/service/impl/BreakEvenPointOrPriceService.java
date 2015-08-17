@@ -1,5 +1,7 @@
 package com.edaisong.api.service.impl;
 
+import java.math.BigDecimal;
+
 import org.springframework.stereotype.Service;
 
 import com.edaisong.entity.domain.OrderCommission;
@@ -9,33 +11,28 @@ import com.edaisong.entity.domain.OrderCommission;
 public class BreakEvenPointOrPriceService extends OrderPriceService{
 
 	@Override
-	public float GetCurrenOrderCommission(OrderCommission model) {
-		// TODO Auto-generated method stub
-		return 0;
+	public BigDecimal getCurrenOrderCommission(OrderCommission model) {
+		return BigDecimal.valueOf(0);
 	}
 
 	@Override
-	public float GetOrderWebSubsidy(OrderCommission model) {
-		// TODO Auto-generated method stub
-		return 0;
+	public BigDecimal getOrderWebSubsidy(OrderCommission model) {
+		return BigDecimal.valueOf(0);
 	}
 
 	@Override
-	public float GetCommissionRate(OrderCommission model) {
-		// TODO Auto-generated method stub
-		return 0;
+	public BigDecimal getCommissionRate(OrderCommission model) {
+		return BigDecimal.valueOf(0);
 	}
 
 	@Override
-	public float GetBaseCommission(OrderCommission model) {
-		// TODO Auto-generated method stub
-		return 0;
+	public BigDecimal getBaseCommission(OrderCommission model) {
+		return BigDecimal.valueOf(0);
 	}
 
 	@Override
-	public float GetAdjustment(OrderCommission model) {
-		// TODO Auto-generated method stub
-		return 0;
+	public BigDecimal getAdjustment(OrderCommission model) {
+		return BigDecimal.valueOf(0);
 	}
 
 }
