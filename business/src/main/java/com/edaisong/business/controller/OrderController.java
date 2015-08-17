@@ -43,8 +43,11 @@ public class OrderController {
 	 */
 	@RequestMapping("list2")
 	public ModelAndView list() {
-		ModelAndView model = new ModelAndView("order/list");
-		return model;
+		ModelAndView view = new ModelAndView("businessView");
+		view.addObject("subtitle", "订单");
+		view.addObject("currenttitle", "订单管理");
+		view.addObject("viewPath", "order/list");
+		return view;
 	}
 
 	/**
