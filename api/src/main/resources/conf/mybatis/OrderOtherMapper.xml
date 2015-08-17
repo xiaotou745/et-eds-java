@@ -282,15 +282,7 @@
     where Id = #{id,jdbcType=INTEGER}
   </update>
   
- <!-- 根据订单号 骑士id 查询子订单详情集合 add by caoheyang 20150804 --> 
- <select id="getOrderChildByOrderInfo" parameterType="java.util.Map" resultType="com.edaisong.entity.OrderOther">
-select  oc.Id ,oc.OrderId ,oc.ChildId ,oc.TotalPrice ,oc.GoodPrice ,oc.DeliveryPrice ,oc.PayStyle ,
-oc.PayType ,oc.PayStatus , oc.PayBy , oc.PayTime ,oc.PayPrice ,oc.HasUploadTicket ,
-oc.TicketUrl ,oc.CreateBy ,oc.CreateTime ,oc.UpdateBy ,oc.UpdateTime
-from    dbo.OrderChild oc ( nolock )
- join dbo.[order] (nolock)o on oc.OrderId=o.Id
-where  o.OrderNo=#{OrderNo,jdbcType=NVARCHAR} and o.businessId=#{BusinessId,jdbcType=INTEGER} 
-</select>
+
   
   
 </mapper>

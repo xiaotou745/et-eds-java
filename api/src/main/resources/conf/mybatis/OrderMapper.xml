@@ -839,10 +839,12 @@
   parameterType="com.edaisong.entity.req.OrderDetailBusinessReq"  >
 select a.Id,a.OrderNo,a.Status,a.OrderFrom,a.OriginalOrderNo,a.Remark,a.PubDate, 
 b.GrabTime,b.TakeTime,a.ActualDoneDate,a.RecevicePhoneNo,a.ReceviceAddress,c.TrueName,c.PhoneNo,
-a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney
+a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,
+ case when a.OrderFrom=0 then '客户端' else d.GroupName end GroupName
  from dbo.[order] ( nolock ) a
  join dbo.OrderOther ( nolock ) b on a.Id=b.OrderId
  LEFT join dbo.clienter  ( nolock ) c on a.clienterId=b.Id 
+ left  join dbo.[group] d on a.OrderFrom=d.Id 
  where a.OrderNo=#{orderNo,jdbcType=NVARCHAR} and a.BusinessId= #{businessId,jdbcType=INTEGER} 
    </select>
    <!-- 商户取消订单功能   add by caoheyang 20150804 -->

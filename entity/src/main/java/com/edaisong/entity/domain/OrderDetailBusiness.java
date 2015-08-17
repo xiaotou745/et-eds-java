@@ -12,7 +12,7 @@ public class OrderDetailBusiness {
 	private int id;
 	private String orderNo;
 	private int status;
-	private int orderFrom;
+	private String groupName;
 	private String originalOrderNo;
 	private String remark;
 	private Date pubDate;
@@ -73,15 +73,15 @@ public class OrderDetailBusiness {
 	/**
 	 * 订单来源
 	 */
-	public int getOrderFrom() {
-		return orderFrom;
+	public String getGroupName() {
+		return groupName;
 	}
 
 	/**
 	 * 订单来源
 	 */
-	public void setOrderFrom(int orderFrom) {
-		this.orderFrom = orderFrom;
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 
 	/**
