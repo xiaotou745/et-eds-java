@@ -54,6 +54,9 @@ public class AccountController {
 	public @ResponseBody LoginResp login(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
 			@RequestParam boolean rememberMe) {
+		Object sessionCode = request.getSession().getAttribute("code");
+		//一次性验证码,防止暴力破解
+		request.getSession().removeAttribute("code");
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
 		boolean isLogin = checkIsLogin(request);
@@ -63,7 +66,7 @@ public class AccountController {
 			return resp;
 		}
 
-		Object sessionCode = request.getSession().getAttribute("code");
+		
 		// 验证码不正确
 		if (sessionCode == null || !sessionCode.toString().toLowerCase().equals(code.toLowerCase())) {
 			resp.setMessage("验证码不正确");

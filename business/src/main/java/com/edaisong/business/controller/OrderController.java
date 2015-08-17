@@ -1,7 +1,10 @@
 package com.edaisong.business.controller;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,8 +99,23 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value = "publish")
+	public ModelAndView publish(HttpServletRequest request) {
+		
+		ModelAndView view = new ModelAndView("order/publish");
+		return view;
+		
+		
+	}
+	
+	/**
+	 * 确定发布订单
+	 * @author 胡灵波
+	 * @Date 2015年8月11日 14:09:32
+	 * @return
+	 */
+	@RequestMapping(value = "add", method = { RequestMethod.POST })
 	@ResponseBody
-	public OrderResp publish() {
+	public OrderResp add() {
 		OrderResp resp=new OrderResp();
 		OrderReq req=new OrderReq();
 		resp=orderService.AddOrder(req);

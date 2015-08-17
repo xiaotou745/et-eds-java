@@ -146,7 +146,7 @@ public class SqlSessionUtil {
 
 	public int insert(String statement, Object parameter) {
 		try {
-			int result = innerSession.insert(statement, parameter);
+			int result = innerSession.insert(statement, parameter);			
 			innerSession.commit();
 			return result;
 		} catch (Exception e) {

@@ -133,7 +133,11 @@
       #{businessreceivable,jdbcType=DECIMAL}, #{mealssettlemode,jdbcType=INTEGER}, #{finishdatelength,jdbcType=INTEGER}, 
       #{finishall,jdbcType=INTEGER}, #{realordercommission,jdbcType=NUMERIC})
   </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.Order" >
+  <insert id="insertSelective" parameterType="com.edaisong.entity.Order">  
+ <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+    select @@IDENTITY as id
+  </selectKey>
+
     insert into dbo.[order]
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -300,7 +304,7 @@
       </if>
       <if test="realordercommission != null" >
         RealOrderCommission,
-      </if>
+      </if>      
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -467,8 +471,8 @@
       </if>
       <if test="realordercommission != null" >
         #{realordercommission,jdbcType=NUMERIC},
-      </if>
-    </trim>
+      </if>    
+    </trim>     
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Order" >
     update order
