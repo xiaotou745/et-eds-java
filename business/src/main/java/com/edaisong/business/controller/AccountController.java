@@ -20,8 +20,8 @@ import com.edaisong.business.common.WebConst;
 import com.edaisong.business.entity.CookieModel;
 import com.edaisong.business.entity.resp.LoginResp;
 import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.JsonUtil;
-import com.edaisong.core.web.CookieUtils;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
@@ -54,6 +54,9 @@ public class AccountController {
 	public @ResponseBody LoginResp login(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
 			@RequestParam boolean rememberMe) {
+		Object sessionCode = request.getSession().getAttribute("code");
+		//一次性验证码,防止暴力破解
+		request.getSession().removeAttribute("code");
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
 		boolean isLogin = checkIsLogin(request);
@@ -63,9 +66,9 @@ public class AccountController {
 			return resp;
 		}
 
-		Object sessionCode = request.getSession().getAttribute("code");
+		
 		// 验证码不正确
-		if (sessionCode == null || !sessionCode.toString().equals(code)) {
+		if (sessionCode == null || !sessionCode.toString().toLowerCase().equals(code.toLowerCase())) {
 			resp.setMessage("验证码不正确");
 			resp.setSuccess(false);
 			return resp;
@@ -102,14 +105,14 @@ public class AccountController {
 	 * @return
 	 */
 	@RequestMapping(value = "logoff", method = { RequestMethod.POST })
-	public @ResponseBody ResponseBase logoff(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody boolean logoff(HttpServletRequest request, HttpServletResponse response) {
 		// 删除登录cookie
 		Cookie cookie = CookieUtils.getCookieByName(WebConst.LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
 			CookieUtils.deleteCookie(request, response, cookie);
-			redisService.set(WebConst.LOGIN_COOKIE_NAME, null, -1);
+			redisService.remove(WebConst.LOGIN_COOKIE_NAME);
 		}
-		return new ResponseBase();
+		return true;
 	}
 
 	/**

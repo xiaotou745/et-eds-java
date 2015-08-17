@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="com.edaisong.core.common.HtmlHelper"%>
+<%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
 <%@page import="com.edaisong.entity.BusinessGroup"%>
 <%@page import="com.edaisong.entity.DeliveryCompany"%>
@@ -11,7 +11,7 @@
 <%@page import="com.edaisong.entity.domain.BusinessDetailModel"%>
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%@page import="com.edaisong.entity.BusinessOptionLog"%>
-<%@page import="com.edaisong.core.common.ParseHelper"%>
+<%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
 String basePath =PropertyUtils.getProperty("static.admin.url");
@@ -68,11 +68,6 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 					value="<%=detail.getLandline()==null?"":detail.getLandline()%>">
 			</div>
 			<div class="control-group">
-				<label style="margin-left: 5px">配 送 费：</label> <input
-					name="busiWaisong" id="busiWaisong" type="text"
-					value="<%=detail.getDistribsubsidy()%>">
-			</div>
-			<div class="control-group">
 				<label style="margin-left: 20px">城 市：</label>
 				<%=HtmlHelper.getSelect("busiCity", openCityList, "name", "code",detail.getCityid(),"","-请选择-","width:77px")%>
 				<label>区 域：</label>
@@ -91,38 +86,24 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 					type="text" value="<%=detail.getLatitude()%>" disabled="disabled">
 				<a id="postion" style="margin-left: 15px"><b>地图定位</b></a>
 			</div>
+			  <div class="control-group" style="margin-bottom: 10px" id="OrderChecked">
+                <label style="margin-left: 5px">订单是否需要审核：</label>
+                <label><input name="IsCheckOrder" type="radio" value="1" <%=detail.getIsOrderChecked()==1?"checked" : ""%> />是 </label>
+                <label><input name="IsCheckOrder" type="radio" value="0" <%=detail.getIsOrderChecked()==0?"checked" : ""%> />否 </label> 
+            </div>	
 		</div>
 		<hr />
 		<div
 			style="width: 750px; height: auto; border-bottom: solid 0px #dcdcdc; padding-left: 10px;">
 			<div class="control-group" style="margin-top: 10px">
-				<label style="font-size: 15px">结算比例设置(应收)</label>
+				<label style="font-size: 15px">应收商家</label>
 			</div>
-			<div class="control-group">
-				<input id="rCommissionFormulaMode0" name="rCommissionFormulaMode"
-					type="radio" value="1"
-					<%=detail.getCommissiontype()==1?"checked" : ""%>> <label
-					for="rCommissionFormulaMode0">结算比例：</label> <input
-					id="rCommissionFormulaMode1" name="rCommissionFormulaMode"
-					type="radio" value="2" style="margin-left: 30px"
-					<%=detail.getCommissiontype()==2?"checked" : ""%>> <label
-					for="rCommissionFormulaMode1">固定金额：</label> <input type="hidden"
-					id="oldCommissionType" name="oldCommissionType">
-			</div>
-			<div class="control-group" style="margin-bottom: 10px">
-				<div id="divbusCommissionText"
-					<%=detail.getCommissiontype()==2?"hidden" : ""%>>
-					<input name="busCommissionText" id="busCommissionText"
-						style="width: 120px;" type="text"
-						value="<%=detail.getBusinesscommission()%>">%
-				</div>
-				<div id="divCommissionFixValue"
-					<%=detail.getCommissiontype()==1?"hidden" : ""%>>
-					<input name="CommissionFixValue" id="CommissionFixValue"
-						style="width: 120px;" type="text"
-						value="<%=detail.getCommissionfixvalue()%>">元/单
-				</div>
-			</div>
+			     <div class="control-group">
+                    <label>订单金额*</label>
+                    <label title="应收商家配送费比例">商配比例</label><input id="busCommissionText" name="busCommissionText" style="width:100px" type="text" value="<%=detail.getBusinesscommission()%>" />
+                    %&nbsp;+&nbsp;<label title="应收商家配送费定额">商配定额</label><input id="CommissionFixValue" name="CommissionFixValue" style="width:100px" value="<%=detail.getCommissionfixvalue()%>" />&nbsp;+&nbsp;
+                    <label title="代收客户配送费">代收客配</label><input id="busiWaisong" id="busiWaisong" style="width:100px" value="<%=detail.getDistribsubsidy()%>" />
+                </div>
 		</div>
 		<hr />
 		<div
@@ -320,7 +301,7 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 	    oldForm=$("#busForm").serialize();
 	});
 	var oldForm="";
-	var oldDic=new ActiveXObject("Scripting.Dictionary");
+    var oldValues= new Array();   
 
 	function funcCheckExpress() {
 		var businessId = $('#busiId').val();
@@ -337,7 +318,6 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			success : function(businessExpressRef) {
 				if (businessExpressRef.length > 0) {
 					for (var i = 0; i < businessExpressRef.length; i++) {
-						oldDic.Add(businessExpressRef[i].expressid,businessExpressRef[i].isenable);
 						if (businessExpressRef[i].isenable == 1) {
 							$(
 									":checkbox[id='"
@@ -351,14 +331,14 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 						}
 					}
 				}
-				//保存商家的物流公司设置
-				$("input[name='checkMenus']").each(function() {
-							if ($(this).is(':checked')) {
-								oldDic.Add(parseInt($(this).val()),1);
-							} else {
-								oldDic.Add(parseInt($(this).val()),0);
-							}
-				});
+                //保存商家的物流公司设置
+                $("input[name='checkMenus']").each(function () {
+                    if ($(this).is(':checked')) {
+                        oldValues.push(1);
+                    } else {
+                        oldValues.push(0);
+                    }
+                });
 			}
 		});
 	};
@@ -403,17 +383,7 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			});
 		});
 	});
-	//结算比例选择
-	$('input[name="rCommissionFormulaMode"]').click(function() {
-		var a = $('input[name="rCommissionFormulaMode"]:checked').val();
-		if (a == 1) {
-			$("#divCommissionFixValue").hide();
-			$("#divbusCommissionText").show();
-		} else {
-			$("#divbusCommissionText").hide();
-			$("#divCommissionFixValue").show();
-		}
-	});
+
 	//市区联动
 	$('#busiCity').change(function() {
 		var selDistrictCode = $("#busiDistrict");
@@ -571,7 +541,8 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			"originalbusiid" : originalBusiId,
 			"onekeypuborder" : oneKeyPubOrder,
 			"isemployertask" : IsEmployerTask,
-			"isallowoverdraft" : isAllowOverdraft
+			"isallowoverdraft" : isAllowOverdraft,
+			"isOrderChecked":$('#OrderChecked input[name="IsCheckOrder"]:checked ').val()
 		};
 		var url = "<%=basePath%>/business/modifybusiness";
 		$.ajax({
@@ -595,23 +566,25 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 	$("#btnModifyExpress").click(function() {
 		var busiId = $('#busiId').val();
 		var deliveryCompanyList = "";
-		var newDic=	new ActiveXObject("Scripting.Dictionary");//创建对象   
-		$("input[name='checkMenus']").each(
-				function() {
-					if ($(this).is(':checked')) {
-						newDic.Add(parseInt($(this).val()),1);
-					} else {
-						newDic.Add(parseInt($(this).val()),0);
-					}
-		});
-		
-		var keys = newDic.Keys().toArray();
-		for (var i = 0; i < keys.length; i++) {//发生了改变，才需要提交db
-			if (oldDic.Item(keys[i]) != newDic.Item(keys[i])) {
-				deliveryCompanyList = deliveryCompanyList + keys[i]
-						+ "," + newDic.Item(keys[i]) + ";";
-			}
-		}
+		var newKeys = new Array();
+        var newValues = new Array();
+        $("input[name='checkMenus']").each(
+                function () {
+                    newKeys.push($(this).val());
+                    if ($(this).is(':checked')) {
+                        newValues.push(1);
+                    } else {
+                        newValues.push(0);
+                    }
+                });
+
+
+        for (var i = 0; i < newKeys.length; i++) {//发生了改变，才需要提交db
+            if (oldValues[i] != newValues[i]) {
+                deliveryCompanyList = deliveryCompanyList + newKeys[i]
+                        + "," + newValues[i] + ";";
+            }
+        }
 		if(deliveryCompanyList==""){
 			alert("物流公司数据没有发生变更，不需要保存");
 			return;

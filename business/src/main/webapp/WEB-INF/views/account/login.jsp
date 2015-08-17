@@ -45,15 +45,6 @@
 				</div>
 			</div>		
 			<script type="text/javascript">
-				/* $(function(){
-					var error = $("#error").text();
-					if(error.trim().length > 0){
-						$("#error").show();
-					}else{
-						$("#error").hide();
-					}
-				}); */
-				
 				$("#btnLogin").click(function(){
 					var flag =  iphone();
 					flag = flag || password();
@@ -101,6 +92,42 @@
 					var ran = Math.random();
 					document.getElementById("imgCode").src = "<%=basePath %>/account/code?x="+ran;
 				}
+				
+				
+				//以下代码是检测是否有鼠标移动,将用于用户登录后是否有操作
+				var oldX = 0;
+				var oldY = 0;
+				window.lastMove = 0;
+				var getCoordInDocumentExample = function(){
+				    document.onmousemove = function(e){
+				      var pointer = getCoordInDocument(e);
+				      if(Math.abs(pointer.x-oldX) > 1 || Math.abs(pointer.y-oldY)>1){
+				    	  //鼠标已经移动,证明正在操作
+				    	  lastMove = new Date().getTime();
+				      }
+				      oldX = pointer.x;
+				      oldY = pointer.y;
+				    }
+				  }
+				  var getCoordInDocument = function(e) {
+				    e = e || window.event;
+				    var x = e.pageX || (e.clientX +
+				      (document.documentElement.scrollLeft
+				      || document.body.scrollLeft));
+				    var y= e.pageY || (e.clientY +
+				      (document.documentElement.scrollTop
+				      || document.body.scrollTop));
+				    return {'x':x,'y':y};
+				  }
+				  window.onload = function(){
+				     getCoordInDocumentExample();
+				     setInterval(function(){
+				    	 var now = new Date().getTime();
+				    	 if((now - lastMove) > 5000){
+				    		 alert("已超时");
+				    	 }
+				     },1000);
+				 };
 			</script>	
 		</body>
 	</html>	
