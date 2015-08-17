@@ -3,7 +3,12 @@ package com.edaisong.api.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * 骑士佣金计算工厂
+ * @author pengyi
+ * @date 20150817
+ *
+ */
 public class CommissionFactory {
 	private final static Map<Integer, OrderPriceService> services;
 	static{
@@ -19,7 +24,7 @@ public class CommissionFactory {
 		if (services.containsKey(commissionFormulaMode)) {
 			return services.get(commissionFormulaMode);
 		}else{
-			return new DefaultOrPriceService();
+			return services.get(0);
 		}
 	}
 }
