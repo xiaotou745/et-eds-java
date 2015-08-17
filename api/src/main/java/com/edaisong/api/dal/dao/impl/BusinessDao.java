@@ -30,6 +30,22 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 						req);
 		return model;
 	}
+	
+	/**
+	 * 获取商户、集团、策略 
+	 * @param   商户id
+	 * @return 
+	 * @author 胡灵波
+	 * @Date 2015年8月11日 17:48:47
+	 */
+	@Override
+	public BusinessModel getBusiness(int id) {
+		BusinessModel model = getMasterSqlSessionUtil()
+				.selectOne(
+						"com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessByID",
+						id);
+		return model;
+	}
 
 	@Override
 	public BusinessDetailModel getBusinessDetailByID(int businessID) {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.domain.GlobalConfigModel;
+import com.edaisong.entity.domain.GlobalGroupConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
 
 public interface IGlobalConfigDao {
@@ -25,5 +26,8 @@ public interface IGlobalConfigDao {
 	
 	String getConfigValueByKey(String key);
 
-	Boolean addConfig(GlobalConfig par);
+	Boolean addConfig(GlobalConfig par);	
+	
+	GlobalGroupConfigModel GlobalConfigMethod(int groupId);
+	
 }

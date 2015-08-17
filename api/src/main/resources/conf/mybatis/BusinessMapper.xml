@@ -55,6 +55,52 @@
 		WHERE b.Id = #{businessID}
 	</select>
 
+<select id="getBusinessByID" resultType="com.edaisong.entity.domain.BusinessModel"
+		parameterType="java.lang.Long">
+		SELECT
+		b.id ,
+		b.name ,
+		b.city ,
+		b.district ,
+		b.phoneno ,
+		b.phoneno2 ,
+		b.idcard ,
+		b.[address] ,
+		isnull(b.landline,'') as  landline,
+		b.longitude ,
+		b.latitude ,
+		b.[status] ,
+		b.inserttime ,
+		b.districtid ,
+		b.cityid ,
+		b.provincecode ,
+		b.citycode ,
+		b.areacode ,
+		b.province ,
+		ISNULL(b.DistribSubsidy, 0.00) distribsubsidy ,
+		b.businesscommission ,
+		b.commissiontype ,
+		b.commissionfixvalue ,
+		b.businessgroupId ,
+		b.balanceprice ,
+		b.allowwithdrawprice ,
+		b.haswithdrawprice ,
+		b.checkpicurl ,
+		b.businesslicensepic ,
+		b.mealssettlemode ,
+		isnull(b.groupid,0) as groupid ,
+		b.originalbusiid ,	
+		ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
+		b.isallowoverdraft ,
+		b.isemployertask ,
+		ISNULL(b.RecommendPhone, '') AS recommendphone,
+		bg.StrategyId as StrategyId
+		FROM business b WITH ( NOLOCK )	
+		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON
+		b.BusinessGroupId =bg.Id		
+		WHERE b.Id = #{businessID}
+	</select>
+
 	<update id="modifyBusiness" parameterType="com.edaisong.entity.domain.BusinessModifyModel">
 		update business
 		<set>
