@@ -16,7 +16,7 @@ import com.edaisong.entity.domain.OrderCommission;
  * @date 20150817
  *
  */
-@Service
+@Service("baseCommissionOrPriceService")
 public class BaseCommissionOrPriceService extends OrderPriceService{
 	
 	@Autowired
