@@ -41,7 +41,7 @@
 
 	$(document).ajaxError(function(event, jqXHR, options, errorMsg) {
 		var info=jqXHR.responseText;
-		//alert(options.url + "调用出错了！");
+		alert(options.url + "调用出错了！");
 	});
 	function countH() {
 		var WinHeight = $(window).height();
