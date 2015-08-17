@@ -1,7 +1,7 @@
 package com.edaisong.entity.domain;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * 商家后台 订单详情页面基础数据
