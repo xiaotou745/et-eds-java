@@ -55,7 +55,7 @@
 </head>
 <body>
 	<tiles:insertAttribute name="header"></tiles:insertAttribute>
-	<div class="content cb">
+	<div class="content content2  cb">
 		<tiles:insertAttribute name="leftmenu"></tiles:insertAttribute>
 		<div class="center">
 			<tiles:insertAttribute name="breadcrumbs"></tiles:insertAttribute>
