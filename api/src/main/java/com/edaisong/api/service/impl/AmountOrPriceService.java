@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.edaisong.entity.domain.OrderCommission;
 
 
-@Service
+@Service("amountOrPriceService")
 public class AmountOrPriceService extends OrderPriceService{
 
 	@Override
