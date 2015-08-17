@@ -843,7 +843,7 @@ a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,
  case when a.OrderFrom=0 then '客户端' else d.GroupName end GroupName
  from dbo.[order] ( nolock ) a
  join dbo.OrderOther ( nolock ) b on a.Id=b.OrderId
- LEFT join dbo.clienter  ( nolock ) c on a.clienterId=b.Id 
+ LEFT join dbo.clienter  ( nolock ) c on a.clienterId=c.Id 
  left  join dbo.[group] d on a.OrderFrom=d.Id 
  where a.OrderNo=#{orderNo,jdbcType=NVARCHAR} and a.BusinessId= #{businessId,jdbcType=INTEGER} 
    </select>
