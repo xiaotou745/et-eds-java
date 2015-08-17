@@ -15,6 +15,8 @@
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/base.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/commen.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/index.css">
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/newProjects.css">
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/popup.css">
 
 <script type="text/javascript"
 	src="<%=basePath%>/js/jquery-1.11.2.min.js"></script>

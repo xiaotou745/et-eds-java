@@ -109,9 +109,11 @@ public class OrderController {
 	 */
 	@RequestMapping(value = "publish")
 	public ModelAndView publish(HttpServletRequest request) {
-
-		ModelAndView view = new ModelAndView("order/publish");
-		return view;
+		ModelAndView model = new ModelAndView("businessView");
+		model.addObject("subtitle", "订单中心");
+		model.addObject("currenttitle", "发布任务");
+		model.addObject("viewPath", "order/publish");
+		return model;
 
 	}
 
