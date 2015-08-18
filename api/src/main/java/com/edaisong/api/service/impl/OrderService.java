@@ -17,15 +17,19 @@ import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
+import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
 import com.edaisong.core.enums.MealsSettleMode;
 import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderStatus;
+import com.edaisong.core.enums.SuperPlatform;
+import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderOther;
+import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
@@ -53,7 +57,8 @@ public class OrderService implements IOrderService {
 	private IBusinessDao businessDao;
 	@Autowired
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
-
+    @Autowired
+	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -248,8 +253,16 @@ public class OrderService implements IOrderService {
 							.setScale(2, RoundingMode.HALF_UP));
 			order.setBusinessreceivable(money);
 		}
-		orderDao.insert(order);
-
+		int orderID=orderDao.insert(order);
+		OrderSubsidiesLog record=new OrderSubsidiesLog();
+		record.setOrderid(orderID);
+		record.setOrderstatus(OrderStatus.New.value());
+		record.setOptid(req.getBusinessid());
+		record.setOptname(businessModel.getName());
+		record.setRemark(TaskStatus.PublishOrder.desc());
+		record.setPlatform(SuperPlatform.Business.value());
+		orderSubsidiesLogDao.insert(record);
+		
 		int orderid = order.getId().intValue();
 		// 写入订单Other表
 		OrderOther orderOther = new OrderOther();
