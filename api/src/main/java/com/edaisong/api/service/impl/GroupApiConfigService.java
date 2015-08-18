@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 
 
 
-import com.edaisong.api.dal.dao.inter.IGroupApiConfigDao;
+
+import com.edaisong.api.dao.inter.IGroupApiConfigDao;
 import com.edaisong.api.service.inter.IGroupApiConfigService;
 import com.edaisong.entity.GroupApiConfig;
 

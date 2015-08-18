@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 
 
 
-import com.edaisong.api.dal.dao.inter.IActionLogDao;
+
+import com.edaisong.api.dao.inter.IActionLogDao;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.entity.domain.ActionLog;
 

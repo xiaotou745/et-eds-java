@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edaisong.api.dal.dao.inter.IGroupDao;
+import com.edaisong.api.dao.inter.IGroupDao;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.domain.GroupModel;

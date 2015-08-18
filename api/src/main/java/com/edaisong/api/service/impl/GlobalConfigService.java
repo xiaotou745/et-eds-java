@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edaisong.api.dal.dao.inter.IGlobalConfigDao;
+import com.edaisong.api.dao.inter.IGlobalConfigDao;
 import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.domain.GlobalConfigModel;

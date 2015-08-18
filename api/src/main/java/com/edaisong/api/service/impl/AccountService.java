@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edaisong.api.dal.dao.inter.IAccountDao;
+import com.edaisong.api.dao.inter.IAccountDao;
 import com.edaisong.api.service.inter.IAccountService;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.common.PagedResponse;

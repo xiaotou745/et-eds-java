@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edaisong.api.dal.dao.inter.ITestUserTblDao;
+import com.edaisong.api.dao.inter.ITestUserTblDao;
 import com.edaisong.api.service.inter.ITestUserTblService;
 import com.edaisong.entity.TestUserTbl;
 import com.edaisong.entity.domain.TestUserRecord;
