@@ -4,7 +4,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.edaisong.api.business.SpringBeanHelper;
+import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.api.service.inter.ITestUserTblService;
 import com.edaisong.entity.domain.TestUserRecord;
 

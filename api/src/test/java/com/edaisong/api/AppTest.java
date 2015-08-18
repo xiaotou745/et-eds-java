@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import com.edaisong.api.business.SpringBeanHelper;
-import com.edaisong.api.service.impl.OrderPriceService;
+import com.edaisong.api.common.OrderPriceBaseProvider;
+import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
@@ -23,13 +23,14 @@ import com.edaisong.entity.resp.OrderDetailBusinessResp;
 public class AppTest extends TestCase {
 
 	IOrderService testService;
-	OrderPriceService baseCommissionService;
-	IOrderService orderService;
+
+	OrderPriceBaseProvider baseCommissionService;
+
 
 	public AppTest() {
 		testService = SpringBeanHelper
 				.getCustomBeanByType(IOrderService.class);
-		baseCommissionService = (OrderPriceService)SpringBeanHelper.getCustomBean("baseCommissionOrPriceService");
+		baseCommissionService = (OrderPriceBaseProvider)SpringBeanHelper.getCustomBean("baseCommissionOrPriceService");
 				//.getCustomBeanByType(OrderPriceService.class);
 	}
 

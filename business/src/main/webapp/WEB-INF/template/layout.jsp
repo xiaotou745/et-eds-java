@@ -21,7 +21,7 @@
 
 <script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.2.min.js"></script>
 <%-- <script type="text/javascript" src="<%=basePath%>/js/jquery-ui-1.8.20.js"></script> --%>
-<script type="text/javascript" src="<%=basePath%>/js/jquery.ui.datepicker-zh-CN.js"></script>
+<%-- <script type="text/javascript" src="<%=basePath%>/js/jquery.ui.datepicker-zh-CN.js"></script> --%>
 <script>
 $(document).ready(function() {
 	setTimeout("regTrEvent()",50);  

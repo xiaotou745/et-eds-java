@@ -120,6 +120,7 @@
 		</div>
 	</div>
 	<div class="right2 fl">
+	    <input type="button" value="取消订单" id="CanelOrderBtn">
 		<h2>订单明细</h2>
 		<p>
 			总金额：<span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
@@ -165,3 +166,16 @@
 		</table>
 	</div>
 </div>
+<script type="text/javascript">
+$(function(){
+	//取消订单事件
+	$("#CanelOrderBtn").click(function(){
+		if(confirm("您确认取消订单吗？")){
+			 var data={"orderNo":"<%=modelDatas.getOrderModel().getOrderNo()%>","orderId":<%=modelDatas.getOrderModel().getId() %>};
+				$.post("<%=basePath%>/order/canelorder",data, function(result) {
+					alert("取消订单成功！")
+				});
+		}
+	});
+});
+</script>

@@ -1,6 +1,6 @@
 package com.edaisong.api;
 
-import com.edaisong.api.business.SpringBeanHelper;
+import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.entity.req.BusinessLoginReq;
 
