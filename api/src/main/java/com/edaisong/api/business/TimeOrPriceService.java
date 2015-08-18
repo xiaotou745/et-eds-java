@@ -1,14 +1,15 @@
-package com.edaisong.api.service.impl;
+package com.edaisong.api.business;
 
 import java.math.BigDecimal;
 
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.service.impl.OrderPriceService;
 import com.edaisong.entity.domain.OrderCommission;
 
 
-@Service("breakEvenPointOrPriceService")
-public class BreakEvenPointOrPriceService extends OrderPriceService{
+@Service("timeOrPriceService")
+public class TimeOrPriceService extends OrderPriceService{
 
 	@Override
 	public BigDecimal getCurrenOrderCommission(OrderCommission model) {
