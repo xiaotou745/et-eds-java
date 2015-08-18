@@ -40,20 +40,30 @@
 		var oldX = 0;
 		var oldY = 0;
 		var flag = false;
+		var maxArea = 5;
 		document.onmousemove = function(e) {
 			var pointer = getCoordInDocument(e);
-			if (Math.abs(pointer.x - oldX) > 5
-					|| Math.abs(pointer.y - oldY) > 5) {
+			if (Math.abs(pointer.x - oldX) > maxArea
+					|| Math.abs(pointer.y - oldY) > maxArea) {
 				//鼠标已经移动,证明正在操作
 				isMove = true;
 			} else {
 				isMove = false;
 			}
 			if (isMove) {
-				var t=setTimeout("if(flag){window.location.href='<%=basePath%>/account/logoff';}flag=true;",3000);
+				flag = true;
+				var t=setTimeout("logoff()",3000);
 			}
 			oldX = pointer.x;
 			oldY = pointer.y;
+		}
+		
+		function logoff(){
+			if(flag){
+				window.location.href="<%=basePath%>/account/logoff";
+				maxArea = 10000;
+				flag = false;
+			}
 		}
 	</script>
 	<%
