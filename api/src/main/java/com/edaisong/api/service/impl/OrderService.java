@@ -22,6 +22,7 @@ import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
 import com.edaisong.core.enums.BusinessStatus;
+import com.edaisong.core.enums.CancelOrderBusinessReturnEnum;
 import com.edaisong.core.enums.MealsSettleMode;
 import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderStatus;
@@ -34,8 +35,8 @@ import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
+import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -127,8 +128,8 @@ public class OrderService implements IOrderService {
 		CancelOrderBusinessResp resp = new CancelOrderBusinessResp();
 		if (req.getOrderId() <= 0 || req.getOrderNo().isEmpty()
 				|| req.getOrderNo() == null || req.getBusinessId() <= 0) {
-			resp.setResponseCode(ResponseCode.PARAMETER_FORMAT_ERROR);
-			resp.setMessage("取消失败");
+			resp.setResponseCode(CancelOrderBusinessReturnEnum.OrderEmpty.value());
+			resp.setMessage(CancelOrderBusinessReturnEnum.OrderEmpty.desc());
 			return resp;
 		}
 		Order orderSearch = new Order();// 查询取消的订单的基础数据
@@ -138,13 +139,11 @@ public class OrderService implements IOrderService {
 		orderSearch.setStatus((byte) OrderStatus.New.value()); // 查询状态属于待接单的
 		Order orderRe = orderDao.getOneByCriteria(orderSearch); // 查询取消的订单的基础数据
 		if (orderRe == null) {
-			resp.setResponseCode(ResponseCode.PARAMETER_FORMAT_ERROR);
-			resp.setMessage("取消订单失败,订单已被抢或订单不存在！");
+			resp.setResponseCode(CancelOrderBusinessReturnEnum.CancelOrderError.value());
+			resp.setMessage(CancelOrderBusinessReturnEnum.CancelOrderError.desc());
 			return resp;
 		}
 		cancelOrderBusinessTrans(req, orderRe); // 事务代码
-		resp.setResponseCode(ResponseCode.SUCESS);
-		resp.setMessage("取消订单成功！");
 		return resp;
 	}
 
@@ -414,5 +413,9 @@ private void fillOrderChild(OrderReq req, BusinessModel businessModel,Order orde
         }       
         return PublishOrderReturnEnum.Success;
 	}
-
+	
+	@Override
+	public BusinessOrderSummaryModel getBusinessOrderSummary(int businessId) {
+		return orderDao.getBusinessOrderSummary(businessId);
+	}
 }

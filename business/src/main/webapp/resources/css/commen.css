@@ -504,10 +504,23 @@
 }
 
 .content .center .bottom4 .right2{
+	position: relative;
 	width: 768px;
 	padding:20px;
 	background-color:#fff;
 	border:1px solid #dfe1e8;
+}
+.content .center .bottom4 .right2 input[type="button"]{
+	position: absolute;
+	top:25px;
+	right:70px;
+	width: 110px;
+	height: 34px;
+	color:#fff;
+	font-size: 14px;
+	background-color:#006699;
+	border:none;
+	border-radius:3px;
 }
 .content .center .bottom4 .right2 h2{
 	color:#000;

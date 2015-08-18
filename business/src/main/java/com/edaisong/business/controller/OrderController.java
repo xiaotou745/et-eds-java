@@ -123,7 +123,8 @@ public class OrderController {
 	 */
 	@RequestMapping(value = "canelorder", method = { RequestMethod.POST })
 	@ResponseBody
-	public CancelOrderBusinessResp login(@RequestBody CancelOrderBusinessReq req) {
+	public CancelOrderBusinessResp canelorder(CancelOrderBusinessReq req,HttpServletRequest request) {
+		req.setBusinessId(UserContext.getCurrentContext(request).getBusiness().getId());
 		CancelOrderBusinessResp resp = orderService.cancelOrderBusiness(req);
 		return resp;
 	}

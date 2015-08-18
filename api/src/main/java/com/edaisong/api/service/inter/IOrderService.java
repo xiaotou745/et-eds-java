@@ -1,5 +1,6 @@
 package com.edaisong.api.service.inter;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
@@ -56,4 +57,12 @@ public interface IOrderService {
 	 * @return
 	 */
 	OrderResp AddOrder(OrderReq  req);
+	
+	/**
+	 * 获得商家订单概览信息
+	 * @param 商家Id
+	 * @date 20150818
+	 * @return
+	 */
+	BusinessOrderSummaryModel getBusinessOrderSummary(int businessId);
 }
