@@ -28,6 +28,7 @@ import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.api.service.inter.IClienterService;
+import com.edaisong.business.entity.UserContext;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.NumberHelper;
 import com.edaisong.core.util.ParseHelper;
@@ -96,13 +97,10 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value = "detail", method = { RequestMethod.GET })
-	public ModelAndView detail(String orderno) {
-		 String numberString=NumberHelper.getcode();
-		
-		
+	public ModelAndView detail(String orderno,HttpServletRequest request) {
 		OrderDetailBusinessReq req=new OrderDetailBusinessReq();
 		req.setOrderNo(orderno);
-		req.setBusinessId(2047);
+		req.setBusinessId(UserContext.getCurrentContext(request).getBusiness().getId());
 		ModelAndView model = new ModelAndView("businessView");
 		model.addObject("subtitle", "订单中心");
 		model.addObject("currenttitle", "订单详情");

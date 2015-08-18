@@ -60,9 +60,9 @@
 		
 		function logoff(){
 			if(flag){
-				window.location.href="<%=basePath%>/account/logoff";
+				<%-- window.location.href="<%=basePath%>/account/logoff";
 				maxArea = 10000;
-				flag = false;
+				flag = false; --%>
 			}
 		}
 	</script>
