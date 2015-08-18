@@ -11,24 +11,27 @@ import org.springframework.transaction.annotation.Transactional;
 import com.edaisong.api.common.CommissionFactory;
 import com.edaisong.api.common.OrderPriceBaseProvider;
 import com.edaisong.api.common.OrderSettleMoneyHelper;
+import com.edaisong.api.dao.impl.OrderChildDao;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
+import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
-
 import com.edaisong.core.enums.BusinessStatus;
-
 import com.edaisong.core.enums.MealsSettleMode;
 import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
+import com.edaisong.core.enums.SuperPlatform;
+import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderOther;
+import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
@@ -56,7 +59,8 @@ public class OrderService implements IOrderService {
 	private IBusinessDao businessDao;
 	@Autowired
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
-
+    @Autowired
+	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -197,7 +201,57 @@ public class OrderService implements IOrderService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public OrderResp AddOrder(OrderReq req) {
 		OrderResp resp = new OrderResp();
+		BusinessModel businessModel = businessDao.getBusiness(req.getBusinessid());
+		PublishOrderReturnEnum returnEnum= verificationAddOrder(req,businessModel);
+		if (returnEnum!=PublishOrderReturnEnum.Success) {
+			resp.setResponseCode(returnEnum.value());
+			resp.setMessage(returnEnum.desc());
+			return resp;
+		}
 		// 订单主表
+		Order order = fillOrder(req, businessModel);
+		int orderID=orderDao.insert(order);
+		OrderSubsidiesLog record=new OrderSubsidiesLog();
+		record.setOrderid(orderID);
+		record.setOrderstatus(OrderStatus.New.value());
+		record.setOptid(req.getBusinessid());
+		record.setOptname(businessModel.getName());
+		record.setRemark(TaskStatus.PublishOrder.desc());
+		record.setPlatform(SuperPlatform.Business.value());
+		orderSubsidiesLogDao.insert(record);
+		
+		if (order.getAdjustment().compareTo(BigDecimal.ZERO)>0) {
+			OrderSubsidiesLog adjustRecord=new OrderSubsidiesLog();
+			adjustRecord.setOrderid(orderID);
+			adjustRecord.setPrice(order.getAdjustment());
+			adjustRecord.setOrderstatus(OrderStatus.New.value());
+			adjustRecord.setOptid(req.getBusinessid());
+			adjustRecord.setOptname(TaskStatus.PublishOrder.desc());
+			adjustRecord.setRemark("补贴加钱,订单金额:" + order.getAmount() + "-佣金补贴策略id:" + order.getCommissionformulamode());
+			adjustRecord.setPlatform(SuperPlatform.Business.value());
+			orderSubsidiesLogDao.insert(adjustRecord);
+		}
+		
+		int orderid = order.getId().intValue();
+		// 写入订单Other表
+		OrderOther orderOther = new OrderOther();
+		orderOther.setOrderid(orderid);
+		orderOther.setNeeduploadcount(req.getOrdercount());
+		orderOther.setHaduploadcount(0);
+		orderOther.setPublongitude(businessModel.getLongitude());
+		orderOther.setPublatitude(businessModel.getLatitude());
+		orderOther.setOnekeypuborder(businessModel.getOnekeypuborder());
+		orderOther.setIsorderchecked(businessModel.getIsOrderChecked());
+		orderOtherDao.insert(orderOther);
+
+		if (req.getListOrderChild() != null
+				&& req.getListOrderChild().size() > 0) {
+			orderChildDao.insertList(req.getListOrderChild());
+		}
+		return resp;
+	}
+
+	private Order fillOrder(OrderReq req, BusinessModel businessModel) {
 		Order order = new Order();
 		order.setOrderno("no11111111");// 临时
 		order.setRecevicename(req.getRecevicename());
@@ -217,7 +271,7 @@ public class OrderService implements IOrderService {
 		order.setPickupaddress(req.getPickupaddress());
 		order.setRecevicecity(req.getRecevicecity());
 		
-		BusinessModel businessModel = businessDao.getBusiness(req.getBusinessid());
+
 		order.setCommissionformulamode(businessModel.getStrategyId());
 		order.setBusinesscommission(businessModel.getBusinesscommission());
 		order.setBusinessgroupid(businessModel.getGroupid());
@@ -251,27 +305,8 @@ public class OrderService implements IOrderService {
 							.setScale(2, RoundingMode.HALF_UP));
 			order.setBusinessreceivable(money);
 		}
-		orderDao.insert(order);
-
-		int orderid = order.getId().intValue();
-		// 写入订单Other表
-		OrderOther orderOther = new OrderOther();
-		orderOther.setOrderid(orderid);
-		orderOther.setNeeduploadcount(req.getOrdercount());
-		orderOther.setHaduploadcount(0);
-		orderOther.setPublongitude(businessModel.getLongitude());
-		orderOther.setPublatitude(businessModel.getLatitude());
-		orderOther.setOnekeypuborder(businessModel.getOnekeypuborder());
-		orderOther.setIsorderchecked(businessModel.getIsOrderChecked());
-		orderOtherDao.insert(orderOther);
-
-		if (req.getListOrderChild() != null
-				&& req.getListOrderChild().size() > 0) {
-			orderChildDao.insertList(req.getListOrderChild());
-		}
-		return resp;
-	}	
-	
+		return order;
+	}
 	/**
 	 * 商户发单数据验证  
 	 * @author CaoHeYang
@@ -280,12 +315,19 @@ public class OrderService implements IOrderService {
 	 * @Date 20150818
 	 * @return
 	 */
-	public PublishOrderReturnEnum verificationAddOrder(OrderReq  req,BusinessModel businessModel){
+	private PublishOrderReturnEnum verificationAddOrder(OrderReq  req,BusinessModel businessModel){
+		if (businessModel==null) {
+			return PublishOrderReturnEnum.BusinessEmpty;
+		}
 		boolean isOneKeyPubOrder = false;
         if (businessModel != null && businessModel.getOnekeypuborder() == 1)
         {
         	 isOneKeyPubOrder = true;
         }   
+        if (businessModel.getStatus()!=BusinessStatus.AuditPass.value())//验证该商户有无发布订单资格   审核通过下不允许发单
+        {
+        	return PublishOrderReturnEnum.HadCancelQualification;
+        }
         //非一键发单模式下
         if (!isOneKeyPubOrder) {
         	 if (req.getRecevicephoneno()==null||req.getRecevicephoneno().isEmpty())//手机号
@@ -297,10 +339,6 @@ public class OrderService implements IOrderService {
             	 return PublishOrderReturnEnum.ReceviceAddressIsNULL;
              }
 		}
-        if (businessModel.getStatus()!=BusinessStatus.AuditPass.value())//验证该商户有无发布订单资格   审核通过下不允许发单
-        {
-        	return PublishOrderReturnEnum.HadCancelQualification;
-        }
         if (req.getListOrderChild().size()> 15 || req.getListOrderChild().size() <= 0||req.getOrdercount()!=req.getListOrderChild().size())
         {
         	return PublishOrderReturnEnum.OrderCountError;
@@ -324,11 +362,16 @@ public class OrderService implements IOrderService {
         }
         if (businessModel.getIsallowoverdraft()== 0) //0不允许透支
         {
-            if (businessModel.getBalanceprice()==null)
+    		BigDecimal settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
+    				req.getAmount(), businessModel.getBusinesscommission(),
+    				businessModel.getCommissionfixvalue(), req.getOrdercount(),
+    				businessModel.getDistribsubsidy(), OrderFrom.EDaiSong.value());
+            if (businessModel.getBalanceprice().compareTo(settleMoney)<0)
             {
                return PublishOrderReturnEnum.BusiBalancePriceLack;
             }
         }       
         return PublishOrderReturnEnum.Success;
 	}
+
 }
