@@ -1,8 +1,10 @@
 package com.edaisong.api.service.inter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.edaisong.entity.Business;
+import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
@@ -67,4 +69,14 @@ public interface IBusinessService {
 	 * @return 
 	 */
 	int updateAuditStatus(int businessID,int status);
+	
+	/**
+	 * 更新商户余额、可提现余额  
+	 * @author hailongzhao
+	 * @date 20150818
+	 * @param businessID
+	 * @param money
+	 * @return
+	 */
+	int updateForWithdrawC(BusinessBalanceRecord record);
 }

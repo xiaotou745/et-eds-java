@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.edaisong.api.common.CommissionFactory;
 import com.edaisong.api.common.OrderPriceBaseProvider;
 import com.edaisong.api.common.OrderSettleMoneyHelper;
-import com.edaisong.api.dao.impl.OrderChildDao;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
+import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
@@ -30,6 +30,7 @@ import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
+import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
@@ -61,6 +62,8 @@ public class OrderService implements IOrderService {
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
     @Autowired
 	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
+    
+    private IBusinessService businessService;
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -202,15 +205,18 @@ public class OrderService implements IOrderService {
 	public OrderResp AddOrder(OrderReq req) {
 		OrderResp resp = new OrderResp();
 		BusinessModel businessModel = businessDao.getBusiness(req.getBusinessid());
+		//校验是否可以正常发单
 		PublishOrderReturnEnum returnEnum= verificationAddOrder(req,businessModel);
 		if (returnEnum!=PublishOrderReturnEnum.Success) {
-			resp.setResponseCode(returnEnum.value());
+			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
 		// 订单主表
 		Order order = fillOrder(req, businessModel);
 		int orderID=orderDao.insert(order);
+		order.setId(orderID);
+		//记录发单日志
 		OrderSubsidiesLog record=new OrderSubsidiesLog();
 		record.setOrderid(orderID);
 		record.setOrderstatus(OrderStatus.New.value());
@@ -220,6 +226,19 @@ public class OrderService implements IOrderService {
 		record.setPlatform(SuperPlatform.Business.value());
 		orderSubsidiesLogDao.insert(record);
 		
+		//扣除商家结算费
+		BusinessBalanceRecord balanceRecord=new BusinessBalanceRecord();
+		balanceRecord.setBusinessid(req.getBusinessid());
+		balanceRecord.setAmount(order.getSettlemoney().multiply(new BigDecimal(-1)));
+		balanceRecord.setStatus((short)BusinessBalanceRecordStatus.Success.value());
+		balanceRecord.setRecordtype((short)BusinessBalanceRecordRecordType.PublishOrder.value());
+		balanceRecord.setOperator(businessModel.getName());
+		balanceRecord.setWithwardid((long)orderID);
+		balanceRecord.setRelationno(order.getOrderno());
+		balanceRecord.setRemark("扣除商家结算费");
+		businessService.updateForWithdrawC(balanceRecord);
+		
+		//记录补贴日志
 		if (order.getAdjustment().compareTo(BigDecimal.ZERO)>0) {
 			OrderSubsidiesLog adjustRecord=new OrderSubsidiesLog();
 			adjustRecord.setOrderid(orderID);
@@ -232,10 +251,9 @@ public class OrderService implements IOrderService {
 			orderSubsidiesLogDao.insert(adjustRecord);
 		}
 		
-		int orderid = order.getId().intValue();
 		// 写入订单Other表
 		OrderOther orderOther = new OrderOther();
-		orderOther.setOrderid(orderid);
+		orderOther.setOrderid(orderID);
 		orderOther.setNeeduploadcount(req.getOrdercount());
 		orderOther.setHaduploadcount(0);
 		orderOther.setPublongitude(businessModel.getLongitude());
@@ -243,14 +261,36 @@ public class OrderService implements IOrderService {
 		orderOther.setOnekeypuborder(businessModel.getOnekeypuborder());
 		orderOther.setIsorderchecked(businessModel.getIsOrderChecked());
 		orderOtherDao.insert(orderOther);
-
+        
+		//写入OrderChild
 		if (req.getListOrderChild() != null
 				&& req.getListOrderChild().size() > 0) {
+			fillOrderChild(req,businessModel,order);
 			orderChildDao.insertList(req.getListOrderChild());
 		}
 		return resp;
 	}
-
+private void fillOrderChild(OrderReq req, BusinessModel businessModel,Order order){
+	if (req.getListOrderChild() != null
+			&& req.getListOrderChild().size() > 0) {
+		OrderChild child=null;
+		short payStatus=0;
+		if (req.getIspay()||!req.getIspay()
+				&& req.getMealssettlemode() == MealsSettleMode.LineOff.value()) {
+			payStatus=1;
+		}
+		for (int i = 0; i < req.getListOrderChild().size(); i++) {
+		    child=req.getListOrderChild().get(i);
+		    child.setChildid(i+1);
+			child.setCreateby(businessModel.getName());
+			child.setUpdateby(businessModel.getName());
+			child.setDeliveryprice(order.getDistribsubsidy());
+			child.setOrderid(order.getId());
+			child.setTotalprice(child.getGoodprice().add(child.getDeliveryprice()));
+			child.setPaystatus(payStatus);
+		}
+	}
+}
 	private Order fillOrder(OrderReq req, BusinessModel businessModel) {
 		Order order = new Order();
 		order.setOrderno("no11111111");// 临时
@@ -279,8 +319,8 @@ public class OrderService implements IOrderService {
 		order.setCommissionfixvalue(businessModel.getCommissionfixvalue());
 		order.setMealssettlemode(businessModel.getMealssettlemode());
 		order.setDistribsubsidy(businessModel.getDistribsubsidy());
+		
 		OrderCommission orderCommission = new OrderCommission();
-
 		OrderPriceBaseProvider orderPriceService = CommissionFactory
 				.GetCommission(businessModel.getStrategyId());
 		order.setOrdercommission(orderPriceService
@@ -305,6 +345,7 @@ public class OrderService implements IOrderService {
 							.setScale(2, RoundingMode.HALF_UP));
 			order.setBusinessreceivable(money);
 		}
+
 		return order;
 	}
 	/**
