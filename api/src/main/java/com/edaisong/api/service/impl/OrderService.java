@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 import java.util.Date;
 
+import org.apache.commons.collections.functors.IfClosure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,10 @@ import com.edaisong.api.dal.dao.inter.IOrderOtherDao;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
+import com.edaisong.core.enums.BusinessStatus;
 import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderStatus;
+import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
@@ -252,10 +255,64 @@ public class OrderService implements IOrderService {
 		return resp;
 	}	
 	
-	
-	public boolean verificationAddOrder(OrderReq  req){
-		boolean isOneKeyPubOrder = false;   //一键发单
-		return false;
+	/**
+	 * 商户发单数据验证  
+	 * @author CaoHeYang
+	 * @param req
+	 * @param businessModel
+	 * @Date 20150818
+	 * @return
+	 */
+	public PublishOrderReturnEnum verificationAddOrder(OrderReq  req,BusinessModel businessModel){
+		boolean isOneKeyPubOrder = false;
+        if (businessModel != null && businessModel.getOnekeypuborder() == 1)
+        {
+        	 isOneKeyPubOrder = true;
+        }   
+        //非一键发单模式下
+        if (!isOneKeyPubOrder) {
+        	 if (req.getRecevicephoneno()==null||req.getRecevicephoneno().isEmpty())//手机号
+             {
+        		 return PublishOrderReturnEnum.RecevicePhoneIsNULL;
+             }
+             if (req.getReceviceaddress()==null||req.getReceviceaddress().isEmpty())
+             {
+            	 return PublishOrderReturnEnum.ReceviceAddressIsNULL;
+             }
+		}
+        if (businessModel.getStatus()!=BusinessStatus.AuditPass.value())//验证该商户有无发布订单资格   审核通过下不允许发单
+        {
+        	return PublishOrderReturnEnum.HadCancelQualification;
+        }
+        if (req.getListOrderChild().size()> 15 || req.getListOrderChild().size() <= 0||req.getOrdercount()!=req.getListOrderChild().size())
+        {
+        	return PublishOrderReturnEnum.OrderCountError;
+        }
+        BigDecimal amount = BigDecimal.ZERO;
+        for (int i = 0; i < req.getListOrderChild().size(); i++)//子订单价格
+        {
+            if (req.getListOrderChild().get(i).getGoodprice().compareTo(new BigDecimal(5))<0)  //金额小于5不合法
+            {
+                return PublishOrderReturnEnum.AmountLessThanTen;
+            }
+            if (req.getListOrderChild().get(i).getGoodprice().compareTo(new BigDecimal(1000))>0) //金额大于1000不合法
+            {
+            	return PublishOrderReturnEnum.AmountMoreThanFiveThousand;
+            }
+            amount.add(req.getListOrderChild().get(i).getGoodprice());
+        }
+        if (req.getAmount().compareTo(amount)!=0)
+        {
+           return PublishOrderReturnEnum.AmountIsNotEqual; //金额有误
+        }
+        if (businessModel.getIsallowoverdraft()== 0) //0不允许透支
+        {
+            if (businessModel.getBalanceprice()==null)
+            {
+               return PublishOrderReturnEnum.BusiBalancePriceLack;
+            }
+        }       
+        return PublishOrderReturnEnum.Success;
 	}
 }
 
