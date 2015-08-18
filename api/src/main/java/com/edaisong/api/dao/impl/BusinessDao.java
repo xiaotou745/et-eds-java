@@ -86,11 +86,8 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	}
 /**
 	 * 更新 商户 余额，可提现余额
-	 * 
-	 * @param money
-	 *            金额
-	 * @param businessId
-	 *            商户id
+	 * @param money 金额
+	 * @param businessId 商户id
 	 * @Date 20150804
 	 * @param business
 	 * @return

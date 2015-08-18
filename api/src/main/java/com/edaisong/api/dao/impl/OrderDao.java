@@ -10,6 +10,7 @@ import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -111,5 +112,13 @@ public class OrderDao extends DaoBase implements IOrderDao {
 						"com.edaisong.api.dal.dao.inter.IOrderDao.cancelOrderBusiness",
 						order);
 		return res;
+	}
+
+	@Override
+	public BusinessOrderSummaryModel getBusinessOrderSummary(int businessId) {
+		// TODO Auto-generated method stub
+		return getMasterSqlSessionUtil().selectOne(
+				"com.edaisong.api.dal.dao.inter.IOrderDao.getBusinessOrderSummary", 
+				businessId);
 	}
 }
