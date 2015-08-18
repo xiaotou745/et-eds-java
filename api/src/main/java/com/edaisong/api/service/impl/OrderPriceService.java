@@ -1,60 +1,82 @@
 package com.edaisong.api.service.impl;
 
-import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import com.edaisong.entity.domain.OrderCommission;
 
+/**
+ * 佣金补贴策略基类
+ * 
+ * @author pengyi
+ * @author pengyi
+ * @date 20150817
+ *
+ */
+public abstract class OrderPriceService {
+	/**
+	 * 获取订单的骑士佣金
+	 * 
+	 * @param model
+	 * @author pengyi
+	 * @date 20150817
+	 * @return
+	 */
+	public abstract BigDecimal getCurrenOrderCommission(OrderCommission model);
 
-@Service
-public abstract class OrderPriceService{
-	   /// <summary>
-    /// 获取订单的骑士佣金 add by caoheyang 20150305
-    /// </summary>
-    /// <param name="model">订单</param>
-    /// <returns></returns>
-    public abstract float GetCurrenOrderCommission(OrderCommission model);
+	/**
+	 * 获取订单的网站补贴
+	 * 
+	 * @param model
+	 * @author pengyi
+	 * @date 20150817
+	 * @return
+	 */
+	public abstract BigDecimal getOrderWebSubsidy(OrderCommission model);
 
-    /// <summary>
-    /// 获取订单的网站补贴 add by caoheyang 20150402
-    /// </summary>
-    /// <param name="model">订单</param>
-    /// <returns></returns>
-    public abstract float GetOrderWebSubsidy(OrderCommission model);
+	/**
+	 * 获取订单的佣金比例
+	 * 
+	 * @param model
+	 * @author pengyi
+	 * @date 20150817
+	 * @return
+	 */
+	public abstract BigDecimal getCommissionRate(OrderCommission model);
 
-    /// <summary>
-    /// 获取订单的佣金比例 add by caoheyang 20150402
-    /// </summary>
-    /// <param name="model">订单</param>
-    /// <returns></returns>
-    public abstract float GetCommissionRate(OrderCommission model);
+	/**
+	 * 获取订单基本佣金
+	 * 
+	 * @param model
+	 * @author pengyi
+	 * @date 20150817
+	 * @return
+	 */
+	public abstract BigDecimal getBaseCommission(OrderCommission model);
 
-    /// <summary>
-    /// 获取订单基本佣金 add by 彭宜 20150807
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    public abstract float GetBaseCommission(OrderCommission model);
+	/**
+	 * 获取订单的额外补贴金额
+	 * 
+	 * @param model
+	 * @author pengyi
+	 * @date 20150817
+	 * @return
+	 */
+	public abstract BigDecimal getAdjustment(OrderCommission model);
 
-    /// <summary>
-    /// 获取订单的额外补贴金额 add by caoheyang 20150409
-    /// </summary>
-    /// <param name="model">订单</param>
-    /// <returns></returns>
-    public abstract float GetAdjustment(OrderCommission model);
-
-
-    /// <summary>
-    ///C端 获取订单的金额 add by caoheyang 20150305
-    /// </summary>
-    /// <param name="model">订单</param>
-    /// <returns></returns>
-    public static float GetCurrenOrderPrice(OrderCommission model)
-    {
-    	float amount = model.getAmount(); 
-        int orderCount = model.getOrderCount(); 
-        float distribSubsidy = model.getDistribSubsidy(); 
-        //需进行四舍五入
-        return amount + orderCount * distribSubsidy;
-    }
-
+	/**
+	 * C端 获取订单的金额
+	 * 
+	 * @param model
+	 * @author pengyi
+	 * @date 20150817
+	 * @return
+	 */
+	public static BigDecimal getCurrenOrderPrice(OrderCommission model) {
+		BigDecimal amount = model.getAmount();
+		BigDecimal orderCount = BigDecimal.valueOf(model.getOrderCount());
+		BigDecimal distribSubsidy = model.getDistribSubsidy();
+		// 需进行四舍五入
+		return amount.add(distribSubsidy.multiply(orderCount)).setScale(2, RoundingMode.HALF_UP);
+	}
 }

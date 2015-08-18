@@ -1,22 +1,28 @@
 package com.edaisong.business.common;
 
-import javax.servlet.*;
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.edaisong.business.entity.CookieModel;
+import com.edaisong.api.business.SpringBeanHelper;
 import com.edaisong.core.cache.redis.RedisService;
-import com.edaisong.core.util.CookieUtils;
-import com.edaisong.core.util.JsonUtil;
-
-import java.io.IOException;
 
 public class PermissionFilter implements Filter {
-	//@Autowired
-	//private RedisService redisService;
+	private RedisService redisService;
 	private final String loginUri = "/account/login";
+	
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
+		redisService = SpringBeanHelper.getCustomBeanByType(RedisService.class);
+	}
+	
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletReponse, FilterChain filterChain)
 			throws IOException, ServletException {
@@ -31,62 +37,40 @@ public class PermissionFilter implements Filter {
 			uri = uri.substring(0, uri.length() - 1);
 		}
 
-		// �жϸ�uri�Ƿ���ҪȨ����֤
+		// 判断该uri是否需要权限验证
 		// int permissionCode = this.getPermissionCode_MutiLevel(uri);
 		// if (permissionCode== PermissionConfig.UNDEFINE) {
 		// filterChain.doFilter(request, response);
 		// return;
 		// }
 		
-		//�Ƿ��ѵ�¼
-/*		boolean isLogin = checkLogin(request);
+		//判断是否登录
+		boolean isLogin = ServerUtil.checkIsLogin(request);
 		if (isLogin) {
 			request.getRequestDispatcher(loginUri).forward(request, response);
 			return;
-		}*/
+		}
 
 		String failUri = "";
 		Object misUser = null;
 		// if(null==misUser){
-		// request.setAttribute("message", "�ף��޷���ȡ���Ȩ����Ϣ�������µ�¼mis��");
+		// request.setAttribute("message", "亲，无法获取你的权限信息，请重新登录mis！");
 		// request.getRequestDispatcher(failUri).forward(request,response);
 		// return;
 		// }
-		// Ȩ����֤�ж�
+		// 权限认证判定
 
 		// if (!misUser.isIllegal(permissionCode)) {
-		// Ȩ��δͨ��
-		// request.setAttribute("message", "�ף���û��Ȩ�޷��ʸ���Ϣ����������ʵ��˻���¼mis��");
+		// 权限未通过
+		// request.setAttribute("message", "亲，您没有权限访问该信息，请更换合适的账户登录mis！");
 		// request.getRequestDispatcher(failUri).forward(request, response);
 		// return;
 		// }
-		filterChain.doFilter(request, response);// Ȩ��ͨ��
-	}
-
-	@Override
-	public void init(FilterConfig arg0) throws ServletException {
+		filterChain.doFilter(request, response);// 权限通过
 	}
 
 	@Override
 	public void destroy() {
 
 	}
-	
-	/*private boolean checkLogin(HttpServletRequest request){
-		boolean isLogin = false;
-		final String cookieKey = WebConst.LOGIN_COOKIE_NAME; 
-		String cookieValue = CookieUtils.getCookie(request, cookieKey);
-		if(cookieValue != null){
-			CookieModel cookieModel = JsonUtil.str2obj(cookieValue, CookieModel.class);
-			if(cookieModel != null){
-				if(cookieModel.getVersion() == request.getServletContext().getInitParameter("cookieVersion")){
-					Object loginStatusValue = redisService.get(cookieModel.getValue(),Object.class);
-					if(loginStatusValue != null){
-						isLogin = true;
-					}
-				}
-			}
-		}
-		return isLogin;
-	}*/
 }

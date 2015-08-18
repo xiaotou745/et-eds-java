@@ -51,24 +51,6 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao   {
 	}
 
 
-    /**
-     * 根据订单信息查询 子订单集合 
-     * @param orderNo 订单号
-     * @param businessId 商户id
-     * @author CaoHeYang
-     * @Date 20150804
-     * @return
-     */
-	@Override
-	public List<OrderOther> getOrderChildByOrderInfo(String orderNo,
-			int businessId) {
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("OrderNo", orderNo);
-		paramMap.put("BusinessId", businessId);
-		List<OrderOther> result=getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dal.dao.inter.IOrderOtherDao.getOrderChildByOrderInfo"
-				 , paramMap);
-	     return result;
-
-	}
+  
 
 }

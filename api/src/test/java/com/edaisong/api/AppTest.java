@@ -1,22 +1,14 @@
 package com.edaisong.api;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.Field;
+import java.math.BigDecimal;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.edaisong.api.business.SpringBeanHelper;
+import com.edaisong.api.service.impl.OrderPriceService;
 import com.edaisong.api.service.inter.IOrderService;
-import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
@@ -29,10 +21,13 @@ import com.edaisong.entity.resp.OrderDetailBusinessResp;
 public class AppTest extends TestCase {
 
 	IOrderService testService;
+	OrderPriceService baseCommissionService;
 
 	public AppTest() {
 		testService = SpringBeanHelper
 				.getCustomBeanByType(IOrderService.class);
+		baseCommissionService = (OrderPriceService)SpringBeanHelper.getCustomBean("baseCommissionOrPriceService");
+				//.getCustomBeanByType(OrderPriceService.class);
 	}
 
 	// /**
@@ -88,4 +83,17 @@ public class AppTest extends TestCase {
 	}
 
 
+	public void testGetCurrenOrderCommission(){
+		OrderCommission model = new OrderCommission();
+		model.setAmount(new BigDecimal(100));
+		model.setBusinessCommission(new BigDecimal(10));
+		model.setBusinessGroupId(7);
+		model.setCommissionFixValue(new BigDecimal(5));
+		model.setCommissionType(1);
+		model.setDistribSubsidy(new BigDecimal(2.0));
+		model.setStrategyId(4);
+		
+		BigDecimal ret = baseCommissionService.getCurrenOrderCommission(model);
+		
+	}
 }

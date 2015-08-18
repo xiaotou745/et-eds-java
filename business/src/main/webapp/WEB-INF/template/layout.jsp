@@ -15,7 +15,8 @@
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/base.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/commen.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/index.css">
-<%-- <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/jquery-ui.css"> --%>
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/newProjects.css">
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/popup.css">
 
 
 <script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.2.min.js"></script>
@@ -63,7 +64,7 @@ function regTrEvent(){
 </head>
 <body>
 	<tiles:insertAttribute name="header"></tiles:insertAttribute>
-	<div class="content cb">
+	<div class="content content2  cb">
 		<tiles:insertAttribute name="leftmenu"></tiles:insertAttribute>
 		<div class="center">
 			<tiles:insertAttribute name="breadcrumbs"></tiles:insertAttribute>

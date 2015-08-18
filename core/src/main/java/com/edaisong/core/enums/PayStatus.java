@@ -9,7 +9,7 @@ public enum PayStatus {
 	/**
 	 * 待支付
 	 */
-	WaitPay(1,"待支付"),
+	WaitPay(0,"待支付"),
 	/**
 	 * 已支付
 	 */
@@ -17,7 +17,7 @@ public enum PayStatus {
 	/**
 	 * 支付中
 	 */
-	WaitingPay(1,"支付中");
+	WaitingPay(2,"支付中");
 	private int value = 0;
 	private String desc;
 	private PayStatus(int value, String desc) { // 必须是private的，否则编译错误

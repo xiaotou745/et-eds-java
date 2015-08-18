@@ -2,6 +2,7 @@ package com.edaisong.entity.resp;
 
 import java.util.List;
 
+import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 
@@ -11,23 +12,23 @@ import com.edaisong.entity.domain.OrderDetailBusiness;
  * @Date 20150804
  */
 public class OrderDetailBusinessResp {
-	private List<OrderOther> orderOthers;
+	private List<OrderChild> orderChilds;
 	private OrderDetailBusiness orderModel;
 
 	/**
 	 * 子订单集合
 	 * @return
 	 */
-	public List<OrderOther> getOrderOthers() {
-		return orderOthers;
+	public List<OrderChild> getOrderChilds() {
+		return orderChilds;
 	}
 
 	/**
 	 * 子订单
 	 * @param orderOthers
 	 */
-	public void setOrderOthers(List<OrderOther> orderOthers) {
-		this.orderOthers = orderOthers;
+	public void setOrderChilds(List<OrderChild> orderChilds) {
+		this.orderChilds = orderChilds;
 	}
 
 	/**

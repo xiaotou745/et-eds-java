@@ -1,6 +1,8 @@
 package com.edaisong.business.controller;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.business.common.ServerUtil;
 import com.edaisong.business.common.WebConst;
 import com.edaisong.business.entity.CookieModel;
 import com.edaisong.business.entity.resp.LoginResp;
@@ -33,7 +36,7 @@ public class AccountController {
 	@Autowired
 	private RedisService redisService;
 
-	@RequestMapping(value = "login", method = { RequestMethod.GET })
+/*	@RequestMapping(value = "login", method = { RequestMethod.GET })
 	public ModelAndView LoginConfig(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		boolean isLogin = checkIsLogin(request);
 		if(isLogin){
@@ -42,7 +45,7 @@ public class AccountController {
 		}
 		ModelAndView mv = new ModelAndView("account/login");
 		return mv;
-	}
+	}*/
 
 	@RequestMapping("code")
 	public ModelAndView code(HttpServletRequest request, HttpServletResponse response) {
@@ -59,7 +62,7 @@ public class AccountController {
 		request.getSession().removeAttribute("code");
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
-		boolean isLogin = checkIsLogin(request);
+		boolean isLogin = ServerUtil.checkIsLogin(request);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
 			resp.setSuccess(true);
@@ -103,16 +106,20 @@ public class AccountController {
 	 * @param request
 	 * @param response
 	 * @return
+	 * @throws IOException 
 	 */
-	@RequestMapping(value = "logoff", method = { RequestMethod.POST })
-	public @ResponseBody boolean logoff(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "logoff")
+	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
 		Cookie cookie = CookieUtils.getCookieByName(WebConst.LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
+		    CookieModel cookieModel = JsonUtil.str2obj(URLDecoder.decode(cookie.getValue(),"utf-8"), CookieModel.class);
+		    if(cookieModel != null){
+		    	redisService.remove(cookieModel.getValue());
+		    }
 			CookieUtils.deleteCookie(request, response, cookie);
-			redisService.remove(WebConst.LOGIN_COOKIE_NAME);
 		}
-		return true;
+		response.sendRedirect(request.getContextPath() + "/");
 	}
 
 	/**
@@ -120,7 +127,7 @@ public class AccountController {
 	 * @param request
 	 * @return
 	 */
-	private boolean checkIsLogin(HttpServletRequest request) {
+/*	private boolean checkIsLogin(HttpServletRequest request) {
 		// 如果已登录,直接返回
 		boolean isLogin = false;
 		final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
@@ -135,5 +142,5 @@ public class AccountController {
 			}
 		}
 		return isLogin;
-	}
+	}*/
 }

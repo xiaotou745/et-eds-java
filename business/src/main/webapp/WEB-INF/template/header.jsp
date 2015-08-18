@@ -6,7 +6,7 @@
 <div class="header">
 	<a class="logo fl" href="javascript:;"><img src="<%=basePath %>/images/logo.png" width="175" height="25" alt=""></a>
 	<p class="fr">
-		<a class="fr" href="javascript:;">退出</a>
+		<a class="fr" href="<%=basePath %>/account/logoff">退出</a>
 		<em class="fr">|</em>
 		<span class="fr">
 			您好，
