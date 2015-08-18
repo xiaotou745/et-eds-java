@@ -29,6 +29,7 @@ import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.core.util.NumberHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
@@ -96,6 +97,9 @@ public class OrderController {
 	 */
 	@RequestMapping(value = "detail", method = { RequestMethod.GET })
 	public ModelAndView detail(String orderno) {
+		 String numberString=NumberHelper.getcode();
+		
+		
 		OrderDetailBusinessReq req=new OrderDetailBusinessReq();
 		req.setOrderNo(orderno);
 		req.setBusinessId(2047);
