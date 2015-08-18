@@ -1,5 +1,6 @@
 package com.edaisong.api.service.inter;
 
+import java.util.Date;
 import java.util.List;
 
 import com.edaisong.entity.Business;
@@ -67,4 +68,14 @@ public interface IBusinessService {
 	 * @return 
 	 */
 	int updateAuditStatus(int businessID,int status);
+	
+	/**
+	 * 更新商户最后登录时间
+	 * @param businessID
+	 * @param loginTime
+	 * @author pengyi
+	 * @date 20150818
+	 * @return
+	 */
+	int updateLastLoginTime(int businessID,Date loginTime);
 }

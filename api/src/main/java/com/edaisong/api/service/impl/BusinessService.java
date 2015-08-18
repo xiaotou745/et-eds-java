@@ -1,5 +1,6 @@
 package com.edaisong.api.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -259,6 +260,16 @@ public class BusinessService implements IBusinessService {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * 更新商户最后登录时间
+	 * @author pengyi
+	 * @date 20150818
+	 */
+	@Override
+	public 	int updateLastLoginTime(int businessID,Date loginTime) {
+		return iBusinessDao.updateLastLoginTime(businessID, new Date());
 	}
 
 }

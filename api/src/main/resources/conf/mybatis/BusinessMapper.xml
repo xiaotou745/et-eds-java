@@ -406,4 +406,10 @@ MERGE INTO BusinessExpressRelation ber
         update business set Status=#{status,jdbcType=INTEGER}
 		where  Id= #{businessID,jdbcType=INTEGER}
 	</update>
+	
+	<!-- 更新 商户 最后登录时间   add by pengyi 20150818  -->	
+	<update id="updateLastLoginTime" parameterType="java.util.Map">
+        update business set LastLoginTime=#{lastLoginTime,jdbcType=TIMESTAMP}
+		where  Id= #{businessID,jdbcType=INTEGER}
+	</update>
 </mapper>

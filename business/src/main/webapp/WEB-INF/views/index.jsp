@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.entity.BusinessMessage"%>
 <%@page import="com.edaisong.entity.domain.BusinessOrderSummaryModel"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -6,6 +7,7 @@
 <%
 	String basePath = PropertyUtils.getProperty("static.business.url");
 	BusinessOrderSummaryModel bos = (BusinessOrderSummaryModel)request.getAttribute("bos");
+	BusinessMessage message = (BusinessMessage)request.getAttribute("message");
 %>
 
 <div class="center">
@@ -53,11 +55,19 @@
 			</div>
 			<div class="r-bottom">
 				<h2>
-					公告 <a class="fr" href="javascript:;">更多>></a>
+					公告<!--  <a class="fr" href="javascript:;">更多>></a> -->
 				</h2>
 				<p class="cb">
-					<em class="fl"></em> <span class="fl">中国快递行业五大焦点透视中外物流面临两极差异
-						掘金中小企业市场</span>
+					<em class="fl"></em>
+					<%
+						if(message != null){		
+					%>
+					<span class="fl">
+						<%=message.getContent() %>
+					</span>
+					<% }else{ %>
+					当前没有公告
+					<%} %>
 				</p>
 			</div>
 		</div>

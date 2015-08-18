@@ -90,4 +90,12 @@
       PubDate = #{pubdate,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <select id="getLatestMessage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+     SELECT TOP 1 
+	 <include refid="Base_Column_List" />
+	 FROM BusinessMessage WHERE 
+	 BusinessId= #{businessId,jdbcType=INTEGER}
+	 ORDER BY PubDate desc;
+  </select>
 </mapper>
