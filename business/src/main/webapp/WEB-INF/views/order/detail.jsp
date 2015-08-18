@@ -1,3 +1,4 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.If"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
@@ -39,23 +40,30 @@
 	</div>
 	<div class="right2 fl">
 		<div class="r-t cb">
+		    <% if(modelDatas.getOrderModel().getCancelTime()!=null)
+		  	  {
+		    %>
 			<p class="fl">
-			    if()
 				<!-- 加入vh选择器隐藏该标签 -->
-				<span>订单取消</span> <em>11.27&nbsp;17:40</em>
+				<span>订单取消</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+					.getCancelTime(), "MM.dd HH:mm")%></em>
 			</p>
 			<p class="fl">
 				<!-- 加入vh选择器隐藏该标签 -->
-				<span>订单取消</span> <em>11.27&nbsp;17:40</em>
+				<span>订单取消</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+					.getCancelTime(), "MM.dd HH:mm")%></em>
 			</p>
 			<p class="fl">
 				<!-- 加入vh选择器隐藏该标签 -->
-				<span>订单取消</span> <em>11.27&nbsp;17:40</em>
+				<span>订单取消</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+					.getCancelTime(), "MM.dd HH:mm")%></em>
 			</p>
 			<p class="fl">
 				<!-- 加入vh选择器隐藏该标签 -->
-				<span>订单取消</span> <em>11.27&nbsp;17:40</em>
+				<span>订单取消</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+					.getCancelTime(), "MM.dd HH:mm")%></em>
 			</p>
+			<% }%>
 		</div>
 		<div class="liuc">
 			<img src="<%=basePath%>/images/icon-13.png" width="618" height="35"
@@ -121,7 +129,9 @@
 		</div>
 	</div>
 	<div class="right2 fl">
+		    <% if(modelDatas.getOrderModel().getCancelTime()==null){%>
 	    <input type="button" value="取消订单" id="CanelOrderBtn">
+	    		<% }%>
 		<h2>订单明细</h2>
 		<p>
 			总金额：<span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
@@ -173,7 +183,7 @@ $(function(){
 	$("#CanelOrderBtn").click(function(){
 		if(confirm("您确认取消订单吗？")){
 			 var data={"orderNo":"<%=modelDatas.getOrderModel().getOrderNo()%>","orderId":<%=modelDatas.getOrderModel().getId() %>};
-				$.post("<%=basePath%>/order/canelorder",data, function(result) {
+				$.post("<%=basePath%>/order/canelorder" ,data, function(result) {
 					alert(result.message);
 				});
 		}
