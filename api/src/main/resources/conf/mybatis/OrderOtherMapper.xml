@@ -255,8 +255,11 @@
       <if test="isnotrealorder != null" >
         IsNotRealOrder = #{isnotrealorder,jdbcType=INTEGER},
       </if>
+       <if test="cancelTime != null" >
+        CancelTime = getdate()
+      </if>
     </set>
-    where Id = #{id,jdbcType=INTEGER}
+    where OrderId = #{orderid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderOther" >
     update OrderOther
@@ -282,8 +285,5 @@
       IsNotRealOrder = #{isnotrealorder,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  
-
-  
   
 </mapper>

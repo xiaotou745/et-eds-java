@@ -41,8 +41,9 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao   {
 
 	@Override
 	public int updateByPrimaryKeySelective(OrderOther record) {
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dal.dao.inter.IOrderOtherDao.updateByPrimaryKeySelective", record);		 
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

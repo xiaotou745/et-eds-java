@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.edaisong.api.common.CommissionFactory;
 import com.edaisong.api.common.OrderPriceBaseProvider;
 import com.edaisong.api.common.OrderSettleMoneyHelper;
-import com.edaisong.api.dao.impl.OrderChildDao;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
@@ -34,7 +33,6 @@ import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
@@ -62,6 +60,7 @@ public class OrderService implements IOrderService {
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
     @Autowired
 	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
+    
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -184,6 +183,10 @@ public class OrderService implements IOrderService {
 			businessBalanceRecord.setRelationno(req.getOrderNo()); // 关联单号
 			businessBalanceRecord.setRemark("商户取消订单返回配送费"); // 注释
 			businessBalanceRecordDao.insert(businessBalanceRecord); // 记录
+			OrderOther orderOther=new OrderOther();
+			orderOther.setOrderid(req.getOrderId());
+			orderOther.setCancelTime(new Date());
+			orderOtherDao.updateByPrimaryKeySelective(orderOther);
 		} else {
 			throw new RuntimeException("更新订单状态为取消失败");
 		}

@@ -173,7 +173,7 @@ $(function(){
 		if(confirm("您确认取消订单吗？")){
 			 var data={"orderNo":"<%=modelDatas.getOrderModel().getOrderNo()%>","orderId":<%=modelDatas.getOrderModel().getId() %>};
 				$.post("<%=basePath%>/order/canelorder",data, function(result) {
-					alert("取消订单成功！")
+					alert(result.message);
 				});
 		}
 	});
