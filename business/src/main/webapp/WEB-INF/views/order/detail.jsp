@@ -40,6 +40,7 @@
 	<div class="right2 fl">
 		<div class="r-t cb">
 			<p class="fl">
+			    if()
 				<!-- 加入vh选择器隐藏该标签 -->
 				<span>订单取消</span> <em>11.27&nbsp;17:40</em>
 			</p>
