@@ -230,8 +230,8 @@ public class BusinessService implements IBusinessService {
 	 * @param businessId 商户Id
 	 * @return Business
 	 */
-	public Business getBusinessById(int businessId) {
-		return iBusinessDao.getBusinessById(businessId);
+	public Business getById(int businessId) {
+		return iBusinessDao.getById(businessId);
 	}
 
 	@Override
@@ -247,7 +247,7 @@ public class BusinessService implements IBusinessService {
 		}
 		int result = iBusinessDao.updateAuditStatus(businessID, status);
 		if (result > 0) {
-			Business business = iBusinessDao.getBusinessById(businessID);
+			Business business = iBusinessDao.getById(businessID);
 			String juWangKeBusiAuditCallBack = PropertyUtils
 					.getProperty("JuWangKeBusiAuditCallBack");
 			// 调用第三方接口 ，聚网客商户审核通过后调用接口

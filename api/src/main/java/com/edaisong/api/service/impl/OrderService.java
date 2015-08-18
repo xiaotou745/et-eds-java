@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -250,5 +251,11 @@ public class OrderService implements IOrderService {
 		
 		return resp;
 	}	
+	
+	
+	public boolean verificationAddOrder(OrderReq  req){
+		boolean isOneKeyPubOrder = false;   //一键发单
+		return false;
+	}
 }
 

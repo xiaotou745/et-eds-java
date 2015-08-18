@@ -53,7 +53,7 @@ public interface IBusinessService {
 	 * @param businessId 商户Id
 	 * @return Business
 	 */
-	Business getBusinessById(int businessId);
+	Business getById(int businessId);
 	/**
 	 * 修改商家绑定的物流公司
 	 * @param 

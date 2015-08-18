@@ -104,11 +104,16 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 						parasMap);
 
 	}
+	
+	/**
+	 * 根据商户id获取商户基础数据
+	 */
 	@Override
-	public Business getBusinessById(int businessId) { 
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessById",businessId);
+	public Business getById(int businessId) { 
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dal.dao.inter.IBusinessDao.getById",businessId);
 }
 
+	
 	@Override
 	public int modifyExpress(List<BusinessExpressRelation> listData) {
 		return getMasterSqlSessionUtil()
