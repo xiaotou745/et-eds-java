@@ -359,7 +359,7 @@
 		insert into BusinessLoginLog([PhoneNo],[Description],[IsSuccess])
 		values(#{PhoneNo,jdbcType=NVARCHAR},#{Description,jdbcType=NVARCHAR},#{IsSuccess,jdbcType=SMALLINT})
 	</insert>
-	<select id="getBusinessById" resultType="com.edaisong.entity.Business" parameterType="java.lang.Integer" statementType="CALLABLE">
+	<select id="getById" resultType="com.edaisong.entity.Business" parameterType="java.lang.Integer" statementType="CALLABLE">
 	  select 
 	  b.* 
 	  from dbo.business b WITH (NOLOCK) where b.Id = #{businessId,jdbcType=INTEGER} 
