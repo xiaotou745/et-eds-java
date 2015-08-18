@@ -1,5 +1,7 @@
 package com.edaisong.business.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,8 @@ import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.api.service.inter.IClienterService;
+import com.edaisong.core.util.JsonUtil;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
 @Controller
@@ -41,7 +45,7 @@ public class OrderController {
 	 * @Date 20150806
 	 * @return
 	 */
-	@RequestMapping("list2")
+	@RequestMapping("list")
 	public ModelAndView list() {
 		ModelAndView view = new ModelAndView("businessView");
 		view.addObject("subtitle", "订单");
@@ -57,8 +61,25 @@ public class OrderController {
 	 * @Date 20150806
 	 * @return
 	 */
-	@RequestMapping("list")
-	public ModelAndView listdo(PagedOrderSearchReq searchWebReq) {
+	@RequestMapping("listdo")
+	public ModelAndView listdo(Integer timeType,PagedOrderSearchReq searchWebReq) {
+		Date tDate=new Date();
+		switch (timeType) {
+		case 0://今天的订单
+			searchWebReq.setOrderPubStart(ParseHelper.ToDateString(tDate, "yyyy-MM-dd"));
+			searchWebReq.setOrderPubEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
+			break;
+		case 1://7天的订单
+			searchWebReq.setOrderPubStart(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,-7), "yyyy-MM-dd"));
+			searchWebReq.setOrderPubEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
+			break;
+		case 2://30天的订单
+			searchWebReq.setOrderPubStart(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,1,-1), "yyyy-MM-dd"));
+			searchWebReq.setOrderPubEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
+			break;
+		default:
+			break;
+		}
 		PagedResponse<OrderListModel> resp = orderService
 				.getOrders(searchWebReq);
 		ModelAndView view = new ModelAndView("order/listdo");

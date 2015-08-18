@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.core.enums.OrderStatus"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
@@ -10,75 +11,60 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
+<%@page import="com.edaisong.core.util.EnumHelper"%>
 
 <%	
 String basePath =PropertyUtils.getProperty("static.business.url");
 %>
+<div class="top cb">
 
-<div class="wrapper wrapper-content animated fadeInRight">
-
-	<div class="row">
-		<div class="col-lg-12">
-			<form method="POST" action="#" class="form-horizontal" id="searchForm">
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">订单状态:</label>
-							<div class="col-sm-8">
-							<select name="commissionType"
-				class="selectw" id="commissionType" style="width: 143px">
-					<option value="-1" selected="selected">全部</option>
-					<option value="1">固定比例</option>
-					<option value="2">固定金额</option>
-			</select> 
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">时间:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" name="OrderPubStart"/>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">到:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" name="OrderPubEnd" />
-   						</div>
-						</div>
-					</div>
-					
-				</div>
-					<div class="row">
-
-
-					
-					<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
-					<div class="col-lg-3">
-						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;">搜索</button>
-					
-					</div>
-				</div>
+			<h3 class="cb">
+				全部订单
+				<p class="fr">
+					<input type="text" class="fl" placeholder="订单号，骑士姓名或手机号" id="customerInfo">
+					<input type="button" class="fl" value="搜索按钮" id="customerSearch">
+				</p>
+			</h3>
+				<form method="POST" action="#" class="form-horizontal" id="searchForm">
+	<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
+			<div class="function">
+				<input type="button" class="fr" value="搜索" id="btnSearch">
+				<span class="fl">订单状态</span>
+					<%=HtmlHelper.getSelect("orderStatus", EnumHelper.GetEnumItems(OrderStatus.class), "desc", "value",null,"-1","全部","width:155px","fl") %>
+				<span class="fl">发单时间</span>
+				<label class="fl">
+					<input type="radio" name="timeType" value="0" checked="checked">
+					今日
+				</label>
+				<label class="fl">
+					<input type="radio" name="timeType"  value="1">
+					7天
+				</label>
+				<label class="fl">
+					<input type="radio" name="timeType" value="2">
+					30天
+				</label>
+				<label class="fl">
+					<input type="radio" name="timeType" value="3">
+					区间
+				</label>
+				<span class="intime"><input type="text" class="dinput" id="orderPubStart" name="orderPubStart"><s onClick="WdatePicker({el:'time1',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="inblock">至</span>
+				<span class="intime"><input type="text" class="dinput" id="orderPubEnd" name="orderPubEnd"><s onClick="WdatePicker({el:'time2',dateFmt:'yyyy-MM-dd'});"></s></span>
+			</div>
 			</form>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="ibox-content" id="content"></div>
+		<div class="bottom bottom2 bottom3" id="content">
 		</div>
-	</div>
-</div>
-
 <script>
+$(document).ready(function () {  
+//     $('#orderPubStart').datepicker();
+//     $('#orderPubEnd').datepicker();
+}); 
 	var jss = {
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
 		 var data=$("#searchForm").serialize();
-// 			data.CurrentPage=currentPage;
 			$.post("<%=basePath%>/order/listdo",data, function(d) {
 				$("#content").html(d);
 			});
@@ -87,5 +73,16 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 	jss.search(1);
 	$("#btnSearch").click(function() {
 		jss.search(1);
+	});
+	$("#customerSearch").click(function() {
+		if($("#customerInfo").val()!=""){
+			var data={"superManPhone":$("#customerInfo").val()};
+			var data={"superManName":$("#customerInfo").val()};
+			var data={"originalOrderNo":$("#customerInfo").val()};
+			$.post("<%=basePath%>/order/listdo",data, function(d) {
+				$("#content").html(d);
+			});
+		}
+
 	});
 </script>

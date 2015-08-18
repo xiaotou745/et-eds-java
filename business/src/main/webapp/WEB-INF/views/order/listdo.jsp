@@ -9,8 +9,7 @@
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 
-<table
-	class="table table-striped table-bordered table-hover dataTables-example">
+<table width="100%" class="stripe">
 	<thead>
 		<tr>
 			<th style="width: 60px;">编号</th>
@@ -32,8 +31,7 @@
 	</thead>
 	<tbody>
 		<%
-			PagedResponse<OrderListModel> responsePageList = (PagedResponse<OrderListModel>) request
-					.getAttribute("listData");
+			PagedResponse<OrderListModel> responsePageList = (PagedResponse<OrderListModel>) request.getAttribute("listData");
 			List<OrderListModel> data = responsePageList.getResultList();
 			if (data == null) {
 				data = new ArrayList<OrderListModel>();

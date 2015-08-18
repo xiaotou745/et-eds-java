@@ -34,14 +34,18 @@ public class HtmlHelper {
 	 */
 	public static <T> String getSelect(String selectName, List<T> list,
 			String textName, String valueName, Object selectedValue,
-			Object defaultValue, String defaultText, String styleString) {
+			Object defaultValue, String defaultText, String styleString,String classString) {
 		StringBuffer htmlStrBuffer = new StringBuffer();
 		String selected = "";
 		String style = "";
 		if (styleString != null) {
 			style = "style=\"" + styleString + "\"";
 		}
-		htmlStrBuffer.append(" <select class=\"selectw\" " + style + " id=\""
+		String strClass = "";
+		if (strClass != null) {
+			strClass = classString;
+		}
+		htmlStrBuffer.append(" <select class=\""+strClass+"\" " + style + " id=\""
 				+ selectName + "\" name=\"" + selectName + "\"> ");
 		if (defaultValue != null) {
 			if (selectedValue != null
@@ -125,7 +129,7 @@ public class HtmlHelper {
 	public static <T> String getSelect(String selectName, List<T> list,
 			String textName, String valueName) {
 		return getSelect(selectName, list, textName, valueName, null, "-1",
-				"全部", null);
+				"全部", null,null);
 	}
 
 	/**
@@ -143,6 +147,12 @@ public class HtmlHelper {
 	public static <T> String getSelect(String selectName, List<T> list,
 			String textName, String valueName, String styleString) {
 		return getSelect(selectName, list, textName, valueName, null, "-1",
-				"全部", styleString);
+				"全部", styleString,null);
+	}
+	public static <T> String getSelect(String selectName, List<T> list,
+			String textName, String valueName, Object selectedValue,
+			Object defaultValue, String defaultText, String styleString) {
+		return getSelect(selectName, list, textName, valueName, null, "-1",
+				"全部", styleString,null);
 	}
 }
