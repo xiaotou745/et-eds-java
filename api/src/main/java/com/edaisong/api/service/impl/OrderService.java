@@ -18,6 +18,7 @@ import com.edaisong.api.dal.dao.inter.IOrderOtherDao;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
+import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
@@ -185,17 +186,17 @@ public class OrderService implements IOrderService {
 		//订单主表
 		Order order=new Order();						
 		order.setOrderno("no11111111");//临时
-		order.setRecevicename("测试");
-		order.setRecevicephoneno("18301222651");
-		order.setReceviceaddress("北京市朝阳区百子湾11");
-		order.setIspay(true);		
-		order.setAmount(BigDecimal.valueOf(193.00));
-		order.setRemark("配送说明");
-		order.setOrderfrom(0);//订单来源
-		order.setStatus(Byte.parseByte("0"));
-		order.setRecevicelongitude(0.0);
-		order.setRecevicelatitude(0.0);
-		order.setOrdercount(1);
+		order.setRecevicename(req.getRecevicename());
+		order.setRecevicephoneno(req.getRecevicephoneno());
+		order.setReceviceaddress(req.getReceviceaddress());
+		order.setIspay(req.getIspay());		
+		order.setAmount(req.getAmount());
+		order.setRemark(req.getRemark());
+		order.setOrderfrom(OrderFrom.EDaiSong.value());
+		order.setStatus((byte)OrderStatus.New.value());
+		order.setRecevicelongitude(req.getRecevicelongitude());
+		order.setRecevicelatitude(req.getRecevicelatitude());
+		order.setOrdercount(req.getOrdercount());
 		order.setTimespan("1");
 		order.setPubdate(new Date());			
 		//1812

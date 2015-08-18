@@ -18,32 +18,41 @@
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/newProjects.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/popup.css">
 
-<script type="text/javascript"
-	src="<%=basePath%>/js/jquery-1.11.2.min.js"></script>
+
+<script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.2.min.js"></script>
+<%-- <script type="text/javascript" src="<%=basePath%>/js/jquery-ui-1.8.20.js"></script> --%>
+<script type="text/javascript" src="<%=basePath%>/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script>
-	$(document).ready(function() {
-		$(".stripe tr").mouseover(function() {
-			//鼠标移到class为stripe的表格的tr上时，执行函数
+$(document).ready(function() {
+	setTimeout("regTrEvent()",50);  
+});
 
-			$(this).addClass("over");
-		}).mouseout(function() {
-			//给这行添加class值为over，并且当鼠标一出该行时执行函数
+function regTrEvent(){  
+	if($(".stripe tr").length==0){
+		setTimeout("regTrEvent()",50);  
+		return;
+	}
+	$(".stripe tr").mouseover(function() {
+		//鼠标移到class为stripe的表格的tr上时，执行函数
+		$(this).addClass("over");
+	}).mouseout(function() {
+		//给这行添加class值为over，并且当鼠标一出该行时执行函数
+		$(this).removeClass("over");
+	})
+	//移除该行的class
 
-			$(this).removeClass("over");
-		})
-		//移除该行的class
+	$(".stripe tr:even").addClass("alt");
+	//给class为stripe的表格的偶数行添加class值为alt
 
-		$(".stripe tr:even").addClass("alt");
-		//给class为stripe的表格的偶数行添加class值为alt
-
-		//注：$(':even') 为偶数语法；
-		//注：$(':odd')  为奇数语法；
-		countH();
-	});
+	//注：$(':even') 为偶数语法；
+	//注：$(':odd')  为奇数语法；
+	countH();
+}  
 
 	$(document).ajaxError(function(event, jqXHR, options, errorMsg) {
 		var info=jqXHR.responseText;
-		alert(options.url + "调用出错了！");
+		//alert(options.url + "调用出错了！");
+		alert(info);
 	});
 	function countH() {
 		var WinHeight = $(window).height();
@@ -63,6 +72,5 @@
 			<tiles:insertAttribute name="footer" ignore="true"></tiles:insertAttribute>	
 		</div>	
 	</div>
-
 </body>
 </html>

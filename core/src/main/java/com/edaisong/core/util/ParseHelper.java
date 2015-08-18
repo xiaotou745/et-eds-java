@@ -3,6 +3,7 @@ package com.edaisong.core.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ParseHelper {
@@ -114,5 +115,34 @@ public class ParseHelper {
 		}else {
 			return o.toString();
 		}
+	}
+	/**
+	 * 日期加减帮助方法
+	 * @author 赵海龙
+	 * @Date 20150817
+	 * @param dt：要操作的日期对象
+	 * @param type：0是年，1是月，2是日
+	 * @param dif：需要加减的值，负数时，表示减
+	 * @return
+	 */
+	public static Date plusDate(Date dt,int type,int dif){
+	    Calendar rightNow = Calendar.getInstance();
+	    rightNow.setTime(dt);
+	    switch (type) {
+		case 0:
+		    rightNow.add(Calendar.YEAR,dif);//日期加n年
+			break;
+		case 1:
+		    rightNow.add(Calendar.MONTH,dif);//日期加n月
+			break;
+		case 2:
+		    rightNow.add(Calendar.DAY_OF_YEAR,dif);//日期加n天
+			break;
+		default:
+			break;
+		}
+
+	    Date dt1=rightNow.getTime();
+	    return dt1;
 	}
 }

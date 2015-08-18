@@ -749,7 +749,7 @@
       <if test="originalOrderNo != null and originalOrderNo!=''">
 	      and o.OriginalOrderNo=''${originalOrderNo}''
      </if>
-      <if test="orderStatus != null">
+      <if test="orderStatus != null and orderStatus>-1">
 	      and o.Status=${orderStatus}
      </if>
       <if test="superManName != null and superManName!=''">
