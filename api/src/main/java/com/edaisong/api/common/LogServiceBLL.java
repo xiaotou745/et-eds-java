@@ -1,4 +1,4 @@
-package com.edaisong.api.business;
+package com.edaisong.api.common;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

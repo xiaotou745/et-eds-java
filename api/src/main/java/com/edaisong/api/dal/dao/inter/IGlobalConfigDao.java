@@ -8,26 +8,10 @@ import com.edaisong.entity.domain.GlobalGroupConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
 
 public interface IGlobalConfigDao {
-	int deleteByPrimaryKey(Integer id);
-
-	int insert(GlobalConfig record);
-
-	int insertSelective(GlobalConfig record);
-
-	GlobalConfig selectByPrimaryKey(Integer id);
-
-	int updateByPrimaryKeySelective(GlobalConfig record);
-
-	int updateByPrimaryKey(GlobalConfig record);
-
 	List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id);
-
-	Boolean saveConfig(ConfigSaveReq par);
+	int update(ConfigSaveReq par);
+	int insert(GlobalConfig par);	
 	
-	String getConfigValueByKey(String key);
-
-	Boolean addConfig(GlobalConfig par);	
-	
-	GlobalGroupConfigModel GlobalConfigMethod(int groupId);
+//	GlobalGroupConfigModel GlobalConfigMethod(int groupId);
 	
 }

@@ -1,13 +1,14 @@
-package com.edaisong.api.business;
+package com.edaisong.api.common;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dal.dao.impl.GlobalConfigDao;
-import com.edaisong.api.service.impl.OrderPriceService;
+import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.entity.domain.GlobalGroupConfigModel;
 import com.edaisong.entity.domain.OrderCommission;
 
@@ -15,13 +16,12 @@ import com.edaisong.entity.domain.OrderCommission;
  * 基本佣金+补贴
  * @author pengyi
  * @date 20150817
- *
  */
-@Service("baseCommissionOrPriceService")
-public class BaseCommissionOrPriceService extends OrderPriceService{
+@Component
+public class BaseCommissionOrPriceProvider extends OrderPriceBaseProvider{
 	
 	@Autowired
-	GlobalConfigDao globalConfigDao;
+	IGlobalConfigService globalConfigService;
 	@Override
 	public BigDecimal getCurrenOrderCommission(OrderCommission model) {
         if (model.getAmount() == null)
@@ -37,9 +37,9 @@ public class BaseCommissionOrPriceService extends OrderPriceService{
         if (model.getOrderWebSubsidy() != null && !model.getOrderWebSubsidy().equals(BigDecimal.valueOf(0))){
             return model.getOrderWebSubsidy();
         }
-        GlobalGroupConfigModel globalConfigModel = globalConfigDao.GlobalConfigMethod(model.getBusinessGroupId());
-        if(globalConfigModel != null){
-        	return new BigDecimal(globalConfigModel.getBaseSiteSubsidies());
+        String baseSiteSubsidies=globalConfigService.getConfigValueByKey(model.getBusinessGroupId(), "baseSiteSubsidies");
+        if(baseSiteSubsidies != null&&!baseSiteSubsidies.isEmpty()){
+        	return new BigDecimal(baseSiteSubsidies);
         }else{
         	return BigDecimal.valueOf(0);
         }
@@ -52,9 +52,9 @@ public class BaseCommissionOrPriceService extends OrderPriceService{
 
 	@Override
 	public BigDecimal getBaseCommission(OrderCommission model) {
-        GlobalGroupConfigModel globalConfigModel = globalConfigDao.GlobalConfigMethod(model.getBusinessGroupId());
-        if(globalConfigModel != null){
-        	return new BigDecimal(globalConfigModel.getBaseCommission());
+		String baseCommission=globalConfigService.getConfigValueByKey(model.getBusinessGroupId(), "baseCommission");
+        if(baseCommission != null&&!baseCommission.isEmpty()){
+        	return new BigDecimal(baseCommission);
         }else{
         	return BigDecimal.valueOf(0);
         }

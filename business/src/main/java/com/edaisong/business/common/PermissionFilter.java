@@ -11,7 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.edaisong.api.business.SpringBeanHelper;
+import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.core.cache.redis.RedisService;
 
 public class PermissionFilter implements Filter {

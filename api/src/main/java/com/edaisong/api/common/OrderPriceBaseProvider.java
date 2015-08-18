@@ -1,4 +1,4 @@
-package com.edaisong.api.service.impl;
+package com.edaisong.api.common;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,7 +13,7 @@ import com.edaisong.entity.domain.OrderCommission;
  * @date 20150817
  *
  */
-public abstract class OrderPriceService {
+public abstract class OrderPriceBaseProvider {
 	/**
 	 * 获取订单的骑士佣金
 	 * 

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dal.dao.inter.IGlobalConfigDao;
-import com.edaisong.api.service.inter.IAdminToolsService;
+import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
@@ -16,7 +16,7 @@ import com.edaisong.entity.req.ConfigSaveReq;
  * 管理员工具 
  * */
 @Service
-public class AdminToolsService implements IAdminToolsService {
+public class GlobalConfigService implements IGlobalConfigService {
 	@Autowired
 	private IGlobalConfigDao iGlobalConfigDao ;
 	/*
@@ -32,14 +32,14 @@ public class AdminToolsService implements IAdminToolsService {
 	 * 修改全局变量参数
 	 * */
 	@Override
-	public Boolean saveConfig(ConfigSaveReq par) {
-		return iGlobalConfigDao.saveConfig(par);
+	public int update(ConfigSaveReq par) {
+		return iGlobalConfigDao.update(par);
 	}
 	@Override
 	public String getConfigValueByKey(int groupID,String key) {
 		Map<String, String> resultMap=getGlobalConfigMapByGroupId(groupID);
-		if (resultMap.containsKey(key)) {
-			return resultMap.get(key);
+		if (resultMap.containsKey(key.toUpperCase())) {
+			return resultMap.get(key.toUpperCase());
 		}
 		return "";
 	}
@@ -47,15 +47,15 @@ public class AdminToolsService implements IAdminToolsService {
 	 * 添加新的全局配置
 	 * */
 	@Override
-	public Boolean addConfig(GlobalConfig par) {
-		return iGlobalConfigDao.addConfig(par);
+	public int insert(GlobalConfig par) {
+		return iGlobalConfigDao.insert(par);
 	}
 
 	private Map<String, String> getGlobalConfigMapByGroupId(Integer id) {
 		List<GlobalConfigModel> listDataConfigModels=iGlobalConfigDao.getGlobalConfigByGroupId(id);
 		Map<String, String> resultMap=new HashMap<>();
 		for (GlobalConfigModel globalConfigModel : listDataConfigModels) {
-			resultMap.put(globalConfigModel.getKeyName(), globalConfigModel.getValue());
+			resultMap.put(globalConfigModel.getKeyName().toUpperCase(), globalConfigModel.getValue());
 		}
 		return resultMap;
 	}

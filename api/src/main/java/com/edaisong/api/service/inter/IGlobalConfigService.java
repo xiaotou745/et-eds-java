@@ -8,10 +8,10 @@ import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.AuthorityMenuReq;
 import com.edaisong.entity.req.ConfigSaveReq;
 
-public interface IAdminToolsService {
+public interface IGlobalConfigService {
 
 	 List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) ;
-	 Boolean saveConfig(ConfigSaveReq par);
+	 int update(ConfigSaveReq par);
 	 String getConfigValueByKey(int groupID,String key);
-	 Boolean addConfig(GlobalConfig par);
+	 int insert(GlobalConfig par);
 }

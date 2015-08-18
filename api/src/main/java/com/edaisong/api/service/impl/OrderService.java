@@ -1,7 +1,6 @@
 package com.edaisong.api.service.impl;
 
 import java.math.BigDecimal;
-
 import java.math.RoundingMode;
 import java.util.Date;
 
@@ -9,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edaisong.api.business.OrderSettleMoneyHelper;
+import com.edaisong.api.common.CommissionFactory;
+import com.edaisong.api.common.OrderPriceBaseProvider;
+import com.edaisong.api.common.OrderSettleMoneyHelper;
 import com.edaisong.api.dal.dao.impl.OrderChildDao;
 import com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dal.dao.inter.IBusinessDao;
@@ -24,7 +25,6 @@ import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
-import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
@@ -38,7 +38,6 @@ import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
-import com.edaisong.entity.resp.OrderOtherResp;
 import com.edaisong.entity.resp.OrderResp;
 
 @Service
@@ -225,7 +224,7 @@ public class OrderService implements IOrderService {
 		order.setDistribsubsidy(businessModel.getDistribsubsidy());
 		OrderCommission orderCommission = new OrderCommission();
 
-		OrderPriceService orderPriceService = CommissionFactory
+		OrderPriceBaseProvider orderPriceService = CommissionFactory
 				.GetCommission(businessModel.getStrategyId());
 		order.setOrdercommission(orderPriceService
 				.getCurrenOrderCommission(orderCommission));

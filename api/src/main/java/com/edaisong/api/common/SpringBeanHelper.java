@@ -1,4 +1,4 @@
-package com.edaisong.api.business;
+package com.edaisong.api.common;
 
 
 import org.apache.ibatis.session.SqlSessionFactory;

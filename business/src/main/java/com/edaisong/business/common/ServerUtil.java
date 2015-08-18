@@ -2,7 +2,7 @@ package com.edaisong.business.common;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.edaisong.api.business.SpringBeanHelper;
+import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.business.entity.CookieModel;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.util.CookieUtils;

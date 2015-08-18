@@ -6,7 +6,7 @@
 <%@ page language="java"
 	import="com.edaisong.api.service.inter.IAuthorityMenuClassService"%>
 <%@ page language="java"
-	import="com.edaisong.api.business.SpringBeanHelper"%>
+	import="com.edaisong.api.common.SpringBeanHelper"%>
 <%@ page language="java"
 	import="com.edaisong.entity.req.AuthorityMenuReq"%>
 <%@ page language="java" import="com.edaisong.entity.MenuEntity"%>

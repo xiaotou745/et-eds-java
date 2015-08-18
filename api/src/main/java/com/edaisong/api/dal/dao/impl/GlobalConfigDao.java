@@ -19,43 +19,6 @@ import com.edaisong.entity.req.ConfigSaveReq;
 
 @Repository
 public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
-
-	@Override
-	public int deleteByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insert(GlobalConfig record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertSelective(GlobalConfig record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public GlobalConfig selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(GlobalConfig record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(GlobalConfig record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	/*
 	 * 获取全局配置
 	 */
@@ -75,55 +38,46 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 	 * 保存全局变量的值
 	 */
 	@Override
-	public Boolean saveConfig(ConfigSaveReq par) {
-		String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.saveConfigValue";
+	public int update(ConfigSaveReq par) {
+		String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.update";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", par.getId());
 		paramMap.put("parvalue", par.getConfigValue());
-		return getMasterSqlSessionUtil().update(statement, paramMap) > 0;
+		return getMasterSqlSessionUtil().update(statement, paramMap);
 	}
 
 	/*
-	 * 通过某个字段获取值
+	 * 添加新的全局配置
 	 */
 	@Override
-	public String getConfigValueByKey(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	/*
-	 * 添加新的全局配置
-	 * */
-	@Override
-	public Boolean addConfig(GlobalConfig par) {
-		// TODO Auto-generated method stub
-		String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.insertConifg";
+	public int insert(GlobalConfig par) {
+		String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.insert";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("keyname", par.getKeyname());
 		paramMap.put("value", par.getValue());
 		paramMap.put("remark", par.getRemark());
 		
-		return getMasterSqlSessionUtil().insert(statement, paramMap) > 0;
+		return getMasterSqlSessionUtil().insert(statement, paramMap);
 	}
 	
-	/**
-	 * 获取系统默认配置
-	 * @author 胡灵波
-	 * @Date 2015年8月14日 16:08:58
-	 * @return
-	 */
-	@Override
-    public GlobalGroupConfigModel GlobalConfigMethod(int groupId)
-    {
-    	GlobalGroupConfigModel model=null;
-    	
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("GroupId", groupId);
-		model = getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dal.dao.inter.IGlobalConfigDao.query",
-				paramMap);
-		
-		return model;   	
-    }   
+//	/**
+//	 * 获取系统默认配置
+//	 * @author 胡灵波
+//	 * @Date 2015年8月14日 16:08:58
+//	 * @return
+//	 */
+//	@Override
+//    public GlobalGroupConfigModel GlobalConfigMethod(int groupId)
+//    {
+//    	GlobalGroupConfigModel model=null;
+//    	
+//		Map<String, Object> paramMap = new HashMap<>();
+//		paramMap.put("GroupId", groupId);
+//		model = getMasterSqlSessionUtil().selectOne(
+//				"com.edaisong.api.dal.dao.inter.IGlobalConfigDao.query",
+//				paramMap);
+//		
+//		return model;   	
+//    }   
    
 }

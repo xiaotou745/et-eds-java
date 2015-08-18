@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.edaisong.api.business.LogServiceBLL;
+import com.edaisong.api.common.LogServiceBLL;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.core.util.SystemUtils;
