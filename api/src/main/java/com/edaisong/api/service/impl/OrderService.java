@@ -35,6 +35,7 @@ import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderCommission;
@@ -269,27 +270,27 @@ public class OrderService implements IOrderService {
 		}
 		return resp;
 	}
-private void fillOrderChild(OrderReq req, BusinessModel businessModel,Order order){
-	if (req.getListOrderChild() != null
-			&& req.getListOrderChild().size() > 0) {
-		OrderChild child=null;
-		short payStatus=0;
-		if (req.getIspay()||!req.getIspay()
-				&& req.getMealssettlemode() == MealsSettleMode.LineOff.value()) {
-			payStatus=1;
-		}
-		for (int i = 0; i < req.getListOrderChild().size(); i++) {
-		    child=req.getListOrderChild().get(i);
-		    child.setChildid(i+1);
-			child.setCreateby(businessModel.getName());
-			child.setUpdateby(businessModel.getName());
-			child.setDeliveryprice(order.getDistribsubsidy());
-			child.setOrderid(order.getId());
-			child.setTotalprice(child.getGoodprice().add(child.getDeliveryprice()));
-			child.setPaystatus(payStatus);
+	private void fillOrderChild(OrderReq req, BusinessModel businessModel,Order order){
+		if (req.getListOrderChild() != null
+				&& req.getListOrderChild().size() > 0) {
+			OrderChild child=null;
+			short payStatus=0;
+			if (req.getIspay()||!req.getIspay()
+					&& req.getMealssettlemode() == MealsSettleMode.LineOff.value()) {
+				payStatus=1;
+			}
+			for (int i = 0; i < req.getListOrderChild().size(); i++) {
+			    child=req.getListOrderChild().get(i);
+			    child.setChildid(i+1);
+				child.setCreateby(businessModel.getName());
+				child.setUpdateby(businessModel.getName());
+				child.setDeliveryprice(order.getDistribsubsidy());
+				child.setOrderid(order.getId());
+				child.setTotalprice(child.getGoodprice().add(child.getDeliveryprice()));
+				child.setPaystatus(payStatus);
+			}
 		}
 	}
-}
 	private Order fillOrder(OrderReq req, BusinessModel businessModel) {
 		Order order = new Order();
 		order.setOrderno("no11111111");// 临时
@@ -299,15 +300,15 @@ private void fillOrderChild(OrderReq req, BusinessModel businessModel,Order orde
 		order.setIspay(req.getIspay());
 		order.setAmount(req.getAmount());
 		order.setRemark(req.getRemark());
-		order.setOrderfrom(OrderFrom.EDaiSong.value());
+		order.setOrderfrom(req.getOrderfrom());
 		order.setStatus((byte) OrderStatus.New.value());
-		order.setRecevicelongitude(req.getRecevicelongitude());
-		order.setRecevicelatitude(req.getRecevicelatitude());
 		order.setOrdercount(req.getOrdercount());
 		order.setTimespan("1");
 		order.setPubdate(new Date());
 		order.setBusinessid(req.getBusinessid());
-		order.setPickupaddress(req.getPickupaddress());
+//		order.setRecevicelongitude(req.getRecevicelongitude());
+//		order.setRecevicelatitude(req.getRecevicelatitude());
+//		order.setPickupaddress(req.getPickupaddress());
 		order.setRecevicecity(req.getRecevicecity());
 		
 
@@ -331,13 +332,13 @@ private void fillOrderChild(OrderReq req, BusinessModel businessModel,Order orde
 		BigDecimal settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
 				req.getAmount(), businessModel.getBusinesscommission(),
 				businessModel.getCommissionfixvalue(), req.getOrdercount(),
-				businessModel.getDistribsubsidy(), OrderFrom.EDaiSong.value());
+				businessModel.getDistribsubsidy(), req.getOrderfrom());
 		order.setSettlemoney(settleMoney);
 		order.setAdjustment(orderPriceService.getAdjustment(orderCommission));
 
 		order.setBusinessreceivable(BigDecimal.valueOf(0));// 退还商家金额
 		if (!req.getIspay()
-				&& req.getMealssettlemode() == MealsSettleMode.LineOn.value()) {
+				&& order.getMealssettlemode() == MealsSettleMode.LineOn.value()) {
 			BigDecimal money = req.getAmount().add(
 					businessModel.getDistribsubsidy()
 							.multiply(new BigDecimal(req.getOrdercount()))
@@ -405,7 +406,7 @@ private void fillOrderChild(OrderReq req, BusinessModel businessModel,Order orde
     		BigDecimal settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
     				req.getAmount(), businessModel.getBusinesscommission(),
     				businessModel.getCommissionfixvalue(), req.getOrdercount(),
-    				businessModel.getDistribsubsidy(), OrderFrom.EDaiSong.value());
+    				businessModel.getDistribsubsidy(), req.getOrderfrom());
             if (businessModel.getBalanceprice().compareTo(settleMoney)<0)
             {
                return PublishOrderReturnEnum.BusiBalancePriceLack;

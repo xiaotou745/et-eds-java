@@ -34,6 +34,7 @@ import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.business.entity.UserContext;
+import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.NumberHelper;
 import com.edaisong.core.util.ParseHelper;
@@ -172,6 +173,8 @@ public class OrderController {
 		req.setAmount(new BigDecimal(500.32));
 		req.setRemark("尽快送到，要提供餐具");
 		req.setOrdercount(5);
+		req.setMealssettlemode(1);
+		req.setOrderfrom(OrderFrom.EDaiSong.value());
 		List<OrderChild> listOrderChild=new ArrayList<OrderChild>();
 		OrderChild child=new OrderChild();
 		child.setGoodprice(new BigDecimal(10));
