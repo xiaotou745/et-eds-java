@@ -118,7 +118,7 @@ public class OrderController {
 	 */
 	@RequestMapping(value = "canelorder", method = { RequestMethod.POST })
 	@ResponseBody
-	public CancelOrderBusinessResp login(@RequestBody CancelOrderBusinessReq req) {
+	public CancelOrderBusinessResp canelorder(CancelOrderBusinessReq req) {
 		CancelOrderBusinessResp resp = orderService.cancelOrderBusiness(req);
 		return resp;
 	}
