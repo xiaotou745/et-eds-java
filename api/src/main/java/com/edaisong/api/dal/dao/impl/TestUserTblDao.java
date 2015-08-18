@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Repository;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.ITestUserTblDao;
 import com.edaisong.entity.TestUserTbl;
 import com.edaisong.entity.domain.TestUserRecord;

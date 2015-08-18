@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.IDeliveryCompanyDao;
 import com.edaisong.entity.DeliveryCompany;
 

@@ -1,5 +1,6 @@
 package com.edaisong.api.dal.dao.impl;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.IBusinessRechargeDao;
 import com.edaisong.entity.BusinessRecharge;
 

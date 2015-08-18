@@ -1,4 +1,4 @@
-package com.edaisong.api.dal.dao.impl;
+package com.edaisong.api.common;
 
 import java.util.List;
 

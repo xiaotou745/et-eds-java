@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Repository;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.IBusinessDao;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessExpressRelation;

@@ -1,4 +1,4 @@
-package com.edaisong.api.dal.dao.impl;
+package com.edaisong.api.common;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 
+
 import org.springframework.stereotype.Repository;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.IGroupDao;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.domain.GroupModel;

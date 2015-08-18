@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 
+
 import org.springframework.stereotype.Repository;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.IAuthorityMenuClassDao;
 import com.edaisong.entity.AuthorityMenuClass;
 import com.edaisong.entity.MenuEntity;

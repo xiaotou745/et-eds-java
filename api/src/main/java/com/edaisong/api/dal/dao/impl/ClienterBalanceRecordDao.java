@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.IClienterBalanceRecordDao;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;

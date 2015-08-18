@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.IOrderDao;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.Order;

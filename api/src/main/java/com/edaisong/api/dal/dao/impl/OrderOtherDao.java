@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.IOrderOtherDao;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.domain.OrderDetailBusiness;

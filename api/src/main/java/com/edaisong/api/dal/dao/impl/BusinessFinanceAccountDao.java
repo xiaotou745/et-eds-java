@@ -2,6 +2,7 @@ package com.edaisong.api.dal.dao.impl;
 
 import org.springframework.stereotype.Repository;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.IBusinessFinanceAccountDao;
 import com.edaisong.entity.BusinessFinanceAccount;
 

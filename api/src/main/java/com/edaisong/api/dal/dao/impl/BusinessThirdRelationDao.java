@@ -3,8 +3,10 @@ package com.edaisong.api.dal.dao.impl;
 import java.util.List;
 
 
+
 import org.springframework.stereotype.Repository;
 
+import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dal.dao.inter.IBusinessThirdRelationDao;
 import com.edaisong.entity.BusinessThirdRelation;
 import com.edaisong.entity.domain.BusinessThirdRelationModel;
