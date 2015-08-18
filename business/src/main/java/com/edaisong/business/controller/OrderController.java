@@ -74,12 +74,15 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value = "detail", method = { RequestMethod.GET })
-	public ModelAndView detail(OrderDetailBusinessReq req) {
-		ModelAndView model = new ModelAndView("");
+	public ModelAndView detail(String orderno) {
+		OrderDetailBusinessReq req=new OrderDetailBusinessReq();
+		req.setOrderNo(orderno);
+		req.setBusinessId(2047);
+		ModelAndView model = new ModelAndView("businessView");
 		model.addObject("subtitle", "订单中心");
 		model.addObject("currenttitle", "订单详情");
 		model.addObject("viewPath", "order/detail");
-		model.addObject("datas", orderService.getOrderDetailBusiness(req));
+		model.addObject("modelDatas", orderService.getOrderDetailBusiness(req));
 		return model;
 	}
 
@@ -106,9 +109,11 @@ public class OrderController {
 	 */
 	@RequestMapping(value = "publish")
 	public ModelAndView publish(HttpServletRequest request) {
-
-		ModelAndView view = new ModelAndView("order/publish");
-		return view;
+		ModelAndView model = new ModelAndView("businessView");
+		model.addObject("subtitle", "订单中心");
+		model.addObject("currenttitle", "发布任务");
+		model.addObject("viewPath", "order/publish");
+		return model;
 
 	}
 

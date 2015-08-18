@@ -13,15 +13,15 @@ public enum OrderStatus {
 	/**
 	 * 订单已完成 
 	 */
-	Complite(1, "待接单"),
+	Complite(1, "已完成"),
 	/**
 	 * 订单已接单
 	 */
-	Delivery(2, "订单已接单 "),
+	Delivery(2, "已接单 "),
 	/**
 	 * 订单已取消
 	 */
-	Cancel(3, "订单已取消"),
+	Cancel(3, "已取消"),
 	/**
 	 * 取货中
 	 */

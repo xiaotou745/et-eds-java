@@ -93,7 +93,7 @@ public class OrderService implements IOrderService {
 			OrderDetailBusinessReq para) {
 		OrderDetailBusinessResp modelsBusinessResp = new OrderDetailBusinessResp();
 		modelsBusinessResp.setOrderModel(orderDao.getOrderDetailBusiness(para));
-		modelsBusinessResp.setOrderOthers(orderOtherDao
+		modelsBusinessResp.setOrderChilds(orderChildDao
 				.getOrderChildByOrderInfo(para.getOrderNo(),
 						para.getBusinessId()));
 		return modelsBusinessResp;
