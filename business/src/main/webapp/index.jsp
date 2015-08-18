@@ -52,7 +52,7 @@
 			}
 			if (isMove) {
 				flag = true;
-				var t=setTimeout("logoff()",3000);
+				var t=setTimeout("logoff()",2*60*60*1000);
 			}
 			oldX = pointer.x;
 			oldY = pointer.y;

@@ -9,7 +9,7 @@
 	boolean isLogin = ServerUtil.checkIsLogin(request);
 	if(isLogin){
 		//如果登录,跳转到首页
-		response.sendRedirect(request.getContextPath()+"/index.jsp");
+		response.sendRedirect(request.getContextPath()+"/index");
 	}
 %>
 
@@ -76,7 +76,7 @@
 							async:true,
 							success:function(data){
 								if(data.success){
-									window.location.href = "<%=basePath %>/index.jsp";
+									window.location.href = "<%=basePath %>/index";
 								}else{
 									$("#error").text(data.message);
 									$("#error").show();
