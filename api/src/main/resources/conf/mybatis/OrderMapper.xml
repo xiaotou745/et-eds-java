@@ -58,6 +58,19 @@
     <result column="FinishAll" property="finishall" jdbcType="INTEGER" />
     <result column="RealOrderCommission" property="realordercommission" jdbcType="NUMERIC" />
   </resultMap>
+  <!-- 商家订单概览信息 可扩展  add by pengyi 20180818-->
+  <resultMap id="businessOrderSummaryResultMap" type="com.edaisong.entity.domain.BusinessOrderSummaryModel">
+	  <result property="unReceive" column="unReceive" jdbcType="INTEGER"/>
+	  <result property="finish" column="finish" jdbcType="INTEGER"/>
+	  <result property="cancel" column="cancel" jdbcType="INTEGER"/>
+	  <result property="pickUp" column="pickUp" jdbcType="INTEGER"/>
+	  <result property="received" column="received" jdbcType="INTEGER"/>
+	  <result property="name" column="name" jdbcType="NVARCHAR"/>
+	  <result property="balancePrice" column="balancePrice" jdbcType="NUMERIC"/>
+	  <result property="lastLoginTime" column="lastLoginTime" jdbcType="TIMESTAMP"/>
+	  <result property="city" column="city" jdbcType="NVARCHAR"/>
+  </resultMap>
+  
   <sql id="Base_Column_List" >
     Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
     ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
@@ -855,4 +868,17 @@ a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,
  into dbo.OrderSubsidiesLog(OrderId,Price,InsertTime,OptName,Remark,OptId,OrderStatus,[Platform])
  WHERE  OrderNo= #{orderno,jdbcType=NVARCHAR}  and Status= #{status,jdbcType=INTEGER} 
    </update>
+   
+   <!-- 根据商家Id获得商家订单概述  add by pengyi 20150818-->
+   <select id="getBusinessOrderSummary" resultMap="businessOrderSummaryResultMap" parameterType="java.lang.Integer">
+   	WITH o AS (
+	 SELECT sum(CASE WHEN AuditStatus=1 THEN 1 ELSE 0 end) AS 'finish',
+	 sum(CASE WHEN AuditStatus=2 THEN 1 ELSE 0 end) AS 'received',  --待抢单
+	 sum(CASE WHEN AuditStatus=3 THEN 1 ELSE 0 end) AS 'cancel',  --已完成
+	 sum(CASE WHEN AuditStatus=4 THEN 1 ELSE 0 end) AS 'pickUp',    --已取消
+	 sum(CASE WHEN AuditStatus=0 THEN 1 ELSE 0 end) AS 'unReceive'--配送中
+	 FROM dbo.[order] WHERE businessId= #{id,jdbcType=INTEGER})   --待取货
+	 SELECT b.Name,b.Address,b.City,b.BalancePrice,b.LastLoginTime,o.finish,o.received,o.cancel,o.pickUp,o.unReceive 
+	 FROM o JOIN dbo.business b ON b.id = #{id,jdbcType=INTEGER};
+   </select>
 </mapper>

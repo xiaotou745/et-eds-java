@@ -28,6 +28,7 @@ import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
+import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
@@ -256,6 +257,11 @@ public class OrderService implements IOrderService {
 	public boolean verificationAddOrder(OrderReq  req){
 		boolean isOneKeyPubOrder = false;   //一键发单
 		return false;
+	}
+
+	@Override
+	public BusinessOrderSummaryModel getBusinessOrderSummary(int businessId) {
+		return orderDao.getBusinessOrderSummary(businessId);
 	}
 }
 

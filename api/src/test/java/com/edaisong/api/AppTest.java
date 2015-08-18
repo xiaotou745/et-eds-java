@@ -2,12 +2,14 @@ package com.edaisong.api;
 
 import java.math.BigDecimal;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import com.edaisong.api.business.SpringBeanHelper;
 import com.edaisong.api.service.impl.OrderPriceService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
@@ -22,6 +24,7 @@ public class AppTest extends TestCase {
 
 	IOrderService testService;
 	OrderPriceService baseCommissionService;
+	IOrderService orderService;
 
 	public AppTest() {
 		testService = SpringBeanHelper
@@ -95,5 +98,10 @@ public class AppTest extends TestCase {
 		
 		BigDecimal ret = baseCommissionService.getCurrenOrderCommission(model);
 		
+	}
+	
+	public void testGetBusinessOrderSummary(){
+		BusinessOrderSummaryModel model = testService.getBusinessOrderSummary(1812);
+		//Assert.assertTrue(model.getName()!= null);
 	}
 }

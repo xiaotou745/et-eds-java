@@ -3,6 +3,7 @@ package com.edaisong.api.dal.dao.inter;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -64,5 +65,13 @@ public interface IOrderDao {
 	 * @return
 	 */
 	int cancelOrderBusiness(Order order);
+	
+	/**
+	 * 获得商家订单概览信息
+	 * @param 商家Id
+	 * @date 20150818
+	 * @return
+	 */
+	BusinessOrderSummaryModel getBusinessOrderSummary(int businessId);
 
 }
