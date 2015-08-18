@@ -48,5 +48,11 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 	     return result;
 
 	}
+
+	@Override
+	public int insertList(List<OrderChild> record) {
+		return getMasterSqlSessionUtil().insert(
+				"com.edaisong.api.dal.dao.inter.IOrderChildDao.insertList", record);
+	}
 	
 }

@@ -9,6 +9,7 @@ public interface IOrderChildDao {
     //int deleteByPrimaryKey(Long id);
 
     int insert(OrderChild record);
+    int insertList(List<OrderChild> record);
 
 //    int insertSelective(OrderChild record);
 //

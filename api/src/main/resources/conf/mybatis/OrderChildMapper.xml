@@ -68,6 +68,40 @@
 		#{thirdpaystatus,jdbcType=SMALLINT}
 		)
 	</insert>
+	<insert id="insertList" parameterType="java.util.List">
+	 <foreach collection="list" index="index" item="item">    
+		insert into OrderChild (Id, OrderId, ChildId,
+		TotalPrice, GoodPrice, DeliveryPrice,
+		PayStyle, PayType, PayStatus,
+		PayBy, PayTime, PayPrice,
+		HasUploadTicket, TicketUrl, CreateBy,
+		CreateTime, UpdateBy, UpdateTime,
+		OriginalOrderNo, WxCodeUrl, ThirdPayStatus
+		)
+		values (#{item.id,jdbcType=BIGINT}, 
+		#{item.orderid,jdbcType=INTEGER},
+		#{item.childid,jdbcType=INTEGER},
+		#{item.totalprice,jdbcType=DECIMAL},
+		#{item.goodprice,jdbcType=DECIMAL},
+		#{item.deliveryprice,jdbcType=DECIMAL},
+		#{item.paystyle,jdbcType=SMALLINT}, 
+		#{item.paytype,jdbcType=SMALLINT},
+		#{item.paystatus,jdbcType=SMALLINT},
+		#{item.payby,jdbcType=NVARCHAR},
+		#{item.paytime,jdbcType=TIMESTAMP}, 
+		#{item.payprice,jdbcType=DECIMAL},
+		#{item.hasuploadticket,jdbcType=BIT},
+		#{item.ticketurl,jdbcType=VARCHAR},
+		#{item.createby,jdbcType=NVARCHAR},
+		#{item.createtime,jdbcType=TIMESTAMP}, 
+		#{item.updateby,jdbcType=NVARCHAR}, 
+		#{item.updatetime,jdbcType=TIMESTAMP},
+		#{item.originalorderno,jdbcType=VARCHAR},
+		#{item.wxcodeurl,jdbcType=VARCHAR},
+		#{item.thirdpaystatus,jdbcType=SMALLINT}
+		)
+		     </foreach>
+	</insert>
 	<insert id="insertSelective" parameterType="com.edaisong.entity.OrderChild">
 		insert into OrderChild
 		<trim prefix="(" suffix=")" suffixOverrides=",">
