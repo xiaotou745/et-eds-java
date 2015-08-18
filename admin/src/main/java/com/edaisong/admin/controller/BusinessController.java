@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.edaisong.api.service.inter.IAdminToolsService;
+import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.IBusinessExpressRelationService;
 import com.edaisong.api.service.inter.IBusinessFinanceAccountService;
 import com.edaisong.api.service.inter.IBusinessGroupService;
@@ -64,7 +64,7 @@ public class BusinessController {
 	private IGroupService iGroupService;
 
 	@Autowired
-	private IAdminToolsService adminToolsService;
+	private IGlobalConfigService adminToolsService;
 
 	@Autowired
 	private IBusinessThirdRelationService businessThirdRelationService;

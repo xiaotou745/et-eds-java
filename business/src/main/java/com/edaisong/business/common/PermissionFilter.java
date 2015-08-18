@@ -11,12 +11,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.edaisong.api.business.SpringBeanHelper;
+import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.core.cache.redis.RedisService;
 
 public class PermissionFilter implements Filter {
 	private RedisService redisService;
-	private final String loginUri = "/account/login";
 	
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
@@ -45,11 +44,13 @@ public class PermissionFilter implements Filter {
 		// }
 		
 		//判断是否登录
-		boolean isLogin = ServerUtil.checkIsLogin(request);
-		if (isLogin) {
-			request.getRequestDispatcher(loginUri).forward(request, response);
+/*		boolean isLogin = ServerUtil.checkIsLogin(request);
+		if (!isLogin && (!request.getServletPath().equals("/login.jsp") || !request.getServletPath().equals("/account/code"))) {
+			//request.getRequestDispatcher(loginUri).forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/");
 			return;
-		}
+		}*/
+		
 
 		String failUri = "";
 		Object misUser = null;

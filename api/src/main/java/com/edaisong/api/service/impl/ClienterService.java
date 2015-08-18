@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edaisong.api.dal.dao.inter.IClienterDao;
+import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.Clienter;

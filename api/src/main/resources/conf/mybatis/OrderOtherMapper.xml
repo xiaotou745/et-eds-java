@@ -47,7 +47,7 @@
       GrabLongitude, GrabLatitude, CompleteLongitude, 
       CompleteLatitude, TakeTime, TakeLongitude, 
       TakeLatitude, PubToGrabDistance, GrabToCompleteDistance, 
-      PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder
+      PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked
       )
     values (#{id,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, #{needuploadcount,jdbcType=INTEGER}, 
       #{receiptpic,jdbcType=VARCHAR}, #{haduploadcount,jdbcType=INTEGER}, #{isjoinwithdraw,jdbcType=INTEGER}, 
@@ -56,6 +56,7 @@
       #{completelatitude,jdbcType=DOUBLE}, #{taketime,jdbcType=TIMESTAMP}, #{takelongitude,jdbcType=DOUBLE}, 
       #{takelatitude,jdbcType=DOUBLE}, #{pubtograbdistance,jdbcType=DOUBLE}, #{grabtocompletedistance,jdbcType=DOUBLE}, 
       #{pubtocompletedistance,jdbcType=DOUBLE}, #{onekeypuborder,jdbcType=INTEGER}, #{isnotrealorder,jdbcType=INTEGER}
+      , #{isorderchecked,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.OrderOther" >
