@@ -180,6 +180,20 @@
 							validate=true;
 							if(validate){
 								$('.popup1').show();
+								var url = "<%=basePath%>/order/add";
+								var paramaters={};
+								$.ajax({
+									type : 'POST',
+									url : url,
+									data : paramaters,
+									success : function(result) {
+										if(result.responseCode==0){
+											alert("操作成功");
+										}
+										else{
+										alert(result.message);}
+									}
+								});
 							}
 						});
 		//验证元素非空，为空显示提示语，不为空隐藏提示语  add by caoheyang 20150818
