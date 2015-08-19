@@ -1,10 +1,7 @@
 package com.edaisong.business.controller;
 
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -21,13 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.business.common.ServerUtil;
 import com.edaisong.business.common.WebConst;
-import com.edaisong.business.entity.CookieModel;
 import com.edaisong.business.entity.resp.LoginResp;
 import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.util.CookieUtils;
-import com.edaisong.core.util.JsonUtil;
 import com.edaisong.entity.Business;
-import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
 @Controller
@@ -94,12 +89,9 @@ public class AccountController {
 		Date lastLoginTime = new Date();//更新最后登录时间
 		businessService.updateLastLoginTime(business.getId(), lastLoginTime);
 		business.setLastLoginTime(lastLoginTime);
-		String key = UUID.randomUUID().toString();
-		CookieModel cookieModel = new CookieModel();
-		cookieModel.setValue(key);
-		cookieModel.setVersion(request.getServletContext().getInitParameter("cookieVersion"));
+		String key = String.format("%s_%s", RedissCacheKey.LOGIN_COOKIE_KEY,business.getPhoneno());//UUID.randomUUID().toString();
 		redisService.set(key, business, cookieMaxAge);
-		CookieUtils.setCookie(response, WebConst.LOGIN_COOKIE_NAME, JsonUtil.obj2string(cookieModel), cookieMaxAge,
+		CookieUtils.setCookie(request,response, WebConst.LOGIN_COOKIE_NAME, key, cookieMaxAge,
 				true);
 		resp.setSuccess(true);
 		return resp;
@@ -119,10 +111,7 @@ public class AccountController {
 		// 删除登录cookie
 		Cookie cookie = CookieUtils.getCookieByName(WebConst.LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
-		    CookieModel cookieModel = JsonUtil.str2obj(URLDecoder.decode(cookie.getValue(),"utf-8"), CookieModel.class);
-		    if(cookieModel != null){
-		    	redisService.remove(cookieModel.getValue());
-		    }
+		    	redisService.remove(cookie.getValue());
 			CookieUtils.deleteCookie(request, response, cookie);
 		}
 		response.sendRedirect(request.getContextPath() + "/");

@@ -3,18 +3,19 @@ package com.edaisong.business.common;
 import javax.servlet.http.HttpServletRequest;
 
 import com.edaisong.api.common.SpringBeanHelper;
-import com.edaisong.business.entity.CookieModel;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.JsonUtil;
 
 public class ServerUtil {
 	private final static RedisService redisService;
-	static{
+	static {
 		redisService = SpringBeanHelper.getCustomBeanByType(RedisService.class);
 	}
+
 	/**
 	 * 是否登录
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -25,21 +26,18 @@ public class ServerUtil {
 			final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
 			String cookieValue = CookieUtils.getCookie(request, cookieKey);
 			if (cookieValue != null) {
-				CookieModel cookieModel = JsonUtil.str2obj(cookieValue, CookieModel.class);
-				if (cookieModel != null) {
-					Object loginStatusValue = redisService.get(cookieModel.getValue(), Object.class);
-					if (loginStatusValue != null) {
-						isLogin = true;
-					}
+				Object loginStatusValue = redisService.get(cookieValue, Object.class);
+				if (loginStatusValue != null) {
+					isLogin = true;
 				}
 			}
 		} catch (Exception e) {
 			return isLogin;
 		}
-		
+
 		return isLogin;
 	}
-	
+
 	public static String getIpAddr(HttpServletRequest request) {
 		String ip = request.getHeader("x-forwarded-for");
 		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {

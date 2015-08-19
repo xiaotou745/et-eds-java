@@ -1,7 +1,10 @@
 package com.edaisong.api.dao.impl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -123,9 +126,13 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	}
 
 	@Override
-	public List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId) {
+	public List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId,Date startTime,Date endTime) {
+		Map<String, Object> paramMap = new HashedMap();
+		paramMap.put("businessId", businessId);
+		paramMap.put("startTime", startTime);
+		paramMap.put("endTime", endTime);
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.getBusiPubOrderTimeStatistics", 
-				businessId);
+				"com.edaisong.api.dal.dao.inter.IOrderDao.getBusiPubOrderTimeStatistics", 
+				paramMap);
 	}
 }

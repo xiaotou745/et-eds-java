@@ -17,21 +17,22 @@
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/index.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/newProjects.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/popup.css">
-
-
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
 <script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.2.min.js"></script>
 <%-- <script type="text/javascript" src="<%=basePath%>/js/jquery-ui-1.8.20.js"></script> --%>
 <%-- <script type="text/javascript" src="<%=basePath%>/js/jquery.ui.datepicker-zh-CN.js"></script> --%>
 <script>
 $(document).ready(function() {
-	setTimeout("regTrEvent()",50);  
+	//setTimeout("regTrEvent()",50);  
 });
 
 function regTrEvent(){  
-	if($(".stripe tr").length==0){
-		setTimeout("regTrEvent()",50);  
-		return;
-	}
+// 	if($(".stripe tr").length==0){
+// 		setTimeout("regTrEvent()",50);  
+// 		return;
+// 	}
+
 	$(".stripe tr").mouseover(function() {
 		//鼠标移到class为stripe的表格的tr上时，执行函数
 		$(this).addClass("over");
@@ -47,6 +48,7 @@ function regTrEvent(){
 	//注：$(':even') 为偶数语法；
 	//注：$(':odd')  为奇数语法；
 	countH();
+	setTimeout("regTrEvent()",50);  
 }  
 
 	$(document).ajaxError(function(event, jqXHR, options, errorMsg) {

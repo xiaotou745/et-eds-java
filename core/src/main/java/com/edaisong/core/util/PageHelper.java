@@ -9,12 +9,13 @@ public class PageHelper {
 			return "";
 		// int pageCount = TotalRecord % PageSize != 0 ? TotalRecord / PageSize
 		// + 1 : TotalRecord / PageSize;
+		//共 39 页 572 条记录，当前为第 1 页,本页 15 条
 		StringBuilder sb = new StringBuilder();
 		sb.append("<div class=\"row\">");
 		sb.append("<div class=\"col-sm-6\">");
 		sb.append("<div class=\"dataTables_info\" id=\"DataTables_Table_0_info\" role=\"alert\"");
 		sb.append("aria-live=\"polite\" aria-relevant=\"all\">共 " + TotalPage
-				+ "页，找到 " + TotalRecord + " 个</div>");
+				+ "页," + TotalRecord + "条记录,当前为第"+CurrentPage+"页,每页"+PageSize+"条</div>");
 		sb.append("</div>");
 
 		sb.append("<div class=\"col-sm-6\">");

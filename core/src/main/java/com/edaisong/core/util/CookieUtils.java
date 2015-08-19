@@ -116,8 +116,8 @@ public class CookieUtils {
 	 * @param name 名称
 	 * @param value 值
 	 */
-	public static void setCookie(HttpServletResponse response, String name, String value) {
-		setCookie(response, name, value, 60*60*24);
+	public static void setCookie(HttpServletRequest request,HttpServletResponse response, String name, String value) {
+		setCookie(request,response, name, value, 60*60*24);
 	}
 	
 	/**
@@ -127,8 +127,8 @@ public class CookieUtils {
 	 * @param maxAge 生存时间（单位秒）
 	 * @param uri 路径
 	 */
-	public static void setCookie(HttpServletResponse response, String name, String value, int maxAge) {
-		setCookie(response,name,value,maxAge,false);
+	public static void setCookie(HttpServletRequest request,HttpServletResponse response, String name, String value, int maxAge) {
+		setCookie(request,response,name,value,maxAge,false);
 	}
 	/**
 	 * 设置 Cookie
@@ -138,9 +138,9 @@ public class CookieUtils {
 	 * @param uri 路径
 	 * @param httpOnly 是否是httpOnly
 	 */
-	public static void setCookie(HttpServletResponse response, String name, String value, int maxAge,boolean httpOnly) {
+	public static void setCookie(HttpServletRequest request,HttpServletResponse response, String name, String value, int maxAge,boolean httpOnly) {
 		Cookie cookie = new Cookie(name, null);
-		cookie.setPath("/");
+		cookie.setPath(getPath(request));
 		cookie.setMaxAge(maxAge);
 		try {
 			cookie.setValue(URLEncoder.encode(value, "utf-8"));
@@ -205,7 +205,6 @@ public class CookieUtils {
             HttpServletResponse response, Cookie cookie) {
         if (cookie != null) {
             cookie.setPath(getPath(request));
-            cookie.setValue("");
             cookie.setMaxAge(0);
             response.addCookie(cookie);
         }

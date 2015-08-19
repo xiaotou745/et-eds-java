@@ -8,15 +8,15 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
-
-<table width="100%" class="stripe">
+<%@page import="com.edaisong.core.enums.OrderStatus"%>
+<table class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
 		<tr>
 			<th style="width: 60px;">编号</th>
 			<th style="width: 150px;">订单号</th>
 			<th style="width: 200px;">商户信息</th>
 			<th style="width: 115px;">超人信息</th>
-			<th style="width: 100px;">发布时间</th>
+			<th style="width: 100px;">发单时间</th>
 			<th style="width: 150px;">送货地址</th>
 			<th style="width: 100px;">完成时间</th>
 			<th style="width: 150px;">订单明细</th>
@@ -24,8 +24,6 @@
 			<th style="width: 110px;">扣除补贴</th>
 			<th style="width: 110px;">商家结算</th>
 			<th style="width: 110px;">订单状态</th>
-			<th style="width: 110px;">已传/总计</th>
-			<th style="width: 110px;">抢单-完成</th>
 			<th style="width: 60px;">操作</th>
 		</tr>
 	</thead>
@@ -37,28 +35,17 @@
 				data = new ArrayList<OrderListModel>();
 			}
 			for (int i = 0; i < data.size(); i++) {
-
-				double distance = data.get(i).getGrabToCompleteDistance();
-				String grabToCompleteStyle = "";
-				String grabToCompleteStr = "";
-				if (distance == -1)//抢单和完成的坐标有一个未知时
-				{
-					grabToCompleteStyle = "color:black";
-					grabToCompleteStr = "未知";
-				} else if (distance == 0.0)//抢单和完成的坐标重合
-				{
-					grabToCompleteStyle = "color:red;font-weight:900";
-					grabToCompleteStr = "重合";
-				} else //抢单和完成的坐标不重合
-				{
-					grabToCompleteStyle = "color:green";
-					grabToCompleteStr = "不重合";
-				}
 				int diffHour = 0;
 				String val = diffHour > 10 && data.get(i).getStatus() == 0 ? "red"
 						: diffHour > 8 && data.get(i).getStatus() == 0 ? "blue"
 								: diffHour > 5 && data.get(i).getStatus() == 0 ? "yellow"
 										: "none";
+								String statusStr="未知";
+								OrderStatus s=	OrderStatus.getEnum(data.get(i).getStatus());
+								if(s!=null){
+									statusStr=s.desc();
+								}
+										
 		%>
 		<tr>
 			<td><%=i + 1%></td>
@@ -100,10 +87,10 @@
 				}
 			%>
 			<td><%=data.get(i).getBusinessCommission()%></td>
-			<td><%=data.get(i).getGroupName()%></td>
-			<td><%=data.get(i).getHadUploadCount()%>/<%=data.get(i).getOrderCount()%></td>
-			<td style="<%=grabToCompleteStyle%>"><%=grabToCompleteStr%></td>
-			<td><a href="javascript:showMapData('@item.Id')">地图</a></td>
+			<td><%=statusStr%></td>
+			<td><a href="javascript:showMapData('@item.Id')">取消订单</a>
+			<a href="javascript:showMapData('@item.Id')">订单详情</a>
+			</td>
 		</tr>
 		<%
 			}
