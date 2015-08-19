@@ -118,7 +118,16 @@ public class OrderReq {
 //	    private Double realordercommission;
 	    
 	    private List<OrderChild> listOrderChild;
+	    
+	    private String childstr;
 
+	    public String getChildstr() {
+			return childstr;
+		}
+
+		public void setChildstr(String childstr) {
+			this.childstr = childstr;
+		}
 //	    public Integer getId() {
 //	        return id;
 //	    }
@@ -151,7 +160,9 @@ public class OrderReq {
 //	        this.pubdate = pubdate;
 //	    }
 
-	    public String getRecevicename() {
+	  
+
+		public String getRecevicename() {
 	        return recevicename;
 	    }
 

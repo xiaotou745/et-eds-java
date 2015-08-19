@@ -157,6 +157,7 @@ public class OrderController {
 	@RequestMapping(value = "add", method = { RequestMethod.POST })
 	@ResponseBody
 	public OrderResp add(OrderReq req,HttpServletRequest request) {
+		req.setListOrderChild(JsonUtil.str2list(req.getChildstr(),OrderChild.class));
 		OrderResp resp = new OrderResp();
 		UserContext context = UserContext.getCurrentContext(request);
 		if (context==null||context.getBusiness()==null||context.getBusiness().getId()<=0) {
@@ -165,10 +166,7 @@ public class OrderController {
 			return resp;
 		}
 		req.setBusinessid(context.getBusiness().getId());
-		req.setRecevicename("张三");
-		req.setRecevicephoneno("13521815154");
-		req.setReceviceaddress("大望路");
-		req.setRecevicecity("北京");
+	
 		req.setIspay(false);
 		req.setAmount(new Double(25));
 		req.setRemark("尽快送到，要提供餐具");

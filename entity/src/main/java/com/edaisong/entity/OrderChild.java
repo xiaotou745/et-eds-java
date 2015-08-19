@@ -1,9 +1,10 @@
 package com.edaisong.entity;
 
+import java.io.Serializable;
 import java.lang.Double;
 import java.util.Date;
 
-public class OrderChild {
+public class OrderChild implements Serializable {
     private Long id;
 
     private Integer orderid;

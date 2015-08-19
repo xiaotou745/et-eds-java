@@ -204,13 +204,15 @@
 			var ispay=$("fukuan:checked").val()==0?false:true;//是否已付款
 			var amount=1000; //金额
 			var remark=$("#remark").val();  //备注
-			var listOrderChild = new Array($('.copy').length);  //子订单信息			
-			$('.copy').each(function(index, domEle) {				
-				listOrderChild.push({"goodprice":$(this).find('input[type=text]').val()});
+			var listOrderChild = new Array();;	
+			$('.copy').each(function(index, domEle) {	
+				var temp={"goodprice":$(this).find('input[type=text]').val()};
+				listOrderChild.push(temp);
 			});
- 			var paramaters={"recevicename":recevicename,"recevicephoneno":recevicephoneno,"receviceaddress":receviceaddress,
- 					"ispay":ispay,"amount":amount,"remark":remark};
- 		
+        
+			var paramaters={"recevicename":recevicename,"recevicephoneno":recevicephoneno,"receviceaddress":receviceaddress,
+ 					"ispay":ispay,"amount":amount,"remark":remark,"childstr":JSON.stringify(listOrderChild)};
+ 		    console.log(paramaters)
 			var url = "<%=basePath%>/order/add";
 			$.ajax({
 				type : 'POST',
