@@ -24,7 +24,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public int insert(Order record)
 	{
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dal.dao.inter.IOrderDao.insertSelective", record);
+				"com.edaisong.api.dao.inter.IOrderDao.insertSelective", record);
 	}
 	
 	/**
@@ -41,7 +41,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 
 		PagedResponse<OrderListModel> result = new PagedResponse<OrderListModel>();
 		result = getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dal.dao.inter.IOrderDao.GetOrders", search);
+				"com.edaisong.api.dao.inter.IOrderDao.GetOrders", search);
 		return result;
 	}
 
@@ -55,7 +55,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	 */
 	public OrderMapDetail getOrderMapDetail(long orderId) {
 		OrderMapDetail result = getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dal.dao.inter.IOrderDao.getOrderMapDetail",
+				"com.edaisong.api.dao.inter.IOrderDao.getOrderMapDetail",
 				orderId);
 		return result;
 	}
@@ -73,7 +73,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 			OrderDetailBusinessReq para) {
 		OrderDetailBusiness result = getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dal.dao.inter.IOrderDao.getOrderDetailBusiness",
+						"com.edaisong.api.dao.inter.IOrderDao.getOrderDetailBusiness",
 						para);
 		return result;
 	}
@@ -91,7 +91,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public Order getOneByCriteria(Order order) {
 		Order result = getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dal.dao.inter.IOrderDao.getOneByCriteria",
+						"com.edaisong.api.dao.inter.IOrderDao.getOneByCriteria",
 						order);
 		return result;
 	}
@@ -109,7 +109,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public int cancelOrderBusiness(Order order) {
 		int res = getMasterSqlSessionUtil()
 				.update(
-						"com.edaisong.api.dal.dao.inter.IOrderDao.cancelOrderBusiness",
+						"com.edaisong.api.dao.inter.IOrderDao.cancelOrderBusiness",
 						order);
 		return res;
 	}
@@ -118,7 +118,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public BusinessOrderSummaryModel getBusinessOrderSummary(int businessId) {
 		// TODO Auto-generated method stub
 		return getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dal.dao.inter.IOrderDao.getBusinessOrderSummary", 
+				"com.edaisong.api.dao.inter.IOrderDao.getBusinessOrderSummary", 
 				businessId);
 	}
 }

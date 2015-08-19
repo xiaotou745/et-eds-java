@@ -31,7 +31,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		paramMap.put("status", record.getStatus());	
 		//其它的暂时没有写
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dal.dao.inter.IClienterDao.updateByPrimaryKeySelective",
+				.update("com.edaisong.api.dao.inter.IClienterDao.updateByPrimaryKeySelective",
 						paramMap);
 	}
 
@@ -53,7 +53,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		paramMap.put("withwardId", 0);	
 		
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dal.dao.inter.IClienterDao.updateMoneyById",
+				.update("com.edaisong.api.dao.inter.IClienterDao.updateMoneyById",
 						paramMap);
 	}	
 	
@@ -91,7 +91,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		map.put("PageSize", PageSize);
 		map.put("CurrentPage", CurrentPage);
 		List<ClienterModel> list = getMasterSqlSessionUtil()
-				.selectList("com.edaisong.api.dal.dao.inter.IClienterDao.query",
+				.selectList("com.edaisong.api.dao.inter.IClienterDao.query",
 						map);
 		
 		PagedResponse<ClienterModel> resp = new PagedResponse<ClienterModel>();		

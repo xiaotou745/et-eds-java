@@ -64,7 +64,7 @@ public class OrderService implements IOrderService {
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
     @Autowired
 	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
-    
+    @Autowired
     private IBusinessService businessService;
 	/**
 	 * 后台订单列表页面
@@ -225,6 +225,7 @@ public class OrderService implements IOrderService {
 		record.setOrderid(orderID);
 		record.setOrderstatus(OrderStatus.New.value());
 		record.setOptid(req.getBusinessid());
+		record.setPrice(0d);
 		record.setOptname(businessModel.getName());
 		record.setRemark(TaskStatus.PublishOrder.desc());
 		record.setPlatform(SuperPlatform.Business.value());
@@ -292,6 +293,11 @@ public class OrderService implements IOrderService {
 				child.setOrderid(order.getId());
 				child.setTotalprice(child.getGoodprice()+child.getDeliveryprice());
 				child.setPaystatus(payStatus);
+				child.setOriginalorderno("");
+				child.setWxcodeurl("");
+				child.setPayprice(0d);
+				child.setHasuploadticket(false);
+				child.setThirdpaystatus((short)0);
 			}
 		}
 	}
