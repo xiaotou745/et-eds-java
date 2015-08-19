@@ -56,17 +56,18 @@
 		  	  {
 		    	if (modelDatas.getOrderModel().getGrabTime() != null) {
 					 %>
-	    			  <p class="fl" style="border:none"></p>
-	    	  <% 
-			 }  if (modelDatas.getOrderModel().getTakeTime() != null) {
+	    			  <p class="fl" style="border:none">
+	    			  </p>
+	    	    <% 
+			  }  if (modelDatas.getOrderModel().getTakeTime() != null) {
 				 %>
-   			  <p class="fl" style="border:none"></p>
-	    	     	     	     	  
-   	  <% 
-		  } 
+	   			  <p class="fl" style="border:none">
+	   			  </p>    	     	     	  
+   			  <% 
+				  } 
 			   if (modelDatas.getOrderModel().getActualDoneDate() != null) {
 		    	  %>
-		    			  <p class="fl" style="border:none"></p>		    	     	     	     	  
+		    		 <p class="fl" style="border:none"></p>		    	     	     	     	  
 		    	  <% 
 					}
 		    %>
@@ -76,7 +77,10 @@
 				<span>订单取消</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
 					.getCancelTime(), "MM.dd HH:mm")%></em>
 			</p>
-			<% }%>
+			<% }
+		    else{%>
+		   		 <p class="fl" style="border:none"></p>		    	
+		    <%} %>
 		</div>
 		<div class="liuc">
 			<img src="<%=basePath%>/images/icon-13.png" width="618" height="35"
@@ -189,10 +193,11 @@ $(function(){
 		     $.post("<%=basePath%>/order/canelorder", data,
                   function(result) {
 					if(result.responseCode==0){
-						alert("取消订单成功！")
+						alert("取消订单成功！");
+						window.location.reload();
 					}
-		   		});
-							}
-						});
+		   	    	});
+				}
+			});
 	});
 </script>
