@@ -41,15 +41,17 @@
 	<div class="box2-ny">
 		<p class="cb">
 			<span class="fl"> <em class="fl">*</em> 顾客是否付款
-			</span> <label class="fl"> <input type="radio" class="fl"
-				name="fukuan"> 已付款
-			</label> <label class="fl"> <input type="radio" class="fl"
-				name="fukuan"> 未付款
+			</span> 
+		    <label class="fl"> <input type="radio" class="fl"
+				name="fukuan" checked value="0"> 未付款
+			</label>
+			<label class="fl"> <input type="radio" class="fl"
+				name="fukuan" value="1"> 已付款
 			</label>
 		</p>
 		<div class="orderBox dn">
 			<p class="cb">
-				<span class="fl"> 订单数量 </span> <s class="fl">3单</s> <a
+				<span class="fl"> 订单数量 </span> <s class="fl">1单</s> <a
 					href="javascript:;" class="fl add">添加</a>
 			</p>
 			<p class="cb copy">
@@ -63,7 +65,7 @@
 		</p>
 		<p class="cb">
 			<span class="fl lh15"> 备注 </span>
-			<textarea class="fl"></textarea>
+			<textarea class="fl" id="remark"></textarea>
 		</p>
 	</div>
 </div>
@@ -91,7 +93,7 @@
 		</i> <a class="qx" href="javascript:;">取消</a> <a class="qr"
 			href="javascript:;">确认</a>
 		<!-- class=“qr“ 加入选择器”ok"呼出任务发布成功弹层 -->
-		<!-- class=“qr“ 加入选择器”no"呼出任务发布成功弹层 -->
+		<!-- class=“qr“ 加入选择器”no"呼出任务发布失败弹层 -->
 	</div>
 </div>
 
@@ -150,21 +152,26 @@
 			var clone = add.clone();
 			clone.find('span').html('订单' + ($('.copy').length + 1))
 			$('.orderBox').append(clone);
+			$('.orderBox').find('s').eq(0).html($('.copy').length +"单");  //重置单量
 		});
 		//删除订单数量
 		$('.orderBox').on('click', '.del', function() {
 			$(this).parent().remove();
+			//对子订单序列号重新进行排序
+            for(index=0;index<$('.copy').length;index++)
+            {
+            	$('.copy').eq(index).find('span').html('订单' +  (index+1));
+            }
 			if ($('.copy').length < 2) {
 				$('.orderBox').addClass('dn');
 			} else {
 				$('.orderBox').removeClass('dn');
 			}
+			$('.orderBox').find('s').eq(0).html($('.copy').length +"单");  //重置单量
 		});
 
 		//确认发布任务弹窗呼出 And 关闭
-		$('.fabu')
-				.on('click',
-						function() {
+		$('.fabu').on('click',function() {
 							var validate = true;
 							//手机号非空判断 
 							validate=checkEmpty("telphone");					
@@ -175,16 +182,7 @@
 							validate=true;
 							if(validate){
 								$('.popup1').show();
-								var url = "<%=basePath%>/order/add";
-								var paramaters={};
-								$.ajax({
-									type : 'POST',
-									url : url,
-									data : paramaters,
-									success : function(result) {
-										alert(result);
-									}
-								});
+								
 							}
 						});
 		//验证元素非空，为空显示提示语，不为空隐藏提示语  add by caoheyang 20150818
@@ -197,7 +195,42 @@
 			}
 		}
 		
-		
+		//任务发布 弹出层 的确认按钮 触发 ajax 请求  caoheyang 20150819
+		$('.qr').on('click', function() {
+			$(this).parents('.popup1').hide();
+			var recevicename=$("#telphone").val();  //收货人姓名
+			var recevicephoneno=$("#name").val(); //收货人电话
+			var receviceaddress=$("#address").val(); //收货人地址
+			var ispay=$("fukuan:checked").val()==0?false:true;//是否已付款
+			var amount=1000; //金额
+			var remark=$("#remark").val();  //备注
+			var listOrderChild = new Array($('.copy').length);  //子订单信息			
+			$('.copy').each(function(index, domEle) {				
+				listOrderChild.push({"goodprice":$(this).find('input[type=text]').val()});
+			});
+ 			var paramaters={"recevicename":recevicename,"recevicephoneno":recevicephoneno,"receviceaddress":receviceaddress,
+ 					"ispay":ispay,"amount":amount,"remark":remark};
+ 		
+			var url = "<%=basePath%>/order/add";
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data :paramaters,
+				success : function(result) {
+					if(result.responseCode==0){  
+					    //异步请求成功 呼出 成功层
+						$('.popup2').show();
+					} else if(result.responseCode==-8){  
+						$('.popup3').show();  //余额不足弹层
+					} else
+					{
+					  alert(result.message);	
+					}
+				}
+			});
+
+		});
+
 		$('.qx').on('click', function() {
 			$(this).parents('.popup1').hide();
 		});
@@ -207,6 +240,7 @@
 			$(this).parents('.popup1').hide();
 			$('.popup2').show();
 		});
+		
 		$('.qr2').on('click', function() {
 			$(this).parents('.popup2').hide();
 		});

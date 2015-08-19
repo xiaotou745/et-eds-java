@@ -19,6 +19,8 @@ import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IOrderService;
+import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
 import com.edaisong.core.enums.BusinessStatus;
@@ -65,8 +67,10 @@ public class OrderService implements IOrderService {
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
     @Autowired
 	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
-    
+    @Autowired
     private IBusinessService businessService;
+    @Autowired
+    private RedisService redisService;
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -217,15 +221,20 @@ public class OrderService implements IOrderService {
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
+		if(checkHasExist(req.getBusinessid())){
+			resp.setResponseCode(PublishOrderReturnEnum.OrderHasExist.value());
+			resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc());
+			return resp;
+		}
 		// 订单主表
 		Order order = fillOrder(req, businessModel);
-		int orderID=orderDao.insert(order);
-		order.setId(orderID);
+		orderDao.insert(order);
 		//记录发单日志
 		OrderSubsidiesLog record=new OrderSubsidiesLog();
-		record.setOrderid(orderID);
+		record.setOrderid(order.getId());
 		record.setOrderstatus(OrderStatus.New.value());
 		record.setOptid(req.getBusinessid());
+		record.setPrice(0d);
 		record.setOptname(businessModel.getName());
 		record.setRemark(TaskStatus.PublishOrder.desc());
 		record.setPlatform(SuperPlatform.Business.value());
@@ -238,7 +247,7 @@ public class OrderService implements IOrderService {
 		balanceRecord.setStatus((short)BusinessBalanceRecordStatus.Success.value());
 		balanceRecord.setRecordtype((short)BusinessBalanceRecordRecordType.PublishOrder.value());
 		balanceRecord.setOperator(businessModel.getName());
-		balanceRecord.setWithwardid((long)orderID);
+		balanceRecord.setWithwardid((long)order.getId());
 		balanceRecord.setRelationno(order.getOrderno());
 		balanceRecord.setRemark("扣除商家结算费");
 		businessService.updateForWithdrawC(balanceRecord);
@@ -246,7 +255,7 @@ public class OrderService implements IOrderService {
 		//记录补贴日志
 		if (order.getAdjustment()>0) {
 			OrderSubsidiesLog adjustRecord=new OrderSubsidiesLog();
-			adjustRecord.setOrderid(orderID);
+			adjustRecord.setOrderid(order.getId());
 			adjustRecord.setPrice(order.getAdjustment());
 			adjustRecord.setOrderstatus(OrderStatus.New.value());
 			adjustRecord.setOptid(req.getBusinessid());
@@ -258,7 +267,7 @@ public class OrderService implements IOrderService {
 		
 		// 写入订单Other表
 		OrderOther orderOther = new OrderOther();
-		orderOther.setOrderid(orderID);
+		orderOther.setOrderid(order.getId());
 		orderOther.setNeeduploadcount(req.getOrdercount());
 		orderOther.setHaduploadcount(0);
 		orderOther.setPublongitude(businessModel.getLongitude());
@@ -273,7 +282,34 @@ public class OrderService implements IOrderService {
 			fillOrderChild(req,businessModel,order);
 			orderChildDao.insertList(req.getListOrderChild());
 		}
+		resetOrderHasExist(req.getBusinessid());
 		return resp;
+	}
+	/**
+	 * 判断该商家是否在30s内已经发过订单
+	 * @param businessID
+	 * @return
+	 */
+	private boolean checkHasExist(int businessID){
+		String timespanKey=RedissCacheKey.Order_TimeSpan+businessID;
+		Object object= redisService.get(timespanKey, Object.class);
+		if (object==null) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	/**
+	 * 重置商家是否在30s内已经发过订单的标记
+	 * @param businessID
+	 */
+	private void resetOrderHasExist(int businessID){
+		String timespanKey=RedissCacheKey.Order_TimeSpan+businessID;
+		Object object= redisService.get(timespanKey, Object.class);
+		if (object!=null) {
+			redisService.remove(timespanKey);
+		}
+		redisService.set(timespanKey, "", 30);
 	}
 	private void fillOrderChild(OrderReq req, BusinessModel businessModel,Order order){
 		if (req.getListOrderChild() != null
@@ -293,6 +329,11 @@ public class OrderService implements IOrderService {
 				child.setOrderid(order.getId());
 				child.setTotalprice(child.getGoodprice()+child.getDeliveryprice());
 				child.setPaystatus(payStatus);
+				child.setOriginalorderno("");
+				child.setWxcodeurl("");
+				child.setPayprice(0d);
+				child.setHasuploadticket(false);
+				child.setThirdpaystatus((short)0);
 			}
 		}
 	}
@@ -308,7 +349,6 @@ public class OrderService implements IOrderService {
 		order.setOrderfrom(req.getOrderfrom());
 		order.setStatus((byte) OrderStatus.New.value());
 		order.setOrdercount(req.getOrdercount());
-		order.setTimespan("1");
 		order.setPubdate(new Date());
 		order.setBusinessid(req.getBusinessid());
 //		order.setRecevicelongitude(req.getRecevicelongitude());

@@ -28,7 +28,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 	@Override
 	public List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) {
 
-		String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.getGlobalGroupConfig";
+		String statement = "com.edaisong.api.dao.inter.IGlobalConfigDao.getGlobalGroupConfig";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("groupid", id);
 		List<GlobalConfigModel> model = getReadOnlySqlSessionUtil().selectList(
@@ -42,7 +42,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 	 */
 	@Override
 	public int update(ConfigSaveReq par) {
-		String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.update";
+		String statement = "com.edaisong.api.dao.inter.IGlobalConfigDao.update";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", par.getId());
 		paramMap.put("parvalue", par.getConfigValue());
@@ -54,7 +54,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 	 */
 	@Override
 	public int insert(GlobalConfig par) {
-		String statement = "com.edaisong.api.dal.dao.inter.IGlobalConfigDao.insert";
+		String statement = "com.edaisong.api.dao.inter.IGlobalConfigDao.insert";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("keyname", par.getKeyname());
 		paramMap.put("value", par.getValue());
@@ -77,7 +77,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 //		Map<String, Object> paramMap = new HashMap<>();
 //		paramMap.put("GroupId", groupId);
 //		model = getMasterSqlSessionUtil().selectOne(
-//				"com.edaisong.api.dal.dao.inter.IGlobalConfigDao.query",
+//				"com.edaisong.api.dao.inter.IGlobalConfigDao.query",
 //				paramMap);
 //		
 //		return model;   	

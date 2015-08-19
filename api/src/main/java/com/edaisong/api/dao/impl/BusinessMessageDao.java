@@ -54,7 +54,7 @@ public class BusinessMessageDao extends DaoBase implements IBusinessMessageDao{
 	@Override
 	public BusinessMessage getLatestMessage(int businessId) {
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dal.dao.inter.IBusinessMessageDao.getLatestMessage"
+				.selectOne("com.edaisong.api.dao.inter.IBusinessMessageDao.getLatestMessage"
 						, businessId);
 	}
 

@@ -26,7 +26,7 @@ public class BusinessFinanceAccountDao extends DaoBase implements
 	public BusinessFinanceAccount getDetailByBusinesID(Integer businessID) {
 		return getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dal.dao.inter.IBusinessFinanceAccountDao.getDetailByBusinesID",
+						"com.edaisong.api.dao.inter.IBusinessFinanceAccountDao.getDetailByBusinesID",
 						businessID);
 	}
 

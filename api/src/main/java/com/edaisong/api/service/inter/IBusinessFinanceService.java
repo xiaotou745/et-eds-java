@@ -2,7 +2,8 @@ package com.edaisong.api.service.inter;
 
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.req.TransDetailReq;
+import com.edaisong.entity.req.PagedTransDetailReq;
+
 /**
  * 商户财务相关模块
  * 2015年8月4日13:08:38
@@ -14,5 +15,5 @@ public interface IBusinessFinanceService {
 	 * 2015年8月4日13:09:00
 	 * 茹化肖
 	 * */
-	PagedResponse<BusinessBalanceRecord> getTransDetailList(TransDetailReq par);
+	PagedResponse<BusinessBalanceRecord> getTransDetailList(PagedTransDetailReq par);
 }

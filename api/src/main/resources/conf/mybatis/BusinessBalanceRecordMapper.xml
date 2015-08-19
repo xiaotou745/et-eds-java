@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao" >
+<mapper namespace="com.edaisong.api.dao.inter.IBusinessBalanceRecordDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.BusinessBalanceRecord" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
@@ -185,7 +185,7 @@
   </sql>
    <!-- 获取收支明细的分页存储过程 -->
   <select id="getTransDetailList" resultType="com.edaisong.entity.BusinessBalanceRecord" 
-  parameterType="com.edaisong.entity.req.TransDetailReq" statementType="CALLABLE">  
+  parameterType="com.edaisong.entity.req.PagedTransDetailReq" statementType="CALLABLE">  
 {call Sp_CustomPage2015_V1(
 ' bbr.id DESC ',
 ' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,bbr.Amount,bbr.Balance,bbr.Status,OperateTime ',

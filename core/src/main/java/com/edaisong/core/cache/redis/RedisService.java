@@ -102,12 +102,16 @@ public class RedisService {
 	}
 
 	public <T> T get(String key, Class<T> type) {
-		ValueOperations<String, Object> operation = getOperation();
+		try {
+			ValueOperations<String, Object> operation = getOperation();
+			Object object = operation.get(key);
 
-		Object object = operation.get(key);
+			// TODO: 这里没有判断object的类型是否是T，之后再加；
+			return (T) object;
+		} catch (Exception e) {
+			return null;
+		}
 
-		// TODO: 这里没有判断object的类型是否是T，之后再加；
-		return (T) object;
 	}
 
 	public <T> List<T> mutilGet(String key, Class<T> type) {

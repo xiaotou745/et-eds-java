@@ -13,4 +13,5 @@ public class RedissCacheKey {
     public static final String Ets_Service_Provider_Common_GetOpenCity_New = "Ets_Service_Provider_Common_GetOpenCity_New_java";
     public static final String LOGIN_COUNT_B = "LoginCount_B_";//商家登录次数
     public final static String LOGIN_COOKIE_KEY = "java_user_login";//登录Cookie的key
+    public static final String Order_TimeSpan = "Order_TimeSpan_";//商家发单时间戳
 }

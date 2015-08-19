@@ -15,7 +15,7 @@ public class BusinessExpressRelationDao extends DaoBase implements
 	public List<BusinessExpressRelation> selectByBusinessID(Integer businessID) {
 		List<BusinessExpressRelation> model = getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dal.dao.inter.IBusinessExpressRelationDao.selectByBusinessID",
+						"com.edaisong.api.dao.inter.IBusinessExpressRelationDao.selectByBusinessID",
 						businessID);
 		return model;
 	}

@@ -74,7 +74,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 		map.put("PageSize", PageSize);
 		map.put("CurrentPage", CurrentPage);
 		List<ClienterBalanceRecord> list = getMasterSqlSessionUtil()
-				.selectList("com.edaisong.api.dal.dao.inter.IClienterBalanceRecordDao.query",
+				.selectList("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.query",
 						map);
 		
 		PagedResponse<ClienterBalanceRecord> resp = new PagedResponse<ClienterBalanceRecord>();		

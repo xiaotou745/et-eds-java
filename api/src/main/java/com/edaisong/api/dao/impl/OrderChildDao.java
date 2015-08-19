@@ -27,7 +27,7 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 	public int insert(OrderChild record)
 	{
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dal.dao.inter.IOrderChildDao.insertSelective", record);
+				"com.edaisong.api.dao.inter.IOrderChildDao.insertSelective", record);
 	}	
 	
 	  /**
@@ -44,7 +44,7 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("OrderNo", orderNo);
 		paramMap.put("BusinessId", businessId);
-		List<OrderChild> result=getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dal.dao.inter.IOrderChildDao.getOrderChildByOrderInfo"
+		List<OrderChild> result=getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IOrderChildDao.getOrderChildByOrderInfo"
 				 , paramMap);
 	     return result;
 
@@ -53,7 +53,7 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 	@Override
 	public int insertList(List<OrderChild> record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dal.dao.inter.IOrderChildDao.insertList", record);
+				"com.edaisong.api.dao.inter.IOrderChildDao.insertList", record);
 	}
 	
 }

@@ -29,7 +29,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req) {
 		PagedResponse<BusinessModel> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessList",
+						"com.edaisong.api.dao.inter.IBusinessDao.getBusinessList",
 						req);
 		return model;
 	}
@@ -45,7 +45,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public BusinessModel getBusiness(int id) {
 		BusinessModel model = getMasterSqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessByID",
+						"com.edaisong.api.dao.inter.IBusinessDao.getBusinessByID",
 						id);
 		return model;
 	}
@@ -54,7 +54,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public BusinessDetailModel getBusinessDetailByID(int businessID) {
 		return getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessDetailByID",
+						"com.edaisong.api.dao.inter.IBusinessDao.getBusinessDetailByID",
 						businessID);
 	}
 
@@ -62,14 +62,14 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public List<BusinessOptionLog> getOpLogByBusinessID(int businessID) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dal.dao.inter.IBusinessDao.getOpLogByBusinessID",
+						"com.edaisong.api.dao.inter.IBusinessDao.getOpLogByBusinessID",
 						businessID);
 	}
 
 	@Override
 	public int modifyBusiness(BusinessModifyModel detailModel) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dal.dao.inter.IBusinessDao.modifyBusiness",
+				"com.edaisong.api.dao.inter.IBusinessDao.modifyBusiness",
 				detailModel);
 	}
 
@@ -79,12 +79,12 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		paramMap.put("phoneNo", phoneNo);
 		paramMap.put("password", password);
 
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dal.dao.inter.IBusinessDao.getBusinessByPhoneNoAndPwd",paramMap);
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getBusinessByPhoneNoAndPwd",paramMap);
 	}
 
 	@Override
 	public boolean addLoginLog(BusinessLoginLog log) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dal.dao.inter.IBusinessDao.addLogingLog",log) > 0;
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessDao.addLogingLog",log) > 0;
 	}
 /**
 	 * 更新 商户 余额，可提现余额
@@ -100,7 +100,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		parasMap.put("Money", money);
 		parasMap.put("Id", businessId);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dal.dao.inter.IBusinessDao.updateForWithdraw",
+				.update("com.edaisong.api.dao.inter.IBusinessDao.updateForWithdraw",
 						parasMap);
 
 	}
@@ -110,14 +110,14 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	 */
 	@Override
 	public Business getById(int businessId) { 
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dal.dao.inter.IBusinessDao.getById",businessId);
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getById",businessId);
 }
 
 	
 	@Override
 	public int modifyExpress(List<BusinessExpressRelation> listData) {
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dal.dao.inter.IBusinessDao.modifyExpress",
+				.update("com.edaisong.api.dao.inter.IBusinessDao.modifyExpress",
 						listData);
 	}
 
@@ -127,7 +127,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		parasMap.put("businessID", businessID);
 		parasMap.put("status", status);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dal.dao.inter.IBusinessDao.updateAuditStatus",
+				.update("com.edaisong.api.dao.inter.IBusinessDao.updateAuditStatus",
 						parasMap);
 	}
 
@@ -137,7 +137,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		parasMap.put("businessID", businessID);
 		parasMap.put("lastLoginTime", loginTime);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dal.dao.inter.IBusinessDao.updateLastLoginTime",
+				.update("com.edaisong.api.dao.inter.IBusinessDao.updateLastLoginTime",
 						parasMap);
 	}
 }
