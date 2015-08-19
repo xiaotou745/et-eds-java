@@ -1,5 +1,7 @@
 package com.edaisong.api.dao.impl;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.lang.Double;
 import java.util.HashMap;
 import java.util.List;
@@ -126,6 +128,16 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		parasMap.put("status", status);
 		return getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dao.inter.IBusinessDao.updateAuditStatus",
+						parasMap);
+	}
+
+	@Override
+	public int updateLastLoginTime(int businessID, Date loginTime) {
+		Map<String, Object> parasMap = new HashMap();
+		parasMap.put("businessID", businessID);
+		parasMap.put("lastLoginTime", loginTime);
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dao.inter.IBusinessDao.updateLastLoginTime",
 						parasMap);
 	}
 }

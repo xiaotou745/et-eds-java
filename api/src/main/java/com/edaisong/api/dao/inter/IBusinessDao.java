@@ -1,6 +1,8 @@
 package com.edaisong.api.dao.inter;
 
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.lang.Double;
 import java.util.List;
 
@@ -83,4 +85,14 @@ public interface IBusinessDao {
 	 * @return 
 	 */
 	int updateAuditStatus(int businessID,int status);
+	
+	/**
+	 * 更新商户最后登录时间
+	 * @param businessID
+	 * @param loginTime
+	 * @author pengyi
+	 * @date 20150818
+	 * @return
+	 */
+	int updateLastLoginTime(int businessID,Date loginTime);
 }

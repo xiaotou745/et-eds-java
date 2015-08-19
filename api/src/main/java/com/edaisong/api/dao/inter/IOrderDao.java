@@ -1,8 +1,10 @@
 package com.edaisong.api.dao.inter;
 
-import com.edaisong.entity.Group;
+import java.util.List;
+
 import com.edaisong.entity.Order;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
@@ -69,9 +71,18 @@ public interface IOrderDao {
 	/**
 	 * 获得商家订单概览信息
 	 * @param 商家Id
+	 * @author pengyi
 	 * @date 20150818
 	 * @return
 	 */
 	BusinessOrderSummaryModel getBusinessOrderSummary(int businessId);
 
+	/**
+	 * 获得商家发布订单时间统计
+	 * @param 商家Id
+	 * @author pengyi
+	 * @date 20150819
+	 * @return
+	 */
+	List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId);
 }
