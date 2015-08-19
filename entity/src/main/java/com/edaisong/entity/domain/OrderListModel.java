@@ -1,6 +1,6 @@
 package com.edaisong.entity.domain;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 /**
@@ -19,10 +19,10 @@ public class OrderListModel {
     private String receviceAddress ;
     private Date actualDoneDate ;
     private boolean isPay ;
-    private BigDecimal amount ;
-    private BigDecimal orderCommission ;
-    private BigDecimal distribSubsidy ;
-    private BigDecimal websiteSubsidy ;
+    private Double amount ;
+    private Double orderCommission ;
+    private Double distribSubsidy ;
+    private Double websiteSubsidy ;
     private String remark ;
 	private byte status ;
     private int clienterId ;
@@ -35,7 +35,7 @@ public class OrderListModel {
     private long originalOrderId ;
     private String originalOrderNo ;
     private int quantity ;
-    private BigDecimal weight ;
+    private Double weight ;
     private String receiveProvince ;
     private String receiveArea ;
     private String receiveProvinceCode ;
@@ -47,7 +47,7 @@ public class OrderListModel {
     private int luJuQty ;
     private String songCanDate ;
     private int orderCount ;
-    private BigDecimal commissionRate ;
+    private Double commissionRate ;
     private String orderSign ;
     private String businessName ;
     private String businessPhoneNo ;
@@ -59,9 +59,9 @@ public class OrderListModel {
     private String businessCity ;
     private String clienterTrueName ;
     private int groupId ;
-    private BigDecimal accountBalance ;
-    private BigDecimal adjustment ;
-    private BigDecimal businessCommission ;
+    private Double accountBalance ;
+    private Double adjustment ;
+    private Double businessCommission ;
     private String pickupCode ;
     private int needUploadCount ;
     private int hadUploadCount ;
@@ -72,21 +72,21 @@ public class OrderListModel {
     / 子订单
     */
 //    private List<OrderDetail> OrderDetailList ;
-    private BigDecimal settleMoney ;
+    private Double settleMoney ;
     private int mealsSettleMode ;
     private int isJoinWithdraw ;
-    private BigDecimal businessReceivable ;
+    private Double businessReceivable ;
     private String optUserName ;
     private double grabToCompleteDistance ;
     private Date grabTime ;
     private int isNotRealOrder ;
-    private BigDecimal realOrderCommission ;
+    private Double realOrderCommission ;
     private int isEnable ;
     private String settleType ;
-    private BigDecimal settleValue ;
-    private BigDecimal superManSettleValue ;
+    private Double settleValue ;
+    private Double superManSettleValue ;
     private Date takeTime ;
-    private BigDecimal deliveryCompanySettleMoney ;
+    private Double deliveryCompanySettleMoney ;
     private int deliveryCompanyID ;
   
     /**
@@ -217,56 +217,56 @@ public class OrderListModel {
     /**
      * 订单金额
      */
-	public BigDecimal getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
     /**
      *  订单金额
      */
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
     /**
      * 订单佣金
      */
-	public BigDecimal getOrderCommission() {
+	public Double getOrderCommission() {
 		return orderCommission;
 	}
 
     /**
      *  订单佣金
      */
-	public void setOrderCommission(BigDecimal orderCommission) {
+	public void setOrderCommission(Double orderCommission) {
 		this.orderCommission = orderCommission;
 	}
 
     /**
      * 外送费
      */
-	public BigDecimal getDistribSubsidy() {
+	public Double getDistribSubsidy() {
 		return distribSubsidy;
 	}
 
     /**
      *  外送费
      */
-	public void setDistribSubsidy(BigDecimal distribSubsidy) {
+	public void setDistribSubsidy(Double distribSubsidy) {
 		this.distribSubsidy = distribSubsidy;
 	}
 
     /**
      * 网站补贴
      */
-	public BigDecimal getWebsiteSubsidy() {
+	public Double getWebsiteSubsidy() {
 		return websiteSubsidy;
 	}
 
     /**
      *  网站补贴
      */
-	public void setWebsiteSubsidy(BigDecimal websiteSubsidy) {
+	public void setWebsiteSubsidy(Double websiteSubsidy) {
 		this.websiteSubsidy = websiteSubsidy;
 	}
 
@@ -439,14 +439,14 @@ public class OrderListModel {
     /**
      * 重量
      */
-	public BigDecimal getWeight() {
+	public Double getWeight() {
 		return weight;
 	}
 
     /**
      * 重量
      */
-	public void setWeight(BigDecimal weight) {
+	public void setWeight(Double weight) {
 		this.weight = weight;
 	}
 
@@ -607,14 +607,14 @@ public class OrderListModel {
     /**
      * 佣金比例
      */
-	public BigDecimal getCommissionRate() {
+	public Double getCommissionRate() {
 		return commissionRate;
 	}
 
     /**
      * 佣金比例
      */
-	public void setCommissionRate(BigDecimal commissionRate) {
+	public void setCommissionRate(Double commissionRate) {
 		this.commissionRate = commissionRate;
 	}
 
@@ -775,42 +775,42 @@ public class OrderListModel {
     /**
      * 骑士收入
      */
-	public BigDecimal getAccountBalance() {
+	public Double getAccountBalance() {
 		return accountBalance;
 	}
 
     /**
      * 骑士收入
      */
-	public void setAccountBalance(BigDecimal accountBalance) {
+	public void setAccountBalance(Double accountBalance) {
 		this.accountBalance = accountBalance;
 	}
 
     /**
      * 补贴金额
      */
-	public BigDecimal getAdjustment() {
+	public Double getAdjustment() {
 		return adjustment;
 	}
 
     /**
      * 补贴金额
      */
-	public void setAdjustment(BigDecimal adjustment) {
+	public void setAdjustment(Double adjustment) {
 		this.adjustment = adjustment;
 	}
 
     /**
      * 商家结算比例
      */
-	public BigDecimal getBusinessCommission() {
+	public Double getBusinessCommission() {
 		return businessCommission;
 	}
 
     /**
      * 商家结算比例
      */
-	public void setBusinessCommission(BigDecimal businessCommission) {
+	public void setBusinessCommission(Double businessCommission) {
 		this.businessCommission = businessCommission;
 	}
 
@@ -887,14 +887,14 @@ public class OrderListModel {
     /**
      * 商户结算金额
      */
-	public BigDecimal getSettleMoney() {
+	public Double getSettleMoney() {
 		return settleMoney;
 	}
 
     /**
      * 商户结算金额
      */
-	public void setSettleMoney(BigDecimal settleMoney) {
+	public void setSettleMoney(Double settleMoney) {
 		this.settleMoney = settleMoney;
 	}
 
@@ -929,14 +929,14 @@ public class OrderListModel {
     /**
      * 商户应收
      */
-	public BigDecimal getBusinessReceivable() {
+	public Double getBusinessReceivable() {
 		return businessReceivable;
 	}
 
     /**
      * 商户应收
      */
-	public void setBusinessReceivable(BigDecimal businessReceivable) {
+	public void setBusinessReceivable(Double businessReceivable) {
 		this.businessReceivable = businessReceivable;
 	}
 
@@ -999,14 +999,14 @@ public class OrderListModel {
     /**
      * 最终给骑士的佣金
      */
-	public BigDecimal getRealOrderCommission() {
+	public Double getRealOrderCommission() {
 		return realOrderCommission;
 	}
 
     /**
      * 最终给骑士的佣金
      */
-	public void setRealOrderCommission(BigDecimal realOrderCommission) {
+	public void setRealOrderCommission(Double realOrderCommission) {
 		this.realOrderCommission = realOrderCommission;
 	}
 
@@ -1041,28 +1041,28 @@ public class OrderListModel {
     /**
      * 配送公司结算数值
      */
-	public BigDecimal getSettleValue() {
+	public Double getSettleValue() {
 		return settleValue;
 	}
 
     /**
      * 配送公司结算数值
      */
-	public void setSettleValue(BigDecimal settleValue) {
+	public void setSettleValue(Double settleValue) {
 		this.settleValue = settleValue;
 	}
 
     /**
      * 骑士结算数值
      */
-	public BigDecimal getSuperManSettleValue() {
+	public Double getSuperManSettleValue() {
 		return superManSettleValue;
 	}
 
     /**
      * 骑士结算数值
      */
-	public void setSuperManSettleValue(BigDecimal superManSettleValue) {
+	public void setSuperManSettleValue(Double superManSettleValue) {
 		this.superManSettleValue = superManSettleValue;
 	}
 
@@ -1083,14 +1083,14 @@ public class OrderListModel {
     /**
      * 物流公司结算金额
      */
-	public BigDecimal getDeliveryCompanySettleMoney() {
+	public Double getDeliveryCompanySettleMoney() {
 		return deliveryCompanySettleMoney;
 	}
 
     /**
      * 物流公司结算金额
      */
-	public void setDeliveryCompanySettleMoney(BigDecimal deliveryCompanySettleMoney) {
+	public void setDeliveryCompanySettleMoney(Double deliveryCompanySettleMoney) {
 		this.deliveryCompanySettleMoney = deliveryCompanySettleMoney;
 	}
 

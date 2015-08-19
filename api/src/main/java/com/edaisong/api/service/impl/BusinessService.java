@@ -1,6 +1,6 @@
 package com.edaisong.api.service.impl;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -270,7 +270,7 @@ public class BusinessService implements IBusinessService {
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int updateForWithdrawC(BusinessBalanceRecord record) {
-		if (record.getAmount().compareTo(BigDecimal.ZERO)!=0) {
+		if (record.getAmount()!=0) {
 	       iBusinessDao.updateForWithdraw(record.getAmount(), record.getBusinessid());
 	       return businessBalanceRecordDao.insert(record);
 		}

@@ -1,6 +1,6 @@
 package com.edaisong.business.controller;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -170,18 +170,18 @@ public class OrderController {
 		req.setReceviceaddress("大望路");
 		req.setRecevicecity("北京");
 		req.setIspay(false);
-		req.setAmount(new BigDecimal(25));
+		req.setAmount(new Double(25));
 		req.setRemark("尽快送到，要提供餐具");
 		req.setOrdercount(2);
 		req.setMealssettlemode(1);
 		req.setOrderfrom(OrderFrom.EDaiSong.value());
 		List<OrderChild> listOrderChild=new ArrayList<OrderChild>();
 		OrderChild child=new OrderChild();
-		child.setGoodprice(new BigDecimal(10));
+		child.setGoodprice(new Double(10));
 		listOrderChild.add(child);
 		
 		OrderChild child2=new OrderChild();
-		child2.setGoodprice(new BigDecimal(15));
+		child2.setGoodprice(new Double(15));
 		listOrderChild.add(child2);
 		
 		req.setListOrderChild(listOrderChild);

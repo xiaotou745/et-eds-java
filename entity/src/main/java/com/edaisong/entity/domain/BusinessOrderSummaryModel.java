@@ -1,6 +1,6 @@
 package com.edaisong.entity.domain;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 /**
@@ -16,7 +16,7 @@ public class BusinessOrderSummaryModel {
 	private int pickUp;//配送中
 	private int received;//待取货
 	private String name;//名称
-	private BigDecimal balancePrice;//余额
+	private Double balancePrice;//余额
 	private Date lastLoginTime;//最后登录时间
 	private String city;//所在城市
 	public String getName() {
@@ -25,10 +25,10 @@ public class BusinessOrderSummaryModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public BigDecimal getBalancePrice() {
+	public Double getBalancePrice() {
 		return balancePrice;
 	}
-	public void setBalancePrice(BigDecimal balancePrice) {
+	public void setBalancePrice(Double balancePrice) {
 		this.balancePrice = balancePrice;
 	}
 	public Date getLastLoginTime() {

@@ -1,6 +1,6 @@
 package com.edaisong.api.service.impl;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.math.RoundingMode;
 import java.util.Date;
 
@@ -233,7 +233,7 @@ public class OrderService implements IOrderService {
 		//扣除商家结算费
 		BusinessBalanceRecord balanceRecord=new BusinessBalanceRecord();
 		balanceRecord.setBusinessid(req.getBusinessid());
-		balanceRecord.setAmount(order.getSettlemoney().multiply(new BigDecimal(-1)));
+		balanceRecord.setAmount(-order.getSettlemoney());
 		balanceRecord.setStatus((short)BusinessBalanceRecordStatus.Success.value());
 		balanceRecord.setRecordtype((short)BusinessBalanceRecordRecordType.PublishOrder.value());
 		balanceRecord.setOperator(businessModel.getName());
@@ -243,7 +243,7 @@ public class OrderService implements IOrderService {
 		businessService.updateForWithdrawC(balanceRecord);
 		
 		//记录补贴日志
-		if (order.getAdjustment().compareTo(BigDecimal.ZERO)>0) {
+		if (order.getAdjustment()>0) {
 			OrderSubsidiesLog adjustRecord=new OrderSubsidiesLog();
 			adjustRecord.setOrderid(orderID);
 			adjustRecord.setPrice(order.getAdjustment());
@@ -290,7 +290,7 @@ public class OrderService implements IOrderService {
 				child.setUpdateby(businessModel.getName());
 				child.setDeliveryprice(order.getDistribsubsidy());
 				child.setOrderid(order.getId());
-				child.setTotalprice(child.getGoodprice().add(child.getDeliveryprice()));
+				child.setTotalprice(child.getGoodprice()+child.getDeliveryprice());
 				child.setPaystatus(payStatus);
 			}
 		}
@@ -333,20 +333,18 @@ public class OrderService implements IOrderService {
 				.getOrderWebSubsidy(orderCommission));
 		order.setCommissionrate(orderPriceService
 				.getCommissionRate(orderCommission));
-		BigDecimal settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
+		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
 				req.getAmount(), businessModel.getBusinesscommission(),
 				businessModel.getCommissionfixvalue(), req.getOrdercount(),
 				businessModel.getDistribsubsidy(), req.getOrderfrom());
 		order.setSettlemoney(settleMoney);
 		order.setAdjustment(orderPriceService.getAdjustment(orderCommission));
 
-		order.setBusinessreceivable(BigDecimal.valueOf(0));// 退还商家金额
+		order.setBusinessreceivable(Double.valueOf(0));// 退还商家金额
 		if (!req.getIspay()
 				&& order.getMealssettlemode() == MealsSettleMode.LineOn.value()) {
-			BigDecimal money = req.getAmount().add(
-					businessModel.getDistribsubsidy()
-							.multiply(new BigDecimal(req.getOrdercount()))
-							.setScale(2, RoundingMode.HALF_UP));
+			Double money = req.getAmount()+(businessModel.getDistribsubsidy()*req.getOrdercount());
+							
 			order.setBusinessreceivable(money);
 		}
 
@@ -388,18 +386,18 @@ public class OrderService implements IOrderService {
         {
         	return PublishOrderReturnEnum.OrderCountError;
         }
-        BigDecimal amount = BigDecimal.ZERO;
+        Double amount = 0d;
         for (int i = 0; i < req.getListOrderChild().size(); i++)//子订单价格
         {
-            if (req.getListOrderChild().get(i).getGoodprice().compareTo(new BigDecimal(5))<0)  //金额小于5不合法
+            if (req.getListOrderChild().get(i).getGoodprice()<5)  //金额小于5不合法
             {
                 return PublishOrderReturnEnum.AmountLessThanTen;
             }
-            if (req.getListOrderChild().get(i).getGoodprice().compareTo(new BigDecimal(1000))>0) //金额大于1000不合法
+            if (req.getListOrderChild().get(i).getGoodprice()>1000) //金额大于1000不合法
             {
             	return PublishOrderReturnEnum.AmountMoreThanFiveThousand;
             }
-            amount=amount.add(req.getListOrderChild().get(i).getGoodprice());
+            amount=amount+req.getListOrderChild().get(i).getGoodprice();
         }
         if (req.getAmount().compareTo(amount)!=0)
         {
@@ -407,11 +405,11 @@ public class OrderService implements IOrderService {
         }
         if (businessModel.getIsallowoverdraft()== 0) //0不允许透支
         {
-    		BigDecimal settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
+    		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
     				req.getAmount(), businessModel.getBusinesscommission(),
     				businessModel.getCommissionfixvalue(), req.getOrdercount(),
     				businessModel.getDistribsubsidy(), req.getOrderfrom());
-            if (businessModel.getBalanceprice().compareTo(settleMoney)<0)
+            if (businessModel.getBalanceprice()<settleMoney)
             {
                return PublishOrderReturnEnum.BusiBalancePriceLack;
             }

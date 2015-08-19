@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class Records {
@@ -10,9 +10,9 @@ public class Records {
 
     private Integer userid;
 
-    private BigDecimal amount;
+    private Double amount;
 
-    private BigDecimal balance;
+    private Double balance;
 
     private Date createtime;
 
@@ -50,19 +50,19 @@ public class Records {
         this.userid = userid;
     }
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public BigDecimal getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

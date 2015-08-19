@@ -1,6 +1,6 @@
 package com.edaisong.api.common;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.math.RoundingMode;
 
 public class OrderSettleMoneyHelper {
@@ -16,13 +16,12 @@ public class OrderSettleMoneyHelper {
  * @Date 20150818
  * @return
  */
-	public static BigDecimal GetSettleMoney(BigDecimal amount, BigDecimal businessCommissionRate, BigDecimal commissionFixValue,
-			int ordercount, BigDecimal distribSubsidy, int orderform) {
+	public static Double GetSettleMoney(Double amount, Double businessCommissionRate, Double commissionFixValue,
+			int ordercount, Double distribSubsidy, int orderform) {
 		if (orderform > 0){ // 第三方订单 不考虑外送费
-			distribSubsidy = new BigDecimal(0);
+			distribSubsidy = 0d;
 		}
-		return amount.multiply(businessCommissionRate).multiply(new BigDecimal(0.01))
-				.add(commissionFixValue.add(distribSubsidy).multiply(new BigDecimal(ordercount))
-				.setScale(2, RoundingMode.HALF_UP));
+		//订单金额*结算比例+(固定金额+外送费)*订单数量
+		return amount*businessCommissionRate*0.01+(commissionFixValue+distribSubsidy)*ordercount;
 	}
 }

@@ -1,6 +1,6 @@
 package com.edaisong.entity.domain;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class BusinesRechargeModel {
@@ -72,28 +72,28 @@ public class BusinesRechargeModel {
 	/**
 	 * 充值金额
 	 */
-	public BigDecimal getRechargeAmount() {
+	public Double getRechargeAmount() {
 		return rechargeAmount;
 	}
 
 	/**
 	 * 充值金额
 	 */
-	public void setRechargeAmount(BigDecimal rechargeAmount) {
+	public void setRechargeAmount(Double rechargeAmount) {
 		this.rechargeAmount = rechargeAmount;
 	}
 
 	/**
 	 * 赠送金额
 	 */
-	public BigDecimal getRechargeAmountFree() {
+	public Double getRechargeAmountFree() {
 		return rechargeAmountFree;
 	}
 
 	/**
 	 * 赠送金额
 	 */
-	public void setRechargeAmountFree(BigDecimal rechargeAmountFree) {
+	public void setRechargeAmountFree(Double rechargeAmountFree) {
 		this.rechargeAmountFree = rechargeAmountFree;
 	}
 
@@ -119,9 +119,9 @@ public class BusinesRechargeModel {
 
 	private String remark;
 
-	private BigDecimal rechargeAmount;
+	private Double rechargeAmount;
 
-	private BigDecimal rechargeAmountFree;
+	private Double rechargeAmountFree;
 
 	private int rechargeType;
 

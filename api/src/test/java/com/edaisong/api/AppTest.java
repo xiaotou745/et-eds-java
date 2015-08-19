@@ -1,6 +1,6 @@
 package com.edaisong.api;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -89,15 +89,15 @@ public class AppTest extends TestCase {
 
 	public void testGetCurrenOrderCommission(){
 		OrderCommission model = new OrderCommission();
-		model.setAmount(new BigDecimal(100));
-		model.setBusinessCommission(new BigDecimal(10));
+		model.setAmount(new Double(100));
+		model.setBusinessCommission(new Double(10));
 		model.setBusinessGroupId(7);
-		model.setCommissionFixValue(new BigDecimal(5));
+		model.setCommissionFixValue(new Double(5));
 		model.setCommissionType(1);
-		model.setDistribSubsidy(new BigDecimal(2.0));
+		model.setDistribSubsidy(new Double(2.0));
 		model.setStrategyId(4);
 		
-		BigDecimal ret = baseCommissionService.getCurrenOrderCommission(model);
+		Double ret = baseCommissionService.getCurrenOrderCommission(model);
 		
 	}
 	

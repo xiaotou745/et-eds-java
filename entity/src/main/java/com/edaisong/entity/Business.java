@@ -1,7 +1,7 @@
 package com.edaisong.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class Business implements Serializable{
@@ -53,21 +53,21 @@ public class Business implements Serializable{
 
     private Integer commissiontypeid;
 
-    private BigDecimal distribsubsidy;
+    private Double distribsubsidy;
 
-    private BigDecimal businesscommission;
+    private Double businesscommission;
 
     private Integer commissiontype;
 
-    private BigDecimal commissionfixvalue;
+    private Double commissionfixvalue;
 
     private Integer businessgroupid;
 
-    private BigDecimal balanceprice;
+    private Double balanceprice;
 
-    private BigDecimal allowwithdrawprice;
+    private Double allowwithdrawprice;
 
-    private BigDecimal haswithdrawprice;
+    private Double haswithdrawprice;
 
     private Integer mealssettlemode;
 
@@ -281,19 +281,19 @@ public class Business implements Serializable{
         this.commissiontypeid = commissiontypeid;
     }
 
-    public BigDecimal getDistribsubsidy() {
+    public Double getDistribsubsidy() {
         return distribsubsidy;
     }
 
-    public void setDistribsubsidy(BigDecimal distribsubsidy) {
+    public void setDistribsubsidy(Double distribsubsidy) {
         this.distribsubsidy = distribsubsidy;
     }
 
-    public BigDecimal getBusinesscommission() {
+    public Double getBusinesscommission() {
         return businesscommission;
     }
 
-    public void setBusinesscommission(BigDecimal businesscommission) {
+    public void setBusinesscommission(Double businesscommission) {
         this.businesscommission = businesscommission;
     }
 
@@ -305,11 +305,11 @@ public class Business implements Serializable{
         this.commissiontype = commissiontype;
     }
 
-    public BigDecimal getCommissionfixvalue() {
+    public Double getCommissionfixvalue() {
         return commissionfixvalue;
     }
 
-    public void setCommissionfixvalue(BigDecimal commissionfixvalue) {
+    public void setCommissionfixvalue(Double commissionfixvalue) {
         this.commissionfixvalue = commissionfixvalue;
     }
 
@@ -321,27 +321,27 @@ public class Business implements Serializable{
         this.businessgroupid = businessgroupid;
     }
 
-    public BigDecimal getBalanceprice() {
+    public Double getBalanceprice() {
         return balanceprice;
     }
 
-    public void setBalanceprice(BigDecimal balanceprice) {
+    public void setBalanceprice(Double balanceprice) {
         this.balanceprice = balanceprice;
     }
 
-    public BigDecimal getAllowwithdrawprice() {
+    public Double getAllowwithdrawprice() {
         return allowwithdrawprice;
     }
 
-    public void setAllowwithdrawprice(BigDecimal allowwithdrawprice) {
+    public void setAllowwithdrawprice(Double allowwithdrawprice) {
         this.allowwithdrawprice = allowwithdrawprice;
     }
 
-    public BigDecimal getHaswithdrawprice() {
+    public Double getHaswithdrawprice() {
         return haswithdrawprice;
     }
 
-    public void setHaswithdrawprice(BigDecimal haswithdrawprice) {
+    public void setHaswithdrawprice(Double haswithdrawprice) {
         this.haswithdrawprice = haswithdrawprice;
     }
 

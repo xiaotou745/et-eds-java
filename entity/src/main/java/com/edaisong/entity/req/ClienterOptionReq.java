@@ -1,7 +1,7 @@
 package com.edaisong.entity.req;
 
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 import com.edaisong.entity.common.RequestBase;
@@ -16,7 +16,7 @@ public class ClienterOptionReq extends RequestBase{
     public Date insertTime ;//写入时间
     public Integer platform ;//平台属性
     public String remark;//操作描述
-    public BigDecimal rechargeAmount;//调整金额    
+    public Double rechargeAmount;//调整金额    
     private Short recordType;  
 	private Long withwardId;
     
@@ -62,10 +62,10 @@ public class ClienterOptionReq extends RequestBase{
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	public BigDecimal getRechargeAmount() {
+	public Double getRechargeAmount() {
 		return rechargeAmount;
 	}
-	public void setRechargeAmount(BigDecimal rechargeAmount) {
+	public void setRechargeAmount(Double rechargeAmount) {
 		this.rechargeAmount = rechargeAmount;
 	}
 	  public Short getRecordType() {

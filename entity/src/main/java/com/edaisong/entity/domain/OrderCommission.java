@@ -1,6 +1,6 @@
 package com.edaisong.entity.domain;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 
 /**
  * 订单佣金
@@ -12,11 +12,11 @@ public class OrderCommission {
 	/**
 	 * 订单金额
 	 */
-    private BigDecimal amount;
+    private Double amount;
     /**
      * 外送费
      */
-    private BigDecimal distribSubsidy;
+    private Double distribSubsidy;
 
     /**
      * 订单数量
@@ -26,7 +26,7 @@ public class OrderCommission {
     /**
      * 商户结算比例
      */
-    private BigDecimal businessCommission;
+    private Double businessCommission;
 
     /**
      * 结算类型
@@ -36,7 +36,7 @@ public class OrderCommission {
     /**
      * 固定金额
      */
-    private BigDecimal commissionFixValue;
+    private Double commissionFixValue;
 
     /**
      * 商家分组ID
@@ -50,21 +50,21 @@ public class OrderCommission {
     /**
      * 网站补贴
      */
-    private BigDecimal orderWebSubsidy;
+    private Double orderWebSubsidy;
 
-	public BigDecimal getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
-	public BigDecimal getDistribSubsidy() {
+	public Double getDistribSubsidy() {
 		return distribSubsidy;
 	}
 
-	public void setDistribSubsidy(BigDecimal distribSubsidy) {
+	public void setDistribSubsidy(Double distribSubsidy) {
 		this.distribSubsidy = distribSubsidy;
 	}
 
@@ -76,11 +76,11 @@ public class OrderCommission {
 		this.orderCount = orderCount;
 	}
 
-	public BigDecimal getBusinessCommission() {
+	public Double getBusinessCommission() {
 		return businessCommission;
 	}
 
-	public void setBusinessCommission(BigDecimal businessCommission) {
+	public void setBusinessCommission(Double businessCommission) {
 		this.businessCommission = businessCommission;
 	}
 
@@ -92,11 +92,11 @@ public class OrderCommission {
 		this.commissionType = commissionType;
 	}
 
-	public BigDecimal getCommissionFixValue() {
+	public Double getCommissionFixValue() {
 		return commissionFixValue;
 	}
 
-	public void setCommissionFixValue(BigDecimal commissionFixValue) {
+	public void setCommissionFixValue(Double commissionFixValue) {
 		this.commissionFixValue = commissionFixValue;
 	}
 
@@ -116,11 +116,11 @@ public class OrderCommission {
 		this.strategyId = strategyId;
 	}
 
-	public BigDecimal getOrderWebSubsidy() {
+	public Double getOrderWebSubsidy() {
 		return orderWebSubsidy;
 	}
 
-	public void setOrderWebSubsidy(BigDecimal orderWebSubsidy) {
+	public void setOrderWebSubsidy(Double orderWebSubsidy) {
 		this.orderWebSubsidy = orderWebSubsidy;
 	}
     

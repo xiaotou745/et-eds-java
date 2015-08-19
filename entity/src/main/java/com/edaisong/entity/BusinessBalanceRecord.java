@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class BusinessBalanceRecord {
@@ -8,11 +8,11 @@ public class BusinessBalanceRecord {
 
     private Integer businessid;
 
-    private BigDecimal amount;
+    private Double amount;
 
     private Short status;
 
-    private BigDecimal balance;
+    private Double balance;
 
     private Short recordtype;
 
@@ -44,11 +44,11 @@ public class BusinessBalanceRecord {
         this.businessid = businessid;
     }
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -60,11 +60,11 @@ public class BusinessBalanceRecord {
         this.status = status;
     }
 
-    public BigDecimal getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

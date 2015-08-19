@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class DeliveryCompany {
@@ -14,13 +14,13 @@ public class DeliveryCompany {
 
     private Integer settletype;
 
-    private BigDecimal clienterfixmoney;
+    private Double clienterfixmoney;
 
-    private BigDecimal clientersettleratio;
+    private Double clientersettleratio;
 
-    private BigDecimal deliverycompanysettlemoney;
+    private Double deliverycompanysettlemoney;
 
-    private BigDecimal deliverycompanyratio;
+    private Double deliverycompanyratio;
 
     private Integer businessquantity;
 
@@ -76,35 +76,35 @@ public class DeliveryCompany {
         this.settletype = settletype;
     }
 
-    public BigDecimal getClienterfixmoney() {
+    public Double getClienterfixmoney() {
         return clienterfixmoney;
     }
 
-    public void setClienterfixmoney(BigDecimal clienterfixmoney) {
+    public void setClienterfixmoney(Double clienterfixmoney) {
         this.clienterfixmoney = clienterfixmoney;
     }
 
-    public BigDecimal getClientersettleratio() {
+    public Double getClientersettleratio() {
         return clientersettleratio;
     }
 
-    public void setClientersettleratio(BigDecimal clientersettleratio) {
+    public void setClientersettleratio(Double clientersettleratio) {
         this.clientersettleratio = clientersettleratio;
     }
 
-    public BigDecimal getDeliverycompanysettlemoney() {
+    public Double getDeliverycompanysettlemoney() {
         return deliverycompanysettlemoney;
     }
 
-    public void setDeliverycompanysettlemoney(BigDecimal deliverycompanysettlemoney) {
+    public void setDeliverycompanysettlemoney(Double deliverycompanysettlemoney) {
         this.deliverycompanysettlemoney = deliverycompanysettlemoney;
     }
 
-    public BigDecimal getDeliverycompanyratio() {
+    public Double getDeliverycompanyratio() {
         return deliverycompanyratio;
     }
 
-    public void setDeliverycompanyratio(BigDecimal deliverycompanyratio) {
+    public void setDeliverycompanyratio(Double deliverycompanyratio) {
         this.deliverycompanyratio = deliverycompanyratio;
     }
 

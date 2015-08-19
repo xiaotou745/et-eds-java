@@ -1,6 +1,6 @@
 package com.edaisong.api.common;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 
 import org.springframework.stereotype.Service;
 
@@ -10,28 +10,28 @@ import com.edaisong.entity.domain.OrderCommission;
 public class TimeOrPriceProvider extends OrderPriceBaseProvider{
 
 	@Override
-	public BigDecimal getCurrenOrderCommission(OrderCommission model) {
-		return BigDecimal.valueOf(0);
+	public Double getCurrenOrderCommission(OrderCommission model) {
+		return Double.valueOf(0);
 	}
 
 	@Override
-	public BigDecimal getOrderWebSubsidy(OrderCommission model) {
-		return BigDecimal.valueOf(0);
+	public Double getOrderWebSubsidy(OrderCommission model) {
+		return Double.valueOf(0);
 	}
 
 	@Override
-	public BigDecimal getCommissionRate(OrderCommission model) {
-		return BigDecimal.valueOf(0);
+	public Double getCommissionRate(OrderCommission model) {
+		return Double.valueOf(0);
 	}
 
 	@Override
-	public BigDecimal getBaseCommission(OrderCommission model) {
-		return BigDecimal.valueOf(0);
+	public Double getBaseCommission(OrderCommission model) {
+		return Double.valueOf(0);
 	}
 
 	@Override
-	public BigDecimal getAdjustment(OrderCommission model) {
-		return BigDecimal.valueOf(0);
+	public Double getAdjustment(OrderCommission model) {
+		return Double.valueOf(0);
 	}
 
 }

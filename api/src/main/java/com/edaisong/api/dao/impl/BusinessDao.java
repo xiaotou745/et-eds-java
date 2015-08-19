@@ -1,6 +1,6 @@
 package com.edaisong.api.dao.impl;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,7 +93,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	 * @return
 	 */
 	@Override
-	public int updateForWithdraw(BigDecimal money, int businessId) {
+	public int updateForWithdraw(Double money, int businessId) {
 		Map<String, Object> parasMap = new HashMap();
 		parasMap.put("Money", money);
 		parasMap.put("Id", businessId);
