@@ -888,7 +888,10 @@ a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,
    </select>
    
    <!-- 根据商家Id获得商家发布订单时间统计  add by pengyi 20150819-->
-   <select id="getBusiPubOrderTimeStatistics" resultMap="busiPubOrderTimeStatisticsResultMap" parameterType="java.lang.Integer">
-   	SELECT  COUNT(1) as pubCount, DATENAME(HOUR,o.PubDate) AS hour FROM dbo.[order] (NOLOCK) o WHERE businessId=#{id,jdbcType=INTEGER} GROUP BY DATENAME(HOUR,o.PubDate) ORDER BY hour;
+   <select id="getBusiPubOrderTimeStatistics" resultMap="busiPubOrderTimeStatisticsResultMap" parameterType="java.util.Map">
+   	SELECT  COUNT(1) as pubCount, DATENAME(HOUR,o.PubDate) AS hour 
+   	FROM dbo.[order] (NOLOCK) o 
+   	WHERE businessId=#{businessId,jdbcType=INTEGER} AND PubDate>=#{startTime,jdbcType=TIMESTAMP} AND <![CDATA[PubDate<=#{endTime,jdbcType=TIMESTAMP} ]]> 
+   	GROUP BY DATENAME(HOUR,o.PubDate) ORDER BY hour;
    </select>
 </mapper>

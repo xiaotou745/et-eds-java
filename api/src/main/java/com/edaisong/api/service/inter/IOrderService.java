@@ -1,4 +1,5 @@
 package com.edaisong.api.service.inter;
+import java.util.Date;
 import java.util.List;
 
 import com.edaisong.entity.common.PagedResponse;
@@ -73,9 +74,11 @@ public interface IOrderService {
 	/**
 	 * 获得商家发布订单时间统计
 	 * @param 商家Id
+	 * @param 开始时间
+	 * @param 结束时间
 	 * @author pengyi
 	 * @date 20150819
 	 * @return
 	 */
-	List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId);
+	List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId,Date startTime,Date endTime);
 }

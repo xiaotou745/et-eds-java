@@ -15,10 +15,15 @@
 	List<BusiPubOrderTimeStatisticsModel> pubOrderTimestatistics = (List<BusiPubOrderTimeStatisticsModel>)request.getAttribute("pubOrderTimestatistics");
 %>
 
-<script type="text/javascript"
+<!-- <script type="text/javascript"
 	src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
 <script type="text/javascript"
-	src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
+	src="http://cdn.hcharts.cn/highcharts/exporting.js"></script> -->
+
+<script type="text/javascript"
+	src="<%=basePath%>/js/highcharts/js/highcharts.js"></script>
+<script type="text/javascript"
+	src="<%=basePath%>/js/highcharts/js/modules/exporting.js"></script>
 
 <div class="center">
 	<div class="top cb">
@@ -90,9 +95,9 @@
 		</div>
 	</div>
 	<div class="bottom">
-		<h2>
+		<!-- <h2>
 			今日订单统计 <a href="javascript:;">查看更多</a>
-		</h2>
+		</h2> -->
 		<div id="container" style="min-width: 500px; height: 400px"></div>
 	</div>
 </div>
@@ -104,71 +109,68 @@
 		for(BusiPubOrderTimeStatisticsModel model : pubOrderTimestatistics){
 			sb.append(String.format("statistics[%d]=%d;", model.getHour(),model.getPubCount()));
 		}%>
-
+	
 <%=sb.toString()%>
-
+	
 <%}%>
-
-var hours = [];
-var counts = [];
-for(i=0;i<24;i++){
-	var c = i + 1;
-	hours[i] = (c).toString();
-	if(!statistics[c]){
-		counts[i] = 0;
-	}else{
-		counts[i] = statistics[c];
+	var hours = [];
+	var counts = [];
+	for (i = 0; i < 24; i++) {
+		var c = i + 1;
+		hours[i] = (c).toString();
+		if (!statistics[c]) {
+			counts[i] = 0;
+		} else {
+			counts[i] = statistics[c];
+		}
 	}
-}
 	//图表
 	$(function() {
-		$('#container')
-				.highcharts(
-						{
-							chart : {
-								type : 'spline'
-							},
-							title : {
-								text : '今日订单统计'
-							},
-							subtitle : {
-								text : ''
-							},
-							xAxis : {
-								categories : hours
-							},
-							yAxis : {
-								title : {
-									text : '数量'
-								},
-								labels : {
-									formatter : function() {
-										return this.value;
-									}
-								}
-							},
-							tooltip : {
-								crosshairs : true,
-								shared : true
-							},
-							legend : {
-								enabled : false
-							},
-							plotOptions : {
-								spline : {
-									marker : {
-										radius : 4,
-										lineColor : '#666666',
-										lineWidth : 1
-									}
-								}
-							},
-							series : [ {
-								type : 'area',
-								name : '该时间段订单数量',
-								data : counts
+		$('#container').highcharts({
+			chart : {
+				type : 'spline'
+			},
+			title : {
+				text : '今日订单统计'
+			},
+			subtitle : {
+				text : ''
+			},
+			xAxis : {
+				categories : hours
+			},
+			yAxis : {
+				title : {
+					text : '数量'
+				},
+				labels : {
+					formatter : function() {
+						return this.value;
+					}
+				}
+			},
+			tooltip : {
+				crosshairs : true,
+				shared : true
+			},
+			legend : {
+				enabled : false
+			},
+			plotOptions : {
+				spline : {
+					marker : {
+						radius : 4,
+						lineColor : '#666666',
+						lineWidth : 1
+					}
+				}
+			},
+			series : [ {
+				type : 'area',
+				name : '该时间段订单数量',
+				data : counts
 
-							} ]
-						});
+			} ]
+		});
 	});
 </script>

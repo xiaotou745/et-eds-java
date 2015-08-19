@@ -7,7 +7,7 @@
 	<div class="nav">
 		<img src="<%=basePath%>/images/dun.png" width="55" height="74" alt="">
 		<a href="javascript:">发布任务</a>
-		<span><a class="one" href="javascript:;">商户主页</a></span>
+		<span><a class="one" href="<%=basePath%>/index">商户主页</a></span>
 		<span class="on"><a class="two" href="javascript:;">全部订单</a></span>
 		<span><a class="three" href="javascript:;">订单统计</a></span>
 		<span><a class="four" href="javascript:;">交易明细</a></span>

@@ -1,6 +1,8 @@
 package com.edaisong.api;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.lang.Double;
 
@@ -110,7 +112,13 @@ public class AppTest extends TestCase {
 	}
 	
 	public void testGetBusiPubOrderTimeStatistics(){
-		List<BusiPubOrderTimeStatisticsModel> models = testService.getBusiPubOrderTimeStatistics(1812);
+		Calendar c = Calendar.getInstance();
+		c.set(c.get(Calendar.YEAR), 1, c.get(Calendar.DATE), 0, 0, 0);
+		Date startTime = c.getTime();
+		c.set(c.get(Calendar.YEAR), 10, c.get(Calendar.DATE), 0, 0, 0);
+		c.add(Calendar.DATE, 1);
+		Date endTime = c.getTime();
+		List<BusiPubOrderTimeStatisticsModel> models = testService.getBusiPubOrderTimeStatistics(1812,startTime,endTime);
 		Assert.assertTrue(models.size() > 0);
 	}
 }

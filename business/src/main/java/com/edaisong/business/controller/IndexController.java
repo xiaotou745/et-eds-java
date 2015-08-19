@@ -1,6 +1,8 @@
 package com.edaisong.business.controller;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +39,14 @@ public class IndexController {
 		}
 		BusinessOrderSummaryModel bos = orderService.getBusinessOrderSummary(business.getId());
 		BusinessMessage message = businessMessageDao.getLatestMessage(business.getId());
-		List<BusiPubOrderTimeStatisticsModel> statistics = orderService.getBusiPubOrderTimeStatistics(business.getId());
+		//获得查询订单统计的开始时间和结束时间
+		Calendar c = Calendar.getInstance();
+		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), 0, 0, 0);
+		Date startTime = c.getTime();
+		c.add(Calendar.DATE, 1);
+		Date endTime = c.getTime();
+		List<BusiPubOrderTimeStatisticsModel> statistics = orderService
+				.getBusiPubOrderTimeStatistics(business.getId(),startTime,endTime);
 		model.addObject("subtitle", "");
 		model.addObject("currenttitle", "首页");
 		model.addObject("viewPath", "index");
