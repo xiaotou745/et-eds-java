@@ -186,6 +186,8 @@ public class OrderController {
 		
 		req.setListOrderChild(listOrderChild);
 
+	    System.out.println(JsonUtil.obj2string(req));
+		
 		resp = orderService.AddOrder(req);
 
 		return resp;
