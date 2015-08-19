@@ -180,20 +180,7 @@
 							validate=true;
 							if(validate){
 								$('.popup1').show();
-								var url = "<%=basePath%>/order/add";
-								var paramaters={};
-								$.ajax({
-									type : 'POST',
-									url : url,
-									data : paramaters,
-									success : function(result) {
-										if(result.responseCode==0){
-											alert("操作成功");
-										}
-										else{
-										alert(result.message);}
-									}
-								});
+								
 							}
 						});
 		//验证元素非空，为空显示提示语，不为空隐藏提示语  add by caoheyang 20150818
@@ -209,8 +196,25 @@
 		//任务发布 弹出层 的确认按钮 触发 ajax 请求  caoheyang 20150819
 		$('.qr').on('click', function() {
 			$(this).parents('.popup1').hide();
-		    //异步请求成功 呼出 成功层
-			$('.popup2').show();
+			var url = "<%=basePath%>/order/add";
+			var paramaters={};
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data : paramaters,
+				success : function(result) {
+					if(result.responseCode==0){  
+					    //异步请求成功 呼出 成功层
+						$('.popup2').show();
+					} else if(result.responseCode==-8){  
+						$('.popup3').show();  //余额不足弹层
+					} else
+					{
+					  alert(result.message);	
+					}
+				}
+			});
+
 		});
 
 		$('.qx').on('click', function() {
