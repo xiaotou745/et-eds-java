@@ -91,7 +91,7 @@
 		</i> <a class="qx" href="javascript:;">取消</a> <a class="qr"
 			href="javascript:;">确认</a>
 		<!-- class=“qr“ 加入选择器”ok"呼出任务发布成功弹层 -->
-		<!-- class=“qr“ 加入选择器”no"呼出任务发布成功弹层 -->
+		<!-- class=“qr“ 加入选择器”no"呼出任务发布失败弹层 -->
 	</div>
 </div>
 

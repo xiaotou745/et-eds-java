@@ -136,7 +136,7 @@
 	</div>
 	<div class="right2 fl">
 		    <% if(modelDatas.getOrderModel().getStatus()==OrderStatus.New.value()){%>
-	    <input type="button" value="取消订单" id="CanelOrderBtn">
+	    <input type="button" value="取消订单"  class="qxOrder">
 	    		<% }%>
 		<h2>订单明细</h2>
 		<p>
@@ -183,21 +183,47 @@
 		</table>
 	</div>
 </div>
-<script type="text/javascript">
-$(function(){
 
+<!-- 确认取消订单 -->
+<div class="popup popup5" style="display:none;">
+	<div class="bg">蒙层</div>
+	<div class="popupBox popupBox5">
+		<h1>确定要取消该订单吗？</h1>
+		<a class="qx2" href="javascript:;">取消</a>
+		<a class="qr2" href="javascript:;" >确认</a>
+	</div>
+</div>
+
+<script>
+$(function(){
+	
+	function countH(){
+		var WinHeight = $(window).height();
+		$(".nav").css({
+		    "min-height":WinHeight-70
+		})
+	}
+	$(function(){
+		countH();
+
+		//确认取消订单弹层呼出 And 关闭
+		$('.qxOrder').on('click',function(){
+			$('.popup5').show();
+		});
+		$('.qx2').on('click',function(){
+			$(this).parents('.popup5').hide();
+		});
+	})
 	//取消订单事件
-	$("#CanelOrderBtn").click(function(){
-		if(confirm("您确认取消订单吗？")){
-			 var data={"orderNo":"<%=modelDatas.getOrderModel().getOrderNo()%>","orderId":<%=modelDatas.getOrderModel().getId() %>};
-		     $.post("<%=basePath%>/order/canelorder", data,
-                  function(result) {
-					if(result.responseCode==0){
-						alert("取消订单成功！");
-						window.location.reload();
-					}
-		   	    	});
+	$(".qr2").click(function(){
+		 var data={"orderNo":"<%=modelDatas.getOrderModel().getOrderNo()%>","orderId":<%=modelDatas.getOrderModel().getId() %>};
+	     $.post("<%=basePath%>/order/canelorder", data,
+                 function(result) {
+				if(result.responseCode==0){
+					alert("取消订单成功！");
+					window.location.reload();
 				}
-			});
+	   	    	});
+		});
 	});
 </script>
