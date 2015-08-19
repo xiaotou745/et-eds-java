@@ -182,7 +182,11 @@
 									url : url,
 									data : paramaters,
 									success : function(result) {
-										alert(result);
+										if(result.responseCode==0){
+											alert("操作成功");
+										}
+										else{
+										alert(result.message);}
 									}
 								});
 							}

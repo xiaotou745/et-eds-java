@@ -45,7 +45,12 @@ public enum PublishOrderReturnEnum {
 	/**
 	 * 您已被取消发单资格
 	 */
-	HadCancelQualification(-9, "您已被取消发单资格");
+	HadCancelQualification(-9, "您已被取消发单资格"),
+	
+	/**
+	 * 订单已经存在
+	 */
+	OrderHasExist(-10, "订单已经存在");
 
 	private int value = 0;
 	private String desc;
