@@ -17,7 +17,7 @@ import com.edaisong.entity.domain.OrderCommission;
  * @author pengyi
  * @date 20150817
  */
-@Component
+@Component("baseCommissionOrPriceService")
 public class BaseCommissionOrPriceProvider extends OrderPriceBaseProvider{
 	
 	@Autowired

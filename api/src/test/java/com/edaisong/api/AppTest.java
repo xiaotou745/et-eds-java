@@ -1,6 +1,7 @@
 package com.edaisong.api;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -9,6 +10,7 @@ import com.edaisong.api.common.OrderPriceBaseProvider;
 import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
@@ -104,5 +106,10 @@ public class AppTest extends TestCase {
 	public void testGetBusinessOrderSummary(){
 		BusinessOrderSummaryModel model = testService.getBusinessOrderSummary(1812);
 		//Assert.assertTrue(model.getName()!= null);
+	}
+	
+	public void testGetBusiPubOrderTimeStatistics(){
+		List<BusiPubOrderTimeStatisticsModel> models = testService.getBusiPubOrderTimeStatistics(1812);
+		Assert.assertTrue(models.size() > 0);
 	}
 }

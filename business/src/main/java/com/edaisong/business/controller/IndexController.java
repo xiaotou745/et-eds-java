@@ -1,7 +1,7 @@
 package com.edaisong.business.controller;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.edaisong.api.dao.impl.BusinessMessageDao;
 import com.edaisong.api.dao.inter.IBusinessMessageDao;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.business.entity.UserContext;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessMessage;
+import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 
 @Controller
@@ -37,11 +37,13 @@ public class IndexController {
 		}
 		BusinessOrderSummaryModel bos = orderService.getBusinessOrderSummary(business.getId());
 		BusinessMessage message = businessMessageDao.getLatestMessage(business.getId());
+		List<BusiPubOrderTimeStatisticsModel> statistics = orderService.getBusiPubOrderTimeStatistics(business.getId());
 		model.addObject("subtitle", "");
 		model.addObject("currenttitle", "首页");
 		model.addObject("viewPath", "index");
 		model.addObject("bos", bos);
 		model.addObject("message", message);
+		model.addObject("pubOrderTimestatistics", statistics);
 		
 		return model;
 	}

@@ -269,7 +269,7 @@ public class BusinessService implements IBusinessService {
 	 */
 	@Override
 	public 	int updateLastLoginTime(int businessID,Date loginTime) {
-		return iBusinessDao.updateLastLoginTime(businessID, new Date());
+		return iBusinessDao.updateLastLoginTime(businessID, loginTime);
 	}
 
 }
