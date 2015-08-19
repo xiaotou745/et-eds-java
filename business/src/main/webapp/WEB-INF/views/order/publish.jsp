@@ -49,7 +49,7 @@
 		</p>
 		<div class="orderBox dn">
 			<p class="cb">
-				<span class="fl"> 订单数量 </span> <s class="fl">3单</s> <a
+				<span class="fl"> 订单数量 </span> <s class="fl">1单</s> <a
 					href="javascript:;" class="fl add">添加</a>
 			</p>
 			<p class="cb copy">
@@ -91,7 +91,7 @@
 		</i> <a class="qx" href="javascript:;">取消</a> <a class="qr"
 			href="javascript:;">确认</a>
 		<!-- class=“qr“ 加入选择器”ok"呼出任务发布成功弹层 -->
-		<!-- class=“qr“ 加入选择器”no"呼出任务发布成功弹层 -->
+		<!-- class=“qr“ 加入选择器”no"呼出任务发布失败弹层 -->
 	</div>
 </div>
 
@@ -150,15 +150,22 @@
 			var clone = add.clone();
 			clone.find('span').html('订单' + ($('.copy').length + 1))
 			$('.orderBox').append(clone);
+			$('.orderBox').find('s').eq(0).html($('.copy').length +"单");  //重置单量
 		});
 		//删除订单数量
 		$('.orderBox').on('click', '.del', function() {
 			$(this).parent().remove();
+			//对子订单序列号重新进行排序
+            for(index=0;index<$('.copy').length;index++)
+            {
+            	$('.copy').eq(index).find('span').html('订单' +  (index+1));
+            }
 			if ($('.copy').length < 2) {
 				$('.orderBox').addClass('dn');
 			} else {
 				$('.orderBox').removeClass('dn');
 			}
+			$('.orderBox').find('s').eq(0).html($('.copy').length +"单");  //重置单量
 		});
 
 		//确认发布任务弹窗呼出 And 关闭
@@ -174,6 +181,10 @@
 							validate=checkEmpty("name");	
 							validate=true;
 							if(validate){
+								
+								console.log($('.popupBox1').find('span').has("订单数量"))
+	
+								
 								$('.popup1').show();
 								var url = "<%=basePath%>/order/add";
 								var paramaters={};

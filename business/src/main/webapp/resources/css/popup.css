@@ -122,3 +122,36 @@
 	color:#000;
 	font-size: 18px;
 }
+
+
+
+
+.popup .popupBox5{
+	height: 120px;
+}
+.popup .popupBox5 h1{
+	text-align: center;
+	color:#006699;
+	font-size: 20px;
+	margin-bottom: 10px;
+}
+.popup .popupBox5 a{
+	display: inline-block;
+	width: 143px;
+	height: 43px;
+	line-height: 43px;
+	text-align: center;
+	font-size: 16px;
+	margin-top: 25px;
+	border-radius:3px;
+}
+.popup .popupBox5 a.qx2{
+	color:#333;
+	background-color:#f9f9f9;
+	border:1px solid #cdcdcd;
+}
+.popup .popupBox5 a.qr2{
+	color:#fff;
+	background-color:#006699;
+	border:1px solid #006699;
+}
