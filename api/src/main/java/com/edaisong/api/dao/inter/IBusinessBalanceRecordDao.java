@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.req.TransDetailReq;
+import com.edaisong.entity.req.PagedTransDetailReq;
 
 public interface IBusinessBalanceRecordDao {
     int insert(BusinessBalanceRecord record);
@@ -13,5 +13,5 @@ public interface IBusinessBalanceRecordDao {
      *2015年8月4日13:02:01
      *茹化肖
      * */
-    PagedResponse<BusinessBalanceRecord> getTransDetailList(TransDetailReq par);
+    PagedResponse<BusinessBalanceRecord> getTransDetailList(PagedTransDetailReq par);
 }

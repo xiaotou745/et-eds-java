@@ -15,7 +15,6 @@ import com.edaisong.api.service.inter.IBusinessFinanceService;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
-import com.edaisong.entity.req.TransDetailReq;
 /*
  * 管理员工具
  * 茹化肖

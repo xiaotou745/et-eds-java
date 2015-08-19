@@ -41,10 +41,12 @@
 	<div class="box2-ny">
 		<p class="cb">
 			<span class="fl"> <em class="fl">*</em> 顾客是否付款
-			</span> <label class="fl"> <input type="radio" class="fl"
-				name="fukuan"> 已付款
-			</label> <label class="fl"> <input type="radio" class="fl"
-				name="fukuan"> 未付款
+			</span> 
+		    <label class="fl"> <input type="radio" class="fl"
+				name="fukuan" checked value="0"> 未付款
+			</label>
+			<label class="fl"> <input type="radio" class="fl"
+				name="fukuan" value="1"> 已付款
 			</label>
 		</p>
 		<div class="orderBox dn">
@@ -63,7 +65,7 @@
 		</p>
 		<p class="cb">
 			<span class="fl lh15"> 备注 </span>
-			<textarea class="fl"></textarea>
+			<textarea class="fl" id="remark"></textarea>
 		</p>
 	</div>
 </div>
@@ -169,9 +171,7 @@
 		});
 
 		//确认发布任务弹窗呼出 And 关闭
-		$('.fabu')
-				.on('click',
-						function() {
+		$('.fabu').on('click',function() {
 							var validate = true;
 							//手机号非空判断 
 							validate=checkEmpty("telphone");					
@@ -181,25 +181,8 @@
 							validate=checkEmpty("name");	
 							validate=true;
 							if(validate){
-								
-								console.log($('.popupBox1').find('span').has("订单数量"))
-	
-								
 								$('.popup1').show();
-								var url = "<%=basePath%>/order/add";
-								var paramaters={};
-								$.ajax({
-									type : 'POST',
-									url : url,
-									data : paramaters,
-									success : function(result) {
-										if(result.responseCode==0){
-											alert("操作成功");
-										}
-										else{
-										alert(result.message);}
-									}
-								});
+								
 							}
 						});
 		//验证元素非空，为空显示提示语，不为空隐藏提示语  add by caoheyang 20150818
@@ -212,7 +195,42 @@
 			}
 		}
 		
-		
+		//任务发布 弹出层 的确认按钮 触发 ajax 请求  caoheyang 20150819
+		$('.qr').on('click', function() {
+			$(this).parents('.popup1').hide();
+			var recevicename=$("#telphone").val();  //收货人姓名
+			var recevicephoneno=$("#name").val(); //收货人电话
+			var receviceaddress=$("#address").val(); //收货人地址
+			var ispay=$("fukuan:checked").val()==0?false:true;//是否已付款
+			var amount=1000; //金额
+			var remark=$("#remark").val();  //备注
+			var listOrderChild = new Array($('.copy').length);  //子订单信息			
+			$('.copy').each(function(index, domEle) {				
+				listOrderChild.push({"goodprice":$(this).find('input[type=text]').val()});
+			});
+ 			var paramaters={"recevicename":recevicename,"recevicephoneno":recevicephoneno,"receviceaddress":receviceaddress,
+ 					"ispay":ispay,"amount":amount,"remark":remark};
+ 		
+			var url = "<%=basePath%>/order/add";
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data :paramaters,
+				success : function(result) {
+					if(result.responseCode==0){  
+					    //异步请求成功 呼出 成功层
+						$('.popup2').show();
+					} else if(result.responseCode==-8){  
+						$('.popup3').show();  //余额不足弹层
+					} else
+					{
+					  alert(result.message);	
+					}
+				}
+			});
+
+		});
+
 		$('.qx').on('click', function() {
 			$(this).parents('.popup1').hide();
 		});
@@ -222,6 +240,7 @@
 			$(this).parents('.popup1').hide();
 			$('.popup2').show();
 		});
+		
 		$('.qr2').on('click', function() {
 			$(this).parents('.popup2').hide();
 		});

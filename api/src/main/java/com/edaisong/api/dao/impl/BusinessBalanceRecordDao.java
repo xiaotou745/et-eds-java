@@ -11,7 +11,7 @@ import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.req.TransDetailReq;
+import com.edaisong.entity.req.PagedTransDetailReq;
 @Repository
 public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanceRecordDao {
 	@Override
@@ -27,7 +27,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
  * 
  * */
 	@Override
-	public PagedResponse<BusinessBalanceRecord> getTransDetailList(TransDetailReq par) {
+	public PagedResponse<BusinessBalanceRecord> getTransDetailList(PagedTransDetailReq par) {
 		PagedResponse<BusinessBalanceRecord> resp = new PagedResponse<BusinessBalanceRecord>();
 		resp= getReadOnlySqlSessionUtil()
 				.selectPageList("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getTransDetailList",

@@ -464,7 +464,7 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId) {
-		return orderDao.getBusiPubOrderTimeStatistics(1812);
+	public List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId,Date startTime,Date endTime) {
+		return orderDao.getBusiPubOrderTimeStatistics(businessId,startTime,endTime);
 	}
 }

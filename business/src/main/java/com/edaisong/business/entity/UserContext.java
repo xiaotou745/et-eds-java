@@ -36,10 +36,7 @@ public class UserContext {
 		final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
 		if (cookieValue != null) {
-			CookieModel cookieModel = JsonUtil.str2obj(cookieValue, CookieModel.class);
-			if (cookieModel != null) {
-				return new UserContext(redisService.get(cookieModel.getValue(), Business.class),false);
-			}
+			return new UserContext(redisService.get(cookieValue, Business.class),false);
 		}
 		return empty;
 	}
