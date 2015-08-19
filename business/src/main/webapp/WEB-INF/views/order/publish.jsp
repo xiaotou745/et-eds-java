@@ -171,7 +171,8 @@
 							//收货地址
 							validate=checkEmpty("address");								
 							//姓名
-							validate=checkEmpty("name");		
+							validate=checkEmpty("name");	
+							validate=true;
 							if(validate){
 								$('.popup1').show();
 								var url = "<%=basePath%>/order/add";

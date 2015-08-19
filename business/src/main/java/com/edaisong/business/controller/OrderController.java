@@ -170,9 +170,9 @@ public class OrderController {
 		req.setReceviceaddress("大望路");
 		req.setRecevicecity("北京");
 		req.setIspay(false);
-		req.setAmount(new BigDecimal(500.32));
+		req.setAmount(new BigDecimal(25));
 		req.setRemark("尽快送到，要提供餐具");
-		req.setOrdercount(5);
+		req.setOrdercount(2);
 		req.setMealssettlemode(1);
 		req.setOrderfrom(OrderFrom.EDaiSong.value());
 		List<OrderChild> listOrderChild=new ArrayList<OrderChild>();

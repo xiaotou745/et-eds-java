@@ -395,7 +395,7 @@ public class OrderService implements IOrderService {
             {
             	return PublishOrderReturnEnum.AmountMoreThanFiveThousand;
             }
-            amount.add(req.getListOrderChild().get(i).getGoodprice());
+            amount=amount.add(req.getListOrderChild().get(i).getGoodprice());
         }
         if (req.getAmount().compareTo(amount)!=0)
         {
