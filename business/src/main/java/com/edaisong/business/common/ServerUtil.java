@@ -21,17 +21,22 @@ public class ServerUtil {
 	public static boolean checkIsLogin(HttpServletRequest request) {
 		// 如果已登录,直接返回
 		boolean isLogin = false;
-		final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
-		String cookieValue = CookieUtils.getCookie(request, cookieKey);
-		if (cookieValue != null) {
-			CookieModel cookieModel = JsonUtil.str2obj(cookieValue, CookieModel.class);
-			if (cookieModel != null) {
-				Object loginStatusValue = redisService.get(cookieModel.getValue(), Object.class);
-				if (loginStatusValue != null) {
-					isLogin = true;
+		try {
+			final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
+			String cookieValue = CookieUtils.getCookie(request, cookieKey);
+			if (cookieValue != null) {
+				CookieModel cookieModel = JsonUtil.str2obj(cookieValue, CookieModel.class);
+				if (cookieModel != null) {
+					Object loginStatusValue = redisService.get(cookieModel.getValue(), Object.class);
+					if (loginStatusValue != null) {
+						isLogin = true;
+					}
 				}
 			}
+		} catch (Exception e) {
+			return isLogin;
 		}
+		
 		return isLogin;
 	}
 	
