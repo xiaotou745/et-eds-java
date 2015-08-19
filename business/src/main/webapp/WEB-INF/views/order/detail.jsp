@@ -39,52 +39,49 @@
 					.getRemark())%></h5>
 	</div>
 	<div class="right2 fl">
-		<%
-			String checkStyle = "";
-			if (modelDatas.getOrderModel().getActualDoneDate() != null) {
-				checkStyle = "w1 w2 w3 w4";
-			} else if (modelDatas.getOrderModel().getTakeTime() != null) {
-				checkStyle = "w1 w2 w3";
-			} else if (modelDatas.getOrderModel().getGrabTime() != null) {
-				checkStyle = "w1 w2";
-			} else if (modelDatas.getOrderModel().getPubDate() != null) {
-				checkStyle = "w1";
-			}
-		%>
+	<%
+				String checkStyle="";
+			    if (modelDatas.getOrderModel().getActualDoneDate() != null) {
+					checkStyle = "w1 w2 w3 w4";
+				} else if (modelDatas.getOrderModel().getTakeTime() != null) {
+					checkStyle = "w1 w2 w3";
+				} else if (modelDatas.getOrderModel().getGrabTime() != null) {
+					checkStyle = "w1 w2";
+				} else if (modelDatas.getOrderModel().getPubDate() != null) {
+					checkStyle = "w1";
+				}
+			%>
 		<div class="r-t cb" id="divCanel">
-			<%
-				if (modelDatas.getOrderModel().getCancelTime() != null) {
-					if (modelDatas.getOrderModel().getGrabTime() != null) {
-			%>
-			<p class="fl" style="border: none"></p>
-			<%
-				}
-					if (modelDatas.getOrderModel().getTakeTime() != null) {
-			%>
-			<p class="fl" style="border: none"></p>
-
-			<%
-				}
-					if (modelDatas.getOrderModel().getActualDoneDate() != null) {
-			%>
-			<p class="fl" style="border: none"></p>
-			<%
-				}
-			%>
+		    <% if(modelDatas.getOrderModel().getStatus()==OrderStatus.Cancel.value())
+		  	  {
+		    	if (modelDatas.getOrderModel().getGrabTime() != null) {
+					 %>
+	    			  <p class="fl" style="border:none"></p>
+	    	  <% 
+			 }  if (modelDatas.getOrderModel().getTakeTime() != null) {
+				 %>
+   			  <p class="fl" style="border:none"></p>
+	    	     	     	     	  
+   	  <% 
+		  } 
+			   if (modelDatas.getOrderModel().getActualDoneDate() != null) {
+		    	  %>
+		    			  <p class="fl" style="border:none"></p>		    	     	     	     	  
+		    	  <% 
+					}
+		    %>
 
 			<p class="fl">
 				<!-- 加入vh选择器隐藏该标签 -->
 				<span>订单取消</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
-						.getCancelTime(), "MM.dd HH:mm")%></em>
+					.getCancelTime(), "MM.dd HH:mm")%></em>
 			</p>
-			<%
-				}
-			%>
+			<% }%>
 		</div>
 		<div class="liuc">
 			<img src="<%=basePath%>/images/icon-13.png" width="618" height="35"
 				alt="置灰状态">
-
+			
 			<!-- w1 w2 w3 w4 分别为四种状态的选中效果选择器 -->
 			<span class="on <%=checkStyle%>"> <img
 				src="<%=basePath%>/images/icon-14.png" width="618" height="35"
@@ -94,7 +91,8 @@
 		<div class="r-t2 cb">
 			<p class="fl">
 				<span>发布</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
-					.getPubDate(), "MM.dd HH:mm")%> </em>
+					.getPubDate(), "MM.dd HH:mm")%>
+				</em>
 			</p>
 			<p class="fl">
 				<span>接单</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
@@ -133,13 +131,9 @@
 		</div>
 	</div>
 	<div class="right2 fl">
-		<%
-			if (modelDatas.getOrderModel().getCancelTime() == null) {
-		%>
-		<input type="button" value="取消订单" id="CanelOrderBtn">
-		<%
-			}
-		%>
+		    <% if(modelDatas.getOrderModel().getStatus()==OrderStatus.New.value()){%>
+	    <input type="button" value="取消订单" id="CanelOrderBtn">
+	    		<% }%>
 		<h2>订单明细</h2>
 		<p>
 			总金额：<span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
@@ -191,11 +185,13 @@ $(function(){
 	//取消订单事件
 	$("#CanelOrderBtn").click(function(){
 		if(confirm("您确认取消订单吗？")){
-			 var data={"orderNo":"<%=modelDatas.getOrderModel().getOrderNo()%>","orderId":<%=modelDatas.getOrderModel().getId()%>};
-				$.post("<%=basePath%>/order/canelorder", data,
-										function(result) {
-											alert(result.message);
-										});
+			 var data={"orderNo":"<%=modelDatas.getOrderModel().getOrderNo()%>","orderId":<%=modelDatas.getOrderModel().getId() %>};
+		     $.post("<%=basePath%>/order/canelorder", data,
+                  function(result) {
+					if(result.responseCode==0){
+						alert("取消订单成功！")
+					}
+		   		});
 							}
 						});
 	});
