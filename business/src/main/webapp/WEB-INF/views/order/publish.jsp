@@ -44,7 +44,7 @@
 			</span> <label class="fl"> <input type="radio" class="fl"
 				name="fukuan"> 已付款
 			</label> <label class="fl"> <input type="radio" class="fl"
-				name="fukuan"> 未付款
+				name="fukuan" checked> 未付款
 			</label>
 		</p>
 		<div class="orderBox dn">
@@ -91,7 +91,7 @@
 		</i> <a class="qx" href="javascript:;">取消</a> <a class="qr"
 			href="javascript:;">确认</a>
 		<!-- class=“qr“ 加入选择器”ok"呼出任务发布成功弹层 -->
-		<!-- class=“qr“ 加入选择器”no"呼出任务发布成功弹层 -->
+		<!-- class=“qr“ 加入选择器”no"呼出任务发布失败弹层 -->
 	</div>
 </div>
 
@@ -169,9 +169,7 @@
 		});
 
 		//确认发布任务弹窗呼出 And 关闭
-		$('.fabu')
-				.on('click',
-						function() {
+		$('.fabu').on('click',function() {
 							var validate = true;
 							//手机号非空判断 
 							validate=checkEmpty("telphone");					
@@ -181,10 +179,6 @@
 							validate=checkEmpty("name");	
 							validate=true;
 							if(validate){
-								
-								console.log($('.popupBox1').find('span').has("订单数量"))
-	
-								
 								$('.popup1').show();
 								var url = "<%=basePath%>/order/add";
 								var paramaters={};
@@ -193,7 +187,11 @@
 									url : url,
 									data : paramaters,
 									success : function(result) {
-										alert(result);
+										if(result.responseCode==0){
+											alert("操作成功");
+										}
+										else{
+										alert(result.message);}
 									}
 								});
 							}
@@ -208,7 +206,13 @@
 			}
 		}
 		
-		
+		//任务发布 弹出层 的确认按钮 触发 ajax 请求  caoheyang 20150819
+		$('.qr').on('click', function() {
+			$(this).parents('.popup1').hide();
+		    //异步请求成功 呼出 成功层
+			$('.popup2').show();
+		});
+
 		$('.qx').on('click', function() {
 			$(this).parents('.popup1').hide();
 		});
@@ -218,6 +222,7 @@
 			$(this).parents('.popup1').hide();
 			$('.popup2').show();
 		});
+		
 		$('.qr2').on('click', function() {
 			$(this).parents('.popup2').hide();
 		});

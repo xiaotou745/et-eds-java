@@ -158,9 +158,6 @@
 
     insert into dbo.[order]
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
       <if test="orderno != null" >
         OrderNo,
       </if>
@@ -325,9 +322,6 @@
       </if>      
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="orderno != null" >
         #{orderno,jdbcType=NVARCHAR},
       </if>
