@@ -3,6 +3,7 @@ package com.edaisong.api.dao.inter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.lang.Double;
 import java.util.List;
 
 import com.edaisong.entity.Business;
@@ -64,7 +65,7 @@ public interface IBusinessDao {
 	 * @param business
 	 * @return
 	 */
-	 int updateForWithdraw(BigDecimal money,int businessId);
+	 int updateForWithdraw(Double money,int businessId);
 	/**
 	 * 根据商户Id获取商户信息
 	 * @param businessId 商户Id

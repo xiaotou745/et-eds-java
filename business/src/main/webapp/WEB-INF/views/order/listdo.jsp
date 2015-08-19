@@ -2,7 +2,7 @@
 	pageEncoding="utf-8"%>
 <%@page import="java.sql.Date"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
-<%@page import="java.math.BigDecimal"%>
+<%@page import="java.lang.Double"%>
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -83,13 +83,12 @@
 			任务补贴:<%=data.get(i).getAdjustment()%>
 			</td>			
 			<%
-				BigDecimal butie = BigDecimal.valueOf(0.00);
+				Double butie = 0.00d;
 					if (1 == data.get(i).getIsNotRealOrder()) {
-						butie = data.get(i).getOrderCommission()
-								.subtract(data.get(i).getRealOrderCommission());
+						butie = data.get(i).getOrderCommission()-data.get(i).getRealOrderCommission();
 					}
 
-					if (butie.compareTo(BigDecimal.valueOf(0.00)) == 1) // BigDecimal 比较 返回1  代表大于
+					if (butie>0) 
 					{
 			%>
 			<td style="color: red; font-weight: 600"><%=butie%></td>

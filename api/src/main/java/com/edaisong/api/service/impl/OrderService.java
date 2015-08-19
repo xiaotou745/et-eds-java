@@ -1,7 +1,6 @@
 package com.edaisong.api.service.impl;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.lang.Double;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
+import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
@@ -31,10 +31,12 @@ import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
+import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
+import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderCommission;
@@ -63,6 +65,8 @@ public class OrderService implements IOrderService {
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
     @Autowired
 	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
+    
+    private IBusinessService businessService;
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -185,6 +189,10 @@ public class OrderService implements IOrderService {
 			businessBalanceRecord.setRelationno(req.getOrderNo()); // 关联单号
 			businessBalanceRecord.setRemark("商户取消订单返回配送费"); // 注释
 			businessBalanceRecordDao.insert(businessBalanceRecord); // 记录
+			OrderOther orderOther=new OrderOther();
+			orderOther.setOrderid(req.getOrderId());
+			orderOther.setCancelTime(new Date());
+			orderOtherDao.updateByPrimaryKeySelective(orderOther);
 		} else {
 			throw new RuntimeException("更新订单状态为取消失败");
 		}
@@ -202,15 +210,18 @@ public class OrderService implements IOrderService {
 	public OrderResp AddOrder(OrderReq req) {
 		OrderResp resp = new OrderResp();
 		BusinessModel businessModel = businessDao.getBusiness(req.getBusinessid());
+		//校验是否可以正常发单
 		PublishOrderReturnEnum returnEnum= verificationAddOrder(req,businessModel);
 		if (returnEnum!=PublishOrderReturnEnum.Success) {
-			resp.setResponseCode(returnEnum.value());
+			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
 		// 订单主表
 		Order order = fillOrder(req, businessModel);
 		int orderID=orderDao.insert(order);
+		order.setId(orderID);
+		//记录发单日志
 		OrderSubsidiesLog record=new OrderSubsidiesLog();
 		record.setOrderid(orderID);
 		record.setOrderstatus(OrderStatus.New.value());
@@ -220,7 +231,20 @@ public class OrderService implements IOrderService {
 		record.setPlatform(SuperPlatform.Business.value());
 		orderSubsidiesLogDao.insert(record);
 		
-		if (order.getAdjustment().compareTo(BigDecimal.ZERO)>0) {
+		//扣除商家结算费
+		BusinessBalanceRecord balanceRecord=new BusinessBalanceRecord();
+		balanceRecord.setBusinessid(req.getBusinessid());
+		balanceRecord.setAmount(-order.getSettlemoney());
+		balanceRecord.setStatus((short)BusinessBalanceRecordStatus.Success.value());
+		balanceRecord.setRecordtype((short)BusinessBalanceRecordRecordType.PublishOrder.value());
+		balanceRecord.setOperator(businessModel.getName());
+		balanceRecord.setWithwardid((long)orderID);
+		balanceRecord.setRelationno(order.getOrderno());
+		balanceRecord.setRemark("扣除商家结算费");
+		businessService.updateForWithdrawC(balanceRecord);
+		
+		//记录补贴日志
+		if (order.getAdjustment()>0) {
 			OrderSubsidiesLog adjustRecord=new OrderSubsidiesLog();
 			adjustRecord.setOrderid(orderID);
 			adjustRecord.setPrice(order.getAdjustment());
@@ -232,10 +256,9 @@ public class OrderService implements IOrderService {
 			orderSubsidiesLogDao.insert(adjustRecord);
 		}
 		
-		int orderid = order.getId().intValue();
 		// 写入订单Other表
 		OrderOther orderOther = new OrderOther();
-		orderOther.setOrderid(orderid);
+		orderOther.setOrderid(orderID);
 		orderOther.setNeeduploadcount(req.getOrdercount());
 		orderOther.setHaduploadcount(0);
 		orderOther.setPublongitude(businessModel.getLongitude());
@@ -243,14 +266,36 @@ public class OrderService implements IOrderService {
 		orderOther.setOnekeypuborder(businessModel.getOnekeypuborder());
 		orderOther.setIsorderchecked(businessModel.getIsOrderChecked());
 		orderOtherDao.insert(orderOther);
-
+        
+		//写入OrderChild
 		if (req.getListOrderChild() != null
 				&& req.getListOrderChild().size() > 0) {
+			fillOrderChild(req,businessModel,order);
 			orderChildDao.insertList(req.getListOrderChild());
 		}
 		return resp;
 	}
-
+	private void fillOrderChild(OrderReq req, BusinessModel businessModel,Order order){
+		if (req.getListOrderChild() != null
+				&& req.getListOrderChild().size() > 0) {
+			OrderChild child=null;
+			short payStatus=0;
+			if (req.getIspay()||!req.getIspay()
+					&& req.getMealssettlemode() == MealsSettleMode.LineOff.value()) {
+				payStatus=1;
+			}
+			for (int i = 0; i < req.getListOrderChild().size(); i++) {
+			    child=req.getListOrderChild().get(i);
+			    child.setChildid(i+1);
+				child.setCreateby(businessModel.getName());
+				child.setUpdateby(businessModel.getName());
+				child.setDeliveryprice(order.getDistribsubsidy());
+				child.setOrderid(order.getId());
+				child.setTotalprice(child.getGoodprice()+child.getDeliveryprice());
+				child.setPaystatus(payStatus);
+			}
+		}
+	}
 	private Order fillOrder(OrderReq req, BusinessModel businessModel) {
 		Order order = new Order();
 		order.setOrderno("no11111111");// 临时
@@ -260,15 +305,15 @@ public class OrderService implements IOrderService {
 		order.setIspay(req.getIspay());
 		order.setAmount(req.getAmount());
 		order.setRemark(req.getRemark());
-		order.setOrderfrom(OrderFrom.EDaiSong.value());
+		order.setOrderfrom(req.getOrderfrom());
 		order.setStatus((byte) OrderStatus.New.value());
-		order.setRecevicelongitude(req.getRecevicelongitude());
-		order.setRecevicelatitude(req.getRecevicelatitude());
 		order.setOrdercount(req.getOrdercount());
 		order.setTimespan("1");
 		order.setPubdate(new Date());
 		order.setBusinessid(req.getBusinessid());
-		order.setPickupaddress(req.getPickupaddress());
+//		order.setRecevicelongitude(req.getRecevicelongitude());
+//		order.setRecevicelatitude(req.getRecevicelatitude());
+//		order.setPickupaddress(req.getPickupaddress());
 		order.setRecevicecity(req.getRecevicecity());
 		
 
@@ -279,8 +324,8 @@ public class OrderService implements IOrderService {
 		order.setCommissionfixvalue(businessModel.getCommissionfixvalue());
 		order.setMealssettlemode(businessModel.getMealssettlemode());
 		order.setDistribsubsidy(businessModel.getDistribsubsidy());
+		
 		OrderCommission orderCommission = new OrderCommission();
-
 		OrderPriceBaseProvider orderPriceService = CommissionFactory
 				.GetCommission(businessModel.getStrategyId());
 		order.setOrdercommission(orderPriceService
@@ -289,22 +334,21 @@ public class OrderService implements IOrderService {
 				.getOrderWebSubsidy(orderCommission));
 		order.setCommissionrate(orderPriceService
 				.getCommissionRate(orderCommission));
-		BigDecimal settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
+		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
 				req.getAmount(), businessModel.getBusinesscommission(),
 				businessModel.getCommissionfixvalue(), req.getOrdercount(),
-				businessModel.getDistribsubsidy(), OrderFrom.EDaiSong.value());
+				businessModel.getDistribsubsidy(), req.getOrderfrom());
 		order.setSettlemoney(settleMoney);
 		order.setAdjustment(orderPriceService.getAdjustment(orderCommission));
 
-		order.setBusinessreceivable(BigDecimal.valueOf(0));// 退还商家金额
+		order.setBusinessreceivable(Double.valueOf(0));// 退还商家金额
 		if (!req.getIspay()
-				&& req.getMealssettlemode() == MealsSettleMode.LineOn.value()) {
-			BigDecimal money = req.getAmount().add(
-					businessModel.getDistribsubsidy()
-							.multiply(new BigDecimal(req.getOrdercount()))
-							.setScale(2, RoundingMode.HALF_UP));
+				&& order.getMealssettlemode() == MealsSettleMode.LineOn.value()) {
+			Double money = req.getAmount()+(businessModel.getDistribsubsidy()*req.getOrdercount());
+							
 			order.setBusinessreceivable(money);
 		}
+
 		return order;
 	}
 	/**
@@ -343,18 +387,18 @@ public class OrderService implements IOrderService {
         {
         	return PublishOrderReturnEnum.OrderCountError;
         }
-        BigDecimal amount = BigDecimal.ZERO;
+        Double amount = 0d;
         for (int i = 0; i < req.getListOrderChild().size(); i++)//子订单价格
         {
-            if (req.getListOrderChild().get(i).getGoodprice().compareTo(new BigDecimal(5))<0)  //金额小于5不合法
+            if (req.getListOrderChild().get(i).getGoodprice()<5)  //金额小于5不合法
             {
                 return PublishOrderReturnEnum.AmountLessThanTen;
             }
-            if (req.getListOrderChild().get(i).getGoodprice().compareTo(new BigDecimal(1000))>0) //金额大于1000不合法
+            if (req.getListOrderChild().get(i).getGoodprice()>1000) //金额大于1000不合法
             {
             	return PublishOrderReturnEnum.AmountMoreThanFiveThousand;
             }
-            amount.add(req.getListOrderChild().get(i).getGoodprice());
+            amount=amount+req.getListOrderChild().get(i).getGoodprice();
         }
         if (req.getAmount().compareTo(amount)!=0)
         {
@@ -362,11 +406,11 @@ public class OrderService implements IOrderService {
         }
         if (businessModel.getIsallowoverdraft()== 0) //0不允许透支
         {
-    		BigDecimal settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
+    		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
     				req.getAmount(), businessModel.getBusinesscommission(),
     				businessModel.getCommissionfixvalue(), req.getOrdercount(),
-    				businessModel.getDistribsubsidy(), OrderFrom.EDaiSong.value());
-            if (businessModel.getBalanceprice().compareTo(settleMoney)<0)
+    				businessModel.getDistribsubsidy(), req.getOrderfrom());
+            if (businessModel.getBalanceprice()<settleMoney)
             {
                return PublishOrderReturnEnum.BusiBalancePriceLack;
             }

@@ -2,73 +2,86 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
-<!-- Log4j提供的appender有以下几种: -->
- <!-- org.apache.log4j.ConsoleAppender(控制台), -->
- <!-- org.apache.log4j.FileAppender(文件), -->
- <!-- org.apache.log4j.DailyRollingFileAppender(每天产生一个日志文件), -->
- <!-- org.apache.log4j.RollingFileAppender(文件大小到达指定尺寸的时候产生一个新的文件), -->
- <!-- org.apache.log4j.WriterAppender(将日志信息以流格式发送到任意指定的地方) -->
-    <!-- 控制台输出 -->
-    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d %p [%c] - %m%n"/>
-        </layout>
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="LevelMin" value="Info"/>
-        </filter>
-    </appender> 
-    <!-- 系统启动日志输出文件 -->
-    <appender name="adminAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="Encoding" value="UTF-8"/>
-        <param name="File" value="c:/log/admin/admin.log"/>
-        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
-        <layout class="org.apache.log4j.PatternLayout">
-               <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
-        </layout>
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="LevelMin" value="INFO"/>
-        </filter>
-    </appender>
-        <appender name="businessAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="Encoding" value="UTF-8"/>
-        <param name="File" value="c:/log/business/business.log"/>
-        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
-        <layout class="org.apache.log4j.PatternLayout">
-               <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
-        </layout>
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="LevelMin" value="INFO"/>
-        </filter>
-    </appender>
-    <appender name="apiHttpAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="Encoding" value="UTF-8"/>
-        <param name="File" value="c:/log/apiHttp/apiHttp.log"/>
-        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
-        <layout class="org.apache.log4j.PatternLayout">
-               <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n"/>
-        </layout>
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="LevelMin" value="INFO"/>
-        </filter>
-    </appender>
-    <category name="businessLogger" additivity="false">
-        <!--若将level的value更改为OFF，则表示关掉该下的所有日志-->
-        <level value="INFO"/>
-        <appender-ref ref="businessAppender"/>
-    </category>
-    <category name="adminLogger" additivity="false">
-        <!--若将level的value更改为OFF，则表示关掉该下的所有日志-->
-        <level value="INFO"/>
-        <appender-ref ref="adminAppender"/>
-    </category>
-    <category name="apiHttpLogger" additivity="false">
-        <!--若将level的value更改为OFF，则表示关掉该下的所有日志-->
-        <level value="INFO"/>
-        <appender-ref ref="apiHttpAppender"/>
-    </category>
-<!--     <root> -->
-<!--         <level value="ALL"/> -->
-<!--         <appender-ref ref="stdout"/> -->
-<!--     </root> -->
-
+	<!-- Log4j提供的appender有以下几种: -->
+	<!-- org.apache.log4j.ConsoleAppender(控制台), -->
+	<!-- org.apache.log4j.FileAppender(文件), -->
+	<!-- org.apache.log4j.DailyRollingFileAppender(每天产生一个日志文件), -->
+	<!-- org.apache.log4j.RollingFileAppender(文件大小到达指定尺寸的时候产生一个新的文件), -->
+	<!-- org.apache.log4j.WriterAppender(将日志信息以流格式发送到任意指定的地方) -->
+	<!-- 控制台输出 -->
+	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %p [%c] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="DEBUG" />
+		</filter>
+	</appender>
+	<!-- 系统启动日志输出文件 -->
+	<appender name="adminAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="File" value="c:/log/admin/admin.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+		</filter>
+	</appender>
+	<appender name="businessAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="File" value="c:/log/business/business.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+		</filter>
+	</appender>
+	<appender name="apiHttpAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="File" value="c:/log/apiHttp/apiHttp.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+		</filter>
+	</appender>
+	<category name="businessLogger" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="businessAppender" />
+	</category>
+	<category name="adminLogger" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="adminAppender" />
+	</category>
+	<category name="apiHttpLogger" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="apiHttpAppender" />
+	</category>
+	<!-- 下面是打印mybatis语句的配置 -->
+	<logger name="com.ibatis" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.Connection" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.Statement" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.PreparedStatement" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.ResultSet" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<!-- 上面是打印mybatis语句的配置 -->
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="stdout" />
+	</root>
 </log4j:configuration>

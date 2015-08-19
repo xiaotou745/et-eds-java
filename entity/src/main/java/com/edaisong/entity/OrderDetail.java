@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class OrderDetail {
@@ -10,7 +10,7 @@ public class OrderDetail {
 
     private String productname;
 
-    private BigDecimal unitprice;
+    private Double unitprice;
 
     private Integer quantity;
 
@@ -44,11 +44,11 @@ public class OrderDetail {
         this.productname = productname == null ? null : productname.trim();
     }
 
-    public BigDecimal getUnitprice() {
+    public Double getUnitprice() {
         return unitprice;
     }
 
-    public void setUnitprice(BigDecimal unitprice) {
+    public void setUnitprice(Double unitprice) {
         this.unitprice = unitprice;
     }
 

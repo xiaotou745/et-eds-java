@@ -1,6 +1,6 @@
 package com.edaisong.api.common;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.math.RoundingMode;
 
 import com.edaisong.entity.domain.OrderCommission;
@@ -22,7 +22,7 @@ public abstract class OrderPriceBaseProvider {
 	 * @date 20150817
 	 * @return
 	 */
-	public abstract BigDecimal getCurrenOrderCommission(OrderCommission model);
+	public abstract Double getCurrenOrderCommission(OrderCommission model);
 
 	/**
 	 * 获取订单的网站补贴
@@ -32,7 +32,7 @@ public abstract class OrderPriceBaseProvider {
 	 * @date 20150817
 	 * @return
 	 */
-	public abstract BigDecimal getOrderWebSubsidy(OrderCommission model);
+	public abstract Double getOrderWebSubsidy(OrderCommission model);
 
 	/**
 	 * 获取订单的佣金比例
@@ -42,7 +42,7 @@ public abstract class OrderPriceBaseProvider {
 	 * @date 20150817
 	 * @return
 	 */
-	public abstract BigDecimal getCommissionRate(OrderCommission model);
+	public abstract Double getCommissionRate(OrderCommission model);
 
 	/**
 	 * 获取订单基本佣金
@@ -52,7 +52,7 @@ public abstract class OrderPriceBaseProvider {
 	 * @date 20150817
 	 * @return
 	 */
-	public abstract BigDecimal getBaseCommission(OrderCommission model);
+	public abstract Double getBaseCommission(OrderCommission model);
 
 	/**
 	 * 获取订单的额外补贴金额
@@ -62,7 +62,7 @@ public abstract class OrderPriceBaseProvider {
 	 * @date 20150817
 	 * @return
 	 */
-	public abstract BigDecimal getAdjustment(OrderCommission model);
+	public abstract Double getAdjustment(OrderCommission model);
 
 	/**
 	 * C端 获取订单的金额
@@ -72,11 +72,11 @@ public abstract class OrderPriceBaseProvider {
 	 * @date 20150817
 	 * @return
 	 */
-	public static BigDecimal getCurrenOrderPrice(OrderCommission model) {
-		BigDecimal amount = model.getAmount();
-		BigDecimal orderCount = BigDecimal.valueOf(model.getOrderCount());
-		BigDecimal distribSubsidy = model.getDistribSubsidy();
+	public static Double getCurrenOrderPrice(OrderCommission model) {
+		Double amount = model.getAmount();
+		Double orderCount = Double.valueOf(model.getOrderCount());
+		Double distribSubsidy = model.getDistribSubsidy();
 		// 需进行四舍五入
-		return amount.add(distribSubsidy.multiply(orderCount)).setScale(2, RoundingMode.HALF_UP);
+		return amount+distribSubsidy*orderCount;
 	}
 }

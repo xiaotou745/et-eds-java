@@ -14,41 +14,10 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.TransDetailReq;
 @Repository
 public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanceRecordDao {
-
-	@Override
-	public int deleteByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	@Override
 	public int insert(BusinessBalanceRecord record) {
 	   int result=	getMasterSqlSessionUtil().insert("com.edaisong.api.dal.dao.inter.IBusinessBalanceRecordDao.insert",record);
 		return result;
-	}
-
-	@Override
-	public int insertSelective(BusinessBalanceRecord record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public BusinessBalanceRecord selectByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(BusinessBalanceRecord record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(BusinessBalanceRecord record) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 /**
  * 

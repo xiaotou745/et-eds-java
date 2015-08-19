@@ -2,6 +2,7 @@ package com.edaisong.api.dao.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.lang.Double;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,17 +88,14 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	}
 /**
 	 * 更新 商户 余额，可提现余额
-	 * 
-	 * @param money
-	 *            金额
-	 * @param businessId
-	 *            商户id
+	 * @param money 金额
+	 * @param businessId 商户id
 	 * @Date 20150804
 	 * @param business
 	 * @return
 	 */
 	@Override
-	public int updateForWithdraw(BigDecimal money, int businessId) {
+	public int updateForWithdraw(Double money, int businessId) {
 		Map<String, Object> parasMap = new HashMap();
 		parasMap.put("Money", money);
 		parasMap.put("Id", businessId);

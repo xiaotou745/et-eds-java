@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class Statistic {
@@ -14,7 +14,7 @@ public class Statistic {
 
     private Integer ddrzqscount;
 
-    private BigDecimal orderprice;
+    private Double orderprice;
 
     private Integer misstioncount;
 
@@ -26,11 +26,11 @@ public class Statistic {
 
     private Double clienteraverageordercount;
 
-    private BigDecimal ysprice;
+    private Double ysprice;
 
-    private BigDecimal yfprice;
+    private Double yfprice;
 
-    private BigDecimal ykprice;
+    private Double ykprice;
 
     private Integer onesubsidyordercount;
 
@@ -44,13 +44,13 @@ public class Statistic {
 
     private Integer activeclienter;
 
-    private BigDecimal incometotal;
+    private Double incometotal;
 
-    private BigDecimal rechargetotal;
+    private Double rechargetotal;
 
-    private BigDecimal withdrawbusinessprice;
+    private Double withdrawbusinessprice;
 
-    private BigDecimal businessbalance;
+    private Double businessbalance;
 
     public Integer getId() {
         return id;
@@ -92,11 +92,11 @@ public class Statistic {
         this.ddrzqscount = ddrzqscount;
     }
 
-    public BigDecimal getOrderprice() {
+    public Double getOrderprice() {
         return orderprice;
     }
 
-    public void setOrderprice(BigDecimal orderprice) {
+    public void setOrderprice(Double orderprice) {
         this.orderprice = orderprice;
     }
 
@@ -140,27 +140,27 @@ public class Statistic {
         this.clienteraverageordercount = clienteraverageordercount;
     }
 
-    public BigDecimal getYsprice() {
+    public Double getYsprice() {
         return ysprice;
     }
 
-    public void setYsprice(BigDecimal ysprice) {
+    public void setYsprice(Double ysprice) {
         this.ysprice = ysprice;
     }
 
-    public BigDecimal getYfprice() {
+    public Double getYfprice() {
         return yfprice;
     }
 
-    public void setYfprice(BigDecimal yfprice) {
+    public void setYfprice(Double yfprice) {
         this.yfprice = yfprice;
     }
 
-    public BigDecimal getYkprice() {
+    public Double getYkprice() {
         return ykprice;
     }
 
-    public void setYkprice(BigDecimal ykprice) {
+    public void setYkprice(Double ykprice) {
         this.ykprice = ykprice;
     }
 
@@ -212,35 +212,35 @@ public class Statistic {
         this.activeclienter = activeclienter;
     }
 
-    public BigDecimal getIncometotal() {
+    public Double getIncometotal() {
         return incometotal;
     }
 
-    public void setIncometotal(BigDecimal incometotal) {
+    public void setIncometotal(Double incometotal) {
         this.incometotal = incometotal;
     }
 
-    public BigDecimal getRechargetotal() {
+    public Double getRechargetotal() {
         return rechargetotal;
     }
 
-    public void setRechargetotal(BigDecimal rechargetotal) {
+    public void setRechargetotal(Double rechargetotal) {
         this.rechargetotal = rechargetotal;
     }
 
-    public BigDecimal getWithdrawbusinessprice() {
+    public Double getWithdrawbusinessprice() {
         return withdrawbusinessprice;
     }
 
-    public void setWithdrawbusinessprice(BigDecimal withdrawbusinessprice) {
+    public void setWithdrawbusinessprice(Double withdrawbusinessprice) {
         this.withdrawbusinessprice = withdrawbusinessprice;
     }
 
-    public BigDecimal getBusinessbalance() {
+    public Double getBusinessbalance() {
         return businessbalance;
     }
 
-    public void setBusinessbalance(BigDecimal businessbalance) {
+    public void setBusinessbalance(Double businessbalance) {
         this.businessbalance = businessbalance;
     }
 }

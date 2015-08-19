@@ -2,7 +2,7 @@
 	pageEncoding="utf-8"%>
 <%@page import="java.sql.Date"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
-<%@page import="java.math.BigDecimal"%>
+<%@page import="java.lang.Double"%>
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>

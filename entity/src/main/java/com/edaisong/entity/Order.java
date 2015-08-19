@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class Order {
@@ -22,13 +22,13 @@ public class Order {
 
     private Boolean ispay;
 
-    private BigDecimal amount;
+    private Double amount;
 
-    private BigDecimal ordercommission;
+    private Double ordercommission;
 
-    private BigDecimal distribsubsidy;
+    private Double distribsubsidy;
 
-    private BigDecimal websitesubsidy;
+    private Double websitesubsidy;
 
     private String remark;
 
@@ -52,7 +52,7 @@ public class Order {
 
     private Integer quantity;
 
-    private BigDecimal weight;
+    private Double weight;
 
     private String receiveprovince;
 
@@ -76,17 +76,17 @@ public class Order {
 
     private Integer ordercount;
 
-    private BigDecimal commissionrate;
+    private Double commissionrate;
 
     private Integer payment;
 
     private Integer commissionformulamode;
 
-    private BigDecimal adjustment;
+    private Double adjustment;
 
-    private BigDecimal businesscommission;
+    private Double businesscommission;
 
-    private BigDecimal settlemoney;
+    private Double settlemoney;
 
     private Integer dealcount;
 
@@ -96,7 +96,7 @@ public class Order {
 
     private Integer commissiontype;
 
-    private BigDecimal commissionfixvalue;
+    private Double commissionfixvalue;
 
     private Integer businessgroupid;
 
@@ -104,7 +104,7 @@ public class Order {
 
     private String invoice;
 
-    private BigDecimal businessreceivable;
+    private Double businessreceivable;
 
     private Integer mealssettlemode;
 
@@ -112,7 +112,7 @@ public class Order {
 
     private Integer finishall;
 
-    private BigDecimal realordercommission;
+    private Double realordercommission;
 
     public Integer getId() {
         return id;
@@ -186,35 +186,35 @@ public class Order {
         this.ispay = ispay;
     }
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public BigDecimal getOrdercommission() {
+    public Double getOrdercommission() {
         return ordercommission;
     }
 
-    public void setOrdercommission(BigDecimal ordercommission) {
+    public void setOrdercommission(Double ordercommission) {
         this.ordercommission = ordercommission;
     }
 
-    public BigDecimal getDistribsubsidy() {
+    public Double getDistribsubsidy() {
         return distribsubsidy;
     }
 
-    public void setDistribsubsidy(BigDecimal distribsubsidy) {
+    public void setDistribsubsidy(Double distribsubsidy) {
         this.distribsubsidy = distribsubsidy;
     }
 
-    public BigDecimal getWebsitesubsidy() {
+    public Double getWebsitesubsidy() {
         return websitesubsidy;
     }
 
-    public void setWebsitesubsidy(BigDecimal websitesubsidy) {
+    public void setWebsitesubsidy(Double websitesubsidy) {
         this.websitesubsidy = websitesubsidy;
     }
 
@@ -306,11 +306,11 @@ public class Order {
         this.quantity = quantity;
     }
 
-    public BigDecimal getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(BigDecimal weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
@@ -402,11 +402,11 @@ public class Order {
         this.ordercount = ordercount;
     }
 
-    public BigDecimal getCommissionrate() {
+    public Double getCommissionrate() {
         return commissionrate;
     }
 
-    public void setCommissionrate(BigDecimal commissionrate) {
+    public void setCommissionrate(Double commissionrate) {
         this.commissionrate = commissionrate;
     }
 
@@ -426,27 +426,27 @@ public class Order {
         this.commissionformulamode = commissionformulamode;
     }
 
-    public BigDecimal getAdjustment() {
+    public Double getAdjustment() {
         return adjustment;
     }
 
-    public void setAdjustment(BigDecimal adjustment) {
+    public void setAdjustment(Double adjustment) {
         this.adjustment = adjustment;
     }
 
-    public BigDecimal getBusinesscommission() {
+    public Double getBusinesscommission() {
         return businesscommission;
     }
 
-    public void setBusinesscommission(BigDecimal businesscommission) {
+    public void setBusinesscommission(Double businesscommission) {
         this.businesscommission = businesscommission;
     }
 
-    public BigDecimal getSettlemoney() {
+    public Double getSettlemoney() {
         return settlemoney;
     }
 
-    public void setSettlemoney(BigDecimal settlemoney) {
+    public void setSettlemoney(Double settlemoney) {
         this.settlemoney = settlemoney;
     }
 
@@ -482,11 +482,11 @@ public class Order {
         this.commissiontype = commissiontype;
     }
 
-    public BigDecimal getCommissionfixvalue() {
+    public Double getCommissionfixvalue() {
         return commissionfixvalue;
     }
 
-    public void setCommissionfixvalue(BigDecimal commissionfixvalue) {
+    public void setCommissionfixvalue(Double commissionfixvalue) {
         this.commissionfixvalue = commissionfixvalue;
     }
 
@@ -514,11 +514,11 @@ public class Order {
         this.invoice = invoice == null ? null : invoice.trim();
     }
 
-    public BigDecimal getBusinessreceivable() {
+    public Double getBusinessreceivable() {
         return businessreceivable;
     }
 
-    public void setBusinessreceivable(BigDecimal businessreceivable) {
+    public void setBusinessreceivable(Double businessreceivable) {
         this.businessreceivable = businessreceivable;
     }
 
@@ -546,11 +546,11 @@ public class Order {
         this.finishall = finishall;
     }
 
-    public BigDecimal getRealordercommission() {
+    public Double getRealordercommission() {
         return realordercommission;
     }
 
-    public void setRealordercommission(BigDecimal realordercommission) {
+    public void setRealordercommission(Double realordercommission) {
         this.realordercommission = realordercommission;
     }
 }

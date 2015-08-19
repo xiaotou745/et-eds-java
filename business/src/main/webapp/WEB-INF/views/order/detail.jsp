@@ -1,3 +1,4 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.If"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
@@ -38,28 +39,7 @@
 					.getRemark())%></h5>
 	</div>
 	<div class="right2 fl">
-		<div class="r-t cb">
-			<p class="fl">
-				<!-- 加入vh选择器隐藏该标签 -->
-				<span>订单取消</span> <em>11.27&nbsp;17:40</em>
-			</p>
-			<p class="fl">
-				<!-- 加入vh选择器隐藏该标签 -->
-				<span>订单取消</span> <em>11.27&nbsp;17:40</em>
-			</p>
-			<p class="fl">
-				<!-- 加入vh选择器隐藏该标签 -->
-				<span>订单取消</span> <em>11.27&nbsp;17:40</em>
-			</p>
-			<p class="fl">
-				<!-- 加入vh选择器隐藏该标签 -->
-				<span>订单取消</span> <em>11.27&nbsp;17:40</em>
-			</p>
-		</div>
-		<div class="liuc">
-			<img src="<%=basePath%>/images/icon-13.png" width="618" height="35"
-				alt="置灰状态">
-			<%
+	<%
 				String checkStyle="";
 			    if (modelDatas.getOrderModel().getActualDoneDate() != null) {
 					checkStyle = "w1 w2 w3 w4";
@@ -71,6 +51,41 @@
 					checkStyle = "w1";
 				}
 			%>
+		<div class="r-t cb" id="divCanel">
+		    <% if(modelDatas.getOrderModel().getStatus()==OrderStatus.Cancel.value())
+		  	  {
+		    	if (modelDatas.getOrderModel().getGrabTime() != null) {
+					 %>
+	    			  <p class="fl" style="border:none">
+	    			  </p>
+	    	    <% 
+			  }  if (modelDatas.getOrderModel().getTakeTime() != null) {
+				 %>
+	   			  <p class="fl" style="border:none">
+	   			  </p>    	     	     	  
+   			  <% 
+				  } 
+			   if (modelDatas.getOrderModel().getActualDoneDate() != null) {
+		    	  %>
+		    		 <p class="fl" style="border:none"></p>		    	     	     	     	  
+		    	  <% 
+					}
+		    %>
+
+			<p class="fl">
+				<!-- 加入vh选择器隐藏该标签 -->
+				<span>订单取消</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+					.getCancelTime(), "MM.dd HH:mm")%></em>
+			</p>
+			<% }
+		    else{%>
+		   		 <p class="fl" style="border:none"></p>		    	
+		    <%} %>
+		</div>
+		<div class="liuc">
+			<img src="<%=basePath%>/images/icon-13.png" width="618" height="35"
+				alt="置灰状态">
+			
 			<!-- w1 w2 w3 w4 分别为四种状态的选中效果选择器 -->
 			<span class="on <%=checkStyle%>"> <img
 				src="<%=basePath%>/images/icon-14.png" width="618" height="35"
@@ -120,7 +135,9 @@
 		</div>
 	</div>
 	<div class="right2 fl">
+		    <% if(modelDatas.getOrderModel().getStatus()==OrderStatus.New.value()){%>
 	    <input type="button" value="取消订单" id="CanelOrderBtn">
+	    		<% }%>
 		<h2>订单明细</h2>
 		<p>
 			总金额：<span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
@@ -168,14 +185,19 @@
 </div>
 <script type="text/javascript">
 $(function(){
+
 	//取消订单事件
 	$("#CanelOrderBtn").click(function(){
 		if(confirm("您确认取消订单吗？")){
 			 var data={"orderNo":"<%=modelDatas.getOrderModel().getOrderNo()%>","orderId":<%=modelDatas.getOrderModel().getId() %>};
-				$.post("<%=basePath%>/order/canelorder",data, function(result) {
-					alert("取消订单成功！")
-				});
-		}
+		     $.post("<%=basePath%>/order/canelorder", data,
+                  function(result) {
+					if(result.responseCode==0){
+						alert("取消订单成功！");
+						window.location.reload();
+					}
+		   	    	});
+				}
+			});
 	});
-});
 </script>

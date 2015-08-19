@@ -1,7 +1,7 @@
 package com.edaisong.entity.domain;
 
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class ClienterModel {
@@ -13,7 +13,7 @@ public class ClienterModel {
     
     private String idCard;   
 
-    private  BigDecimal accountBalance;//帐户余额
+    private  Double accountBalance;//帐户余额
     
     private String picWithHandUrl;
     
@@ -23,7 +23,7 @@ public class ClienterModel {
     
     private Integer workStatus;      
     
-    private  BigDecimal allowWithdrawPrice;//可提现余额
+    private  Double allowWithdrawPrice;//可提现余额
     
     private Byte status;//审核状态       
     
@@ -69,11 +69,11 @@ public class ClienterModel {
 		this.idCard = idCard;
 	}
 
-	public BigDecimal getAccountBalance() {
+	public Double getAccountBalance() {
 		return accountBalance;
 	}
 
-	public void setAccountBalance(BigDecimal accountBalance) {
+	public void setAccountBalance(Double accountBalance) {
 		this.accountBalance = accountBalance;
 	}
 
@@ -109,11 +109,11 @@ public class ClienterModel {
 		this.workStatus = workStatus;
 	}
 
-	public BigDecimal getAllowWithdrawPrice() {
+	public Double getAllowWithdrawPrice() {
 		return allowWithdrawPrice;
 	}
 
-	public void setAllowWithdrawPrice(BigDecimal allowWithdrawPrice) {
+	public void setAllowWithdrawPrice(Double allowWithdrawPrice) {
 		this.allowWithdrawPrice = allowWithdrawPrice;
 	}
 

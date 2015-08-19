@@ -1,11 +1,14 @@
 package com.edaisong.business.controller;
 
+import java.lang.Double;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.catalina.connector.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -17,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.impl.OrderService;
 import com.edaisong.api.service.inter.IOrderService;
+import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
@@ -29,6 +34,7 @@ import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.business.entity.UserContext;
+import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.NumberHelper;
 import com.edaisong.core.util.ParseHelper;
@@ -150,9 +156,36 @@ public class OrderController {
 	 */
 	@RequestMapping(value = "add", method = { RequestMethod.POST })
 	@ResponseBody
-	public OrderResp add() {
+	public OrderResp add(OrderReq req,HttpServletRequest request) {
 		OrderResp resp = new OrderResp();
-		OrderReq req = new OrderReq();
+		UserContext context = UserContext.getCurrentContext(request);
+		if (context==null||context.getBusiness()==null||context.getBusiness().getId()<=0) {
+			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
+			resp.setMessage("没有获取到登录信息，请重新登录");
+			return resp;
+		}
+		req.setBusinessid(context.getBusiness().getId());
+		req.setRecevicename("张三");
+		req.setRecevicephoneno("13521815154");
+		req.setReceviceaddress("大望路");
+		req.setRecevicecity("北京");
+		req.setIspay(false);
+		req.setAmount(new Double(25));
+		req.setRemark("尽快送到，要提供餐具");
+		req.setOrdercount(2);
+		req.setMealssettlemode(1);
+		req.setOrderfrom(OrderFrom.EDaiSong.value());
+		List<OrderChild> listOrderChild=new ArrayList<OrderChild>();
+		OrderChild child=new OrderChild();
+		child.setGoodprice(new Double(10));
+		listOrderChild.add(child);
+		
+		OrderChild child2=new OrderChild();
+		child2.setGoodprice(new Double(15));
+		listOrderChild.add(child2);
+		
+		req.setListOrderChild(listOrderChild);
+
 		resp = orderService.AddOrder(req);
 
 		return resp;

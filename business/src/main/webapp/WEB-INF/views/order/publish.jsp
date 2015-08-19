@@ -171,9 +171,20 @@
 							//收货地址
 							validate=checkEmpty("address");								
 							//姓名
-							validate=checkEmpty("name");		
+							validate=checkEmpty("name");	
+							validate=true;
 							if(validate){
 								$('.popup1').show();
+								var url = "<%=basePath%>/order/add";
+								var paramaters={};
+								$.ajax({
+									type : 'POST',
+									url : url,
+									data : paramaters,
+									success : function(result) {
+										alert(result);
+									}
+								});
 							}
 						});
 		//验证元素非空，为空显示提示语，不为空隐藏提示语  add by caoheyang 20150818

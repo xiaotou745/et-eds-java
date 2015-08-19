@@ -1,6 +1,6 @@
 package com.edaisong.entity.req;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.List;
 
 import com.edaisong.entity.common.PagedRequestBase;
@@ -12,7 +12,7 @@ public class PagedBusinessReq extends PagedRequestBase {
 	private String businessPhone;
 	private int status;
 	private int mealsSettleMode;
-	private BigDecimal businessSettlementRatio;
+	private Double businessSettlementRatio;
 	private int groupId;
 	private int businessGroupId;
 	private int commissionType;
@@ -80,7 +80,7 @@ public class PagedBusinessReq extends PagedRequestBase {
 	 * 
 	 * @return the businessSettlementRatio
 	 */
-	public BigDecimal getBusinessSettlementRatio() {
+	public Double getBusinessSettlementRatio() {
 		return businessSettlementRatio;
 	}
 
@@ -90,7 +90,7 @@ public class PagedBusinessReq extends PagedRequestBase {
 	 * @param businessSettlementRatio
 	 *            the businessSettlementRatio to set
 	 */
-	public void setBusinessSettlementRatio(BigDecimal businessSettlementRatio) {
+	public void setBusinessSettlementRatio(Double businessSettlementRatio) {
 		this.businessSettlementRatio = businessSettlementRatio;
 	}
 

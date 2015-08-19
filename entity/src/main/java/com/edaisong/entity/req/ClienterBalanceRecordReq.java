@@ -1,7 +1,7 @@
 package com.edaisong.entity.req;
 
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 import com.edaisong.entity.common.RequestBase;

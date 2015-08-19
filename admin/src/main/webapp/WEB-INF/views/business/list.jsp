@@ -6,7 +6,7 @@
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
-<%@page import="java.math.BigDecimal"%>
+<%@page import="java.lang.Double"%>
 <%
 	String basePath =PropertyUtils.getProperty("static.admin.url");
 %>

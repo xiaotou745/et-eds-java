@@ -1,6 +1,6 @@
 package com.edaisong.entity.domain;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 /**
@@ -23,10 +23,11 @@ public class OrderDetailBusiness {
 	private String receviceAddress;
 	private String trueName;
 	private String phoneNo;
-	private BigDecimal amount;
-	private BigDecimal orderCommission;
+	private Double amount;
+	private Double orderCommission;
 	private int isPay;
-	private BigDecimal settleMoney;
+	private Double settleMoney;
+	private Date cancelTime;
 
 	/**
 	 * ID
@@ -227,28 +228,28 @@ public class OrderDetailBusiness {
 	/**
 	 * 金额
 	 */
-	public BigDecimal getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
 	/**
 	 * 金额
 	 */
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
 	/**
 	 * 佣金
 	 */
-	public BigDecimal getOrderCommission() {
+	public Double getOrderCommission() {
 		return orderCommission;
 	}
 
 	/**
 	 * 佣金
 	 */
-	public void setOrderCommission(BigDecimal orderCommission) {
+	public void setOrderCommission(Double orderCommission) {
 		this.orderCommission = orderCommission;
 	}
 
@@ -268,18 +269,38 @@ public class OrderDetailBusiness {
 
 	/**
 	 * 结算金额
+	 * 
 	 * @return
 	 */
-	public BigDecimal getSettleMoney() {
+	public Double getSettleMoney() {
 		return settleMoney;
 	}
 
 	/**
 	 * 结算金额
+	 * 
 	 * @param settleMoney
 	 */
-	public void setSettleMoney(BigDecimal settleMoney) {
+	public void setSettleMoney(Double settleMoney) {
 		this.settleMoney = settleMoney;
+	}
+
+	/**
+	 * 取消时间
+	 * 
+	 * @return
+	 */
+	public Date getCancelTime() {
+		return cancelTime;
+	}
+
+	/**
+	 * 取消时间
+	 * 
+	 * @param cancelTime
+	 */
+	public void setCancelTime(Date cancelTime) {
+		this.cancelTime = cancelTime;
 	}
 
 }

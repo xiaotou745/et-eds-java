@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class BusinessWithdrawForm {
@@ -10,15 +10,15 @@ public class BusinessWithdrawForm {
 
     private Integer businessid;
 
-    private BigDecimal balanceprice;
+    private Double balanceprice;
 
-    private BigDecimal allowwithdrawprice;
+    private Double allowwithdrawprice;
 
     private Short status;
 
-    private BigDecimal amount;
+    private Double amount;
 
-    private BigDecimal balance;
+    private Double balance;
 
     private Date withdrawtime;
 
@@ -70,19 +70,19 @@ public class BusinessWithdrawForm {
         this.businessid = businessid;
     }
 
-    public BigDecimal getBalanceprice() {
+    public Double getBalanceprice() {
         return balanceprice;
     }
 
-    public void setBalanceprice(BigDecimal balanceprice) {
+    public void setBalanceprice(Double balanceprice) {
         this.balanceprice = balanceprice;
     }
 
-    public BigDecimal getAllowwithdrawprice() {
+    public Double getAllowwithdrawprice() {
         return allowwithdrawprice;
     }
 
-    public void setAllowwithdrawprice(BigDecimal allowwithdrawprice) {
+    public void setAllowwithdrawprice(Double allowwithdrawprice) {
         this.allowwithdrawprice = allowwithdrawprice;
     }
 
@@ -94,19 +94,19 @@ public class BusinessWithdrawForm {
         this.status = status;
     }
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public BigDecimal getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

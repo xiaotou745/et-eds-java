@@ -1,11 +1,14 @@
 package com.edaisong.api.service.impl;
 
 import java.util.Date;
+import java.lang.Double;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.core.cache.redis.RedisService;
@@ -16,6 +19,7 @@ import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.HttpUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
+import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
@@ -32,6 +36,8 @@ public class BusinessService implements IBusinessService {
 
 	@Autowired
 	private IBusinessDao iBusinessDao;
+	@Autowired
+	private IBusinessBalanceRecordDao businessBalanceRecordDao;
 	@Autowired
 	private RedisService redisService;
 
@@ -272,4 +278,13 @@ public class BusinessService implements IBusinessService {
 		return iBusinessDao.updateLastLoginTime(businessID, loginTime);
 	}
 
+	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public int updateForWithdrawC(BusinessBalanceRecord record) {
+		if (record.getAmount()!=0) {
+	       iBusinessDao.updateForWithdraw(record.getAmount(), record.getBusinessid());
+	       return businessBalanceRecordDao.insert(record);
+		}
+        return 0;
+	}
 }

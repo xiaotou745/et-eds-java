@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="java.sql.Date"%>
-<%@page import="java.math.BigDecimal"%>
+<%@page import="java.lang.Double"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
