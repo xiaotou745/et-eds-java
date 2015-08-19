@@ -14,4 +14,13 @@ public interface IBusinessMessageDao {
     int updateByPrimaryKeySelective(BusinessMessage record);
 
     int updateByPrimaryKey(BusinessMessage record);
+    
+    /**
+     * 获得最新一条商户消息
+     * @param businessId
+     * @author pengyi
+     * @date 20150818
+     * @return
+     */
+    BusinessMessage getLatestMessage(int businessId);
 }

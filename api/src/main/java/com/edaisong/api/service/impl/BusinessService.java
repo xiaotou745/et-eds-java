@@ -1,5 +1,6 @@
 package com.edaisong.api.service.impl;
 
+import java.util.Date;
 import java.lang.Double;
 import java.util.List;
 
@@ -265,6 +266,16 @@ public class BusinessService implements IBusinessService {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * 更新商户最后登录时间
+	 * @author pengyi
+	 * @date 20150818
+	 */
+	@Override
+	public 	int updateLastLoginTime(int businessID,Date loginTime) {
+		return iBusinessDao.updateLastLoginTime(businessID, loginTime);
 	}
 
 	@Override

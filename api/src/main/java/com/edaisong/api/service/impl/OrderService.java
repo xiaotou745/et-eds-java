@@ -1,8 +1,8 @@
 package com.edaisong.api.service.impl;
 
 import java.lang.Double;
-import java.math.RoundingMode;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +35,7 @@ import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
@@ -426,5 +427,10 @@ public class OrderService implements IOrderService {
 	@Override
 	public BusinessOrderSummaryModel getBusinessOrderSummary(int businessId) {
 		return orderDao.getBusinessOrderSummary(businessId);
+	}
+
+	@Override
+	public List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId) {
+		return orderDao.getBusiPubOrderTimeStatistics(1812);
 	}
 }

@@ -10,6 +10,7 @@ import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
@@ -116,9 +117,15 @@ public class OrderDao extends DaoBase implements IOrderDao {
 
 	@Override
 	public BusinessOrderSummaryModel getBusinessOrderSummary(int businessId) {
-		// TODO Auto-generated method stub
-		return getMasterSqlSessionUtil().selectOne(
+		return getReadOnlySqlSessionUtil().selectOne(
 				"com.edaisong.api.dao.inter.IOrderDao.getBusinessOrderSummary", 
+				businessId);
+	}
+
+	@Override
+	public List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderDao.getBusiPubOrderTimeStatistics", 
 				businessId);
 	}
 }

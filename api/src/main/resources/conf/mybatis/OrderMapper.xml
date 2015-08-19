@@ -70,6 +70,11 @@
 	  <result property="lastLoginTime" column="lastLoginTime" jdbcType="TIMESTAMP"/>
 	  <result property="city" column="city" jdbcType="NVARCHAR"/>
   </resultMap>
+  <!-- 商家发单时间统计 可扩展  add by pengyi 20180819-->
+  <resultMap id="busiPubOrderTimeStatisticsResultMap" type="com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel">
+	  <result property="hour" column="hour" jdbcType="INTEGER"/>
+	  <result property="pubCount" column="pubCount" jdbcType="INTEGER"/>
+  </resultMap>
   
   <sql id="Base_Column_List" >
     Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
@@ -877,8 +882,13 @@ a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,
 	 sum(CASE WHEN AuditStatus=3 THEN 1 ELSE 0 end) AS 'cancel',  --已完成
 	 sum(CASE WHEN AuditStatus=4 THEN 1 ELSE 0 end) AS 'pickUp',    --已取消
 	 sum(CASE WHEN AuditStatus=0 THEN 1 ELSE 0 end) AS 'unReceive'--配送中
-	 FROM dbo.[order] WHERE businessId= #{id,jdbcType=INTEGER})   --待取货
+	 FROM dbo.[order] (NOLOCK) WHERE businessId= #{id,jdbcType=INTEGER})   --待取货
 	 SELECT b.Name,b.Address,b.City,b.BalancePrice,b.LastLoginTime,o.finish,o.received,o.cancel,o.pickUp,o.unReceive 
-	 FROM o JOIN dbo.business b ON b.id = #{id,jdbcType=INTEGER};
+	 FROM o JOIN dbo.business (NOLOCK) b ON b.id = #{id,jdbcType=INTEGER};
+   </select>
+   
+   <!-- 根据商家Id获得商家发布订单时间统计  add by pengyi 20150819-->
+   <select id="getBusiPubOrderTimeStatistics" resultMap="busiPubOrderTimeStatisticsResultMap" parameterType="java.lang.Integer">
+   	SELECT  COUNT(1) as pubCount, DATENAME(HOUR,o.PubDate) AS hour FROM dbo.[order] (NOLOCK) o WHERE businessId=#{id,jdbcType=INTEGER} GROUP BY DATENAME(HOUR,o.PubDate) ORDER BY hour;
    </select>
 </mapper>

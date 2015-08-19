@@ -3,6 +3,7 @@ package com.edaisong.business.controller;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -25,6 +26,7 @@ import com.edaisong.business.entity.resp.LoginResp;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.entity.Business;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
@@ -76,9 +78,9 @@ public class AccountController {
 			resp.setSuccess(false);
 			return resp;
 		}
-		BusinessLoginResp business = businessService.login(phoneNo, password);
-		if (!business.isLoginSuccess()) {
-			resp.setMessage(business.getMessage());
+		BusinessLoginResp businessResp = businessService.login(phoneNo, password);
+		if (!businessResp.isLoginSuccess()) {
+			resp.setMessage(businessResp.getMessage());
 			resp.setSuccess(false);
 			return resp;
 		}
@@ -88,11 +90,15 @@ public class AccountController {
 		if (rememberMe) {
 			cookieMaxAge = 60 * 60 * 24;
 		}
+		Business business = businessResp.getBusiness();
+		Date lastLoginTime = new Date();//更新最后登录时间
+		businessService.updateLastLoginTime(business.getId(), lastLoginTime);
+		business.setLastLoginTime(lastLoginTime);
 		String key = UUID.randomUUID().toString();
 		CookieModel cookieModel = new CookieModel();
 		cookieModel.setValue(key);
 		cookieModel.setVersion(request.getServletContext().getInitParameter("cookieVersion"));
-		redisService.set(key, business.getBusiness(), cookieMaxAge);
+		redisService.set(key, business, cookieMaxAge);
 		CookieUtils.setCookie(response, WebConst.LOGIN_COOKIE_NAME, JsonUtil.obj2string(cookieModel), cookieMaxAge,
 				true);
 		resp.setSuccess(true);
