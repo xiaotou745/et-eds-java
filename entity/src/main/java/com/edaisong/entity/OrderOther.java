@@ -46,8 +46,18 @@ public class OrderOther {
     private Integer isnotrealorder;
     
     private Integer isorderchecked;
+    
+    private Date cancelTime;
 
-    public Integer getId() {
+    public Date getCancelTime() {
+		return cancelTime;
+	}
+
+	public void setCancelTime(Date cancelTime) {
+		this.cancelTime = cancelTime;
+	}
+
+	public Integer getId() {
         return id;
     }
 

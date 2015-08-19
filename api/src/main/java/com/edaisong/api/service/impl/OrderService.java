@@ -188,6 +188,10 @@ public class OrderService implements IOrderService {
 			businessBalanceRecord.setRelationno(req.getOrderNo()); // 关联单号
 			businessBalanceRecord.setRemark("商户取消订单返回配送费"); // 注释
 			businessBalanceRecordDao.insert(businessBalanceRecord); // 记录
+			OrderOther orderOther=new OrderOther();
+			orderOther.setOrderid(req.getOrderId());
+			orderOther.setCancelTime(new Date());
+			orderOtherDao.updateByPrimaryKeySelective(orderOther);
 		} else {
 			throw new RuntimeException("更新订单状态为取消失败");
 		}

@@ -27,6 +27,7 @@ public class OrderDetailBusiness {
 	private BigDecimal orderCommission;
 	private int isPay;
 	private BigDecimal settleMoney;
+	private Date cancelTime;
 
 	/**
 	 * ID
@@ -268,6 +269,7 @@ public class OrderDetailBusiness {
 
 	/**
 	 * 结算金额
+	 * 
 	 * @return
 	 */
 	public BigDecimal getSettleMoney() {
@@ -276,10 +278,29 @@ public class OrderDetailBusiness {
 
 	/**
 	 * 结算金额
+	 * 
 	 * @param settleMoney
 	 */
 	public void setSettleMoney(BigDecimal settleMoney) {
 		this.settleMoney = settleMoney;
+	}
+
+	/**
+	 * 取消时间
+	 * 
+	 * @return
+	 */
+	public Date getCancelTime() {
+		return cancelTime;
+	}
+
+	/**
+	 * 取消时间
+	 * 
+	 * @param cancelTime
+	 */
+	public void setCancelTime(Date cancelTime) {
+		this.cancelTime = cancelTime;
 	}
 
 }
