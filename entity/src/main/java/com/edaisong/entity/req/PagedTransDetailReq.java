@@ -7,7 +7,7 @@ import com.edaisong.entity.common.PagedRequestBase;
  * 茹化肖
  * 
  * */
-public class TransDetailReq extends PagedRequestBase {
+public class PagedTransDetailReq extends PagedRequestBase {
 
 	private String startDate;
 	private String endDate;

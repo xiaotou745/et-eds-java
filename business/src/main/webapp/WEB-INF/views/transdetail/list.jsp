@@ -10,27 +10,55 @@
 String basePath =PropertyUtils.getProperty("static.business.url");
 %>
 <script src="<%=basePath%>/js/jquery-2.1.1.js"></script>
-<form>
-日期:<input type="text" name="txtstartDate" id="startDate">到<input type="text" name="txtendDate" id="endDate"><br/>
-交易类型:<select id="transTypeSelect">
-<option value="0">全部</option>
-<option value="1">发布订单</option>
-<option value="2">取消订单</option>
-<option value="8">订单菜品费</option>
-<option value="9">充值</option>
-<option value="11">手续费</option>
-</select>
-<select id="numTypeSelect">
-<option value="0">单号类型</option>
-<option value="1">订单号</option>
-<option value="2">流水号</option>
-</select>
-<input type="text" name="txtnumString" id="numString" /> 
-<button type="button" id="btnSerach" >查询</button>
-</form>
-<div id="dataList">
-</div>
+<div class="center">
+		<div class="top cb">
+			<h3 class="cb">
+				交易明细
+			</h3>
+			<div class="function">
+				<input type="button" class="fr" value="搜索" id="btnSerach">
+					<span class="fl">时间</span>
+				<span class="intime"><input type="text" name="d" class="dinput" id="startDate" ><s onClick="WdatePicker({el:'startDate',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="inblock">至</span>
+				<span class="intime"><input type="text" name="d2" class="dinput" id="endDate" ><s onClick="WdatePicker({el:'endDate',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="fl">交易类型</span>
+				<select class="fl" id="transTypeSelect">
+					<option value="0">全部</option>
+					<option value="1">发布订单</option>
+					<option value="2">取消订单</option>
+					<option value="8">订单菜品费</option>
+					<option value="9">充值</option>
+					<option value="11">手续费</option>
+				</select>
+				<select class="fl" id="numTypeSelect">
+				<option value="0">单号类型</option>
+				<option value="1">订单号</option>
+				<option value="2">流水号</option>
+				</select>
+				<span class="fl">单号/流水</span>
+				<input type="text" placeholder="订单号，流水号" class="dinput"  id="numString" >
+			</div>
+		</div>
+		<div class="bottom bottom2 bottom3" id="content">
+
+		</div>
+	</div>
 <script>
+var jss = {
+		search : function(currentPage) {
+			var paramaters={
+					startDate:$('#startDate').val(),
+					endDate:$('#endDate').val(),
+					transType:$('#transTypeSelect option:selected').val(),
+					numType:$('#numTypeSelect option:selected').val(),
+					numString:$('#numString').val(),
+					currentPage:currentPage
+					}
+			$.post("<%=basePath%>/transdetail/listdo",paramaters, function(d) {
+				$("#content").html(d);
+			});
+		}
+	}
 $(function(){
 	//alert(<%=basePath%>);
 	//设置文本框不可用
@@ -46,37 +74,9 @@ $(function(){
 		}
 	});
 	$('#btnSerach').click(function(){
-		PostData(1);
+		jss.search(1);
 	});
-	PostData(1);
+	jss.search(1);;
 });
-var jss = {
-		search : function(currentPage) {
-		$("#_hiddenCurrentPage").val(currentPage);
-		 var data=$("#searchForm").serialize();
-			$.post('<%=basePath%>/transdetail/listdo',data, function(d) {
-				$("#content").html(d);
-			});
-		}
-	}
-//获取页面数据
-function PostData(currentPage){
-	var url='<%=basePath%>/transdetail/listdo'
-	var paramaters={
-			startDate:$('#startDate').val(),
-			endDate:$('#endDate').val(),
-			transType:$('#transTypeSelect option:selected').val(),
-			numType:$('#numTypeSelect option:selected').val(),
-			numString:$('#numString').val(),
-			businessid:1791}
-	$.ajax({
-        type: 'POST',
-        url: url,
-        data: paramaters,
-        success: function (data) {
-        	$('#dataList').html(data);
-        }
-    });
-};
 
 </script>

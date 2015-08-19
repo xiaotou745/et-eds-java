@@ -185,7 +185,7 @@
   </sql>
    <!-- 获取收支明细的分页存储过程 -->
   <select id="getTransDetailList" resultType="com.edaisong.entity.BusinessBalanceRecord" 
-  parameterType="com.edaisong.entity.req.TransDetailReq" statementType="CALLABLE">  
+  parameterType="com.edaisong.entity.req.PagedTransDetailReq" statementType="CALLABLE">  
 {call Sp_CustomPage2015_V1(
 ' bbr.id DESC ',
 ' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,bbr.Amount,bbr.Balance,bbr.Status,OperateTime ',
