@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IOrderSubsidiesLogDao" >
-  <insert id="insert" parameterType="com.edaisong.entity.OrderSubsidiesLog" >
-    insert into OrderSubsidiesLog (Id, OrderId, Price, 
+<mapper namespace="com.edaisong.api.dao.inter.IOrderSubsidiesLogDao" >
+  <insert id="insert" parameterType="com.edaisong.entity.OrderSubsidiesLog"  useGeneratedKeys="true" keyProperty="id" >
+    insert into OrderSubsidiesLog (OrderId, Price, 
       InsertTime, OptName, Remark, 
       OptId, OrderStatus, Platform
       )
-    values (#{id,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
-      #{inserttime,jdbcType=TIMESTAMP}, #{optname,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR}, 
+    values (#{orderid,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+      getdate(), #{optname,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR}, 
       #{optid,jdbcType=INTEGER}, #{orderstatus,jdbcType=INTEGER}, #{platform,jdbcType=INTEGER}
       )
   </insert>

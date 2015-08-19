@@ -32,7 +32,7 @@ public class PublicProvinceCityDao extends DaoBase implements
 		paramMap.put("cityName", cityName);
 		List<OpenCityModel> list = getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.getOpenCityList",
+						"com.edaisong.api.dao.inter.IPublicProvinceCityDao.getOpenCityList",
 						paramMap);
 		return list;
 
@@ -53,7 +53,7 @@ public class PublicProvinceCityDao extends DaoBase implements
 		paramMap.put("MainCode",
 				openCityCodeList.substring(0, openCityCodeList.indexOf(',')));
 		int count = getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateOpen",
+				.update("com.edaisong.api.dao.inter.IPublicProvinceCityDao.updateOpen",
 						paramMap);
 		return true;
 	}
@@ -73,7 +73,7 @@ public class PublicProvinceCityDao extends DaoBase implements
 		paramMap.put("MainCode",
 				closeCityCodeList.substring(0, closeCityCodeList.indexOf(',')));
 		int count = getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.updateClose",
+				.update("com.edaisong.api.dao.inter.IPublicProvinceCityDao.updateClose",
 						paramMap);
 		return true;
 
@@ -89,7 +89,7 @@ public class PublicProvinceCityDao extends DaoBase implements
 	public List<AreaModel> getOpenCitySql(){
 		List<AreaModel> list = getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.getOpenCitySql"
+						"com.edaisong.api.dao.inter.IPublicProvinceCityDao.getOpenCitySql"
 						);
 		return list;
 	}
@@ -101,7 +101,7 @@ public class PublicProvinceCityDao extends DaoBase implements
 	public List<AreaModel> getOpenCityListByAccountID(int accountID) {
 		List<AreaModel> list = getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao.getOpenCityListByAccountID",
+						"com.edaisong.api.dao.inter.IPublicProvinceCityDao.getOpenCityListByAccountID",
 						accountID);
 		return list;
 

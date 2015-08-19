@@ -56,7 +56,7 @@ public class DeliveryCompanyDao extends DaoBase implements IDeliveryCompanyDao {
 	public List<DeliveryCompany> getDeliveryCompanyList() {
 		List<DeliveryCompany> list = getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dal.dao.inter.IDeliveryCompanyDao.getDeliveryCompanyList"	);
+						"com.edaisong.api.dao.inter.IDeliveryCompanyDao.getDeliveryCompanyList"	);
 		return list;
 
 	}

@@ -24,7 +24,7 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao   {
 	public int insert(OrderOther record) {
 		// TODO Auto-generated method stub
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dal.dao.inter.IOrderOtherDao.insertSelective", record);		         
+				"com.edaisong.api.dao.inter.IOrderOtherDao.insertSelective", record);		         
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao   {
 	@Override
 	public int updateByPrimaryKeySelective(OrderOther record) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dal.dao.inter.IOrderOtherDao.updateByPrimaryKeySelective", record);		 
+				"com.edaisong.api.dao.inter.IOrderOtherDao.updateByPrimaryKeySelective", record);		 
 		// TODO Auto-generated method stub
 	}
 

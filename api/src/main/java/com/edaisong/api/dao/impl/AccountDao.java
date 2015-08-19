@@ -35,7 +35,7 @@ public class AccountDao extends DaoBase implements IAccountDao {
 		map.put("PageSize", PageSize);
 		map.put("CurrentPage", CurrentPage);
 		List<com.edaisong.entity.Account> list = getReadOnlySqlSessionUtil()
-				.selectList("com.edaisong.api.dal.dao.inter.IAccountDao.query",
+				.selectList("com.edaisong.api.dao.inter.IAccountDao.query",
 						map);
 
 		PagedResponse<Account> resp = new PagedResponse<Account>();
