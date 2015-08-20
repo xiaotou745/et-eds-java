@@ -27,12 +27,14 @@
 			</span> <input class="fl" type="text" id="address" name="" value="">
 			<em class="fl" style="display:none">收货地址不能为空</em>
 		</p>
-		<p class="cb">
-	<!-- 		<span class="fl"> <em class="fl">*</em> -->
-			 收货人姓名
-			</span> <input class="fl" type="text" id="name" name="" value=""> <em
-				class="fl" style="display:none">收货人姓名不能为空</em>
-		</p>
+	   <p class="cb">
+			<span class="fl">
+				<!-- <em class="fl">*</em> -->
+				收货人姓名
+			</span>
+			<input class="fl" type="text" id="name">
+			<em class="fl" style="display:none"></em>
+	  </p>
 	</div>
 </div>
 <div class="box2">
@@ -56,13 +58,14 @@
 					href="javascript:;" class="fl add">添加</a>
 			</p>
 			<p class="cb copy">
-				<span class="fl"> 订单1 </span> <b class="fl"> <input type="text">
+				<em class="fl impo">*</em>
+				<span class="fl"> 订单1 </span> <b class="fl"> <input type="text" class="price">
 					元
 				</b> <a href="javascript:;" class="fl del">删除</a> <em class="fl ts">订单金额必须大于等于5元且小于1000元</em>
 			</p>
 		</div>
 		<p class="cb">
-			<span class="fl"> 订单金额 </span> <em class="fl">￥0</em>
+			<span class="fl"> 订单金额 </span> <em class="fl" id="allPrice">￥0</em>
 		</p>
 		<p class="cb">
 			<span class="fl lh15"> 备注 </span>
@@ -89,6 +92,7 @@
 		</p>
 		<p class="cb">
 			<span class="fl">订单总金额</span> <em class="fl">￥0</em>
+			<input type="hidden" name="amount" value="" id="amount"/>
 		</p>
 		<i>当前任务结算<s>0</s>元，剩余余额<s>0</s>元！
 		</i> <a class="qx" href="javascript:;">取消</a> <a class="qr"
@@ -98,7 +102,7 @@
 	</div>
 </div>
 <!-- 任务发布失败弹层 -->
-<div class="popup popup2 popup6" style="display:none;">
+<div class="popup  popup6" style="display:none;">
 	<div class="bg">蒙层</div>
 	<div class="popupBox popupBox2 popup6">
 		<img src="<%=basePath%>/images/no.png" alt="失败">
@@ -187,16 +191,15 @@
 			var inputList = $("input");
 			for(var i = 0;i<inputList.length;i++){
 				var temp = vinput(inputList[i]);
-
 				if(!temp){
-					console.log(temp);
 					validate = temp;
 				}
-			}	
+			}				
 			if(validate){
 				$(".popup1").show();
 				$(".popup1 .cb:eq(0) em").html($("#allPrice").html());
 				$(".popup1 .cb:eq(1) em").html($(".price").length);
+				$(".popup1 .cb:eq(3) em").html($("#allPrice").html());  //总金额
 			}
 		});
 		
@@ -204,11 +207,11 @@
 		//任务发布 弹出层 的确认按钮 触发 ajax 请求  caoheyang 20150819
 		$('.qr').on('click', function() {
 			$(this).parents('.popup1').hide();
-			var recevicename=$("#telphone").val();  //收货人姓名
-			var recevicephoneno=$("#name").val(); //收货人电话
+			var recevicename=$("#name").val();  //收货人姓名
+			var recevicephoneno=$("#telphone ").val(); //收货人电话
 			var receviceaddress=$("#address").val(); //收货人地址
-			var ispay=$("fukuan:checked").val()==0?false:true;//是否已付款
-			var amount=1000; //金额
+			var ispay=$("input[name='fukuan']:checked").val()==0?false:true;//是否已付款
+			var amount=$("#amount").val(); //金额
 			var remark=$("#remark").val();  //备注
 			var ordercount=$('.copy').length; //订单数量
 			var listOrderChild = new Array();
@@ -219,13 +222,13 @@
         
 			var paramaters={"recevicename":recevicename,"recevicephoneno":recevicephoneno,"receviceaddress":receviceaddress,
  					"ispay":ispay,"amount":amount,"remark":remark,"ordercount":ordercount,"childstr":JSON.stringify(listOrderChild)};
- 		    console.log(paramaters)
 			var url = "<%=basePath%>/order/add";
 			$.ajax({
 				type : 'POST',
 				url : url,
 				data :paramaters,
 				success : function(result) {
+					$(this).parents('.popup1').hide();
 					if(result.responseCode==0){  
 					    //异步请求成功 呼出 成功层
 						$('.popup2').show();
@@ -233,7 +236,8 @@
 						$('.popup3').show();  //余额不足弹层
 					} else
 					{
-					  alert(result.message);	
+					  $('.popup6').find('h2').html(result.message);
+					  $('.popup6').show();
 					}
 				}
 			});
@@ -285,12 +289,8 @@
 		$('.box2').on('blur','input',function(){
 			vinput(this);
 		});
-		// $('input').on('input',function(){
-		// 	if($(this).attr('minLength')){
-		// 		var val = $(this).val().substr(0,$(this).attr('minLength'));
-		// 		$(this).val(val);
-		// 	}
-		// })
+	
+		
 		function vinput(input){
 			if($(input).attr('type')!='text'){
 				return true;
@@ -342,8 +342,9 @@
 				
 				all = Math.round(all*100)/100;
 				all = all.toFixed(2);
+				$('#amount').val(all);  //真实订单金额
 				$('#allPrice').html('¥'+all);
-				$(input).parent().next().next().hide();
+				$(input).parent().next().next().removeAttr('style');
 				return true;
 			}
 			return true;
