@@ -27,7 +27,7 @@
     //在内存中创建图象  
     int width = 106;  
     int height = 43;  
-    int lineCount = 5;
+    int lineCount = 100;
     int codeCount = 4;
     BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);  
     int fontWidth = width / (codeCount +2);
