@@ -86,7 +86,7 @@
 								}
 							},
 							error:function(error){
-								alert(error);
+								alert("登录错误");
 							},
 						});
 					}		

@@ -34,9 +34,11 @@ public class ServerUtil {
 		// 如果没有登录,清除旧的登录cookie
 		if (!isLogin) {
 			Cookie[] cookies = request.getCookies();
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals(cookieKey)) {
-					CookieUtils.deleteCookie(request, response, cookie);
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals(cookieKey)) {
+						CookieUtils.deleteCookie(request, response, cookie);
+					}
 				}
 			}
 		}
