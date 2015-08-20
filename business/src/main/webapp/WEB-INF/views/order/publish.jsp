@@ -210,7 +210,7 @@
 			var recevicename=$("#name").val();  //收货人姓名
 			var recevicephoneno=$("#telphone ").val(); //收货人电话
 			var receviceaddress=$("#address").val(); //收货人地址
-			var ispay=$("fukuan:checked").val()==0?false:true;//是否已付款
+			var ispay=$("input[name='fukuan']:checked").val()==0?false:true;//是否已付款
 			var amount=$("#amount").val(); //金额
 			var remark=$("#remark").val();  //备注
 			var ordercount=$('.copy').length; //订单数量
