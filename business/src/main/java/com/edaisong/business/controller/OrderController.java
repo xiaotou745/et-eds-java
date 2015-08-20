@@ -31,6 +31,7 @@ import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
+import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.business.entity.UserContext;
@@ -70,7 +71,7 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("listdo")
-	public ModelAndView listdo(Integer timeType,PagedOrderSearchReq searchWebReq) {
+	public ModelAndView listdo(Integer timeType,PagedOrderSearchReq searchWebReq,HttpServletRequest request) {
 		Date tDate=new Date();
 		switch (timeType) {
 		case 0://今天的订单
@@ -88,6 +89,7 @@ public class OrderController {
 		default:
 			break;
 		}
+		searchWebReq.setBusinessID(UserContext.getCurrentContext(request).getBusiness().getId());
 		PagedResponse<OrderListModel> resp = orderService
 				.getOrders(searchWebReq);
 		ModelAndView view = new ModelAndView("order/listdo");
@@ -111,7 +113,11 @@ public class OrderController {
 		model.addObject("subtitle", "订单中心");
 		model.addObject("currenttitle", "订单详情");
 		model.addObject("viewPath", "order/detail");
-		model.addObject("modelDatas", orderService.getOrderDetailBusiness(req));
+		OrderDetailBusinessResp resp=orderService.getOrderDetailBusiness(req);
+		if (resp==null||resp.getOrderModel()==null||resp.getOrderChilds()==null||resp.getOrderChilds().size()==0) {
+			throw new RuntimeException("没有找到orderno="+orderno+"的订单");
+		}
+		model.addObject("modelDatas", resp);
 		return model;
 	}
 

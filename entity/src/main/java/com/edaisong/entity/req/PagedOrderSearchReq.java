@@ -21,7 +21,7 @@ public class PagedOrderSearchReq extends PagedRequestBase{
      private String businessCity ;  
      private String hidDaochu ;  
      private String deliveryCompany ;
-     
+     private Integer businessID ; 
      /**
       * 超人电话
       */
@@ -177,6 +177,12 @@ public class PagedOrderSearchReq extends PagedRequestBase{
      */
 	public void setDeliveryCompany(String deliveryCompany) {
 		this.deliveryCompany = deliveryCompany;
+	}
+	public Integer getBusinessID() {
+		return businessID;
+	}
+	public void setBusinessID(Integer businessID) {
+		this.businessID = businessID;
 	}
 
 

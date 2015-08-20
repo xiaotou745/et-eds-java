@@ -24,7 +24,7 @@
 <%-- <script type="text/javascript" src="<%=basePath%>/js/jquery.ui.datepicker-zh-CN.js"></script> --%>
 <script>
 $(document).ready(function() {
-	//setTimeout("regTrEvent()",50);  
+	setTimeout("regTrEvent()",50);  
 });
 
 function regTrEvent(){  

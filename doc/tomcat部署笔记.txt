@@ -32,8 +32,8 @@ open站点：/usr/local/tomcat/webapps2/open
 	  </Service>
 
 
-3、删除原有的server.xml
-4、上传server.xml
+3、删除原有的server.xml:rm -f server.xml
+4、上传server.xml:rs
 5、关闭tomcat:
 	/usr/local/tomcat/bin/shutdown.sh
 6、开始tomcat：
