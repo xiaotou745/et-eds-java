@@ -4,30 +4,24 @@ package com.edaisong.entity.req;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.edaisong.entity.common.PagedRequestBase;
 import com.edaisong.entity.common.RequestBase;
 
-public class ClienterBalanceRecordReq extends RequestBase{
+public class ClienterBalanceRecordReq extends PagedRequestBase{
 	
-	private Integer clienterId;
-	private int currentPage;
-	
-
-    public Integer getClienterId() {
-        return clienterId;
-    }
-
-    public void setClienterId(Integer clienterid) {
-        this.clienterId = clienterid;
-    }
-
-	public int getCurrentPage() {
-		return currentPage;
+	public Integer getClienterId() {
+		return clienterId;
 	}
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}	
-	
-	
-	
+	public void setClienterId(Integer clienterId) {
+		this.clienterId = clienterId;
+	}
+	public int getBusinessId() {
+		return businessId;
+	}
+	public void setBusinessId(int businessId) {
+		this.businessId = businessId;
+	}
+	private Integer clienterId;
+	private int businessId;
 }
 

@@ -139,4 +139,35 @@
       IsBind = #{isbind,jdbcType=SMALLINT}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <sql id="SelectByBusinessIdColumn">
+	bcr.Id, c.TrueName, c.PhoneNo, 
+	( case when c.WorkStatus = 1 then '下班'
+	      else '上班'
+	 end ) WorkStatus, AccountBalance,
+	        AllowWithdrawPrice, 
+	( case when c.Status = 0 then '被拒绝'
+	       when c.Status = 1 then '已通过'
+	       when c.Status = 2 then '未审核'
+	       when c.Status = 3 then '审核中'
+	       else '未知'
+	  end ) Status,
+	( select    sum(OrderCount)
+	  from      dbo.[order] o ( nolock )
+	  where     clienterId = bcr.ClienterId
+	            and Status = 1
+	) OrderCount
+  </sql>
+  <select id="selectByBusinessId" parameterType="com.edaisong.entity.req.ClienterBalanceRecordReq"  statementType="CALLABLE" >
+  	{call Sp_CustomPage2015_V1(
+	' bcr.Id desc ',
+	' <include refid="SelectByBusinessIdColumn"/>',
+	' dbo.BusinessClienterRelation bcr ( nolock ) ',
+	'  bcr.BusinessId = #{businessId} order by bcr.Id desc ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER}
+	,1,
+	#{totalRecord,mode=OUT,jdbcType=INTEGER},
+	#{totalPage,mode=OUT,jdbcType=INTEGER}
+	)}
+  </select>
 </mapper>
