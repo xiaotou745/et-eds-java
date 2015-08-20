@@ -10,7 +10,7 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 	boolean isLogin = ServerUtil.checkIsLogin(request,response);
 	if(isLogin){
 		//如果登录,跳转到首页
-		response.sendRedirect(request.getContextPath()+"/index");
+		response.sendRedirect(basePath+"/index");
 	}
 %>
 

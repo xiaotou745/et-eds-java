@@ -22,6 +22,7 @@ import com.edaisong.business.entity.resp.LoginResp;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.util.CookieUtils;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
@@ -54,9 +55,11 @@ public class AccountController {
 	public @ResponseBody LoginResp login(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
 			@RequestParam boolean rememberMe) {
-		Object sessionCode = request.getSession().getAttribute("code");
+		//Object sessionCode = request.getSession().getAttribute("code");
+		String sessionCode = ServerUtil.getAuthCode(request);
 		//一次性验证码,防止暴力破解
-		request.getSession().removeAttribute("code");
+		//request.getSession().removeAttribute("code");
+		ServerUtil.removeAuthCodeCookie(request, response);
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
 		boolean isLogin = ServerUtil.checkIsLogin(request,response);
@@ -114,7 +117,7 @@ public class AccountController {
 		    	redisService.remove(cookie.getValue());
 			CookieUtils.deleteCookie(request, response, cookie);
 		}
-		response.sendRedirect(request.getContextPath() + "/");
+		response.sendRedirect(PropertyUtils.getProperty("static.business.url") + "/");
 	}
 
 	/**
