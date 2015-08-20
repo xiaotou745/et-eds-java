@@ -1,7 +1,7 @@
-<<<<<<< HEAD
+
 package com.edaisong.business.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,10 +18,3 @@ public class ClienterController {
 		return null;
 	}
 }
-=======
-package com.edaisong.business.controller;
-
-public class ClienterController {
-
-}
->>>>>>> 772aaa3d48304344b9aa3741b8664c84a74d3a86
