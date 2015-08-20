@@ -284,7 +284,7 @@
 		//表单验证配置
 		var teg = {};
 		teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;
-		teg.address = 'empty';
+		teg.address1 = 'empty';;
 
 		$('.box2').on('blur','input',function(){
 			vinput(this);
