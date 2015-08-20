@@ -12,15 +12,15 @@
 <table class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
 		<tr>
-			<th style="width: 60px;">编号</th>
-			<th style="width: 150px;">订单号</th>
-			<th style="width: 100px;">发单时间</th>
-			<th style="width: 100px;">订单金额</th>
-			<th style="width: 150px;">收货人信息</th>
-			<th style="width: 115px;">骑士信息</th>
-			<th style="width: 100px;">完成时间</th>
-			<th style="width: 110px;">订单状态</th>
-			<th style="width: 60px;">操作</th>
+			<th>编号</th>
+			<th>订单号</th>
+			<th>发单时间</th>
+			<th>订单金额</th>
+			<th>收货人信息</th>
+			<th>骑士信息</th>
+			<th>完成时间</th>
+			<th>订单状态</th>
+			<th>操作</th>
 		</tr>
 	</thead>
 	<tbody>

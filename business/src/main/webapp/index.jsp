@@ -1,9 +1,6 @@
 <%@page import="com.edaisong.business.common.ServerUtil"%>
-<%@page import="com.edaisong.business.entity.UserContext"
-	pageEncoding="utf-8"%>
-<%
-	String basePath = request.getContextPath();
-%>
+<%@page import="com.edaisong.business.entity.UserContext" pageEncoding="utf-8"%>
+
 <html>
 <body>
 	<h2>Hello World!</h2>
