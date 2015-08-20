@@ -125,7 +125,6 @@
 			counts[i] = statistics[c];
 		}
 	}
-
 	$(function() {
 		var notice = $("#notice").text();
 		if(notice.length > 70){
@@ -158,7 +157,8 @@
 						return this.value;
 					}
 				},
-				minTickInterval:1
+				minTickInterval:1,
+				tickAmount:11
 			},
 			tooltip : {
 				crosshairs : true,
