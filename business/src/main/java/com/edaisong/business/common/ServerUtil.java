@@ -20,26 +20,22 @@ public class ServerUtil {
 	 * @param request
 	 * @return
 	 */
-	public static boolean checkIsLogin(HttpServletRequest request,HttpServletResponse response) {
+	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response) {
 		// 如果已登录,直接返回
 		boolean isLogin = false;
 		final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
-		try {
-			String cookieValue = CookieUtils.getCookie(request, cookieKey);
-			if (cookieValue != null) {
-				Object loginStatusValue = redisService.get(cookieValue, Object.class);
-				if (loginStatusValue != null) {
-					isLogin = true;
-				}
+		String cookieValue = CookieUtils.getCookie(request, cookieKey);
+		if (cookieValue != null) {
+			Object loginStatusValue = redisService.get(cookieValue, Object.class);
+			if (loginStatusValue != null) {
+				isLogin = true;
 			}
-		} catch (Exception e) {
-			return isLogin;
 		}
-		//如果没有登录,清除旧的登录cookie
-		if(!isLogin){
+		// 如果没有登录,清除旧的登录cookie
+		if (!isLogin) {
 			Cookie[] cookies = request.getCookies();
 			for (Cookie cookie : cookies) {
-				if(cookie.getName().equals(cookieKey)){
+				if (cookie.getName().equals(cookieKey)) {
 					CookieUtils.deleteCookie(request, response, cookie);
 				}
 			}
