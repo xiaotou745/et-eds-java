@@ -59,7 +59,7 @@ public class AccountController {
 		request.getSession().removeAttribute("code");
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
-		boolean isLogin = ServerUtil.checkIsLogin(request);
+		boolean isLogin = ServerUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
 			resp.setSuccess(true);
