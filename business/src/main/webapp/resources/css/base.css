@@ -39,4 +39,3 @@ body{color:#808080;background:#fff; font:12px/1.5 "微软雅黑";}
 a:hover {text-decoration:none;}
 /* 默认不显示下划线，保持页面简洁 */
 ins,a {text-decoration:none;}
-.footer{border-top:2px solid #dcdcdc;height:40px;width:1088px;line-height:40px;text-align:center;color:#7c7c7c;position:fixed;bottom:0px;}

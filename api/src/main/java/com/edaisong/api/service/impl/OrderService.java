@@ -212,12 +212,13 @@ public class OrderService implements IOrderService {
 	 */
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public OrderResp AddOrder(OrderReq req) {
+		req.setOrderfrom(OrderFrom.BusinessWeb.value());  //订单来源   商家版后台
 		OrderResp resp = new OrderResp();
 		BusinessModel businessModel = businessDao.getBusiness(req.getBusinessid());
 		//校验是否可以正常发单
 		PublishOrderReturnEnum returnEnum= verificationAddOrder(req,businessModel);
 		if (returnEnum!=PublishOrderReturnEnum.Success) {
-			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
+			resp.setResponseCode(returnEnum.value());
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
@@ -347,7 +348,6 @@ public class OrderService implements IOrderService {
 	private Order fillOrder(OrderReq req, BusinessModel businessModel) {
 		Order order = new Order();
 		order.setOrderno("no11111111");// 临时
-		req.setOrderfrom(OrderFrom.BusinessWeb.value());  //订单来源   商家版后台
 		order.setRecevicename(req.getRecevicename());
 		order.setRecevicephoneno(req.getRecevicephoneno());
 		order.setReceviceaddress(req.getReceviceaddress());
@@ -359,9 +359,10 @@ public class OrderService implements IOrderService {
 		order.setOrdercount(req.getOrdercount());
 		order.setPubdate(new Date());
 		order.setBusinessid(req.getBusinessid());
-//		order.setRecevicelongitude(req.getRecevicelongitude());
-//		order.setRecevicelatitude(req.getRecevicelatitude());
-//		order.setPickupaddress(req.getPickupaddress());
+     	order.setPickupaddress(businessModel.getAddress());
+		order.setRecevicelongitude(0d); //TODO 暂时默认0
+		order.setRecevicelatitude(0d);//TODO 暂时默认0
+
 		order.setRecevicecity(businessModel.getCity());   //TODO 配送城市  暂时取商家的
 		
 		order.setCommissionformulamode(businessModel.getStrategyId());

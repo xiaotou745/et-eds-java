@@ -11,9 +11,6 @@ img,input,textarea,h1,h2,h3,h4,h5,h6 {border:0px;font-family:Microsoft YaHei;}
 .ex_box{
 	width:100%;
 	height:650px;
-	position:absolute;
-	top:50%;
-	margin-top:-325px;
 	background:#0a1b4c;
 }
 .ex_top{
