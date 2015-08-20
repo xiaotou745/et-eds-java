@@ -5,6 +5,7 @@
 
 <%
 	String basePath = PropertyUtils.getProperty("static.business.url");
+    BusinessModel businessModel=(BusinessModel) request.getAttribute("businessModel");//商家基本信息
 %>
 
 <div class="top cb">
@@ -198,9 +199,13 @@
 			}				
 			if(validate){
 				$(".popup1").show();
-				$(".popup1 .cb:eq(0) em").html($("#allPrice").html());
-				$(".popup1 .cb:eq(1) em").html($(".price").length);
-				$(".popup1 .cb:eq(3) em").html($("#allPrice").html());  //总金额
+				$(".popup1 .cb:eq(0) em").html($("#allPrice").html()); //订单金额
+				$(".popup1 .cb:eq(1) em").html($(".price").length);  //订单数量
+				var totaldistribsubsidy=<%=businessModel.getDistribsubsidy()%>*$(".price").length;
+				$(".popup1 .cb:eq(2) em").html('￥'+Math.round(totaldistribsubsidy).toFixed(2));  //外送费
+				var amont=parseFloat($('#amount').val());
+				var total=parseFloat(totaldistribsubsidy);
+				$(".popup1 .cb:eq(3) em").html('￥'+(amont+total).toFixed(2));  //总金额
 			}
 		});
 		
@@ -285,7 +290,6 @@
 		//表单验证配置
 		var teg = {};
 		<%  // 一键发单客户端校验逻辑
-	    	BusinessModel businessModel=(BusinessModel) request.getAttribute("businessModel");//商家基本信息
 	    	if(businessModel.getOnekeypuborder()==0)
 	    	{
 		%>
@@ -350,8 +354,8 @@
 				
 				all = Math.round(all*100)/100;
 				all = all.toFixed(2);
-				$('#amount').val(all);  //真实订单金额
-				$('#allPrice').html('¥'+all);
+				$('#amount').val(all);  // 真实订单金额
+				$('#allPrice').html('¥'+all);  
 				$(input).parent().next().next().removeAttr('style');
 				return true;
 			}
