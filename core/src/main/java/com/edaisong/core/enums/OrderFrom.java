@@ -7,13 +7,38 @@ package com.edaisong.core.enums;
  */
 public enum OrderFrom {
 	/**
-	 * 订单新增 
+	 * E代送B端
 	 */
 	EDaiSong(0, "E代送B端"),
+	/**
+	 * 聚网客
+	 */
 	JuWangKe(1, "聚网客"),
+	/**
+	 * 万达
+	 */
 	WanDa(2, "万达"),
+	/**
+	 * 全时
+	 */
 	QuanShi(3, "全时"),
-	MeiTuan(4, "美团");
+	/**
+	 * 美团
+	 */
+	MeiTuan(4, "美团"),
+	/**
+	 * 回家吃饭
+	 */
+	HomeForDinner(5, "回家吃饭"),
+	/**
+	 * 首旅
+	 */
+	Tourism(6, "首旅"),
+	/**
+	 * 商家版后台
+	 */
+	BusinessWeb(99, "商家版后台"),
+	;
 	private int value = 0;
 	private String desc;
 	private OrderFrom(int value, String desc) { // 必须是private的，否则编译错误

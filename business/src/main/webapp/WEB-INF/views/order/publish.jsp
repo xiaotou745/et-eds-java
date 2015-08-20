@@ -204,7 +204,8 @@
 			var ispay=$("fukuan:checked").val()==0?false:true;//是否已付款
 			var amount=1000; //金额
 			var remark=$("#remark").val();  //备注
-			var listOrderChild = new Array();;	
+			var ordercount=$('.copy').length; //订单数量
+			var listOrderChild = new Array();
 			$('.copy').each(function(index, domEle) {	
 				var temp={"goodprice":$(this).find('input[type=text]').val()};
 				listOrderChild.push(temp);

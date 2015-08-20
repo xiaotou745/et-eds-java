@@ -337,9 +337,17 @@ public class OrderService implements IOrderService {
 			}
 		}
 	}
+	/**
+	 * 发布订单根据请求参数，商家信息装配订单信息
+	 * @author ZhaoHaiLong
+	 * @param req 
+	 * @param businessModel 商家信息
+	 * @return
+	 */
 	private Order fillOrder(OrderReq req, BusinessModel businessModel) {
 		Order order = new Order();
 		order.setOrderno("no11111111");// 临时
+		req.setOrderfrom(OrderFrom.BusinessWeb.value());  //订单来源   商家版后台
 		order.setRecevicename(req.getRecevicename());
 		order.setRecevicephoneno(req.getRecevicephoneno());
 		order.setReceviceaddress(req.getReceviceaddress());
@@ -354,15 +362,14 @@ public class OrderService implements IOrderService {
 //		order.setRecevicelongitude(req.getRecevicelongitude());
 //		order.setRecevicelatitude(req.getRecevicelatitude());
 //		order.setPickupaddress(req.getPickupaddress());
-		order.setRecevicecity(req.getRecevicecity());
+		order.setRecevicecity(businessModel.getCity());   //TODO 配送城市  暂时取商家的
 		
-
 		order.setCommissionformulamode(businessModel.getStrategyId());
 		order.setBusinesscommission(businessModel.getBusinesscommission());
 		order.setBusinessgroupid(businessModel.getGroupid());
 		order.setCommissiontype(businessModel.getCommissiontype());
 		order.setCommissionfixvalue(businessModel.getCommissionfixvalue());
-		order.setMealssettlemode(businessModel.getMealssettlemode());
+		order.setMealssettlemode(businessModel.getMealssettlemode());   //餐费结算方式（0：线下结算 1：线上结算）
 		order.setDistribsubsidy(businessModel.getDistribsubsidy());
 		
 		OrderCommission orderCommission = new OrderCommission();

@@ -157,7 +157,7 @@ public class OrderController {
 	@RequestMapping(value = "add", method = { RequestMethod.POST })
 	@ResponseBody
 	public OrderResp add(OrderReq req,HttpServletRequest request) {
-		req.setListOrderChild(JsonUtil.str2list(req.getChildstr(),OrderChild.class));
+		req.setListOrderChild(JsonUtil.str2list(req.getChildstr(),OrderChild.class));  //序列化得到子订单信息汇总
 		OrderResp resp = new OrderResp();
 		UserContext context = UserContext.getCurrentContext(request);
 		if (context==null||context.getBusiness()==null||context.getBusiness().getId()<=0) {
@@ -166,26 +166,6 @@ public class OrderController {
 			return resp;
 		}
 		req.setBusinessid(context.getBusiness().getId());
-	
-		req.setIspay(false);
-		req.setAmount(new Double(25));
-		req.setRemark("尽快送到，要提供餐具");
-		req.setOrdercount(2);
-		req.setMealssettlemode(1);
-		req.setOrderfrom(OrderFrom.EDaiSong.value());
-		List<OrderChild> listOrderChild=new ArrayList<OrderChild>();
-		OrderChild child=new OrderChild();
-		child.setGoodprice(new Double(10));
-		listOrderChild.add(child);
-		
-		OrderChild child2=new OrderChild();
-		child2.setGoodprice(new Double(15));
-		listOrderChild.add(child2);
-		
-		req.setListOrderChild(listOrderChild);
-
-	    System.out.println(JsonUtil.obj2string(req));
-		
 		resp = orderService.AddOrder(req);
 
 		return resp;
