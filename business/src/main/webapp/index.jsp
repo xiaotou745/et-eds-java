@@ -20,7 +20,7 @@
 	</h3>
 
 	<%
-		boolean isLogin = ServerUtil.checkIsLogin(request);
+		boolean isLogin = ServerUtil.checkIsLogin(request,response);
 		if (isLogin) {
 	%>
 	<script type="text/javascript">

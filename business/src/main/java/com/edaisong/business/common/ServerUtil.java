@@ -1,11 +1,12 @@
 package com.edaisong.business.common;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.util.CookieUtils;
-import com.edaisong.core.util.JsonUtil;
 
 public class ServerUtil {
 	private final static RedisService redisService;
@@ -19,7 +20,7 @@ public class ServerUtil {
 	 * @param request
 	 * @return
 	 */
-	public static boolean checkIsLogin(HttpServletRequest request) {
+	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response) {
 		// 如果已登录,直接返回
 		boolean isLogin = false;
 		final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
@@ -28,6 +29,15 @@ public class ServerUtil {
 			Object loginStatusValue = redisService.get(cookieValue, Object.class);
 			if (loginStatusValue != null) {
 				isLogin = true;
+			}
+		}
+		// 如果没有登录,清除旧的登录cookie
+		if (!isLogin) {
+			Cookie[] cookies = request.getCookies();
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals(cookieKey)) {
+					CookieUtils.deleteCookie(request, response, cookie);
+				}
 			}
 		}
 

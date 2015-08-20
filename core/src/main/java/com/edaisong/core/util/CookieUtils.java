@@ -204,7 +204,11 @@ public class CookieUtils {
     public static void deleteCookie(HttpServletRequest request,
             HttpServletResponse response, Cookie cookie) {
         if (cookie != null) {
-            cookie.setPath(getPath(request));
+        	String path = cookie.getPath();
+        	if(path == null){
+        		path = getPath(request);
+        	}
+            cookie.setPath(path);
             cookie.setMaxAge(0);
             response.addCookie(cookie);
         }
