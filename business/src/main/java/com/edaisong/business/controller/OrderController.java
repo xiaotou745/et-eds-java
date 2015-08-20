@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.impl.OrderService;
+import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.common.PagedResponse;
@@ -46,6 +47,8 @@ import com.edaisong.entity.resp.BusinessLoginResp;
 public class OrderController {
 	@Autowired
 	IOrderService orderService;
+	@Autowired
+	IBusinessService businessService;
 
 	/**
 	 * 订单列表页面
@@ -148,6 +151,7 @@ public class OrderController {
 		ModelAndView model = new ModelAndView("businessView");
 		model.addObject("subtitle", "订单中心");
 		model.addObject("currenttitle", "发布任务");
+		model.addObject("businessModel",businessService.getBusiness(UserContext.getCurrentContext(request).getBusiness().getId()));
 		model.addObject("viewPath", "order/publish");
 		return model;
 

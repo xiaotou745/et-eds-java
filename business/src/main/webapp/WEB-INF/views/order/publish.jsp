@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="com.edaisong.entity.domain.BusinessModel"%>
 
 <%
 	String basePath = PropertyUtils.getProperty("static.business.url");
@@ -229,7 +230,7 @@
 				data :paramaters,
 				success : function(result) {
 					$(this).parents('.popup1').hide();
-					if(result.responseCode==0){  
+                	if(result.responseCode==0){  
 					    //异步请求成功 呼出 成功层
 						$('.popup2').show();
 					} else if(result.responseCode==-8){  
@@ -283,8 +284,15 @@
 
 		//表单验证配置
 		var teg = {};
-		teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;
-		teg.address1 = 'empty';;
+		<%  // 一键发单客户端校验逻辑
+	    	BusinessModel businessModel=(BusinessModel) request.getAttribute("businessModel");//商家基本信息
+	    	if(businessModel.getOnekeypuborder()==0)
+	    	{
+		%>
+			teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;
+			teg.address = 'empty';
+		<% }
+			%>
 
 		$('.box2').on('blur','input',function(){
 			vinput(this);

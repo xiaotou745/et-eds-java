@@ -45,7 +45,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public BusinessModel getBusiness(int id) {
 		BusinessModel model = getMasterSqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dao.inter.IBusinessDao.getBusinessByID",
+						"com.edaisong.api.dao.inter.IBusinessDao.getBusiness",
 						id);
 		return model;
 	}
