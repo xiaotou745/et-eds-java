@@ -8,6 +8,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
+<%@page import="com.edaisong.core.enums.OrderStatus"%>
 
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
@@ -102,7 +103,7 @@
 				}
 			%>
 			<td><%=data.get(i).getBusinessCommission()%></td>
-			<td><%=data.get(i).getGroupName()%></td>
+			<td><%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td><%=data.get(i).getHadUploadCount()%>/<%=data.get(i).getOrderCount()%></td>
 			<td style="<%=grabToCompleteStyle%>"><%=grabToCompleteStr%></td>
 			<td><a href="javascript:showMapData('@item.Id')">地图</a></td>

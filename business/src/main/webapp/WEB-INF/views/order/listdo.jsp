@@ -9,18 +9,22 @@
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.enums.OrderStatus"%>
-<table class="table table-striped table-bordered table-hover dataTables-example">
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%
+	String basePath = PropertyUtils.getProperty("static.business.url");
+%>
+<table class="stripe table table-striped table-bordered table-hover dataTables-example" width="100%">
 	<thead>
 		<tr>
-			<th>编号</th>
-			<th>订单号</th>
-			<th>发单时间</th>
-			<th>订单金额</th>
+			<th style="width:50px">编号</th>
+			<th style="width:10px">订单号</th>
+			<th style="width:150px">发单时间</th>
+			<th style="width:80px">订单金额</th>
 			<th>收货人信息</th>
-			<th>骑士信息</th>
-			<th>完成时间</th>
-			<th>订单状态</th>
-			<th>操作</th>
+			<th style="width:150px">骑士信息</th>
+			<th style="width:150px">完成时间</th>
+			<th style="width:80px">订单状态</th>
+			<th style="width:80px">操作</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -38,14 +42,18 @@
 			<td><%=data.get(i).getOrderNo()%></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getPubDate())%></td>
 			<td><%=data.get(i).getAmount()%></td>
-			<td><%=ParseHelper.ShowString(data.get(i).getReceviceAddress())%></td>
-			<td><%=ParseHelper.ShowString(data.get(i).getClienterName())%> <br /> 
-				<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%>
+			<td align="left">
+			姓名:<%=ParseHelper.ShowString(data.get(i).getReceviceName())%> <br /> 
+			电话:<%=ParseHelper.ShowString(data.get(i).getRecevicePhoneNo())%> <br /> 
+			地址:<%=ParseHelper.ShowString(data.get(i).getReceviceAddress())%></td>
+			<td align="left">
+			姓名:<%=ParseHelper.ShowString(data.get(i).getClienterName())%> <br /> 
+			电话:<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%>
 			</td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getActualDoneDate())%></td>
 			<td><%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
-			<td><a href="javascript:showMapData('@item.Id')">取消订单</a>
-			<a href="javascript:showMapData('@item.Id')">订单详情</a>
+			<td><a class="red2" href="javascript:void(0)" onclick="cancelOrder(<%=data.get(i).getId()%>,'<%=data.get(i).getOrderNo()%>')">取消订单</a>
+			<a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getOrderNo()%>">订单详情</a>
 			</td>
 		</tr>
 		<%
@@ -57,3 +65,25 @@
 					responsePageList.getCurrentPage(),
 					responsePageList.getTotalRecord(),
 					responsePageList.getTotalPage())%>
+<script type="text/javascript">
+function cancelOrder(orderId,orderNo){
+	if (!window.confirm("是否取消订单？")) {
+        return;
+    }
+    var paramaters = { "orderId": orderId,"orderNo":orderNo };
+    var url = "<%=basePath%>/order/canelorder";
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: paramaters,
+        success: function (result) {
+        	if (result.responseCode!=0) {
+                window.location.href = "<%=basePath%>/order/list";
+            } else {
+                alert(result.message);
+            }
+        }
+    });
+}
+</script>
+					
