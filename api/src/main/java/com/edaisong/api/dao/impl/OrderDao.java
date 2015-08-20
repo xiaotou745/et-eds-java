@@ -132,7 +132,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		paramMap.put("startTime", startTime);
 		paramMap.put("endTime", endTime);
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dal.dao.inter.IOrderDao.getBusiPubOrderTimeStatistics", 
+				"com.edaisong.api.dao.inter.IOrderDao.getBusiPubOrderTimeStatistics", 
 				paramMap);
 	}
 }
