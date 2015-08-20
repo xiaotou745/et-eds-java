@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.edaisong.core.util.PropertyUtils;
+
 public class AuthInteceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		if (handler instanceof HandlerMethod) {
@@ -14,7 +16,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 			if (!isLogin
 					&& (!request.getServletPath().equals("/account/login") && !request.getServletPath().equals(
 							"/account/code"))) {
-				response.sendRedirect(request.getContextPath() + "/");
+				String basePath =PropertyUtils.getProperty("static.business.url");
+				response.sendRedirect(basePath + "/");
 				return false;
 			}
 		}

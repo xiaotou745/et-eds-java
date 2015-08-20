@@ -91,9 +91,37 @@ public class PageHelper {
 	 */
 	private static String GetPageInfo(int CurrentPage, int TotalPage) {
 		StringBuilder sb = new StringBuilder();
+		String headMoreString="";
+		String endMoreString="";
+		int showPage=5;//一次显示10个分页的按钮
+		int headPage=1;
+		int endPage=TotalPage;
+		if (TotalPage>showPage) {
+			if (CurrentPage>showPage) {
+				headPage=CurrentPage-showPage/2;
+				if (CurrentPage==TotalPage) {
+					headPage=TotalPage-showPage+1;
+				}
+				endPage=headPage+showPage-1;
+				if (endPage>TotalPage) {
+					endPage=TotalPage;
+				}
+				headMoreString="<li class=\"paginate_button\" aria-controls=\"DataTables_Table_0\" tabindex=\"0\"><a href=\"javascript:jss.search("
+						+ (headPage-1) + ")\">...</a></li>";
 
-		for (int i = 0; i < TotalPage; i++) {
-			int myPage = i + 1;
+				if (endPage<TotalPage) {
+					endMoreString="<li class=\"paginate_button\" aria-controls=\"DataTables_Table_0\" tabindex=\"0\"><a href=\"javascript:jss.search("
+							+ (endPage+1) + ")\">...</a></li>";
+				}
+			}else {
+				endPage=showPage;
+				endMoreString="<li class=\"paginate_button\" aria-controls=\"DataTables_Table_0\" tabindex=\"0\"><a href=\"javascript:jss.search("
+						+ (endPage+1) + ")\">...</a></li>";
+			}
+		}
+
+		for (int i = headPage; i <= endPage; i++) {
+			int myPage = i;
 			String Href = "javascript:jss.search(" + (myPage) + ")";
 			String activeStr = myPage == CurrentPage ? " active" : "";
 			sb.append("<li class=\"paginate_button"
@@ -101,7 +129,7 @@ public class PageHelper {
 					+ "\" aria-controls=\"DataTables_Table_0\" tabindex=\"0\"><a href=\""
 					+ Href + "\">" + myPage + "</a></li>");
 		}
-		return sb.toString();
+		return headMoreString+sb.toString()+endMoreString;
 	}
 
 	/*

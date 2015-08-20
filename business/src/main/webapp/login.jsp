@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="com.edaisong.business.common.ServerUtil" %>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
-	String basePath = request.getContextPath();
+String basePath =PropertyUtils.getProperty("static.business.url");
 %>
 
 <%
 	boolean isLogin = ServerUtil.checkIsLogin(request,response);
 	if(isLogin){
 		//如果登录,跳转到首页
-		response.sendRedirect(request.getContextPath()+"/index");
+		response.sendRedirect(basePath+"/index");
 	}
 %>
 
@@ -86,7 +87,7 @@
 								}
 							},
 							error:function(error){
-								alert(error);
+								alert("登录错误");
 							},
 						});
 					}		
