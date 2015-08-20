@@ -212,7 +212,7 @@
 			});
         
 			var paramaters={"recevicename":recevicename,"recevicephoneno":recevicephoneno,"receviceaddress":receviceaddress,
- 					"ispay":ispay,"amount":amount,"remark":remark,"childstr":JSON.stringify(listOrderChild)};
+ 					"ispay":ispay,"amount":amount,"remark":remark,"ordercount":ordercount,"childstr":JSON.stringify(listOrderChild)};
  		    console.log(paramaters)
 			var url = "<%=basePath%>/order/add";
 			$.ajax({
