@@ -9,7 +9,8 @@
 <%	
 String basePath =PropertyUtils.getProperty("static.business.url");
 %>
-<script src="<%=basePath%>/js/jquery-2.1.1.js"></script>
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
 <div class="center">
 		<div class="top cb">
 			<h3 class="cb">

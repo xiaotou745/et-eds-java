@@ -13,21 +13,32 @@
 <%
 	String basePath = PropertyUtils.getProperty("static.business.url");
 %>
-<table class="stripe table table-striped table-bordered table-hover dataTables-example" width="100%">
-	<thead>
-		<tr>
-			<th style="width:50px">编号</th>
-			<th style="width:10px">订单号</th>
-			<th style="width:150px">发单时间</th>
-			<th style="width:80px">订单金额</th>
-			<th>收货人信息</th>
-			<th style="width:150px">骑士信息</th>
-			<th style="width:150px">完成时间</th>
-			<th style="width:80px">订单状态</th>
-			<th style="width:80px">操作</th>
-		</tr>
-	</thead>
+<table class="stripe" width="100%">
+<!-- 	<thead> -->
+<!-- 			<tr> -->
+<!-- 			<th style="width:50px">编号</th> -->
+<!-- 			<th style="width:10px">订单号</th> -->
+<!-- 			<th style="width:150px">发单时间</th> -->
+<!-- 			<th style="width:80px">订单金额</th> -->
+<!-- 			<th>收货人信息</th> -->
+<!-- 			<th style="width:150px">骑士信息</th> -->
+<!-- 			<th style="width:150px">完成时间</th> -->
+<!-- 			<th style="width:80px">订单状态</th> -->
+<!-- 			<th style="width:80px">操作</th> -->
+<!-- 		</tr> -->
+<!-- 	</thead> -->
 	<tbody>
+			<tr>
+			<td style="width:50px">编号</td>
+			<td style="width:10px">订单号</td>
+			<td style="width:150px">发单时间</td>
+			<td style="width:80px">订单金额</td>
+			<td>收货人信息</td>
+			<td style="width:150px">骑士信息</td>
+			<td style="width:150px">完成时间</td>
+			<td style="width:80px">订单状态</td>
+			<td style="width:80px">操作</td>
+		</tr>
 		<%
 			PagedResponse<OrderListModel> responsePageList = (PagedResponse<OrderListModel>) request.getAttribute("listData");
 			List<OrderListModel> data = responsePageList.getResultList();

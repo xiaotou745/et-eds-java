@@ -16,6 +16,8 @@
 <%	
 String basePath =PropertyUtils.getProperty("static.business.url");
 %>
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
 <div class="top cb">
 
 			<h3 class="cb">
@@ -48,9 +50,9 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 					<input type="radio" name="timeType" value="3">
 					区间
 				</label>
-				<span class="intime"><input type="text" class="dinput" id="orderPubStart" name="orderPubStart"><s onClick="WdatePicker({el:'time1',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="intime"><input type="text" class="dinput" id="orderPubStart" name="orderPubStart"><s onClick="WdatePicker({el:'orderPubStart',dateFmt:'yyyy-MM-dd'});"></s></span>
 				<span class="inblock">至</span>
-				<span class="intime"><input type="text" class="dinput" id="orderPubEnd" name="orderPubEnd"><s onClick="WdatePicker({el:'time2',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="intime"><input type="text" class="dinput" id="orderPubEnd" name="orderPubEnd"><s onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd'});"></s></span>
 			</div>
 			</form>
 		</div>
