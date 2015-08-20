@@ -359,9 +359,10 @@ public class OrderService implements IOrderService {
 		order.setOrdercount(req.getOrdercount());
 		order.setPubdate(new Date());
 		order.setBusinessid(req.getBusinessid());
-//		order.setRecevicelongitude(req.getRecevicelongitude());
-//		order.setRecevicelatitude(req.getRecevicelatitude());
-//		order.setPickupaddress(req.getPickupaddress());
+     	order.setPickupaddress(businessModel.getAddress());
+		order.setRecevicelongitude(0d); //TODO 暂时默认0
+		order.setRecevicelatitude(0d);//TODO 暂时默认0
+
 		order.setRecevicecity(businessModel.getCity());   //TODO 配送城市  暂时取商家的
 		
 		order.setCommissionformulamode(businessModel.getStrategyId());

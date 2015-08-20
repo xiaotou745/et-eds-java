@@ -3,6 +3,8 @@ package com.edaisong.api.common;
 import java.lang.Double;
 import java.math.RoundingMode;
 
+import com.edaisong.core.enums.OrderFrom;
+
 public class OrderSettleMoneyHelper {
 /**
  * 计算订单应收
@@ -18,7 +20,7 @@ public class OrderSettleMoneyHelper {
  */
 	public static Double GetSettleMoney(Double amount, Double businessCommissionRate, Double commissionFixValue,
 			int ordercount, Double distribSubsidy, int orderform) {
-		if (orderform > 0){ // 第三方订单 不考虑外送费
+		if (orderform > 0&&orderform!=OrderFrom.BusinessWeb.value()){ // 第三方订单 不考虑外送费
 			distribSubsidy = 0d;
 		}
 		//订单金额*结算比例+(固定金额+外送费)*订单数量
