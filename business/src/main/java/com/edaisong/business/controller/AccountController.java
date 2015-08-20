@@ -22,6 +22,7 @@ import com.edaisong.business.entity.resp.LoginResp;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.util.CookieUtils;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
@@ -116,7 +117,7 @@ public class AccountController {
 		    	redisService.remove(cookie.getValue());
 			CookieUtils.deleteCookie(request, response, cookie);
 		}
-		response.sendRedirect(request.getContextPath() + "/");
+		response.sendRedirect(PropertyUtils.getProperty("static.business.url") + "/");
 	}
 
 	/**
