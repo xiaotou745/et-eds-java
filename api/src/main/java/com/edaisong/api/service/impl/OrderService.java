@@ -218,7 +218,7 @@ public class OrderService implements IOrderService {
 		//校验是否可以正常发单
 		PublishOrderReturnEnum returnEnum= verificationAddOrder(req,businessModel);
 		if (returnEnum!=PublishOrderReturnEnum.Success) {
-			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
+			resp.setResponseCode(returnEnum.value());
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
