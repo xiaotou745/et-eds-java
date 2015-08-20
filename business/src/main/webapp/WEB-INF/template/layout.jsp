@@ -17,8 +17,8 @@
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/index.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/newProjects.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/popup.css">
-<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
-<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
+<%-- <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css"> --%>
 <script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.2.min.js"></script>
 <%-- <script type="text/javascript" src="<%=basePath%>/js/jquery-ui-1.8.20.js"></script> --%>
 <%-- <script type="text/javascript" src="<%=basePath%>/js/jquery.ui.datepicker-zh-CN.js"></script> --%>
