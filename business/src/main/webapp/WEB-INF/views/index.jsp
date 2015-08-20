@@ -81,7 +81,7 @@
 					<%
 						if(message != null){
 					%>
-					<span class="fl" style="overflow-x: scroll;"> <%=message.getContent()%>
+					<span class="fl" id="notice"> <%=message.getContent()%>
 					</span>
 					<%
 						}else{
@@ -103,6 +103,7 @@
 </div>
 
 <script type="text/javascript">
+//统计图
 	var statistics = new Array();
 <%if(pubOrderTimestatistics != null){
 		StringBuilder sb = new StringBuilder();
@@ -124,8 +125,14 @@
 			counts[i] = statistics[c];
 		}
 	}
-	//图表
+
 	$(function() {
+		var notice = $("#notice").text();
+		if(notice.length > 70){
+			$("#notice").text(notice.substr(0,70)+"...");
+		}
+		
+		//统计图
 		$('#container').highcharts({
 			chart : {
 				type : 'spline'
@@ -137,7 +144,10 @@
 				text : ''
 			},
 			xAxis : {
-				categories : hours
+				categories : hours,
+				title : {
+					text : '时间(小时)'
+				},
 			},
 			yAxis : {
 				title : {
@@ -147,7 +157,8 @@
 					formatter : function() {
 						return this.value;
 					}
-				}
+				},
+				minTickInterval:1
 			},
 			tooltip : {
 				crosshairs : true,
