@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.business.common.ServerUtil"%>
 <%@ page contentType="image/jpeg" language="java" import="java.util.*,java.awt.*,java.awt.image.*,javax.imageio.*" pageEncoding="utf-8"%>  
   
 <%!  
@@ -72,7 +73,8 @@
         g.drawString(rand,(i + 1) * fontWidth,fontHeight);  
     }  
     System.out.println(sRand);
-    session.setAttribute("code",sRand);  
+    //session.setAttribute("code",sRand);  
+    ServerUtil.storeAuthCode2Redis(sRand, request, response);
     //图像生效  
     g.dispose();  
     //输出图像到页面  

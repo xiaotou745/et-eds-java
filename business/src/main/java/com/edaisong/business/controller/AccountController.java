@@ -54,9 +54,11 @@ public class AccountController {
 	public @ResponseBody LoginResp login(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
 			@RequestParam boolean rememberMe) {
-		Object sessionCode = request.getSession().getAttribute("code");
+		//Object sessionCode = request.getSession().getAttribute("code");
+		String sessionCode = ServerUtil.getAuthCode(request);
 		//一次性验证码,防止暴力破解
-		request.getSession().removeAttribute("code");
+		//request.getSession().removeAttribute("code");
+		ServerUtil.removeAuthCodeCookie(request, response);
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
 		boolean isLogin = ServerUtil.checkIsLogin(request,response);
