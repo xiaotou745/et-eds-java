@@ -312,13 +312,19 @@ public class OrderService implements IOrderService {
 		}
 		redisService.set(timespanKey, "", 30);
 	}
+	/**
+	 * 商家发单 插入子订单
+	 * @param req
+	 * @param businessModel
+	 * @param order
+	 */
 	private void fillOrderChild(OrderReq req, BusinessModel businessModel,Order order){
 		if (req.getListOrderChild() != null
 				&& req.getListOrderChild().size() > 0) {
 			OrderChild child=null;
 			short payStatus=0;
 			if (req.getIspay()||!req.getIspay()
-					&& req.getMealssettlemode() == MealsSettleMode.LineOff.value()) {
+					&& businessModel.getMealssettlemode() == MealsSettleMode.LineOff.value()) {
 				payStatus=1;
 			}
 			for (int i = 0; i < req.getListOrderChild().size(); i++) {
