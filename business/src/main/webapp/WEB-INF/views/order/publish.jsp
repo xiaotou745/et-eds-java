@@ -28,7 +28,8 @@
 			<em class="fl" style="display:none">收货地址不能为空</em>
 		</p>
 		<p class="cb">
-			<span class="fl"> <em class="fl">*</em> 收货人姓名
+	<!-- 		<span class="fl"> <em class="fl">*</em> -->
+			 收货人姓名
 			</span> <input class="fl" type="text" id="name" name="" value=""> <em
 				class="fl" style="display:none">收货人姓名不能为空</em>
 		</p>
@@ -61,7 +62,7 @@
 			</p>
 		</div>
 		<p class="cb">
-			<span class="fl"> 订单金额 </span> <em class="fl">￥45.00</em>
+			<span class="fl"> 订单金额 </span> <em class="fl">￥0</em>
 		</p>
 		<p class="cb">
 			<span class="fl lh15"> 备注 </span>
@@ -78,22 +79,31 @@
 	<div class="popupBox popupBox1">
 		<h1>确认发布任务</h1>
 		<p class="cb">
-			<span class="fl">订单金额</span> <em class="fl">￥41.00</em>
+			<span class="fl">订单金额</span> <em class="fl">￥0</em>
 		</p>
 		<p class="cb">
-			<span class="fl">订单数量</span> <em class="fl">3</em>
+			<span class="fl">订单数量</span> <em class="fl">1</em>
 		</p>
 		<p class="cb">
 			<span class="fl">配送费</span> <em class="fl">￥0.00</em>
 		</p>
 		<p class="cb">
-			<span class="fl">订单总金额</span> <em class="fl">￥41.00</em>
+			<span class="fl">订单总金额</span> <em class="fl">￥0</em>
 		</p>
-		<i>当前任务结算<s>45</s>元，剩余余额<s>6</s>元！
+		<i>当前任务结算<s>0</s>元，剩余余额<s>0</s>元！
 		</i> <a class="qx" href="javascript:;">取消</a> <a class="qr"
 			href="javascript:;">确认</a>
 		<!-- class=“qr“ 加入选择器”ok"呼出任务发布成功弹层 -->
 		<!-- class=“qr“ 加入选择器”no"呼出任务发布失败弹层 -->
+	</div>
+</div>
+<!-- 任务发布失败弹层 -->
+<div class="popup popup2 popup6" style="display:none;">
+	<div class="bg">蒙层</div>
+	<div class="popupBox popupBox2 popup6">
+		<img src="<%=basePath%>/images/no.png" alt="失败">
+		<h2>任务发布失败！</h2>
+		<a class="qr3" href="javascript:;">确认</a>
 	</div>
 </div>
 
@@ -172,29 +182,25 @@
 
 		//确认发布任务弹窗呼出 And 关闭
 		$('.fabu').on('click',function() {
-							var validate = true;
-							//手机号非空判断 
-							validate=checkEmpty("telphone");					
-							//收货地址
-							validate=checkEmpty("address");								
-							//姓名
-							validate=checkEmpty("name");	
-							validate=true;
-							if(validate){
-								$('.popup1').show();
-								
-							}
-						});
-		//验证元素非空，为空显示提示语，不为空隐藏提示语  add by caoheyang 20150818
-		function checkEmpty(id){
-			if ($("#"+id).val().replace(/(^\s*)|(\s*$)/g,"").length == 0) { 
-				$("#"+id).next().css("display","block");
-				return false;
-			}else{
-				$("#"+id).next().css("display","none");
+			var validate = true;
+			//手机号非空判断
+			var inputList = $("input");
+			for(var i = 0;i<inputList.length;i++){
+				var temp = vinput(inputList[i]);
+
+				if(!temp){
+					console.log(temp);
+					validate = temp;
+				}
+			}	
+			if(validate){
+				$(".popup1").show();
+				$(".popup1 .cb:eq(0) em").html($("#allPrice").html());
+				$(".popup1 .cb:eq(1) em").html($(".price").length);
 			}
-		}
+		});
 		
+
 		//任务发布 弹出层 的确认按钮 触发 ajax 请求  caoheyang 20150819
 		$('.qr').on('click', function() {
 			$(this).parents('.popup1').hide();
@@ -248,6 +254,15 @@
 			$(this).parents('.popup2').hide();
 		});
 
+		//任务发布失败弹层呼出 And 关闭
+		$('.no2').on('click', function() {
+			$(this).parents('.popup1').hide();
+			$('.popup6').show();
+		});
+		$('.qr3').on('click', function() {
+			$(this).parents('.popup6').hide();
+		});
+		
 		//余额不足弹层呼出 And 关闭
 		$('.no').on('click', function() {
 			$(this).parents('.popup1').hide();
@@ -262,6 +277,98 @@
 			$(this).parents('.popup4').hide();
 		});
 
+		//表单验证配置
+		var teg = {};
+		teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;
+		teg.address = 'empty';
+
+		$('.box2').on('blur','input',function(){
+			vinput(this);
+		});
+		// $('input').on('input',function(){
+		// 	if($(this).attr('minLength')){
+		// 		var val = $(this).val().substr(0,$(this).attr('minLength'));
+		// 		$(this).val(val);
+		// 	}
+		// })
+		function vinput(input){
+			if($(input).attr('type')!='text'){
+				return true;
+			}
+			var id = $(input).attr('id');
+			var reg = teg[id];
+			var val = $(input).val();
+
+			if($(input).attr('minlength')){
+				if($(input).val().length>$(input).attr('minlength')){
+					$(input).next().show();
+					return false;
+				}else{
+					$(input).next().hide();
+
+				}
+			}
+
+			if(reg){
+
+				if(reg == 'empty'){
+					if(val != ''){
+						$(input).next().hide();
+						return true;
+					}
+				}else{
+					if(reg.test(val)){
+						$(input).next().hide();
+						return true;
+					}
+				}
+				
+				$(input).next().show();
+				return false;
+			}else if($(input).hasClass('price')){
+				//金额操作
+				if(val<5 || val>1000){
+					$(input).parent().next().next().attr('style','display:block!important');
+					return false;
+				}
+				var all = 0;
+				var priceList = $('.price');
+				for(var i=0;i<priceList.length;i++){
+					if(!parseFloat($(priceList[i]).val())){
+						return false;
+					}
+					all = parseFloat($(priceList[i]).val())+all;
+				}
+				
+				all = Math.round(all*100)/100;
+				all = all.toFixed(2);
+				$('#allPrice').html('¥'+all);
+				$(input).parent().next().next().hide();
+				return true;
+			}
+			return true;
+
+
+		}
+		
+		$('.orderBox').on('keydown','.price',function(e){
+			var obj=e.srcElement || e.target;
+			var dot=obj.value.indexOf(".");//alert(e.which);
+			var  key=e.keyCode|| e.which;
+
+			if(key==8 || key==9 || key==46 || (key>=37  && key<=40))
+				return true;
+			if ((key<=57 && key>=48) || (key<=105 && key>=95)  ) { //数字
+				if(dot==-1)//没有小数点
+			    	return true;
+			  	else if(obj.value.length<=dot+2)//两位小数
+			  		return true;
+			}else if((key==46 || key==190 || key==110 ) && dot==-1){//小数点
+			  	return true;
+			}        
+			return false;
+		})
+	
 		//自动完成     暂时屏蔽
 		/* var list = [];
 		$("#telphone").on("keyup",function(){
