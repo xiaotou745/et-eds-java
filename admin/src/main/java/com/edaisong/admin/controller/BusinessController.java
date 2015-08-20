@@ -15,23 +15,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.edaisong.api.service.inter.IAdminToolsService;
+import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.IBusinessExpressRelationService;
+import com.edaisong.api.service.inter.IBusinessFinanceAccountService;
 import com.edaisong.api.service.inter.IBusinessGroupService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IBusinessThirdRelationService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
-import com.edaisong.core.common.ParseHelper;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessExpressRelation;
+import com.edaisong.entity.BusinessFinanceAccount;
 import com.edaisong.entity.BusinessGroup;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.BusinesRechargeModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
@@ -61,7 +64,7 @@ public class BusinessController {
 	private IGroupService iGroupService;
 
 	@Autowired
-	private IAdminToolsService adminToolsService;
+	private IGlobalConfigService adminToolsService;
 
 	@Autowired
 	private IBusinessThirdRelationService businessThirdRelationService;
@@ -72,6 +75,8 @@ public class BusinessController {
 	@Autowired
 	private IBusinessExpressRelationService businessExpressRelationService;
 
+	@Autowired
+	private IBusinessFinanceAccountService businessFinanceAccountService;
 	@RequestMapping("list")
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse res) {
@@ -142,7 +147,7 @@ public class BusinessController {
 		String bigFileNameb = relativePath + "/nopic.jpg";
 		String checkPicUrl = relativePath + "/nopic.jpg";
 		String businessLicensePic = relativePath + "/nopic.jpg";
-		if (!detail.getCheckpicurl().isEmpty()) {
+		if (detail.getCheckpicurl()!=null&&!detail.getCheckpicurl().isEmpty()) {
 			int fileLastDot = detail.getCheckpicurl().lastIndexOf('.');
 			String fileHandHouZhui = detail.getCheckpicurl()
 					.substring(fileLastDot,detail.getCheckpicurl().length());
@@ -153,7 +158,7 @@ public class BusinessController {
 			checkPicUrl = parentRelativePath + "/"
 					+ fileUploadFolderNameBusiness + detail.getCheckpicurl();
 		}
-		if (!detail.getBusinesslicensepic().isEmpty()) {
+		if (detail.getBusinesslicensepic()!=null&&!detail.getBusinesslicensepic().isEmpty()) {
 			int fileLastDotb = detail.getBusinesslicensepic().lastIndexOf('.');
 			String fileHandHouZhuib = detail.getBusinesslicensepic().substring(fileLastDotb,detail.getBusinesslicensepic().length());
 			bigFileNameb = parentRelativePath + "/"
@@ -229,5 +234,53 @@ public class BusinessController {
 	public List<AreaModel> getCityDistrict(int cityID) {
 		return iPublicProvinceCityService.getOpenCityDistrict(cityID);
 	}
-	
+	@RequestMapping("modifyexpress")
+	@ResponseBody
+	public int modifyExpress(int busiId,String deliveryCompanyList) {
+		if (deliveryCompanyList==null||deliveryCompanyList.isEmpty()) {
+			return -1;
+		}
+		List<BusinessExpressRelation> listData=new ArrayList<>();
+		String [] expressList= deliveryCompanyList.split(";");
+		for (String express : expressList) {
+			if (!express.isEmpty()) {
+				String [] itemsStrings= express.split(",");
+				BusinessExpressRelation item=new BusinessExpressRelation();
+				item.setExpressid(ParseHelper.ToInt(itemsStrings[0]));
+				item.setIsenable(ParseHelper.ToShort(itemsStrings[1]));
+				item.setBusinessid(busiId);
+				item.setCreateby("admin");
+				item.setUpdateby("admin");
+				listData.add(item);
+			}
+		}
+
+		return iBusinessService.modifyExpress(listData);
+	}
+	@RequestMapping("audit")
+	@ResponseBody
+	 public int businessAudit(int businessID,int status)
+     {
+         return iBusinessService.updateAuditStatus(businessID, status);
+     }
+	@RequestMapping("getfinanceaccount")
+	@ResponseBody
+	 public BusinessFinanceAccount getFinanceAccount(int businessID)
+     {
+		BusinessFinanceAccount resultAccount= businessFinanceAccountService.getDetailByBusinesID(businessID);
+		return resultAccount;
+     }
+	@RequestMapping("recharge")
+	@ResponseBody
+	 public int businessRecharge(BusinesRechargeModel param)
+     {
+		return 0;
+     }
+	@RequestMapping("withdraw")
+	@ResponseBody
+	 public BusinessFinanceAccount businessWithdraw(int businessID)
+     {
+		BusinessFinanceAccount resultAccount= businessFinanceAccountService.getDetailByBusinesID(businessID);
+		return resultAccount;
+     }
 }

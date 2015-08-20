@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.edaisong.business.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,3 +18,10 @@ public class ClienterController {
 		return null;
 	}
 }
+=======
+package com.edaisong.business.controller;
+
+public class ClienterController {
+
+}
+>>>>>>> 772aaa3d48304344b9aa3741b8664c84a74d3a86

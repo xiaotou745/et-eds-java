@@ -2,10 +2,6 @@ package com.edaisong.admin.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Context;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
-import com.edaisong.api.service.inter.ITestService;
-import com.edaisong.core.common.HtmlHelper;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
-import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
@@ -27,12 +20,6 @@ import com.edaisong.entity.req.PagedOrderSearchReq;
 @Controller
 @RequestMapping("order")
 public class OrderController {
-	 @Autowired
-	 private ITestService testService;
-	 @Context
-	 private HttpServletRequest  request;
-	 @Context
-	 private HttpServletResponse response;
 	 @Autowired
 	 private IOrderService orderService;
 	 

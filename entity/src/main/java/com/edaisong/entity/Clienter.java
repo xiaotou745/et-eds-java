@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class Clienter {
@@ -24,7 +24,7 @@ public class Clienter {
 
     private Byte status;
 
-    private BigDecimal accountbalance;
+    private Double accountbalance;
 
     private Date inserttime;
 
@@ -52,9 +52,9 @@ public class Clienter {
 
     private Integer workstatus;
 
-    private BigDecimal allowwithdrawprice;
+    private Double allowwithdrawprice;
 
-    private BigDecimal haswithdrawprice;
+    private Double haswithdrawprice;
 
     private Short isbind;
 
@@ -140,11 +140,11 @@ public class Clienter {
         this.status = status;
     }
 
-    public BigDecimal getAccountbalance() {
+    public Double getAccountbalance() {
         return accountbalance;
     }
 
-    public void setAccountbalance(BigDecimal accountbalance) {
+    public void setAccountbalance(Double accountbalance) {
         this.accountbalance = accountbalance;
     }
 
@@ -252,19 +252,19 @@ public class Clienter {
         this.workstatus = workstatus;
     }
 
-    public BigDecimal getAllowwithdrawprice() {
+    public Double getAllowwithdrawprice() {
         return allowwithdrawprice;
     }
 
-    public void setAllowwithdrawprice(BigDecimal allowwithdrawprice) {
+    public void setAllowwithdrawprice(Double allowwithdrawprice) {
         this.allowwithdrawprice = allowwithdrawprice;
     }
 
-    public BigDecimal getHaswithdrawprice() {
+    public Double getHaswithdrawprice() {
         return haswithdrawprice;
     }
 
-    public void setHaswithdrawprice(BigDecimal haswithdrawprice) {
+    public void setHaswithdrawprice(Double haswithdrawprice) {
         this.haswithdrawprice = haswithdrawprice;
     }
 

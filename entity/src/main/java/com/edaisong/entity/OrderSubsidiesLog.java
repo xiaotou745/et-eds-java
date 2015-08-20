@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class OrderSubsidiesLog {
@@ -8,7 +8,7 @@ public class OrderSubsidiesLog {
 
     private Integer orderid;
 
-    private BigDecimal price;
+    private Double price;
 
     private Date inserttime;
 
@@ -38,11 +38,11 @@ public class OrderSubsidiesLog {
         this.orderid = orderid;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

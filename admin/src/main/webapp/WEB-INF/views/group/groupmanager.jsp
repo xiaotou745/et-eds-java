@@ -7,9 +7,7 @@
 <%
 String basePath =PropertyUtils.getProperty("static.admin.url");
 %>
-
-<div style="height:500%"></div>
-  
+ <script type="text/javascript" src="<%=basePath%>/js/admin.js"></script>
    <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>

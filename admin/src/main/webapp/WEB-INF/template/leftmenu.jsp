@@ -6,16 +6,16 @@
 <%@ page language="java"
 	import="com.edaisong.api.service.inter.IAuthorityMenuClassService"%>
 <%@ page language="java"
-	import="com.edaisong.api.business.SqlSessionFactoryPool"%>
+	import="com.edaisong.api.common.SpringBeanHelper"%>
 <%@ page language="java"
 	import="com.edaisong.entity.req.AuthorityMenuReq"%>
 <%@ page language="java" import="com.edaisong.entity.MenuEntity"%>
 <%@ page language="java" import="java.util.List"%>
 <%@ page language="java" import="java.util.ArrayList"%>
 <%
-	String basePath =new PropertyUtils().getProperty("static.admin.url");
-	IAuthorityMenuClassService menuService = SqlSessionFactoryPool
-			.getCustomBeanByType(IAuthorityMenuClassService.class);
+	String basePath =PropertyUtils.getProperty("static.admin.url");
+	IAuthorityMenuClassService menuService = SpringBeanHelper
+	.getCustomBeanByType(IAuthorityMenuClassService.class);
 
 	AuthorityMenuReq req = new AuthorityMenuReq();
 	req.setAccountId("1");

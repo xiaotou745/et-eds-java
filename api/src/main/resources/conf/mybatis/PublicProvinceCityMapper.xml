@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao" >
+<mapper namespace="com.edaisong.api.dao.inter.IPublicProvinceCityDao" >
   <!--获取开放城市列表（非分页） add by caoheyang 20150720  -->
   <select id="getOpenCityList"  resultType="com.edaisong.entity.domain.OpenCityModel" 
     parameterType="java.util.Map" >

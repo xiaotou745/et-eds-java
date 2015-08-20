@@ -1,16 +1,16 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class Subsidy {
     private Integer id;
 
-    private BigDecimal ordercommission;
+    private Double ordercommission;
 
-    private BigDecimal distribsubsidy;
+    private Double distribsubsidy;
 
-    private BigDecimal websitesubsidy;
+    private Double websitesubsidy;
 
     private Date startdate;
 
@@ -20,7 +20,7 @@ public class Subsidy {
 
     private Integer groupid;
 
-    private BigDecimal pkmcost;
+    private Double pkmcost;
 
     private Integer ordertype;
 
@@ -32,27 +32,27 @@ public class Subsidy {
         this.id = id;
     }
 
-    public BigDecimal getOrdercommission() {
+    public Double getOrdercommission() {
         return ordercommission;
     }
 
-    public void setOrdercommission(BigDecimal ordercommission) {
+    public void setOrdercommission(Double ordercommission) {
         this.ordercommission = ordercommission;
     }
 
-    public BigDecimal getDistribsubsidy() {
+    public Double getDistribsubsidy() {
         return distribsubsidy;
     }
 
-    public void setDistribsubsidy(BigDecimal distribsubsidy) {
+    public void setDistribsubsidy(Double distribsubsidy) {
         this.distribsubsidy = distribsubsidy;
     }
 
-    public BigDecimal getWebsitesubsidy() {
+    public Double getWebsitesubsidy() {
         return websitesubsidy;
     }
 
-    public void setWebsitesubsidy(BigDecimal websitesubsidy) {
+    public void setWebsitesubsidy(Double websitesubsidy) {
         this.websitesubsidy = websitesubsidy;
     }
 
@@ -88,11 +88,11 @@ public class Subsidy {
         this.groupid = groupid;
     }
 
-    public BigDecimal getPkmcost() {
+    public Double getPkmcost() {
         return pkmcost;
     }
 
-    public void setPkmcost(BigDecimal pkmcost) {
+    public void setPkmcost(Double pkmcost) {
         this.pkmcost = pkmcost;
     }
 

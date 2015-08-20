@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class ClienterAccountChecking {
@@ -10,15 +10,15 @@ public class ClienterAccountChecking {
 
     private Date createdate;
 
-    private BigDecimal flowstatmoney;
+    private Double flowstatmoney;
 
-    private BigDecimal clientertotalmoney;
+    private Double clientertotalmoney;
 
     private Date startdate;
 
     private Date enddate;
 
-    private BigDecimal lasttotalmoney;
+    private Double lasttotalmoney;
 
     public Integer getId() {
         return id;
@@ -44,19 +44,19 @@ public class ClienterAccountChecking {
         this.createdate = createdate;
     }
 
-    public BigDecimal getFlowstatmoney() {
+    public Double getFlowstatmoney() {
         return flowstatmoney;
     }
 
-    public void setFlowstatmoney(BigDecimal flowstatmoney) {
+    public void setFlowstatmoney(Double flowstatmoney) {
         this.flowstatmoney = flowstatmoney;
     }
 
-    public BigDecimal getClientertotalmoney() {
+    public Double getClientertotalmoney() {
         return clientertotalmoney;
     }
 
-    public void setClientertotalmoney(BigDecimal clientertotalmoney) {
+    public void setClientertotalmoney(Double clientertotalmoney) {
         this.clientertotalmoney = clientertotalmoney;
     }
 
@@ -76,11 +76,11 @@ public class ClienterAccountChecking {
         this.enddate = enddate;
     }
 
-    public BigDecimal getLasttotalmoney() {
+    public Double getLasttotalmoney() {
         return lasttotalmoney;
     }
 
-    public void setLasttotalmoney(BigDecimal lasttotalmoney) {
+    public void setLasttotalmoney(Double lasttotalmoney) {
         this.lasttotalmoney = lasttotalmoney;
     }
 }

@@ -80,8 +80,8 @@ public class ClienterController {
 	public ModelAndView listdo(ClienterReq req) {		
 		
 		PagedResponse<ClienterModel> resp = clienterService.query(req);
-		ModelAndView model = new ModelAndView();//默认listdo.jsp
-		//ModelAndView model = new ModelAndView("clienter/listdo");
+		//ModelAndView model = new ModelAndView();//默认listdo.jsp
+		ModelAndView model = new ModelAndView("clienter/listdo");
 		model.addObject("listData", resp);
 		return model;
 	}	
@@ -94,7 +94,7 @@ public class ClienterController {
 	 * @return
 	 */	
 	@RequestMapping("clienterbalancerecordlist")
-	public ModelAndView clienterbalancerecordlist(HttpServletRequest request){			
+	public ModelAndView clienterbalancerecordlist(HttpServletRequest request){				
 
 		int clienterId=Integer.parseInt(request.getParameter("clienterId"));
 		

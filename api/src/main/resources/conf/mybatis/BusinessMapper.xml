@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IBusinessDao">
+<mapper namespace="com.edaisong.api.dao.inter.IBusinessDao">
 	<select id="getBusinessDetailByID" resultType="com.edaisong.entity.domain.BusinessDetailModel"
 		parameterType="java.lang.Long">
 		SELECT
@@ -36,6 +36,7 @@
 		b.mealssettlemode ,
 		isnull(b.groupid,0) as groupid ,
 		b.originalbusiid ,
+		b.isOrderChecked,
 		bfa.trueName ,
 		bfa.accountNo ,
 		bfa.accountType ,
@@ -52,6 +53,52 @@
 		bfa.BusinessId
 		AND bfa.IsEnable = 1
 		LEFT JOIN [group] g WITH ( NOLOCK ) ON g.Id = b.GroupId
+		WHERE b.Id = #{businessID}
+	</select>
+
+<select id="getBusinessByID" resultType="com.edaisong.entity.domain.BusinessModel"
+		parameterType="java.lang.Long">
+		SELECT
+		b.id ,
+		b.name ,
+		b.city ,
+		b.district ,
+		b.phoneno ,
+		b.phoneno2 ,
+		b.idcard ,
+		b.[address] ,
+		isnull(b.landline,'') as  landline,
+		b.longitude ,
+		b.latitude ,
+		b.[status] ,
+		b.inserttime ,
+		b.districtid ,
+		b.cityid ,
+		b.provincecode ,
+		b.citycode ,
+		b.areacode ,
+		b.province ,
+		ISNULL(b.DistribSubsidy, 0.00) distribsubsidy ,
+		b.businesscommission ,
+		b.commissiontype ,
+		b.commissionfixvalue ,
+		b.businessgroupId ,
+		b.balanceprice ,
+		b.allowwithdrawprice ,
+		b.haswithdrawprice ,
+		b.checkpicurl ,
+		b.businesslicensepic ,
+		b.mealssettlemode ,
+		isnull(b.groupid,0) as groupid ,
+		b.originalbusiid ,	
+		ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
+		b.isallowoverdraft ,
+		b.isemployertask ,
+		ISNULL(b.RecommendPhone, '') AS recommendphone,
+		bg.StrategyId as StrategyId
+		FROM business b WITH ( NOLOCK )	
+		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON
+		b.BusinessGroupId =bg.Id		
 		WHERE b.Id = #{businessID}
 	</select>
 
@@ -121,6 +168,10 @@
 			<if test="isallowoverdraft != null">
 				isallowoverdraft = #{isallowoverdraft,jdbcType=INTEGER},
 			</if>
+			<if test="isOrderChecked != null">
+				IsOrderChecked = #{isOrderChecked,jdbcType=INTEGER},
+			</if>
+			
 		</set>
 		OUTPUT
                         Inserted.Id,
@@ -172,9 +223,9 @@
 		bg.Name businessgroupname ,
 		ISNULL(b.MealsSettleMode, 0) mealssettlemode ,
 		ISNULL(b.BalancePrice,0) balanceprice ,
-		ISNULL(b.AllowWithdrawPrice, 0)
-		allowwithdrawprice ,
-		ISNULL(b.RecommendPhone, '''') AS recommendphone
+		ISNULL(b.AllowWithdrawPrice, 0) allowwithdrawprice ,
+		ISNULL(b.RecommendPhone, '''') AS recommendphone ,
+	    b.LastLoginTime 
 	</sql>
 
 	<sql id="getBusinessListFrom">
@@ -259,4 +310,106 @@
 		WHERE BusinessId = #{businessID}
 		ORDER BY Id DESC
 	</select>
+
+	<select id="getBusinessByPhoneNoAndPwd" resultType="com.edaisong.entity.Business"
+		parameterType="java.util.Map">
+		SELECT
+		b.id ,
+		b.name ,
+		b.city ,
+		b.district ,
+		b.phoneno ,
+		b.phoneno2 ,
+		b.idcard ,
+		b.[address] ,
+		isnull(b.landline,'') as  landline,
+		b.longitude ,
+		b.latitude ,
+		b.[status] ,
+		b.inserttime ,
+		b.districtid ,
+		b.cityid ,
+		b.provincecode ,
+		b.citycode ,
+		b.areacode ,
+		b.province ,
+		ISNULL(b.DistribSubsidy, 0.00) distribsubsidy ,
+		b.businesscommission ,
+		b.commissiontype ,
+		b.commissionfixvalue ,
+		b.businessgroupId ,
+		b.balanceprice ,
+		b.allowwithdrawprice ,
+		b.haswithdrawprice ,
+		b.checkpicurl ,
+		b.businesslicensepic ,
+		b.mealssettlemode ,
+		isnull(b.groupid,0) as groupid ,
+		b.originalbusiid ,
+		ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
+		b.isallowoverdraft ,
+		b.isemployertask ,
+		ISNULL(b.RecommendPhone, '') AS recommendphone
+		FROM business b WITH ( NOLOCK )
+		WHERE b.PhoneNo = #{phoneNo,jdbcType=NVARCHAR}
+		AND Password = #{password,jdbcType=NVARCHAR} 
+	</select>
+	
+	<insert id="addLogingLog" parameterType="com.edaisong.entity.BusinessLoginLog" useGeneratedKeys="true" keyProperty="id">
+		insert into BusinessLoginLog([PhoneNo],[Description],[IsSuccess])
+		values(#{PhoneNo,jdbcType=NVARCHAR},#{Description,jdbcType=NVARCHAR},#{IsSuccess,jdbcType=SMALLINT})
+	</insert>
+	<select id="getById" resultType="com.edaisong.entity.Business" parameterType="java.lang.Integer" statementType="CALLABLE">
+	  select 
+	  b.* 
+	  from dbo.business b WITH (NOLOCK) where b.Id = #{businessId,jdbcType=INTEGER} 
+	</select>
+
+   <!-- 更新 商户 余额，可提现余额   add by caoheyang 20150804  -->	
+	<update id="updateForWithdraw" parameterType="java.util.Map">
+		update  business
+		set  BalancePrice=BalancePrice+ #{Money,jdbcType=DECIMAL} ,AllowWithdrawPrice=AllowWithdrawPrice+ #{Money,jdbcType=DECIMAL}
+		where  Id= #{Id,jdbcType=INTEGER}
+	</update>
+	<update id="modifyExpress" parameterType="java.util.List">
+	 <foreach collection="list" index="index" item="item">    
+MERGE INTO BusinessExpressRelation ber
+    USING ( VALUES
+        ( #{item.businessid,jdbcType=INTEGER} ,
+          #{item.expressid,jdbcType=INTEGER}
+        ) ) AS berNew ( BusinessId, ExpressId )
+    ON ber.BusinessId = berNew.BusinessId
+        AND ber.ExpressId = berNew.ExpressId
+    WHEN MATCHED
+        THEN UPDATE
+          SET       ber.IsEnable = #{item.isenable,jdbcType=SMALLINT} ,
+                    ber.UpdateBy = #{item.updateby,jdbcType=NVARCHAR} ,
+                    ber.UpdateTime = GETDATE()
+    WHEN NOT MATCHED
+        THEN INSERT (
+                      BusinessId ,
+                      ExpressId ,
+                      CreateBy ,
+                      UpdateBy ,
+                      IsEnable
+                    )
+          VALUES    ( #{item.businessid,jdbcType=INTEGER} ,
+                      #{item.expressid,jdbcType=INTEGER} ,
+                      #{item.createby,jdbcType=NVARCHAR} ,
+                      #{item.updateby,jdbcType=NVARCHAR} ,
+                      #{item.isenable,jdbcType=SMALLINT}
+                    );
+     </foreach>
+	</update>
+   <!-- 更新 商户 余额，可提现余额   add by zhaohailong 20150811  -->	
+	<update id="updateAuditStatus" parameterType="java.util.Map">
+        update business set Status=#{status,jdbcType=INTEGER}
+		where  Id= #{businessID,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 更新 商户 最后登录时间   add by pengyi 20150818  -->	
+	<update id="updateLastLoginTime" parameterType="java.util.Map">
+        update business set LastLoginTime=#{lastLoginTime,jdbcType=TIMESTAMP}
+		where  Id= #{businessID,jdbcType=INTEGER}
+	</update>
 </mapper>

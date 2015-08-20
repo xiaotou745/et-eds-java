@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edaisong.api.dal.dao.inter.IBusinessClienterRelationDao" >
@@ -170,4 +171,147 @@
 	#{totalPage,mode=OUT,jdbcType=INTEGER}
 	)}
   </select>
+=======
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IBusinessClienterRelationDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.BusinessClienterRelation" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
+    <result column="ClienterId" property="clienterid" jdbcType="INTEGER" />
+    <result column="IsEnable" property="isenable" jdbcType="SMALLINT" />
+    <result column="CreateBy" property="createby" jdbcType="NVARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="UpdateBy" property="updateby" jdbcType="NVARCHAR" />
+    <result column="UpdateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="IsBind" property="isbind" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, BusinessId, ClienterId, IsEnable, CreateBy, CreateTime, UpdateBy, UpdateTime, 
+    IsBind
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from BusinessClienterRelation
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from BusinessClienterRelation
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.BusinessClienterRelation" >
+    insert into BusinessClienterRelation (Id, BusinessId, ClienterId, 
+      IsEnable, CreateBy, CreateTime, 
+      UpdateBy, UpdateTime, IsBind
+      )
+    values (#{id,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, #{clienterid,jdbcType=INTEGER}, 
+      #{isenable,jdbcType=SMALLINT}, #{createby,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updateby,jdbcType=NVARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{isbind,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.BusinessClienterRelation" >
+    insert into BusinessClienterRelation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="businessid != null" >
+        BusinessId,
+      </if>
+      <if test="clienterid != null" >
+        ClienterId,
+      </if>
+      <if test="isenable != null" >
+        IsEnable,
+      </if>
+      <if test="createby != null" >
+        CreateBy,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="updateby != null" >
+        UpdateBy,
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime,
+      </if>
+      <if test="isbind != null" >
+        IsBind,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="clienterid != null" >
+        #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="isenable != null" >
+        #{isenable,jdbcType=SMALLINT},
+      </if>
+      <if test="createby != null" >
+        #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isbind != null" >
+        #{isbind,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.BusinessClienterRelation" >
+    update BusinessClienterRelation
+    <set >
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="clienterid != null" >
+        ClienterId = #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="isenable != null" >
+        IsEnable = #{isenable,jdbcType=SMALLINT},
+      </if>
+      <if test="createby != null" >
+        CreateBy = #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isbind != null" >
+        IsBind = #{isbind,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.BusinessClienterRelation" >
+    update BusinessClienterRelation
+    set BusinessId = #{businessid,jdbcType=INTEGER},
+      ClienterId = #{clienterid,jdbcType=INTEGER},
+      IsEnable = #{isenable,jdbcType=SMALLINT},
+      CreateBy = #{createby,jdbcType=NVARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      IsBind = #{isbind,jdbcType=SMALLINT}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+>>>>>>> 772aaa3d48304344b9aa3741b8664c84a74d3a86
 </mapper>

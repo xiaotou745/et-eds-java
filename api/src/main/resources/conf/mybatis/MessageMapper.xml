@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IMessageDao" >
+<mapper namespace="com.edaisong.api.dao.inter.IMessageDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.Message" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="PushWay" property="pushway" jdbcType="SMALLINT" />
@@ -239,5 +239,23 @@
       		,[UpdateTime]
   FROM Message msg WITH(NOLOCK)
   </select>
-  
+  <select id="getMessageListByMessage" parameterType="java.util.Map" resultType="com.edaisong.entity.Message">
+     SELECT  [Id]
+      		,[PushWay]
+      		,[MessageType]
+      		,[Content]
+      		,[SentStatus]
+      		,[PushType]
+      		,[PushTarget]
+      		,[PushCity]
+      		,[PushPhone]
+      		,[SendType]
+      		,[SendTime]
+      		,[OverTime]
+      		,[CreateBy]
+      		,[CreateTime]
+      		,[UpdateBy]
+      		,[UpdateTime]
+  FROM Message msg WITH(NOLOCK)
+  </select>
 </mapper>

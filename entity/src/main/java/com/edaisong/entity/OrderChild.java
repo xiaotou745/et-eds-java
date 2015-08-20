@@ -1,20 +1,21 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
+import java.lang.Double;
 import java.util.Date;
 
-public class OrderChild {
+public class OrderChild implements Serializable {
     private Long id;
 
     private Integer orderid;
 
     private Integer childid;
 
-    private BigDecimal totalprice;
+    private Double totalprice;
 
-    private BigDecimal goodprice;
+    private Double goodprice;
 
-    private BigDecimal deliveryprice;
+    private Double deliveryprice;
 
     private Short paystyle;
 
@@ -26,7 +27,7 @@ public class OrderChild {
 
     private Date paytime;
 
-    private BigDecimal payprice;
+    private Double payprice;
 
     private Boolean hasuploadticket;
 
@@ -70,27 +71,27 @@ public class OrderChild {
         this.childid = childid;
     }
 
-    public BigDecimal getTotalprice() {
+    public Double getTotalprice() {
         return totalprice;
     }
 
-    public void setTotalprice(BigDecimal totalprice) {
+    public void setTotalprice(Double totalprice) {
         this.totalprice = totalprice;
     }
 
-    public BigDecimal getGoodprice() {
+    public Double getGoodprice() {
         return goodprice;
     }
 
-    public void setGoodprice(BigDecimal goodprice) {
+    public void setGoodprice(Double goodprice) {
         this.goodprice = goodprice;
     }
 
-    public BigDecimal getDeliveryprice() {
+    public Double getDeliveryprice() {
         return deliveryprice;
     }
 
-    public void setDeliveryprice(BigDecimal deliveryprice) {
+    public void setDeliveryprice(Double deliveryprice) {
         this.deliveryprice = deliveryprice;
     }
 
@@ -134,11 +135,11 @@ public class OrderChild {
         this.paytime = paytime;
     }
 
-    public BigDecimal getPayprice() {
+    public Double getPayprice() {
         return payprice;
     }
 
-    public void setPayprice(BigDecimal payprice) {
+    public void setPayprice(Double payprice) {
         this.payprice = payprice;
     }
 

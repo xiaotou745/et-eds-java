@@ -13,16 +13,16 @@
         <put-attribute name="header_css" value=""></put-attribute>
     </definition>
     
-    <definition name="home" extends="defaultTemplate">
-    	<put-attribute name="title" value="首页"></put-attribute>
-    	<put-attribute name="breadcrumbs" value="/WEB-INF/template/breadcrumbs.jsp"></put-attribute>
-    	<put-attribute name="body" value="/WEB-INF/views/home/index.jsp"></put-attribute>
-    </definition>
-        <definition name="orderlist" extends="defaultTemplate">
-    	<put-attribute name="title" value="订单列表"></put-attribute>
-    	<put-attribute name="breadcrumbs" value="/WEB-INF/template/breadcrumbs.jsp"></put-attribute>
-    	<put-attribute name="body" value="/WEB-INF/views/notImplement.jsp"></put-attribute>
-    </definition>
+<!--     <definition name="home" extends="defaultTemplate"> -->
+<!--     	<put-attribute name="title" value="首页"></put-attribute> -->
+<!--     	<put-attribute name="breadcrumbs" value="/WEB-INF/template/breadcrumbs.jsp"></put-attribute> -->
+<!--     	<put-attribute name="body" value="/WEB-INF/views/home/index.jsp"></put-attribute> -->
+<!--     </definition> -->
+<!--         <definition name="orderlist" extends="defaultTemplate"> -->
+<!--     	<put-attribute name="title" value="订单列表"></put-attribute> -->
+<!--     	<put-attribute name="breadcrumbs" value="/WEB-INF/template/breadcrumbs.jsp"></put-attribute> -->
+<!--     	<put-attribute name="body" value="/WEB-INF/views/notImplement.jsp"></put-attribute> -->
+<!--     </definition> -->
        <definition name="adminView" extends="defaultTemplate">
     	<put-attribute name="title" value="首页"></put-attribute>
         <put-attribute name="body" expression="/WEB-INF/views/${viewPath}.jsp" />	

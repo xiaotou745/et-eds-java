@@ -1,6 +1,6 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class BusinessRecharge {
@@ -12,7 +12,7 @@ public class BusinessRecharge {
 
     private String orderno;
 
-    private BigDecimal payamount;
+    private Double payamount;
 
     private Integer paystatus;
 
@@ -54,11 +54,11 @@ public class BusinessRecharge {
         this.orderno = orderno == null ? null : orderno.trim();
     }
 
-    public BigDecimal getPayamount() {
+    public Double getPayamount() {
         return payamount;
     }
 
-    public void setPayamount(BigDecimal payamount) {
+    public void setPayamount(Double payamount) {
         this.payamount = payamount;
     }
 

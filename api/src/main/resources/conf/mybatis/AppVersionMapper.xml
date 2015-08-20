@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IAppVersionDao" >
+<mapper namespace="com.edaisong.api.dao.inter.IAppVersionDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.AppVersion" >
     <id column="ID" property="id" jdbcType="INTEGER" />
     <result column="Version" property="version" jdbcType="NVARCHAR" />

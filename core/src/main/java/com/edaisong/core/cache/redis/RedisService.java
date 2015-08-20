@@ -103,7 +103,6 @@ public class RedisService {
 
 	public <T> T get(String key, Class<T> type) {
 		ValueOperations<String, Object> operation = getOperation();
-
 		Object object = operation.get(key);
 
 		// TODO: 这里没有判断object的类型是否是T，之后再加；

@@ -19,23 +19,24 @@
 	<mvc:annotation-driven />
 	<mvc:resources mapping="/**" location="/resources/" />
 	<mvc:interceptors>
-			<bean class="com.edaisong.business.common.handler.GlobalLogInteceptor" />
+			<bean class="com.edaisong.business.common.GlobalLogInteceptor" />
+			<bean class="com.edaisong.business.common.AuthInteceptor" />
 	</mvc:interceptors>
 
 	<!-- 全局异常 -->
 	<bean id="exceptionResolver"
-		class="com.edaisong.business.common.handler.GlobalExceptionHandler" />
-		 
+		class="com.edaisong.business.common.GlobalExceptionHandler" />
+
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-		<property name="definitions">
-			<list>
-				<value>/WEB-INF/tile-defs/layout.xml</value>
-			</list>
-		</property>
+	<property name="definitions">
+	<list>
+	<value>/WEB-INF/tile-defs/layout.xml</value>
+	</list>
+	</property>
 	</bean>
 
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
-		<property name="order" value="1"></property>
+	<property name="order" value="1"></property>
 	</bean>
 
 	<bean id="viewResolver"

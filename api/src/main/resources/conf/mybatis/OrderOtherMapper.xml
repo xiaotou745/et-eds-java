@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IOrderOtherDao" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderOtherDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderOther" >
     <id column="Id" property="id" jdbcType="INTEGER" />
     <result column="OrderId" property="orderid" jdbcType="INTEGER" />
@@ -47,7 +47,7 @@
       GrabLongitude, GrabLatitude, CompleteLongitude, 
       CompleteLatitude, TakeTime, TakeLongitude, 
       TakeLatitude, PubToGrabDistance, GrabToCompleteDistance, 
-      PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder
+      PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked
       )
     values (#{id,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, #{needuploadcount,jdbcType=INTEGER}, 
       #{receiptpic,jdbcType=VARCHAR}, #{haduploadcount,jdbcType=INTEGER}, #{isjoinwithdraw,jdbcType=INTEGER}, 
@@ -56,6 +56,7 @@
       #{completelatitude,jdbcType=DOUBLE}, #{taketime,jdbcType=TIMESTAMP}, #{takelongitude,jdbcType=DOUBLE}, 
       #{takelatitude,jdbcType=DOUBLE}, #{pubtograbdistance,jdbcType=DOUBLE}, #{grabtocompletedistance,jdbcType=DOUBLE}, 
       #{pubtocompletedistance,jdbcType=DOUBLE}, #{onekeypuborder,jdbcType=INTEGER}, #{isnotrealorder,jdbcType=INTEGER}
+      , #{isorderchecked,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.OrderOther" >
@@ -254,8 +255,11 @@
       <if test="isnotrealorder != null" >
         IsNotRealOrder = #{isnotrealorder,jdbcType=INTEGER},
       </if>
+       <if test="cancelTime != null" >
+        CancelTime = getdate()
+      </if>
     </set>
-    where Id = #{id,jdbcType=INTEGER}
+    where OrderId = #{orderid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderOther" >
     update OrderOther
@@ -281,4 +285,5 @@
       IsNotRealOrder = #{isnotrealorder,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  
 </mapper>

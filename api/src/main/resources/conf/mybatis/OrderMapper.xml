@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IOrderDao" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.Order" >
     <id column="Id" property="id" jdbcType="INTEGER" />
     <result column="OrderNo" property="orderno" jdbcType="NVARCHAR" />
@@ -58,6 +58,24 @@
     <result column="FinishAll" property="finishall" jdbcType="INTEGER" />
     <result column="RealOrderCommission" property="realordercommission" jdbcType="NUMERIC" />
   </resultMap>
+  <!-- 商家订单概览信息 可扩展  add by pengyi 20180818-->
+  <resultMap id="businessOrderSummaryResultMap" type="com.edaisong.entity.domain.BusinessOrderSummaryModel">
+	  <result property="unReceive" column="unReceive" jdbcType="INTEGER"/>
+	  <result property="finish" column="finish" jdbcType="INTEGER"/>
+	  <result property="cancel" column="cancel" jdbcType="INTEGER"/>
+	  <result property="pickUp" column="pickUp" jdbcType="INTEGER"/>
+	  <result property="received" column="received" jdbcType="INTEGER"/>
+	  <result property="name" column="name" jdbcType="NVARCHAR"/>
+	  <result property="balancePrice" column="balancePrice" jdbcType="NUMERIC"/>
+	  <result property="lastLoginTime" column="lastLoginTime" jdbcType="TIMESTAMP"/>
+	  <result property="city" column="city" jdbcType="NVARCHAR"/>
+  </resultMap>
+  <!-- 商家发单时间统计 可扩展  add by pengyi 20180819-->
+  <resultMap id="busiPubOrderTimeStatisticsResultMap" type="com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel">
+	  <result property="hour" column="hour" jdbcType="INTEGER"/>
+	  <result property="pubCount" column="pubCount" jdbcType="INTEGER"/>
+  </resultMap>
+  
   <sql id="Base_Column_List" >
     Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
     ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
@@ -69,18 +87,32 @@
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展  CaoHeYang 20150804 -->
+  <select id="getOneByCriteria" resultMap="BaseResultMap" parameterType="com.edaisong.entity.Order" >
     select 
     <include refid="Base_Column_List" />
-    from order
-    where Id = #{id,jdbcType=INTEGER}
+    from [order]
+    where 1=1 
+    <if test="id != null" >
+        and id= #{id,jdbcType=INTEGER}  
+    </if>
+    <if test="orderno != null" >
+        and orderno= #{orderno,jdbcType=NVARCHAR} 
+    </if>
+     <if test="businessid != null" >
+        and businessid= #{businessid,jdbcType=INTEGER} 
+    </if>
+    <if test="status != null" >
+        and status= #{status,jdbcType=INTEGER} 
+    </if>
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from order
     where Id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.Order" >
-    insert into order (Id, OrderNo, PickUpAddress, 
+    insert into dbo.[order] (Id, OrderNo, PickUpAddress, 
       PubDate, ReceviceName, RecevicePhoneNo, 
       ReceviceAddress, ActualDoneDate, IsPay, 
       Amount, OrderCommission, DistribSubsidy, 
@@ -119,12 +151,13 @@
       #{businessreceivable,jdbcType=DECIMAL}, #{mealssettlemode,jdbcType=INTEGER}, #{finishdatelength,jdbcType=INTEGER}, 
       #{finishall,jdbcType=INTEGER}, #{realordercommission,jdbcType=NUMERIC})
   </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.Order" >
-    insert into order
+  <insert id="insertSelective" parameterType="com.edaisong.entity.Order">  
+ <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+    select @@IDENTITY as id
+  </selectKey>
+
+    insert into dbo.[order]
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
       <if test="orderno != null" >
         OrderNo,
       </if>
@@ -286,12 +319,9 @@
       </if>
       <if test="realordercommission != null" >
         RealOrderCommission,
-      </if>
+      </if>      
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="orderno != null" >
         #{orderno,jdbcType=NVARCHAR},
       </if>
@@ -453,8 +483,8 @@
       </if>
       <if test="realordercommission != null" >
         #{realordercommission,jdbcType=NUMERIC},
-      </if>
-    </trim>
+      </if>    
+    </trim>     
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Order" >
     update order
@@ -731,7 +761,7 @@
       <if test="originalOrderNo != null and originalOrderNo!=''">
 	      and o.OriginalOrderNo=''${originalOrderNo}''
      </if>
-      <if test="orderStatus != null">
+      <if test="orderStatus != null and orderStatus>-1">
 	      and o.Status=${orderStatus}
      </if>
       <if test="superManName != null and superManName!=''">
@@ -783,7 +813,7 @@
  </select>
   
   
-   <!--后台订单列表页面 ） add by caoheyang 20150728  -->
+   <!--后台订单列表百度地图打点基础数据   add by caoheyang 20150728  -->
   <select id="getOrderMapDetail"  resultType="com.edaisong.entity.domain.OrderMapDetail"   
   parameterType="long"  >
 	select  ord.OrderId,
@@ -816,4 +846,46 @@
                             WHERE   ab.Id = @orderID
  </select>
   
+  <!--商家后台 订单详情页面基础数据    add by caoheyang 20150804  -->
+  <select id="getOrderDetailBusiness"  resultType="com.edaisong.entity.domain.OrderDetailBusiness"   
+  parameterType="com.edaisong.entity.req.OrderDetailBusinessReq"  >
+select a.Id,a.OrderNo,a.Status,a.OrderFrom,a.OriginalOrderNo,a.Remark,a.PubDate, 
+b.GrabTime,b.TakeTime,b.CancelTime,a.ActualDoneDate,a.RecevicePhoneNo,a.ReceviceAddress,c.TrueName,c.PhoneNo,
+a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,
+ case when a.OrderFrom=0 then '客户端' else d.GroupName end GroupName
+ from dbo.[order] ( nolock ) a
+ join dbo.OrderOther ( nolock ) b on a.Id=b.OrderId
+ LEFT join dbo.clienter  ( nolock ) c on a.clienterId=c.Id 
+ left  join dbo.[group] d on a.OrderFrom=d.Id 
+ where a.OrderNo=#{orderNo,jdbcType=NVARCHAR} and a.BusinessId= #{businessId,jdbcType=INTEGER} 
+   </select>
+   <!-- 商户取消订单功能   add by caoheyang 20150804 -->
+   <update id="cancelOrderBusiness" parameterType="com.edaisong.entity.Order"  >
+   UPDATE dbo.[order]
+ SET  [Status] =3,OtherCancelReason= #{othercancelreason,jdbcType=NVARCHAR}
+ output Inserted.Id,#{amount,jdbcType=INTEGER},GETDATE(),'商家',#{othercancelreason,jdbcType=NVARCHAR},Inserted.businessId,Inserted.[Status],0
+ into dbo.OrderSubsidiesLog(OrderId,Price,InsertTime,OptName,Remark,OptId,OrderStatus,[Platform])
+ WHERE  OrderNo= #{orderno,jdbcType=NVARCHAR}  and Status= #{status,jdbcType=INTEGER} 
+   </update>
+   
+   <!-- 根据商家Id获得商家订单概述  add by pengyi 20150818-->
+   <select id="getBusinessOrderSummary" resultMap="businessOrderSummaryResultMap" parameterType="java.lang.Integer">
+   	WITH o AS (
+	 SELECT sum(CASE WHEN AuditStatus=1 THEN 1 ELSE 0 end) AS 'finish',
+	 sum(CASE WHEN AuditStatus=2 THEN 1 ELSE 0 end) AS 'received',  --待抢单
+	 sum(CASE WHEN AuditStatus=3 THEN 1 ELSE 0 end) AS 'cancel',  --已完成
+	 sum(CASE WHEN AuditStatus=4 THEN 1 ELSE 0 end) AS 'pickUp',    --已取消
+	 sum(CASE WHEN AuditStatus=0 THEN 1 ELSE 0 end) AS 'unReceive'--配送中
+	 FROM dbo.[order] (NOLOCK) WHERE businessId= #{id,jdbcType=INTEGER})   --待取货
+	 SELECT b.Name,b.Address,b.City,b.BalancePrice,b.LastLoginTime,o.finish,o.received,o.cancel,o.pickUp,o.unReceive 
+	 FROM o JOIN dbo.business (NOLOCK) b ON b.id = #{id,jdbcType=INTEGER};
+   </select>
+   
+   <!-- 根据商家Id获得商家发布订单时间统计  add by pengyi 20150819-->
+   <select id="getBusiPubOrderTimeStatistics" resultMap="busiPubOrderTimeStatisticsResultMap" parameterType="java.util.Map">
+   	SELECT  COUNT(1) as pubCount, DATENAME(HOUR,o.PubDate) AS hour 
+   	FROM dbo.[order] (NOLOCK) o 
+   	WHERE businessId=#{businessId,jdbcType=INTEGER} AND PubDate>=#{startTime,jdbcType=TIMESTAMP} AND <![CDATA[PubDate<=#{endTime,jdbcType=TIMESTAMP} ]]> 
+   	GROUP BY DATENAME(HOUR,o.PubDate) ORDER BY hour;
+   </select>
 </mapper>

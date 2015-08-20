@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.IAuthorityAccountMenuSetDao" >
+<mapper namespace="com.edaisong.api.dao.inter.IAuthorityAccountMenuSetDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.AuthorityAccountMenuSet" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="AccoutId" property="accoutid" jdbcType="INTEGER" />

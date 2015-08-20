@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="com.edaisong.core.common.HtmlHelper"%>
+<%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
 <%@page import="com.edaisong.entity.BusinessGroup"%>
 <%@page import="com.edaisong.entity.DeliveryCompany"%>
@@ -11,7 +11,7 @@
 <%@page import="com.edaisong.entity.domain.BusinessDetailModel"%>
 <%@page import="com.edaisong.entity.domain.GroupModel"%>
 <%@page import="com.edaisong.entity.BusinessOptionLog"%>
-<%@page import="com.edaisong.core.common.ParseHelper"%>
+<%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
 String basePath =PropertyUtils.getProperty("static.admin.url");
@@ -40,10 +40,9 @@ for (GroupModel groupModel : groupListData) {
 List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttribute("businessGroupListData");
 %>
 <div>
-	<div id="left"
-		style="float: left; width: 750px; height: auto; border-right: 1px #dcdcdc solid; margin-top: -10px;">
-		<div
-			style="width: 750px; height: auto; border-bottom: solid 0px #dcdcdc; padding-left: 10px;">
+	<div id="left" style="float: left; width: 750px; height: auto; border-right: 1px #dcdcdc solid; margin-top: -10px;">
+	<form id="busForm" action="">
+		<div style="width: 750px; height: auto; border-bottom: solid 0px #dcdcdc; padding-left: 10px;">
 			<div class="control-group" style="margin-top: 10px">
 				<label>注册账号：</label> <label><%=detail.getPhoneno()%></label>
 				<div class="SearchMd"
@@ -69,11 +68,6 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 					value="<%=detail.getLandline()==null?"":detail.getLandline()%>">
 			</div>
 			<div class="control-group">
-				<label style="margin-left: 5px">配 送 费：</label> <input
-					name="busiWaisong" id="busiWaisong" type="text"
-					value="<%=detail.getDistribsubsidy()%>">
-			</div>
-			<div class="control-group">
 				<label style="margin-left: 20px">城 市：</label>
 				<%=HtmlHelper.getSelect("busiCity", openCityList, "name", "code",detail.getCityid(),"","-请选择-","width:77px")%>
 				<label>区 域：</label>
@@ -92,38 +86,24 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 					type="text" value="<%=detail.getLatitude()%>" disabled="disabled">
 				<a id="postion" style="margin-left: 15px"><b>地图定位</b></a>
 			</div>
+			  <div class="control-group" style="margin-bottom: 10px" id="OrderChecked">
+                <label style="margin-left: 5px">订单是否需要审核：</label>
+                <label><input name="IsCheckOrder" type="radio" value="1" <%=detail.getIsOrderChecked()==1?"checked" : ""%> />是 </label>
+                <label><input name="IsCheckOrder" type="radio" value="0" <%=detail.getIsOrderChecked()==0?"checked" : ""%> />否 </label> 
+            </div>	
 		</div>
 		<hr />
 		<div
 			style="width: 750px; height: auto; border-bottom: solid 0px #dcdcdc; padding-left: 10px;">
 			<div class="control-group" style="margin-top: 10px">
-				<label style="font-size: 15px">结算比例设置(应收)</label>
+				<label style="font-size: 15px">应收商家</label>
 			</div>
-			<div class="control-group">
-				<input id="rCommissionFormulaMode0" name="rCommissionFormulaMode"
-					type="radio" value="1"
-					<%=detail.getCommissiontype()==1?"checked" : ""%>> <label
-					for="rCommissionFormulaMode0">结算比例：</label> <input
-					id="rCommissionFormulaMode1" name="rCommissionFormulaMode"
-					type="radio" value="2" style="margin-left: 30px"
-					<%=detail.getCommissiontype()==2?"checked" : ""%>> <label
-					for="rCommissionFormulaMode1">固定金额：</label> <input type="hidden"
-					id="oldCommissionType" name="oldCommissionType">
-			</div>
-			<div class="control-group" style="margin-bottom: 10px">
-				<div id="divbusCommissionText"
-					<%=detail.getCommissiontype()==2?"hidden" : ""%>>
-					<input name="busCommissionText" id="busCommissionText"
-						style="width: 120px;" type="text"
-						value="<%=detail.getBusinesscommission()%>">%
-				</div>
-				<div id="divCommissionFixValue"
-					<%=detail.getCommissiontype()==1?"hidden" : ""%>>
-					<input name="CommissionFixValue" id="CommissionFixValue"
-						style="width: 120px;" type="text"
-						value="<%=detail.getCommissionfixvalue()%>">元/单
-				</div>
-			</div>
+			     <div class="control-group">
+                    <label>订单金额*</label>
+                    <label title="应收商家配送费比例">商配比例</label><input id="busCommissionText" name="busCommissionText" style="width:100px" type="text" value="<%=detail.getBusinesscommission()%>" />
+                    %&nbsp;+&nbsp;<label title="应收商家配送费定额">商配定额</label><input id="CommissionFixValue" name="CommissionFixValue" style="width:100px" value="<%=detail.getCommissionfixvalue()%>" />&nbsp;+&nbsp;
+                    <label title="代收客户配送费">代收客配</label><input id="busiWaisong" id="busiWaisong" style="width:100px" value="<%=detail.getDistribsubsidy()%>" />
+                </div>
 		</div>
 		<hr />
 		<div
@@ -195,7 +175,7 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			</div>
 
 		</div>
-
+    </form>
 		<div
 			style="width: 750px; height: auto; overflow: auto; margin-top: 10px; border-bottom: solid 1px #dcdcdc;"
 			id="divDeliveryCompany">
@@ -213,7 +193,7 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 				</div>
 				<%
 					for (DeliveryCompany item : deliveryCompany) {
-								                String check = item.getDeliverycompanycode()==detail.getRecommendphone() ? "checked='checked'" : "";
+					String check = item.getDeliverycompanycode()==detail.getRecommendphone() ? "checked='checked'" : "";
 				%>
 				<div style="width: 110px; height: 25px; float: left">
 					<input type="checkbox" name="checkMenus" id="<%=item.getId()%>"
@@ -314,19 +294,14 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 
 
 <script type="text/javascript">
-	//var adminjs = new adminglass();
-	//实例化后台类
 	$(document).ready(function() {
 		$('#operateTimeStart').datepicker();
 		$('#operateTimeEnd').datepicker();
 		funcCheckExpress();
-		//var hidPushCity = $("#hidPushCity").val();
-		//var cityArr = hidPushCity.split(",");
-		//$.each(cityArr, function (i, n) {
-		//    $(":checkbox[id='" + n + "']").prop("checked", true);
-		//});
-
+	    oldForm=$("#busForm").serialize();
 	});
+	var oldForm="";
+    var oldValues= new Array();   
 
 	function funcCheckExpress() {
 		var businessId = $('#busiId').val();
@@ -354,94 +329,83 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 											+ businessExpressRef[i].expressid
 											+ "']").prop("checked", false);
 						}
-
 					}
 				}
-			},
-		error:function(d){
-			alert(d.responseText);
-		}
+                //保存商家的物流公司设置
+                $("input[name='checkMenus']").each(function () {
+                    if ($(this).is(':checked')) {
+                        oldValues.push(1);
+                    } else {
+                        oldValues.push(0);
+                    }
+                });
+			}
 		});
-
 	};
 
 
 	//百度地图
-	$("#postion").click(
-			function() {
-				$('#MapShow').modal('show');
-				var longitude = $('#busiLongitude').val();
-				var latitude = $('#busiLatitude').val();
-				var map = new BMap.Map("map", {
-					enableMapClick : false
-				});
-				map.centerAndZoom(new BMap.Point(longitude, latitude), 13);
-				map.enableScrollWheelZoom();
-				var marker = new BMap.Marker(
-						new BMap.Point(longitude, latitude)); // 创建点
-				map.addOverlay(marker);
-				map.addEventListener("click", function(e) {
-					map.clearOverlays();
-					var markernew = new BMap.Marker(new BMap.Point(e.point.lng,
-							e.point.lat)); // 创建新点
-					map.addOverlay(markernew);
-					var geoc = new BMap.Geocoder();
-					var pt = e.point;
-					geoc.getLocation(pt, function(rs) {
-						var addComp = rs.addressComponents;
-						var address = addComp.province + addComp.city
-								+ addComp.district + addComp.street
-								+ addComp.streetNumber;
-						//TODO..城市是否开通
-						addComp.city
-						//TODO..城区是否存在
-						addComp.district
+	$("#postion").click(function() {
+		$('#MapShow').modal('show');
+		var longitude = $('#busiLongitude').val();
+		var latitude = $('#busiLatitude').val();
+		var map = new BMap.Map("map", {
+			enableMapClick : false
+		});
+		map.centerAndZoom(new BMap.Point(longitude, latitude), 13);
+		map.enableScrollWheelZoom();
+		var marker = new BMap.Marker(
+				new BMap.Point(longitude, latitude)); // 创建点
+		map.addOverlay(marker);
+		map.addEventListener("click", function(e) {
+			map.clearOverlays();
+			var markernew = new BMap.Marker(new BMap.Point(e.point.lng,
+					e.point.lat)); // 创建新点
+			map.addOverlay(markernew);
+			var geoc = new BMap.Geocoder();
+			var pt = e.point;
+			geoc.getLocation(pt, function(rs) {
+				var addComp = rs.addressComponents;
+				var address = addComp.province + addComp.city
+						+ addComp.district + addComp.street
+						+ addComp.streetNumber;
+				//TODO..城市是否开通
+				addComp.city
+				//TODO..城区是否存在
+				addComp.district
 
-						if (confirm("是否使用地址【" + address + "】？")) {
-							$('#busiLongitude').val(e.point.lng);
-							$('#busiLatitude').val(e.point.lat);
-							$('#busiAddr').val(address);
-							$('#MapShow').modal('hide');
-						}
-					});
-				});
+				if (confirm("是否使用地址【" + address + "】？")) {
+					$('#busiLongitude').val(e.point.lng);
+					$('#busiLatitude').val(e.point.lat);
+					$('#busiAddr').val(address);
+					$('#MapShow').modal('hide');
+				}
 			});
-	//结算比例选择
-	$('input[name="rCommissionFormulaMode"]').click(function() {
-		var a = $('input[name="rCommissionFormulaMode"]:checked').val();
-		if (a == 1) {
-			$("#divCommissionFixValue").hide();
-			$("#divbusCommissionText").show();
-		} else {
-			$("#divbusCommissionText").hide();
-			$("#divCommissionFixValue").show();
-		}
+		});
 	});
+
 	//市区联动
 	$('#busiCity').change(function() {
-						var selDistrictCode = $("#busiDistrict");
-						selDistrictCode.empty(); //清除选择的城市信息
-						selDistrictCode.append('<option value="" >--区域--</option>');
-						if ($(this).val() != null && $(this).val() != "") {
-							var url = "<%=basePath%>/business/getCityDistrict";
-							var paramaters={cityID : $(this).val()};
-							$.ajax({
-								type : 'POST',
-								url : url,
-								data : paramaters,
-								success : function(data) {
-									$.each(data,function(i,item) {
-										selDistrictCode.append('<option  value="' + item.code + '">'
-														+ item.name
-														+ '</option>');
-									});
-								},
-								error : function(d) {
-									alert(d.responseText);
-								}
-							});
-						}
+		var selDistrictCode = $("#busiDistrict");
+		selDistrictCode.empty(); //清除选择的城市信息
+		selDistrictCode.append('<option value="" >--区域--</option>');
+		if ($(this).val() != null && $(this).val() != "") {
+			var url = "<%=basePath%>/business/getCityDistrict";
+			var paramaters={cityID : $(this).val()};
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data : paramaters,
+				success : function(data) {
+					$.each(data,function(i,item) {
+						selDistrictCode.append('<option  value="' + item.code + '">'
+										+ item.name
+										+ '</option>');
 					});
+				}
+			});
+		}
+	});
 	//全选
 	function checkAll() {
 		var checkedOfAll = $("#selectAll").prop("checked");
@@ -450,191 +414,203 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 
 	//保存
 	$("#btnModifyCommit").click(function() {
-						var id = $('#busiId').val();
-						var name = $('#busiName').val();
-						var phoneNo2 = $('#busiPhoneNo2').val();
-						var landline = $('#busiLandline').val();
-						var distribSubsidy = $('#busiWaisong').val();
-						var cityId = $('#busiCity').val();
-						var districtId = $('#busiDistrict').val();
-						var cityName = $('#busiCity option:selected').text();
-						var districtName = $('#busiDistrict option:selected')
-								.text();
-						var adress = $('#busiAddr').val();
-						var latitude = $('#busiLatitude').val();
-						var longitude = $('#busiLongitude').val();
-						var commissionType = $(
-								'input[name="rCommissionFormulaMode"]:checked')
-								.val();
-						var commissionText = $('#busCommissionText').val();
-						var commissionFixValue = $('#CommissionFixValue').val();
-						var businessGroupId = $('#businessGroupID').val();
-						var mealsSettleMode = $('#busiMealsSettleMode').val();
-						var groupId = 0;
-						var originalBusiId = $('#busiSourceId').val();
-						var hidGroupId = $('#hidGroupId').val();
-						var oneKeyPubOrder = $(
-								'input[name="rOneKeyPubOrder"]:checked').val();
-						var IsEmployerTask = $(
-								'input[name="rIsEmployerTask"]:checked').val();
+		 var data=$("#busForm").serialize();
+		 if(oldForm==data){
+			 alert("没有需要更新的信息");
+			 return;
+		 }
+		var id = $('#busiId').val();
+		var name = $('#busiName').val();
+		var phoneNo2 = $('#busiPhoneNo2').val();
+		var landline = $('#busiLandline').val();
+		var distribSubsidy = $('#busiWaisong').val();
+		var cityId = $('#busiCity').val();
+		var districtId = $('#busiDistrict').val();
+		var cityName = $('#busiCity option:selected').text();
+		var districtName = $('#busiDistrict option:selected')
+				.text();
+		var adress = $('#busiAddr').val();
+		var latitude = $('#busiLatitude').val();
+		var longitude = $('#busiLongitude').val();
+		var commissionType = $(
+				'input[name="rCommissionFormulaMode"]:checked')
+				.val();
+		var commissionText = $('#busCommissionText').val();
+		var commissionFixValue = $('#CommissionFixValue').val();
+		var businessGroupId = $('#businessGroupID').val();
+		var mealsSettleMode = $('#busiMealsSettleMode').val();
+		var groupId = 0;
+		var originalBusiId = $('#busiSourceId').val();
+		var hidGroupId = $('#hidGroupId').val();
+		var oneKeyPubOrder = $(
+				'input[name="rOneKeyPubOrder"]:checked').val();
+		var IsEmployerTask = $(
+				'input[name="rIsEmployerTask"]:checked').val();
 
-						var isAllowOverdraft = $(
-								'input[name="rBalanceAllowOverDraft"]:checked')
-								.val();
-						if (hidGroupId == 0) {
-							groupId = $('#busGroupId').val();
-						}
-						if (name.trim().length == 0) {
-							alert("请输入商户名称！");
-							return;
-						}
-						if (name.trim().length > 20) {
-							alert("商户名称长度不超过20！");
-							return;
-						}
-						if (originalBusiId.trim().length
-								&& isNaN(originalBusiId)) {
-							alert("请输入正确的第三方Id!");
-							return;
-						}
-						var reg = /^0?1\d{10}$/;
-						var regLandLine = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
-						var decimalFormat = /^[0-9]*(\.[0-9]{1,2})?$/;
-						if (!reg.test(phoneNo2)) {
-							alert("请输入正确的手机号!");
-							return;
-						}
-						if (!regLandLine.test(landline)
-								&& landline.trim().length > 0) {
-							alert("请输入正确的座机号!");
-							return;
-						}
-						if (!decimalFormat.test(distribSubsidy)
-								|| distribSubsidy == '') {
-							alert("请输入正确的配送费，且不小于0元！");
-							return;
-						}
-						if (cityId == "") {
-							alert("请选择城市！");
-							return;
-						}
+		var isAllowOverdraft = $(
+				'input[name="rBalanceAllowOverDraft"]:checked')
+				.val();
+		if (hidGroupId == 0) {
+			groupId = $('#busGroupId').val();
+		}
+		if (name.trim().length == 0) {
+			alert("请输入商户名称！");
+			return;
+		}
+		if (name.trim().length > 20) {
+			alert("商户名称长度不超过20！");
+			return;
+		}
+		if (originalBusiId.trim().length
+				&& isNaN(originalBusiId)) {
+			alert("请输入正确的第三方Id!");
+			return;
+		}
+		var reg = /^0?1\d{10}$/;
+		var regLandLine = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+		var decimalFormat = /^[0-9]*(\.[0-9]{1,2})?$/;
+		if (!reg.test(phoneNo2)) {
+			alert("请输入正确的手机号!");
+			return;
+		}
+		if (!regLandLine.test(landline)
+				&& landline.trim().length > 0) {
+			alert("请输入正确的座机号!");
+			return;
+		}
+		if (!decimalFormat.test(distribSubsidy)
+				|| distribSubsidy == '') {
+			alert("请输入正确的配送费，且不小于0元！");
+			return;
+		}
+		if (cityId == "") {
+			alert("请选择城市！");
+			return;
+		}
 
-						if (districtId == "") {
-							alert("请选择区域！");
-							return;
-						}
-						if (adress.trim().length == 0) {
-							alert("请输入详细地址！");
-							return;
-						}
-						if (longitude.trim().length == 0) {
-							alert("请输入经度！");
-							return;
-						}
-						if (latitude.trim().length == 0) {
-							alert("请输入纬度！");
-							return;
-						}
-						if (commissionType == 1) {
-							if (commissionText == ''
-									|| Number(commissionText) < 1
-									|| Number(commissionText) > 100) {
-								alert("结算比例的区间为1-100!");
-								return;
-							}
-						} else {
+		if (districtId == "") {
+			alert("请选择区域！");
+			return;
+		}
+		if (adress.trim().length == 0) {
+			alert("请输入详细地址！");
+			return;
+		}
+		if (longitude.trim().length == 0) {
+			alert("请输入经度！");
+			return;
+		}
+		if (latitude.trim().length == 0) {
+			alert("请输入纬度！");
+			return;
+		}
+		if (commissionType == 1) {
+			if (commissionText == ''
+					|| Number(commissionText) < 1
+					|| Number(commissionText) > 100) {
+				alert("结算比例的区间为1-100!");
+				return;
+			}
+		} else {
 
-							if (!decimalFormat.test(commissionFixValue)
-									|| commissionFixValue == '') {
-								alert("请输入正确的固定金额，且不小于0元!");
-								return;
-							}
-						}
-						var paramaters = {
-							"id" : id,
-							"name" : name,
-							"landline" : landline,
-							"phoneno2" : phoneNo2,
-							"distribsubsidy" : distribSubsidy,
-							"cityid" : cityId,
-							"districtid" : districtId,
-							"city" : cityName,
-							"district" : districtName,
-							"address" : adress,
-							"latitude" : latitude,
-							"longitude" : longitude,
-							"commissiontype" : commissionType,
-							"businesscommission" : commissionText,
-							"commissionfixvalue" : commissionFixValue,
-							"businessgroupid" : businessGroupId,
-							"mealssettlemode" : mealsSettleMode,
-							"groupid" : groupId,
-							"originalbusiid" : originalBusiId,
-							"onekeypuborder" : oneKeyPubOrder,
-							"isemployertask" : IsEmployerTask,
-							"isallowoverdraft" : isAllowOverdraft
-						};
-						var url = "<%=basePath%>/business/modifybusiness";
-						$.ajax({
-							type : 'POST',
-							url : url,
-							data : paramaters,
-							success : function(result) {
-								if (result == 1) {
-									alert("修改商户信息成功");
-									window.location.href = "<%=basePath%>/business/detail?businessID=<%=detail.getId()%>";
-								} else if (result == 0) {
-									alert("修改商户信息失败");
-								} else {
-									alert("没有需要更新的信息");
-								}
-							},
-							error : function(d) {
-								alert(d.responseText);
-							}
-						});
-
-					});
-	//保存物流公司配置
-	$("#btnModifyExpress").click(
-			function() {
-				if (confirm("确定要提交保存吗？")) {
-					var busiId = $('#busiId').val();
-					var deliveryCompanyList = "";
-					$("input[name='checkMenus']").each(
-							function() {
-								if ($(this).is(':checked')) {
-									deliveryCompanyList = deliveryCompanyList
-											+ $(this).val() + ",1;";
-								} else {
-									deliveryCompanyList = deliveryCompanyList
-											+ $(this).val() + ",0;";
-								}
-							});
-					var paramaters = {
-						"busiId" : busiId,
-						"deliveryCompanyList" : deliveryCompanyList
-					};
-					var url = "/BusinessManager/ModifyBusinessExpress";
-					$.ajax({
-						type : 'POST',
-						url : url,
-						data : paramaters,
-						success : function(result) {
-							if (result.IsSuccess) {
-								alert(result.Message);
-								window.location.href = window.location.href;
-							} else {
-								alert(result.Message);
-							}
-						},
-						error : function(d) {
-							alert(d.responseText);
-						}
-					});
+			if (!decimalFormat.test(commissionFixValue)
+					|| commissionFixValue == '') {
+				alert("请输入正确的固定金额，且不小于0元!");
+				return;
+			}
+		}
+		var paramaters = {
+			"id" : id,
+			"name" : name,
+			"landline" : landline,
+			"phoneno2" : phoneNo2,
+			"distribsubsidy" : distribSubsidy,
+			"cityid" : cityId,
+			"districtid" : districtId,
+			"city" : cityName,
+			"district" : districtName,
+			"address" : adress,
+			"latitude" : latitude,
+			"longitude" : longitude,
+			"commissiontype" : commissionType,
+			"businesscommission" : commissionText,
+			"commissionfixvalue" : commissionFixValue,
+			"businessgroupid" : businessGroupId,
+			"mealssettlemode" : mealsSettleMode,
+			"groupid" : groupId,
+			"originalbusiid" : originalBusiId,
+			"onekeypuborder" : oneKeyPubOrder,
+			"isemployertask" : IsEmployerTask,
+			"isallowoverdraft" : isAllowOverdraft,
+			"isOrderChecked":$('#OrderChecked input[name="IsCheckOrder"]:checked ').val()
+		};
+		var url = "<%=basePath%>/business/modifybusiness";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				if (result == 1) {
+					alert("修改商户信息成功");
+					window.location.href = "<%=basePath%>/business/detail?businessID=<%=detail.getId()%>";
+				} else if (result == 0) {
+					alert("修改商户信息失败");
+				} else {
+					alert("没有需要更新的信息");
 				}
+			}
+		});
 
-			});
+	});
+	//保存物流公司配置
+	$("#btnModifyExpress").click(function() {
+		var busiId = $('#busiId').val();
+		var deliveryCompanyList = "";
+		var newKeys = new Array();
+        var newValues = new Array();
+        $("input[name='checkMenus']").each(
+                function () {
+                    newKeys.push($(this).val());
+                    if ($(this).is(':checked')) {
+                        newValues.push(1);
+                    } else {
+                        newValues.push(0);
+                    }
+                });
+
+
+        for (var i = 0; i < newKeys.length; i++) {//发生了改变，才需要提交db
+            if (oldValues[i] != newValues[i]) {
+                deliveryCompanyList = deliveryCompanyList + newKeys[i]
+                        + "," + newValues[i] + ";";
+            }
+        }
+		if(deliveryCompanyList==""){
+			alert("物流公司数据没有发生变更，不需要保存");
+			return;
+		}
+		if (!confirm("确定要提交保存吗？")){
+			return;
+		}
+		var paramaters = {
+			"busiId" : busiId,
+			"deliveryCompanyList" : deliveryCompanyList
+		};
+		var url = "<%=basePath%>/business/modifyexpress";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				if (result > 0) {
+					alert("更新成功");
+					window.location.href = window.location.href;
+				} else {
+					alert("失败");
+				}
+			}
+		});
+});
 </script>
 <script type="text/javascript"
 	src="http://api.map.baidu.com/api?v=2.0&ak=dAeaG6HwIFGlkbqtyKkyFGEC"></script>

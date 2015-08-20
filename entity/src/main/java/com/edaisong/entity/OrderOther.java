@@ -44,8 +44,20 @@ public class OrderOther {
     private Integer onekeypuborder;
 
     private Integer isnotrealorder;
+    
+    private Integer isorderchecked;
+    
+    private Date cancelTime;
 
-    public Integer getId() {
+    public Date getCancelTime() {
+		return cancelTime;
+	}
+
+	public void setCancelTime(Date cancelTime) {
+		this.cancelTime = cancelTime;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -212,4 +224,12 @@ public class OrderOther {
     public void setIsnotrealorder(Integer isnotrealorder) {
         this.isnotrealorder = isnotrealorder;
     }
+
+	public Integer getIsorderchecked() {
+		return isorderchecked;
+	}
+
+	public void setIsorderchecked(Integer isorderchecked) {
+		this.isorderchecked = isorderchecked;
+	}
 }

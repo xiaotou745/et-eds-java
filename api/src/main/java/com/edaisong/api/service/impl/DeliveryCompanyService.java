@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edaisong.api.dal.dao.inter.IDeliveryCompanyDao;
-import com.edaisong.api.dal.dao.inter.IPublicProvinceCityDao;
+import com.edaisong.api.dao.inter.IDeliveryCompanyDao;
+import com.edaisong.api.dao.inter.IPublicProvinceCityDao;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.entity.DeliveryCompany;
 

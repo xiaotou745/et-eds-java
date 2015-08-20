@@ -1,12 +1,12 @@
 package com.edaisong.entity;
 
-import java.math.BigDecimal;
+import java.lang.Double;
 import java.util.Date;
 
 public class CrossShopStatisticLog {
     private Integer id;
 
-    private BigDecimal totalamount;
+    private Double totalamount;
 
     private Integer oncecount;
 
@@ -28,25 +28,25 @@ public class CrossShopStatisticLog {
 
     private Integer exceedninetimescount;
 
-    private BigDecimal onceprice;
+    private Double onceprice;
 
-    private BigDecimal twiceprice;
+    private Double twiceprice;
 
-    private BigDecimal threetimesprice;
+    private Double threetimesprice;
 
-    private BigDecimal fourtimesprice;
+    private Double fourtimesprice;
 
-    private BigDecimal fivetimesprice;
+    private Double fivetimesprice;
 
-    private BigDecimal sixtimesprice;
+    private Double sixtimesprice;
 
-    private BigDecimal seventimesprice;
+    private Double seventimesprice;
 
-    private BigDecimal eighttimesprice;
+    private Double eighttimesprice;
 
-    private BigDecimal ninetimesprice;
+    private Double ninetimesprice;
 
-    private BigDecimal exceedninetimesprice;
+    private Double exceedninetimesprice;
 
     private Date createtime;
 
@@ -60,11 +60,11 @@ public class CrossShopStatisticLog {
         this.id = id;
     }
 
-    public BigDecimal getTotalamount() {
+    public Double getTotalamount() {
         return totalamount;
     }
 
-    public void setTotalamount(BigDecimal totalamount) {
+    public void setTotalamount(Double totalamount) {
         this.totalamount = totalamount;
     }
 
@@ -148,83 +148,83 @@ public class CrossShopStatisticLog {
         this.exceedninetimescount = exceedninetimescount;
     }
 
-    public BigDecimal getOnceprice() {
+    public Double getOnceprice() {
         return onceprice;
     }
 
-    public void setOnceprice(BigDecimal onceprice) {
+    public void setOnceprice(Double onceprice) {
         this.onceprice = onceprice;
     }
 
-    public BigDecimal getTwiceprice() {
+    public Double getTwiceprice() {
         return twiceprice;
     }
 
-    public void setTwiceprice(BigDecimal twiceprice) {
+    public void setTwiceprice(Double twiceprice) {
         this.twiceprice = twiceprice;
     }
 
-    public BigDecimal getThreetimesprice() {
+    public Double getThreetimesprice() {
         return threetimesprice;
     }
 
-    public void setThreetimesprice(BigDecimal threetimesprice) {
+    public void setThreetimesprice(Double threetimesprice) {
         this.threetimesprice = threetimesprice;
     }
 
-    public BigDecimal getFourtimesprice() {
+    public Double getFourtimesprice() {
         return fourtimesprice;
     }
 
-    public void setFourtimesprice(BigDecimal fourtimesprice) {
+    public void setFourtimesprice(Double fourtimesprice) {
         this.fourtimesprice = fourtimesprice;
     }
 
-    public BigDecimal getFivetimesprice() {
+    public Double getFivetimesprice() {
         return fivetimesprice;
     }
 
-    public void setFivetimesprice(BigDecimal fivetimesprice) {
+    public void setFivetimesprice(Double fivetimesprice) {
         this.fivetimesprice = fivetimesprice;
     }
 
-    public BigDecimal getSixtimesprice() {
+    public Double getSixtimesprice() {
         return sixtimesprice;
     }
 
-    public void setSixtimesprice(BigDecimal sixtimesprice) {
+    public void setSixtimesprice(Double sixtimesprice) {
         this.sixtimesprice = sixtimesprice;
     }
 
-    public BigDecimal getSeventimesprice() {
+    public Double getSeventimesprice() {
         return seventimesprice;
     }
 
-    public void setSeventimesprice(BigDecimal seventimesprice) {
+    public void setSeventimesprice(Double seventimesprice) {
         this.seventimesprice = seventimesprice;
     }
 
-    public BigDecimal getEighttimesprice() {
+    public Double getEighttimesprice() {
         return eighttimesprice;
     }
 
-    public void setEighttimesprice(BigDecimal eighttimesprice) {
+    public void setEighttimesprice(Double eighttimesprice) {
         this.eighttimesprice = eighttimesprice;
     }
 
-    public BigDecimal getNinetimesprice() {
+    public Double getNinetimesprice() {
         return ninetimesprice;
     }
 
-    public void setNinetimesprice(BigDecimal ninetimesprice) {
+    public void setNinetimesprice(Double ninetimesprice) {
         this.ninetimesprice = ninetimesprice;
     }
 
-    public BigDecimal getExceedninetimesprice() {
+    public Double getExceedninetimesprice() {
         return exceedninetimesprice;
     }
 
-    public void setExceedninetimesprice(BigDecimal exceedninetimesprice) {
+    public void setExceedninetimesprice(Double exceedninetimesprice) {
         this.exceedninetimesprice = exceedninetimesprice;
     }
 
