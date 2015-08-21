@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="com.edaisong.entity.domain.BusinessModel"%>
 
 <%
 	String basePath = PropertyUtils.getProperty("static.business.url");
+    BusinessModel businessModel=(BusinessModel) request.getAttribute("businessModel");//商家基本信息
 %>
 
 <div class="top cb">
@@ -197,9 +199,13 @@
 			}				
 			if(validate){
 				$(".popup1").show();
-				$(".popup1 .cb:eq(0) em").html($("#allPrice").html());
-				$(".popup1 .cb:eq(1) em").html($(".price").length);
-				$(".popup1 .cb:eq(3) em").html($("#allPrice").html());  //总金额
+				$(".popup1 .cb:eq(0) em").html($("#allPrice").html()); //订单金额
+				$(".popup1 .cb:eq(1) em").html($(".price").length);  //订单数量
+				var totaldistribsubsidy=<%=businessModel.getDistribsubsidy()%>*$(".price").length;
+				$(".popup1 .cb:eq(2) em").html('￥'+Math.round(totaldistribsubsidy).toFixed(2));  //外送费
+				var amont=parseFloat($('#amount').val());
+				var total=parseFloat(totaldistribsubsidy);
+				$(".popup1 .cb:eq(3) em").html('￥'+(amont+total).toFixed(2));  //总金额
 			}
 		});
 		
@@ -229,7 +235,7 @@
 				data :paramaters,
 				success : function(result) {
 					$(this).parents('.popup1').hide();
-					if(result.responseCode==0){  
+                	if(result.responseCode==0){  
 					    //异步请求成功 呼出 成功层
 						$('.popup2').show();
 					} else if(result.responseCode==-8){  
@@ -283,8 +289,14 @@
 
 		//表单验证配置
 		var teg = {};
-		teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;
-		teg.address1 = 'empty';;
+		<%  // 一键发单客户端校验逻辑
+	    	if(businessModel.getOnekeypuborder()==0)
+	    	{
+		%>
+			teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;
+			teg.address = 'empty';
+		<% }
+			%>
 
 		$('.box2').on('blur','input',function(){
 			vinput(this);
@@ -331,6 +343,7 @@
 					$(input).parent().next().next().attr('style','display:block!important');
 					return false;
 				}
+				$(input).parent().next().next().removeAttr('style');
 				var all = 0;
 				var priceList = $('.price');
 				for(var i=0;i<priceList.length;i++){
@@ -342,9 +355,9 @@
 				
 				all = Math.round(all*100)/100;
 				all = all.toFixed(2);
-				$('#amount').val(all);  //真实订单金额
-				$('#allPrice').html('¥'+all);
-				$(input).parent().next().next().removeAttr('style');
+				$('#amount').val(all);  // 真实订单金额
+				$('#allPrice').html('¥'+all);  
+
 				return true;
 			}
 			return true;

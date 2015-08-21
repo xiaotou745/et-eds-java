@@ -55,8 +55,8 @@
 		LEFT JOIN [group] g WITH ( NOLOCK ) ON g.Id = b.GroupId
 		WHERE b.Id = #{businessID}
 	</select>
-
-<select id="getBusinessByID" resultType="com.edaisong.entity.domain.BusinessModel"
+<!-- 获取商户、集团、策略   2015年8月11日 17:48:47 胡灵波 -->
+<select id="getBusiness" resultType="com.edaisong.entity.domain.BusinessModel"
 		parameterType="java.lang.Long">
 		SELECT
 		b.id ,
