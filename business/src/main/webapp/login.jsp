@@ -43,7 +43,7 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 								<input type="text" placeholder="输入验证码" maxlength="4" class="ex_get" name="code" id="code"><span class="ex_over"><img id="imgCode" src="<%=basePath %>/account/code?x=Math.random();" class="img"></span>
 								<p><b class="error error3"></b></p>
 								<label><input type="checkbox" checked="checkbox" name="rememberMe" id="rememberMe"/>记住我（下次自动登录）</label> 
-								<input type="submit" value="登&nbsp;&nbsp;录" class="ex_submit" id="btnLogin">
+								<input type="button" value="登&nbsp;&nbsp;录" class="ex_submit" id="btnLogin">
 							<dl>第一次来E代送？<a href="###">快速注册</a></dl>
 						</div>
 					</div>
@@ -104,44 +104,6 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 					var ran = Math.random();
 					document.getElementById("imgCode").src = "<%=basePath %>/account/code?x="+ran;
 				}
-				
-				
-				//以下代码是检测是否有鼠标移动,将用于用户登录后是否有操作
-				/*var oldX = 0;
-				var oldY = 0;
-				var timeOutSeconds = 5;
-				window.lastMove = 0;
-				var getCoordInDocumentExample = function(){
-				    document.onmousemove = function(e){
-				      var pointer = getCoordInDocument(e);
-				      if(Math.abs(pointer.x-oldX) > 1 || Math.abs(pointer.y-oldY)>1){
-				    	  //鼠标已经移动,证明正在操作
-				    	  lastMove = new Date().getTime();
-				      }
-				      oldX = pointer.x;
-				      oldY = pointer.y;
-				    }
-				  }
-				  var getCoordInDocument = function(e) {
-				    e = e || window.event;
-				    var x = e.pageX || (e.clientX +
-				      (document.documentElement.scrollLeft
-				      || document.body.scrollLeft));
-				    var y= e.pageY || (e.clientY +
-				      (document.documentElement.scrollTop
-				      || document.body.scrollTop));
-				    return {'x':x,'y':y};
-				  }
-				  window.onload = function(){
-				     getCoordInDocumentExample();
-				     setInterval(function(){
-				    	 var now = new Date().getTime();
-				    	 if((now - lastMove) > (timeOutSeconds * 1000)){
-				    		 //alert("已超时");
-				    		 //window.location.href = "<%=basePath %>/";
-				    	 }
-				     },1000);
-				 };*/
 			</script>			
 		</body>
 	</html>	

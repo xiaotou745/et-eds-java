@@ -12,13 +12,5 @@
 		<span><a class="three" href="javascript:;">订单统计</a></span>
 		<span><a class="four" href="<%=basePath%>/transdetail/list">交易明细</a></span>
 		<span><a class="five" href="<%=basePath%>/clienter/list">骑士管理</a></span>
-		<span><a class="six" href="javascript:;">消息中心</a></span>
+		<span><a class="six" href="<%=basePath%>/message/list">消息中心</a></span>
 	</div>
-	<script type="text/javascript">
-// 	$(document).ready(function() {
-// 		$(".nav a").click(function(){
-// 			$(this).parent().siblings().removeClass("on");
-// 			$(this).parent().addClass("on");
-// 		});
-// 	});
-</script>
