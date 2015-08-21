@@ -5,79 +5,82 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
-
+<%@page import="com.edaisong.core.util.EnumHelper"%>
+<%@page import="com.edaisong.core.enums.BusinessBalanceRecordRecordType"%>
+<%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%	
 String basePath =PropertyUtils.getProperty("static.business.url");
 %>
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
-<div class="center">
-		<div class="top cb">
+<div class="top cb">
+
 			<h3 class="cb">
-				交易明细
+			交易明细
+				<p class="fr">
+					<input type="text" class="fl" placeholder="订单号或流水号" id="customerInfo">
+					<input type="button" class="fl" value="搜索按钮" id="customerSearch">
+				</p>
 			</h3>
+				<form method="POST" action="#" class="form-horizontal" id="searchForm">
+	<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
 			<div class="function">
-				<input type="button" class="fr" value="搜索" id="btnSerach">
-					<span class="fl">时间</span>
-				<span class="intime"><input type="text" name="d" class="dinput" id="startDate" ><s onClick="WdatePicker({el:'startDate',dateFmt:'yyyy-MM-dd'});"></s></span>
-				<span class="inblock">至</span>
-				<span class="intime"><input type="text" name="d2" class="dinput" id="endDate" ><s onClick="WdatePicker({el:'endDate',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<input type="button" class="fr" value="搜索" id="btnSearch">
 				<span class="fl">交易类型</span>
-				<select class="fl" id="transTypeSelect">
-					<option value="0">全部</option>
-					<option value="1">发布订单</option>
-					<option value="2">取消订单</option>
-					<option value="8">订单菜品费</option>
-					<option value="9">充值</option>
-					<option value="11">手续费</option>
-				</select>
-				<select class="fl" id="numTypeSelect">
-				<option value="0">单号类型</option>
-				<option value="1">订单号</option>
-				<option value="2">流水号</option>
-				</select>
-				<span class="fl">单号/流水</span>
-				<input type="text" placeholder="订单号，流水号" class="dinput"  id="numString" >
+				<%=HtmlHelper.getSelect("recordType", EnumHelper.GetEnumItems(BusinessBalanceRecordRecordType.class), "desc", "value",null,"-1","全部","width:155px","fl") %>
+				<span class="fl">操作时间</span>
+				<label class="fl">
+					<input type="radio" name="timeType" value="0" checked="checked">
+					今日
+				</label>
+				<label class="fl">
+					<input type="radio" name="timeType"  value="1">
+					7天
+				</label>
+				<label class="fl">
+					<input type="radio" name="timeType" value="2">
+					30天
+				</label>
+				<label class="fl">
+					<input type="radio" name="timeType" value="3">
+					区间
+				</label>
+				<span class="intime"><input type="text" class="dinput" id="startDate" name="startDate"><s onClick="WdatePicker({el:'startDate',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="inblock">至</span>
+				<span class="intime"><input type="text" class="dinput" id="endDate" name="endDate"><s onClick="WdatePicker({el:'endDate',dateFmt:'yyyy-MM-dd'});"></s></span>
 			</div>
-		</div>
+			</form>
+</div>
 		<div class="bottom bottom2 bottom3" id="content">
 
 		</div>
-	</div>
 <script>
+var searchType=0;
 var jss = {
 		search : function(currentPage) {
-			var paramaters={
-					startDate:$('#startDate').val(),
-					endDate:$('#endDate').val(),
-					transType:$('#transTypeSelect option:selected').val(),
-					numType:$('#numTypeSelect option:selected').val(),
-					numString:$('#numString').val(),
-					currentPage:currentPage
-					}
-			$.post("<%=basePath%>/transdetail/listdo",paramaters, function(d) {
-				$("#content").html(d);
-			});
+			if(searchType==0){//点击了查询按钮
+				$("#_hiddenCurrentPage").val(currentPage);
+				 var data=$("#searchForm").serialize();
+					$.post("<%=basePath%>/transdetail/listdo",data, function(d) {
+						$("#content").html(d);
+					});
+			}else{//点击了右上角的放大镜查询
+				 var data={CurrentPage:currentPage,search:$("#customerInfo").val()};
+					$.post("<%=basePath%>/transdetail/customerlistdo",data, function(d) {
+						$("#content").html(d);
+					});
+			}
 		}
 	}
-$(function(){
-	//alert(<%=basePath%>);
-	//设置文本框不可用
-	$('#numString').attr('disabled','disabled');
-	//单号类型改变事件
-	$('#numTypeSelect').change(function(){
-		var numtype=$('#numTypeSelect option:selected').val();
-		if(numtype==0){
-			$('#numString').attr('disabled','disabled');
-		}
-		else{
-			$('#numString').removeAttr('disabled');
-		}
-	});
-	$('#btnSerach').click(function(){
-		jss.search(1);
-	});
-	jss.search(1);;
-});
 
+jss.search(1);
+$("#btnSearch").click(function() {
+	searchType=0;
+	$("#customerInfo").val("");
+	jss.search(1);
+});
+$("#customerSearch").click(function() {
+	searchType=1;
+	jss.search(1);
+});
 </script>

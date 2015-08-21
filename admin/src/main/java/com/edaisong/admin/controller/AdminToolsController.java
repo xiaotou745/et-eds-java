@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IGlobalConfigService;
-import com.edaisong.api.service.inter.IBusinessFinanceService;
+import com.edaisong.api.service.inter.IBusinessBalanceRecordService;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;

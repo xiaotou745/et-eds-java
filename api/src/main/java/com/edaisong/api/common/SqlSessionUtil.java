@@ -54,6 +54,9 @@ public class SqlSessionUtil {
 	 */
 	public <E> PagedResponse<E> selectPageList(String statement, Object parameter) {
 		try {
+			if (!(parameter instanceof PagedRequestBase)) {
+				throw new RuntimeException("分页请求必须继承于PagedRequestBase");
+			}
 			PagedRequestBase basemodel=  (PagedRequestBase)parameter;
 			if (basemodel.getCurrentPage()==0) {
 				basemodel.setCurrentPage(1);  //默认第一页

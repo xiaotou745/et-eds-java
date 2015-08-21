@@ -9,7 +9,7 @@
 		<a  class="on" href="<%=basePath%>/order/publish">发布任务</a>
 		<span><a class="one" href="<%=basePath%>/index">商户主页</a></span>
 		<span><a class="two" href="<%=basePath%>/order/list">全部订单</a></span>
-		<span><a class="three" href="javascript:;">订单统计</a></span>
+<!-- 		<span><a class="three" href="javascript:;">订单统计</a></span> -->
 		<span><a class="four" href="<%=basePath%>/transdetail/list">交易明细</a></span>
 		<span><a class="five" href="<%=basePath%>/clienter/list">骑士管理</a></span>
 		<span><a class="six" href="javascript:;">消息中心</a></span>
