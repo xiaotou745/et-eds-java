@@ -48,9 +48,11 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
             </tr>
         </table>  
         
-   <div id="content">
-	
-   </div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox-content" id="content"></div>
+		</div>
+	</div>
    
    
    <div tabindex="-1" class="modal inmodal" id="ClienterRechargeShow"
