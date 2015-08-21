@@ -11,16 +11,9 @@ public class PagedTransDetailReq extends PagedRequestBase {
 
 	private String startDate;
 	private String endDate;
-	private String transType;
-	private String numType;
-	private String numString;
-	private int businessid;
-	public int getBusinessid() {
-		return businessid;
-	}
-	public void setBusinessid(int businessid) {
-		this.businessid = businessid;
-	}
+	private String recordType;
+	private int businessID;
+
 	public String getStartDate() {
 		return startDate;
 	}
@@ -33,38 +26,16 @@ public class PagedTransDetailReq extends PagedRequestBase {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	/**
-	 * 交易类型 
-	 *  1：发布订单  订单号
-	 *  2：取消订单  订单号
-	 *  6：系统奖励  空
-	 *  8：订单菜品费 订单号 
-	 *  9：充值  流水
-	 *  11 手续费) 流水
-	 * */
-	public String getTransType() {
-		return transType;
+	public String getRecordType() {
+		return recordType;
 	}
-	public void setTransType(String transType) {
-		this.transType = transType;
+	public void setRecordType(String recordType) {
+		this.recordType = recordType;
 	}
-	/**
-	 * 单号类型,1订单号 2 流水单号
-	 * */
-	public String getNumType() {
-		return numType;
+	public int getBusinessID() {
+		return businessID;
 	}
-	public void setNumType(String numType) {
-		this.numType = numType;
+	public void setBusinessID(int businessID) {
+		this.businessID = businessID;
 	}
-	/**
-	 *订单号/流水单号 
-	 */
-	public String getNumString() {
-		return numString;
-	}
-	public void setNumString(String numString) {
-		this.numString = numString;
-	}
-	
 }

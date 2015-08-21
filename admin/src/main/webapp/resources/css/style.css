@@ -3073,15 +3073,15 @@ ol.unstyled {
   color: #e5e6e7;
 }
 /* FOOTER */
-.footer {
-  background: none repeat scroll 0 0 white;
-  border-top: 1px solid #e7eaec;
-  bottom: 0;
-  left: 0;
-  padding: 10px 20px;
-  position: absolute;
-  right: 0;
-}
+/* .footer { */
+/*   background: none repeat scroll 0 0 white; */
+/*   border-top: 1px solid #e7eaec; */
+/*   bottom: 0; */
+/*   left: 0; */
+/*   padding: 10px 20px; */
+/*   position: absolute; */
+/*   right: 0; */
+/* } */
 .footer.fixed_full {
   position: fixed;
   bottom: 0;

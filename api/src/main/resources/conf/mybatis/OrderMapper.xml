@@ -803,7 +803,7 @@
   parameterType="com.edaisong.entity.req.PagedOrderSearchReq" 
   statementType="CALLABLE" >
 	{call Sp_CustomPage2015_V1(
-	' o.Status asc , o.Id desc ',
+	' o.PubDate desc ',
 	' <include refid="GetOrdersColums" />',
 	' <include refid="GetOrdersFrom" /> ',
 	' <include refid="GetOrdersColumsWhere"/> ',
@@ -891,4 +891,30 @@ a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,
    	WHERE businessId=#{businessId,jdbcType=INTEGER} AND PubDate>=#{startTime,jdbcType=TIMESTAMP} AND <![CDATA[PubDate<=#{endTime,jdbcType=TIMESTAMP} ]]> 
    	GROUP BY DATENAME(HOUR,o.PubDate) ORDER BY hour;
    </select>
+   <!--商家中心订单列表页面右上角自定义查询 ） add by zhaohailong 20150821  -->
+  <sql id="customerGetOrdersWhere" >
+     1=1  
+      <if test="search != null and search!='' and businessID>0">
+	    and b.id=${businessID}  and  (o.OrderNo=''${search}''
+	      	    or c.TrueName=''${search}''
+	     		or c.PhoneNo=''${search}'')
+     </if>
+  </sql>
+  
+   <!--商家中心订单列表页面右上角自定义查询 ） add by zhaohailong 20150821  -->
+  <select id="customerGetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   
+  parameterType="com.edaisong.entity.req.PagedCustomerSearchReq" 
+  statementType="CALLABLE" >
+	{call Sp_CustomPage2015_V1(
+	' o.PubDate desc ',
+	' <include refid="GetOrdersColums" />',
+	' <include refid="GetOrdersFrom" /> ',
+	' <include refid="customerGetOrdersWhere"/> ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER}
+	,1,
+	#{totalRecord,mode=OUT,jdbcType=INTEGER},
+	#{totalPage,mode=OUT,jdbcType=INTEGER}
+	)}
+ </select>
 </mapper>

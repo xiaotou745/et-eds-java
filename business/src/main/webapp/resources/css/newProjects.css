@@ -167,6 +167,9 @@
 .content2 .center .box2 .box2-ny .orderBox p em{
 	margin-left: 45px;
 }
+.content2 .center .box2 .box2-ny .orderBox p em.ts{
+	display: none;
+}
 .content2 .center .box2 .box2-ny .orderBox .copy{
 	position: relative;
 }
@@ -201,3 +204,4 @@
 	border-radius:3px;
 	cursor:pointer;
 }
+

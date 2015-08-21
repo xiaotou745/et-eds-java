@@ -47,6 +47,7 @@ import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
+import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
@@ -207,7 +208,7 @@ public class OrderService implements IOrderService {
 	 * 
 	 * @param req
 	 * @return
-	 * @author 胡灵波
+	 * @author zhaohailong
 	 * @Date 2015年8月6日 09:56:25
 	 */
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
@@ -289,6 +290,7 @@ public class OrderService implements IOrderService {
 	/**
 	 * 判断该商家是否在30s内已经发过订单
 	 * @param businessID
+	 * @author 赵海龙
 	 * @return
 	 */
 	private boolean checkHasExist(int businessID){
@@ -480,5 +482,10 @@ public class OrderService implements IOrderService {
 	@Override
 	public List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId,Date startTime,Date endTime) {
 		return orderDao.getBusiPubOrderTimeStatistics(businessId,startTime,endTime);
+	}
+
+	@Override
+	public PagedResponse<OrderListModel> customerGetOrders(PagedCustomerSearchReq req) {
+       return orderDao.customerGetOrders(req);
 	}
 }

@@ -21,13 +21,13 @@ PagedResponse<BusinessBalanceRecord> responsePageList = (PagedResponse<BusinessB
 					<td>收支金额</td>
 					<td>余额</td>
 					<td>状态</td>
-					<td>时间</td>
+					<td>操作时间</td>
 				</tr>
 				<%for(int i=0;i<responsePageList.getResultList().size();i++)
 				{%>
 				<tr>
 					<td><%=BusinessBalanceRecordRecordType.getEnum((int)responsePageList.getResultList().get(i).getRecordtype()).desc() %></td>
-					<td><%=responsePageList.getResultList().get(i).getRelationno() %></td>
+					<td>(<%=responsePageList.getResultList().get(i).getRelationno() %>)(<%=responsePageList.getResultList().get(i).getWithwardid() %>)</td>
 					<td>￥<%=responsePageList.getResultList().get(i).getAmount() %></td>
 					<td>￥<%=responsePageList.getResultList().get(i).getBalance() %></td>
 					<td><%=BusinessBalanceRecordStatus.getEnum((int)responsePageList.getResultList().get(i).getStatus()).desc()%></td>

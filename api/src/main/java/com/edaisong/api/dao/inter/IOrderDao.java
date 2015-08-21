@@ -11,6 +11,7 @@ import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
 public interface IOrderDao {
@@ -27,6 +28,14 @@ public interface IOrderDao {
 	 */
 	PagedResponse<OrderListModel> getOrders(PagedOrderSearchReq search);
 
+	/**
+	 * 商家中心订单列表页面右上角自定义查询 
+	 * @author zhaohailong
+	 * @Date 20150821
+	 * @param search 查询参数：可能为订单号，骑士手机号，骑士姓名
+	 * @return
+	 */
+	 PagedResponse<OrderListModel> customerGetOrders(PagedCustomerSearchReq req);
 	/**
 	 * 根据orderID获取订单地图数据
 	 * 

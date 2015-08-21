@@ -277,7 +277,7 @@
 .content .center .bottom2 table{
 	background-color:#fff;
 	border:1px solid #e7e9ef;
-	border-bottom:none;
+/* 	border-bottom:none; */
 }
 .content .center .bottom2 table tr td{
 	height: 55px;

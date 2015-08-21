@@ -55,36 +55,36 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 				<span class="intime"><input type="text" class="dinput" id="orderPubEnd" name="orderPubEnd"><s onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd'});"></s></span>
 			</div>
 			</form>
-		</div>
+</div>
 		<div class="bottom bottom2 bottom3" id="content">
 		</div>
 <script>
-$(document).ready(function () {  
-//     $('#orderPubStart').datepicker();
-//     $('#orderPubEnd').datepicker();
-}); 
-	var jss = {
-		search : function(currentPage) {
-		$("#_hiddenCurrentPage").val(currentPage);
-		 var data=$("#searchForm").serialize();
-			$.post("<%=basePath%>/order/listdo",data, function(d) {
-				$("#content").html(d);
-			});
-		}
-	}
-	jss.search(1);
-	$("#btnSearch").click(function() {
-		jss.search(1);
-	});
-	$("#customerSearch").click(function() {
-		if($("#customerInfo").val()!=""){
-			var data={"superManPhone":$("#customerInfo").val()};
-			var data={"superManName":$("#customerInfo").val()};
-			var data={"originalOrderNo":$("#customerInfo").val()};
-			$.post("<%=basePath%>/order/listdo",data, function(d) {
-				$("#content").html(d);
-			});
+var searchType=0;
+var jss = {
+	search : function(currentPage) {
+		if(searchType==0){//点击了查询按钮
+			$("#_hiddenCurrentPage").val(currentPage);
+			 var data=$("#searchForm").serialize();
+				$.post("<%=basePath%>/order/listdo",data, function(d) {
+					$("#content").html(d);
+				});
+		}else{//点击了右上角的放大镜查询
+			 var data={CurrentPage:currentPage,search:$("#customerInfo").val()};
+				$.post("<%=basePath%>/order/customerlistdo",data, function(d) {
+					$("#content").html(d);
+				});
 		}
 
-	});
+	}
+}
+jss.search(1);
+$("#btnSearch").click(function() {
+	searchType=0;
+	$("#customerInfo").val("");
+	jss.search(1);
+});
+$("#customerSearch").click(function() {
+	searchType=1;
+	jss.search(1);
+});
 </script>

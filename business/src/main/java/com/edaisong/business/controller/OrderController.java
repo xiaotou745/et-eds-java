@@ -30,6 +30,7 @@ import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
+import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
@@ -99,7 +100,22 @@ public class OrderController {
 		view.addObject("listData", resp);
 		return view;
 	}
-
+	/**
+	 * 商家中心订单列表页面右上角自定义查询
+	 * @author zhaohailong
+	 * @Date 20150806
+	 * @return
+	 */
+	@RequestMapping("customerlistdo")
+	public ModelAndView customerlistdo(String search,HttpServletRequest request) {
+		PagedCustomerSearchReq req=new PagedCustomerSearchReq();
+		req.setBusinessID(UserContext.getCurrentContext(request).getBusiness().getId());
+		req.setSearch(search);
+		PagedResponse<OrderListModel> resp = orderService.customerGetOrders(req);
+		ModelAndView view = new ModelAndView("order/listdo");
+		view.addObject("listData", resp);
+		return view;
+	}
 	/**
 	 * 订单详情
 	 * 

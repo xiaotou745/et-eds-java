@@ -343,6 +343,7 @@
 					$(input).parent().next().next().attr('style','display:block!important');
 					return false;
 				}
+				$(input).parent().next().next().removeAttr('style');
 				var all = 0;
 				var priceList = $('.price');
 				for(var i=0;i<priceList.length;i++){
@@ -356,7 +357,7 @@
 				all = all.toFixed(2);
 				$('#amount').val(all);  // 真实订单金额
 				$('#allPrice').html('¥'+all);  
-				$(input).parent().next().next().removeAttr('style');
+
 				return true;
 			}
 			return true;
