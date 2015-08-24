@@ -44,7 +44,7 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 								<p><b class="error error3"></b></p>
 								<label><input type="checkbox" checked="checkbox" name="rememberMe" id="rememberMe"/>记住我（下次自动登录）</label> 
 								<input type="button" value="登&nbsp;&nbsp;录" class="ex_submit" id="btnLogin">
-							<dl>第一次来E代送？<a href="###">快速注册</a></dl>
+							<!-- <dl>第一次来E代送？<a href="###">快速注册</a></dl> -->
 						</div>
 					</div>
 				</div>
@@ -88,7 +88,7 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 							},
 							error:function(error){
 								alert("登录错误");
-							},
+							}
 						});
 					}		
 					return false;
