@@ -9,6 +9,7 @@ import java.lang.Double;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
+import com.edaisong.api.common.BaseCommissionOrPriceProvider;
 import com.edaisong.api.common.OrderPriceBaseProvider;
 import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.api.service.inter.IOrderService;
@@ -35,8 +36,7 @@ public class AppTest extends TestCase {
 	public AppTest() {
 		testService = SpringBeanHelper
 				.getCustomBeanByType(IOrderService.class);
-		baseCommissionService = (OrderPriceBaseProvider)SpringBeanHelper.getCustomBean("baseCommissionOrPriceService");
-				//.getCustomBeanByType(OrderPriceService.class);
+		baseCommissionService = (OrderPriceBaseProvider)SpringBeanHelper.getCustomBeanByType(BaseCommissionOrPriceProvider.class);
 	}
 
 	// /**
