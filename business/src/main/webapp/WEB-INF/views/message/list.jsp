@@ -19,7 +19,7 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
 <div class="top cb">
-
+		<h3 class="cb">消息中心</h3>
 		<form method="POST" action="#" class="form-horizontal" id="searchForm">
 			<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
 		</form>
@@ -39,16 +39,5 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 	jss.search(1);
 	$("#btnSearch").click(function() {
 		jss.search(1);
-	});
-	$("#customerSearch").click(function() {
-		if($("#customerInfo").val()!=""){
-			var data={"superManPhone":$("#customerInfo").val()};
-			var data={"superManName":$("#customerInfo").val()};
-			var data={"originalOrderNo":$("#customerInfo").val()};
-			$.post("<%=basePath%>/message/listdo",data, function(d) {
-				$("#content").html(d);
-			});
-		}
-
 	});
 </script>

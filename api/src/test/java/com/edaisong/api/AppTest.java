@@ -1,23 +1,26 @@
 package com.edaisong.api;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.lang.Double;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import com.edaisong.api.common.OrderPriceBaseProvider;
 import com.edaisong.api.common.SpringBeanHelper;
+import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.entity.common.PagedRequestBase;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
+import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 
@@ -30,13 +33,21 @@ public class AppTest extends TestCase {
 	IOrderService testService;
 
 	OrderPriceBaseProvider baseCommissionService;
+	
+	IClienterService clienterService;
 
 
 	public AppTest() {
 		testService = SpringBeanHelper
 				.getCustomBeanByType(IOrderService.class);
-		baseCommissionService = (OrderPriceBaseProvider)SpringBeanHelper.getCustomBean("baseCommissionOrPriceService");
+		//baseCommissionService = (OrderPriceBaseProvider)SpringBeanHelper.getCustomBean("baseCommissionOrPriceService");
 				//.getCustomBeanByType(OrderPriceService.class);
+		clienterService = SpringBeanHelper
+				.getCustomBeanByType(IClienterService.class);
+	}
+	
+	public void test1(){
+		System.out.println("aa");
 	}
 
 	// /**
@@ -102,7 +113,7 @@ public class AppTest extends TestCase {
 		model.setDistribSubsidy(new Double(2.0));
 		model.setStrategyId(4);
 		
-		Double ret = baseCommissionService.getCurrenOrderCommission(model);
+		//Double ret = baseCommissionService.getCurrenOrderCommission(model);
 		
 	}
 	
@@ -120,5 +131,14 @@ public class AppTest extends TestCase {
 		Date endTime = c.getTime();
 		List<BusiPubOrderTimeStatisticsModel> models = testService.getBusiPubOrderTimeStatistics(1812,startTime,endTime);
 		Assert.assertTrue(models.size() > 0);
+	}
+	
+	public void testGetBusinessClienters(){
+		PagedBusinessClientersReq req = new PagedBusinessClientersReq();
+		req.setBusinessId(1891);
+		req.setWorkStatus(2);
+		req.setCurrentPage(1);
+		PagedResponse<BusinessClientersModel> ret = clienterService.getBusinessClienters(req);
+		Assert.assertTrue(ret.getResultList().size() > 0);
 	}
 }

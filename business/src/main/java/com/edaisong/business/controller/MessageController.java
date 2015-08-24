@@ -42,16 +42,11 @@ public class MessageController {
 	 * @return
 	 */
 	@RequestMapping("listdo")
-	public ModelAndView listdo(PagedRequestBase searchWebReq,HttpServletRequest request) {
+	public ModelAndView listdo(PagedBusinessMessageReq searchWebReq,HttpServletRequest request) {
 		ModelAndView view = new ModelAndView("message/listdo");
 		int businessId = UserContext.getCurrentContext(request).getBusiness().getId();
-		PagedBusinessMessageReq req = new PagedBusinessMessageReq();
-		req.setPageSize(searchWebReq.getPageSize());
-		req.setTotalPage(searchWebReq.getTotalPage());
-		req.setTotalRecord(searchWebReq.getTotalRecord());
-		req.setCurrentPage(searchWebReq.getCurrentPage());
-		req.setBusinessId(businessId);
-		PagedResponse<BusinessMessage> resp = businessMessageService.getMessages(req);
+		searchWebReq.setBusinessId(businessId);
+		PagedResponse<BusinessMessage> resp = businessMessageService.getMessages(searchWebReq);
 		view.addObject("listData", resp);
 		return view;
 	}
