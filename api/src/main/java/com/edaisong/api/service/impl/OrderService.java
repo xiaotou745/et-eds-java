@@ -3,6 +3,7 @@ package com.edaisong.api.service.impl;
 import java.lang.Double;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
+import com.edaisong.core.util.OrderNoHelper;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
@@ -347,6 +350,7 @@ public class OrderService implements IOrderService {
 			}
 		}
 	}
+	
 	/**
 	 * 发布订单根据请求参数，商家信息装配订单信息
 	 * @author ZhaoHaiLong
@@ -356,7 +360,7 @@ public class OrderService implements IOrderService {
 	 */
 	private Order fillOrder(OrderReq req, BusinessModel businessModel) {
 		Order order = new Order();
-		order.setOrderno("no11111111");// 临时
+		order.setOrderno(OrderNoHelper.generateOrderCode(req.getBusinessid()));// 临时
 		order.setRecevicename(req.getRecevicename());
 		order.setRecevicephoneno(req.getRecevicephoneno());
 		order.setReceviceaddress(req.getReceviceaddress());
