@@ -98,4 +98,33 @@
 	 BusinessId= #{businessId,jdbcType=INTEGER}
 	 ORDER BY PubDate desc;
   </select>
+  
+  <sql id="getMessagesColums" >
+  	Id, BusinessId, Content, IsRead, PubDate
+  </sql>
+  
+  <sql id="getMessagesFrom" >
+  	BusinessMessage WITH (NOLOCK)
+  </sql>
+  
+  <sql id="getMessagesColumsWhere" >
+  	BusinessId= ${businessId}
+  </sql>
+  
+   <!--消息列表 add by pengyi 20150821  -->
+  <select id="getMessages"  resultType="com.edaisong.entity.BusinessMessage"   
+  parameterType="com.edaisong.entity.req.PagedOrderSearchReq" 
+  statementType="CALLABLE" >
+	{call Sp_CustomPage2015_V1(
+	' PubDate DESC ',
+	' <include refid="getMessagesColums" />',
+	' <include refid="getMessagesFrom" /> ',
+	' <include refid="getMessagesColumsWhere"/> ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER}
+	,1,
+	#{totalRecord,mode=OUT,jdbcType=INTEGER},
+	#{totalPage,mode=OUT,jdbcType=INTEGER}
+	)}
+ </select>
 </mapper>

@@ -1,11 +1,12 @@
 package com.edaisong.api.dao.impl;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IBusinessMessageDao;
 import com.edaisong.entity.BusinessMessage;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.PagedBusinessMessageReq;
 
 /**
  * 商户消息数据访问层
@@ -15,37 +16,6 @@ import com.edaisong.entity.BusinessMessage;
  */
 @Repository
 public class BusinessMessageDao extends DaoBase implements IBusinessMessageDao{
-
-	@Override
-	public int deleteByPrimaryKey(Long id) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public int insert(BusinessMessage record) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public int insertSelective(BusinessMessage record) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BusinessMessage selectByPrimaryKey(Long id) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(BusinessMessage record) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public int updateByPrimaryKey(BusinessMessage record) {
-		throw new NotImplementedException();
-	}
-
 	/**
 	 * 获得最新一条商户消息
 	 * @author pengyi
@@ -56,6 +26,19 @@ public class BusinessMessageDao extends DaoBase implements IBusinessMessageDao{
 		return getReadOnlySqlSessionUtil()
 				.selectOne("com.edaisong.api.dao.inter.IBusinessMessageDao.getLatestMessage"
 						, businessId);
+	}
+
+	/**
+	 * 获得消息列表(分页)
+	 * @author pengyi
+	 * @date 20150821
+	 */
+	@Override
+	public PagedResponse<BusinessMessage> getMessages(PagedBusinessMessageReq search) {
+		PagedResponse<BusinessMessage> result = new PagedResponse<BusinessMessage>();
+		result = getReadOnlySqlSessionUtil().selectPageList(
+				"com.edaisong.api.dao.inter.IBusinessMessageDao.getMessages", search);
+		return result;
 	}
 
 }
