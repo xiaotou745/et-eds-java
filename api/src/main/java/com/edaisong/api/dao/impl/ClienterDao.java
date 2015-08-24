@@ -126,7 +126,8 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		//map.put("Where", Where);
 		map.put("workStatus", req.getWorkStatus());
 		map.put("search", req.getSearch());
-		map.put("selectTable", selectTable);
+		map.put("businessId", req.getBusinessId());
+		//map.put("selectTable", selectTable);
 		map.put("TotalRecord", 0);
 		map.put("TotalPage", 0);
 		map.put("PageSize", PageSize);

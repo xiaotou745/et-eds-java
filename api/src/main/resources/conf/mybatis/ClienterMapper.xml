@@ -110,9 +110,30 @@
      group by c.Id
 
   </sql>
+  
+  <sql id="getBusinessClientersTables">
+  	(SELECT c.id Id,MIN(bcr.businessid) businessid,
+	MIN(c.TrueName) truename,
+	MIN(c.PhoneNo) phoneno,
+	MIN(c.WorkStatus) workstatus,
+	MIN(c.AllowWithdrawPrice) allowwithdrawprice,
+	sum(o.OrderCount) finishedOrderCount,
+	min(c.AccountBalance) accountbalance
+	 FROM dbo.clienter c (nolock)
+	 JOIN dbo.BusinessClienterRelation bcr ON bcr.ClienterId = c.Id AND bcr.BusinessId=${businessId}
+	join dbo.[order] o (nolock) on o.clienterId=c.Id
+	where 1=1
+	<if test="!(workStatus>=2)">
+	and c.WorkStatus=${workStatus}
+	</if>
+	<if test="search != null and search!=''">
+	    and (c.trueName like ''%${search}%'' or c.phoneNo like ''%${search}%'') 
+     </if>
+	group by c.Id) as mp
+  </sql>
 	
 	<!-- 获得商家下的所有骑士  add by pengyi 20150824-->
-	<select id="getBusinessClienters" resultType="com.edaisong.entity.domain.BusinessClientersModel"
+<!-- 	<select id="getBusinessClienters" resultType="com.edaisong.entity.domain.BusinessClientersModel"
 		parameterType="java.util.Map" statementType="CALLABLE">
  
 {call Sp_CustomPage2015_V1(
@@ -123,6 +144,28 @@
 	min(c.AccountBalance) accountbalance ',
 #{selectTable,mode=IN,jdbcType=VARCHAR},
 	' <include refid="getBusinessClientersWhere"/> ',
+#{PageSize,mode=IN,jdbcType=INTEGER},
+#{CurrentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
+#{TotalPage,mode=OUT,jdbcType=VARCHAR}
+)}
+
+	</select> -->
+	
+	
+	
+	<select id="getBusinessClienters" resultType="com.edaisong.entity.domain.BusinessClientersModel"
+		parameterType="java.util.Map" statementType="CALLABLE">
+ 
+{call Sp_CustomPage2015_V1(
+' mp.id desc ',
+' mp.id id,mp.TrueName truename,mp.PhoneNo phoneno,mp.WorkStatus workstatus,
+	mp.allowwithdrawprice allowwithdrawprice,
+	mp.finishedOrderCount finishedOrderCount,
+	mp.AccountBalance accountbalance ',
+	' <include refid="getBusinessClientersTables"/> ',
+	' 1=1 ',
 #{PageSize,mode=IN,jdbcType=INTEGER},
 #{CurrentPage,mode=IN,jdbcType=INTEGER},
 1,

@@ -43,7 +43,7 @@ public class ClienterController {
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedBusinessClientersReq searchWebReq,HttpServletRequest request) {
 		ModelAndView view = new ModelAndView("clienter/listdo");   
-		int businessId = 1891;//UserContext.getCurrentContext(request).getBusiness().getId();
+		int businessId = UserContext.getCurrentContext(request).getBusiness().getId();
 		searchWebReq.setBusinessId(businessId);
 		PagedResponse<BusinessClientersModel> resp = clienterService.getBusinessClienters(searchWebReq);
 		view.addObject("listData", resp);
