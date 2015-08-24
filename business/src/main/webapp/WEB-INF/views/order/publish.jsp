@@ -329,6 +329,7 @@
 		});
 	
 		
+		//客户端安全校验
 		function vinput(input){
 			if($(input).attr('type')!='text'){
 				return true;
@@ -391,6 +392,7 @@
 
 		}
 		
+		//键盘事件
 		$('.orderBox').on('keydown','.price',function(e){
 			var obj=e.srcElement || e.target;
 			var dot=obj.value.indexOf(".");//alert(e.which);
