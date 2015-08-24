@@ -475,22 +475,6 @@ public class OrderService implements IOrderService {
         return PublishOrderReturnEnum.Success;
 	}
 	
-	@Override
-	public BusinessOrderSummaryModel getBusinessOrderSummary(int businessId) {
-		return orderDao.getBusinessOrderSummary(businessId);
-	}
-
-	@Override
-	public List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId,Date startTime,Date endTime) {
-		return orderDao.getBusiPubOrderTimeStatistics(businessId,startTime,endTime);
-	}
-
-	@Override
-	public PagedResponse<OrderListModel> customerGetOrders(PagedCustomerSearchReq req) {
-       return orderDao.customerGetOrders(req);
-	}
-
-	
 	/**
 	 * 商户发单，点击按纽钱查询商户余额信息，以及该订单的结算信息
 	 * @author CaoHeYang
@@ -520,4 +504,20 @@ public class OrderService implements IOrderService {
          }
 		return resp;
 	}
+	@Override
+	public BusinessOrderSummaryModel getBusinessOrderSummary(int businessId) {
+		return orderDao.getBusinessOrderSummary(businessId);
+	}
+
+	@Override
+	public List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId,Date startTime,Date endTime) {
+		return orderDao.getBusiPubOrderTimeStatistics(businessId,startTime,endTime);
+	}
+
+	@Override
+	public PagedResponse<OrderListModel> customerGetOrders(PagedCustomerSearchReq req) {
+       return orderDao.customerGetOrders(req);
+	}
+
+
 }
