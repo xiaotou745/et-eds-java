@@ -10,6 +10,7 @@ import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.CookieUtils;
+import com.edaisong.entity.Business;
 
 public class ServerUtil {
 	private final static RedisService redisService;
@@ -29,8 +30,9 @@ public class ServerUtil {
 		final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
 		if (cookieValue != null) {
+			//redisService.set(cookieValue, "sdf");
 			Object loginStatusValue = redisService.get(cookieValue, Object.class);
-			if (loginStatusValue != null) {
+			if (loginStatusValue != null && loginStatusValue instanceof Business) {
 				isLogin = true;
 			}
 		}

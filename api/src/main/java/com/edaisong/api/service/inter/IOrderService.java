@@ -12,6 +12,7 @@ import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
@@ -70,6 +71,16 @@ public interface IOrderService {
 	 * @return
 	 */
 	OrderResp AddOrder(OrderReq  req);
+	
+	
+	/**
+	 * 商户发单，点击按纽钱查询商户余额信息，以及该订单的结算信息
+	 * @author CaoHeYang
+	 * @param req
+	 * @Date 20150824
+	 * @return
+	 */
+	BusinessBalanceInfoResp getBalanceInfo(OrderReq  req);
 	
 	/**
 	 * 获得商家订单概览信息
