@@ -97,8 +97,8 @@
 			<input type="hidden" name="amount" value="" id="amount"/>
 		</p>
 		<i>当前任务结算<s>0</s>元，剩余余额<s>0</s>元！
-		</i> <a class="qx" href="javascript:;">取消</a> <a class="qr"
-			href="javascript:;">确认</a>
+		</i> <a class="qx" href="javascript:;">取消</a>
+		<a class="qr" href="javascript:;">确认</a>	
 		<!-- class=“qr“ 加入选择器”ok"呼出任务发布成功弹层 -->
 		<!-- class=“qr“ 加入选择器”no"呼出任务发布失败弹层 -->
 	</div>
@@ -206,6 +206,25 @@
 				var amont=parseFloat($('#amount').val());
 				var total=parseFloat(totaldistribsubsidy);
 				$(".popup1 .cb:eq(3) em").html('￥'+(amont+total).toFixed(2));  //总金额
+				var paramaters=getDatas();
+				var url = "<%=basePath%>/order/getbalanceinfo";
+				$.ajax({
+					type : 'POST',
+					url : url,
+					data :paramaters,
+					success : function(result) {
+						$(".popup1 i s:eq(0)").html(result.settleMoney); //任务结算
+						$(".popup1 i s:eq(1)").html(result.balanceprice); //余额
+						if(result.responseCode!=0){
+							if(result.responseCode==-8){
+								$('.popup3').show();  //余额不足弹层
+							}else{
+								$('.popup6').find('h2').html(result.message);
+							    $('.popup6').show();
+							}
+						}
+					}
+				});
 			}
 		});
 		
@@ -213,28 +232,13 @@
 		//任务发布 弹出层 的确认按钮 触发 ajax 请求  caoheyang 20150819
 		$('.qr').on('click', function() {
 			$(this).parents('.popup1').hide();
-			var recevicename=$("#name").val();  //收货人姓名
-			var recevicephoneno=$("#telphone ").val(); //收货人电话
-			var receviceaddress=$("#address").val(); //收货人地址
-			var ispay=$("input[name='fukuan']:checked").val()==0?false:true;//是否已付款
-			var amount=$("#amount").val(); //金额
-			var remark=$("#remark").val();  //备注
-			var ordercount=$('.copy').length; //订单数量
-			var listOrderChild = new Array();
-			$('.copy').each(function(index, domEle) {	
-				var temp={"goodprice":$(this).find('input[type=text]').val()};
-				listOrderChild.push(temp);
-			});
-        
-			var paramaters={"recevicename":recevicename,"recevicephoneno":recevicephoneno,"receviceaddress":receviceaddress,
- 					"ispay":ispay,"amount":amount,"remark":remark,"ordercount":ordercount,"childstr":JSON.stringify(listOrderChild)};
+			var paramaters=getDatas();
 			var url = "<%=basePath%>/order/add";
 			$.ajax({
 				type : 'POST',
 				url : url,
 				data :paramaters,
 				success : function(result) {
-					$(this).parents('.popup1').hide();
                 	if(result.responseCode==0){  
 					    //异步请求成功 呼出 成功层
 						$('.popup2').show();
@@ -249,7 +253,28 @@
 			});
 
 		});
+		
+		//整个form表单内的数据  add by caoheyang 20150824
+		function getDatas()
+		{
+			var recevicename=$("#name").val();  //收货人姓名
+			var recevicephoneno=$("#telphone ").val(); //收货人电话
+			var receviceaddress=$("#address").val(); //收货人地址
+			var ispay=$("input[name='fukuan']:checked").val()==0?false:true;//是否已付款
+			var amount=$("#amount").val(); //金额
+			var remark=$("#remark").val();  //备注
+			var ordercount=$('.copy').length; //订单数量
+			var listOrderChild = new Array();
+			$('.copy').each(function(index, domEle) {	
+				var temp={"goodprice":$(this).find('input[type=text]').val()};
+				listOrderChild.push(temp);
+			});
 
+			var paramaters={"recevicename":recevicename,"recevicephoneno":recevicephoneno,"receviceaddress":receviceaddress,
+ 					"ispay":ispay,"amount":amount,"remark":remark,"ordercount":ordercount,"childstr":JSON.stringify(listOrderChild)};
+			return paramaters;
+		}
+		
 		$('.qx').on('click', function() {
 			$(this).parents('.popup1').hide();
 		});
@@ -269,6 +294,7 @@
 			$(this).parents('.popup1').hide();
 			$('.popup6').show();
 		});
+		
 		$('.qr3').on('click', function() {
 			$(this).parents('.popup6').hide();
 		});

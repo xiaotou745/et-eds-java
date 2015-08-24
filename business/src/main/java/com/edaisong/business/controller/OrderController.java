@@ -32,6 +32,7 @@ import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
@@ -195,5 +196,21 @@ public class OrderController {
 		resp = orderService.AddOrder(req);
 
 		return resp;
+	}
+	
+	/**
+	 * 确定发布订单
+	 * 
+	 * @author 胡灵波
+	 * @Date 2015年8月11日 14:09:32
+	 * @return
+	 */
+	@RequestMapping(value = "getbalanceinfo", method = { RequestMethod.POST })
+	@ResponseBody
+	public BusinessBalanceInfoResp getbalanceinfo(OrderReq req,HttpServletRequest request) {
+		req.setListOrderChild(JsonUtil.str2list(req.getChildstr(),OrderChild.class));  //序列化得到子订单信息汇总
+		OrderResp resp = new OrderResp();
+		req.setBusinessid(UserContext.getCurrentContext(request).getBusiness().getId());
+		return orderService.getBalanceInfo(req);
 	}
 }

@@ -1,6 +1,7 @@
 package com.edaisong.api.common;
 
 import java.lang.Double;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import com.edaisong.core.enums.OrderFrom;
@@ -24,6 +25,7 @@ public class OrderSettleMoneyHelper {
 			distribSubsidy = 0d;
 		}
 		//订单金额*结算比例+(固定金额+外送费)*订单数量
-		return amount*businessCommissionRate*0.01+(commissionFixValue+distribSubsidy)*ordercount;
+		return new BigDecimal(amount*businessCommissionRate*0.01+(commissionFixValue+distribSubsidy)*ordercount).
+				setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 }

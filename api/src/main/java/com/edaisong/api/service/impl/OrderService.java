@@ -49,6 +49,7 @@ import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
@@ -487,5 +488,36 @@ public class OrderService implements IOrderService {
 	@Override
 	public PagedResponse<OrderListModel> customerGetOrders(PagedCustomerSearchReq req) {
        return orderDao.customerGetOrders(req);
+	}
+
+	
+	/**
+	 * 商户发单，点击按纽钱查询商户余额信息，以及该订单的结算信息
+	 * @author CaoHeYang
+	 * @param req
+	 * @Date 20150824
+	 * @return
+	 */
+	public BusinessBalanceInfoResp getBalanceInfo(OrderReq req) {
+		BusinessBalanceInfoResp resp= new BusinessBalanceInfoResp();
+		req.setOrderfrom(OrderFrom.BusinessWeb.value());  //订单来源   商家版后台
+		BusinessModel businessModel = businessDao.getBusiness(req.getBusinessid());
+		if (businessModel==null) {
+			resp.setResponseCode(PublishOrderReturnEnum.BusinessEmpty.value());
+			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
+			return resp;
+		}
+		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
+				req.getAmount(), businessModel.getBusinesscommission(),
+				businessModel.getCommissionfixvalue(), req.getOrdercount(),
+				businessModel.getDistribsubsidy(), req.getOrderfrom());
+		resp.setBalanceprice(businessModel.getBalanceprice());
+		resp.setSettleMoney(settleMoney);
+		 if (businessModel.getBalanceprice()<settleMoney)
+         {
+			resp.setResponseCode(PublishOrderReturnEnum.BusiBalancePriceLack.value());
+			resp.setMessage(PublishOrderReturnEnum.BusiBalancePriceLack.desc());
+         }
+		return resp;
 	}
 }
