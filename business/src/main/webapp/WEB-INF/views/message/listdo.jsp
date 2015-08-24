@@ -25,7 +25,7 @@
 			for(BusinessMessage message : data){
 										
 		%>
-		<tr class="tr2 alt">
+		<tr>
 			<td style="word-break:break-word; width:50px;"><%=ParseHelper.ToDateString(message.getPubdate())%></td>
 			<td style="word-break:break-word; width:200px;"><%=message.getContent()%></td>
 		</tr>
