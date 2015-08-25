@@ -393,11 +393,13 @@
 				$(input).parent().next().next().removeAttr('style');
 				var all = 0;
 				var priceList = $('.price');
+				var tempresult=true;
 				for(var i=0;i<priceList.length;i++){
-					if(!parseFloat($(priceList[i]).val())){
-						return false;
+					if(!parseFloat($(priceList[i]).val())||parseFloat($(priceList[i]).val())<5||parseFloat($(priceList[i]).val())>1000){
+						tempresult= false;
+					}else{
+						all = parseFloat($(priceList[i]).val())+all;
 					}
-					all = parseFloat($(priceList[i]).val())+all;
 				}
 				
 				all = Math.round(all*100)/100;
@@ -405,11 +407,9 @@
 				$('#amount').val(all);  // 真实订单金额
 				$('#allPrice').html('¥'+all);  
 
-				return true;
+				return tempresult;
 			}
 			return true;
-
-
 		}
 		
 		//键盘事件
