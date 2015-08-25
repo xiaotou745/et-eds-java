@@ -27,10 +27,13 @@
 			状态：<span class="green2"><%=OrderStatus.getEnum(
 					modelDatas.getOrderModel().getStatus()).desc()%> </span>
 		</h4>
-		<h5 class="mt8">
+		<%
+		if(modelDatas.getOrderModel().getOriginalOrderNo()!=null&&!modelDatas.getOrderModel().getOriginalOrderNo().isEmpty()){%>
+			<h5 class="mt8">
 			第三方订单号：<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getOriginalOrderNo())%></h5>
-		<h5>
+	    	<h5>
+		<%} %>
 			订单来源：
 			<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getGroupName())%></h5>
@@ -94,20 +97,20 @@
 		</div>
 		<div class="r-t2 cb">
 			<p class="fl">
-				<span>发布</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+				<span>发布</span> <em style="width:67px"><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
 					.getPubDate(), "MM.dd HH:mm")%>
 				</em>
 			</p>
 			<p class="fl">
-				<span>接单</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+				<span>接单</span> <em style="width:67px;"><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
 					.getGrabTime(), "MM.dd HH:mm")%></em>
 			</p>
 			<p class="fl">
-				<span>取餐</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+				<span>取餐</span> <em style="width:67px;"><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
 					.getTakeTime(), "MM.dd HH:mm")%></em>
 			</p>
 			<p class="fl">
-				<span>完成</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+				<span>完成</span> <em style="width:67px;"><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
 					.getActualDoneDate(), "MM.dd HH:mm")%></em>
 			</p>
 		</div>
