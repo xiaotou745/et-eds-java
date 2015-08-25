@@ -71,7 +71,8 @@
 		</p>
 		<p class="cb">
 			<span class="fl lh15"> 备注 </span>
-			<textarea class="fl" id="remark" ></textarea>
+			<textarea class="fl" id="remark"  max-length="50" style="margin-right:20px;"></textarea>
+			<em class="fl" style="display:none">备注最多50字</em>
 		</p>
 	</div>
 </div>
@@ -204,6 +205,13 @@
 		//确认发布任务弹窗呼出 And 关闭
 		$('.fabu').on('click',function() {
 			var validate = true;
+			var remark = $("#remark");
+			if(remark.val().length>remark.attr("max-length")){
+				validate= false;
+				remark.next().show();
+			}else{
+				remark.next().hide();
+			}
 			//手机号非空判断
 			var inputList = $("input");
 			for(var i = 0;i<inputList.length;i++){
@@ -211,7 +219,8 @@
 				if(!temp){
 					validate = temp;
 				}
-			}				
+			}			
+
 			if(validate){
 				$(".popup1").show();
 				$(".popup1 .cb:eq(0) em").html($("#allPrice").html()); //订单金额
