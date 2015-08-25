@@ -335,14 +335,18 @@
 
 		//表单验证配置
 		var teg = {};
-		<%  // 一键发单客户端校验逻辑
+		<%  // 一键发单客户端校验逻辑  不允许一键发单时
 	    	if(businessModel.getOnekeypuborder()==0)
 	    	{
 		%>
-			teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;
+			teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;  //匹配电话号码
 			teg.address = 'empty';
 		<% }
+	    	else{
 			%>
+			teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})|(^\s*$)/;  //匹配电话号码 或者为空
+			<%
+			}%>
 
 		$('.box2').on('blur','input',function(){
 			vinput(this);
@@ -364,7 +368,6 @@
 					return false;
 				}else{
 					$(input).next().hide();
-
 				}
 			}
 
