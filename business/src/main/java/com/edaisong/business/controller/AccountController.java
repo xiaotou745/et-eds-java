@@ -84,7 +84,7 @@ public class AccountController {
 		}
 		// 登录成功,写cookie
 		int cookieMaxAge = 2 * 60 * 24;
-		// 选择记住我,默认cookie24小时,否则2小时
+		// 选择记住我,默认cookie24小时,否则随浏览器的关闭而失效
 		if (rememberMe) {
 			cookieMaxAge = 60 * 60 * 24;
 		}
@@ -94,6 +94,9 @@ public class AccountController {
 		business.setLastLoginTime(lastLoginTime);
 		String key = String.format("%s_%s", RedissCacheKey.LOGIN_COOKIE_KEY,business.getPhoneno());//UUID.randomUUID().toString();
 		redisService.set(key, business, cookieMaxAge);
+		if(!rememberMe){
+			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走
+		}
 		CookieUtils.setCookie(request,response, WebConst.LOGIN_COOKIE_NAME, key, cookieMaxAge,
 				true);
 		resp.setSuccess(true);

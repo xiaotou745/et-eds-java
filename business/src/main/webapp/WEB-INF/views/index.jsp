@@ -103,7 +103,7 @@
 </div>
 
 <script type="text/javascript">
-//统计图
+	//统计图
 	var statistics = new Array();
 <%if(pubOrderTimestatistics != null){
 		StringBuilder sb = new StringBuilder();
@@ -127,10 +127,10 @@
 	}
 	$(function() {
 		var notice = $("#notice").text();
-		if(notice.length > 70){
-			$("#notice").text(notice.substr(0,70)+"...");
+		if (notice.length > 70) {
+			$("#notice").text(notice.substr(0, 70) + "...");
 		}
-		
+
 		//统计图
 		$('#container').highcharts({
 			chart : {
@@ -157,14 +157,20 @@
 						return this.value;
 					}
 				},
-				minTickInterval:1,
-				tickAmount:11
+				minTickInterval : 1,
+				tickAmount : 11
 			},
 			tooltip : {
 				crosshairs : true,
 				shared : true
 			},
 			legend : {
+				enabled : false
+			},
+			credits : {
+				enabled : false
+			},
+			exporting : {
 				enabled : false
 			},
 			plotOptions : {
