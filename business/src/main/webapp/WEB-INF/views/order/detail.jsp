@@ -173,8 +173,16 @@
 								.getEnum(
 										modelDatas.getOrderChilds().get(i)
 												.getPaytype()).desc())%></td>
-				<td><a
-					href="<%=PropertyUtils.getProperty("ImageServicePath")%><%=modelDatas.getOrderChilds().get(i).getTicketurl()%>">查看</a></td>
+				<td>
+				<% 
+				 if(modelDatas.getOrderChilds().get(i).getTicketurl()!=null&&!modelDatas.getOrderChilds().get(i).getTicketurl().isEmpty())
+				 {
+				%>
+				<a
+					href="<%=PropertyUtils.getProperty("ImageServicePath")%><%=modelDatas.getOrderChilds().get(i).getTicketurl()%>">查看</a>
+				<%
+				} %>
+				</td>
 			</tr>
 
 			<%
