@@ -85,6 +85,13 @@ public class HtmlHelper {
 		}
 	}
 
+	/**
+	 * 
+	 * @param type
+	 * @param textName
+	 * @param valueName
+	 * @return
+	 */
 	private static List<Field> getFinalFields(Class type, String textName,
 			String valueName) {
 		List<Field> resultList = new ArrayList<>();
@@ -149,6 +156,19 @@ public class HtmlHelper {
 		return getSelect(selectName, list, textName, valueName, null, "-1",
 				"全部", styleString,null);
 	}
+	
+	/**
+	 * 
+	 * @param selectName
+	 * @param list
+	 * @param textName
+	 * @param valueName
+	 * @param selectedValue
+	 * @param defaultValue
+	 * @param defaultText
+	 * @param styleString
+	 * @return
+	 */
 	public static <T> String getSelect(String selectName, List<T> list,
 			String textName, String valueName, Object selectedValue,
 			Object defaultValue, String defaultText, String styleString) {

@@ -85,7 +85,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">
-							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name") %>
+							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部","","form-control m-b") %>
 							</div>
 						</div>
 					</div>
@@ -95,7 +95,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选集团: </label>
 							<div class="col-sm-8">
-								  <%=HtmlHelper.getSelect("groupId", groupListData, "groupname", "id") %>
+								  <%=HtmlHelper.getSelect("groupId", groupListData, "groupname", "id","-1","-1","全部","","form-control m-b") %>
 							</div>
 						</div>
 					</div>
