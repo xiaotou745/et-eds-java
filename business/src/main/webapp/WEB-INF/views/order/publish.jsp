@@ -71,7 +71,7 @@
 		</p>
 		<p class="cb">
 			<span class="fl lh15"> 备注 </span>
-			<textarea class="fl" id="remark"></textarea>
+			<textarea class="fl" id="remark" ></textarea>
 		</p>
 	</div>
 </div>
@@ -184,6 +184,21 @@
 				$('.orderBox').removeClass('dn');
 			}
 			$('.orderBox').find('s').eq(0).html($('.copy').length +"单");  //重置单量
+			var all = 0;
+			var priceList = $('.price');
+			for(var i=0;i<priceList.length;i++){
+				var tempMoney=0;
+				if(!parseFloat($(priceList[i]).val())){
+					tempMoney=0;
+				}else{
+					tempMoney=parseFloat($(priceList[i]).val());
+				}
+				all = tempMoney+all;
+			}
+			all = Math.round(all*100)/100;
+			all = all.toFixed(2);
+			$('#amount').val(all);  // 真实订单金额
+			$('#allPrice').html('¥'+all);  
 		});
 
 		//确认发布任务弹窗呼出 And 关闭
@@ -216,12 +231,8 @@
 						$(".popup1 i s:eq(0)").html(result.settleMoney); //任务结算
 						$(".popup1 i s:eq(1)").html(result.balanceprice); //余额
 						if(result.responseCode!=0){
-							if(result.responseCode==-8){
-								$('.popup3').show();  //余额不足弹层
-							}else{
 								$('.popup6').find('h2').html(result.message);
 							    $('.popup6').show();
-							}
 						}
 					}
 				});

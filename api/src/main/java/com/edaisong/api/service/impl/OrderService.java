@@ -501,11 +501,7 @@ public class OrderService implements IOrderService {
 				businessModel.getDistribsubsidy(), req.getOrderfrom());
 		resp.setBalanceprice(businessModel.getBalanceprice());
 		resp.setSettleMoney(settleMoney);
-		 if (businessModel.getBalanceprice()<settleMoney)
-         {
-			resp.setResponseCode(PublishOrderReturnEnum.BusiBalancePriceLack.value());
-			resp.setMessage(PublishOrderReturnEnum.BusiBalancePriceLack.desc());
-         }
+		 
 		return resp;
 	}
 	@Override
