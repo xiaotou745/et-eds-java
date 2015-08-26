@@ -1,4 +1,4 @@
-package com.edaisong.business.entity.resp;
+package com.edaisong.business.common;
 
 public class LoginResp {
 	private String message;

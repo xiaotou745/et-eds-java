@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.edaisong.core.util.SpringBeanHelper;
+
 /**
  * 骑士佣金计算工厂
  * @author pengyi

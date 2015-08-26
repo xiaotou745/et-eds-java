@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.business.common.LoginResp;
 import com.edaisong.business.common.ServerUtil;
 import com.edaisong.business.common.WebConst;
-import com.edaisong.business.entity.resp.LoginResp;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.util.CookieUtils;

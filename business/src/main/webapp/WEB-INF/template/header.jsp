@@ -1,5 +1,5 @@
 <%@page import="com.edaisong.entity.Business"%>
-<%@page import="com.edaisong.business.entity.UserContext"%>
+<%@page import="com.edaisong.business.common.UserContext"%>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%

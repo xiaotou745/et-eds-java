@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IBusinessBalanceRecordService;
-import com.edaisong.business.entity.UserContext;
+import com.edaisong.business.common.UserContext;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;

@@ -8,10 +8,10 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import com.edaisong.api.common.OrderPriceBaseProvider;
-import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.common.PagedRequestBase;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;

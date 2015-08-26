@@ -1,5 +1,5 @@
 <%@page import="com.edaisong.business.common.ServerUtil"%>
-<%@page import="com.edaisong.business.entity.UserContext" pageEncoding="utf-8"%>
+<%@page import="com.edaisong.business.common.UserContext" pageEncoding="utf-8"%>
 
 <html>
 <body>
