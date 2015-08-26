@@ -20,6 +20,7 @@
 	<mvc:resources mapping="/**" location="/resources/" />
 	<mvc:interceptors>
 			<bean class="com.edaisong.admin.common.GlobalLogInteceptor" />
+			<!-- <bean class="com.edaisong.admin.common.AuthInteceptor" /> -->
 	</mvc:interceptors>
 
 	<!-- 全局异常 -->

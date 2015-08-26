@@ -8,4 +8,5 @@ import com.edaisong.entity.resp.BusinessLoginResp;
 
 public interface IAccountService {
 	public  PagedResponse<Account>  queryAccount(AccountReq req);
+	Account login(String username,String password);
 }

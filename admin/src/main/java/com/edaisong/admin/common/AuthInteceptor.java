@@ -1,4 +1,4 @@
-package com.edaisong.business.common;
+package com.edaisong.admin.common;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

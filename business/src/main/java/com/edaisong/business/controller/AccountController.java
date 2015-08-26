@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.api.common.LoginHelper;
 import com.edaisong.api.service.inter.IBusinessService;
-import com.edaisong.business.common.ServerUtil;
-import com.edaisong.business.common.WebConst;
 import com.edaisong.business.entity.resp.LoginResp;
 import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.PropertyUtils;
@@ -34,17 +34,6 @@ public class AccountController {
 	@Autowired
 	private RedisService redisService;
 
-/*	@RequestMapping(value = "login", method = { RequestMethod.GET })
-	public ModelAndView LoginConfig(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		boolean isLogin = checkIsLogin(request);
-		if(isLogin){
-			response.sendRedirect(request.getContextPath()+"/index.jsp");
-			return null;
-		}
-		ModelAndView mv = new ModelAndView("account/login");
-		return mv;
-	}*/
-
 	@RequestMapping("code")
 	public ModelAndView code(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView("account/code");
@@ -56,13 +45,13 @@ public class AccountController {
 			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
 			@RequestParam int rememberMe) {
 		//Object sessionCode = request.getSession().getAttribute("code");
-		String sessionCode = ServerUtil.getAuthCode(request);
+		String sessionCode = LoginHelper.getAuthCode(request);
 		//一次性验证码,防止暴力破解
 		//request.getSession().removeAttribute("code");
-		ServerUtil.removeAuthCodeCookie(request, response);
+		LoginHelper.removeAuthCodeCookie(request, response);
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
-		boolean isLogin = ServerUtil.checkIsLogin(request,response);
+		boolean isLogin = LoginHelper.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
 			resp.setSuccess(true);
@@ -97,7 +86,7 @@ public class AccountController {
 		if(!(rememberMe==1)){
 			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走
 		}
-		CookieUtils.setCookie(request,response, WebConst.LOGIN_COOKIE_NAME, key, cookieMaxAge,
+		CookieUtils.setCookie(request,response, GlobalSettings.LOGIN_COOKIE_NAME, key, cookieMaxAge,
 				true);
 		resp.setSuccess(true);
 		return resp;
@@ -115,33 +104,11 @@ public class AccountController {
 	@RequestMapping(value = "logoff")
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
-		Cookie cookie = CookieUtils.getCookieByName(WebConst.LOGIN_COOKIE_NAME, request);
+		Cookie cookie = CookieUtils.getCookieByName(GlobalSettings.LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
 		    	redisService.remove(cookie.getValue());
 			CookieUtils.deleteCookie(request, response, cookie);
 		}
 		response.sendRedirect(PropertyUtils.getProperty("static.business.url") + "/");
 	}
-
-	/**
-	 * 是否登录
-	 * @param request
-	 * @return
-	 */
-/*	private boolean checkIsLogin(HttpServletRequest request) {
-		// 如果已登录,直接返回
-		boolean isLogin = false;
-		final String cookieKey = WebConst.LOGIN_COOKIE_NAME;
-		String cookieValue = CookieUtils.getCookie(request, cookieKey);
-		if (cookieValue != null) {
-			CookieModel cookieModel = JsonUtil.str2obj(cookieValue, CookieModel.class);
-			if (cookieModel != null) {
-				Object loginStatusValue = redisService.get(cookieModel.getValue(), Object.class);
-				if (loginStatusValue != null) {
-					isLogin = true;
-				}
-			}
-		}
-		return isLogin;
-	}*/
 }

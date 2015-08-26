@@ -1,4 +1,4 @@
-package com.edaisong.business.entity;
+package com.edaisong.admin.entity;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -6,11 +6,10 @@ import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.util.CookieUtils;
-import com.edaisong.core.util.JsonUtil;
-import com.edaisong.entity.Business;
+import com.edaisong.entity.Account;
 
 public class UserContext {
-	private Business business;
+	private Account account;
 	private boolean isEmpty;
 
 	private final static UserContext empty = new UserContext(null,true);
@@ -19,13 +18,13 @@ public class UserContext {
 		redisService = SpringBeanHelper.getCustomBeanByType(RedisService.class);
 	}
 	
-	public UserContext(Business business,boolean isEmpty){
-		this.business = business;
+	public UserContext(Account account,boolean isEmpty){
+		this.account = account;
 		this.isEmpty = isEmpty;
 	}
 
-	public Business getBusiness() {
-		return business;
+	public Account getAccount() {
+		return account;
 	}
 	
 	public boolean isEmpty() {
@@ -36,7 +35,7 @@ public class UserContext {
 		final String cookieKey = GlobalSettings.LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
 		if (cookieValue != null) {
-			return new UserContext(redisService.get(cookieValue, Business.class),false);
+			return new UserContext(redisService.get(cookieValue, Account.class),false);
 		}
 		return empty;
 	}

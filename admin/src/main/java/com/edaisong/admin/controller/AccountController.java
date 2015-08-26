@@ -1,15 +1,34 @@
 package com.edaisong.admin.controller;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.api.common.LoginHelper;
+import com.edaisong.api.service.inter.IAccountLoginLogService;
 import com.edaisong.api.service.inter.IAccountService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.consts.GlobalSettings;
+import com.edaisong.core.consts.RedissCacheKey;
+import com.edaisong.core.util.CookieUtils;
+import com.edaisong.core.util.IPUtil;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Account;
+import com.edaisong.entity.AccountLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
@@ -20,13 +39,16 @@ import com.edaisong.entity.req.AccountReq;
 @Controller
 @RequestMapping("account")
 public class AccountController {
-
+	@Autowired
+	private RedisService redisService;
 	@Autowired
 	private IAccountService accountService;
 	@Autowired
 	private IPublicProvinceCityService publicProvinceCityService;
 	@Autowired
 	private IDeliveryCompanyService deliveryCompanyService;
+	@Autowired
+	private IAccountLoginLogService accountLoginLogService;
 
 	@RequestMapping("list")
 	public ModelAndView list() {
@@ -51,5 +73,91 @@ public class AccountController {
 		view.addObject("viewPath", "account/listdo");
 		view.addObject("listData", resp);
 		return view;
+	}
+	
+	@RequestMapping("code")
+	public ModelAndView code(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mv = new ModelAndView("account/code");
+		return mv;
+	}
+	
+	@RequestMapping(value = "login", method = { RequestMethod.POST })
+	public void login(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String username, @RequestParam String password, @RequestParam String code,
+			@RequestParam int rememberMe) throws ServletException, IOException {
+		String basePath = PropertyUtils.getProperty("static.admin.url");
+		Date loginTime = new Date();
+		String sessionCode = LoginHelper.getAuthCode(request);
+		//一次性验证码,防止暴力破解
+		LoginHelper.removeAuthCodeCookie(request, response);
+		// 如果已登录,直接返回
+		boolean isLogin = LoginHelper.checkIsLogin(request,response);
+		AccountLog log = new AccountLog();
+		log.setIp(IPUtil.getIpAddr(request));
+		log.setLoginName(username);
+		log.setLoginTime(loginTime);
+		
+		// 如果已登录,直接返回已登录
+		if (isLogin) {
+			response.sendRedirect(basePath);
+			return;
+		}
+		String error = "";
+		// 验证码不正确
+		if (sessionCode == null || !sessionCode.toString().toLowerCase().equals(code.toLowerCase())) {
+			error = "验证码不正确";
+		}
+		Account account = accountService.login(username, password);
+		if (account == null) {
+			error = "用户名或密码错误";
+		}
+		if(account.getStatus() != 1){
+			error = "您的账号已经被禁用,请联系管理员";
+		}
+		if(!error.equals("")){
+			log.setRemark(error);
+			accountLoginLogService.addLog(log);
+			request.setAttribute("error", error);
+			request.getRequestDispatcher(basePath+"/login.jsp").forward(request, response);
+			return;
+		}
+		// 登录成功,写cookie
+		int cookieMaxAge = 2 * 60 * 24;
+		// 选择记住我,默认cookie24小时,否则随浏览器的关闭而失效
+		if (rememberMe==1) {
+			cookieMaxAge = 60 * 60 * 24;
+		}
+
+		error = "成功";
+		log.setRemark(error);
+		accountLoginLogService.addLog(log);
+		String key = String.format("%s_%s", RedissCacheKey.LOGIN_COOKIE_KEY,account.getLoginname());
+		redisService.set(key, account, cookieMaxAge);
+		if(!(rememberMe==1)){
+			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走
+		}
+		CookieUtils.setCookie(request,response, GlobalSettings.LOGIN_COOKIE_NAME, key, cookieMaxAge,
+				true);
+		response.sendRedirect(basePath);
+	}
+	
+	/**
+	 * 注销
+	 * 
+	 * @author pengyi
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "logoff")
+	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		// 删除登录cookie
+		Cookie cookie = CookieUtils.getCookieByName(GlobalSettings.LOGIN_COOKIE_NAME, request);
+		if (cookie != null) {
+		    	redisService.remove(cookie.getValue());
+			CookieUtils.deleteCookie(request, response, cookie);
+		}
+		response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
 	}
 }
