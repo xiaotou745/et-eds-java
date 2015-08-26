@@ -18,6 +18,8 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 	List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
 %>
+<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
+<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
@@ -71,7 +73,10 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">发布时间:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="OrderPubStart"/>
+							<div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input type="text" class="form-control" value="" name="OrderPubStart" />
+                                    </div>
 							</div>
 						</div>
 					</div>
@@ -79,7 +84,10 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">到:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="OrderPubEnd" />
+							     <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input type="text" class="form-control" value="" name="OrderPubEnd" />
+                                    </div>
    						</div>
 						</div>
 					</div>
@@ -134,6 +142,15 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 </div>
 
 <script>
+ $(function(){
+	  $(' .input-group.date').datepicker({
+          todayBtn: "linked",
+          keyboardNavigation: false,
+          forceParse: false,
+          calendarWeeks: true,
+          autoclose: true
+      });
+ });
 	var jss = {
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);

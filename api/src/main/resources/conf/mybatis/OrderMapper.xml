@@ -774,11 +774,11 @@
 	     and c.PhoneNo=''${superManPhone}''
      </if>
       <if test="orderPubStart != null and orderPubStart!=''">
-	     and o.PubDate>= ''${orderPubStart}''
+	     and o.PubDate>= ''${orderPubStart} 00:00:00''
      </if>
      <if test="orderPubEnd != null and orderPubEnd!=''">
          <![CDATA[ and o.PubDate<=]]> 
-	      ''${orderPubEnd}''
+	      ''${orderPubEnd} 23:59:59''
      </if>
        <if test="groupId != null and groupId != -1">
 	     and o.OrderFrom = ${groupId}
