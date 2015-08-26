@@ -347,7 +347,7 @@
 	    	if(businessModel.getOnekeypuborder()==0)
 	    	{
 		%>
-			teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;  //匹配电话号码
+			teg.telphone = /(?=^1\d{10}$)|(?=^[^1]\d{6,11}$)/;  //匹配电话号码
 			teg.address = 'empty';
 		<% }
 	    	else{
