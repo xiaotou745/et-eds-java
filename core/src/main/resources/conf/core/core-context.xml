@@ -12,8 +12,8 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-	<context:property-placeholder location="classpath:conf/custom/conf.properties"
-		ignore-unresolvable="true" />
+<!-- 	<context:property-placeholder location="classpath:conf/custom/conf.properties" -->
+<!-- 		ignore-unresolvable="true" /> -->
 	<mvc:annotation-driven />
 	<context:component-scan base-package="com.edaisong.core">
 		<context:include-filter type="annotation"

@@ -135,8 +135,10 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+	    
 	<build>
 		<defaultGoal>compile</defaultGoal>
 		<finalName>api</finalName>
+		
 	</build>
 </project>

@@ -6,9 +6,16 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+<<<<<<< HEAD:api/src/main/java/com/edaisong/api/common/LoginHelper.java
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
+=======
+
+
+import com.edaisong.core.cache.redis.RedisService;
+>>>>>>> e4d32c640e53d58118a8c19b0db3fe61fb531a92:business/src/main/java/com/edaisong/business/common/ServerUtil.java
 import com.edaisong.core.util.CookieUtils;
+import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.Business;
 
 public class LoginHelper {

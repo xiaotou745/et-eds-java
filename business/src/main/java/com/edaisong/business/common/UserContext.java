@@ -1,12 +1,11 @@
-package com.edaisong.business.entity;
+package com.edaisong.business.common;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.util.CookieUtils;
-import com.edaisong.core.util.JsonUtil;
+import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.Business;
 
 public class UserContext {

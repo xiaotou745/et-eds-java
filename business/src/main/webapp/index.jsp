@@ -1,2 +1,3 @@
-<%@page import="com.edaisong.business.entity.UserContext" pageEncoding="utf-8"%>
+<%@page import="com.edaisong.business.common.UserContext" pageEncoding="utf-8"%>
+
 

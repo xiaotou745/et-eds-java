@@ -4,8 +4,10 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.edaisong.api.common.SpringBeanHelper;
+
+
 import com.edaisong.api.service.inter.ITestUserTblService;
+import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.domain.TestUserRecord;
 
 public class TestUserTblServiceTest extends TestCase{

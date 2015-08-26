@@ -270,6 +270,7 @@
                 	if(result.responseCode==0){  
 					    //异步请求成功 呼出 成功层
 						$('.popup2').show();
+						 window.location.reload();
 					} else if(result.responseCode==-8){  
 						$('.popup3').show();  //余额不足弹层
 					} else
@@ -347,12 +348,12 @@
 	    	if(businessModel.getOnekeypuborder()==0)
 	    	{
 		%>
-			teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;  //匹配电话号码
+			teg.telphone = /(?=^1\d{10}$)|(?=^[^1]\d{6,11}$)/;  //匹配电话号码
 			teg.address = 'empty';
 		<% }
 	    	else{
 			%>
-			teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})|(^\s*$)/;  //匹配电话号码 或者为空
+			teg.telphone = /(?=^1\d{10}$)|(?=^[^1]\d{6,11}$)|(^\s*$)/;  //匹配电话号码 或者为空
 			<%
 			}%>
 
