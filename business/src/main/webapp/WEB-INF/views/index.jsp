@@ -158,7 +158,8 @@
 					}
 				},
 				minTickInterval : 1,
-				tickAmount : 11
+				tickAmount : 11,
+				allowDecimals:false
 			},
 			tooltip : {
 				crosshairs : true,
