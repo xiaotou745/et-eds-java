@@ -27,10 +27,13 @@
 			状态：<span class="green2"><%=OrderStatus.getEnum(
 					modelDatas.getOrderModel().getStatus()).desc()%> </span>
 		</h4>
-		<h5 class="mt8">
+		<%
+		if(modelDatas.getOrderModel().getOriginalOrderNo()!=null&&!modelDatas.getOrderModel().getOriginalOrderNo().isEmpty()){%>
+			<h5 class="mt8">
 			第三方订单号：<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getOriginalOrderNo())%></h5>
-		<h5>
+	    	<h5>
+		<%} %>
 			订单来源：
 			<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getGroupName())%></h5>
@@ -93,20 +96,20 @@
 			</span>
 		</div>
 		<div class="r-t2 cb">
-			<p class="fl">
-				<span>发布</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+			<p class="fl" style="width:106px;">
+				<span>发布</span> <em ><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
 					.getPubDate(), "MM.dd HH:mm")%>
 				</em>
 			</p>
-			<p class="fl">
-				<span>接单</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
+			<p class="fl" style="width:106px;">
+				<span>接单</span> <em ><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
 					.getGrabTime(), "MM.dd HH:mm")%></em>
 			</p>
-			<p class="fl">
+			<p class="fl" style="width:106px;">
 				<span>取餐</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
 					.getTakeTime(), "MM.dd HH:mm")%></em>
 			</p>
-			<p class="fl">
+			<p class="fl" style="width:106px;">
 				<span>完成</span> <em><%=ParseHelper.ToDateString(modelDatas.getOrderModel()
 					.getActualDoneDate(), "MM.dd HH:mm")%></em>
 			</p>
@@ -173,8 +176,16 @@
 								.getEnum(
 										modelDatas.getOrderChilds().get(i)
 												.getPaytype()).desc())%></td>
-				<td><a
-					href="<%=PropertyUtils.getProperty("ImageServicePath")%><%=modelDatas.getOrderChilds().get(i).getTicketurl()%>">查看</a></td>
+				<td>
+				<% 
+				 if(modelDatas.getOrderChilds().get(i).getTicketurl()!=null&&!modelDatas.getOrderChilds().get(i).getTicketurl().isEmpty())
+				 {
+				%>
+				<a
+					href="<%=PropertyUtils.getProperty("ImageServicePath")%><%=modelDatas.getOrderChilds().get(i).getTicketurl()%>">查看</a>
+				<%
+				} %>
+				</td>
 			</tr>
 
 			<%

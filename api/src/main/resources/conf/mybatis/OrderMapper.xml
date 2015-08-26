@@ -874,11 +874,11 @@ a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,
    <!-- 根据商家Id获得商家订单概述  add by pengyi 20150818-->
    <select id="getBusinessOrderSummary" resultMap="businessOrderSummaryResultMap" parameterType="java.lang.Integer">
    	WITH o AS (
-	 SELECT sum(CASE WHEN AuditStatus=1 THEN 1 ELSE 0 end) AS 'finish',
-	 sum(CASE WHEN AuditStatus=2 THEN 1 ELSE 0 end) AS 'received',  --待抢单
-	 sum(CASE WHEN AuditStatus=3 THEN 1 ELSE 0 end) AS 'cancel',  --已完成
-	 sum(CASE WHEN AuditStatus=4 THEN 1 ELSE 0 end) AS 'pickUp',    --已取消
-	 sum(CASE WHEN AuditStatus=0 THEN 1 ELSE 0 end) AS 'unReceive'--配送中
+	 SELECT sum(CASE WHEN [Status]=1 THEN 1 ELSE 0 end) AS 'finish',
+	 sum(CASE WHEN [Status]=2 THEN 1 ELSE 0 end) AS 'received',  --待抢单
+	 sum(CASE WHEN [Status]=3 THEN 1 ELSE 0 end) AS 'cancel',  --已完成
+	 sum(CASE WHEN [Status]=4 THEN 1 ELSE 0 end) AS 'pickUp',    --已取消
+	 sum(CASE WHEN [Status]=0 THEN 1 ELSE 0 end) AS 'unReceive'--配送中
 	 FROM dbo.[order] (NOLOCK) WHERE businessId= #{id,jdbcType=INTEGER})   --待取货
 	 SELECT b.Name,b.Address,b.City,b.BalancePrice,b.LastLoginTime,o.finish,o.received,o.cancel,o.pickUp,o.unReceive 
 	 FROM o JOIN dbo.business (NOLOCK) b ON b.id = #{id,jdbcType=INTEGER};

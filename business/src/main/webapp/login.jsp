@@ -42,7 +42,7 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 								<p><b class="error error2"></b></p>
 								<input type="text" placeholder="输入验证码" maxlength="4" class="ex_get" name="code" id="code"><span class="ex_over"><img id="imgCode" src="<%=basePath %>/account/code?x=Math.random();" class="img"></span>
 								<p><b class="error error3"></b></p>
-								<label><input type="checkbox" checked="checkbox" name="rememberMe" id="rememberMe"/>记住我（下次自动登录）</label> 
+								<label><input type="checkbox" name="rememberMe" id="rememberMe" value="1"/>记住我（下次自动登录）</label> 
 								<input type="button" value="登&nbsp;&nbsp;录" class="ex_submit" id="btnLogin">
 							<!-- <dl>第一次来E代送？<a href="###">快速注册</a></dl> -->
 						</div>
@@ -62,12 +62,13 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 					flag = flag || password();
 					flag = flag || get();
 					if(flag){
+						var isRem = document.getElementById("rememberMe").checked;
 						var url = "<%=basePath %>/account/login";
 						var params = {
 								"phoneNo":$("#phoneNo").val(),
 							  	"password":$("#password").val(),
 							  	"code":$("#code").val(),
-							  	"rememberMe":$("#rememberMe").val()
+							  	"rememberMe":isRem ? $("#rememberMe").val() : 0
 							  };
 						//请求接口
  					    $.ajax({

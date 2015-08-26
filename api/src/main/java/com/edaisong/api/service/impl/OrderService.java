@@ -329,8 +329,8 @@ public class OrderService implements IOrderService {
 				&& req.getListOrderChild().size() > 0) {
 			OrderChild child=null;
 			short payStatus=0;
-			if (req.getIspay()||!req.getIspay()
-					&& businessModel.getMealssettlemode() == MealsSettleMode.LineOff.value()) {
+			if (req.getIspay()||(!req.getIspay()
+					&& businessModel.getMealssettlemode() == MealsSettleMode.LineOff.value())) {
 				payStatus=1;
 			}
 			for (int i = 0; i < req.getListOrderChild().size(); i++) {
@@ -501,11 +501,7 @@ public class OrderService implements IOrderService {
 				businessModel.getDistribsubsidy(), req.getOrderfrom());
 		resp.setBalanceprice(businessModel.getBalanceprice());
 		resp.setSettleMoney(settleMoney);
-		 if (businessModel.getBalanceprice()<settleMoney)
-         {
-			resp.setResponseCode(PublishOrderReturnEnum.BusiBalancePriceLack.value());
-			resp.setMessage(PublishOrderReturnEnum.BusiBalancePriceLack.desc());
-         }
+		 
 		return resp;
 	}
 	@Override

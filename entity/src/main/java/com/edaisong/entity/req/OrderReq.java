@@ -194,10 +194,17 @@ public class OrderReq {
 //	        this.actualdonedate = actualdonedate;
 //	    }
 
+	    /**
+	     * 0 未付款  1 已付款
+	     * @return
+	     */
 	    public Boolean getIspay() {
 	        return ispay;
 	    }
-
+	  /**
+	   *  0 未付款  1 已付款
+	   * @param ispay
+	   */
 	    public void setIspay(Boolean ispay) {
 	        this.ispay = ispay;
 	    }

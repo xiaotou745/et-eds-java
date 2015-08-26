@@ -18,24 +18,32 @@
 	<div class="box2-ny">
 		<p class="cb">
 			<span class="fl"> <em class="fl">*</em> 收货人电话
-			</span> <input class="fl" type="text" id="telphone" name="" value="" /> <em
-				class="fl" style="display:none">请输入正确手机号码或固定电话号码</em>
+			</span> <input class="fl" type="text" id="telphone" name="" value=""  max-length="20" /> <em
+				class="fl" style="display:none" >请输入正确手机号码或固定电话号码</em>
 		<ul id="list" class="vh">
 			<!-- 加入 "vh" 选择器,为隐藏 -->
 		</ul>
 		</p>
 		<p class="cb">
 			<span class="fl"> <em class="fl">*</em> 收货人地址
-			</span> <input class="fl" type="text" id="address" name="" value="">
-			<em class="fl" style="display:none">收货地址不能为空</em>
+			</span> <input class="fl" type="text" id="address" name="" value=""  max-length="20"/>
+			<em class="fl" style="display:none"><%  // 一键发单客户端校验逻辑  不允许一键发单时
+	    	if(businessModel.getOnekeypuborder()==0)
+	    	{
+		%>
+		       收货地址不能为空且不能超过20个字符
+		<% }else{%>
+		 收货地址不能超过20个字符
+		<% }%>
+		</em>
 		</p>
 	   <p class="cb">
 			<span class="fl">
 				<!-- <em class="fl">*</em> -->
 				收货人姓名
 			</span>
-			<input class="fl" type="text" id="name">
-			<em class="fl" style="display:none"></em>
+			<input class="fl" type="text" id="name"   max-length="20"/>
+			<em class="fl" style="display:none">收货人姓名不能超过20个字符</em>
 	  </p>
 	</div>
 </div>
@@ -71,7 +79,8 @@
 		</p>
 		<p class="cb">
 			<span class="fl lh15"> 备注 </span>
-			<textarea class="fl" id="remark"></textarea>
+			<textarea class="fl" id="remark"  max-length="50" style="margin-right:20px;"></textarea>
+			<em class="fl" style="display:none">备注最多50字</em>
 		</p>
 	</div>
 </div>
@@ -184,11 +193,33 @@
 				$('.orderBox').removeClass('dn');
 			}
 			$('.orderBox').find('s').eq(0).html($('.copy').length +"单");  //重置单量
+			var all = 0;
+			var priceList = $('.price');
+			for(var i=0;i<priceList.length;i++){
+				var tempMoney=0;
+				if(!parseFloat($(priceList[i]).val())){
+					tempMoney=0;
+				}else{
+					tempMoney=parseFloat($(priceList[i]).val());
+				}
+				all = tempMoney+all;
+			}
+			all = Math.round(all*100)/100;
+			all = all.toFixed(2);
+			$('#amount').val(all);  // 真实订单金额
+			$('#allPrice').html('¥'+all);  
 		});
 
 		//确认发布任务弹窗呼出 And 关闭
 		$('.fabu').on('click',function() {
 			var validate = true;
+			var remark = $("#remark");
+			if(remark.val().length>remark.attr("max-length")){
+				validate= false;
+				remark.next().show();
+			}else{
+				remark.next().hide();
+			}
 			//手机号非空判断
 			var inputList = $("input");
 			for(var i = 0;i<inputList.length;i++){
@@ -196,7 +227,8 @@
 				if(!temp){
 					validate = temp;
 				}
-			}				
+			}			
+
 			if(validate){
 				$(".popup1").show();
 				$(".popup1 .cb:eq(0) em").html($("#allPrice").html()); //订单金额
@@ -216,12 +248,8 @@
 						$(".popup1 i s:eq(0)").html(result.settleMoney); //任务结算
 						$(".popup1 i s:eq(1)").html(result.balanceprice); //余额
 						if(result.responseCode!=0){
-							if(result.responseCode==-8){
-								$('.popup3').show();  //余额不足弹层
-							}else{
 								$('.popup6').find('h2').html(result.message);
 							    $('.popup6').show();
-							}
 						}
 					}
 				});
@@ -315,14 +343,18 @@
 
 		//表单验证配置
 		var teg = {};
-		<%  // 一键发单客户端校验逻辑
+		<%  // 一键发单客户端校验逻辑  不允许一键发单时
 	    	if(businessModel.getOnekeypuborder()==0)
 	    	{
 		%>
-			teg.telphone = /(^(010|02\d|0[3-9]\d{2})?\d{7,8}$)|(^1[0-9]{10})/;
+			teg.telphone = /(?=^1\d{10}$)|(?=^[^1]\d{6,11}$)/;  //匹配电话号码
 			teg.address = 'empty';
 		<% }
+	    	else{
 			%>
+			teg.telphone = /(?=^1\d{10}$)|(?=^[^1]\d{6,11}$)|(^\s*$)/;  //匹配电话号码 或者为空
+			<%
+			}%>
 
 		$('.box2').on('blur','input',function(){
 			vinput(this);
@@ -338,13 +370,12 @@
 			var reg = teg[id];
 			var val = $(input).val();
 
-			if($(input).attr('minlength')){
-				if($(input).val().length>$(input).attr('minlength')){
+			if($(input).attr('max-length')){
+				if($(input).val().length>$(input).attr('max-length')){
 					$(input).next().show();
 					return false;
 				}else{
 					$(input).next().hide();
-
 				}
 			}
 
@@ -373,11 +404,13 @@
 				$(input).parent().next().next().removeAttr('style');
 				var all = 0;
 				var priceList = $('.price');
+				var tempresult=true;
 				for(var i=0;i<priceList.length;i++){
-					if(!parseFloat($(priceList[i]).val())){
-						return false;
+					if(!parseFloat($(priceList[i]).val())||parseFloat($(priceList[i]).val())<5||parseFloat($(priceList[i]).val())>1000){
+						tempresult= false;
+					}else{
+						all = parseFloat($(priceList[i]).val())+all;
 					}
-					all = parseFloat($(priceList[i]).val())+all;
 				}
 				
 				all = Math.round(all*100)/100;
@@ -385,11 +418,9 @@
 				$('#amount').val(all);  // 真实订单金额
 				$('#allPrice').html('¥'+all);  
 
-				return true;
+				return tempresult;
 			}
 			return true;
-
-
 		}
 		
 		//键盘事件

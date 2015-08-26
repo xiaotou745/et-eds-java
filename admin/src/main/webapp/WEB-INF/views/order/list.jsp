@@ -10,6 +10,8 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
+<%@page import="com.edaisong.core.util.EnumHelper"%>
+<%@page import="com.edaisong.core.enums.OrderStatus"%>
 
 <%	
 String basePath =PropertyUtils.getProperty("static.admin.url");
@@ -61,7 +63,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">订单状态:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control">
+							<%=HtmlHelper.getSelect("orderStatus", EnumHelper.GetEnumItems(OrderStatus.class), "desc", "value",null,"-1","全部","","form-control m-b") %>
 							</div>
 						</div>
 					</div>
@@ -85,7 +87,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">
-							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name") %>
+							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部","","form-control m-b") %>
 							</div>
 						</div>
 					</div>
@@ -95,7 +97,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选集团: </label>
 							<div class="col-sm-8">
-								  <%=HtmlHelper.getSelect("groupId", groupListData, "groupname", "id") %>
+								  <%=HtmlHelper.getSelect("groupId", groupListData, "groupname", "id","-1","-1","全部","","form-control m-b") %>
 							</div>
 						</div>
 					</div>
@@ -118,9 +120,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 					<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
 					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;">查询</button>
-						<button type="button" class="btn btn-w-m btn-primary" id="btnSave"
-							style="margin-left: 3px;">保存修改</button>
+							style="margin-left: 3px;height:30px;">查询</button>
 					</div>
 				</div>
 			</form>
