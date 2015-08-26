@@ -18,24 +18,32 @@
 	<div class="box2-ny">
 		<p class="cb">
 			<span class="fl"> <em class="fl">*</em> 收货人电话
-			</span> <input class="fl" type="text" id="telphone" name="" value="" /> <em
-				class="fl" style="display:none">请输入正确手机号码或固定电话号码</em>
+			</span> <input class="fl" type="text" id="telphone" name="" value=""  max-length="20" /> <em
+				class="fl" style="display:none" >请输入正确手机号码或固定电话号码</em>
 		<ul id="list" class="vh">
 			<!-- 加入 "vh" 选择器,为隐藏 -->
 		</ul>
 		</p>
 		<p class="cb">
 			<span class="fl"> <em class="fl">*</em> 收货人地址
-			</span> <input class="fl" type="text" id="address" name="" value="">
-			<em class="fl" style="display:none">收货地址不能为空</em>
+			</span> <input class="fl" type="text" id="address" name="" value=""  max-length="20"/>
+			<em class="fl" style="display:none"><%  // 一键发单客户端校验逻辑  不允许一键发单时
+	    	if(businessModel.getOnekeypuborder()==0)
+	    	{
+		%>
+		       收货地址不能为空且不能超过20个字符
+		<% }else{%>
+		 收货地址不能超过20个字符
+		<% }%>
+		</em>
 		</p>
 	   <p class="cb">
 			<span class="fl">
 				<!-- <em class="fl">*</em> -->
 				收货人姓名
 			</span>
-			<input class="fl" type="text" id="name">
-			<em class="fl" style="display:none"></em>
+			<input class="fl" type="text" id="name"   max-length="20"/>
+			<em class="fl" style="display:none">收货人姓名不能超过20个字符</em>
 	  </p>
 	</div>
 </div>
@@ -362,8 +370,8 @@
 			var reg = teg[id];
 			var val = $(input).val();
 
-			if($(input).attr('minlength')){
-				if($(input).val().length>$(input).attr('minlength')){
+			if($(input).attr('max-length')){
+				if($(input).val().length>$(input).attr('max-length')){
 					$(input).next().show();
 					return false;
 				}else{
