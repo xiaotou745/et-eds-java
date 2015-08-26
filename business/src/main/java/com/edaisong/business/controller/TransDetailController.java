@@ -36,8 +36,8 @@ public class TransDetailController {
 	@RequestMapping("list")
 	public ModelAndView transdetail() {
 		ModelAndView view = new ModelAndView("businessView");
-		view.addObject("subtitle", "交易详情");
-		view.addObject("currenttitle", "交易记录");
+		view.addObject("subtitle", "交易明细");
+		view.addObject("currenttitle", "交易明细");
 		view.addObject("viewPath", "transdetail/list");
 		return view;
 	}

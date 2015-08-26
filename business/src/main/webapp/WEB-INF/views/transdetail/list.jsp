@@ -45,9 +45,9 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 					<input type="radio" name="timeType" value="3">
 					区间
 				</label>
-				<span class="intime"><input type="text" class="dinput" id="startDate" name="startDate"><s onClick="WdatePicker({el:'startDate',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="intime"><input type="text"  disabled="disabled" class="dinput" id="startDate" name="startDate"><s onClick="WdatePicker({el:'startDate',dateFmt:'yyyy-MM-dd'});"></s></span>
 				<span class="inblock">至</span>
-				<span class="intime"><input type="text" class="dinput" id="endDate" name="endDate"><s onClick="WdatePicker({el:'endDate',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="intime"><input type="text"  disabled="disabled" class="dinput" id="endDate" name="endDate"><s onClick="WdatePicker({el:'endDate',dateFmt:'yyyy-MM-dd'});"></s></span>
 			</div>
 			</form>
 </div>
@@ -82,5 +82,17 @@ $("#btnSearch").click(function() {
 $("#customerSearch").click(function() {
 	searchType=1;
 	jss.search(1);
+});
+$("input[type='radio']").click(function() {
+	var selected=$('input[name="timeType"]:checked').val();
+	if(selected!="3"){
+		$("#startDate").attr("disabled","disabled");
+		$("#endDate").attr("disabled","disabled");
+		$("#startDate").val("");
+		$("#endDate").val("");
+	}else{
+		$("#startDate").removeAttr("disabled");
+		$("#endDate").removeAttr("disabled");
+	}
 });
 </script>

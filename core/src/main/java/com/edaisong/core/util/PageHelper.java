@@ -45,6 +45,10 @@ public class PageHelper {
 		// 尾页
 		sb.append(GetEndPage(CurrentPage, TotalPage));
 
+		String Href = "javascript:jss.search(" + (CurrentPage + 1) + ")";
+		sb.append("<input type=\"hidden\" id=\"pagesearchmax\" value=\""+TotalPage+"\">");
+		sb.append("<input type=\"text\" id=\"pagesearchvalue\" value=\"1\" width=\"10px\">");
+		sb.append("<input type=\"button\" id=\"pagesearch\" value=\"跳转\" data-submitbutton=\"true\">");
 		sb.append("</ul></div></div></div>");
 
 		return sb.toString();
