@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IClienterService;
-import com.edaisong.business.entity.UserContext;
+import com.edaisong.business.common.UserContext;
 import com.edaisong.entity.BusinessMessage;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;

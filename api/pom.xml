@@ -135,50 +135,10 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault><!--默认启用的是dev环境配置 -->
-			</activation>
-			<build>
-				<filters>
-					<filter>D:/conf/profiles/dev-conf.properties</filter>
-					<filter>D:/conf/profiles/dev-env.properties</filter>
-				</filters>
-			</build>
-		</profile>
-		<profile>
-			<id>test</id>
-			<build>
-				<filters>
-					<filter>D:/conf/profiles/test-conf.properties</filter>
-					<filter>D:/conf/profiles/test-env.properties</filter>
-				</filters>
-			</build>
-		</profile>
-		<profile>
-			<id>pro</id>
-			<build>
-				<filters>
-					<filter>D:/conf/profiles/pro-conf.properties</filter>
-					<filter>D:/conf/profiles/pro-env.properties</filter>
-				</filters>
-			</build>
-		</profile>
-	</profiles>
+	    
 	<build>
 		<defaultGoal>compile</defaultGoal>
 		<finalName>api</finalName>
-		<resources>
-			<resource>
-				<filtering>true</filtering>
-				<directory>src/main/resources/conf/custom/</directory>
-<!-- 				<includes> -->
-<!-- 				<include>env.properties</include>  -->
-<!-- 					<include>spring-datasource.xml</include>  -->
-<!-- 				</includes> -->
-			</resource>
-		</resources>
+		
 	</build>
 </project>

@@ -1,7 +1,7 @@
 package com.edaisong.api;
 
-import com.edaisong.api.common.SpringBeanHelper;
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.req.BusinessLoginReq;
 
 import junit.framework.TestCase;

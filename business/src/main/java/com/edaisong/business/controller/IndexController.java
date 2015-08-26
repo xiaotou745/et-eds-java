@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.dao.inter.IBusinessMessageDao;
 import com.edaisong.api.service.inter.IOrderService;
-import com.edaisong.business.entity.UserContext;
+import com.edaisong.business.common.UserContext;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessMessage;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;

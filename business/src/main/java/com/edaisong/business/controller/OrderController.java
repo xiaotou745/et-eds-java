@@ -37,7 +37,7 @@ import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.api.service.inter.IClienterService;
-import com.edaisong.business.entity.UserContext;
+import com.edaisong.business.common.UserContext;
 import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.NumberHelper;
