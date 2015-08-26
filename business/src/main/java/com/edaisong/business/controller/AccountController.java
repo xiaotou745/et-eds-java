@@ -54,7 +54,7 @@ public class AccountController {
 	@RequestMapping(value = "login", method = { RequestMethod.POST })
 	public @ResponseBody LoginResp login(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
-			@RequestParam boolean rememberMe) {
+			@RequestParam int rememberMe) {
 		//Object sessionCode = request.getSession().getAttribute("code");
 		String sessionCode = ServerUtil.getAuthCode(request);
 		//一次性验证码,防止暴力破解
@@ -84,8 +84,8 @@ public class AccountController {
 		}
 		// 登录成功,写cookie
 		int cookieMaxAge = 2 * 60 * 24;
-		// 选择记住我,默认cookie24小时,否则2小时
-		if (rememberMe) {
+		// 选择记住我,默认cookie24小时,否则随浏览器的关闭而失效
+		if (rememberMe==1) {
 			cookieMaxAge = 60 * 60 * 24;
 		}
 		Business business = businessResp.getBusiness();
@@ -94,6 +94,9 @@ public class AccountController {
 		business.setLastLoginTime(lastLoginTime);
 		String key = String.format("%s_%s", RedissCacheKey.LOGIN_COOKIE_KEY,business.getPhoneno());//UUID.randomUUID().toString();
 		redisService.set(key, business, cookieMaxAge);
+		if(!(rememberMe==1)){
+			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走
+		}
 		CookieUtils.setCookie(request,response, WebConst.LOGIN_COOKIE_NAME, key, cookieMaxAge,
 				true);
 		resp.setSuccess(true);
