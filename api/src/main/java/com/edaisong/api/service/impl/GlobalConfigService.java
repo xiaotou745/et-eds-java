@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.dao.inter.IGlobalConfigDao;
 import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.entity.GlobalConfig;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
+import com.edaisong.entity.req.PagedGlobalConfigReq;
 /*
  * 管理员工具 
  * */
@@ -58,6 +60,11 @@ public class GlobalConfigService implements IGlobalConfigService {
 			resultMap.put(globalConfigModel.getKeyName().toUpperCase(), globalConfigModel.getValue());
 		}
 		return resultMap;
+	}
+	
+	@Override
+	public PagedResponse<GlobalConfigModel> getPagedGlobalConfigModels(PagedGlobalConfigReq search) {
+		return iGlobalConfigDao.getPagedGlobalConfigModels(search);
 	}
 
 }
