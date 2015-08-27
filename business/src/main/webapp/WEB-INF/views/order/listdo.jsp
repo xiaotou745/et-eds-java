@@ -63,7 +63,13 @@
 			</td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getActualDoneDate())%></td>
 			<td><%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
-			<td><a class="red2" href="javascript:void(0)" onclick="cancelOrder(<%=data.get(i).getId()%>,'<%=data.get(i).getOrderNo()%>')">取消订单</a>
+			<td>
+			<%
+			if(data.get(i).getStatus()==(int)OrderStatus.New.value()){
+				%>
+					<a class="red2" href="javascript:void(0)" onclick="cancelOrder(<%=data.get(i).getId()%>,'<%=data.get(i).getOrderNo()%>')">取消订单</a>
+			<%}%>
+		
 			<a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getOrderNo()%>">订单详情</a>
 			</td>
 		</tr>
@@ -78,7 +84,7 @@
 					responsePageList.getTotalPage())%>
 <script type="text/javascript">
 function cancelOrder(orderId,orderNo){
-	if (!window.confirm("是否取消订单？")) {
+	if (!window.confirm("是否确认取消订单？")) {
         return;
     }
     var paramaters = { "orderId": orderId,"orderNo":orderNo };
@@ -88,7 +94,8 @@ function cancelOrder(orderId,orderNo){
         url: url,
         data: paramaters,
         success: function (result) {
-        	if (result.responseCode!=0) {
+        	if (result.responseCode==0) {
+        		 alert("操作成功");
                 window.location.href = "<%=basePath%>/order/list";
             } else {
                 alert(result.message);

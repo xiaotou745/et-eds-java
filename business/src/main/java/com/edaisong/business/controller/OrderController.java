@@ -62,8 +62,8 @@ public class OrderController {
 	@RequestMapping("list")
 	public ModelAndView list() {
 		ModelAndView view = new ModelAndView("businessView");
-		view.addObject("subtitle", "订单");
-		view.addObject("currenttitle", "订单管理");
+		view.addObject("subtitle", "全部订单");
+		view.addObject("currenttitle", "全部订单");
 		view.addObject("viewPath", "order/list");
 		return view;
 	}
@@ -166,7 +166,7 @@ public class OrderController {
 	@RequestMapping(value = "publish")
 	public ModelAndView publish(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView("businessView");
-		model.addObject("subtitle", "订单中心");
+		model.addObject("subtitle", "发布任务");
 		model.addObject("currenttitle", "发布任务");
 		model.addObject("businessModel",businessService.getBusiness(UserContext.getCurrentContext(request).getBusiness().getId()));
 		model.addObject("viewPath", "order/publish");

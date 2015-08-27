@@ -21,15 +21,13 @@
  <script type="text/javascript" src="<%=basePath%>/js/date/WdatePicker.js"></script> 
 <script>
 $(document).ready(function() {
+	$(document).on("click", "#pagesearch", function(){
+		tst();
+	}); 
 	setTimeout("regTrEvent()",50);  
 });
 
 function regTrEvent(){  
-// 	if($(".stripe tr").length==0){
-// 		setTimeout("regTrEvent()",50);  
-// 		return;
-// 	}
-
 	$(".stripe tr").mouseover(function() {
 		//鼠标移到class为stripe的表格的tr上时，执行函数
 		$(this).addClass("over");
@@ -46,19 +44,30 @@ function regTrEvent(){
 	//注：$(':odd')  为奇数语法；
 	countH();
 	setTimeout("regTrEvent()",50);  
-}  
+};  
 
+function tst() {
+	var page=$("#pagesearchvalue").val();
+	var maxpage=$("#pagesearchmax").val();
+	var s = new RegExp("^\\s*(\\d+)\\s*$");
+	if(!s.test(page)||parseInt(page) < 1 || parseInt(page) > maxpage){
+	  alert("页索引超出范围");
+	  $("#pagesearchvalue").val("1");
+	  return;
+	}
+	jss.search(page);
+};
 	$(document).ajaxError(function(event, jqXHR, options, errorMsg) {
 		var info=jqXHR.responseText;
-		//alert(options.url + "调用出错了！");
-		alert(info);
+		alert(options.url + "调用出错了！");
+		//alert(info);
 	});
 	function countH() {
 		var WinHeight = $(window).height();
 		$(".nav").css({
 			"min-height" : WinHeight - 70
 		})
-	}
+	};
 	
 	//如果2小时内页面没有操作自动退出 
 	var getCoordInDocument = function(e) {
@@ -93,7 +102,7 @@ function regTrEvent(){
 		}
 		oldX = pointer.x;
 		oldY = pointer.y;
-	}
+	};
 	
 	function logoff(){
 		if(flag){
@@ -101,7 +110,7 @@ function regTrEvent(){
 			maxArea = 10000;
 			flag = false;
 		}
-	}
+	};
 </script>
 </head>
 <body>
