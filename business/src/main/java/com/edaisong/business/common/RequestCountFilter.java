@@ -1,7 +1,6 @@
 package com.edaisong.business.common;
 
 import java.io.IOException;
-import java.net.URL;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.util.IPUtil;
 import com.edaisong.core.util.SpringBeanHelper;
 
 /**
@@ -43,7 +43,7 @@ public class RequestCountFilter implements Filter {
 		String uri = request.getRequestURI().replace(request.getContextPath(), "");
 		// 如果请求的地址是需要监测的url
 		if (uri.equals(checkUrl)) {
-			String remoteIp = ServerUtil.getIpAddr(request);
+			String remoteIp = IPUtil.getIpAddr(request);
 			String remoteHost = request.getRemoteHost();
 			int remotePort = request.getRemotePort();
 			String key = String.format("%s_%s_%s_%d", checkUrl, remoteIp, remoteHost, remotePort);

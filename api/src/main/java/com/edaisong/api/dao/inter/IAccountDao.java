@@ -22,4 +22,6 @@ public interface IAccountDao {
     int updateByPrimaryKeySelective(Account record);
 
     int updateByPrimaryKey(Account record);
+    
+    Account login(String username,String password);
 }

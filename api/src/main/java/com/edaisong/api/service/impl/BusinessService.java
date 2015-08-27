@@ -12,7 +12,7 @@ import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.core.cache.redis.RedisService;
-import com.edaisong.core.consts.GlobalConfig;
+import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.enums.BusinessStatus;
 import com.edaisong.core.security.MD5Util;
@@ -56,7 +56,7 @@ public class BusinessService implements IBusinessService {
 		Integer loginCount = redisService
 				.get(loginCountCacheKey, Integer.class);
 		loginCount = loginCount == null ? 0 : loginCount;
-		if (loginCount >= GlobalConfig.MAX_LOGIN_COUNT) {
+		if (loginCount >= GlobalSettings.MAX_LOGIN_COUNT) {
 			resp.setLoginSuccess(false);
 			resp.setMessage("您当前登录的次数大于10，请5分钟后重试");
 			addLoginLog(phoneNo == null ? "" : phoneNo, "5分钟内登录次数超过10次", false);
@@ -70,7 +70,7 @@ public class BusinessService implements IBusinessService {
 			resp.setLoginSuccess(false);
 			return resp;
 		}
-		String pwd = MD5Util.MD5(GlobalConfig.PWD_SALT + password);
+		String pwd = MD5Util.MD5(GlobalSettings.PWD_SALT + password);
 		Business b = iBusinessDao.login(phoneNo, pwd);
 		if (b == null) {
 			resp.setMessage("用户名或密码错误");

@@ -83,4 +83,12 @@ public class AccountDao extends DaoBase implements IAccountDao {
 		return 0;
 	}
 
+	@Override
+	public Account login(String username, String password) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("username", username);
+		params.put("password", password);
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IAccountDao.login", params);
+	}
+
 }
