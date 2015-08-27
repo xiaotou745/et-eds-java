@@ -47,7 +47,7 @@
 		<%} %>
 	</tbody>
 </table>
-<%=PageHelper.GetPage(responsePageList.getPageSize(),
+<%=PageHelper.getPage(responsePageList.getPageSize(),
 					responsePageList.getCurrentPage(),
 					responsePageList.getTotalRecord(),
 					responsePageList.getTotalPage())%>

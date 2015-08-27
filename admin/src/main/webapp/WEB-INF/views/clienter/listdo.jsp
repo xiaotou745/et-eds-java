@@ -132,7 +132,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 		%> 	 	
 			</tbody>
 		</table>
-		<%=PageHelper.GetPage(data.getPageSize(),
+		<%=PageHelper.getPage(data.getPageSize(),
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
 
