@@ -81,7 +81,7 @@
 					<%
 						if(message != null){
 					%>
-					<span class="fl" id="notice"> <%=message.getContent()%>
+					<span class="fl" id="notice" style="height:70px;overflow:scroll;"> <%=message.getContent()%>
 					</span>
 					<%
 						}else{
@@ -126,10 +126,10 @@
 		}
 	}
 	$(function() {
-		var notice = $("#notice").text();
+/* 		var notice = $("#notice").text();
 		if (notice.length > 70) {
-			$("#notice").text(notice.substr(0, 70) + "...");
-		}
+			$("#notice").text(notice.substr(0, 60) + "...");
+		} */
 
 		//统计图
 		$('#container').highcharts({
