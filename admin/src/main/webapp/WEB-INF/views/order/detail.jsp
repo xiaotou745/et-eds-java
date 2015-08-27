@@ -17,6 +17,13 @@
     OrderListModel orderListModel=	(OrderListModel)request.getAttribute("orderListModel");
 	List<OrderSubsidiesLog> orderSubsidiesLogs=	(List<OrderSubsidiesLog>)request.getAttribute("orderSubsidiesLogs");
 %>
+<style >
+.tbstyle .tdbg th {
+background: #f6f6f6;
+height: 40px;
+border: 1px solid #dcdcdc;
+color: #333;
+}</style>
 <div style="width: 1000px">
 	<%
 		String subsidy = "";
