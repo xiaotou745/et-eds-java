@@ -24,15 +24,13 @@ public class LoginHelper {
 	 * @param request
 	 * @return
 	 */
-	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response) {
+	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response,String cookieKey) {
 		// 如果已登录,直接返回
 		boolean isLogin = false;
-		final String cookieKey = GlobalSettings.LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
 		if (cookieValue != null) {
-			//redisService.set(cookieValue, "sdf");
 			Object loginStatusValue = redisService.get(cookieValue, Object.class);
-			if (loginStatusValue != null && loginStatusValue instanceof Business) {
+			if (loginStatusValue != null){// && loginStatusValue instanceof Business) {
 				isLogin = true;
 			}
 		}
@@ -60,7 +58,7 @@ public class LoginHelper {
 	public static void storeAuthCode2Redis(String code, HttpServletRequest request, HttpServletResponse response) {
 		String redisKey = UUID.randomUUID().toString();
 		redisService.set(redisKey, code);
-		CookieUtils.setCookie(request, response, GlobalSettings.JSESSIONID, redisKey, 10 * 24);
+		CookieUtils.setCookie(request, response, GlobalSettings.JSESSIONID, redisKey, 5 * 24);
 	}
 
 	/**

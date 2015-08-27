@@ -125,6 +125,9 @@
       <if test="isnotrealorder != null" >
         IsNotRealOrder,
       </if>
+      <if test="isAllowCashPay != null" >
+        isAllowCashPay,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -189,6 +192,9 @@
       </if>
       <if test="isnotrealorder != null" >
         #{isnotrealorder,jdbcType=INTEGER},
+      </if>
+      <if test="isAllowCashPay != null" >
+        #{isAllowCashPay,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>

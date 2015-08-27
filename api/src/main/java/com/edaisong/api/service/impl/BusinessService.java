@@ -70,7 +70,7 @@ public class BusinessService implements IBusinessService {
 			resp.setLoginSuccess(false);
 			return resp;
 		}
-		String pwd = MD5Util.MD5(GlobalSettings.PWD_SALT + password);
+		String pwd = MD5Util.MD5(password);
 		Business b = iBusinessDao.login(phoneNo, pwd);
 		if (b == null) {
 			resp.setMessage("用户名或密码错误");

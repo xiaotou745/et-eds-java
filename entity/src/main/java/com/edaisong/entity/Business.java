@@ -88,6 +88,8 @@ public class Business implements Serializable{
     private Date lastlogintime;
     
     private Integer isOrderChecked;
+    
+    private Integer isAllowCashPay;
 
     public Integer getId() {
         return id;
@@ -422,5 +424,13 @@ public class Business implements Serializable{
 
 	public void setIsOrderChecked(Integer isOrderChecked) {
 		this.isOrderChecked = isOrderChecked;
+	}
+
+	public Integer getIsAllowCashPay() {
+		return isAllowCashPay;
+	}
+
+	public void setIsAllowCashPay(Integer isAllowCashPay) {
+		this.isAllowCashPay = isAllowCashPay;
 	}
 }

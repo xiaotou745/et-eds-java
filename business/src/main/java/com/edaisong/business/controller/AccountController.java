@@ -51,7 +51,7 @@ public class AccountController {
 		LoginHelper.removeAuthCodeCookie(request, response);
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
-		boolean isLogin = LoginHelper.checkIsLogin(request,response);
+		boolean isLogin = LoginHelper.checkIsLogin(request,response,GlobalSettings.BUSINESS_LOGIN_COOKIE_NAME);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
 			resp.setSuccess(true);
@@ -81,12 +81,12 @@ public class AccountController {
 		Date lastLoginTime = new Date();//更新最后登录时间
 		businessService.updateLastLoginTime(business.getId(), lastLoginTime);
 		business.setLastLoginTime(lastLoginTime);
-		String key = String.format("%s_%s", RedissCacheKey.LOGIN_COOKIE_KEY,business.getPhoneno());//UUID.randomUUID().toString();
+		String key = String.format("%s_business_%s", RedissCacheKey.LOGIN_COOKIE_KEY,business.getPhoneno());//UUID.randomUUID().toString();
 		redisService.set(key, business, cookieMaxAge);
 		if(!(rememberMe==1)){
 			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走
 		}
-		CookieUtils.setCookie(request,response, GlobalSettings.LOGIN_COOKIE_NAME, key, cookieMaxAge,
+		CookieUtils.setCookie(request,response, GlobalSettings.BUSINESS_LOGIN_COOKIE_NAME, key, cookieMaxAge,
 				true);
 		resp.setSuccess(true);
 		return resp;
@@ -104,7 +104,7 @@ public class AccountController {
 	@RequestMapping(value = "logoff")
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
-		Cookie cookie = CookieUtils.getCookieByName(GlobalSettings.LOGIN_COOKIE_NAME, request);
+		Cookie cookie = CookieUtils.getCookieByName(GlobalSettings.BUSINESS_LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
 		    	redisService.remove(cookie.getValue());
 			CookieUtils.deleteCookie(request, response, cookie);

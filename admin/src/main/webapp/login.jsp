@@ -1,8 +1,18 @@
+<%@page import="com.edaisong.core.consts.GlobalSettings"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@ page import="com.edaisong.api.common.LoginHelper" %>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
 	String basePath = PropertyUtils.getProperty("static.admin.url");
+%>
+<%
+	boolean isLogin = LoginHelper.checkIsLogin(request,response,GlobalSettings.ADMIN_LOGIN_COOKIE_NAME);
+	if(isLogin){
+		//如果登录,跳转到首页
+		response.sendRedirect(basePath+"/index");
+	}
 %>
 <!DOCTYPE html>
 <html>

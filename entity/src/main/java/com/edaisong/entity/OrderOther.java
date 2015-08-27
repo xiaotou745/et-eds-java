@@ -48,6 +48,7 @@ public class OrderOther {
     private Integer isorderchecked;
     
     private Date cancelTime;
+    private Integer isAllowCashPay;
 
     public Date getCancelTime() {
 		return cancelTime;
@@ -231,5 +232,13 @@ public class OrderOther {
 
 	public void setIsorderchecked(Integer isorderchecked) {
 		this.isorderchecked = isorderchecked;
+	}
+
+	public Integer getIsAllowCashPay() {
+		return isAllowCashPay;
+	}
+
+	public void setIsAllowCashPay(Integer isAllowCashPay) {
+		this.isAllowCashPay = isAllowCashPay;
 	}
 }
