@@ -2,10 +2,13 @@
 $(function() {
 	// 手机号
 	$(".ex_iphone").blur(iphone);
+	$(".ex_iphone").focus(function(){$(".error1").html("");});
 	// 密码
 	$(".ex_pord").blur(password);
+	$(".ex_pord").focus(function(){$(".error2").html("");});
 	// 验证码
 	$(".ex_get").blur(get);
+	$(".ex_get").focus(function(){$(".error3").html("");});
 	/*
 	 * $(".ex_iphone").blur(abc); $(".ex_pord").blur(function(){
 	 * 
@@ -57,7 +60,7 @@ function get() {
 		return false;
 	}
 	if (!reg.test($(".ex_get").val())) {
-		$(".error3").html("验证码里无中文、特殊符号！");
+		$(".error3").html("验证码错误！");
 		$(".error3").css("display", "block");
 		return false;
 	}
