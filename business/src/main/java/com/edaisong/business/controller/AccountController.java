@@ -88,6 +88,9 @@ public class AccountController {
 		}
 		CookieUtils.setCookie(request,response, GlobalSettings.BUSINESS_LOGIN_COOKIE_NAME, key, cookieMaxAge,
 				true);
+		//设置账户cookie
+		CookieUtils.setCookie(request,response, "username", phoneNo, 365 * 60 * 60 * 24,
+				false);
 		resp.setSuccess(true);
 		return resp;
 	}

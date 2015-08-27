@@ -11,7 +11,7 @@
 	boolean isLogin = LoginHelper.checkIsLogin(request,response,GlobalSettings.ADMIN_LOGIN_COOKIE_NAME);
 	if(isLogin){
 		//如果登录,跳转到首页
-		response.sendRedirect(basePath+"/index");
+		response.sendRedirect(basePath+"/order/list");
 	}
 %>
 <!DOCTYPE html>

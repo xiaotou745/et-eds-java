@@ -22,7 +22,6 @@ import com.edaisong.entity.req.PagedOrderSearchReq;
 public class OrderController {
 	 @Autowired
 	 private IOrderService orderService;
-	 
 	 @Autowired
 	 private IPublicProvinceCityService  iPublicProvinceCityService;
 	 @Autowired
@@ -63,8 +62,10 @@ public class OrderController {
 	}
 	
 	/**
-	 * 
+	 * 订单列表页面   弹出 地图页面
+	 * @author CaoHeYang
 	 * @param searchWebReq
+	 * @Date 20150827
 	 * @return
 	 */
 	@RequestMapping(value="ordermap",method= {RequestMethod.POST})
@@ -75,4 +76,19 @@ public class OrderController {
 		return view;
 	}
 	
+	/**
+	 * 订单详情页面
+	 * @author CaoHeYang
+	 * @Date 20150827
+	 * @return
+	 */
+	@RequestMapping("detail")
+	public ModelAndView detail(String orderno, int orderid){
+		ModelAndView model = new ModelAndView("adminView");
+	   OrderListModel orderListModel =orderService.getOrderByNoId(orderno, orderid);
+		model.addObject("subtitle", "订单列表");
+		model.addObject("currenttitle", "订单详情");
+		model.addObject("viewPath", "order/detail");
+		return model;
+	}
 }

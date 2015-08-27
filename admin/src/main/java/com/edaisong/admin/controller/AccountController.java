@@ -100,7 +100,7 @@ public class AccountController {
 		
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
-			response.sendRedirect(basePath);
+			response.sendRedirect(basePath+"/order/list");
 			return;
 		}
 		String error = "";
@@ -142,7 +142,7 @@ public class AccountController {
 		}
 		CookieUtils.setCookie(request,response, GlobalSettings.ADMIN_LOGIN_COOKIE_NAME, key, cookieMaxAge,
 				true);
-		response.sendRedirect(basePath);
+		response.sendRedirect(basePath+"/order/list");
 	}
 	
 	/**

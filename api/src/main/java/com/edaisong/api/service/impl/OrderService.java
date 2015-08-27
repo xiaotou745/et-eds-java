@@ -16,6 +16,7 @@ import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
+import com.edaisong.api.dao.inter.IOrderDetailDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
 import com.edaisong.api.service.inter.IBusinessService;
@@ -37,6 +38,7 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
+import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
@@ -76,6 +78,8 @@ public class OrderService implements IOrderService {
     private IBusinessService businessService;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private IOrderDetailDao orderDetailDao;
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -518,6 +522,29 @@ public class OrderService implements IOrderService {
 	@Override
 	public PagedResponse<OrderListModel> customerGetOrders(PagedCustomerSearchReq req) {
        return orderDao.customerGetOrders(req);
+	}
+
+	 /**
+	  *  根据订单号/订单id查订单信息
+	  * @author CaoHeYang
+	  * @param ordernNo 订单号
+	  * @param orderId  订单id
+	  * @Date 20150827
+	  * @return
+	  */
+	@Override
+	public OrderListModel getOrderByNoId(String orderNo, int orderId) {
+		if (orderNo==null ||orderNo.isEmpty()||orderId<=0) {
+			return new OrderListModel();
+		}
+		OrderListModel orderListModel=orderDao.getOrderByNoId(orderNo, orderId);
+		if (orderListModel!=null) {
+			List<OrderDetail> orderDetails=orderDetailDao.getOrderDetailIByNoId(orderNo, orderId);
+			 orderListModel.setOrderDetailList(orderDetails);
+			 List<OrderChild> orderChilds=orderChildDao.getOrderChildByOrderInfo(orderNo, 0);
+			 orderListModel.setOrderChildList(orderChilds);
+		}
+		return orderListModel;
 	}
 
 
