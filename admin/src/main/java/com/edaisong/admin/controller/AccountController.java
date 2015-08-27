@@ -121,7 +121,7 @@ public class AccountController {
 			log.setRemark(error);
 			accountLoginLogService.addLog(log);
 			request.setAttribute("error", error);
-			request.getRequestDispatcher(basePath+"/login.jsp").forward(request, response);
+			request.getServletContext().getRequestDispatcher(basePath+"/login.jsp").forward(request, response);
 			return;
 		}
 		// 登录成功,写cookie
