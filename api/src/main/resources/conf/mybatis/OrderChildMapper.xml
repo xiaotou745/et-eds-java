@@ -85,7 +85,7 @@
 			and o.OrderNo = #{OrderNo,jdbcType=NVARCHAR}
 		</if>
 		<if test="BusinessId >0">
-				o.businessId=#{BusinessId,jdbcType=INTEGER}
+				and  o.businessId=#{BusinessId,jdbcType=INTEGER}
 		</if>
 <!-- 		o.OrderNo=#{OrderNo,jdbcType=NVARCHAR} and
 		o.businessId=#{BusinessId,jdbcType=INTEGER} -->
