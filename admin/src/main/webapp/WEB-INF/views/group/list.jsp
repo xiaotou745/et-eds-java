@@ -22,7 +22,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
         </table>  
         
         <div id="groupList">     
-        <jsp:include page="groupmanagerlist.jsp"/>
+        <jsp:include page="grouplistdo.jsp"/>
         </div>
 
 <div class="GroupAddDish">

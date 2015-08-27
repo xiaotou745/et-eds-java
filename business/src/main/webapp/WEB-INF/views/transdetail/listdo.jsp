@@ -40,7 +40,7 @@ PagedResponse<BusinessBalanceRecord> responsePageList = (PagedResponse<BusinessB
 				</tr>
 					<%}%>
 			</table>
-			<%=PageHelper.GetPage(responsePageList.getPageSize(),
+			<%=PageHelper.getPage(responsePageList.getPageSize(),
 					responsePageList.getCurrentPage(),
 					responsePageList.getTotalRecord(),
 					responsePageList.getTotalPage())%>

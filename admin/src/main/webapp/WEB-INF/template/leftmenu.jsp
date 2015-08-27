@@ -20,6 +20,8 @@
 	AuthorityMenuReq req = new AuthorityMenuReq();
 	req.setAccountId("1");
 	List<MenuEntity> menuList = menuService.getMenuListByUserID(req);
+    String viewPath =request.getAttribute("viewPath").toString();
+    		
 %>
 <nav class="navbar-default navbar-static-side" role="navigation">
 	<div class="sidebar-collapse">
@@ -47,26 +49,30 @@
 			</li>
 
 			<%
+			        String parentClass="";
 					for (MenuEntity menu : menuList) {
 						if (menu.getParid() == 0) {
+							parentClass="";
 							List<MenuEntity> data=new ArrayList<>();
-							for (MenuEntity submenu : menuList) {
-								if (submenu.getParid() == menu.getMenuid()
-										&& submenu.getIsbutton() == false
-										) {
-									data.add(submenu);
+							for (MenuEntity itemMenu : menuList) {
+								if (itemMenu.getParid() == menu.getMenuid()
+										&& itemMenu.getIsbutton() == false) {
+									if(viewPath.equals(itemMenu.getJavaUrl().substring(1))){
+										parentClass=" class='active' ";
+									}
+									data.add(itemMenu);
 								}
 							}
 							if(data.size()>0){
 								%>
-								<li class=""><a href="#"><i class="fa fa-th-large"></i>
+								<li <%=parentClass%>><a href="#"><i class="fa fa-th-large"></i>
 										<span class="nav-label"><%=menu.getMenuname()%></span> <span
 										class="fa arrow"></span></a>
 									<ul class="nav nav-second-level">
 										<%
 								for (MenuEntity submenu : data) {
 									%>
-									<li class=""><a href="<%=basePath+submenu.getJavaUrl()%>"><%=submenu.getMenuname()%></a></li>
+									<li <%=viewPath.equals(submenu.getJavaUrl().substring(1))?"class='active'":""%>><a href="<%=basePath+submenu.getJavaUrl()%>"><%=submenu.getMenuname()%></a></li>
 
 									<%	
 								}

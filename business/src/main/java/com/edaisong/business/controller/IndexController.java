@@ -37,6 +37,7 @@ public class IndexController {
 			response.sendRedirect(request.getContextPath() + "/");
 			return model;
 		}
+
 		BusinessOrderSummaryModel bos = orderService.getBusinessOrderSummary(business.getId());
 		BusinessMessage message = businessMessageDao.getLatestMessage(business.getId());
 		//获得查询订单统计的开始时间和结束时间

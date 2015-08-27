@@ -30,7 +30,7 @@
 				int count = 1;
 				for(BusinessClientersModel model : data){
 		%>
-		<tr class="tr2 alt">
+		<tr>
 			<td style="word-break:break-word; width:50px;"><%=count%></td>
 			<td style="word-break:break-word; width:200px;"><%=model.getTruename()%></td>
 			<td style="word-break:break-word; width:200px;"><%=model.getPhoneno()%></td>
@@ -47,7 +47,7 @@
 		<%} %>
 	</tbody>
 </table>
-<%=PageHelper.GetPage(responsePageList.getPageSize(),
+<%=PageHelper.getPage(responsePageList.getPageSize(),
 					responsePageList.getCurrentPage(),
 					responsePageList.getTotalRecord(),
 					responsePageList.getTotalPage())%>

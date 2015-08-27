@@ -99,7 +99,7 @@ public class BusinessController {
 		model.addObject("groupListData", resultList);
 		model.addObject("openCityList", openCityList);
 		model.addObject("businessGroupListData", businessGroupListData);
-		model.addObject("viewPath", "business/index");
+		model.addObject("viewPath", "business/list");
 		return model;
 	}
 
@@ -108,7 +108,7 @@ public class BusinessController {
 		PagedResponse<BusinessModel> resp = iBusinessService
 				.getBusinessList(req);
 
-		ModelAndView model = new ModelAndView("business/list");
+		ModelAndView model = new ModelAndView("business/listdo");
 		model.addObject("listData", resp);
 		return model;
 	}

@@ -53,7 +53,11 @@ public enum BusinessBalanceRecordRecordType {
 	/**
 	 * 手续费
 	 */
-	ProcedureFee(11, "手续费");
+	ProcedureFee(11, "手续费"),
+	/**
+	 * 充值赠送
+	 */
+	RechargeGift(12, "充值赠送");
 
 	private int value = 0;
 	private String desc;

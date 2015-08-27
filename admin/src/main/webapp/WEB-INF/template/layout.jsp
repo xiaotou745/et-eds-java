@@ -101,6 +101,33 @@
 				$("#gloablErrorContent").slideUp(500);
 			}
 		});
+		//分页跳转按钮事件处理方法
+		$(document).on("click", "#pagesearch", function(){
+			var page=$("#pagesearchvalue").val();
+			var maxpage=$("#pagesearchmax").val();
+			var s = new RegExp("^\\s*(\\d+)\\s*$");
+			if(!s.test(page)||parseInt(page) < 1 || parseInt(page) > maxpage){
+			  alert("页索引超出范围");
+			  $("#pagesearchvalue").val("1");
+			  return;
+			}
+			jss.search(page);
+		}); 
+		$(document).on("keydown", "#pagesearchvalue", function(e){
+		    var key = null;
+		    if (e.which) {
+		        key = e.which;
+		    }
+		    else if (e.keyCode) {
+		        key = e.keyCode;
+		    }
+
+			if ((48<=key&&key<=57)||(96<=key&&key<=105)) {
+			    return true;
+			}else{
+			    return false;
+			}
+		});
 	});
 </script>
 <tiles:insertAttribute name="header_js" ignore="true"></tiles:insertAttribute>

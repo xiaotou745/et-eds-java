@@ -31,7 +31,7 @@
 			<div class="l-top">
 				<h2>
 					<%=bos.getName()%>
-					<a href="javascript:;">详情</a> <span class="fr"> 最近登录：<%=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(bos.getLastLoginTime())%>
+					<!-- <a href="javascript:;">详情</a> --> <span class="fr"> 最近登录：<%=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(bos.getLastLoginTime())%>
 						<%=bos.getCity()%></span>
 				</h2>
 				<p>

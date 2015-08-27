@@ -38,7 +38,7 @@ public class GroupController {
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "集团管理");
 		model.addObject("listData", resultList);
-		model.addObject("viewPath", "group/groupmanager");
+		model.addObject("viewPath", "group/list");
 		return model;		
 	}
 	
@@ -59,7 +59,7 @@ public class GroupController {
 		//map.put("list", resp);		
 		//ModelAndView model = new ModelAndView("group/GroupManagerList",map);
 		
-		ModelAndView model = new ModelAndView("group/groupmanagerlist");
+		ModelAndView model = new ModelAndView("group/grouplistdo");
 		model.addObject("listData", resultList);
 		return model;		
 	}	

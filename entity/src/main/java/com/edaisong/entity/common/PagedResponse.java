@@ -17,10 +17,10 @@ public class PagedResponse<T>  extends ResponseBase {
 		this.totalRecord = totalRecord;
 	}
 	public int getTotalPage() {
-		return TotalPage;
+		return totalPage;
 	}
 	public void setTotalPage(int totalPage) {
-		TotalPage = totalPage;
+		this.totalPage = totalPage;
 	}
 	public int getCurrentPage() {
 		return currentPage;
@@ -35,7 +35,7 @@ public class PagedResponse<T>  extends ResponseBase {
 		this.pageSize = pageSize;
 	}
 	private int totalRecord;
-	private int TotalPage;
+	private int totalPage;
 	private int currentPage;
 	private int pageSize;
 }
