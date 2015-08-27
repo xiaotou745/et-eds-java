@@ -32,7 +32,13 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 			<div class="function">
 				<input type="button" class="fr" value="搜索" id="btnSearch">
 				<span class="fl">订单状态</span>
-					<%=HtmlHelper.getSelect("orderStatus", EnumHelper.GetEnumItems(OrderStatus.class), "desc", "value",null,"-1","全部","width:155px","fl") %>
+				<select name="orderStatus" class="f1" id="orderStatus">
+					<option value="-1">全部</option>
+					<option value="0">待接单</option>
+					<option value="1">已完成</option>
+					<option value="3">已取消</option>
+					<option value="4">取货中</option>
+			</select>
 				<span class="fl">发单时间</span>
 				<label class="fl">
 					<input type="radio" name="timeType" value="0" checked="checked">
@@ -50,9 +56,9 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 					<input type="radio" name="timeType" value="3">
 					区间
 				</label>
-				<span class="intime"><input type="text" class="dinput" id="orderPubStart" name="orderPubStart"><s onClick="WdatePicker({el:'orderPubStart',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="intime"><input type="text" disabled="disabled" class="dinput" id="orderPubStart" name="orderPubStart"><s onClick="WdatePicker({el:'orderPubStart',dateFmt:'yyyy-MM-dd'});"></s></span>
 				<span class="inblock">至</span>
-				<span class="intime"><input type="text" class="dinput" id="orderPubEnd" name="orderPubEnd"><s onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="intime"><input type="text" class="dinput" disabled="disabled" id="orderPubEnd" name="orderPubEnd"><s onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd'});"></s></span>
 			</div>
 			</form>
 </div>
@@ -86,5 +92,17 @@ $("#btnSearch").click(function() {
 $("#customerSearch").click(function() {
 	searchType=1;
 	jss.search(1);
+});
+$("input[type='radio']").click(function() {
+	var selected=$('input[name="timeType"]:checked').val();
+	if(selected!="3"){
+		$("#orderPubStart").attr("disabled","disabled");
+		$("#orderPubEnd").attr("disabled","disabled");
+		$("#orderPubStart").val("");
+		$("#orderPubEnd").val("");
+	}else{
+		$("#orderPubStart").removeAttr("disabled");
+		$("#orderPubEnd").removeAttr("disabled");
+	}
 });
 </script>

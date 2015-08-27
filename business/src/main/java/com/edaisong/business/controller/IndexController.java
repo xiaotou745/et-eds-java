@@ -47,8 +47,8 @@ public class IndexController {
 		Date endTime = c.getTime();
 		List<BusiPubOrderTimeStatisticsModel> statistics = orderService
 				.getBusiPubOrderTimeStatistics(business.getId(),startTime,endTime);
-		model.addObject("subtitle", "");
-		model.addObject("currenttitle", "首页");
+		model.addObject("subtitle", "商户主页");
+		model.addObject("currenttitle", "商户主页");
 		model.addObject("viewPath", "index");
 		model.addObject("bos", bos);
 		model.addObject("message", message);
