@@ -280,6 +280,7 @@ public class OrderService implements IOrderService {
 		orderOther.setPublatitude(businessModel.getLatitude());
 		orderOther.setOnekeypuborder(businessModel.getOnekeypuborder());
 		orderOther.setIsorderchecked(businessModel.getIsOrderChecked());
+		orderOther.setIsAllowCashPay(businessModel.getIsAllowCashPay());
 		orderOtherDao.insert(orderOther);
         
 		//写入OrderChild

@@ -37,6 +37,7 @@
 		isnull(b.groupid,0) as groupid ,
 		b.originalbusiid ,
 		b.isOrderChecked,
+		b.isAllowCashPay,
 		bfa.trueName ,
 		bfa.accountNo ,
 		bfa.accountType ,
@@ -94,6 +95,7 @@
 		ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
 		b.isallowoverdraft ,
 		b.isemployertask ,
+		b.isAllowCashPay,
 		ISNULL(b.RecommendPhone, '') AS recommendphone,
 		bg.StrategyId as StrategyId
 		FROM business b WITH ( NOLOCK )	
@@ -171,7 +173,9 @@
 			<if test="isOrderChecked != null">
 				IsOrderChecked = #{isOrderChecked,jdbcType=INTEGER},
 			</if>
-			
+			<if test="isAllowCashPay != null">
+				isAllowCashPay = #{isAllowCashPay,jdbcType=INTEGER},
+			</if>
 		</set>
 		OUTPUT
                         Inserted.Id,
@@ -225,7 +229,8 @@
 		ISNULL(b.BalancePrice,0) balanceprice ,
 		ISNULL(b.AllowWithdrawPrice, 0) allowwithdrawprice ,
 		ISNULL(b.RecommendPhone, '''') AS recommendphone ,
-	    b.LastLoginTime 
+	    b.LastLoginTime,
+	    b.isAllowCashPay 
 	</sql>
 
 	<sql id="getBusinessListFrom">
