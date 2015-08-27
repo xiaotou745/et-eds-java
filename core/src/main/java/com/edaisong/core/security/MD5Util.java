@@ -2,6 +2,8 @@ package com.edaisong.core.security;
 
 import java.security.MessageDigest;
 
+import com.edaisong.core.consts.GlobalSettings;
+
 public class MD5Util {
 	/**
 	 * MD5算法
@@ -9,7 +11,7 @@ public class MD5Util {
 	 * @return
 	 */
 	public final static String MD5(String s) {
-        return MD5(s.getBytes());
+        return MD5((GlobalSettings.PWD_SALT+s).getBytes());
     }
 	
 	/**
