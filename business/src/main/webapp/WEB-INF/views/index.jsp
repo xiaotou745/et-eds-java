@@ -74,7 +74,7 @@
 			<div class="r-bottom">
 				<h2>
 					公告
-					<!--  <a class="fr" href="javascript:;">更多>></a> -->
+					<a class="fr" href="<%=basePath%>/message/list">更多>></a> 
 				</h2>
 				<p class="cb">
 					<em class="fl"></em>
