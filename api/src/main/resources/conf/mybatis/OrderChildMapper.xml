@@ -80,7 +80,14 @@
 		dbo.OrderChild oc ( nolock )
 		join dbo.[order] (nolock)o on
 		oc.OrderId=o.Id
-		where o.OrderNo=#{OrderNo,jdbcType=NVARCHAR} and
-		o.businessId=#{BusinessId,jdbcType=INTEGER}
+		where  1=1 
+		<if test="OrderNo != null and OrderNo != '' ">
+			and o.OrderNo = #{OrderNo,jdbcType=NVARCHAR}
+		</if>
+		<if test="BusinessId >0">
+				and  o.businessId=#{BusinessId,jdbcType=INTEGER}
+		</if>
+<!-- 		o.OrderNo=#{OrderNo,jdbcType=NVARCHAR} and
+		o.businessId=#{BusinessId,jdbcType=INTEGER} -->
 	</select>
 </mapper>

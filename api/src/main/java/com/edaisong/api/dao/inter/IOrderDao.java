@@ -28,6 +28,17 @@ public interface IOrderDao {
 	 */
 	PagedResponse<OrderListModel> getOrders(PagedOrderSearchReq search);
 
+	 /**
+	  * 根据订单号/订单id查订单信息
+	  * @author CaoHeYang
+	  * @param ordernNo 订单号
+	  * @param orderId  订单id
+	  * @Date 20150827
+	  * @return
+	  */
+	 OrderListModel getOrderByNoId(String ordernNo,int orderId);
+	 
+	
 	/**
 	 * 商家中心订单列表页面右上角自定义查询 
 	 * @author zhaohailong

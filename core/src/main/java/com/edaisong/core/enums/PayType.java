@@ -25,7 +25,12 @@ public enum PayType {
     /**
 	 * 百度钱包
 	 */
-    BaiDuQinBao (5,"百度钱包");
+    BaiDuQinBao (5,"百度钱包"),
+    /**
+   	 * 现金支付
+   	 */
+    Cash(6,"现金支付");
+    
 	private int value = 0;
 	private String desc;
 	private PayType(int value, String desc) { // 必须是private的，否则编译错误

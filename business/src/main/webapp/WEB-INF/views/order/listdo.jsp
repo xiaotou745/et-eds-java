@@ -50,7 +50,7 @@
 		%>
 		<tr>
 			<td><%=i + 1%></td>
-			<td><%=data.get(i).getOrderNo()%></td>
+			<td><a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getOrderNo()%>"><%=data.get(i).getOrderNo()%></a></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getPubDate())%></td>
 			<td><%=data.get(i).getAmount()%></td>
 			<td align="left">
@@ -69,7 +69,6 @@
 				%>
 					<a class="red2" href="javascript:void(0)" onclick="cancelOrder(<%=data.get(i).getId()%>,'<%=data.get(i).getOrderNo()%>')">取消订单</a>
 			<%}%>
-		
 			<a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getOrderNo()%>">订单详情</a>
 			</td>
 		</tr>

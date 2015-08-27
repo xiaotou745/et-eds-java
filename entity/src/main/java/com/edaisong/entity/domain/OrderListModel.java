@@ -2,6 +2,10 @@ package com.edaisong.entity.domain;
 
 import java.lang.Double;
 import java.util.Date;
+import java.util.List;
+
+import com.edaisong.entity.OrderChild;
+import com.edaisong.entity.OrderDetail;
 
 /**
  * web站 订单详情页面实体model 
@@ -67,11 +71,11 @@ public class OrderListModel {
     private int hadUploadCount ;
     private String receiptPic ;
     private String otherCancelReason ;
-//    private List<OrderChild> OrderChildList ;
+     private List<OrderChild> OrderChildList ;
     /**
     / 子订单
     */
-//    private List<OrderDetail> OrderDetailList ;
+    private List<OrderDetail> OrderDetailList ;
     private Double settleMoney ;
     private int mealsSettleMode ;
     private int isJoinWithdraw ;
@@ -1107,4 +1111,21 @@ public class OrderListModel {
 	public void setDeliveryCompanyID(int deliveryCompanyID) {
 		this.deliveryCompanyID = deliveryCompanyID;
 	}
+
+	public List<OrderChild> getOrderChildList() {
+		return OrderChildList;
+	}
+
+	public void setOrderChildList(List<OrderChild> orderChildList) {
+		OrderChildList = orderChildList;
+	}
+
+	public List<OrderDetail> getOrderDetailList() {
+		return OrderDetailList;
+	}
+
+	public void setOrderDetailList(List<OrderDetail> orderDetailList) {
+		OrderDetailList = orderDetailList;
+	}
+	
 }
