@@ -16,7 +16,6 @@ import com.edaisong.entity.domain.OpenCityModel;
 import com.edaisong.api.dao.inter.IPublicProvinceCityDao;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
-import com.edaisong.core.util.ConfigHelper;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 
@@ -78,7 +77,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 		if (opencitys != null) {
 			AreaModelList areaList = new AreaModelList();
 			areaList.setAreaModels(opencitys);
-			areaList.setVersion(ConfigHelper.getApiVersion());
+			areaList.setVersion(PropertyUtils.getProperty("apiVersion", ""));
 			// redisService.set(
 			// RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
 			// JsonUtil.obj2string(areaList));
