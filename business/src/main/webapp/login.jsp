@@ -58,43 +58,66 @@
 			</div>	
 			
 			<script type="text/javascript">
-				$("#btnLogin").click(function(){
-					var flag =  iphone();
-					flag = flag || password();
-					flag = flag || get();
-					if(flag){
-						var isRem = document.getElementById("rememberMe").checked;
-						var url = "<%=basePath %>/account/login";
-						var params = {
-								"phoneNo":$("#phoneNo").val(),
-							  	"password":$("#password").val(),
-							  	"code":$("#code").val(),
-							  	"rememberMe":isRem ? $("#rememberMe").val() : 0
-							  };
-						//请求接口
- 					    $.ajax({
-							url:url,
-							data:params,
-							type:"POST",
-							async:true,
-							success:function(data){
-								if(data.success){
-									window.location.href = "<%=basePath %>/index";
-								}else{
-									$("#error").text(data.message);
-									$("#error").show();
-									changeCodeImg();
-									$("#password").val("");
-									$("#code").val("");
-								}
-							},
-							error:function(error){
-								alert("登录错误");
+			//读取cookie
+			function getCookie(c_name)
+			{
+			if (document.cookie.length>0)
+			  {
+			  c_start=document.cookie.indexOf(c_name + "=")
+			  if (c_start!=-1)
+			    { 
+			    c_start=c_start + c_name.length+1 
+			    c_end=document.cookie.indexOf(";",c_start)
+			    if (c_end==-1) c_end=document.cookie.length
+			    return unescape(document.cookie.substring(c_start,c_end))
+			    } 
+			  }
+			return ""
+			}
+			
+			$(function(){
+				$("#phoneNo").val(getCookie("username"));
+			});
+			
+			function login(){
+				var flag =  iphone();
+				flag = flag || password();
+				flag = flag || get();
+				if(flag){
+					var isRem = document.getElementById("rememberMe").checked;
+					var url = "<%=basePath %>/account/login";
+					var params = {
+							"phoneNo":$("#phoneNo").val(),
+						  	"password":$("#password").val(),
+						  	"code":$("#code").val(),
+						  	"rememberMe":isRem ? $("#rememberMe").val() : 0
+						  };
+					//请求接口
+					    $.ajax({
+						url:url,
+						data:params,
+						type:"POST",
+						async:true,
+						success:function(data){
+							if(data.success){
+								window.location.href = "<%=basePath %>/index";
+							}else{
+								$("#error").text(data.message);
+								$("#error").show();
+								changeCodeImg();
+								$("#password").val("");
+								$("#code").val("");
 							}
-						});
-					}		
-					return false;
-
+						},
+						error:function(error){
+							alert("登录错误");
+						}
+					});
+				}		
+				return false;
+			}
+				$("#btnLogin").click(function(){
+					login();
 				})
 				
 				$("#imgCode").click(function(){
@@ -105,6 +128,25 @@
 				function changeCodeImg(){
 					var ran = Math.random();
 					document.getElementById("imgCode").src = "<%=basePath %>/account/code?x="+ran;
+				}
+				
+				if(document.addEventListener)   
+				{//如果是Firefox    
+				   document.addEventListener("keypress", fireFoxHandler, true);    
+				}else {    
+				    document.attachEvent("onkeypress", ieHandler);    
+				}    
+				function fireFoxHandler(evt){    
+				    if(evt.keyCode==13)   
+				    {    
+				 login();    
+				    }    
+				}    
+				function ieHandler(evt){    
+				    if(evt.keyCode==13)   
+				    {    
+				 login();  
+				    }    
 				}
 			</script>			
 		</body>
