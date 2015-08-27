@@ -4,6 +4,6 @@
 <body>
 http://jadmin.edaisong.com
 http://localhost:8080/admin
-<script>window.location.href='http://jadmin.edaisong.com/home/index';</script>
+<script>window.location.href='http://localhost:8080/admin/home/index';</script>
 </body>
 </html>

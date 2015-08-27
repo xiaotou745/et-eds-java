@@ -798,7 +798,7 @@
 <!--       </if> -->
   </sql>
   
-   <!--后台订单列表页面 ） add by caoheyang 20150728  -->
+   <!--后台订单列表页面  add by caoheyang 20150728  -->
   <select id="GetOrders"  resultType="com.edaisong.entity.domain.OrderListModel"   
   parameterType="com.edaisong.entity.req.PagedOrderSearchReq" 
   statementType="CALLABLE" >
@@ -814,6 +814,82 @@
 	#{totalPage,mode=OUT,jdbcType=INTEGER}
 	)}
  </select>
+  
+  <!-- 根据订单号/订单id查订单信息  Caoheyang 20150827 -->
+  <select id="getOrderByNoId"  resultType="com.edaisong.entity.domain.OrderListModel"   
+  parameterType="java.util.Map" >
+  SELECT top 1 o.[Id]
+                                        ,o.[OrderNo]
+                                        ,o.[PickUpAddress]
+                                        ,o.PubDate
+                                        ,o.[ReceviceName]
+                                        ,o.[RecevicePhoneNo]
+                                        ,o.[ReceviceAddress]
+                                        ,o.[ActualDoneDate]
+                                        ,o.[IsPay]
+                                        ,o.[Amount]
+                                        ,o.[OrderCommission]
+                                        ,o.[DistribSubsidy]
+                                        ,o.[WebsiteSubsidy]
+                                        ,o.[Remark]
+                                        ,o.[Status]
+                                        ,o.[clienterId]
+                                        ,o.[businessId]
+                                        ,o.[ReceviceCity]
+                                        ,o.[ReceviceLongitude]
+                                        ,o.[ReceviceLatitude]
+                                        ,o.[OrderFrom]
+                                        ,o.[OriginalOrderId]
+                                        ,o.[OriginalOrderNo]
+                                        ,o.[Quantity]
+                                        ,o.[Weight]
+                                        ,o.[ReceiveProvince]
+                                        ,o.[ReceiveArea]
+                                        ,o.[ReceiveProvinceCode]
+                                        ,o.[ReceiveCityCode]
+                                        ,o.[ReceiveAreaCode]
+                                        ,o.[OrderType]
+                                        ,o.[KM]
+                                        ,o.[GuoJuQty]
+                                        ,o.[LuJuQty]
+                                        ,o.[SongCanDate]
+                                        ,o.[OrderCount]
+                                        ,o.[CommissionRate] 
+                                        ,b.[City] BusinessCity
+                                        ,b.Name BusinessName
+                                        ,b.PhoneNo BusinessPhoneNo
+                                        ,b.Address BusinessAddress
+                                        ,c.PhoneNo ClienterPhoneNo
+                                        ,c.TrueName ClienterTrueName
+                                        ,c.TrueName ClienterName
+                                        ,c.AccountBalance AccountBalance                                      
+                                        ,b.GroupId
+                                        ,case when o.orderfrom=0 then '客户端' else g.GroupName end GroupName
+                                        ,o.OriginalOrderNo
+                                        ,oo.NeedUploadCount
+                                        ,oo.HadUploadCount
+                                        ,oo.ReceiptPic
+                                        ,oo.DeductCommissionReason                                        
+                                        ,o.OtherCancelReason
+                                        ,o.OriginalOrderNo
+                                        ,o.IsEnable
+                                        ,o.FinishAll
+                                        ,ISNULL(oo.DeductCommissionType,0) DeductCommissionType
+                                        ,ISNULL(oo.IsJoinWithdraw,0) IsJoinWithdraw
+                                        ,ISNULL(oo.IsOrderChecked,1) IsOrderChecked
+                                    FROM [order] o WITH ( NOLOCK )
+                                    LEFT JOIN business b WITH ( NOLOCK ) ON b.Id = o.businessId
+                                    LEFT JOIN clienter c WITH (NOLOCK) ON o.clienterId=c.Id
+                                    LEFT JOIN OrderOther oo WITH (NOLOCK) ON oo.OrderId=o.Id
+                                    LEFT JOIN [group] g WITH ( NOLOCK ) ON g.Id = o.orderfrom
+                                    WHERE 1=1 
+                                     <if test="orderNo != null and orderNo != '' ">
+	     									  and     o.OrderNo = #{orderNo,jdbcType=NVARCHAR}  
+      								</if>
+                                       <if test="orderId != 0  ">
+	     									  and     o.id = #{orderId,jdbcType=INTEGER}  
+      								</if>
+  </select>
   
   
    <!--后台订单列表百度地图打点基础数据   add by caoheyang 20150728  -->

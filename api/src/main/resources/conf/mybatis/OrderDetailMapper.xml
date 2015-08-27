@@ -125,4 +125,23 @@
       GroupID = #{groupid,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 根据订单号/订单id查订单详情信息  Caoheyang 20150827 -->
+	<select id="getOrderDetailIByNoId" resultType="com.edaisong.entity.OrderDetail"
+		parameterType="java.util.Map">
+		select od.Id ,
+		od.OrderNo ,
+		od.ProductName ,
+		od.UnitPrice ,
+		od.Quantity ,
+		od.InsertTime ,
+		od.FormDetailID ,
+		od.GroupID
+		from dbo.OrderDetail od ( nolock )
+		WHERE 1=1
+		<if test="orderNo != null and orderNo != '' ">
+			and od.OrderNo = #{orderNo,jdbcType=NVARCHAR}
+		</if>
+	</select>
+  
 </mapper>

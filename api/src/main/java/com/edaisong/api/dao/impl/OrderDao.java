@@ -1,6 +1,7 @@
 package com.edaisong.api.dao.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -140,5 +141,21 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	public PagedResponse<OrderListModel> customerGetOrders(PagedCustomerSearchReq req) {
 		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IOrderDao.customerGetOrders", req);
+	}
+
+	 /**
+	  *  根据订单号/订单id查订单信息
+	  * @author CaoHeYang
+	  * @param ordernNo 订单号
+	  * @param orderId  订单id
+	  * @Date 20150827
+	  * @return
+	  */
+	@Override
+	public OrderListModel getOrderByNoId(String ordernNo, int orderId) {
+		Map<String, Object> paramMap = new HashedMap();
+		paramMap.put("orderNo", ordernNo);  //订单号
+		paramMap.put("orderId", orderId);  //订单id
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderDao.getOrderByNoId", paramMap);
 	}
 }
