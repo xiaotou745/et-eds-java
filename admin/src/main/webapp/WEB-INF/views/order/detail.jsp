@@ -17,13 +17,22 @@
     OrderListModel orderListModel=	(OrderListModel)request.getAttribute("orderListModel");
 	List<OrderSubsidiesLog> orderSubsidiesLogs=	(List<OrderSubsidiesLog>)request.getAttribute("orderSubsidiesLogs");
 %>
-<style >
-.tbstyle .tdbg th {
-background: #f6f6f6;
-height: 40px;
-border: 1px solid #dcdcdc;
-color: #333;
-}</style>
+<style  type="text/css">
+ .trclass {
+       text-align:left;
+       line-height:35px;
+       padding:15px;
+       width:auto;
+       min-width:800px;
+    }
+
+    .trclass  td {
+        padding-left:15px;
+        width:225px;
+    }
+    .tbstyle .tdbg th{background:#f6f6f6;height:40px;border:1px solid #dcdcdc;color:#333;
+    text-align: center}
+</style>
 <div style="width: 1000px">
 	<%
 		String subsidy = "";
@@ -79,7 +88,7 @@ color: #333;
 				}
 			%>
 		</tr>
-		<tr>
+		<tr class="trclass">
 			<td>备注：<%=ParseHelper.ShowString(orderListModel.getRemark())%></td>
 			<td>订单数：<%=orderListModel.getOrderCount()%></td>
 			<td>审核推荐处理： <%=ParseHelper.ShowString(orderListModel.getDeductCommissionReason())%></td>
