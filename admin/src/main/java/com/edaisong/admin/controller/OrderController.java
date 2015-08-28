@@ -10,7 +10,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IOrderService;
+import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OrderListModel;
@@ -26,6 +28,8 @@ public class OrderController {
 	 private IPublicProvinceCityService  iPublicProvinceCityService;
 	 @Autowired
     private IGroupService iGroupService;
+	 @Autowired
+	 private IOrderSubsidiesLogService orderSubsidiesLogService;
 	/**
 	 * 订单列表页面 
 	 * @author CaoHeYang
@@ -86,9 +90,15 @@ public class OrderController {
 	public ModelAndView detail(String orderno, int orderid){
 		ModelAndView model = new ModelAndView("adminView");
 	   OrderListModel orderListModel =orderService.getOrderByNoId(orderno, orderid);
+	   if (orderListModel==null) {
+		   throw new RuntimeException("没有找到orderno="+orderno+"的订单");
+	   }
+	   List<OrderSubsidiesLog> orderSubsidiesLogs=orderSubsidiesLogService.GetOrderOptionLog(orderid);
 		model.addObject("subtitle", "订单列表");
 		model.addObject("currenttitle", "订单详情");
 		model.addObject("viewPath", "order/detail");
+		model.addObject("orderListModel", orderListModel);
+		model.addObject("orderSubsidiesLogs", orderSubsidiesLogs);
 		return model;
 	}
 }

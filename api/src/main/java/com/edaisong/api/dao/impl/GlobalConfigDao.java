@@ -4,21 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-
-
-
-
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IGlobalConfigDao;
+import com.edaisong.entity.BusinessMessage;
 import com.edaisong.entity.GlobalConfig;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GlobalConfigModel;
-import com.edaisong.entity.domain.GlobalGroupConfigModel;
-import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.ConfigSaveReq;
+import com.edaisong.entity.req.PagedGlobalConfigReq;
 
 @Repository
 public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
@@ -42,7 +37,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 	 */
 	@Override
 	public int update(ConfigSaveReq par) {
-		String statement = "com.edaisong.api.dao.inter.IGlobalConfigDao.update";
+		String statement = "com.edaisong.api.dao.inter.IGlobalConfigDao.saveConfigValue";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", par.getId());
 		paramMap.put("parvalue", par.getConfigValue());
@@ -61,6 +56,21 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 		paramMap.put("remark", par.getRemark());
 		
 		return getMasterSqlSessionUtil().insert(statement, paramMap);
+	}
+
+	@Override
+	public PagedResponse<GlobalConfigModel> getPagedGlobalConfigModels(PagedGlobalConfigReq search) {
+		PagedResponse<GlobalConfigModel> result = new PagedResponse<GlobalConfigModel>();
+		result = getReadOnlySqlSessionUtil().selectPageList(
+				"com.edaisong.api.dao.inter.IGlobalConfigDao.getPagedGlobalConfigModels", search);
+		return result;
+	}
+
+	@Override
+	public GlobalConfigModel getGlobalConfigByPrimaryId(Integer id) {
+		GlobalConfigModel model = getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IGlobalConfigDao.getGlobalConfigByPrimaryId", id);
+		return model;
 	}
 	
 //	/**

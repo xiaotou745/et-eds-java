@@ -138,9 +138,15 @@
 	</update>
 	<select id="getGlobalGroupConfig" parameterType="java.util.Map"
 		resultType="com.edaisong.entity.domain.GlobalConfigModel">
-		SELECT Id ,Remark ,KeyName ,Value ,Remark FROM GlobalConfig
+		SELECT Id ,Remark ,KeyName ,Value ,Remark,GroupId FROM GlobalConfig
 		(NOLOCK) WHERE
 		Groupid = #{groupid}
+	</select>
+	<select id="getGlobalConfigByPrimaryId" parameterType="java.lang.Integer"
+		resultType="com.edaisong.entity.domain.GlobalConfigModel">
+		SELECT Id ,Remark ,KeyName ,Value ,Remark,GroupId FROM GlobalConfig
+		(NOLOCK) WHERE
+		id = #{id}
 	</select>
 	<update id="saveConfigValue" parameterType="java.util.Map">
 		UPDATE GlobalConfig set Value = #{parvalue,jdbcType=NVARCHAR}
@@ -161,4 +167,33 @@
 		          -1  
 		        )
 	</insert>
+	
+	
+  <sql id="getPagedGlobalConfigModelsColums" >
+  	Id ,Remark ,KeyName ,Value 
+  </sql>
+  
+  <sql id="getPagedGlobalConfigModelsFrom" >
+  	GlobalConfig WITH (NOLOCK)
+  </sql>
+  
+  <sql id="getPagedGlobalConfigModelsColumsWhere" >
+  	Groupid= ${groupId}
+  </sql>
+	
+	<select id="getPagedGlobalConfigModels"  resultType="com.edaisong.entity.domain.GlobalConfigModel"   
+  parameterType="com.edaisong.entity.req.PagedGlobalConfigReq" 
+  statementType="CALLABLE" >
+	{call Sp_CustomPage2015_V1(
+	' Id DESC ',
+	' <include refid="getPagedGlobalConfigModelsColums" />',
+	' <include refid="getPagedGlobalConfigModelsFrom" /> ',
+	' <include refid="getPagedGlobalConfigModelsColumsWhere"/> ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER}
+	,1,
+	#{totalRecord,mode=OUT,jdbcType=INTEGER},
+	#{totalPage,mode=OUT,jdbcType=INTEGER}
+	)}
+ </select>
 </mapper>

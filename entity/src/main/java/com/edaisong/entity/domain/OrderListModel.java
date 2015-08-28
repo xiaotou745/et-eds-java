@@ -93,14 +93,39 @@ public class OrderListModel {
     private Double deliveryCompanySettleMoney ;
     private int deliveryCompanyID ;
   
+    private String deductCommissionReason ;
+
+    
+    private int isOrderChecked;
+    
     /**
+     * 订单是否需要审核
+     * @return
+     */
+    public int getIsOrderChecked() {
+		return isOrderChecked;
+	}
+ 
+    /**
+     * 订单是否需要审核
+     * @param isOrderChecked
+     */
+	public void setIsOrderChecked(int isOrderChecked) {
+		this.isOrderChecked = isOrderChecked;
+	}
+
+
+
+	/**
      * 主键Id
      */
     public int getId() {
 		return id;
 	}
 
-    /**
+
+
+	/**
      *  主键Id
      */
 	public void setId(int Id) {
@@ -207,14 +232,14 @@ public class OrderListModel {
     /**
      * 是否已付款
      */
-	public boolean isPay() {
+	public boolean getIsPay() {
 		return isPay;
 	}
 
     /**
      * 是否已付款
      */
-	public void setPay(boolean isPay) {
+	public void setIsPay(boolean isPay) {
 		this.isPay = isPay;
 	}
 
@@ -246,6 +271,21 @@ public class OrderListModel {
 		this.orderCommission = orderCommission;
 	}
 
+	/**
+	 * 扣除补贴原因
+	 * @return
+	 */
+    public String getDeductCommissionReason() {
+		return deductCommissionReason;
+	}
+
+    /**
+     * 扣除补贴原因
+     * @param deductCommissionReason
+     */
+	public void setDeductCommissionReason(String deductCommissionReason) {
+		this.deductCommissionReason = deductCommissionReason;
+	}
     /**
      * 外送费
      */

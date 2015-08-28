@@ -535,7 +535,7 @@ public class OrderService implements IOrderService {
 	@Override
 	public OrderListModel getOrderByNoId(String orderNo, int orderId) {
 		if (orderNo==null ||orderNo.isEmpty()||orderId<=0) {
-			return new OrderListModel();
+			return null;
 		}
 		OrderListModel orderListModel=orderDao.getOrderByNoId(orderNo, orderId);
 		if (orderListModel!=null) {

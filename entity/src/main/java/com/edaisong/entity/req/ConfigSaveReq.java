@@ -3,15 +3,15 @@ package com.edaisong.entity.req;
 import com.edaisong.entity.common.RequestBase;
 
 public class ConfigSaveReq extends RequestBase{
-	private String id;
+	private Integer id;
 	private String configValue;
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 	/*
 	 * 配置ID
 	 * */
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getConfigValue() {

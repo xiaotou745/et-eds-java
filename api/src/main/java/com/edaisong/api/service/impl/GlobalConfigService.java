@@ -9,9 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dao.inter.IGlobalConfigDao;
 import com.edaisong.api.service.inter.IGlobalConfigService;
+import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.consts.RedissCacheKey;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.GlobalConfig;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
+import com.edaisong.entity.req.PagedGlobalConfigReq;
 /*
  * 管理员工具 
  * */
@@ -19,6 +24,8 @@ import com.edaisong.entity.req.ConfigSaveReq;
 public class GlobalConfigService implements IGlobalConfigService {
 	@Autowired
 	private IGlobalConfigDao iGlobalConfigDao ;
+	@Autowired
+	private RedisService redisService;
 	/*
 	 * 获取全局配置变量
 	 * 茹化肖
@@ -33,7 +40,12 @@ public class GlobalConfigService implements IGlobalConfigService {
 	 * */
 	@Override
 	public int update(ConfigSaveReq par) {
-		return iGlobalConfigDao.update(par);
+		GlobalConfigModel model = iGlobalConfigDao.getGlobalConfigByPrimaryId(par.getId());
+		int ret = iGlobalConfigDao.update(par);
+		if(model != null){
+			redisService.remove(getConfigCacheKey(model.getGroupId()));
+		}
+		return ret;
 	}
 	@Override
 	public String getConfigValueByKey(int groupID,String key) {
@@ -48,6 +60,7 @@ public class GlobalConfigService implements IGlobalConfigService {
 	 * */
 	@Override
 	public int insert(GlobalConfig par) {
+		redisService.remove(getConfigCacheKey(par.getGroupid()));
 		return iGlobalConfigDao.insert(par);
 	}
 
@@ -59,5 +72,19 @@ public class GlobalConfigService implements IGlobalConfigService {
 		}
 		return resultMap;
 	}
+	
+	@Override
+	public PagedResponse<GlobalConfigModel> getPagedGlobalConfigModels(PagedGlobalConfigReq search) {
+		return iGlobalConfigDao.getPagedGlobalConfigModels(search);
+	}
 
+	/**
+	 * 获得全局配置缓存key
+	 * @param groupId
+	 * @return
+	 */
+	private String getConfigCacheKey(int groupId){
+		String globalVersion = PropertyUtils.getProperty("GlobalVersion");
+		return String.format(RedissCacheKey.Ets_Dao_GlobalConfig_GlobalConfigGet+globalVersion, groupId);
+	}
 }

@@ -11,4 +11,20 @@
       #{optid,jdbcType=INTEGER}, #{orderstatus,jdbcType=INTEGER}, #{platform,jdbcType=INTEGER}
       )
   </insert>
+  
+    <!-- 获取订单操作日志  Caoheyang 20150827 -->
+	<select id="GetOrderOptionLog" resultType="com.edaisong.entity.OrderSubsidiesLog"
+		parameterType="java.util.Map">
+		SELECT  Id,
+                                    OrderId,
+                                    OrderStatus,
+                                    OptId,
+                                    OptName,
+                                    InsertTime,
+                                    Platform,
+                                    Remark
+                            FROM OrderSubsidiesLog(nolock)
+                            WHERE OrderId= #{OrderId,jdbcType=INTEGER}
+                            ORDER BY Id;
+	</select>
 </mapper>
