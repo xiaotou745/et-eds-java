@@ -392,20 +392,27 @@ public class OrderService implements IOrderService {
 		order.setDistribsubsidy(businessModel.getDistribsubsidy());
 		
 		OrderCommission orderCommission = new OrderCommission();
-		OrderPriceBaseProvider orderPriceService = CommissionFactory
-				.GetCommission(businessModel.getStrategyId());
-		order.setOrdercommission(orderPriceService
-				.getCurrenOrderCommission(orderCommission));
-		order.setWebsitesubsidy(orderPriceService
-				.getOrderWebSubsidy(orderCommission));
-		order.setCommissionrate(orderPriceService
-				.getCommissionRate(orderCommission));
+		orderCommission.setAmount(req.getAmount());
+		orderCommission.setBusinessCommission(businessModel.getBusinesscommission());
+		orderCommission.setBusinessGroupId(businessModel.getBusinessgroupid());
+		orderCommission.setCommissionFixValue(businessModel.getCommissionfixvalue());
+		orderCommission.setCommissionType(businessModel.getCommissiontype());
+		orderCommission.setDistribSubsidy(businessModel.getDistribsubsidy());
+		orderCommission.setOrderCount(req.getOrdercount());
+		orderCommission.setStrategyId(businessModel.getStrategyId());
+		
+		OrderPriceBaseProvider orderPriceService = CommissionFactory.GetCommission(businessModel.getStrategyId());
+		order.setOrdercommission(orderPriceService.getCurrenOrderCommission(orderCommission));
+		order.setWebsitesubsidy(orderPriceService.getOrderWebSubsidy(orderCommission));
+		order.setCommissionrate(orderPriceService.getCommissionRate(orderCommission));
+		order.setAdjustment(orderPriceService.getAdjustment(orderCommission));
+		
 		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
 				req.getAmount(), businessModel.getBusinesscommission(),
 				businessModel.getCommissionfixvalue(), req.getOrdercount(),
 				businessModel.getDistribsubsidy(), req.getOrderfrom());
 		order.setSettlemoney(settleMoney);
-		order.setAdjustment(orderPriceService.getAdjustment(orderCommission));
+
 
 		order.setBusinessreceivable(Double.valueOf(0));// 退还商家金额
 		if (!req.getIspay()
