@@ -17,40 +17,46 @@
     OrderListModel orderListModel=	(OrderListModel)request.getAttribute("orderListModel");
 	List<OrderSubsidiesLog> orderSubsidiesLogs=	(List<OrderSubsidiesLog>)request.getAttribute("orderSubsidiesLogs");
 %>
-<style  type="text/css">
- .trclass {
-       text-align:left;
-       line-height:35px;
-       padding:15px;
-       width:auto;
-       min-width:800px;
-    }
+<style type="text/css">
+.trclass {
+	text-align: left;
+	line-height: 35px;
+	padding: 15px;
+	width: auto;
+	min-width: 800px;
+}
 
-    .trclass  td {
-        padding-left:15px;
-        width:225px;
-    }
-    .tbstyle .tdbg th{background:#f6f6f6;height:40px;border:1px solid #dcdcdc;color:#333;
-    text-align: center}
+.trclass  td {
+	padding-left: 15px;
+	width: 225px;
+}
+
+.tbstyle .tdbg th {
+	background: #f6f6f6;
+	height: 40px;
+	border: 1px solid #dcdcdc;
+	color: #333;
+	text-align: center
+}
 </style>
 <div style="width: 1000px">
 	<%
 		String subsidy = "";
-		        if (orderListModel.getStatus() == OrderStatus.Complite.value() || orderListModel.getStatus()  == OrderStatus.Delivery.value() 
-		        		|| orderListModel.getStatus()  == OrderStatus.Cancel.value())
-		        {
-		            subsidy = "订单佣金:" + orderListModel.getOrderCommission() + "," + "外送费:" + orderListModel.getDistribSubsidy() 
-		            		+ "," + "网站补贴:" + orderListModel.getWebsiteSubsidy();
-		        }
-		        String payStatus = "";
-		        if (orderListModel.getIsPay())
-		        {
-		            payStatus = "顾客已付款";
-		        }
-		        else
-		        {
-		            payStatus = "顾客未付款";
-		        }
+			        if (orderListModel.getStatus() == OrderStatus.Complite.value() || orderListModel.getStatus()  == OrderStatus.Delivery.value() 
+			        		|| orderListModel.getStatus()  == OrderStatus.Cancel.value())
+			        {
+			            subsidy = "订单佣金:" + orderListModel.getOrderCommission() + "," + "外送费:" + orderListModel.getDistribSubsidy() 
+			            		+ "," + "网站补贴:" + orderListModel.getWebsiteSubsidy();
+			        }
+			        String payStatus = "";
+			        if (orderListModel.getIsPay())
+			        {
+			            payStatus = "顾客已付款";
+			        }
+			        else
+			        {
+			            payStatus = "顾客未付款";
+			        }
 	%>
 	<table class="tbstyle222" border="0"
 		style="font-size: 13px; font-weight: bold; line-height: 300%; width: 1000px;">
@@ -79,8 +85,8 @@
 			<td>收货人地址：<%=ParseHelper.ShowString(orderListModel.getReceviceAddress())%></td>
 			<%
 				if (orderListModel.getStatus() == OrderStatus.Complite.value() || orderListModel.getStatus()  == OrderStatus.Delivery.value() 
-						        		|| orderListModel.getStatus()  == OrderStatus.Cancel.value())
-						            {
+							        		|| orderListModel.getStatus()  == OrderStatus.Cancel.value())
+							            {
 			%>
 			<td>骑士姓名：<%=ParseHelper.ShowString(orderListModel.getClienterTrueName())%></td>
 			<td>骑士手机：<%=ParseHelper.ShowString(orderListModel.getClienterPhoneNo())%></td>
@@ -130,16 +136,16 @@
 			<tbody>
 				<%
 					List<OrderChild> orderChildList =orderListModel.getOrderChildList();
-										                    String curPuth = "";
-										                    String curPhost ="";
-										   for (OrderChild curOrderChild :orderChildList){
-											   String bigFileName = "";
-											   if (curOrderChild.getTicketurl()!=null&&!curOrderChild.getTicketurl().isEmpty())
-									                    {
-									                        int fileLastDot = curOrderChild.getTicketurl().lastIndexOf('.');
-									                        String fileHandHouZhui = curOrderChild.getTicketurl().substring(fileLastDot, curOrderChild.getTicketurl().length());
-									                        bigFileName = curPhost + curPuth + curOrderChild.getTicketurl().substring(0, fileLastDot) + "_0_0" + fileHandHouZhui;
-									                    }
+												                    String curPuth = "";
+												                    String curPhost ="";
+												   for (OrderChild curOrderChild :orderChildList){
+													   String bigFileName = "";
+													   if (curOrderChild.getTicketurl()!=null&&!curOrderChild.getTicketurl().isEmpty())
+											                    {
+											                        int fileLastDot = curOrderChild.getTicketurl().lastIndexOf('.');
+											                        String fileHandHouZhui = curOrderChild.getTicketurl().substring(fileLastDot, curOrderChild.getTicketurl().length());
+											                        bigFileName = curPhost + curPuth + curOrderChild.getTicketurl().substring(0, fileLastDot) + "_0_0" + fileHandHouZhui;
+											                    }
 				%>
 				<tr>
 					<td><%=ParseHelper.ShowString(curOrderChild.getChildid())%></td>
@@ -150,7 +156,7 @@
 					<td>
 						<%
 							if (curOrderChild.getPaytype()!=null && curOrderChild.getPaytype() > 0)
-														                       {
+																		                       {
 						%> <%=ParseHelper.ShowString(PayType.getEnum(curOrderChild.getPaytype()).desc())%>
 						<%
 							}
@@ -159,7 +165,7 @@
 					<td>
 						<%
 							if (curOrderChild.getPaystyle()!=null && curOrderChild.getPaystyle() > 0)
-														                   {
+																		                   {
 						%> <%=ParseHelper.ShowString(PayStyle.getEnum(curOrderChild.getPaystyle()).desc())%>
 						<%
 							}
@@ -170,7 +176,7 @@
 					<td>
 						<%
 							if (bigFileName!=null&&!bigFileName.isEmpty())
-														                   {
+																		                   {
 						%> <a href="<%=bigFileName%>">查看</a> <%
  	}
  %>
@@ -209,10 +215,10 @@
 			<tbody>
 				<%
 					int k = 0; 
-						String orderstatus = "";
-						String strplatform = ""; 
-										 for(OrderSubsidiesLog item :orderSubsidiesLogs){
-											 strplatform=OrderPlatform.getEnum(item.getPlatform()).desc();
+								String orderstatus = "";
+								String strplatform = ""; 
+												 for(OrderSubsidiesLog item :orderSubsidiesLogs){
+													 strplatform=OrderPlatform.getEnum(item.getPlatform()).desc();
 				%>
 				<tr id="<%=item.getId()%>">
 					<td><%=ParseHelper.ShowString(OrderStatus.getEnum(item.getOrderstatus()).desc())%></td>
@@ -229,7 +235,7 @@
 	</div>
 	<%
 		if (orderListModel.getStatus()!=OrderStatus.Cancel.value()) 
-			{
+		{
 	%>
 	<div class="SearchMd" style="float: left">
 		<table border="0" cellspacing="0" cellpadding="0">
@@ -287,16 +293,13 @@
 </div>
 <script>
 	var adminjs = new adminglass(); //实例化后台类
-
 	$("#btnCancel").click(function() {
 		var orderOptionLog = $('#orderOptionLog').val();
 		if ($("#IsEnable").val().trim() == "0") {
 			alert("已删除的订单不能取消！");
 			return false;
 		}
-
 		adminjs.openwinbox('#OrderOptionShow');
-
 	});
 	//扣除网站补贴
 	$("#btnAuditCancel").click(
