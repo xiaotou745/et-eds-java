@@ -374,7 +374,7 @@
 		},function(){
 			$.ajax({
 				type : 'POST',
-				url :  "/Order/CancelOrder",
+				url :  "<%=basePath%>/order/cancelorder",
 				data :  {
 					"orderId" : orderId,
 					"OrderOptionLog" : orderOptionLog
@@ -408,7 +408,7 @@
 		},function(){
 				$.ajax({
 							type : 'POST',
-							url : "/Order/AuditRefuse",
+							url : "<%=basePath%>/order/auditrefuse",
 							data : {
 								"orderId" : orderId,
 								"OrderOptionLog" : orderOptionLog
@@ -432,7 +432,7 @@
 		    shade: false //显示遮罩
 		},function(){$.ajax({
 			type : 'POST',
-			url : "/Order/AuditOK",
+			url : "<%=basePath%>/order/auditok",
 			data : {
 				"orderId" : orderId
 			},
