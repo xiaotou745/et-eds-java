@@ -65,7 +65,7 @@
 
 
 <!-- 第三方弹窗js -->
-<%-- <script src="<%=basePath%>/js/layer.js"></script>  --%>
+<script src="<%=basePath%>/js/layer.js"></script>
 
 <!-- 分页相关js -->
 <%--     <script type="text/javascript" src="<%=basePath%>/js/admin.js"></script> --%>

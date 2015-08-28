@@ -3,7 +3,6 @@ package com.edaisong.admin.controller;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -17,16 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.LoginUtil;
 import com.edaisong.api.common.LoginHelper;
 import com.edaisong.api.service.inter.IAccountLoginLogService;
 import com.edaisong.api.service.inter.IAccountService;
+import com.edaisong.api.service.inter.IAuthorityAccountMenuSetService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.cache.redis.RedisService;
-import com.edaisong.core.consts.GlobalSettings;
-import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.IPUtil;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.AccountLog;
@@ -50,6 +50,8 @@ public class AccountController {
 	private IDeliveryCompanyService deliveryCompanyService;
 	@Autowired
 	private IAccountLoginLogService accountLoginLogService;
+	@Autowired
+	private IAuthorityAccountMenuSetService authorityAccountMenuSetService;
 
 	@RequestMapping("list")
 	public ModelAndView list() {
@@ -92,18 +94,17 @@ public class AccountController {
 		//一次性验证码,防止暴力破解
 		LoginHelper.removeAuthCodeCookie(request, response);
 		// 如果已登录,直接返回
-		boolean isLogin = LoginHelper.checkIsLogin(request,response,GlobalSettings.ADMIN_LOGIN_COOKIE_NAME);
-		AccountLog log = new AccountLog();
-		log.setIp(IPUtil.getIpAddr(request));
-		log.setLoginName(username);
-		log.setLoginTime(loginTime);
-		//log.setBrowser(request.getHeader("user-agent"));
-		
+		boolean isLogin = LoginUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
 			response.sendRedirect(basePath+"/order/list");
 			return;
 		}
+		AccountLog log = new AccountLog();
+		log.setIp(IPUtil.getIpAddr(request));
+		log.setLoginName(username);
+		log.setLoginTime(loginTime);
+		//log.setBrowser(request.getHeader("user-agent"));
 		String error = "";
 		Account account = null;
 		// 验证码不正确
@@ -126,23 +127,23 @@ public class AccountController {
 			return;
 		}
 		// 登录成功,写cookie
-		int cookieMaxAge = 2 * 60 * 24;
+		int cookieMaxAge = -1;
 		// 选择记住我,默认cookie24小时,否则随浏览器的关闭而失效
 		boolean isRemeberMe = rememberMe!= null && rememberMe.equals(1);
 		if (isRemeberMe) {
-			cookieMaxAge = 60 * 60 * 24;
+			cookieMaxAge = 7 * 60 * 60 * 24;
 		}
-
+		account.setPassword(password);//这个是为了给cookie准备的参数
 		error = "成功";
 		log.setRemark(error);
 		accountLoginLogService.addLog(log);
-		String key = String.format("%s_admin_%s_%s", RedissCacheKey.LOGIN_COOKIE_KEY,account.getLoginname(),UUID.randomUUID().toString());
-		redisService.set(key, account, cookieMaxAge);
-		if(!isRemeberMe){
-			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走
-		}
-		CookieUtils.setCookie(request,response, GlobalSettings.ADMIN_LOGIN_COOKIE_NAME, key, cookieMaxAge,
+		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(account), cookieMaxAge,
 				true);
+		List<Integer> menuList = authorityAccountMenuSetService.getMenuIdsByAccountId(account.getId());
+		if(menuList != null){
+			CookieUtils.setCookie(request,response, LoginUtil.MENU_LIST_COOKIE_NAME, JsonUtil.obj2string(menuList), cookieMaxAge,
+					false);
+		}
 		response.sendRedirect(basePath+"/order/list");
 	}
 	
@@ -158,10 +159,13 @@ public class AccountController {
 	@RequestMapping(value = "logoff")
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
-		Cookie cookie = CookieUtils.getCookieByName(GlobalSettings.ADMIN_LOGIN_COOKIE_NAME, request);
+		Cookie cookie = CookieUtils.getCookieByName(LoginUtil.LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
-		    	redisService.remove(cookie.getValue());
 			CookieUtils.deleteCookie(request, response, cookie);
+		}
+		Cookie menuList = CookieUtils.getCookieByName(LoginUtil.MENU_LIST_COOKIE_NAME, request);
+		if (menuList != null) {
+			CookieUtils.deleteCookie(request, response, menuList);
 		}
 		response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
 	}
