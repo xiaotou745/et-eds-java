@@ -270,7 +270,6 @@
                 	if(result.responseCode==0){  
 					    //异步请求成功 呼出 成功层
 						$('.popup2').show();
-						 window.location.reload();
 					} else if(result.responseCode==-8){  
 						$('.popup3').show();  //余额不足弹层
 					} else
@@ -316,6 +315,7 @@
 		
 		$('.qr2').on('click', function() {
 			$(this).parents('.popup2').hide();
+			 window.location.reload();
 		});
 
 		//任务发布失败弹层呼出 And 关闭
