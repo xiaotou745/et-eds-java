@@ -37,7 +37,7 @@ public enum OrderFrom {
 	/**
 	 * 商家版后台
 	 */
-	BusinessWeb(99, "商家版后台"),
+	BusinessWeb(99, "商户web版"),
 	;
 	private int value = 0;
 	private String desc;
