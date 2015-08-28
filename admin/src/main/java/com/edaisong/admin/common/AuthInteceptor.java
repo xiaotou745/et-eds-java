@@ -18,7 +18,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 			if (!isLogin
 					&& (!request.getServletPath().equals("/account/login") && !request.getServletPath().equals(
 							"/account/code"))) {
-				String basePath =PropertyUtils.getProperty("static.business.url");
+				String basePath =PropertyUtils.getProperty("static.admin.url");
 				response.sendRedirect(basePath + "/");
 				return false;
 			}

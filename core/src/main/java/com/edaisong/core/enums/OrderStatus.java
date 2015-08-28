@@ -25,7 +25,7 @@ public enum OrderStatus {
 	/**
 	 * 取货中
 	 */
-	Taking(4, "取货中"),
+	Taking(4, "已取货"),
 	/*
 	 * 待接入
 	 */
