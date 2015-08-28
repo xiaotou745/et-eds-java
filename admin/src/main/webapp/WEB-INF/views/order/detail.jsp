@@ -331,139 +331,120 @@
 	</div>
 </div>
 <script>
+   //取消订单按钮
 	$("#btnCancel").click(function() {
 		var orderOptionLog = $('#orderOptionLog').val();
 		if ($("#IsEnable").val().trim() == "0") {
-			alert("已删除的订单不能取消！");
+			layer.alert('已删除的订单不能取消！', {
+			    icon: 2
+			});
 			return false;
 		}
 		$('#OrderOptionShow').modal('show');
 	});
-	//扣除网站补贴
+	//审核拒绝按钮
 	$("#btnAuditCancel").click(
 			function() {
 				if ($("#IsEnable").val().trim() == "0") {
-					alert("已删除的订单不取扣除网站补贴！");
+					layer.alert('已删除的订单不取扣除网站补贴！', {
+					    icon: 2
+					});
 					return false;
+				}else{
+					$("#deductWebSubsidyReason").text(
+							$("#hidDeductCommissionReason").val());
+					$('#deductWebSubsidyShow').modal('show');
+					return true;
 				}
-				$("#deductWebSubsidyReason").text(
-						$("#hidDeductCommissionReason").val());
-				$('#deductWebSubsidyShow').modal('show');
 			});
-	$('.J_closebox').click(function() {
-		adminjs.closewinbox('.add-openbox');
-		return false;
+	//取消订单保存按钮
+	$('#btnSave').click(	function() {
+		var orderNo = $('#OrderNo').val();
+		var orderId = $('#OrderId').val();
+		var orderOptionLog = $('#orderOptionLog').val();
+		if ($("#orderOptionLog").val().trim() == "") {
+			layer.alert('操作描述不能为空！', {
+			    icon: 2
+			});
+			return false;
+		}
+		layer.confirm('确定要取消该订单吗？', {
+		    btn: ['确认','取消'], //按钮
+		    shade: false //显示遮罩
+		},function(){
+			$.ajax({
+				type : 'POST',
+				url :  "/Order/CancelOrder",
+				data :  {
+					"orderId" : orderId,
+					"OrderOptionLog" : orderOptionLog
+				},
+				success : function(result) {
+					if (result.IsSuccess) {
+						alert(result.Message);
+						window.location.reload();
+					} else {
+						alert(result.Message);
+					}
+				}
+			});
+		});
+		return true;
 	});
-	$('#btnSave')
-			.bind(
-					'click',
-					function() {
-						var orderNo = $('#OrderNo').val();
-						var orderId = $('#OrderId').val();
-						var orderOptionLog = $('#orderOptionLog').val();
-						if ($("#orderOptionLog").val().trim() == "") {
-							alert("操作描述不能为空！");
-							return false;
-						}
-						if (confirm("确定要取消该订单吗？")) {
-							var paramaters = {
+   //审核拒绝保存按钮
+	$('#btnSaveDeductWebSubsidy').click(function() {
+		var orderNo = $('#OrderNo').val();
+		var orderId = $('#OrderId').val();
+		var orderOptionLog = $('#deductWebSubsidyReason').val();
+		if (orderOptionLog.trim() == "") {
+			layer.alert('扣除网站补贴原因不能为空！', {
+			    icon: 2
+			});
+			return false;
+		}
+		layer.confirm('确定要扣除该订单网站补贴吗？', {
+		    btn: ['确认','取消'], //按钮
+		    shade: false //显示遮罩
+		},function(){
+				$.ajax({
+							type : 'POST',
+							url : "/Order/AuditRefuse",
+							data : {
 								"orderId" : orderId,
 								"OrderOptionLog" : orderOptionLog
-							};
-							var url = "/Order/CancelOrder";
-							$
-									.ajax({
-										type : 'POST',
-										url : url,
-										data : paramaters,
-										success : function(result) {
-											if (result.IsSuccess) {
-												alert(result.Message);
-												adminjs
-														.closewinbox('.add-openbox');
-												window.location.href = "/Order/OrderDetail?orderNo="
-														+ orderNo
-														+ "&orderId="
-														+ orderId;
-											} else {
-												alert(result.Message);
-											}
-										}
-									});
-						}
-						return true;
-					});
-
-	$('#btnSaveDeductWebSubsidy')
-			.bind(
-					'click',
-					function() {
-						var orderNo = $('#OrderNo').val();
-						var orderId = $('#OrderId').val();
-						var orderOptionLog = $('#deductWebSubsidyReason').val();
-						if (orderOptionLog.trim() == "") {
-							alert("扣除网站补贴原因不能为空！");
-							return false;
-						}
-						if (confirm("确定要扣除该订单网站补贴吗？")) {
-							var paramaters = {
-								"orderId" : orderId,
-								"OrderOptionLog" : orderOptionLog
-							};
-							var url = "/Order/AuditRefuse";
-							$
-									.ajax({
-										type : 'POST',
-										url : url,
-										data : paramaters,
-										success : function(result) {
-											if (result.IsSuccess) {
-												alert(result.Message);
-												adminjs
-														.closewinbox('.add-openbox');
-												window.location.href = "/Order/OrderDetail?orderNo="
-														+ orderNo
-														+ "&orderId="
-														+ orderId;
-											} else {
-												alert(result.Message);
-											}
-										}
-									});
-						}
-						return true;
-					});
-
-	$('#btnAuditOk')
-			.bind(
-					'click',
-					function() {
-						if (!window.confirm("是否审核通过？")) {
-							return;
-						}
-						var orderNo = $('#OrderNo').val();
-						var orderId = $('#OrderId').val();
-
-						var paramaters = {
-							"orderId" : orderId
-						};
-						var url = "/Order/AuditOK";
-						$
-								.ajax({
-									type : 'POST',
-									url : url,
-									data : paramaters,
-									success : function(result) {
-										if (result.IsSuccess) {
-											alert("审核成功！");
-											window.location.href = "/Order/OrderDetail?orderNo="
-													+ orderNo
-													+ "&orderId="
-													+ orderId;
-										} else {
-											alert(result.Message);
-										}
-									}
-								});
-					});
+							},
+							success : function(result) {
+								if (result.IsSuccess) {
+									alert(result.Message);
+									window.location.reload();
+								} else {s
+									alert(result.Message);
+								}
+							}
+			 });
+		});
+		return true;
+	});
+    //审核通过按钮
+	$('#btnAuditOk').click(function() {
+		layer.confirm('是否审核通过？', {
+		    btn: ['确认','取消'], //按钮
+		    shade: false //显示遮罩
+		},function(){$.ajax({
+			type : 'POST',
+			url : "/Order/AuditOK",
+			data : {
+				"orderId" : orderId
+			},
+			success : function(result) {
+				if (result.IsSuccess) {
+					alert("审核成功！");
+					window.location.reload();
+				} else {
+					alert(result.Message);
+				}
+			}
+		});
+		});
+	});
 </script>
