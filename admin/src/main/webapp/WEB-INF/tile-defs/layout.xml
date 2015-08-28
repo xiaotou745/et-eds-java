@@ -24,7 +24,7 @@
 <!--     	<put-attribute name="body" value="/WEB-INF/views/notImplement.jsp"></put-attribute> -->
 <!--     </definition> -->
        <definition name="adminView" extends="defaultTemplate">
-    	<put-attribute name="title" value="首页"></put-attribute>
+    	<put-attribute name="title" expression="${currenttitle}"></put-attribute>
         <put-attribute name="body" expression="/WEB-INF/views/${viewPath}.jsp" />	
    </definition>
 </tiles-definitions>
