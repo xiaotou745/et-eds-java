@@ -1,32 +1,30 @@
 package com.edaisong.admin.controller;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.velocity.app.event.ReferenceInsertionEventHandler.referenceInsertExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.edaisong.api.service.inter.IGlobalConfigService;
+import com.edaisong.api.service.inter.IBusinessBalanceRecordService;
 import com.edaisong.api.service.inter.IBusinessExpressRelationService;
 import com.edaisong.api.service.inter.IBusinessFinanceAccountService;
 import com.edaisong.api.service.inter.IBusinessGroupService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IBusinessThirdRelationService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
+import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
-import com.edaisong.entity.Business;
+import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessFinanceAccount;
 import com.edaisong.entity.BusinessGroup;
@@ -40,8 +38,10 @@ import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessThirdRelationModel;
 import com.edaisong.entity.domain.GroupModel;
-import com.edaisong.entity.req.PagedBusinessReq;
+import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.GroupReq;
+import com.edaisong.entity.req.PagedBusinessReq;
+import com.edaisong.entity.req.PagedTransDetailReq;
 
 /*
  * 商户管理
@@ -77,6 +77,9 @@ public class BusinessController {
 
 	@Autowired
 	private IBusinessFinanceAccountService businessFinanceAccountService;
+	
+	@Autowired
+	private IBusinessBalanceRecordService businessBalanceRecordService;
 	@RequestMapping("list")
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse res) {
@@ -283,4 +286,31 @@ public class BusinessController {
 		BusinessFinanceAccount resultAccount= businessFinanceAccountService.getDetailByBusinesID(businessID);
 		return resultAccount;
      }
+	
+	@RequestMapping("balancedetail")
+	public ModelAndView getBalanceDetail(int businessId) throws Exception{
+		BusinessDetailModel detail = iBusinessService
+				.getBusinessDetailByID(businessId);
+		if (detail==null) {
+		  throw new Exception("没找到businessID为"+businessId+"的详细信息");
+		}
+		BussinessBalanceQueryReq queryReq = new BussinessBalanceQueryReq();
+		queryReq.setBusinessId(businessId+"");
+		double chargeTotalAmount = businessBalanceRecordService.queryBusinessRechargeTotalAmount(queryReq);
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "商户");
+		model.addObject("currenttitle", "收支记录");
+		model.addObject("detail", detail);
+		model.addObject("chargeTotalAmount", chargeTotalAmount);
+		model.addObject("viewPath", "business/balancedetail");
+		return model;
+	}
+	
+	@RequestMapping("balancerecordllistdo")
+	public ModelAndView getBalanceDetailListDo(PagedTransDetailReq req){
+		PagedResponse<BusinessBalanceRecord> resp = businessBalanceRecordService.getTransDetailList(req);
+		ModelAndView model = new ModelAndView("business/balancerecordllistdo");
+		model.addObject("listData", resp);
+		return model;
+	}
 }

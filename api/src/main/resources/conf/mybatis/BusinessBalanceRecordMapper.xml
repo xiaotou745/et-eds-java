@@ -215,4 +215,11 @@
 #{totalPage,mode=OUT,jdbcType=VARCHAR}
 )} 
   </select>
+  
+  <select id="queryBusinessRechargeTotalAmount" parameterType="java.util.HashMap">
+  	SELECT  SUM(bbr.amount) AS totalAmount
+    FROM    BusinessBalanceRecord bbr ( NOLOCK )
+    INNER JOIN dbo.business b ( NOLOCK ) ON bbr.BusinessId = b.Id 
+    where #{where,jdbcType=VARCHAR}
+  </select>
 </mapper>
