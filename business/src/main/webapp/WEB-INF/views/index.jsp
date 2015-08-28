@@ -15,11 +15,6 @@
 	List<BusiPubOrderTimeStatisticsModel> pubOrderTimestatistics = (List<BusiPubOrderTimeStatisticsModel>)request.getAttribute("pubOrderTimestatistics");
 %>
 
-<!-- <script type="text/javascript"
-	src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
-<script type="text/javascript"
-	src="http://cdn.hcharts.cn/highcharts/exporting.js"></script> -->
-
 <script type="text/javascript"
 	src="<%=basePath%>/js/highcharts/js/highcharts.js"></script>
 <script type="text/javascript"

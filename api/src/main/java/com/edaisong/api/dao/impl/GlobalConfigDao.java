@@ -37,7 +37,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 	 */
 	@Override
 	public int update(ConfigSaveReq par) {
-		String statement = "com.edaisong.api.dao.inter.IGlobalConfigDao.update";
+		String statement = "com.edaisong.api.dao.inter.IGlobalConfigDao.saveConfigValue";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", par.getId());
 		paramMap.put("parvalue", par.getConfigValue());
@@ -64,6 +64,13 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 		result = getReadOnlySqlSessionUtil().selectPageList(
 				"com.edaisong.api.dao.inter.IGlobalConfigDao.getPagedGlobalConfigModels", search);
 		return result;
+	}
+
+	@Override
+	public GlobalConfigModel getGlobalConfigByPrimaryId(Integer id) {
+		GlobalConfigModel model = getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IGlobalConfigDao.getGlobalConfigByPrimaryId", id);
+		return model;
 	}
 	
 //	/**
