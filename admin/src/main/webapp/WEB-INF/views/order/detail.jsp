@@ -85,8 +85,8 @@
 			<td>收货人地址：<%=ParseHelper.ShowString(orderListModel.getReceviceAddress())%></td>
 			<%
 				if (orderListModel.getStatus() == OrderStatus.Complite.value() || orderListModel.getStatus()  == OrderStatus.Delivery.value() 
-							        		|| orderListModel.getStatus()  == OrderStatus.Cancel.value())
-							            {
+									        		|| orderListModel.getStatus()  == OrderStatus.Cancel.value())
+									            {
 			%>
 			<td>骑士姓名：<%=ParseHelper.ShowString(orderListModel.getClienterTrueName())%></td>
 			<td>骑士手机：<%=ParseHelper.ShowString(orderListModel.getClienterPhoneNo())%></td>
@@ -136,16 +136,16 @@
 			<tbody>
 				<%
 					List<OrderChild> orderChildList =orderListModel.getOrderChildList();
-												                    String curPuth = "";
-												                    String curPhost ="";
-												   for (OrderChild curOrderChild :orderChildList){
-													   String bigFileName = "";
-													   if (curOrderChild.getTicketurl()!=null&&!curOrderChild.getTicketurl().isEmpty())
-											                    {
-											                        int fileLastDot = curOrderChild.getTicketurl().lastIndexOf('.');
-											                        String fileHandHouZhui = curOrderChild.getTicketurl().substring(fileLastDot, curOrderChild.getTicketurl().length());
-											                        bigFileName = curPhost + curPuth + curOrderChild.getTicketurl().substring(0, fileLastDot) + "_0_0" + fileHandHouZhui;
-											                    }
+																                    String curPuth = "";
+																                    String curPhost ="";
+																   for (OrderChild curOrderChild :orderChildList){
+																	   String bigFileName = "";
+																	   if (curOrderChild.getTicketurl()!=null&&!curOrderChild.getTicketurl().isEmpty())
+															                    {
+															                        int fileLastDot = curOrderChild.getTicketurl().lastIndexOf('.');
+															                        String fileHandHouZhui = curOrderChild.getTicketurl().substring(fileLastDot, curOrderChild.getTicketurl().length());
+															                        bigFileName = curPhost + curPuth + curOrderChild.getTicketurl().substring(0, fileLastDot) + "_0_0" + fileHandHouZhui;
+															                    }
 				%>
 				<tr>
 					<td><%=ParseHelper.ShowString(curOrderChild.getChildid())%></td>
@@ -156,7 +156,7 @@
 					<td>
 						<%
 							if (curOrderChild.getPaytype()!=null && curOrderChild.getPaytype() > 0)
-																		                       {
+																										                       {
 						%> <%=ParseHelper.ShowString(PayType.getEnum(curOrderChild.getPaytype()).desc())%>
 						<%
 							}
@@ -165,7 +165,7 @@
 					<td>
 						<%
 							if (curOrderChild.getPaystyle()!=null && curOrderChild.getPaystyle() > 0)
-																		                   {
+																										                   {
 						%> <%=ParseHelper.ShowString(PayStyle.getEnum(curOrderChild.getPaystyle()).desc())%>
 						<%
 							}
@@ -176,7 +176,7 @@
 					<td>
 						<%
 							if (bigFileName!=null&&!bigFileName.isEmpty())
-																		                   {
+																										                   {
 						%> <a href="<%=bigFileName%>">查看</a> <%
  	}
  %>
@@ -215,10 +215,10 @@
 			<tbody>
 				<%
 					int k = 0; 
-								String orderstatus = "";
-								String strplatform = ""; 
-												 for(OrderSubsidiesLog item :orderSubsidiesLogs){
-													 strplatform=OrderPlatform.getEnum(item.getPlatform()).desc();
+												String orderstatus = "";
+												String strplatform = ""; 
+																 for(OrderSubsidiesLog item :orderSubsidiesLogs){
+																	 strplatform=OrderPlatform.getEnum(item.getPlatform()).desc();
 				%>
 				<tr id="<%=item.getId()%>">
 					<td><%=ParseHelper.ShowString(OrderStatus.getEnum(item.getOrderstatus()).desc())%></td>
@@ -252,54 +252,92 @@
 	<%
 		}
 	%>
-	<div class="selectSupplierDish">
-		<div class="add-openbox add-form" id="OrderOptionShow"
-			style="width: 500px">
-			<fieldset>
-				<div class="control-group">
-					<label class="control-label" for="input01">操作描述</label>
-					<div class="controls">
-						<textarea cols="45" rows="5" id="orderOptionLog"></textarea>
-						<p class="help-block"></p>
-					</div>
+	<div tabindex="-1" class="modal inmodal" id="OrderOptionShow"
+		role="dialog" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content animated bounceInRight">
+				<div class="modal-header">
+					<button class="close" type="button" data-dismiss="modal">
+						<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+					</button>
+					<h4 class="modal-title">取消订单</h4>
 				</div>
-			</fieldset>
-			<p class="btnbox">
-				<input value="确认" type="button" id="btnSave" class="yesBtn" /> <input
-					value="关闭" type="button" class="J_closebox qxBtn" />
-			</p>
+				<small class="font-bold">
+					<div class="modal-body">
+						<fieldset>
+							<br>
+							<div class="control-group">
+								<label>操作描述：</label>
+								<div class="controls">
+									<textarea cols="45" rows="5" id="orderOptionLog"></textarea>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+						<button class="btn btn-primary" type="button" id="btnSave">保存</button>
+					</div>
+				</small>
+			</div>
+			<small class="font-bold"> </small>
 		</div>
+		<small class="font-bold"> </small>
 	</div>
-
-	<div class="selectSupplierDish">
-		<div class="add-openbox add-form" id="deductWebSubsidyShow"
-			style="width: 500px">
-			<fieldset>
-				<div class="control-group">
-					<label class="control-label" for="deductWebSubsidyReason">扣除网站补贴原因</label>
-					<div class="controls">
-						<textarea cols="45" rows="5" id="deductWebSubsidyReason"></textarea>
-						<p class="help-block"></p>
-					</div>
+	<div tabindex="-1" class="modal inmodal" id="deductWebSubsidyShow"
+		role="dialog" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content animated bounceInRight">
+				<div class="modal-header">
+					<button class="close" type="button" data-dismiss="modal">
+						<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+					</button>
+					<h4 class="modal-title">扣除网站补贴原因</h4>
 				</div>
-			</fieldset>
-			<p class="btnbox">
-				<input value="确认" type="button" id="btnSaveDeductWebSubsidy"
-					class="yesBtn" /> <input value="关闭" type="button"
-					class="J_closebox qxBtn" />
-			</p>
+				<small class="font-bold">
+					<div class="modal-body">
+						<fieldset>
+							<br>
+							<div class="control-group">
+								<label>身份证号/营业执照：</label> <select id="selectreason"
+									class="form-control m-b">
+									<option value="1">任务完成时间小于5分钟</option>
+									<option value="2">任务完成时间大于120分钟</option>
+									<option value="3">接单完成位置重合</option>
+									<option value="4">完成订单超过50个</option>
+									<option value="5">上传小票不符要求</option>
+									<option value="6">任务超时完成，系统自动处理</option>
+									<option value="7">其它原因</option>
+								</select>
+							</div>
+							<div class="control-group">
+								<label>请输入原因：</label>
+								<div class="controls">
+									<textarea cols="45" rows="5" id="deductWebSubsidyReason"></textarea>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+						<button class="btn btn-primary" type="button"
+							id="btnSaveDeductWebSubsidy">保存</button>
+					</div>
+				</small>
+			</div>
+			<small class="font-bold"> </small>
 		</div>
+		<small class="font-bold"> </small>
 	</div>
 </div>
 <script>
-	var adminjs = new adminglass(); //实例化后台类
 	$("#btnCancel").click(function() {
 		var orderOptionLog = $('#orderOptionLog').val();
 		if ($("#IsEnable").val().trim() == "0") {
 			alert("已删除的订单不能取消！");
 			return false;
 		}
-		adminjs.openwinbox('#OrderOptionShow');
+		$('#OrderOptionShow').modal('show');
 	});
 	//扣除网站补贴
 	$("#btnAuditCancel").click(
@@ -308,11 +346,9 @@
 					alert("已删除的订单不取扣除网站补贴！");
 					return false;
 				}
-
 				$("#deductWebSubsidyReason").text(
 						$("#hidDeductCommissionReason").val());
-				//$("#deductWebSubsidyReason").text(hidDeductCommissionReason.val());
-				adminjs.openwinbox('#deductWebSubsidyShow');
+				$('#deductWebSubsidyShow').modal('show');
 			});
 	$('.J_closebox').click(function() {
 		adminjs.closewinbox('.add-openbox');
