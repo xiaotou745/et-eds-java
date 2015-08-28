@@ -14,7 +14,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		if (handler instanceof HandlerMethod) {
 			// 判断是否登录
-			boolean isLogin = LoginHelper.checkIsLogin(request,response,GlobalSettings.ADMIN_LOGIN_COOKIE_NAME);
+			boolean isLogin = LoginUtil.checkIsLogin(request,response);
 			if (!isLogin
 					&& (!request.getServletPath().equals("/account/login") && !request.getServletPath().equals(
 							"/account/code"))) {

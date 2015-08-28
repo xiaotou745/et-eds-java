@@ -1,5 +1,7 @@
 package com.edaisong.api.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.AuthorityAccountMenuSet;
 
 public interface IAuthorityAccountMenuSetDao {
@@ -14,4 +16,6 @@ public interface IAuthorityAccountMenuSetDao {
     int updateByPrimaryKeySelective(AuthorityAccountMenuSet record);
 
     int updateByPrimaryKey(AuthorityAccountMenuSet record);
+    
+    List<Integer> getMenuIdsByAccountId(Integer id);
 }

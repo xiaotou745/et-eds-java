@@ -68,4 +68,8 @@
       MenuId = #{menuid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="getMenuIdsByAccountId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+  	select MenuId from AuthorityAccountMenuSet with(nolock) where AccoutId=#{accoutid,jdbcType=INTEGER}
+  </select>
 </mapper>
