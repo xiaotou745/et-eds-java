@@ -114,7 +114,7 @@
             </ul>
         </li>
         <li>
-            <a href="login.html">
+            <a href="<%=basePath %>/account/logoff">
                 <i class="fa fa-sign-out"></i> 注销
             </a>
         </li>

@@ -150,6 +150,37 @@ public class CookieUtils {
 		}
 		response.addCookie(cookie);
 	}
+	
+	/**
+	 * 设置 Cookie
+	 * @param request
+	 * @param response
+	 * @param name
+	 * @param value
+	 * @param maxAge
+	 * @param httpOnly
+	 * @param domain
+	 * @param path
+	 */
+	public static void setCookie(HttpServletRequest request,HttpServletResponse response, String name, String value, int maxAge,boolean httpOnly
+			,String domain,String path) {
+		Cookie cookie = new Cookie(name, null);
+		if(path == null) 
+			path = getPath(request);
+		cookie.setPath(path);
+		if(domain != null){
+			cookie.setDomain(domain);
+		}
+		cookie.setMaxAge(maxAge);
+		try {
+			cookie.setValue(URLEncoder.encode(value, "utf-8"));
+			cookie.setHttpOnly(httpOnly);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		response.addCookie(cookie);
+	}
+	
 	/**
 	 * 获得指定Cookie的值
 	 * @param name 名称
