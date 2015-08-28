@@ -12,12 +12,7 @@
   <sql id="Base_Column_List" >
     Id, ParId, MenuName, BeLock, Url, IsButton
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from AuthorityMenuClass
-    where Id = #{id,jdbcType=INTEGER}
-  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from AuthorityMenuClass
     where Id = #{id,jdbcType=INTEGER}
@@ -28,80 +23,7 @@
     values (#{id,jdbcType=INTEGER}, #{parid,jdbcType=INTEGER}, #{menuname,jdbcType=VARCHAR}, 
       #{belock,jdbcType=BIT}, #{url,jdbcType=VARCHAR}, #{isbutton,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.AuthorityMenuClass" >
-    insert into AuthorityMenuClass
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="parid != null" >
-        ParId,
-      </if>
-      <if test="menuname != null" >
-        MenuName,
-      </if>
-      <if test="belock != null" >
-        BeLock,
-      </if>
-      <if test="url != null" >
-        Url,
-      </if>
-      <if test="isbutton != null" >
-        IsButton,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="parid != null" >
-        #{parid,jdbcType=INTEGER},
-      </if>
-      <if test="menuname != null" >
-        #{menuname,jdbcType=VARCHAR},
-      </if>
-      <if test="belock != null" >
-        #{belock,jdbcType=BIT},
-      </if>
-      <if test="url != null" >
-        #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="isbutton != null" >
-        #{isbutton,jdbcType=BIT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.AuthorityMenuClass" >
-    update AuthorityMenuClass
-    <set >
-      <if test="parid != null" >
-        ParId = #{parid,jdbcType=INTEGER},
-      </if>
-      <if test="menuname != null" >
-        MenuName = #{menuname,jdbcType=VARCHAR},
-      </if>
-      <if test="belock != null" >
-        BeLock = #{belock,jdbcType=BIT},
-      </if>
-      <if test="url != null" >
-        Url = #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="isbutton != null" >
-        IsButton = #{isbutton,jdbcType=BIT},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.AuthorityMenuClass" >
-    update AuthorityMenuClass
-    set ParId = #{parid,jdbcType=INTEGER},
-      MenuName = #{menuname,jdbcType=VARCHAR},
-      BeLock = #{belock,jdbcType=BIT},
-      Url = #{url,jdbcType=VARCHAR},
-      IsButton = #{isbutton,jdbcType=BIT}
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-      <select id="getMenuListByUserID" resultType="com.edaisong.entity.MenuEntity" parameterType="java.util.Map" >
+  <select id="getMenuListByUserID" resultType="com.edaisong.entity.MenuEntity" parameterType="java.util.Map" >
 	SELECT AccoutId,MenuId,ParId,MenuName,isnull(Url,'') as Url,amc.IsButton,isnull(javaUrl,'/order/list') as javaUrl FROM dbo.AuthorityAccountMenuSet  aam (nolock)
 	JOIN AuthorityMenuClass amc(nolock) ON aam.MenuId = amc.Id
 	WHERE aam.AccoutId=#{accountId}  and  amc.BeLock=CAST(0 as bit)
@@ -110,5 +32,10 @@
 	SELECT #{accountId} AS AccoutId,id AS MenuId,ParId,MenuName,isnull(Url,'') as Url,IsButton,isnull(javaUrl,'/order/list') as javaUrl  FROM AuthorityMenuClass WHERE ParId=0 AND id IN(SELECT ParId FROM dbo.AuthorityAccountMenuSet  aam (nolock)
 	JOIN AuthorityMenuClass amc(nolock) ON aam.MenuId = amc.Id
 	WHERE aam.AccoutId=#{accountId} and  amc.BeLock=CAST(0 as bit)) and BeLock=CAST(0 as bit)
+  </select>
+   <select id="getMenuList" resultType="com.edaisong.entity.MenuEntity">
+	 select 
+    <include refid="Base_Column_List" />
+    from AuthorityMenuClass with(nolock)
   </select>
 </mapper>

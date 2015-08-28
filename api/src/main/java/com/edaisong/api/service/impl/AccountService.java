@@ -8,7 +8,7 @@ import com.edaisong.api.service.inter.IAccountService;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.req.AccountReq;
+import com.edaisong.entity.req.PagedAccountReq;
 
 @Service
 public class AccountService implements IAccountService{
@@ -17,7 +17,7 @@ public class AccountService implements IAccountService{
 	private IAccountDao accountDao;
 	
 	@Override
-	public PagedResponse<Account> queryAccount(AccountReq req) {
+	public PagedResponse<Account> queryAccount(PagedAccountReq req) {
 		return  accountDao.query(req);
 	}
 

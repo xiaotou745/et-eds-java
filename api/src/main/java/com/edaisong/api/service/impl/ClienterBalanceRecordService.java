@@ -13,7 +13,7 @@ import com.edaisong.entity.Account;
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.ClienterModel;
-import com.edaisong.entity.req.AccountReq;
+import com.edaisong.entity.req.PagedAccountReq;
 import com.edaisong.entity.req.ClienterBalanceRecordReq;
 import com.edaisong.entity.req.ClienterReq;
 import com.edaisong.entity.resp.AccountResp;

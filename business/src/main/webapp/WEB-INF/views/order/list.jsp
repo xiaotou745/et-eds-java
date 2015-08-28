@@ -32,13 +32,13 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 			<div class="function">
 				<input type="button" class="fr" value="搜索" id="btnSearch">
 				<span class="fl">订单状态</span>
-				<select name="orderStatus" class="f1" id="orderStatus">
+				<select class="fl"  name="orderStatus"  id="orderStatus">
 					<option value="-1">全部</option>
 					<option value="0">待接单</option>
 					<option value="1">已完成</option>
 					<option value="3">已取消</option>
 					<option value="4">取货中</option>
-			</select>
+				</select>
 				<span class="fl">发单时间</span>
 				<label class="fl">
 					<input type="radio" name="timeType" value="0" checked="checked">

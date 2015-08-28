@@ -7,19 +7,15 @@
 	import="com.edaisong.api.service.inter.IAuthorityMenuClassService"%>
 <%@ page language="java"
 	import="com.edaisong.core.util.SpringBeanHelper"%>
-<%@ page language="java"
-	import="com.edaisong.entity.req.AuthorityMenuReq"%>
 <%@ page language="java" import="com.edaisong.entity.MenuEntity"%>
 <%@ page language="java" import="java.util.List"%>
 <%@ page language="java" import="java.util.ArrayList"%>
+<%@page import="com.edaisong.admin.common.UserContext"%>
 <%
 	String basePath =PropertyUtils.getProperty("static.admin.url");
-	IAuthorityMenuClassService menuService = SpringBeanHelper
-	.getCustomBeanByType(IAuthorityMenuClassService.class);
+	IAuthorityMenuClassService menuService = SpringBeanHelper.getCustomBeanByType(IAuthorityMenuClassService.class);
 
-	AuthorityMenuReq req = new AuthorityMenuReq();
-	req.setAccountId("1");
-	List<MenuEntity> menuList = menuService.getMenuListByUserID(req);
+	List<MenuEntity> menuList = menuService.getMenuListByUserID(UserContext.getCurrentContext(request).getAccount().getId());
     String viewPath =request.getAttribute("viewPath").toString();
     		
 %>
