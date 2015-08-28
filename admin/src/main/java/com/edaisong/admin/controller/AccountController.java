@@ -3,6 +3,7 @@ package com.edaisong.admin.controller;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -135,7 +136,7 @@ public class AccountController {
 		error = "成功";
 		log.setRemark(error);
 		accountLoginLogService.addLog(log);
-		String key = String.format("%s_admin_%s", RedissCacheKey.LOGIN_COOKIE_KEY,account.getLoginname());
+		String key = String.format("%s_admin_%s_%s", RedissCacheKey.LOGIN_COOKIE_KEY,account.getLoginname(),UUID.randomUUID().toString());
 		redisService.set(key, account, cookieMaxAge);
 		if(!isRemeberMe){
 			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走

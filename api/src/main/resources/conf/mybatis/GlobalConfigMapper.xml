@@ -138,9 +138,15 @@
 	</update>
 	<select id="getGlobalGroupConfig" parameterType="java.util.Map"
 		resultType="com.edaisong.entity.domain.GlobalConfigModel">
-		SELECT Id ,Remark ,KeyName ,Value ,Remark FROM GlobalConfig
+		SELECT Id ,Remark ,KeyName ,Value ,Remark,GroupId FROM GlobalConfig
 		(NOLOCK) WHERE
 		Groupid = #{groupid}
+	</select>
+	<select id="getGlobalConfigByPrimaryId" parameterType="java.lang.Integer"
+		resultType="com.edaisong.entity.domain.GlobalConfigModel">
+		SELECT Id ,Remark ,KeyName ,Value ,Remark,GroupId FROM GlobalConfig
+		(NOLOCK) WHERE
+		id = #{id}
 	</select>
 	<update id="saveConfigValue" parameterType="java.util.Map">
 		UPDATE GlobalConfig set Value = #{parvalue,jdbcType=NVARCHAR}

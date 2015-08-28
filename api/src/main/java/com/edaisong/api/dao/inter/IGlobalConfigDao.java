@@ -10,6 +10,7 @@ import com.edaisong.entity.req.PagedGlobalConfigReq;
 
 public interface IGlobalConfigDao {
 	List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id);
+	GlobalConfigModel getGlobalConfigByPrimaryId(Integer id);
 	int update(ConfigSaveReq par);
 	int insert(GlobalConfig par);	
 	PagedResponse<GlobalConfigModel> getPagedGlobalConfigModels(PagedGlobalConfigReq search);

@@ -2,6 +2,7 @@ package com.edaisong.business.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -81,7 +82,7 @@ public class AccountController {
 		Date lastLoginTime = new Date();//更新最后登录时间
 		businessService.updateLastLoginTime(business.getId(), lastLoginTime);
 		business.setLastLoginTime(lastLoginTime);
-		String key = String.format("%s_business_%s", RedissCacheKey.LOGIN_COOKIE_KEY,business.getPhoneno());//UUID.randomUUID().toString();
+		String key = String.format("%s_business_%s_%s", RedissCacheKey.LOGIN_COOKIE_KEY,business.getPhoneno(),UUID.randomUUID().toString());
 		redisService.set(key, business, cookieMaxAge);
 		if(!(rememberMe==1)){
 			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走
