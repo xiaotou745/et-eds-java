@@ -1,7 +1,6 @@
 package com.edaisong.api.service.impl;
 
 import java.util.Date;
-import java.lang.Double;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
-import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
-import com.edaisong.core.enums.BusinessBalanceRecordStatus;
 import com.edaisong.core.enums.BusinessStatus;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.HttpUtil;
@@ -29,7 +26,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
-import com.edaisong.entity.req.BusinessLoginReq;
+import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
@@ -304,6 +301,11 @@ public class BusinessService implements IBusinessService {
 	}
 
 
+	@Override
+	public BusinessRechargeDetailModel getRechargeDetail(String orderNo) {
+		return iBusinessDao.getRechargeDetail(orderNo);
+	}
+
 	/**
 	 *  更新商家余额、可提现余额     
 	 * @param businessMoney
@@ -325,6 +327,5 @@ public class BusinessService implements IBusinessService {
 		businessBalanceRecord.setRelationno(businessMoney.getRelationNo()); // 关联单号
 		businessBalanceRecord.setRemark(businessMoney.getRemark()); // 注释
 		businessBalanceRecordDao.insert(businessBalanceRecord); 
-		
 	}
 }

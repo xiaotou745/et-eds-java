@@ -1,9 +1,7 @@
 package com.edaisong.api.dao.inter;
 
 
-import java.math.BigDecimal;
 import java.util.Date;
-import java.lang.Double;
 import java.util.List;
 
 import com.edaisong.entity.Business;
@@ -14,6 +12,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
+import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.PagedBusinessReq;
 
 public interface IBusinessDao {
@@ -95,4 +94,12 @@ public interface IBusinessDao {
 	 * @return
 	 */
 	int updateLastLoginTime(int businessID,Date loginTime);
+	
+	/**
+	 * 根据单号查询充值详情
+	 * @author pengyi
+	 * @param orderNo
+	 * @return
+	 */
+	BusinessRechargeDetailModel getRechargeDetail(String orderNo);
 }

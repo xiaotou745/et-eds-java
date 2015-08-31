@@ -220,7 +220,7 @@
   </select>
   
   <select id="queryBusinessRechargeTotalAmount" resultType="double" parameterType="java.util.HashMap">
-  	SELECT  SUM(bbr.amount) AS totalAmount
+  	SELECT  ISNULL(SUM(bbr.amount),0) AS totalAmount
     FROM    BusinessBalanceRecord bbr ( NOLOCK )
     INNER JOIN dbo.business b ( NOLOCK ) ON bbr.BusinessId = b.Id 
     where bbr.status=1

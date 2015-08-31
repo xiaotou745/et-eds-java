@@ -1,7 +1,6 @@
 package com.edaisong.api.service.inter;
 
 import java.util.Date;
-import java.lang.Double;
 import java.util.List;
 
 import com.edaisong.entity.Business;
@@ -14,6 +13,7 @@ import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.req.BusinessLoginReq;
 import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.domain.BusinessModifyModel;
+import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
@@ -100,6 +100,7 @@ public interface IBusinessService {
 	 */
 	BusinessModel getBusiness(int id);
 	
+	BusinessRechargeDetailModel getRechargeDetail(String orderNo);
 	/**
 	 *  更新商家余额、可提现余额     
 	 * @param businessMoney
