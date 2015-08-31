@@ -537,11 +537,23 @@
 		where b.Id=#{clienterId,jdbcType=INTEGER};
 	</update>
 	
-	   <!-- 更新 骑士 余额，可提现余额   add by caoheyang 20150831  -->	
-	<update id="updateForWithdraw" parameterType="java.util.Map">
+	   <!-- 更新 骑士 余额  add by caoheyang 20150831  -->	
+	<update id="updateCAccountBalance" parameterType="java.util.Map">
 		update  clienter
-		set  AccountBalance=AccountBalance+ #{Money,jdbcType=DECIMAL} ,
-		AllowWithdrawPrice=AllowWithdrawPrice+ #{Money,jdbcType=DECIMAL}
+		set  AccountBalance=AccountBalance+ #{Money,jdbcType=DECIMAL} 
+		where  Id= #{Id,jdbcType=INTEGER}
+	</update>
+		   <!-- 更新骑士可提现金额    add by caoheyang 20150831  -->	
+	<update id="updateCAllowWithdrawPrice" parameterType="java.util.Map">
+		update  clienter
+		set  AllowWithdrawPrice=AllowWithdrawPrice+ #{Money,jdbcType=DECIMAL} 
+		where  Id= #{Id,jdbcType=INTEGER}
+	</update>
+			   <!-- 更新骑士余额和可提现金额    add by caoheyang 20150831  -->	
+	<update id="updateCBalanceAndWithdraw" parameterType="java.util.Map">
+		update  clienter
+		set  AllowWithdrawPrice=AllowWithdrawPrice+ #{Money,jdbcType=DECIMAL} ,
+		AccountBalance=AccountBalance + #{Money,jdbcType=DECIMAL} 
 		where  Id= #{Id,jdbcType=INTEGER}
 	</update>
 </mapper>

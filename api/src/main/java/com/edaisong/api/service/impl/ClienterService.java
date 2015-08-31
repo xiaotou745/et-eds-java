@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.dao.inter.IClienterAllowWithdrawRecordDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.service.inter.IClienterService;
@@ -13,6 +14,7 @@ import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Clienter;
+import com.edaisong.entity.ClienterAllowWithdrawRecord;
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
@@ -34,7 +36,8 @@ public class ClienterService implements IClienterService {
 	private IClienterDao clienterDao;	
 	@Autowired
 	private IClienterBalanceRecordDao clienterBalanceRecordDao;
-
+@Autowired
+private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	@Override
 	public int modifyStatusById(Clienter record) 
 	{
@@ -61,14 +64,15 @@ public class ClienterService implements IClienterService {
 
 
 	/**
-	 *  更新骑士余额、可提现余额     
+	 * 更新骑士余额
+	 * 
 	 * @param clienterMoney
 	 * @author CaoHeYang
 	 * @date 20150831
 	 */
 	@Override
 	public void updateCAccountBalance(ClienterMoney clienterMoney) {
-		clienterDao.updateForWithdraw(clienterMoney.getAmount(),
+		clienterDao.updateCAccountBalance(clienterMoney.getAmount(),
 				clienterMoney.getClienterId());// 更新商户余额
 		//插入骑士余额流水
 		ClienterBalanceRecord clienterBalanceRecord = new ClienterBalanceRecord();
@@ -82,5 +86,66 @@ public class ClienterService implements IClienterService {
 		clienterBalanceRecord.setRemark(clienterMoney.getRemark()); // 注释
 		clienterBalanceRecordDao.insert(clienterBalanceRecord);
 		
+	}
+
+
+	/**
+	 * 更新骑士可提现余额
+	 * 
+	 * @param clienterMoney
+	 * @author CaoHeYang
+	 * @date 20150831
+	 */
+	@Override
+	public void updateCAllowWithdrawPrice(ClienterMoney clienterMoney) {
+		clienterDao.updateCAllowWithdrawPrice(clienterMoney.getAmount(),
+				clienterMoney.getClienterId());// 更新商户余额
+		//插入骑士余额可提现流水
+		ClienterAllowWithdrawRecord clienterAllowWithdrawRecord = new ClienterAllowWithdrawRecord();
+		clienterAllowWithdrawRecord.setClienterid(clienterMoney.getClienterId());// 商户Id
+		clienterAllowWithdrawRecord.setAmount(clienterMoney.getAmount());
+		clienterAllowWithdrawRecord.setStatus((short)clienterMoney.getStatus()); // 流水状态
+		clienterAllowWithdrawRecord.setRecordtype((short) clienterMoney.getRecordType()); // 
+		clienterAllowWithdrawRecord.setOperator(clienterMoney.getOperator()); // 商家id
+		clienterAllowWithdrawRecord.setWithwardid((long) clienterMoney.getWithwardId()); // 关联单id
+		clienterAllowWithdrawRecord.setRelationno(clienterMoney.getRelationNo()); // 关联单号
+		clienterAllowWithdrawRecord.setRemark(clienterMoney.getRemark()); // 注释
+		clienterAllowWithdrawRecordDao.insert(clienterAllowWithdrawRecord);
+	}
+
+
+	/**
+	 * 更新骑士余额、可提现余额
+	 * 
+	 * @param clienterMoney
+	 * @author CaoHeYang
+	 * @date 20150831
+	 */
+	@Override
+	public void updateCBalanceAndWithdraw(ClienterMoney clienterMoney) {
+		clienterDao.updateCAccountBalance(clienterMoney.getAmount(),
+				clienterMoney.getClienterId());// 更新商户余额
+		//插入骑士余额流水
+		ClienterBalanceRecord clienterBalanceRecord = new ClienterBalanceRecord();
+		clienterBalanceRecord.setClienterid(clienterMoney.getClienterId());// 商户Id
+		clienterBalanceRecord.setAmount(clienterMoney.getAmount());
+		clienterBalanceRecord.setStatus((short)clienterMoney.getStatus()); // 流水状态
+		clienterBalanceRecord.setRecordtype((short) clienterMoney.getRecordType()); // 
+		clienterBalanceRecord.setOperator(clienterMoney.getOperator()); // 商家id
+		clienterBalanceRecord.setWithwardid((long) clienterMoney.getWithwardId()); // 关联单id
+		clienterBalanceRecord.setRelationno(clienterMoney.getRelationNo()); // 关联单号
+		clienterBalanceRecord.setRemark(clienterMoney.getRemark()); // 注释
+		clienterBalanceRecordDao.insert(clienterBalanceRecord);
+		//插入骑士余额可提现流水
+		ClienterAllowWithdrawRecord clienterAllowWithdrawRecord = new ClienterAllowWithdrawRecord();
+		clienterAllowWithdrawRecord.setClienterid(clienterMoney.getClienterId());// 商户Id
+		clienterAllowWithdrawRecord.setAmount(clienterMoney.getAmount());
+		clienterAllowWithdrawRecord.setStatus((short)clienterMoney.getStatus()); // 流水状态
+		clienterAllowWithdrawRecord.setRecordtype((short) clienterMoney.getRecordType()); // 
+		clienterAllowWithdrawRecord.setOperator(clienterMoney.getOperator()); // 商家id
+		clienterAllowWithdrawRecord.setWithwardid((long) clienterMoney.getWithwardId()); // 关联单id
+		clienterAllowWithdrawRecord.setRelationno(clienterMoney.getRelationNo()); // 关联单号
+		clienterAllowWithdrawRecord.setRemark(clienterMoney.getRemark()); // 注释
+		clienterAllowWithdrawRecordDao.insert(clienterAllowWithdrawRecord);
 	}
 }

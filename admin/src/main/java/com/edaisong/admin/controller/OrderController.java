@@ -18,7 +18,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OrderListModel;
-import com.edaisong.entity.req.AuditOkOrder;
+import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
@@ -115,8 +115,9 @@ public class OrderController {
 	@RequestMapping(value="auditok",method= {RequestMethod.POST})
 	@ResponseBody
 	public ResponseBase auditok(int orderid){
-		AuditOkOrder auditOkOrder=new AuditOkOrder();
+		OptOrder auditOkOrder=new OptOrder();
 		auditOkOrder.setOrderId(orderid);
+		ResponseBase responseBase= orderService.auditOk(auditOkOrder);
 		return new ResponseBase();
 	}
 	/**
@@ -128,7 +129,7 @@ public class OrderController {
 	 */
 	@RequestMapping(value="auditrefuse",method= {RequestMethod.POST})
 	@ResponseBody
-	public ResponseBase auditrefuse(AuditOkOrder auditOkOrder){
+	public ResponseBase auditrefuse(OptOrder auditOkOrder){
 		return new ResponseBase();
 	}
 	/**
@@ -141,9 +142,10 @@ public class OrderController {
 	 */
 	@RequestMapping(value="cancelorder",method= {RequestMethod.POST})
 	@ResponseBody
-	public ResponseBase cancelorder(AuditOkOrder auditOkOrder){
-		auditOkOrder.setOptUserId(1);
-		auditOkOrder.setOptUserName("caoheyang");
-		return new ResponseBase();
+	public ResponseBase cancelorder(OptOrder auditokorder){
+		auditokorder.setOptUserId(1);
+		auditokorder.setOptUserName("caoheyang");
+		ResponseBase responseBase= orderService.cancelOrder(auditokorder);
+		return responseBase;
 	}
 }
