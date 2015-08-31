@@ -26,10 +26,14 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 		return 0;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public int insert(ClienterBalanceRecord record) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.insert",
+				record);
+		return result;
 	}
 
 	@Override

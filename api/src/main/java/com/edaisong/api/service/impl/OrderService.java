@@ -54,7 +54,7 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
-import com.edaisong.entity.req.AuditOkOrder;
+import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.ClienterMoney;
@@ -617,16 +617,16 @@ public class OrderService implements IOrderService {
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public ResponseBase cancelOrder(AuditOkOrder auditOkOrder) {
+	public ResponseBase cancelOrder(OptOrder cancelOrder) {
 		ResponseBase responseBase = new ResponseBase();
 		OrderListModel orderModel = orderDao.getOrderByNoId(
-				auditOkOrder.getOrderNo(), auditOkOrder.getOrderId());
+				cancelOrder.getOrderNo(), cancelOrder.getOrderId());
 		if (orderModel == null) {
 			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
 			responseBase.setMessage("未查询到订单信息！");
 		}
-		orderModel.setOptUserName(auditOkOrder.getOptUserName()); // 操作人
-		orderModel.setRemark(auditOkOrder.getOptLog()); // 操作日志
+		orderModel.setOptUserName(cancelOrder.getOptUserName()); // 操作人
+		orderModel.setRemark(cancelOrder.getOptLog()); // 操作日志
 		if (orderModel.getStatus() == OrderStatus.Cancel.value()) {
 			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
 			responseBase.setMessage("订单已为取消状态，不能再次取消操作！");
@@ -636,7 +636,7 @@ public class OrderService implements IOrderService {
 			responseBase.setMessage("订单已分账，不能取消订单！");
 		}
 		Integer orderTaskPayStatus = orderChildDao
-				.getOrderTaskPayStatus(auditOkOrder.getOrderId());
+				.getOrderTaskPayStatus(cancelOrder.getOrderId());
 		// 线上结算 餐费未线上支付模式并且餐费有支付
 		if (orderModel.getMealsSettleMode() == MealsSettleMode.LineOn.value()
 				&& orderTaskPayStatus > 0 && !orderModel.getIsPay()) {
@@ -645,23 +645,23 @@ public class OrderService implements IOrderService {
 		}
 		// 取消订单
 		Order tempCanelOrder = new Order();
-		tempCanelOrder.setId(auditOkOrder.getOrderId());
+		tempCanelOrder.setId(cancelOrder.getOrderId());
 		tempCanelOrder.setStatus((byte) OrderStatus.Cancel.value());
 		orderDao.updateByPrimaryKeySelective(tempCanelOrder);
 		// 记录取消订单日志
 		OrderSubsidiesLog record = new OrderSubsidiesLog();
-		record.setOrderid(auditOkOrder.getOrderId());
+		record.setOrderid(cancelOrder.getOrderId());
 		record.setOrderstatus(OrderStatus.Cancel.value());
-		record.setOptid(auditOkOrder.getOptUserId());
+		record.setOptid(cancelOrder.getOptUserId());
 		record.setPrice(orderModel.getOrderCommission()); // 佣金
-		record.setOptname(auditOkOrder.getOptUserName());
+		record.setOptname(cancelOrder.getOptUserName());
 		record.setPlatform(SuperPlatform.ManagementBackGround.value());
-		record.setRemark(auditOkOrder.getOptUserName()
-				+ "通过后台管理系统取消订单,用户操作描述：【" + auditOkOrder.getOptLog() + "】");
+		record.setRemark(cancelOrder.getOptUserName()
+				+ "通过后台管理系统取消订单,用户操作描述：【" + cancelOrder.getOptLog() + "】");
 		orderSubsidiesLogDao.insert(record);
 		// 更新取消订单时间
 		OrderOther orderOther = new OrderOther();
-		orderOther.setOrderid(auditOkOrder.getOrderId());
+		orderOther.setOrderid(cancelOrder.getOrderId());
 		orderOther.setCancelTime(new Date());
 		orderOtherDao.updateByPrimaryKeySelective(orderOther);
 		// 已完成订单 子订单全部已支付
@@ -676,7 +676,7 @@ public class OrderService implements IOrderService {
 			clienterMoney.setAmount(-orderModel.getOrderCommission());
 			clienterMoney.setStatus(ClienterBalanceRecordStatus.Success.value());
 			clienterMoney.setRecordType(ClienterBalanceRecordRecordType.CancelOrder.value());
-			clienterMoney.setOperator(auditOkOrder.getOptUserName());
+			clienterMoney.setOperator(cancelOrder.getOptUserName());
 			clienterMoney.setWithwardId((long) orderModel.getId()); // 订单id
 			clienterMoney.setRelationNo(orderModel.getOrderNo()); // 关联单号
 			clienterMoney.setRemark(orderModel.getRemark());
@@ -689,13 +689,33 @@ public class OrderService implements IOrderService {
 		businessMoney.setStatus((short) BusinessBalanceRecordStatus.Success.value());
 		businessMoney.setRecordType((short) BusinessBalanceRecordRecordType.CancelOrder
 				.value()); // 取消订单
-		businessMoney.setOperator(auditOkOrder.getOptUserName());
+		businessMoney.setOperator(cancelOrder.getOptUserName());
 		businessMoney.setWithwardId((long) orderModel.getId()); // 订单id
 		businessMoney.setRelationNo(orderModel.getOrderNo()); // 关联单号
 		businessMoney.setRemark(orderModel.getRemark()); // 注释
 		businessService.updateBBalanceAndWithdraw(businessMoney);
 		responseBase.setMessage("订单取消成功");
 		return responseBase;
+	}
+
+	 /**
+	  * 订单审核通过
+	  * @author CaoHeYang
+	  * @param auditOkOrder
+	  * @date 20150831
+	  * @return
+	  */
+	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public ResponseBase auditOk(OptOrder auditOkOrder) {
+		OrderListModel orderModel = orderDao.getOrderByNoId(auditOkOrder.getOrderNo(), auditOkOrder.getOrderId());
+		ResponseBase responseBase=new ResponseBase();
+		if (orderModel.getIsJoinWithdraw() == 1) {
+			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
+			responseBase.setMessage("订单已分账，不能审核通过！");
+		}
+
+		return null;
 	}
 
 }

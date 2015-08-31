@@ -8,8 +8,9 @@ import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
-import com.edaisong.entity.req.AuditOkOrder;
+import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
+import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
@@ -121,6 +122,15 @@ public interface IOrderService {
 	 * @date 20150831r
 	 * @return
 	 */
-	 ResponseBase cancelOrder(AuditOkOrder auditOkOrder);
+	 ResponseBase cancelOrder(OptOrder cancelOrder);
+	 
+	 /**
+	  * 订单审核通过
+	  * @author CaoHeYang
+	  * @param auditOkOrder
+	  * @date 20150831
+	  * @return
+	  */
+	 ResponseBase auditOk(OptOrder auditOkOrder);
 
 }
