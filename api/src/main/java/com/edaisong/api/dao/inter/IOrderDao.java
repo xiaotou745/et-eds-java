@@ -108,4 +108,12 @@ public interface IOrderDao {
 	 * @return
 	 */
 	List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId,Date startTime,Date endTime);
+	
+	/**
+	 * update 任意列 根据id 
+	 * @author CaoHeYang
+	 * @param order
+	 * @return
+	 */
+   int updateByPrimaryKeySelective(Order order);
 }

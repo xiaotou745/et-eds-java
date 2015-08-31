@@ -145,4 +145,21 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return resp;
 	}
 
+    /**
+     * 更新 骑士 余额，可提现余额   
+     * @param amount
+     * @param clienterId
+     *  @Date 20150831
+	 * @param business
+     */
+	@Override
+	public int updateForWithdraw(Double amount, int clienterId) {
+		Map<String, Object> parasMap = new HashMap();
+		parasMap.put("Money", amount);
+		parasMap.put("Id", clienterId);
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dao.inter.IClienterDao.updateForWithdraw",
+						parasMap);
+	}
+
 }

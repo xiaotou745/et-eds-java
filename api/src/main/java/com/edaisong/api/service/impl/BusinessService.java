@@ -14,6 +14,8 @@ import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
+import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
+import com.edaisong.core.enums.BusinessBalanceRecordStatus;
 import com.edaisong.core.enums.BusinessStatus;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.HttpUtil;
@@ -28,6 +30,7 @@ import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.req.BusinessLoginReq;
+import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
@@ -298,5 +301,30 @@ public class BusinessService implements IBusinessService {
 	@Override
 	public BusinessModel getBusiness(int id) {
 		return iBusinessDao.getBusiness(id);
+	}
+
+
+	/**
+	 *  更新商家余额、可提现余额     
+	 * @param businessMoney
+	 * @author CaoHeYang
+	 * @date 20150831
+	 */
+	@Override
+	public void updateBBalanceAndWithdraw(BusinessMoney businessMoney) {
+		iBusinessDao.updateForWithdraw(businessMoney.getAmount(),
+				businessMoney.getBusinessId());// 更新商户余额
+		//插入商家余额流水
+		BusinessBalanceRecord businessBalanceRecord = new BusinessBalanceRecord();
+		businessBalanceRecord.setBusinessid(businessMoney.getBusinessId());// 商户Id
+		businessBalanceRecord.setAmount(businessMoney.getAmount());
+		businessBalanceRecord.setStatus((short)businessMoney.getStatus()); // 流水状态
+		businessBalanceRecord.setRecordtype((short) businessMoney.getRecordType());
+		businessBalanceRecord.setOperator(businessMoney.getOperator()); // 商家id
+		businessBalanceRecord.setWithwardid((long) businessMoney.getWithwardId()); // 关联单id
+		businessBalanceRecord.setRelationno(businessMoney.getRelationNo()); // 关联单号
+		businessBalanceRecord.setRemark(businessMoney.getRemark()); // 注释
+		businessBalanceRecordDao.insert(businessBalanceRecord); 
+		
 	}
 }

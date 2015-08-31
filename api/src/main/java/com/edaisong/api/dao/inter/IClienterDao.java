@@ -20,4 +20,14 @@ public interface IClienterDao {
     PagedResponse<ClienterModel> query(ClienterReq req);
     
     PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req);
+
+  
+    /**
+     * 更新 骑士 余额，可提现余额   
+     * @param amount
+     * @param clienterId
+     *  @Date 20150831
+	 * @param business
+     */
+	int updateForWithdraw(Double amount, int clienterId);
 }

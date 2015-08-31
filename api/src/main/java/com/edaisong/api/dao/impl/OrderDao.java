@@ -158,4 +158,13 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		paramMap.put("orderId", orderId);  //订单id
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderDao.getOrderByNoId", paramMap);
 	}
+	/**
+	 * update 任意列 根据id 
+	 * @author CaoHeYang
+	 * @param order
+	 * @return
+	 */
+  public int updateByPrimaryKeySelective(Order order){
+	  return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderDao.updateByPrimaryKeySelective", order);
+  }
 }

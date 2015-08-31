@@ -3,10 +3,12 @@ import java.util.Date;
 import java.util.List;
 
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.req.AuditOkOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
@@ -111,4 +113,14 @@ public interface IOrderService {
 	 * @return
 	 */
 	List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId,Date startTime,Date endTime);
+   
+	/**
+	 * 管理后台取消订单 
+	 * @author CaoHeYang
+	 * @param auditOkOrde
+	 * @date 20150831r
+	 * @return
+	 */
+	 ResponseBase cancelOrder(AuditOkOrder auditOkOrder);
+
 }

@@ -90,4 +90,21 @@
 <!-- 		o.OrderNo=#{OrderNo,jdbcType=NVARCHAR} and
 		o.businessId=#{BusinessId,jdbcType=INTEGER} -->
 	</select>
+	
+	<!--   获取任务支付状态（0：未支付 1：部分支付 2：已支付） add by caoheyang 20150831 -->
+	<select id="getOrderTaskPayStatus" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		SELECT CASE SUM(oc.PayStatus) 
+				WHEN 0 
+				THEN 0 
+			ELSE 
+				CASE 
+					WHEN  SUM(oc.PayStatus)=COUNT(oc.PayStatus) 
+					THEN 2 
+					ELSE 1 
+				END 
+			END PayStatus
+	  FROM OrderChild oc WITH(NOLOCK)
+	  WHERE OrderId=#{OrderId,jdbcType=INTEGER}
+	</select>
 </mapper>
