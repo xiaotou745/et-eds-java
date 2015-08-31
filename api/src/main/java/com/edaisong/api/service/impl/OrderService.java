@@ -32,7 +32,9 @@ import com.edaisong.core.enums.CancelOrderBusinessReturnEnum;
 import com.edaisong.core.enums.ClienterBalanceRecordRecordType;
 import com.edaisong.core.enums.ClienterBalanceRecordStatus;
 import com.edaisong.core.enums.MealsSettleMode;
+import com.edaisong.core.enums.OrderAuditStatus;
 import com.edaisong.core.enums.OrderFrom;
+import com.edaisong.core.enums.OrderOperationCommon;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.SuperPlatform;
@@ -732,7 +734,19 @@ public class OrderService implements IOrderService {
 		clienterService.updateCAllowWithdrawPrice(clienterMoney);
 		  //更新已提现状态
         orderOtherDao.updateJoinWithdraw(auditOkOrder.getOrderId());
-		return responseBase;
+		  //更新审核状态
+        orderOtherDao.updateAuditStatus(auditOkOrder.getOrderId(),OrderAuditStatus.Through.value());
+		//写入订单日志 
+        OrderSubsidiesLog orderSubsidiesLog=new OrderSubsidiesLog();
+        orderSubsidiesLog.setOrderid(auditOkOrder.getOrderId());
+        orderSubsidiesLog.setPrice(orderModel.getOrderCommission()==null?0:orderModel.getOrderCommission());
+        orderSubsidiesLog.setOptname(auditOkOrder.getOptUserName());
+        orderSubsidiesLog.setRemark("审核通过，增加" + (orderModel.getOrderCommission()==null
+        		?0:orderModel.getOrderCommission()) + "元可提现金额");
+        orderSubsidiesLog.setOptid(auditOkOrder.getOptUserId());
+        orderSubsidiesLog.setOrderstatus(OrderOperationCommon.AuditStatusOk.value());
+        orderSubsidiesLog.setPlatform(SuperPlatform.ManagementBackGround.value());
+        return responseBase;
 	}
 
 }
