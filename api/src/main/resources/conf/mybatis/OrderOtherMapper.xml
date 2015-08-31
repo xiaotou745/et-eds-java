@@ -288,5 +288,12 @@
       IsNotRealOrder = #{isnotrealorder,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  
+  <!-- 更新已提现状态 caoheyang 20150831 -->
+    <update id="updateJoinWithdraw" parameterType="java.util.Map" >
+    update OrderOther set IsJoinWithdraw=1 where orderId=#{orderId,jdbcType=INTEGER}
+    </update>
+      <!-- 更新审核状态 caoheyang 20150831 -->
+    <update id="updateAuditStatus" parameterType="java.util.Map" >
+    update dbo.OrderOther set auditstatus =#{auditstatus,jdbcType=INTEGER} where OrderId=#{orderId,jdbcType=INTEGER}
+    </update>
 </mapper>

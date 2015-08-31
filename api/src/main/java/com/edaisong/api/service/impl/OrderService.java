@@ -624,16 +624,19 @@ public class OrderService implements IOrderService {
 		if (orderModel == null) {
 			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
 			responseBase.setMessage("未查询到订单信息！");
+			return responseBase;
 		}
 		orderModel.setOptUserName(cancelOrder.getOptUserName()); // 操作人
 		orderModel.setRemark(cancelOrder.getOptLog()); // 操作日志
 		if (orderModel.getStatus() == OrderStatus.Cancel.value()) {
 			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
 			responseBase.setMessage("订单已为取消状态，不能再次取消操作！");
+			return responseBase;
 		}
 		if (orderModel.getIsJoinWithdraw() == 1) {
 			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
 			responseBase.setMessage("订单已分账，不能取消订单！");
+			return responseBase;
 		}
 		Integer orderTaskPayStatus = orderChildDao
 				.getOrderTaskPayStatus(cancelOrder.getOrderId());
@@ -642,6 +645,7 @@ public class OrderService implements IOrderService {
 				&& orderTaskPayStatus > 0 && !orderModel.getIsPay()) {
 			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
 			responseBase.setMessage("餐费有支付，不能取消订单！");
+			return responseBase;
 		}
 		// 取消订单
 		Order tempCanelOrder = new Order();
@@ -682,7 +686,7 @@ public class OrderService implements IOrderService {
 			clienterMoney.setRemark(orderModel.getRemark());
 			clienterService.updateCAccountBalance(clienterMoney);
 		}
-		//更新商家余额 插流水
+		//更新商家余额可提现金额 插流水
 		BusinessMoney businessMoney=new BusinessMoney();
 		businessMoney.setAmount(orderModel.getSettleMoney());//金额
 		businessMoney.setBusinessId(orderModel.getBusinessId());// 商户Id
@@ -713,9 +717,22 @@ public class OrderService implements IOrderService {
 		if (orderModel.getIsJoinWithdraw() == 1) {
 			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
 			responseBase.setMessage("订单已分账，不能审核通过！");
+			return responseBase;
 		}
-
-		return null;
+		//更新骑士余额 插流水
+		ClienterMoney clienterMoney=new ClienterMoney();
+		clienterMoney.setClienterId(orderModel.getClienterId());
+		clienterMoney.setAmount(orderModel.getOrderCommission()==null?0:orderModel.getOrderCommission());
+		clienterMoney.setStatus(ClienterBalanceRecordStatus.Success.value());
+		clienterMoney.setRecordType(ClienterBalanceRecordRecordType.OrderCommission.value());
+		clienterMoney.setOperator(auditOkOrder.getOptUserName());
+		clienterMoney.setWithwardId((long) orderModel.getId()); // 订单id
+		clienterMoney.setRelationNo(orderModel.getOrderNo()); // 关联单号
+		clienterMoney.setRemark("管理后台审核通过加可提现");
+		clienterService.updateCAllowWithdrawPrice(clienterMoney);
+		  //更新已提现状态
+        orderOtherDao.updateJoinWithdraw(auditOkOrder.getOrderId());
+		return responseBase;
 	}
 
 }

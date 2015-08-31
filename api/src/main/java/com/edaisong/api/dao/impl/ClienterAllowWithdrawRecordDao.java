@@ -1,9 +1,11 @@
 package com.edaisong.api.dao.impl;
 
+import org.springframework.stereotype.Repository;
+
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IClienterAllowWithdrawRecordDao;
 import com.edaisong.entity.ClienterAllowWithdrawRecord;
-
+@Repository
 public class ClienterAllowWithdrawRecordDao extends DaoBase  implements
 		IClienterAllowWithdrawRecordDao {
 

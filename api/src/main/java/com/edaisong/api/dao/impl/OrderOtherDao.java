@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -12,7 +13,7 @@ import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 
 @Repository
-public class OrderOtherDao extends DaoBase implements IOrderOtherDao   {
+public class OrderOtherDao extends DaoBase implements IOrderOtherDao {
 
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
@@ -24,7 +25,8 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao   {
 	public int insert(OrderOther record) {
 		// TODO Auto-generated method stub
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderOtherDao.insertSelective", record);		         
+				"com.edaisong.api.dao.inter.IOrderOtherDao.insertSelective",
+				record);
 	}
 
 	@Override
@@ -41,8 +43,9 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao   {
 
 	@Override
 	public int updateByPrimaryKeySelective(OrderOther record) {
-		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderOtherDao.updateByPrimaryKeySelective", record);		 
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dao.inter.IOrderOtherDao.updateByPrimaryKeySelective",
+						record);
 		// TODO Auto-generated method stub
 	}
 
@@ -52,7 +55,39 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao   {
 		return 0;
 	}
 
+	/**
+	 * 更新已提现状态
+	 * 
+	 * @author CaoHeYang
+	 * @param orderId
+	 * @date 20150831
+	 * @return
+	 */
+	@Override
+	public int updateJoinWithdraw(int orderId) {
+		Map<String, Object> maps = new HashedMap();
+		maps.put("orderId", orderId);
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IOrderOtherDao.updateJoinWithdraw",
+				maps);
+	}
 
-  
-
+	/**
+	 * 更新订单审核状态
+	 * 
+	 * @author CaoHeYang
+	 * @param orderId
+	 * @param auditstatus
+	 * @date 20150831
+	 * @return
+	 */
+	@Override
+	public int updateAuditStatus(int orderId, int auditstatus) {
+		Map<String, Object> maps = new HashedMap();
+		maps.put("orderId", orderId);
+		maps.put("auditstatus", auditstatus);
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IOrderOtherDao.updateAuditStatus",
+				maps);
+	}
 }
