@@ -22,21 +22,26 @@
     
    
   </sql>
-  
-<select id="query" resultType="com.edaisong.entity.Account" parameterType="java.util.Map" statementType="CALLABLE">
-<![CDATA[  
+ <sql id="queryWhere">
+		1=1
+		<if test="keyword != null and keyword!=''">
+			and UserName like ''%${keyword}%''
+		</if>
+	</sql> 
+<select id="query" resultType="com.edaisong.entity.Account" parameterType="com.edaisong.entity.req.PagedAccountReq" statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
-' Id desc ',
-' Id,UserName,LoginName,Status ',
-' account(nolock) ',
-#{Where,mode=IN,jdbcType=VARCHAR},
-#{PageSize,mode=IN,jdbcType=INTEGER},
-#{CurrentPage,mode=IN,jdbcType=INTEGER},
-1,
-#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
-#{TotalPage,mode=OUT,jdbcType=VARCHAR}
-)}
-	]]>  
+		' Id desc ',
+		' Id,UserName,LoginName,Status ',
+		' account(nolock) ',
+		'
+		<include refid="queryWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)} 
   </select>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

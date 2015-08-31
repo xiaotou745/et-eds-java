@@ -30,31 +30,7 @@ public class AuthorityMenuClassDao extends DaoBase implements
 	}
 
 	@Override
-	public int insertSelective(AuthorityMenuClass record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public AuthorityMenuClass selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(AuthorityMenuClass record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(AuthorityMenuClass record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public List<MenuEntity> getMenuListByUserID(String accountId) {
+	public List<MenuEntity> getMenuListByUserID(int accountId) {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("accountId", accountId);
 		List<MenuEntity> list = getReadOnlySqlSessionUtil()
@@ -62,6 +38,13 @@ public class AuthorityMenuClassDao extends DaoBase implements
 						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getMenuListByUserID",
 						paramMap);
 		return list;
+	}
+
+	@Override
+	public List<AuthorityMenuClass> getMenuList() {
+		return getReadOnlySqlSessionUtil()
+				.selectList(
+						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getMenuList");
 	}
 
 }
