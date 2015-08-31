@@ -142,6 +142,8 @@ public class OrderController {
 	@RequestMapping(value="cancelorder",method= {RequestMethod.POST})
 	@ResponseBody
 	public ResponseBase cancelorder(AuditOkOrder auditOkOrder){
+		auditOkOrder.setOptUserId(1);
+		auditOkOrder.setOptUserName("caoheyang");
 		return new ResponseBase();
 	}
 }

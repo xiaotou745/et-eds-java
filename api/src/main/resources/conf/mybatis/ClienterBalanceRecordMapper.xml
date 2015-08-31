@@ -52,15 +52,16 @@
     delete from ClienterBalanceRecord
     where Id = #{id,jdbcType=BIGINT}
   </delete>
+  
   <insert id="insert" parameterType="com.edaisong.entity.ClienterBalanceRecord" >
-    insert into ClienterBalanceRecord (Id, ClienterId, Amount, 
-      Status, Balance, RecordType, 
-      Operator, OperateTime, WithwardId, 
-      RelationNo, Remark)
-    values (#{id,jdbcType=BIGINT}, #{clienterid,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
-      #{status,jdbcType=SMALLINT}, #{balance,jdbcType=DECIMAL}, #{recordtype,jdbcType=SMALLINT}, 
-      #{operator,jdbcType=NVARCHAR}, #{operatetime,jdbcType=TIMESTAMP}, #{withwardid,jdbcType=BIGINT}, 
-      #{relationno,jdbcType=VARCHAR}, #{remark,jdbcType=NVARCHAR})
+    insert into
+		ClienterBalanceRecord
+		(ClienterId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark)
+		select #{clienterId,jdbcType=INTEGER},
+		#{amount,jdbcType=DECIMAL},#{status,jdbcType=SMALLINT},c.AccountBalance,#{recordtype,jdbcType=SMALLINT},#{operator,jdbcType=NVARCHAR}
+		,#{withwardid,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
+		from dbo.clienter  as c where Id=#{clienterId,jdbcType=INTEGER} ;
+		select @@IDENTITY
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.ClienterBalanceRecord" >
     insert into ClienterBalanceRecord

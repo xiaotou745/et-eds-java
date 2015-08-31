@@ -201,9 +201,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderOther" >
     update OrderOther
     <set >
-      <if test="orderid != null" >
-        OrderId = #{orderid,jdbcType=INTEGER},
-      </if>
       <if test="needuploadcount != null" >
         NeedUploadCount = #{needuploadcount,jdbcType=INTEGER},
       </if>

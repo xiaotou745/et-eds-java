@@ -10,6 +10,8 @@ import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
+import com.edaisong.entity.req.BusinessLoginReq;
+import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.PagedBusinessReq;
@@ -99,4 +101,11 @@ public interface IBusinessService {
 	BusinessModel getBusiness(int id);
 	
 	BusinessRechargeDetailModel getRechargeDetail(String orderNo);
+	/**
+	 *  更新商家余额、可提现余额     
+	 * @param businessMoney
+	 * @author CaoHeYang
+	 * @date 20150831
+	 */
+    void updateBBalanceAndWithdraw(BusinessMoney businessMoney);
 }

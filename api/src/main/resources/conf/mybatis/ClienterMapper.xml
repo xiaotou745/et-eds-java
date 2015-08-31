@@ -536,4 +536,12 @@
 		from clienter b WITH ( ROWLOCK )
 		where b.Id=#{clienterId,jdbcType=INTEGER};
 	</update>
+	
+	   <!-- 更新 骑士 余额，可提现余额   add by caoheyang 20150831  -->	
+	<update id="updateForWithdraw" parameterType="java.util.Map">
+		update  clienter
+		set  AccountBalance=AccountBalance+ #{Money,jdbcType=DECIMAL} ,
+		AllowWithdrawPrice=AllowWithdrawPrice+ #{Money,jdbcType=DECIMAL}
+		where  Id= #{Id,jdbcType=INTEGER}
+	</update>
 </mapper>
