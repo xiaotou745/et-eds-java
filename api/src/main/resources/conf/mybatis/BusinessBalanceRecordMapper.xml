@@ -173,8 +173,11 @@
      <if test="recordType != null and recordType != '' and recordType != -1">
 	      AND bbr.RecordType =${recordType}
      </if>
-     <if test="businessID !=null and businessID">
+     <if test="businessID !=null and businessID!=0">
 	       AND bbr.BusinessId=${businessID}
+     </if>
+     <if test="relationNo !=null and relationNo!=''">
+	       AND bbr.relationNo=''${relationNo}''
      </if>
   </sql>
    <!-- 获取收支明细的分页存储过程 -->
@@ -182,7 +185,7 @@
   parameterType="com.edaisong.entity.req.PagedTransDetailReq" statementType="CALLABLE">  
 {call Sp_CustomPage2015_V1(
 ' bbr.OperateTime DESC ',
-' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,isnull(bbr.WithwardId,0) as WithwardId,bbr.Amount,bbr.Balance,bbr.Status,OperateTime ',
+' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,isnull(bbr.WithwardId,0) as WithwardId,bbr.Amount,bbr.Balance,bbr.Status,OperateTime,Remark,Operator ',
 ' BusinessBalanceRecord AS bbr (nolock) ',
 ' <include refid="getTransDetailListWhere"/> ',
 #{pageSize,mode=IN,jdbcType=INTEGER},
@@ -214,5 +217,51 @@
 #{totalRecord,mode=OUT,jdbcType=VARCHAR},
 #{totalPage,mode=OUT,jdbcType=VARCHAR}
 )} 
+  </select>
+  
+  <select id="queryBusinessRechargeTotalAmount" resultType="double" parameterType="java.util.HashMap">
+  	SELECT  SUM(bbr.amount) AS totalAmount
+    FROM    BusinessBalanceRecord bbr ( NOLOCK )
+    INNER JOIN dbo.business b ( NOLOCK ) ON bbr.BusinessId = b.Id 
+    where bbr.status=1
+    <if test="businessId != null and businessId != ''">
+	      AND bbr.BusinessId='${businessId}'
+     </if>
+     <if test="startDate != null and startDate != ''">
+	       AND bbr.operatetime>='${startDate}'
+     </if>
+
+	     <if test="endDate != null and endDate != ''">
+		       AND '${endDate}'>bbr.operatetime
+	     </if>
+
+    <if test="name != null and name != ''">
+	      AND Name='${name}'
+     </if>
+     <if test="phoneNo != null and phoneNo != ''">
+	      AND PhoneNo='${phoneNo}'
+     </if>
+     <if test="cityId != null and cityId != ''">
+	      AND CityId='${cityId}'
+     </if>
+      <if test="rechargePrice>0">
+	      AND Amount>=${rechargePrice}
+     </if>
+     <choose>
+     	<when test="rechargeType>0">
+	     	<if test="rechargeType==3">
+		      and RecordType=12
+	     	</if>
+	     	<if test="rechargeType==1">
+		      and  bbr.RecordType=9 AND Remark!='商家客户端充值'
+	     	</if>
+	     	<if test="rechargeType==2">
+		      and bbr.RecordType=9 AND Remark='商家客户端充值'
+	     	</if>
+     	</when>
+     	<otherwise>
+	      and (bbr.RecordType=9 or RecordType=12)
+	    </otherwise>
+     </choose>     
   </select>
 </mapper>

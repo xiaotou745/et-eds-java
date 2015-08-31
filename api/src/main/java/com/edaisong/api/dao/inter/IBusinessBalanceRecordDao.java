@@ -1,9 +1,10 @@
 package com.edaisong.api.dao.inter;
 
-import java.util.List;
+import java.text.ParseException;
 
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
 
@@ -25,4 +26,11 @@ public interface IBusinessBalanceRecordDao {
 	 * @return
 	 */
 	PagedResponse<BusinessBalanceRecord> customerGetTransDetailList(PagedCustomerSearchReq par);
+	
+	/**
+	 * 查询商户充值总金额
+	 * @param par
+	 * @return
+	 */
+	double queryBusinessRechargeTotalAmount(BussinessBalanceQueryReq par) throws ParseException;
 }

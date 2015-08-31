@@ -13,7 +13,14 @@ public class PagedTransDetailReq extends PagedRequestBase {
 	private String endDate;
 	private String recordType;
 	private int businessID;
+	private String relationNo;
 
+	public String getRelationNo() {
+		return relationNo;
+	}
+	public void setRelationNo(String relationNo) {
+		this.relationNo = relationNo;
+	}
 	public String getStartDate() {
 		return startDate;
 	}
