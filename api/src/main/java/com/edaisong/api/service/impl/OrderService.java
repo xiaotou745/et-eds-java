@@ -15,6 +15,7 @@ import com.edaisong.api.common.OrderPriceBaseProvider;
 import com.edaisong.api.common.OrderSettleMoneyHelper;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
+import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
@@ -29,8 +30,11 @@ import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
 import com.edaisong.core.enums.BusinessStatus;
 import com.edaisong.core.enums.CancelOrderBusinessReturnEnum;
+import com.edaisong.core.enums.ClienterAllowWithdrawRecordStatus;
+import com.edaisong.core.enums.ClienterAllowWithdrawRecordType;
 import com.edaisong.core.enums.ClienterBalanceRecordRecordType;
 import com.edaisong.core.enums.ClienterBalanceRecordStatus;
+import com.edaisong.core.enums.DeductCommissionType;
 import com.edaisong.core.enums.MealsSettleMode;
 import com.edaisong.core.enums.OrderAuditStatus;
 import com.edaisong.core.enums.OrderFrom;
@@ -42,6 +46,7 @@ import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.BusinessBalanceRecord;
+import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
@@ -61,6 +66,7 @@ import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
@@ -92,7 +98,8 @@ public class OrderService implements IOrderService {
 	private RedisService redisService;
 	@Autowired
 	private IOrderDetailDao orderDetailDao;
-	
+	@Autowired
+	private IClienterBalanceRecordDao clienterBalanceRecordDao;
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -714,8 +721,13 @@ public class OrderService implements IOrderService {
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public ResponseBase auditOk(OptOrder auditOkOrder) {
-		OrderListModel orderModel = orderDao.getOrderByNoId(auditOkOrder.getOrderNo(), auditOkOrder.getOrderId());
 		ResponseBase responseBase=new ResponseBase();
+		OrderListModel orderModel = orderDao.getOrderByNoId(auditOkOrder.getOrderNo(), auditOkOrder.getOrderId());
+		if (orderModel == null) {
+			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
+			responseBase.setMessage("未查询到订单信息！");
+			return responseBase;
+		}
 		if (orderModel.getIsJoinWithdraw() == 1) {
 			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
 			responseBase.setMessage("订单已分账，不能审核通过！");
@@ -747,6 +759,109 @@ public class OrderService implements IOrderService {
         orderSubsidiesLog.setOrderstatus(OrderOperationCommon.AuditStatusOk.value());
         orderSubsidiesLog.setPlatform(SuperPlatform.ManagementBackGround.value());
         return responseBase;
+	}
+
+	/**
+	 * 订单审核拒绝
+	 * @param auditRefuseOrder
+	 * @author CaoHeYang
+	 * @date 20150831
+	 * @return
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public ResponseBase auditRefuse(OptOrder auditRefuseOrder) {
+		ResponseBase responseBase=new ResponseBase();
+		 if (auditRefuseOrder.getOptLog()==null||auditRefuseOrder.getOptLog().isEmpty()) {
+			 responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
+			 responseBase.setMessage("请填写扣除网站补贴原因");
+			 return responseBase;
+		}
+		 OrderListModel orderModel = orderDao.getOrderByNoId(auditRefuseOrder.getOrderNo(), auditRefuseOrder.getOrderId());
+		 if (orderModel==null) {
+			 responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
+			responseBase.setMessage("未查询到订单信息！");
+				return responseBase;
+		}
+		//订单已分账 不能审核拒绝 
+		 if (orderModel.getIsJoinWithdraw() == 1) {
+				responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
+				responseBase.setMessage("订单已分账，不能审核拒绝！");
+				return responseBase;
+		}
+		 OrderOtherSearch orderOtherSearch=new OrderOtherSearch();
+		   //如果要扣除的金额大于0， 写流水
+		 if (orderModel.getOrderCommission()>orderModel.getSettleMoney()) {
+			 ClienterBalanceRecord currenModel=clienterBalanceRecordDao.getByOrderId(orderModel.getId());
+			 if (currenModel==null) {
+				    double diffOrderCommission = orderModel.getSettleMoney() - orderModel.getOrderCommission();
+				    double disOrderCommission = -diffOrderCommission;
+				     //更新骑士余额
+				     ClienterMoney clienterMoney=new ClienterMoney();
+				     clienterMoney.setClienterId(orderModel.getClienterId());
+					 clienterMoney.setAmount(diffOrderCommission);
+				     clienterMoney.setStatus(ClienterBalanceRecordStatus.Success.value());
+					 clienterMoney.setRecordType(ClienterBalanceRecordRecordType.Abnormal.value());
+					 clienterMoney.setOperator(orderModel.getOptUserName());
+					 clienterMoney.setWithwardId(orderModel.getId());
+					 clienterMoney.setRelationNo(orderModel.getOrderNo());
+					 clienterMoney.setRemark(auditRefuseOrder.getOptLog());
+					 clienterService.updateCAccountBalance(clienterMoney);
+					 
+					 orderOtherSearch.setOrderId(orderModel.getId());
+					 orderOtherSearch.setRealOrderCommission(disOrderCommission);
+					 orderOtherSearch.setDeductCommissionReason(auditRefuseOrder.getOptLog());
+					 orderOtherSearch.setDeductCommissionType(DeductCommissionType.People.value());
+					 
+					 //缺省部分逻辑
+					 
+						//写入订单日志 
+				        OrderSubsidiesLog orderSubsidiesLog=new OrderSubsidiesLog();
+				        orderSubsidiesLog.setOrderid(orderModel.getId());
+				        orderSubsidiesLog.setPrice(diffOrderCommission);
+				        orderSubsidiesLog.setOptname(auditRefuseOrder.getOptUserName());
+				        orderSubsidiesLog.setRemark("扣除" + disOrderCommission + "元无效订单金额");
+				        orderSubsidiesLog.setOptid(auditRefuseOrder.getOptUserId());
+				        orderSubsidiesLog.setOrderstatus(OrderOperationCommon.AuditStatusRefuse.value());
+				        orderSubsidiesLog.setPlatform(SuperPlatform.ManagementBackGround.value());
+				       orderSubsidiesLogDao.insert(orderSubsidiesLog);
+			}
+		}
+         //更新订单真实佣金
+		double realOrderCommission=orderModel.getOrderCommission()==null?0:orderModel.getOrderCommission();
+		  realOrderCommission = realOrderCommission > orderModel.getSettleMoney() ? orderModel.getSettleMoney() : realOrderCommission;
+		 //更新骑士可提现余额
+		  ClienterMoney clienterMoney=new ClienterMoney();
+		  clienterMoney.setClienterId(orderModel.getClienterId());
+		  clienterMoney.setAmount(realOrderCommission);
+		  clienterMoney.setStatus(ClienterAllowWithdrawRecordStatus.Success.value());
+		  clienterMoney.setRecordType(ClienterAllowWithdrawRecordType.OrderCommission.value());
+		 clienterMoney.setOperator(orderModel.getOptUserName());
+		 clienterMoney.setWithwardId(orderModel.getId());
+		 clienterMoney.setRelationNo(orderModel.getOrderNo());
+		 clienterMoney.setRemark("管理后台审核拒绝加可提现");
+		 clienterService.updateCAllowWithdrawPrice(clienterMoney);
+		  
+		 orderOtherSearch.setOrderId(orderModel.getId());
+		 orderOtherSearch.setRealOrderCommission(realOrderCommission);
+		 orderOtherSearch.setDeductCommissionReason(auditRefuseOrder.getOptLog());
+		 orderOtherSearch.setDeductCommissionType(DeductCommissionType.People.value());
+		 //缺省部分逻辑
+		  //更新已提现状态
+	       orderOtherDao.updateJoinWithdraw(auditRefuseOrder.getOrderId());
+			//更新审核状态
+	      orderOtherDao.updateAuditStatus(auditRefuseOrder.getOrderId(),OrderAuditStatus.Refuse.value());
+	    	//写入订单日志 
+	       OrderSubsidiesLog orderSubsidiesLog=new OrderSubsidiesLog();
+	       orderSubsidiesLog.setOrderid(orderModel.getId());
+	       orderSubsidiesLog.setPrice(realOrderCommission);
+	       orderSubsidiesLog.setOptname(auditRefuseOrder.getOptUserName());
+	       orderSubsidiesLog.setRemark("增加" + realOrderCommission + "元可提现金额");
+	       orderSubsidiesLog.setOptid(auditRefuseOrder.getOptUserId());
+           orderSubsidiesLog.setOrderstatus(OrderOperationCommon.AuditStatusRefuse.value());
+           orderSubsidiesLog.setPlatform(SuperPlatform.ManagementBackGround.value());
+    	   orderSubsidiesLogDao.insert(orderSubsidiesLog);
+	        return responseBase;
 	}
 
 }
