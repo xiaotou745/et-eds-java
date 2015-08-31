@@ -68,7 +68,7 @@
 			<td><%=data.get(i).getBusinessgroupName()%></td>
 			<td><%=status%></td>
 			<td>外送费:<%=data.get(i).getDistribsubsidy()%><br> 账户余额:<a
-				href="/BusinessManager/BusinessDetail?businessId=<%=data.get(i).getId()%> ">￥<%=data.get(i).getBalanceprice()%></a><br>
+				href="<%=basePath%>/business/balancedetail?businessId=<%=data.get(i).getId()%> ">￥<%=data.get(i).getBalanceprice()%></a><br>
 				可提现余额:<%=data.get(i).getAllowwithdrawprice()%></td>
 			<td><%=data.get(i).getCommissiontype()==1?"结算比例:"+data.get(i).getBusinesscommission():"结算金额:￥"+data.get(i).getCommissionfixvalue()%><br>
 				结算类型:<%=data.get(i).getCommissiontype()==1?"结算比例":"固定金额"%><br>

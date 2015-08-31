@@ -1,4 +1,5 @@
 <%@page import="com.edaisong.core.util.ParseHelper"%>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="java.util.Date"%>
 <%@page import="com.edaisong.core.util.StringUtils"%>
 <%@page import="com.edaisong.entity.domain.GlobalConfigModel"%>
@@ -14,6 +15,7 @@
 <%
 PagedResponse<BusinessBalanceRecord> responsePageList=	(PagedResponse<BusinessBalanceRecord>)request.getAttribute("listData");
 List<BusinessBalanceRecord> data = responsePageList.getResultList();
+String basePath =PropertyUtils.getProperty("static.admin.url");
 if(data == null){
 	data = new ArrayList<BusinessBalanceRecord>();
 }
@@ -36,7 +38,7 @@ if(data == null){
 						<tbody>
 							<%for (int i = 0; i < data.size(); i++) { %>
 							<tr class="info">
-								<td><%=data.get(i).getRecordtype()%></td>
+								<td><%=BusinessBalanceRecordRecordType.getEnum(data.get(i).getRecordtype()).desc()%></td>
 								<td>
 								<%if(data.get(i).getRecordtype()==BusinessBalanceRecordRecordType.Recharge.value()){%>
 								<a href="javascript:funRechargeDetail('<%=data.get(i).getRelationno()%>')"><%=data.get(i).getRelationno()%></a>
@@ -45,15 +47,15 @@ if(data == null){
 										data.get(i).getRecordtype()==BusinessBalanceRecordRecordType.PayFailure.value()){ %>
 									<a href="javascript:funLookDetail(<%=data.get(i).getWithwardid()%>)"><%=data.get(i).getRelationno()%></a>
 								<%}else{ %>
-									<a href="/order/orderdetail?orderNo=<%=data.get(i).getRelationno()%>&OrderId=<%=data.get(i).getWithwardid()%> "><%=data.get(i).getRelationno()%></a>
+									<a href="<%=basePath %>/order/detail?orderno=<%=data.get(i).getRelationno()%>&orderid=<%=data.get(i).getWithwardid()%> "><%=data.get(i).getRelationno()%></a>
 								<%}%>
 								</td>
 						<td>￥<%=data.get(i).getAmount() %></td>
                         <td>￥<%=data.get(i).getBalance() %></td>
                         <td><%=data.get(i).getStatus()==BusinessBalanceRecordStatus.Success.value()? "交易成功" : "交易中"%></td>
                         <td><%=ParseHelper.ToDateString(data.get(i).getOperatetime()) %></td>
-                        <td><%=data.get(i).getOperator() %></td>
-                        <td><%=data.get(i).getRemark() %></td>
+                        <td><%=data.get(i).getOperator()==null?"":data.get(i).getOperator() %></td>
+                        <td><%=data.get(i).getRemark()==null?"":data.get(i).getRemark() %></td>
 							</tr>
 							<%
 								}

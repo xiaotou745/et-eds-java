@@ -11,6 +11,8 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 BusinessDetailModel detail=	(BusinessDetailModel)request.getAttribute("detail");
 double chargeTotalAmount = (double)request.getAttribute("chargeTotalAmount");
 %>
+<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
+<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <table class="tbstyle222" border="0" style="font-size:14px;font-weight:bold;line-height:300%;width:900px ">
         <tr class="trclass">
             <td>商户名称：<%=ParseHelper.ShowString(detail.getName())%></td>
@@ -59,7 +61,7 @@ double chargeTotalAmount = (double)request.getAttribute("chargeTotalAmount");
 							<div class="col-sm-8">
 							<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" value="" name="orderPubStart" />
+                                        <input type="text" class="form-control" value="" name="startDate" />
                                     </div>
 							</div>
 						</div>
@@ -70,7 +72,7 @@ double chargeTotalAmount = (double)request.getAttribute("chargeTotalAmount");
 							<div class="col-sm-8">
 							     <div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" value="" name="orderPubEnd" />
+                                        <input type="text" class="form-control" value="" name="endDate" />
                                     </div>
    						</div>
 						</div>
@@ -78,6 +80,7 @@ double chargeTotalAmount = (double)request.getAttribute("chargeTotalAmount");
 				</div>
 				<div class="row">
 					<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
+					<input type="hidden" name="businessID" id="businessID" value="<%=detail.getId()%>"/>
 					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 							style="margin-left: 3px;height:30px;">查询</button>
@@ -120,5 +123,9 @@ double chargeTotalAmount = (double)request.getAttribute("chargeTotalAmount");
 	$("#btnSearch").click(function() {
 		jss.search(1);
 	});
+	
+	function funLookDetail(withwardId){
+		
+	}
 </script>
 

@@ -306,10 +306,10 @@ public class BusinessController {
 		return model;
 	}
 	
-	@RequestMapping("balancerecordllistdo")
+	@RequestMapping("balancedetaillistdo")
 	public ModelAndView getBalanceDetailListDo(PagedTransDetailReq req){
 		PagedResponse<BusinessBalanceRecord> resp = businessBalanceRecordService.getTransDetailList(req);
-		ModelAndView model = new ModelAndView("business/balancerecordllistdo");
+		ModelAndView model = new ModelAndView("business/balancedetaillistdo");
 		model.addObject("listData", resp);
 		return model;
 	}

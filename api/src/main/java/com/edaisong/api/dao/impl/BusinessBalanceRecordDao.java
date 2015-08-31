@@ -48,10 +48,15 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 
 	@Override
 	public double queryBusinessRechargeTotalAmount(BussinessBalanceQueryReq par) throws ParseException {
-		Map<String, Object> paramsMap = new HashMap<String, Object>();
-		paramsMap.put("where", getBussinessBalanceQueryWhere(par));
+		//Map<String, Object> paramsMap = new HashMap<String, Object>();
+		//paramsMap.put("where", getBussinessBalanceQueryWhere(par));
+		if (!StringUtils.isEmpty(par.getEndDate())) {
+			Date finalDt = ParseHelper.ToDate(par.getEndDate(), "yyyy-MM-dd");
+			finalDt = ParseHelper.plusDate(finalDt, 2, 1);
+			par.setEndDate(ParseHelper.ToDateString(finalDt, "yyyy-MM-dd"));
+		}
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.queryBusinessRechargeTotalAmount", paramsMap);
+				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.queryBusinessRechargeTotalAmount", par);
 	}
 
 	private String getBussinessBalanceQueryWhere(BussinessBalanceQueryReq par) throws ParseException {
@@ -81,7 +86,6 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 		}
 		if (par.getRechargeType() > 0) {
 			if (par.getRechargeType() == 3) {// 充值赠送
-
 				sbSqlWhere.append(" and RecordType=12  ");
 			}else if (par.getRechargeType() == 1) {// 系统充值
 				sbSqlWhere.append("and  bbr.RecordType=9 AND Remark!='商家客户端充值'");
