@@ -10,13 +10,13 @@ public interface IAuthorityMenuClassDao {
 
     int insert(AuthorityMenuClass record);
 
-    int insertSelective(AuthorityMenuClass record);
-
-    AuthorityMenuClass selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(AuthorityMenuClass record);
-
-    int updateByPrimaryKey(AuthorityMenuClass record);
+    List<MenuEntity> getMenuListByUserID(int accountId);
     
-    List<MenuEntity> getMenuListByUserID(String accountId);
+	/**
+	 * 获取所有菜单列表
+	 * @author hailongzhao
+	 * @date 20150828
+	 * @return
+	 */
+	public List<AuthorityMenuClass> getMenuList() ;
 }

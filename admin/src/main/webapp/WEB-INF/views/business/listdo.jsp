@@ -7,8 +7,15 @@
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="java.lang.Double"%>
+<%@page import="com.edaisong.admin.common.UserContext"%>
+<%@page import="com.edaisong.core.consts.AuthCode"%>
 <%
 	String basePath =PropertyUtils.getProperty("static.admin.url");
+boolean business_AuditPass=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_AuditPass);
+boolean business_Modify=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_Modify);
+boolean business_Recharge=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_Recharge);
+boolean business_ClienterBind=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_ClienterBind);
+boolean business_WithDraw=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_WithDraw);
 %>
 
 <table
@@ -34,28 +41,28 @@
 
 		<%
 			PagedResponse<BusinessModel> responsePageList = (PagedResponse<BusinessModel>)request.getAttribute("listData");
-						List<BusinessModel> data=responsePageList.getResultList();
-									 for (int i = 0; i < data.size(); i++) {
-									    String status=""; 
-									    String statusStyle="";
-									    String statusStyle2="style=\"color:gray\"";
-								 switch(data.get(i).getStatus())
-								 {
-								 case 0:status="未审核";
-								 break;
-								 case 1:status="已通过";
-								 statusStyle="style=\"color:gray\"";
-								 statusStyle2="";
-								 break;
-								 case 2:status="未审核且未添加地址";
-								 break;
-								 case 3:status="审核中";
-								 break;
-								 case 4:status="审核被拒绝";
-								 break;
-								 }
-				                 int checkAddress = data.get(i).getAddress()==null||data.get(i).getAddress().isEmpty()?0:1;
-				                 int checkImage = data.get(i).getCheckpicurl()==null||data.get(i).getCheckpicurl().isEmpty()?0:1;
+			List<BusinessModel> data=responsePageList.getResultList();
+			for (int i = 0; i < data.size(); i++) {
+			    String status=""; 
+			    String statusStyle="";
+			    String statusStyle2="style=\"color:gray\"";
+				 switch(data.get(i).getStatus())
+				 {
+				 case 0:status="未审核";
+				 break;
+				 case 1:status="已通过";
+				 statusStyle="style=\"color:gray\"";
+				 statusStyle2="";
+				 break;
+				 case 2:status="未审核且未添加地址";
+				 break;
+				 case 3:status="审核中";
+				 break;
+				 case 4:status="审核被拒绝";
+				 break;
+				 }
+                 int checkAddress = data.get(i).getAddress()==null||data.get(i).getAddress().isEmpty()?0:1;
+                 int checkImage = data.get(i).getCheckpicurl()==null||data.get(i).getCheckpicurl().isEmpty()?0:1;
 		%>
 		<tr>
 			<td><%=data.get(i).getId()%></td>
@@ -73,16 +80,28 @@
 			<td><%=data.get(i).getCommissiontype()==1?"结算比例:"+data.get(i).getBusinesscommission():"结算金额:￥"+data.get(i).getCommissionfixvalue()%><br>
 				结算类型:<%=data.get(i).getCommissiontype()==1?"结算比例":"固定金额"%><br>
 				餐费结算方式:<%=data.get(i).getMealssettlemode()==0?"线下结算":"线上结算"%></td>
-			<td><a href="javascript:void(0)" <%=statusStyle%>
-				onclick="businessOk(<%=checkAddress%>,<%=data.get(i).getId()%>,<%=data.get(i).getBusinesscommission()%>,<%=checkImage%>,<%=data.get(i).getCommissiontype()%>,<%=data.get(i).getLatitude()%>,<%=data.get(i).getLongitude()%>)">审核通过</a>
-				<a href="javascript:void(0)"
-				onclick="businessCancel(<%=data.get(i).getId()%>)" <%=statusStyle2%>>取消资格</a>
+			<td>
+			<% if(business_AuditPass){
+				%>
+			    <a href="javascript:void(0)" <%=statusStyle%> onclick="businessOk(<%=checkAddress%>,<%=data.get(i).getId()%>,<%=data.get(i).getBusinesscommission()%>,<%=checkImage%>,<%=data.get(i).getCommissiontype()%>,<%=data.get(i).getLatitude()%>,<%=data.get(i).getLongitude()%>)">审核通过</a>
+				<a href="javascript:void(0)" onclick="businessCancel(<%=data.get(i).getId()%>)" <%=statusStyle2%>>取消资格</a>
+				<%}
+				if(business_Modify)
+				{%>
 				<a href="<%=basePath%>/business/detail?businessID=<%=data.get(i).getId()%>">修改信息</a>
-				<a href="javascript:void(0)"
-				onclick="businessRecharge(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">充值</a>
+				<%}
+				if(business_Recharge)
+				{%>
+				<a href="javascript:void(0)" onclick="businessRecharge(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">充值</a>
+				<%}
+				if(business_ClienterBind)
+				{%>
 				<a href="/BusinessManager/ClienterBindManage?businessId=<%=data.get(i).getId()%>">骑士绑定</a>
-				<a href="javascript:void(0)"
-				onclick="businessWithdraw(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">提款申请</a>
+				<%}
+				if(business_WithDraw)
+				{%>
+				<a href="javascript:void(0)" onclick="businessWithdraw(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">提款申请</a>
+				<%}%>
 			</td>
 		</tr>
 		<%

@@ -33,7 +33,7 @@ import com.edaisong.entity.AccountLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
-import com.edaisong.entity.req.AccountReq;
+import com.edaisong.entity.req.PagedAccountReq;
 
 
 //import java.util.function.Predicate;
@@ -70,7 +70,7 @@ public class AccountController {
 	}
 
 	@RequestMapping("listdo")
-	public ModelAndView list(AccountReq req) {
+	public ModelAndView list(PagedAccountReq req) {
 		PagedResponse<Account> resp = accountService.queryAccount(req);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "account/listdo");

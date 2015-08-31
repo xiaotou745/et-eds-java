@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dao.inter.IAuthorityMenuClassDao;
 import com.edaisong.api.service.inter.IAuthorityMenuClassService;
+import com.edaisong.entity.AuthorityMenuClass;
 import com.edaisong.entity.MenuEntity;
-import com.edaisong.entity.req.AuthorityMenuReq;
 
 @Service
 public class AuthorityMenuClassService implements IAuthorityMenuClassService {
@@ -16,9 +16,27 @@ public class AuthorityMenuClassService implements IAuthorityMenuClassService {
 	private IAuthorityMenuClassDao dao;
 	
 	@Override
-	public List<MenuEntity> getMenuListByUserID(AuthorityMenuReq req) {
-		return dao.getMenuListByUserID(
-				req.getAccountId());
+	public List<MenuEntity> getMenuListByUserID(int userID) {
+		return dao.getMenuListByUserID(userID);
+	}
+
+	@Override
+	public boolean checkHasAuth(int userID,int menuID) {
+		List<MenuEntity> data=dao.getMenuListByUserID(userID);
+		if (data!=null&&data.size()>0) {
+			for (MenuEntity menuEntity : data) {
+				if (menuID==menuEntity.getMenuid()) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public List<AuthorityMenuClass> getMenuList() {
+		return dao.getMenuList();
 	}
 
 }

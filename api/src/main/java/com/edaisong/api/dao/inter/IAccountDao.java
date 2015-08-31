@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.edaisong.entity.Account;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.req.AccountReq;
+import com.edaisong.entity.req.PagedAccountReq;
 import com.edaisong.entity.resp.AccountResp;
 
 public interface IAccountDao {
 	
-	PagedResponse<Account> query(AccountReq req);
+	PagedResponse<Account> query(PagedAccountReq req);
 	
     int deleteByPrimaryKey(Integer id);
 

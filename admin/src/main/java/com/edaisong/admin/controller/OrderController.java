@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IGroupService;
@@ -14,8 +15,10 @@ import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OrderListModel;
+import com.edaisong.entity.req.AuditOkOrder;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
@@ -100,5 +103,45 @@ public class OrderController {
 		model.addObject("orderListModel", orderListModel);
 		model.addObject("orderSubsidiesLogs", orderSubsidiesLogs);
 		return model;
+	}
+	
+	/**
+	 * 订单审核通过
+	 * @author CaoHeYang
+	 * @param orderid
+	 * @Date 20150828
+	 * @return
+	 */
+	@RequestMapping(value="auditok",method= {RequestMethod.POST})
+	@ResponseBody
+	public ResponseBase auditok(int orderid){
+		AuditOkOrder auditOkOrder=new AuditOkOrder();
+		auditOkOrder.setOrderId(orderid);
+		return new ResponseBase();
+	}
+	/**
+	 * 订单审核拒绝
+	 * @author CaoHeYang
+	 * @param auditOkOrder
+	 * @Date 20150828
+	 * @return
+	 */
+	@RequestMapping(value="auditrefuse",method= {RequestMethod.POST})
+	@ResponseBody
+	public ResponseBase auditrefuse(AuditOkOrder auditOkOrder){
+		return new ResponseBase();
+	}
+	/**
+	 * 取消订单
+	 * 该方法在订单超时列表页也调用
+	 * @author CaoHeYang
+	 * @param auditOkOrder
+	 * @Date 20150828
+	 * @return
+	 */
+	@RequestMapping(value="cancelorder",method= {RequestMethod.POST})
+	@ResponseBody
+	public ResponseBase cancelorder(AuditOkOrder auditOkOrder){
+		return new ResponseBase();
 	}
 }
