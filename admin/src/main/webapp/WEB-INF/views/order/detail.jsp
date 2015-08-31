@@ -380,12 +380,12 @@
 					"OrderOptionLog" : orderOptionLog
 				},
 				success : function(result) {
-					if (result.IsSuccess) {
-						alert(result.Message);
+					layer.alert(result.message, {
+					    icon: 1
+					});
+					if (result.responseCode==0) {
 						window.location.reload();
-					} else {
-						alert(result.Message);
-					}
+					} 
 				}
 			});
 		});
@@ -414,12 +414,12 @@
 								"OrderOptionLog" : orderOptionLog
 							},
 							success : function(result) {
-								if (result.IsSuccess) {
-									alert(result.Message);
+								layer.alert(result.message, {
+								    icon: 1
+								});
+								if (result.responseCode==0) {					
 									window.location.reload();
-								} else {s
-									alert(result.Message);
-								}
+								} 
 							}
 			 });
 		});
@@ -437,11 +437,15 @@
 				"orderId" : orderId
 			},
 			success : function(result) {
-				if (result.IsSuccess) {
-					alert("审核成功！");
+				if (result.responseCode==0) {
+					layer.alert('审核成功！', {
+					    icon: 1
+					});
 					window.location.reload();
 				} else {
-					alert(result.Message);
+					layer.alert(result.message, {
+					    icon: 1
+					});
 				}
 			}
 		});
