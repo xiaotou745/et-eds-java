@@ -813,7 +813,10 @@ public class OrderService implements IOrderService {
 					 orderOtherSearch.setDeductCommissionReason(auditRefuseOrder.getOptLog());
 					 orderOtherSearch.setDeductCommissionType(DeductCommissionType.People.value());
 					 
-					 //缺省部分逻辑
+				      // 更新订单真实佣金
+			           orderDao.updateOrderRealCommission(orderOtherSearch);
+			            //更新无效订单(状态，原因)
+			            orderOtherDao.updateOrderIsReal(orderOtherSearch);
 					 
 						//写入订单日志 
 				        OrderSubsidiesLog orderSubsidiesLog=new OrderSubsidiesLog();
@@ -846,7 +849,10 @@ public class OrderService implements IOrderService {
 		 orderOtherSearch.setRealOrderCommission(realOrderCommission);
 		 orderOtherSearch.setDeductCommissionReason(auditRefuseOrder.getOptLog());
 		 orderOtherSearch.setDeductCommissionType(DeductCommissionType.People.value());
-		 //缺省部分逻辑
+		  // 更新订单真实佣金
+          orderDao.updateOrderRealCommission(orderOtherSearch);
+          //更新无效订单(状态，原因)
+          orderOtherDao.updateOrderIsReal(orderOtherSearch);
 		  //更新已提现状态
 	       orderOtherDao.updateJoinWithdraw(auditRefuseOrder.getOrderId());
 			//更新审核状态

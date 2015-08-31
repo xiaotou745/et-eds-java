@@ -11,6 +11,7 @@ import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.domain.OrderDetailBusiness;
+import com.edaisong.entity.req.OrderOtherSearch;
 
 @Repository
 public class OrderOtherDao extends DaoBase implements IOrderOtherDao {
@@ -90,4 +91,21 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao {
 				"com.edaisong.api.dao.inter.IOrderOtherDao.updateAuditStatus",
 				maps);
 	}
+	/**
+	 * 更新订单是否无效的标记
+	 * 
+	 * @author CaoHeYang
+	 * @param orderId
+	 * @param auditstatus
+	 * @date 20150831
+	 * @return
+	 */
+	@Override
+	public int updateOrderIsReal(OrderOtherSearch orderOtherSearch) {
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IOrderOtherDao.updateOrderIsReal",
+				orderOtherSearch);
+	}
+	
+	
 }
