@@ -11,6 +11,11 @@
 <%@page import="com.edaisong.core.consts.AuthCode"%>
 <%
 	String basePath =PropertyUtils.getProperty("static.admin.url");
+boolean business_AuditPass=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_AuditPass);
+boolean business_Modify=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_Modify);
+boolean business_Recharge=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_Recharge);
+boolean business_ClienterBind=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_ClienterBind);
+boolean business_WithDraw=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_WithDraw);
 %>
 
 <table
@@ -76,24 +81,24 @@
 				结算类型:<%=data.get(i).getCommissiontype()==1?"结算比例":"固定金额"%><br>
 				餐费结算方式:<%=data.get(i).getMealssettlemode()==0?"线下结算":"线上结算"%></td>
 			<td>
-			<% if(UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_AuditPass)){
+			<% if(business_AuditPass){
 				%>
 			    <a href="javascript:void(0)" <%=statusStyle%> onclick="businessOk(<%=checkAddress%>,<%=data.get(i).getId()%>,<%=data.get(i).getBusinesscommission()%>,<%=checkImage%>,<%=data.get(i).getCommissiontype()%>,<%=data.get(i).getLatitude()%>,<%=data.get(i).getLongitude()%>)">审核通过</a>
 				<a href="javascript:void(0)" onclick="businessCancel(<%=data.get(i).getId()%>)" <%=statusStyle2%>>取消资格</a>
 				<%}
-				if(UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_Modify))
+				if(business_Modify)
 				{%>
 				<a href="<%=basePath%>/business/detail?businessID=<%=data.get(i).getId()%>">修改信息</a>
 				<%}
-				if(UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_Recharge))
+				if(business_Recharge)
 				{%>
 				<a href="javascript:void(0)" onclick="businessRecharge(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">充值</a>
 				<%}
-				if(UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_ClienterBind))
+				if(business_ClienterBind)
 				{%>
 				<a href="/BusinessManager/ClienterBindManage?businessId=<%=data.get(i).getId()%>">骑士绑定</a>
 				<%}
-				if(UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_WithDraw))
+				if(business_WithDraw)
 				{%>
 				<a href="javascript:void(0)" onclick="businessWithdraw(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>', '<%=data.get(i).getPhoneno()%>')">提款申请</a>
 				<%}%>

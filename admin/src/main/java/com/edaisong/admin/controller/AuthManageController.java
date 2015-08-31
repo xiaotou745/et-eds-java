@@ -28,15 +28,15 @@ public class AuthManageController {
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "个人账户权限管理");
 		model.addObject("viewPath", "authmanage/list");
+		List<AuthorityMenuClass> menuList = authorityMenuClassService.getMenuList();
+		model.addObject("menuList", menuList);
 		return model;
 	}
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedAccountReq req) {
 		PagedResponse<Account> resp = accountService.queryAccount(req);
-		List<AuthorityMenuClass> menuList = authorityMenuClassService.getMenuList();
 		ModelAndView model = new ModelAndView("authmanage/listdo");
 		model.addObject("listData", resp);
-		model.addObject("menuList", menuList);
 		return model;
 	}
 }
