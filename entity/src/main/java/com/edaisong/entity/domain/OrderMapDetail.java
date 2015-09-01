@@ -7,49 +7,49 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import com.edaisong.entity.common.Location;
 
 public class OrderMapDetail {
-	 @JsonProperty("OrderId")
+
     private long orderId;
     // 商户发单经度
-    @JsonProperty("PubLongitude")
+
     private double pubLongitude;
     // 商户发单纬度
-    @JsonProperty("PubLatitude")
+
     private double pubLatitude;
     // 商户发单时间
-    @JsonProperty("PubDate")
+
     private String pubDate;
     // 骑士抢单经度
-    @JsonProperty("GrabLongitude")
+
     private double grabLongitude;
     // 骑士抢单纬度
-    @JsonProperty("GrabLatitude")
+
     private double grabLatitude;
     // 骑士抢单时间
-    @JsonProperty("GrabTime")
+
     private String grabTime;
     // 骑士取货经度
-    @JsonProperty("TakeLongitude")
+   
     private double takeLongitude;
     // 骑士取货纬度
-    @JsonProperty("TakeLatitude")
+
     private double takeLatitude;
     // 骑士取货时间
-    @JsonProperty("TakeTime")
+
     private String takeTime;
     // 骑士完成订单经度
-    @JsonProperty("CompleteLongitude")
+
     private double completeLongitude;
     // 骑士完成订单纬度
-    @JsonProperty("CompleteLatitude")
+
     private double completeLatitude;
     // 骑士完成订单时间
-    @JsonProperty("ActualDoneDate")
+
     private String actualDoneDate;
     // 抢单和完成点之间的距离
-    @JsonProperty("GrabToCompleteDistance")
+
     private double grabToCompleteDistance;
     //订单实时坐标
-    @JsonProperty("Locations")
+
     public List<Location> locations;
    // 发单坐标是否是实时坐标
     private int isPubDateTimely;

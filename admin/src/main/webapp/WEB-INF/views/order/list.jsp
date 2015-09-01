@@ -210,13 +210,12 @@ width: 100%;
 	            data: {},
 	            success: function (result) {
 	            	$('#orderMapShow').modal('show');
-	                showMap(JSON.parse(result));
+	                showMap(result);
 	            }
 	        });
 	    }
 	 
 	    function showMap(jsonstr) {
-            console.log(jsonstr);
 	        if (jsonstr == null) {
 	            alert("没取到订单的地图数据！");
 	        } else {
@@ -226,43 +225,43 @@ width: 100%;
 	            //没有发单经纬度时，地图中心点设置为天安门
 	            //var centerLongitude = 116.3972282409668;
 	            //var centerLatitude = 39.90960456049752;
-	            var centerLongitude = jsonstr.PubLongitude;
-	            var centerLatitude = jsonstr.PubLatitude;
-	            if (jsonstr.PubLongitude != 0 && jsonstr.PubLatitude!=0) {
+	            var centerLongitude = jsonstr.pubLongitude;
+	            var centerLatitude = jsonstr.pubLatitude;
+	            if (jsonstr.pubLongitude != 0 && jsonstr.pubLatitude!=0) {
 	                //也许需要重新计算中心点
 	            }
 	            map.centerAndZoom(new BMap.Point(centerLongitude, centerLatitude), 16);
 	            map.enableScrollWheelZoom();
 
 	            var points = [];
-	            for (var i = 0; i < jsonstr.Locations.length; i++) {
-	                points.push(new BMap.Point(jsonstr.Locations[i].longitude, jsonstr.Locations[i].latitude));
+	            for (var i = 0; i < jsonstr.locations.length; i++) {
+	                points.push(new BMap.Point(jsonstr.locations[i].longitude, jsonstr.locations[i].latitude));
 	            }
 	            var polyline = new BMap.Polyline(points, { strokeColor: "red", strokeWeight: 2, strokeOpacity: 0.5 });   //创建折线
 	            map.addOverlay(polyline);   //增加折线
-	            var isPubDateTimely = jsonstr.IsPubDateTimely != 0;
-	            var isGrabTimely = jsonstr.IsGrabTimely != 0;
-	            var isTakeTimely = jsonstr.IsTakeTimely != 0;
-	            var isCompleteTimely = jsonstr.IsCompleteTimely != 0;
+	            var isPubDateTimely = jsonstr.isPubDateTimely != 0;
+	            var isGrabTimely = jsonstr.isGrabTimely != 0;
+	            var isTakeTimely = jsonstr.isTakeTimely != 0;
+	            var isCompleteTimely = jsonstr.isCompleteTimely != 0;
 	            //发单
-	            var marker = new BMap.Marker(new BMap.Point(jsonstr.PubLongitude, jsonstr.PubLatitude)); // 创建点
+	            var marker = new BMap.Marker(new BMap.Point(jsonstr.pubLongitude, jsonstr.pubLatitude)); // 创建点
 	            map.addOverlay(marker);
-	            var label = new BMap.Label("发单时间-" + jsonstr.PubDate + (!isPubDateTimely?",非实时":""), { offset: new BMap.Size(-200, -10) });
+	            var label = new BMap.Label("发单时间-" + jsonstr.pubDate + (!isPubDateTimely?",非实时":""), { offset: new BMap.Size(-200, -10) });
 	            marker.setLabel(label);
 	            //抢单
-	            var marker1 = new BMap.Marker(new BMap.Point(jsonstr.GrabLongitude, jsonstr.GrabLatitude)); // 创建点
+	            var marker1 = new BMap.Marker(new BMap.Point(jsonstr.grabLongitude, jsonstr.grabLatitude)); // 创建点
 	            map.addOverlay(marker1);
-	            var label = new BMap.Label("抢单时间-" + jsonstr.GrabTime + (!isGrabTimely ? ",非实时" : ""), { offset: new BMap.Size(20, -10) });
+	            var label = new BMap.Label("抢单时间-" + jsonstr.grabTime + (!isGrabTimely ? ",非实时" : ""), { offset: new BMap.Size(20, -10) });
 	            marker1.setLabel(label);
 	            //取货
-	            var marker2 = new BMap.Marker(new BMap.Point(jsonstr.TakeLongitude, jsonstr.TakeLatitude)); // 创建点
+	            var marker2 = new BMap.Marker(new BMap.Point(jsonstr.takeLongitude, jsonstr.takeLatitude)); // 创建点
 	            map.addOverlay(marker2);
-	            var label = new BMap.Label("取货时间-" + jsonstr.TakeTime + (!isTakeTimely ? ",非实时" : ""), { offset: new BMap.Size(20, 20) });
+	            var label = new BMap.Label("取货时间-" + jsonstr.takeTime + (!isTakeTimely ? ",非实时" : ""), { offset: new BMap.Size(20, 20) });
 	            marker2.setLabel(label);
 	            //完成
-	            var marker3 = new BMap.Marker(new BMap.Point(jsonstr.CompleteLongitude, jsonstr.CompleteLatitude)); // 创建点
+	            var marker3 = new BMap.Marker(new BMap.Point(jsonstr.completeLongitude, jsonstr.completeLatitude)); // 创建点
 	            map.addOverlay(marker3);
-	            var label = new BMap.Label("完成时间-" + jsonstr.ActualDoneDate + (!isCompleteTimely ? ",非实时" : ""), { offset: new BMap.Size(-200, 20) });
+	            var label = new BMap.Label("完成时间-" + jsonstr.actualDoneDate + (!isCompleteTimely ? ",非实时" : ""), { offset: new BMap.Size(-200, 20) });
 	            marker3.setLabel(label);
 	        }
 	    }

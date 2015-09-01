@@ -84,9 +84,8 @@ public class OrderController {
 	 */
 	@RequestMapping(value="ordermap",method= {RequestMethod.POST})
 	@ResponseBody
-	public String ordermap(int orderid){
-		String str= JsonUtil.obj2string(orderService.getOrderMapDetail(orderid)) ; 
-		return str;
+	public OrderMapDetail ordermap(int orderid){
+		return orderService.getOrderMapDetail(orderid);
 	}
 	
 	/**
