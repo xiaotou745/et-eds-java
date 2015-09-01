@@ -145,4 +145,54 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return resp;
 	}
 
+    /**
+     * 更新骑士余额
+     * @param amount
+     * @param clienterId
+     *  @Date 20150831
+	 * @param business
+     */
+	@Override
+	public int updateCAccountBalance(Double amount, int clienterId) {
+		Map<String, Object> parasMap = new HashMap();
+		parasMap.put("Money", amount);
+		parasMap.put("Id", clienterId);
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dao.inter.IClienterDao.updateCAccountBalance",
+						parasMap);
+	}
+
+	 /**
+     * 更新骑士余额
+     * @param amount
+     * @param clienterId
+     *  @Date 20150831
+	 * @param business
+     */
+	@Override
+	public int updateCAllowWithdrawPrice(Double amount, int clienterId) {
+		Map<String, Object> parasMap = new HashMap();
+		parasMap.put("Money", amount);
+		parasMap.put("Id", clienterId);
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dao.inter.IClienterDao.updateCAllowWithdrawPrice",
+						parasMap);
+	}
+	/**
+	 * 更新骑士余额和可提现金额
+	 * @author CaoHeYang
+	 * @param amount
+	 * @param clienterId
+	 * @date 20150831
+	 * @return
+	 */
+	@Override
+	public int updateCBalanceAndWithdraw(Double amount, int clienterId) {
+		Map<String, Object> parasMap = new HashMap();
+		parasMap.put("Money", amount);
+		parasMap.put("Id", clienterId);
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dao.inter.IClienterDao.updateCBalanceAndWithdraw",
+						parasMap);
+	}
 }

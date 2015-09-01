@@ -201,9 +201,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderOther" >
     update OrderOther
     <set >
-      <if test="orderid != null" >
-        OrderId = #{orderid,jdbcType=INTEGER},
-      </if>
       <if test="needuploadcount != null" >
         NeedUploadCount = #{needuploadcount,jdbcType=INTEGER},
       </if>
@@ -291,5 +288,21 @@
       IsNotRealOrder = #{isnotrealorder,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  
+  <!-- 更新已提现状态 caoheyang 20150831 -->
+    <update id="updateJoinWithdraw" parameterType="java.util.Map" >
+    update OrderOther set IsJoinWithdraw=1 where orderId=#{orderId,jdbcType=INTEGER}
+    </update>
+      <!-- 更新审核状态 caoheyang 20150831 -->
+    <update id="updateAuditStatus" parameterType="java.util.Map" >
+    update dbo.OrderOther set auditstatus =#{auditstatus,jdbcType=INTEGER} where OrderId=#{orderId,jdbcType=INTEGER}
+    </update>
+    
+      <!-- 更新审核状态 caoheyang 20150831 -->
+    <update id="updateOrderIsReal" parameterType="com.edaisong.entity.req.OrderOtherSearch" >
+   update OrderOther 
+set IsNotRealOrder=1, DeductCommissionReason=#{deductCommissionReason,jdbcType=VARCHAR},
+DeductCommissionType=#{deductCommissionType,jdbcType=INTEGER}
+where orderid=#{orderId,jdbcType=INTEGER}
+    </update>
+    
 </mapper>

@@ -2,6 +2,8 @@ package com.edaisong.admin.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
@@ -18,7 +21,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OrderListModel;
-import com.edaisong.entity.req.AuditOkOrder;
+import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
@@ -33,6 +36,8 @@ public class OrderController {
     private IGroupService iGroupService;
 	 @Autowired
 	 private IOrderSubsidiesLogService orderSubsidiesLogService;
+	 @Autowired
+	 private HttpServletRequest request;
 	/**
 	 * 订单列表页面 
 	 * @author CaoHeYang
@@ -115,8 +120,11 @@ public class OrderController {
 	@RequestMapping(value="auditok",method= {RequestMethod.POST})
 	@ResponseBody
 	public ResponseBase auditok(int orderid){
-		AuditOkOrder auditOkOrder=new AuditOkOrder();
+		OptOrder auditOkOrder=new OptOrder();
 		auditOkOrder.setOrderId(orderid);
+		auditOkOrder.setOptUserId(UserContext.getCurrentContext(request).getId());
+		auditOkOrder.setOptUserName(UserContext.getCurrentContext(request).getName());
+		ResponseBase responseBase= orderService.auditOk(auditOkOrder);
 		return new ResponseBase();
 	}
 	/**
@@ -128,7 +136,9 @@ public class OrderController {
 	 */
 	@RequestMapping(value="auditrefuse",method= {RequestMethod.POST})
 	@ResponseBody
-	public ResponseBase auditrefuse(AuditOkOrder auditOkOrder){
+	public ResponseBase auditrefuse(OptOrder auditrefuse){
+		auditrefuse.setOptUserId(UserContext.getCurrentContext(request).getId());
+		auditrefuse.setOptUserName(UserContext.getCurrentContext(request).getName());
 		return new ResponseBase();
 	}
 	/**
@@ -141,7 +151,10 @@ public class OrderController {
 	 */
 	@RequestMapping(value="cancelorder",method= {RequestMethod.POST})
 	@ResponseBody
-	public ResponseBase cancelorder(AuditOkOrder auditOkOrder){
-		return new ResponseBase();
+	public ResponseBase cancelorder(OptOrder cancelorder){
+		cancelorder.setOptUserId(UserContext.getCurrentContext(request).getId());
+		cancelorder.setOptUserName(UserContext.getCurrentContext(request).getName());
+		ResponseBase responseBase= orderService.cancelOrder(cancelorder);
+		return responseBase;
 	}
 }

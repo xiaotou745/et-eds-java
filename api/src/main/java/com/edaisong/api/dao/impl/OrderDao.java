@@ -20,6 +20,7 @@ import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
@@ -157,5 +158,25 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		paramMap.put("orderNo", ordernNo);  //订单号
 		paramMap.put("orderId", orderId);  //订单id
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderDao.getOrderByNoId", paramMap);
+	}
+	/**
+	 * update 任意列 根据id 
+	 * @author CaoHeYang
+	 * @param order
+	 * @return
+	 */
+  public int updateByPrimaryKeySelective(Order order){
+	  return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderDao.updateByPrimaryKeySelective", order);
+  }
+  /**
+   * 更新订单真实佣金
+   * @author CaoHeYang
+   * @param orderOtherSearch
+   * @date 20150831
+   * @return
+   */
+	@Override
+	public int updateOrderRealCommission(OrderOtherSearch orderOtherSearch) {
+		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderDao.updateOrderRealCommission", orderOtherSearch);
 	}
 }

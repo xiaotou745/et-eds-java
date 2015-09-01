@@ -1,8 +1,6 @@
 package com.edaisong.api.dao.impl;
 
-import java.math.BigDecimal;
 import java.util.Date;
-import java.lang.Double;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +18,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
+import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.PagedBusinessReq;
 
 @Repository
@@ -139,5 +138,10 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		return getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dao.inter.IBusinessDao.updateLastLoginTime",
 						parasMap);
+	}
+
+	@Override
+	public BusinessRechargeDetailModel getRechargeDetail(String orderNo) {
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getRechargeDetail", orderNo);
 	}
 }

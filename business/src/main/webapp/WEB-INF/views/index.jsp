@@ -35,27 +35,27 @@
 			</div>
 			<div class="l-bottom">
 				<p class="fl">
-					<img src="images/icon-7.png" width="47" height="47" alt="待抢单"
+					<img src="images/icon-7.png" width="47" height="47" alt="待抢单任务"
 						class="fl"> <span class="fl"> <em class="blue"><%=bos.getUnReceive()%></em>
-						<b>待抢单</b>
+						<b>待抢单任务</b>
 					</span>
 				</p>
 				<p class="fl">
-					<img src="images/icon-8.png" width="47" height="47" alt="待取货"
+					<img src="images/icon-8.png" width="47" height="47" alt="待取货任务"
 						class="fl"> <span class="fl"> <em class="purple"><%=bos.getReceived()%></em>
-						<b>待取货</b>
+						<b>待取货任务</b>
 					</span>
 				</p>
 				<p class="fl">
-					<img src="images/icon-9.png" width="47" height="47" alt="配送中"
+					<img src="images/icon-9.png" width="47" height="47" alt="配送中任务"
 						class="fl"> <span class="fl"> <em class="green"><%=bos.getPickUp()%></em>
-						<b>配送中</b>
+						<b>配送中任务</b>
 					</span>
 				</p>
 				<p class="fl">
-					<img src="images/icon-10.png" width="47" height="47" alt="已取消"
+					<img src="images/icon-10.png" width="47" height="47" alt="已取消任务"
 						class="fl"> <span class="fl"> <em class="red"><%=bos.getCancel()%></em>
-						<b>已取消</b>
+						<b>已取消任务</b>
 					</span>
 				</p>
 			</div>
@@ -167,7 +167,7 @@
 				enabled : false
 			},
 			exporting : {
-				enabled : false
+				enabled : true
 			},
 			plotOptions : {
 				spline : {

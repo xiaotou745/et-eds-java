@@ -11,6 +11,7 @@ import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
@@ -108,4 +109,21 @@ public interface IOrderDao {
 	 * @return
 	 */
 	List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId,Date startTime,Date endTime);
+	
+	/**
+	 * update 任意列 根据id 
+	 * @author CaoHeYang
+	 * @param order
+	 * @return
+	 */
+   int updateByPrimaryKeySelective(Order order);
+   
+   /**
+    * 更新订单真实佣金
+    * @author CaoHeYang
+    * @param orderOtherSearch
+    * @date 20150831
+    * @return
+    */
+    int updateOrderRealCommission(OrderOtherSearch orderOtherSearch);
 }

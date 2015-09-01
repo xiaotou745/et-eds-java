@@ -377,15 +377,26 @@
 				url :  "<%=basePath%>/order/cancelorder",
 				data :  {
 					"orderId" : orderId,
-					"OrderOptionLog" : orderOptionLog
+					"optLog" : orderOptionLog,
+					"orderNo":orderNo
 				},
 				success : function(result) {
 					layer.alert(result.message, {
 					    icon: 1
 					});
 					if (result.responseCode==0) {
-						window.location.reload();
-					} 
+						layer.alert(result.message, {
+						    icon: 1
+						},function(){
+							window.location.reload();
+						});
+
+					} else
+					{
+						layer.alert(result.message, {
+						    icon: 2
+				    	});
+					}
 				}
 			});
 		});
