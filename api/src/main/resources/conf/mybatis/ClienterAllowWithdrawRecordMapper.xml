@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dal.dao.inter.ClienterAllowWithdrawRecordMapper" >
+<mapper namespace="com.edaisong.api.dao.inter.IClienterAllowWithdrawRecordDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.ClienterAllowWithdrawRecord" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="ClienterId" property="clienterid" jdbcType="INTEGER" />
@@ -33,10 +33,10 @@
    insert into
 		ClienterAllowWithdrawRecord
 		(ClienterId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark)
-		select #{clienterId,jdbcType=INTEGER},
+		select #{clienterid,jdbcType=INTEGER},
 		#{amount,jdbcType=DECIMAL},#{status,jdbcType=SMALLINT},c.AllowWithdrawPrice,#{recordtype,jdbcType=SMALLINT},#{operator,jdbcType=NVARCHAR}
 		,#{withwardid,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
-		from dbo.clienter  as c where Id=#{clienterId,jdbcType=INTEGER} ;
+		from dbo.clienter  as c where Id=#{clienterid,jdbcType=INTEGER} ;
 		select @@IDENTITY
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.ClienterAllowWithdrawRecord" >

@@ -701,6 +701,7 @@ public class OrderService implements IOrderService {
 		orderSubsidiesLog.setOptid(auditOkOrder.getOptUserId());
 		orderSubsidiesLog.setOrderstatus(OrderOperationCommon.AuditStatusOk.value());
 		orderSubsidiesLog.setPlatform(SuperPlatform.ManagementBackGround.value());
+		orderSubsidiesLogDao.insert(orderSubsidiesLog);
 		return responseBase;
 	}
 

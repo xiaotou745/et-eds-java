@@ -16,6 +16,7 @@
 	String basePath =PropertyUtils.getProperty("static.admin.url");
     OrderListModel orderListModel=	(OrderListModel)request.getAttribute("orderListModel");
 	List<OrderSubsidiesLog> orderSubsidiesLogs=	(List<OrderSubsidiesLog>)request.getAttribute("orderSubsidiesLogs");
+	boolean isShowAuditBtn=(boolean)request.getAttribute("isShowAuditBtn");
 %>
 <style type="text/css">
 .trclass {
@@ -242,10 +243,17 @@
 			<tr>
 				<td><input type="button" value="取消订单" class="searchBtn"
 					id="btnCancel" /></td>
+										<%
+						if (isShowAuditBtn) 
+						{
+					%>
 				<td><input type="button" value="审核通过" class="searchBtn"
 					id="btnAuditOk" style="margin-left: 10px;" /> <input type="button"
 					value="审核拒绝" class="searchBtn" id="btnAuditCancel"
 					style="margin-left: 10px;" /></td>
+			 <%
+					}
+				%>
 			</tr>
 		</table>
 	</div>
@@ -450,7 +458,8 @@
 		layer.confirm('是否审核通过？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
-		},function(){$.ajax({
+		},function(){
+			$.ajax({
 			type : 'POST',
 			url : "<%=basePath%>/order/auditok",
 			data : {
