@@ -61,7 +61,7 @@
 		<tr>
 			<td>
 				<button type="button" class="btn btn-default btn-lg" onclick="window.location.href='<%=basePath%>/business/addclienterbindlist?businessId=<%=detail.getId()%>'">手动绑定</button>
-				<button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='<%=basePath%>/business/bathaddclienterbindlist?businessId=<%=detail.getId()%>'">批量绑定</button>
+				<%-- <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='<%=basePath%>/business/clienterbathbindlist?businessId=<%=detail.getId()%>'">批量绑定</button> --%>
 			</td>
 		</tr>
 		<tr>

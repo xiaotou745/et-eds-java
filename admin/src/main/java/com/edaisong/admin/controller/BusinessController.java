@@ -421,4 +421,28 @@ public class BusinessController {
 		}
 		return response;
 	}
+	
+	@RequestMapping("clienterbathbindlist")
+	public ModelAndView clienterbathbindlist(int businessId) throws Exception {
+		BusinessDetailModel detail = iBusinessService.getBusinessDetailByID(businessId);
+		if (detail == null) {
+			throw new Exception("没找到businessID为" + businessId + "的详细信息");
+		}
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "商户");
+		model.addObject("currenttitle", "批量添加骑士绑定");
+		model.addObject("detail", detail);
+		return model;
+	}
+	
+	@RequestMapping("clienterbathbindlistdo")
+	public ModelAndView clienterbathbindlistdo(int businessId,String clienterName,String clienterPhone) throws Exception {
+		ModelAndView model = new ModelAndView("business/addclienterbindlistdo");
+		PagedClienterSearchReq req = new PagedClienterSearchReq();
+		req.setClienterName(clienterName);
+		req.setClienterPhone(clienterPhone);
+		PagedResponse<ClienterModel> resp = clienterService.getClienterList(req);
+		model.addObject("listData", resp);
+		return model;
+	}
 }
