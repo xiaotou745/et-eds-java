@@ -216,7 +216,7 @@ width: 100%;
 	    }
 	 
 	    function showMap(jsonstr) {
-            console.log(jsonstr.PubLongitude);
+            console.log(jsonstr);
 	        if (jsonstr == null) {
 	            alert("没取到订单的地图数据！");
 	        } else {
@@ -232,7 +232,6 @@ width: 100%;
 	                //也许需要重新计算中心点
 	            }
 	            map.centerAndZoom(new BMap.Point(centerLongitude, centerLatitude), 16);
-	            //map.centerAndZoom(new BMap.Point(116.404, 39.915), 16);
 	            map.enableScrollWheelZoom();
 
 	            var points = [];

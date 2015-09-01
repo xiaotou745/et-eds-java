@@ -1,6 +1,8 @@
 package com.edaisong.api.service.impl;
 
 import java.lang.Double;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -128,9 +130,52 @@ public class OrderService implements IOrderService {
 	 */
 	@Override
 	public OrderMapDetail getOrderMapDetail(int orderid) {
-		OrderMapDetail orderMapDetail=new OrderMapDetail();
+		OrderMapDetail orderMapDetail=orderDao.getOrderMapDetail(orderid);
 		if (orderMapDetail!=null) {
-			orderMapDetail.setLocations(new ArrayList<Location>());
+			Date startTime=new Date();
+			Date endTime=new Date();
+            if(orderMapDetail.getPubDate()==null){
+            	  orderMapDetail.setPubDate("暂无");
+            }else {
+					startTime= ParseHelper.ToDate(orderMapDetail.getPubDate()) ;
+			}
+            if(orderMapDetail.getGrabTime()==null){
+          	  orderMapDetail.setGrabTime("暂无");
+             }else{
+            	 endTime= ParseHelper.ToDate(orderMapDetail.getGrabTime()) ;
+             }
+            if(orderMapDetail.getTakeTime()==null){
+            	  orderMapDetail.setTakeTime("暂无");
+            }else{
+           	 endTime= ParseHelper.ToDate(orderMapDetail.getTakeTime()) ;
+            }
+            if(orderMapDetail.getActualDoneDate()==null){
+            	  orderMapDetail.setActualDoneDate("暂无");
+            }else{
+              	 endTime= ParseHelper.ToDate(orderMapDetail.getActualDoneDate()) ;
+             }
+            if (orderMapDetail.getGrabLatitude() == 0 || orderMapDetail.getGrabLongitude() == 0)
+            {
+            	orderMapDetail.setGrabLongitude( orderMapDetail.getPubLongitude()) ;
+            	orderMapDetail.setGrabLatitude(orderMapDetail.getPubLatitude()) ;
+            }
+            if (orderMapDetail.getTakeLatitude() == 0 || orderMapDetail.getTakeLongitude() == 0)
+            {
+            	orderMapDetail.setTakeLongitude( orderMapDetail.getPubLongitude()) ;
+            	orderMapDetail.setTakeLatitude(orderMapDetail.getPubLatitude()) ;
+            }
+            if (orderMapDetail.getCompleteLatitude() == 0 || orderMapDetail.getCompleteLongitude() == 0)
+            {
+            	orderMapDetail.setCompleteLongitude( orderMapDetail.getPubLongitude()) ;
+            	orderMapDetail.setCompleteLatitude (orderMapDetail.getPubLatitude()) ;
+            }
+            //开始时间小于结束时间才获取实时坐标 
+	         if (startTime.compareTo(endTime)<0) {
+	        		orderMapDetail.setLocations(new ArrayList<Location>());
+			 }
+		    if (orderMapDetail.getLocations()==null) {
+			  orderMapDetail.setLocations(new ArrayList<Location>());
+		    }
 		}
 		return orderMapDetail;
 		

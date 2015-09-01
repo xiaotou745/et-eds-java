@@ -13,8 +13,8 @@ public class OrderMapDetail {
     @JsonProperty("PubLongitude")
     private double pubLongitude;
     // 商户发单纬度
-    @JsonProperty("HubLatitude")
-    private double hubLatitude;
+    @JsonProperty("PubLatitude")
+    private double pubLatitude;
     // 商户发单时间
     @JsonProperty("PubDate")
     private String pubDate;
@@ -78,14 +78,14 @@ public class OrderMapDetail {
 	/**
      *   商户发单纬度
      */
-	public double getHubLatitude() {
-		return hubLatitude;
+	public double getPubLatitude() {
+		return pubLatitude;
 	}
 	/**
      *   商户发单纬度
      */
-	public void setHubLatitude(double hubLatitude) {
-		this.hubLatitude = hubLatitude;
+	public void setPubLatitude(double pubLatitude) {
+		this.pubLatitude = pubLatitude;
 	}
 	/**
      *  商户发单时间
