@@ -421,6 +421,12 @@
 			});
 			return false;
 		}
+		if (orderOptionLog.trim().length < 5 || orderOptionLog.trim().length > 50) {
+			layer.alert('请保证输入内容在5到50个字符！', {
+			    icon: 2
+			});
+			return false;
+		}
 		layer.confirm('确定要扣除该订单网站补贴吗？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
