@@ -22,8 +22,9 @@
 		<td>已绑定骑士:<%=bindClienterQty%></td>
 	</tr>
 	<tr>
-		<td><button type="button" class="btn btn-w-m btn-primary" id=btnExport
-							style="margin-left: 3px; height: 30px;">添加骑士绑定</button></td>
+		<td><button type="button" class="btn btn-w-m btn-primary" id=btnExport style="margin-left: 3px; height: 30px;" 
+			onclick="window.location.href='<%=basePath%>/business/addclienterbindlist?businessId=<%=detail.getId()%>'">
+			添加骑士绑定</button></td>
 	</tr>
 	
 </table>
@@ -35,8 +36,6 @@
 		</div>
 	</div>
 </div>
-
-
 
 <script>
 	var jss = {

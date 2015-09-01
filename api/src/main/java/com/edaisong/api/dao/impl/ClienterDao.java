@@ -18,6 +18,7 @@ import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
+import com.edaisong.entity.req.PagedClienterSearchReq;
 
 
 
@@ -105,6 +106,11 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return resp;
 	}
 
+	/**
+	 * 获得商家下的所有骑士 ,包含骑士已接单的数量
+	 * @author pengyi
+	 * @date 20150901
+	 */
 	@Override
 	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {
 		Map<String, Object> map = new HashMap<String, Object>();				
@@ -115,7 +121,6 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		map.put("workStatus", req.getWorkStatus());
 		map.put("search", req.getSearch());
 		map.put("businessId", req.getBusinessId());
-		//map.put("selectTable", selectTable);
 		map.put("TotalRecord", 0);
 		map.put("TotalPage", 0);
 		map.put("PageSize", PageSize);
@@ -192,5 +197,17 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dao.inter.IClienterDao.updateClienterIsBind",
 						parasMap) > 0;
+	}
+
+	/**
+	 * 获得骑士和绑定信息列表
+	 * @author pengyi
+	 * @date 20150901
+	 */
+	@Override
+	public PagedResponse<ClienterModel> getClienterBindInfoList(PagedClienterSearchReq req) {
+		return getReadOnlySqlSessionUtil()
+				.selectPageList("com.edaisong.api.dao.inter.IClienterDao.getClienterBindInfoList",
+						req);
 	}
 }

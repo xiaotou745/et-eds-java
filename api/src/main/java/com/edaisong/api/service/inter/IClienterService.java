@@ -9,6 +9,7 @@ import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
+import com.edaisong.entity.req.PagedClienterSearchReq;
 
 public interface IClienterService {
 
@@ -48,4 +49,10 @@ public interface IClienterService {
 	 */
 	void updateCBalanceAndWithdraw(ClienterMoney clienterMoney);
 
+	/**
+	 * 获得骑士列表
+	 * @author pengyi
+	 * @date 20150901
+	 */
+	PagedResponse<ClienterModel> getClienterList(PagedClienterSearchReq req);
 }

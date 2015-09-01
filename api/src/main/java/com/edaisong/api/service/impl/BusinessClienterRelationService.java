@@ -103,7 +103,42 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 				}
 			}
 		}
+		if (!flag) {
+			throw new RuntimeException("修改骑士绑定失败");
+		}
 		return flag;
 	}
 
+	/**
+	 * 确实骑士是否已绑定商家
+	 * @author pengyi
+	 * @date 20150901
+	 */
+	@Override
+	public boolean checkHaveBind(ClienterBindOptionReq req) {
+		return businessClienterRelationDao.checkHaveBind(req);
+	}
+
+	/**
+	 * 添加骑士绑定
+	 * @author pengyi
+	 * @date 20150901
+	 * @param req
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public boolean addClienterBind(ClienterBindOptionReq req){
+		boolean reg = false;
+		if (businessClienterRelationDao.addClienterBind(req)){
+            if (businessDao.updateBusinessIsBind(req.getBusinessId(), 1)){
+                if (clienterDao.updateClienterIsBind(req.getClienterId(), 1)){
+                    reg = true;
+                }
+            }
+        }
+		if (!reg) {
+			throw new RuntimeException("添加骑士绑定失败");
+		}
+        return reg;
+	}
 }

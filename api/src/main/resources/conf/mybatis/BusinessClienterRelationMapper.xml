@@ -223,14 +223,14 @@
 	   ,InsertTime
 	   ,Remark)
 	from BusinessClienterRelation bcr WITH ( ROWLOCK )
-	where bcr.BusinessId=${businessId} AND bcr.ClienterId=${clienterId};
+	where bcr.BusinessId=${businessId} AND bcr.ClienterId=${clienterId}
   </sql>
   
   <!-- 修改骑士绑定  add by pengyi 20150901 -->
   <update id="modifyClienterBind" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
   	update bcr
 	set    bcr.IsBind=#{isBind,jdbcType=INTEGER}
-	<include refid="modifyClienterBindOutput"></include>
+	<include refid="modifyClienterBindOutput"></include>;
   </update>
   
     <!-- 移除骑士绑定  add by pengyi 20150901 -->
@@ -239,4 +239,18 @@
 	set    bcr.IsEnable=0
 	<include refid="modifyClienterBindOutput"></include>
   </update>
+  
+  <select id="checkHaveBind" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
+  	SELECT COUNT(1) FROM BusinessClienterRelation bcr WITH(NOLOCK) 
+  	WHERE  bcr.IsEnable=1 AND BusinessId=#{businessId,jdbcType=INTEGER} AND ClienterId=#{clienterId,jdbcType=INTEGER};
+  </select>
+  
+  <insert id="addClienterBind" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
+  	INSERT INTO [BusinessClienterRelation]
+           ([BusinessId]
+           ,[ClienterId]
+           ,[CreateBy]
+           ,[UpdateBy])
+	<include refid="modifyClienterBindOutput"></include>;
+  </insert>
 </mapper>

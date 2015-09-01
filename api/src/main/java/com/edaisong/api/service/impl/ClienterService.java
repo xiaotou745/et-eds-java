@@ -24,6 +24,7 @@ import com.edaisong.entity.req.PagedAccountReq;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
+import com.edaisong.entity.req.PagedClienterSearchReq;
 import com.edaisong.entity.resp.AccountResp;
 
 
@@ -147,5 +148,15 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 		clienterAllowWithdrawRecord.setRelationno(clienterMoney.getRelationNo()); // 关联单号
 		clienterAllowWithdrawRecord.setRemark(clienterMoney.getRemark()); // 注释
 		clienterAllowWithdrawRecordDao.insert(clienterAllowWithdrawRecord);
+	}
+
+	/**
+	 * 获得骑士列表
+	 * @author pengyi
+	 * @date 20150901
+	 */
+	@Override
+	public PagedResponse<ClienterModel> getClienterList(PagedClienterSearchReq req) {
+		return clienterDao.getClienterBindInfoList(req);
 	}
 }

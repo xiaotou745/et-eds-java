@@ -93,4 +93,28 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 		return getMasterSqlSessionUtil().update(
 				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.removeclienterbind", req) > 0;
 	}
+
+	/**
+	 * 确实骑士是否已绑定商家
+	 * @author pengyi
+	 * @date 20150901
+	 */
+	@Override
+	public boolean checkHaveBind(ClienterBindOptionReq req) {
+		return ((int)getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.checkHaveBind", req)) > 0;
+	}
+	
+	/**
+	 * 添加骑士绑定
+	 * @author pengyi
+	 * @date 20150901
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public boolean addClienterBind(ClienterBindOptionReq req){
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.addClienterBind", req) > 0;
+	}
 }

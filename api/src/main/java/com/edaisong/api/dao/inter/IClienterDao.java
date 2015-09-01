@@ -7,6 +7,7 @@ import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
+import com.edaisong.entity.req.PagedClienterSearchReq;
 
 
 public interface IClienterDao {
@@ -51,4 +52,13 @@ public interface IClienterDao {
 	int updateCBalanceAndWithdraw(Double amount, int clienterId);
 	
 	boolean updateClienterIsBind(int clienterId, int isBind);
+	
+	/**
+	 * 获得骑士绑定信息列表
+	 * @author pengyi
+	 * @date 20150901
+	 * @param req
+	 * @return
+	 */
+	PagedResponse<ClienterModel> getClienterBindInfoList(PagedClienterSearchReq req);
 }
