@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IBusinessBalanceRecordService;
+import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessExpressRelationService;
 import com.edaisong.api.service.inter.IBusinessFinanceAccountService;
 import com.edaisong.api.service.inter.IBusinessGroupService;
@@ -33,6 +35,7 @@ import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.BusinesRechargeModel;
+import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
@@ -40,8 +43,10 @@ import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessThirdRelationModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
+import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.PagedBusinessReq;
+import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
 
 /*
@@ -81,6 +86,9 @@ public class BusinessController {
 
 	@Autowired
 	private IBusinessBalanceRecordService businessBalanceRecordService;
+	
+	@Autowired
+	private IBusinessClienterRelationService businessClienterRelationService;
 
 	@RequestMapping("list")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse res) {
@@ -315,5 +323,47 @@ public class BusinessController {
 		ModelAndView model = new ModelAndView("business/balancedetaillistdo");
 		model.addObject("listData", resp);
 		return model;
+	}
+	
+	@RequestMapping("clienterbindlist")
+	public ModelAndView clienterBindList(int businessId) throws Exception {
+		BusinessDetailModel detail = iBusinessService.getBusinessDetailByID(businessId);
+		if (detail == null) {
+			throw new Exception("没找到businessID为" + businessId + "的详细信息");
+		}
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("detail", detail);
+		model.addObject("bindClienterQty", businessClienterRelationService.getBusinessBindClienterQty(businessId));
+		return model;
+	}
+	
+	@RequestMapping("clienterbindlistdo")
+	public ModelAndView clienterBindListDo(int businessId) throws Exception {
+		ModelAndView model = new ModelAndView("business/clienterbindlistdo");
+		PagedCustomerSearchReq req = new PagedCustomerSearchReq();
+		req.setBusinessID(businessId);
+		PagedResponse<BusinessClienterRelationModel> resp = businessClienterRelationService.getBusinessClienterRelationList(req);
+		model.addObject("listData", resp);
+		return model;
+	}
+	
+	@RequestMapping("modifyclienterbind")
+	public int modifyClienterBind(ClienterBindOptionReq req,HttpServletRequest request){
+		req.setOptId(UserContext.getCurrentContext(request).getId());
+		req.setOptName(UserContext.getCurrentContext(request).getName());
+		if(businessClienterRelationService.modifyClienterBind(req)){
+			return 1;
+		}
+		return 0;
+	}
+	
+	@RequestMapping("removeclienterbind")
+	public int removeclienterbind(ClienterBindOptionReq req,HttpServletRequest request){
+		req.setOptId(UserContext.getCurrentContext(request).getId());
+		req.setOptName(UserContext.getCurrentContext(request).getName());
+		if(businessClienterRelationService.removeclienterbind(req)){
+			return 1;
+		}
+		return 0;
 	}
 }

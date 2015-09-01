@@ -107,23 +107,11 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 
 	@Override
 	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {
-		Map<String, Object> map = new HashMap<String, Object>();		
-/*		String Where = " 1=1 ";	
-		if(req.getWorkStatus() < 2){
-			Where += " and c.workstatus=" + req.getWorkStatus();
-		}
-		if (!StringUtils.isEmpty(req.getSearch())) {
-			Where += " and (c.trueName like ''%" + req.getSearch() 
-					+ "%'' or c.phoneNo like ''%"+ req.getSearch()+"%'')";
-		}
-		Where+=" group by c.Id";*/
-		
+		Map<String, Object> map = new HashMap<String, Object>();				
 		String selectTable = " dbo.clienter c (nolock) JOIN dbo.BusinessClienterRelation (nolock) bcr ON bcr.ClienterId = c.Id AND bcr.BusinessId="
 				+req.getBusinessId()+" join dbo.[order] o (nolock) on o.clienterId=c.Id ";
-		
 		int PageSize = 15;
 		int CurrentPage = req.getCurrentPage();
-		//map.put("Where", Where);
 		map.put("workStatus", req.getWorkStatus());
 		map.put("search", req.getSearch());
 		map.put("businessId", req.getBusinessId());
@@ -194,5 +182,15 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dao.inter.IClienterDao.updateCBalanceAndWithdraw",
 						parasMap);
+	}
+
+	@Override
+	public boolean updateClienterIsBind(int clienterId, int isBind) {
+		Map<String, Object> parasMap = new HashMap();
+		parasMap.put("clienterId", clienterId);
+		parasMap.put("isBind", isBind);
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dao.inter.IClienterDao.updateClienterIsBind",
+						parasMap) > 0;
 	}
 }

@@ -556,4 +556,9 @@
 		AccountBalance=AccountBalance + #{Money,jdbcType=DECIMAL} 
 		where  Id= #{Id,jdbcType=INTEGER}
 	</update>
+	
+	<!-- 更新骑士是否绑定  add by pengyi  20150901 -->
+	<update id="updateClienterIsBind" parameterType="java.util.Map">
+		update clienter set IsBind = #{isBind,jdbcType=INTEGER}  where Id = #{clienterId,jdbcType=INTEGER};
+	</update>
 </mapper>

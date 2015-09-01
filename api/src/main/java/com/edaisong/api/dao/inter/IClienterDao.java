@@ -50,4 +50,5 @@ public interface IClienterDao {
 	 */
 	int updateCBalanceAndWithdraw(Double amount, int clienterId);
 	
+	boolean updateClienterIsBind(int clienterId, int isBind);
 }
