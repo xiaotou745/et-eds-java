@@ -121,7 +121,7 @@
 	min(c.AccountBalance) accountbalance
 	 FROM dbo.clienter c (nolock)
 	 JOIN dbo.BusinessClienterRelation bcr ON bcr.ClienterId = c.Id AND bcr.BusinessId=${businessId}
-	join dbo.[order] o (nolock) on o.clienterId=c.Id
+	left join dbo.[order] o (nolock) on o.clienterId=c.Id
 	where 1=1
 	<if test="!(workStatus>=2)">
 	and c.WorkStatus=${workStatus}

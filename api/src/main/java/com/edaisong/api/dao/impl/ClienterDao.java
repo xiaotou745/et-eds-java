@@ -114,8 +114,6 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {
 		Map<String, Object> map = new HashMap<String, Object>();				
-		String selectTable = " dbo.clienter c (nolock) JOIN dbo.BusinessClienterRelation (nolock) bcr ON bcr.ClienterId = c.Id AND bcr.BusinessId="
-				+req.getBusinessId()+" join dbo.[order] o (nolock) on o.clienterId=c.Id ";
 		int PageSize = 15;
 		int CurrentPage = req.getCurrentPage();
 		map.put("workStatus", req.getWorkStatus());
