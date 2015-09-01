@@ -715,7 +715,7 @@ public class OrderService implements IOrderService {
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public ResponseBase auditRefuse(OptOrder auditRefuseOrder) {
-		OrderListModel orderModel = orderDao.getOrderByNoId(auditRefuseOrder.getOrderNo(), auditRefuseOrder.getOrderId());
+		OrderListModel orderModel = orderDao.getOrderWriteByNoId(auditRefuseOrder.getOrderNo(), auditRefuseOrder.getOrderId());
 		ResponseBase responseBase = auditRefuseCheck(auditRefuseOrder, orderModel);
 		if (responseBase.getResponseCode() != ResponseCode.SUCESS) {
 			return responseBase;
