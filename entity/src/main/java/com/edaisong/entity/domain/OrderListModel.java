@@ -95,10 +95,26 @@ public class OrderListModel {
   
     private String deductCommissionReason ;
 
-    
+    private  int finishAll;
     private int isOrderChecked;
     
     /**
+     * 是否已完成
+     * @return
+     */
+    public int getFinishAll() {
+		return finishAll;
+	}
+
+    /**
+     * 是否已完成
+     * @param finishAll
+     */
+	public void setFinishAll(int finishAll) {
+		this.finishAll = finishAll;
+	}
+
+	/**
      * 订单是否需要审核
      * @return
      */
