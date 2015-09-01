@@ -144,13 +144,6 @@
 																                    String curPuth = "";
 																                    String curPhost ="";
 																   for (OrderChild curOrderChild :orderChildList){
-																	   String bigFileName = "";
-																	   if (curOrderChild.getTicketurl()!=null&&!curOrderChild.getTicketurl().isEmpty())
-															                    {
-															                        int fileLastDot = curOrderChild.getTicketurl().lastIndexOf('.');
-															                        String fileHandHouZhui = curOrderChild.getTicketurl().substring(fileLastDot, curOrderChild.getTicketurl().length());
-															                        bigFileName = curPhost + curPuth + curOrderChild.getTicketurl().substring(0, fileLastDot) + "_0_0" + fileHandHouZhui;
-															                    }
 				%>
 				<tr>
 					<td><%=ParseHelper.ShowString(curOrderChild.getChildid())%></td>
@@ -180,9 +173,9 @@
 					<td></td>
 					<td>
 						<%
-							if (bigFileName!=null&&!bigFileName.isEmpty())
-																										                   {
-						%> <a href="<%=bigFileName%>">查看</a> <%
+							if (curOrderChild.getTicketurl()!=null&&!curOrderChild.getTicketurl().isEmpty())
+			             {
+						%> <a href="<%=PropertyUtils.getProperty("ImageServicePath")%><%=curOrderChild.getTicketurl()%>">查看</a> <%
  	}
  %>
 
