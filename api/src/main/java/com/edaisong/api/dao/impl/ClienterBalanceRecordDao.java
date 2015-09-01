@@ -94,6 +94,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 
 	  /**
 	   * 根据订单获取对象
+	   * 引处使用了 nolock
 	   * @author CaoHeYang
 	   * @param id
 	   * @date 20150831
