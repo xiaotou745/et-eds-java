@@ -1,6 +1,7 @@
 package com.edaisong.api.service.impl;
 
 import java.lang.Double;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -52,6 +53,7 @@ import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
+import com.edaisong.entity.common.Location;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
@@ -125,8 +127,13 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	public OrderMapDetail getOrderMapDetail(long orderid) {
-		return orderDao.getOrderMapDetail(orderid);
+	public OrderMapDetail getOrderMapDetail(int orderid) {
+		OrderMapDetail orderMapDetail=new OrderMapDetail();
+		if (orderMapDetail!=null) {
+			orderMapDetail.setLocations(new ArrayList<Location>());
+		}
+		return orderMapDetail;
+		
 	}
 
 	/**

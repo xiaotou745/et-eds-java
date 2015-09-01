@@ -964,7 +964,7 @@
 
 	<!--后台订单列表百度地图打点基础数据 add by caoheyang 20150728 -->
 	<select id="getOrderMapDetail" resultType="com.edaisong.entity.domain.OrderMapDetail"
-		parameterType="long">
+		parameterType="java.lang.Integer">
 		select ord.OrderId,
 		CASE WHEN ISNULL(PubLongitude, 0) = 0 THEN c.Longitude
 		ELSE PubLongitude
@@ -992,7 +992,7 @@
 		FROM [order] (NOLOCK) ab
 		JOIN OrderOther (NOLOCK) ord ON ord.OrderId = ab.Id
 		JOIN business (NOLOCK) c ON c.id = ab.businessId
-		WHERE ab.Id = @orderID
+		WHERE ab.Id =#{orderId,jdbcType=INTEGER} 
 	</select>
 
 	<!--商家后台 订单详情页面基础数据 add by caoheyang 20150804 -->

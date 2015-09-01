@@ -16,11 +16,13 @@ import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.OrderListModel;
+import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
@@ -81,11 +83,10 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value="ordermap",method= {RequestMethod.POST})
-	public ModelAndView ordermap(long orderid){
-		ModelAndView view = new ModelAndView();
-		view.addObject("model", orderService.getOrderMapDetail(orderid));
-		view.addObject("viewPath", "order/ordermap");
-		return view;
+	@ResponseBody
+	public String ordermap(int orderid){
+		String str= JsonUtil.obj2string(orderService.getOrderMapDetail(orderid)) ; 
+		return str;
 	}
 	
 	/**
