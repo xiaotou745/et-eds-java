@@ -543,7 +543,7 @@
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Order">
-		update order
+		update [order]
 		<set>
 			<if test="orderno != null">
 				OrderNo = #{orderno,jdbcType=NVARCHAR},
@@ -945,6 +945,8 @@
 		,ISNULL(oo.DeductCommissionType,0) DeductCommissionType
 		,ISNULL(oo.IsJoinWithdraw,0) IsJoinWithdraw
 		,ISNULL(oo.IsOrderChecked,1) IsOrderChecked
+		,ISNULL(o.SettleMoney,0)  SettleMoney
+		,o.MealsSettleMode
 		FROM [order] o WITH ( NOLOCK )
 		LEFT JOIN business b WITH ( NOLOCK ) ON b.Id = o.businessId
 		LEFT JOIN clienter c WITH (NOLOCK) ON o.clienterId=c.Id

@@ -105,6 +105,6 @@
 				END 
 			END PayStatus
 	  FROM OrderChild oc WITH(NOLOCK)
-	  WHERE OrderId=#{OrderId,jdbcType=INTEGER}
+	  WHERE OrderId=#{orderId,jdbcType=INTEGER}
 	</select>
 </mapper>

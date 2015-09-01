@@ -57,10 +57,10 @@
     insert into
 		ClienterBalanceRecord
 		(ClienterId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark)
-		select #{clienterId,jdbcType=INTEGER},
+		select #{clienterid,jdbcType=INTEGER},
 		#{amount,jdbcType=DECIMAL},#{status,jdbcType=SMALLINT},c.AccountBalance,#{recordtype,jdbcType=SMALLINT},#{operator,jdbcType=NVARCHAR}
 		,#{withwardid,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
-		from dbo.clienter  as c where Id=#{clienterId,jdbcType=INTEGER} ;
+		from dbo.clienter  as c where Id=#{clienterid,jdbcType=INTEGER} ;
 		select @@IDENTITY
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.ClienterBalanceRecord" >
