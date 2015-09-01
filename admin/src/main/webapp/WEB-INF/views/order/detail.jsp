@@ -11,6 +11,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.core.enums.PayType"%>
 <%@page import="com.edaisong.core.enums.OrderPlatform"%>
+<%@page import="com.edaisong.core.enums.MealsSettleMode"%>
 <%@page import="java.lang.StringBuilder"%>
 <%
 	String basePath =PropertyUtils.getProperty("static.admin.url");
@@ -96,10 +97,13 @@
 			%>
 		</tr>
 		<tr class="trclass">
-			<td>备注：<%=ParseHelper.ShowString(orderListModel.getRemark())%></td>
 			<td>订单数：<%=orderListModel.getOrderCount()%></td>
-			<td>审核推荐处理： <%=ParseHelper.ShowString(orderListModel.getDeductCommissionReason())%></td>
+	        <td>支付来源：<%=MealsSettleMode.getEnum(orderListModel.getMealsSettleMode()).desc()%></td>
 			<td>订单是否需要审核：<%=orderListModel.getIsOrderChecked()==1? "是":"否"%></td>
+		    <td>备注：<%=ParseHelper.ShowString(orderListModel.getRemark())%></td>
+		</tr>
+		<tr class="trclass">
+					<td>审核推荐处理： <%=ParseHelper.ShowString(orderListModel.getDeductCommissionReason())%></td>
 		</tr>
 	</table>
 	<hr />
@@ -111,7 +115,7 @@
 				                for (int i = 0; i < orderListModel.getOrderDetailList().size(); i++)
 				                {
 				                    caiPin.append(orderListModel.getOrderDetailList().get(i).getProductname() + "*" + orderListModel.getOrderDetailList().get(i).getQuantity());
-				                    if (i > 0 && i != orderListModel.getOrderDetailList().size() )
+				                    if (i >= 0 && i != orderListModel.getOrderDetailList().size() -1)
 				                    {
 				                        caiPin.append(",");
 				                    }
