@@ -62,6 +62,22 @@ public class ParseHelper {
 		}
 		return result;
 	}
+	
+	/**
+	 * 
+	 * @param o
+	 * @param defaultValue
+	 * @return
+	 */
+	public static double ToDouble(Object o, double defaultValue) {
+		double result = defaultValue;
+		try {
+			result = Double.parseDouble(o.toString());
+		} catch (Exception e) {
+
+		}
+		return result;
+	}
 
 	/**
 	 * 

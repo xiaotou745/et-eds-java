@@ -1,16 +1,18 @@
 package com.edaisong.api.common;
 
-import java.lang.Double;
-import java.math.RoundingMode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import org.springframework.stereotype.Service;
-
+import com.edaisong.api.service.inter.IGlobalConfigService;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.domain.OrderCommission;
 
 
-@Service
+@Component
 public class DefaultOrPriceProvider extends OrderPriceBaseProvider{
-
+	@Autowired
+	IGlobalConfigService globalConfigService;
+	
 	@Override
 	public Double getCurrenOrderCommission(OrderCommission model) {		
 		Double distribe;  //默认外送费，网站补贴都为0
@@ -27,12 +29,17 @@ public class DefaultOrPriceProvider extends OrderPriceBaseProvider{
 
 	@Override
 	public Double getOrderWebSubsidy(OrderCommission model) {
-		return Double.valueOf(0);
+		if (model.getOrderWebSubsidy() != null && model.getOrderWebSubsidy() != 0) {
+			return ParseHelper.ToDouble(model.getOrderWebSubsidy(), 0d);
+		}
+		return ParseHelper.ToDouble(
+				globalConfigService.getConfigValueByKey(model.getBusinessGroupId(), "CommonSiteSubsidies"), 0d);
 	}
 
 	@Override
 	public Double getCommissionRate(OrderCommission model) {
-		return Double.valueOf(0);
+		return ParseHelper.ToDouble(
+				globalConfigService.getConfigValueByKey(model.getBusinessGroupId(), "CommonCommissionRatio"), 0d);
 	}
 
 	@Override
