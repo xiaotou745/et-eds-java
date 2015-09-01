@@ -19,6 +19,7 @@ import com.edaisong.api.common.OrderSettleMoneyHelper;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
+import com.edaisong.api.dao.inter.IClienterLocationDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
@@ -104,6 +105,8 @@ public class OrderService implements IOrderService {
 	private IOrderDetailDao orderDetailDao;
 	@Autowired
 	private IClienterBalanceRecordDao clienterBalanceRecordDao;
+	@Autowired 
+	IClienterLocationDao clienterLocationDao;
 
 	/**
 	 * 后台订单列表页面
@@ -134,22 +137,22 @@ public class OrderService implements IOrderService {
 		if (orderMapDetail!=null) {
 			Date startTime=new Date();
 			Date endTime=new Date();
-            if(orderMapDetail.getPubDate()==null){
+            if(orderMapDetail.getPubDate()==null||orderMapDetail.getPubDate().indexOf("1900-01-01")>=0){
             	  orderMapDetail.setPubDate("暂无");
             }else {
 					startTime= ParseHelper.ToDate(orderMapDetail.getPubDate()) ;
 			}
-            if(orderMapDetail.getGrabTime()==null){
+            if(orderMapDetail.getGrabTime()==null||orderMapDetail.getGrabTime().indexOf("1900-01-01")>=0){
           	  orderMapDetail.setGrabTime("暂无");
              }else{
             	 endTime= ParseHelper.ToDate(orderMapDetail.getGrabTime()) ;
              }
-            if(orderMapDetail.getTakeTime()==null){
+            if(orderMapDetail.getTakeTime()==null||orderMapDetail.getTakeTime().indexOf("1900-01-01")>=0){
             	  orderMapDetail.setTakeTime("暂无");
             }else{
            	 endTime= ParseHelper.ToDate(orderMapDetail.getTakeTime()) ;
             }
-            if(orderMapDetail.getActualDoneDate()==null){
+            if(orderMapDetail.getActualDoneDate()==null||orderMapDetail.getActualDoneDate().indexOf("1900-01-01")>=0){
             	  orderMapDetail.setActualDoneDate("暂无");
             }else{
               	 endTime= ParseHelper.ToDate(orderMapDetail.getActualDoneDate()) ;
@@ -170,8 +173,9 @@ public class OrderService implements IOrderService {
             	orderMapDetail.setCompleteLatitude (orderMapDetail.getPubLatitude()) ;
             }
             //开始时间小于结束时间才获取实时坐标 
-	         if (startTime.compareTo(endTime)<0) {
-	        		orderMapDetail.setLocations(new ArrayList<Location>());
+	         if (startTime.compareTo(endTime)<0&&orderMapDetail.getClienterId()>0) {
+	        		orderMapDetail.setLocations(
+	        				clienterLocationDao.getLocationsByTime(startTime, endTime, orderMapDetail.getClienterId()));
 			 }
 		    if (orderMapDetail.getLocations()==null) {
 			  orderMapDetail.setLocations(new ArrayList<Location>());

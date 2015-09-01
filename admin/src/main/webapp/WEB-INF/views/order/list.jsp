@@ -236,7 +236,7 @@ width: 100%;
 
 	            var points = [];
 	            for (var i = 0; i < jsonstr.Locations.length; i++) {
-	                points.push(new BMap.Point(jsonstr.Locations[i].Longitude, jsonstr.Locations[i].Latitude));
+	                points.push(new BMap.Point(jsonstr.Locations[i].longitude, jsonstr.Locations[i].latitude));
 	            }
 	            var polyline = new BMap.Polyline(points, { strokeColor: "red", strokeWeight: 2, strokeOpacity: 0.5 });   //创建折线
 	            map.addOverlay(polyline);   //增加折线

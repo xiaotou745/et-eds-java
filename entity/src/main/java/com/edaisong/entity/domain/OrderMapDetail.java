@@ -51,7 +51,87 @@ public class OrderMapDetail {
     //订单实时坐标
     @JsonProperty("Locations")
     public List<Location> locations;
+   // 发单坐标是否是实时坐标
+    private int isPubDateTimely;
+ // 抢单坐标是否是实时坐标
+    private int isGrabTimely;
+ // 取货坐标是否是实时坐标
+    private int isTakeTimely;
+ // 完成坐标是否是实时坐标
+    private int isCompleteTimely;
+ // 骑士Id 
+    private int clienterId;
+     /**
+      * 发单坐标是否是实时坐标
+      * @return
+      */
+    public int getIsPubDateTimely() {
+		return isPubDateTimely;
+	}
     /**
+     * 发单坐标是否是实时坐标
+     * @param isPubDateTimely
+     */
+	public void setIsPubDateTimely(int isPubDateTimely) {
+		this.isPubDateTimely = isPubDateTimely;
+	}
+	/**
+	 * 抢单坐标是否是实时坐标
+	 * @return
+	 */
+	public int getIsGrabTimely() {
+		return isGrabTimely;
+	}
+	/**
+	 * 抢单坐标是否是实时坐标
+	 * @param isGrabTimely
+	 */
+	public void setIsGrabTimely(int isGrabTimely) {
+		this.isGrabTimely = isGrabTimely;
+	}
+	/**
+	 * 取货坐标是否是实时坐标
+	 * @return
+	 */
+	public int getIsTakeTimely() {
+		return isTakeTimely;
+	}
+	/**
+	 * 取货坐标是否是实时坐标
+	 * @param isTakeTimely
+	 */
+	public void setIsTakeTimely(int isTakeTimely) {
+		this.isTakeTimely = isTakeTimely;
+	}
+	/**
+	 * 完成坐标是否是实时坐标
+	 * @return
+	 */
+	public int getIsCompleteTimely() {
+		return isCompleteTimely;
+	}
+	/**
+	 * 完成坐标是否是实时坐标
+	 * @param isCompleteTimely
+	 */
+	public void setIsCompleteTimely(int isCompleteTimely) {
+		this.isCompleteTimely = isCompleteTimely;
+	}
+	/**
+	 *  骑士Id
+	 * @return
+	 */
+	public int getClienterId() {
+		return clienterId;
+	}
+	/**
+	 *  骑士Id
+	 * @param clienterId
+	 */
+	public void setClienterId(int clienterId) {
+		this.clienterId = clienterId;
+	}
+	/**
      *  订单id
      */
 	public long getOrderId() {
