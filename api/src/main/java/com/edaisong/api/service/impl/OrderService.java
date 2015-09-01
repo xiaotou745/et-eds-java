@@ -575,7 +575,7 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	@Transactional(rollbackFor = Exception.class, timeout = 1000)
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public ResponseBase cancelOrder(OptOrder cancelOrder) {
 		ResponseBase responseBase = new ResponseBase();
 		OrderListModel orderModel = orderDao.getOrderByNoId(cancelOrder.getOrderNo(), cancelOrder.getOrderId());
@@ -716,8 +716,8 @@ public class OrderService implements IOrderService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public ResponseBase auditRefuse(OptOrder auditRefuseOrder) {
 		OrderListModel orderModel = orderDao.getOrderByNoId(auditRefuseOrder.getOrderNo(), auditRefuseOrder.getOrderId());
-		ResponseBase responseBase =auditRefuseCheck(auditRefuseOrder, orderModel);
-		if (responseBase.getResponseCode()!=ResponseCode.SUCESS) {
+		ResponseBase responseBase = auditRefuseCheck(auditRefuseOrder, orderModel);
+		if (responseBase.getResponseCode() != ResponseCode.SUCESS) {
 			return responseBase;
 		}
 		// 如果要扣除的金额大于0， 写流水
@@ -727,78 +727,78 @@ public class OrderService implements IOrderService {
 				double diffOrderCommission = orderModel.getSettleMoney() - orderModel.getOrderCommission();
 				double disOrderCommission = -diffOrderCommission;
 				// 更新骑士余额
-				ClienterMoney clienterMoney =auditRefuseGetClienterMoney(orderModel);  
+				ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel);
 				clienterMoney.setRemark(auditRefuseOrder.getOptLog());
 				clienterMoney.setAmount(diffOrderCommission);
 				clienterMoney.setStatus(ClienterBalanceRecordStatus.Success.value());
 				clienterMoney.setRecordType(ClienterBalanceRecordRecordType.Abnormal.value());
 				clienterService.updateCAccountBalance(clienterMoney);
-       
+
 				// 更新订单真实佣金 更新无效订单(状态，原因)
-				OrderOtherSearch orderOtherSearch =auditRefuseGetOrderOtherSearch( orderModel, auditRefuseOrder); 
+				OrderOtherSearch orderOtherSearch = auditRefuseGetOrderOtherSearch(orderModel, auditRefuseOrder);
 				orderOtherSearch.setRealOrderCommission(disOrderCommission);
 				// 写入订单日志
-				OrderSubsidiesLog orderSubsidiesLog = auditRefuseGetOrderSubsidiesLog(orderModel,auditRefuseOrder);
+				OrderSubsidiesLog orderSubsidiesLog = auditRefuseGetOrderSubsidiesLog(orderModel, auditRefuseOrder);
 				orderSubsidiesLog.setPrice(diffOrderCommission);
 				orderSubsidiesLog.setRemark("扣除" + disOrderCommission + "元无效订单金额");
-				auditRefusePartial(orderOtherSearch,orderSubsidiesLog);
+				auditRefusePartial(orderOtherSearch, orderSubsidiesLog);
 			}
 		}
 		// 更新订单真实佣金
 		double realOrderCommission = orderModel.getOrderCommission() == null ? 0 : orderModel.getOrderCommission();
 		realOrderCommission = realOrderCommission > orderModel.getSettleMoney() ? orderModel.getSettleMoney() : realOrderCommission;
 		// 更新骑士可提现余额
-		ClienterMoney clienterMoney =auditRefuseGetClienterMoney(orderModel);  
+		ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel);
 		clienterMoney.setRemark(auditRefuseOrder.getOptLog());
 		clienterMoney.setAmount(realOrderCommission);
 		clienterMoney.setStatus(ClienterAllowWithdrawRecordStatus.Success.value());
 		clienterMoney.setRecordType(ClienterAllowWithdrawRecordType.OrderCommission.value());
 		clienterMoney.setRemark("管理后台审核拒绝加可提现");
 		clienterService.updateCAllowWithdrawPrice(clienterMoney);
-		
-		//订单other操作
-		OrderOtherSearch orderOtherSearch =auditRefuseGetOrderOtherSearch( orderModel, auditRefuseOrder); 
+
+		// 订单other操作
+		OrderOtherSearch orderOtherSearch = auditRefuseGetOrderOtherSearch(orderModel, auditRefuseOrder);
 		orderOtherSearch.setRealOrderCommission(realOrderCommission);
 		// 写入订单日志
-		OrderSubsidiesLog orderSubsidiesLog = auditRefuseGetOrderSubsidiesLog(orderModel,auditRefuseOrder);
+		OrderSubsidiesLog orderSubsidiesLog = auditRefuseGetOrderSubsidiesLog(orderModel, auditRefuseOrder);
 		orderSubsidiesLog.setPrice(realOrderCommission);
 		orderSubsidiesLog.setRemark("增加" + realOrderCommission + "元可提现金额");
-		auditRefusePartial(orderOtherSearch,orderSubsidiesLog);
+		auditRefusePartial(orderOtherSearch, orderSubsidiesLog);
 		// 更新已提现状态
 		orderOtherDao.updateJoinWithdraw(auditRefuseOrder.getOrderId());
 		// 更新审核状态
 		orderOtherDao.updateAuditStatus(auditRefuseOrder.getOrderId(), OrderAuditStatus.Refuse.value());
 		return responseBase;
 	}
+
 	/**
-	 * 取消订单 
-	 * 1.更新订单真实佣金
-	 * 2.更新无效订单(状态，原因)
-	 * 3.插入订单操作日志
+	 * 取消订单 1.更新订单真实佣金 2.更新无效订单(状态，原因) 3.插入订单操作日志
+	 * 
 	 * @author CaoHeYang
 	 * @param orderOtherSearch
 	 * @param orderSubsidiesLog
 	 * @date 20150901
 	 */
-	private void auditRefusePartial(OrderOtherSearch orderOtherSearch,OrderSubsidiesLog orderSubsidiesLog){
+	private void auditRefusePartial(OrderOtherSearch orderOtherSearch, OrderSubsidiesLog orderSubsidiesLog) {
 		// 更新订单真实佣金
 		orderDao.updateOrderRealCommission(orderOtherSearch);
 		// 更新无效订单(状态，原因)
 		orderOtherDao.updateOrderIsReal(orderOtherSearch);
-		//插入订单操作日志
+		// 插入订单操作日志
 		orderSubsidiesLogDao.insert(orderSubsidiesLog);
 	}
-	
+
 	/**
 	 * 订单审核拒绝 数据服务器端验证
+	 * 
 	 * @author CaoHeYang
 	 * @param auditRefuseOrder
 	 * @param orderModel
 	 * @date 20150901
 	 * @return
 	 */
-	private ResponseBase auditRefuseCheck(OptOrder auditRefuseOrder,OrderListModel orderModel){
-		ResponseBase responseBase=new ResponseBase();
+	private ResponseBase auditRefuseCheck(OptOrder auditRefuseOrder, OrderListModel orderModel) {
+		ResponseBase responseBase = new ResponseBase();
 		if (auditRefuseOrder.getOptLog() == null || auditRefuseOrder.getOptLog().isEmpty()) {
 			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
 			responseBase.setMessage("请填写扣除网站补贴原因");
@@ -817,31 +817,35 @@ public class OrderService implements IOrderService {
 		}
 		return responseBase;
 	}
+
 	/**
 	 * 订单审核拒绝 获取更新骑士余额或者可提现余额的基础数据实体
+	 * 
 	 * @author CaoHeYang
 	 * @param orderModel
 	 * @date 20150901
 	 * @return
 	 */
-	private ClienterMoney auditRefuseGetClienterMoney(OrderListModel orderModel){
-		ClienterMoney clienterMoney=new ClienterMoney();
+	private ClienterMoney auditRefuseGetClienterMoney(OrderListModel orderModel) {
+		ClienterMoney clienterMoney = new ClienterMoney();
 		clienterMoney.setClienterId(orderModel.getClienterId());
 		clienterMoney.setOperator(orderModel.getOptUserName());
 		clienterMoney.setWithwardId(orderModel.getId());
 		clienterMoney.setRelationNo(orderModel.getOrderNo());
 		return clienterMoney;
 	}
+
 	/**
-	 *  订单审核拒绝 获取订单日志的基础数据实体
+	 * 订单审核拒绝 获取订单日志的基础数据实体
+	 * 
 	 * @author CaoHeYang
 	 * @param orderModel
 	 * @param auditRefuseOrder
 	 * @date 20150901
 	 * @return
 	 */
-	private OrderSubsidiesLog auditRefuseGetOrderSubsidiesLog(OrderListModel orderModel,OptOrder auditRefuseOrder) {
-		OrderSubsidiesLog orderSubsidiesLog=new OrderSubsidiesLog();
+	private OrderSubsidiesLog auditRefuseGetOrderSubsidiesLog(OrderListModel orderModel, OptOrder auditRefuseOrder) {
+		OrderSubsidiesLog orderSubsidiesLog = new OrderSubsidiesLog();
 		orderSubsidiesLog.setOrderid(orderModel.getId());
 		orderSubsidiesLog.setOrderstatus(OrderOperationCommon.AuditStatusRefuse.value());
 		orderSubsidiesLog.setPlatform(SuperPlatform.ManagementBackGround.value());
@@ -849,15 +853,17 @@ public class OrderService implements IOrderService {
 		orderSubsidiesLog.setOptid(auditRefuseOrder.getOptUserId());
 		return orderSubsidiesLog;
 	}
+
 	/**
-	 *  订单审核拒绝 获取更新订单other的基础数据
+	 * 订单审核拒绝 获取更新订单other的基础数据
+	 * 
 	 * @author CaoHeYang
 	 * @param orderModel
 	 * @param auditRefuseOrder
 	 * @date 20150901
 	 * @return
 	 */
-	private OrderOtherSearch auditRefuseGetOrderOtherSearch(OrderListModel orderModel,OptOrder auditRefuseOrder) {
+	private OrderOtherSearch auditRefuseGetOrderOtherSearch(OrderListModel orderModel, OptOrder auditRefuseOrder) {
 		OrderOtherSearch orderOtherSearch = new OrderOtherSearch();
 		orderOtherSearch.setOrderId(orderModel.getId());
 		orderOtherSearch.setDeductCommissionReason(auditRefuseOrder.getOptLog());

@@ -139,7 +139,8 @@ public class OrderController {
 	public ResponseBase auditrefuse(OptOrder auditrefuse){
 		auditrefuse.setOptUserId(UserContext.getCurrentContext(request).getId());
 		auditrefuse.setOptUserName(UserContext.getCurrentContext(request).getName());
-		return new ResponseBase();
+		ResponseBase responseBase= orderService.auditRefuse(auditrefuse);
+		return responseBase;
 	}
 	/**
 	 * 取消订单

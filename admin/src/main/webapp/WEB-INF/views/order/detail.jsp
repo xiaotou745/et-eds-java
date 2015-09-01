@@ -422,15 +422,22 @@
 							url : "<%=basePath%>/order/auditrefuse",
 							data : {
 								"orderId" : orderId,
-								"OrderOptionLog" : orderOptionLog
+								"optLog" : orderOptionLog,
+								"orderNo":orderNo
 							},
 							success : function(result) {
-								layer.alert(result.message, {
-								    icon: 1
-								});
-								if (result.responseCode==0) {					
-									window.location.reload();
-								} 
+								if (result.responseCode==0) {		
+									layer.alert(result.message, {
+									    icon: 1
+									},function(){
+										window.location.reload();
+									});
+								}else
+								{
+									layer.alert(result.message, {
+									    icon: 2
+							    	});
+								}
 							}
 			 });
 		});
@@ -438,6 +445,8 @@
 	});
     //审核通过按钮
 	$('#btnAuditOk').click(function() {
+		var orderNo = $('#OrderNo').val();
+		var orderId = $('#OrderId').val();
 		layer.confirm('是否审核通过？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
@@ -445,17 +454,19 @@
 			type : 'POST',
 			url : "<%=basePath%>/order/auditok",
 			data : {
-				"orderId" : orderId
+				"orderId" : orderId,
+				"orderNo":orderNo
 			},
 			success : function(result) {
 				if (result.responseCode==0) {
 					layer.alert('审核成功！', {
 					    icon: 1
+					},function(){
+						window.location.reload();
 					});
-					window.location.reload();
 				} else {
 					layer.alert(result.message, {
-					    icon: 1
+					    icon: 2
 					});
 				}
 			}
