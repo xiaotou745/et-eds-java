@@ -60,7 +60,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	 * @Date 20150730
 	 * @return
 	 */
-	public OrderMapDetail getOrderMapDetail(long orderId) {
+	public OrderMapDetail getOrderMapDetail(int orderId) {
 		OrderMapDetail result = getReadOnlySqlSessionUtil().selectOne(
 				"com.edaisong.api.dao.inter.IOrderDao.getOrderMapDetail",
 				orderId);
