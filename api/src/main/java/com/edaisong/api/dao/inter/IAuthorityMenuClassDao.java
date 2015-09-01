@@ -13,10 +13,10 @@ public interface IAuthorityMenuClassDao {
     List<MenuEntity> getMenuListByUserID(int accountId);
     
 	/**
-	 * 获取所有菜单列表
+	 * 获取给定用户的权限列表
 	 * @author hailongzhao
 	 * @date 20150828
 	 * @return
 	 */
-	public List<AuthorityMenuClass> getMenuList() ;
+	public List<MenuEntity> getAuthList(int userID) ;
 }

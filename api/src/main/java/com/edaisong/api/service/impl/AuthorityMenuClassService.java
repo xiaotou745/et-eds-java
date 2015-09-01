@@ -35,8 +35,8 @@ public class AuthorityMenuClassService implements IAuthorityMenuClassService {
 	}
 
 	@Override
-	public List<AuthorityMenuClass> getMenuList() {
-		return dao.getMenuList();
+	public List<MenuEntity> getAuthList(int userID) {
+		return dao.getAuthList(userID);
 	}
 
 }
