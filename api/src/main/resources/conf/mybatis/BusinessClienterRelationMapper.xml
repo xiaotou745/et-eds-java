@@ -170,4 +170,87 @@
 	#{totalPage,mode=OUT,jdbcType=INTEGER}
 	)}
   </select>
+  
+  <select id="getBusinessBindClienterQty" resultType="int" parameterType="int">
+  	SELECT COUNT(1) FROM BusinessClienterRelation bcr WITH(NOLOCK) 
+  	WHERE bcr.IsBind = 1 AND bcr.IsEnable=1 AND BusinessId=#{businessId,jdbcType=INTEGER};
+  </select>
+  
+  <select id="getClienterBindBusinessQty" resultType="int" parameterType="int">
+  	SELECT COUNT(1) FROM BusinessClienterRelation bcr WITH(NOLOCK) 
+  	WHERE bcr.IsBind = 1 AND bcr.IsEnable=1 AND ClienterId=#{clienterId,jdbcType=INTEGER};
+  </select>
+  
+  <sql id="getBusinessClienterRelationListWhere">
+  	bcr.IsEnable=1
+  	<if test="businessID != 0" >
+  		AND bcr.[BusinessId]=${businessID}
+  	</if>
+  	<if test="search != null and search!=''">
+	    and (c.TrueName=''${search}''
+		or c.PhoneNo=''${search}'')
+		</if>
+  </sql>
+  
+  <!-- 商户绑定骑士列表 -->
+    <select id="getBusinessClienterRelationList" resultType="com.edaisong.entity.domain.BusinessClienterRelationModel" parameterType="com.edaisong.entity.req.PagedCustomerSearchReq"  statementType="CALLABLE" >
+  	{call Sp_CustomPage2015_V1(
+	' bcr.Id DESC ',
+	' c.TrueName ClienterName,c.PhoneNo,bcr.CreateTime,bcr.IsBind,bcr.CreateBy,bcr.UpdateBy,bcr.UpdateTime,bcr.BusinessId,bcr.ClienterId,bcr.IsEnable ',
+	' BusinessClienterRelation bcr WITH(NOLOCK) JOIN dbo.clienter c WITH(NOLOCK) ON bcr.ClienterId=c.Id ',
+	' <include refid="getBusinessClienterRelationListWhere" /> ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER}
+	,1,
+	#{totalRecord,mode=OUT,jdbcType=INTEGER},
+	#{totalPage,mode=OUT,jdbcType=INTEGER}
+	)}
+  </select>
+  
+  <sql id="modifyClienterBindOutput">
+  	OUTPUT
+	  Inserted.BusinessId,
+	  Inserted.ClienterId,
+	  ${optId},
+	  ${optName},
+	  getdate(),
+	  ${remark}
+	INTO ClienterBindOptionLog
+	  ( BusinessId
+	   ,ClienterId
+	   ,OptId
+	   ,OptName
+	   ,InsertTime
+	   ,Remark)
+	from BusinessClienterRelation bcr WITH ( ROWLOCK )
+	where bcr.BusinessId=${businessId} AND bcr.ClienterId=${clienterId}
+  </sql>
+  
+  <!-- 修改骑士绑定  add by pengyi 20150901 -->
+  <update id="modifyClienterBind" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
+  	update bcr
+	set    bcr.IsBind=#{isBind,jdbcType=INTEGER}
+	<include refid="modifyClienterBindOutput"></include>;
+  </update>
+  
+    <!-- 移除骑士绑定  add by pengyi 20150901 -->
+  <update id="removeclienterbind" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
+  	update bcr
+	set    bcr.IsEnable=0
+	<include refid="modifyClienterBindOutput"></include>
+  </update>
+  
+  <select id="checkHaveBind" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
+  	SELECT COUNT(1) FROM BusinessClienterRelation bcr WITH(NOLOCK) 
+  	WHERE  bcr.IsEnable=1 AND BusinessId=#{businessId,jdbcType=INTEGER} AND ClienterId=#{clienterId,jdbcType=INTEGER};
+  </select>
+  
+  <insert id="addClienterBind" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
+  	INSERT INTO [BusinessClienterRelation]
+           ([BusinessId]
+           ,[ClienterId]
+           ,[CreateBy]
+           ,[UpdateBy])
+	<include refid="modifyClienterBindOutput"></include>;
+  </insert>
 </mapper>

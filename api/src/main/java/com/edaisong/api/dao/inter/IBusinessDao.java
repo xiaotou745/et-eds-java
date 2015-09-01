@@ -102,4 +102,6 @@ public interface IBusinessDao {
 	 * @return
 	 */
 	BusinessRechargeDetailModel getRechargeDetail(String orderNo);
+	
+	boolean updateBusinessIsBind(int businessId, int isBind);
 }

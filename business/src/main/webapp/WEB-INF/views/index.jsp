@@ -167,7 +167,7 @@
 				enabled : false
 			},
 			exporting : {
-				enabled : true
+				enabled : false
 			},
 			plotOptions : {
 				spline : {

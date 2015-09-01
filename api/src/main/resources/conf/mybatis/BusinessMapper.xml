@@ -432,4 +432,9 @@ MERGE INTO BusinessExpressRelation ber
                                 JOIN BusinessRecharge c ( NOLOCK ) ON a.id = c.BusinessId AND b.RelationNo=c.OrderNo 
                         WHERE   c.OrderNo=#{orderNo,jdbcType=VARCHAR}
 	</select>
+	
+	<!-- 更新商户是否绑定骑士  add by pengyi 20150901 -->
+	<update id="updateBusinessIsBind" parameterType="java.util.Map">
+		update business set IsBind = #{isBind,jdbcType=INTEGER} where Id = #{businessId,jdbcType=INTEGER};
+	</update>
 </mapper>

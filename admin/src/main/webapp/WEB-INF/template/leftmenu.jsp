@@ -14,7 +14,12 @@
 <%
 	String basePath =PropertyUtils.getProperty("static.admin.url");
 	IAuthorityMenuClassService menuService = SpringBeanHelper.getCustomBeanByType(IAuthorityMenuClassService.class);
-
+	
+	UserContext context = UserContext.getCurrentContext(request);
+	if(context == null){
+		response.sendRedirect(basePath);
+		return;
+	}
 	List<MenuEntity> menuList = menuService.getMenuListByUserID(UserContext.getCurrentContext(request).getAccount().getId());
     String viewPath =request.getAttribute("viewPath").toString();
     		

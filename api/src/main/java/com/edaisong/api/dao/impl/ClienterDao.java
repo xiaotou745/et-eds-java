@@ -18,6 +18,7 @@ import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
+import com.edaisong.entity.req.PagedClienterSearchReq;
 
 
 
@@ -105,29 +106,21 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return resp;
 	}
 
+	/**
+	 * 获得商家下的所有骑士 ,包含骑士已接单的数量
+	 * @author pengyi
+	 * @date 20150901
+	 */
 	@Override
 	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {
-		Map<String, Object> map = new HashMap<String, Object>();		
-/*		String Where = " 1=1 ";	
-		if(req.getWorkStatus() < 2){
-			Where += " and c.workstatus=" + req.getWorkStatus();
-		}
-		if (!StringUtils.isEmpty(req.getSearch())) {
-			Where += " and (c.trueName like ''%" + req.getSearch() 
-					+ "%'' or c.phoneNo like ''%"+ req.getSearch()+"%'')";
-		}
-		Where+=" group by c.Id";*/
-		
+		Map<String, Object> map = new HashMap<String, Object>();				
 		String selectTable = " dbo.clienter c (nolock) JOIN dbo.BusinessClienterRelation (nolock) bcr ON bcr.ClienterId = c.Id AND bcr.BusinessId="
 				+req.getBusinessId()+" join dbo.[order] o (nolock) on o.clienterId=c.Id ";
-		
 		int PageSize = 15;
 		int CurrentPage = req.getCurrentPage();
-		//map.put("Where", Where);
 		map.put("workStatus", req.getWorkStatus());
 		map.put("search", req.getSearch());
 		map.put("businessId", req.getBusinessId());
-		//map.put("selectTable", selectTable);
 		map.put("TotalRecord", 0);
 		map.put("TotalPage", 0);
 		map.put("PageSize", PageSize);
@@ -194,5 +187,27 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return getMasterSqlSessionUtil()
 				.update("com.edaisong.api.dao.inter.IClienterDao.updateCBalanceAndWithdraw",
 						parasMap);
+	}
+
+	@Override
+	public boolean updateClienterIsBind(int clienterId, int isBind) {
+		Map<String, Object> parasMap = new HashMap();
+		parasMap.put("clienterId", clienterId);
+		parasMap.put("isBind", isBind);
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dao.inter.IClienterDao.updateClienterIsBind",
+						parasMap) > 0;
+	}
+
+	/**
+	 * 获得骑士和绑定信息列表
+	 * @author pengyi
+	 * @date 20150901
+	 */
+	@Override
+	public PagedResponse<ClienterModel> getClienterBindInfoList(PagedClienterSearchReq req) {
+		return getReadOnlySqlSessionUtil()
+				.selectPageList("com.edaisong.api.dao.inter.IClienterDao.getClienterBindInfoList",
+						req);
 	}
 }

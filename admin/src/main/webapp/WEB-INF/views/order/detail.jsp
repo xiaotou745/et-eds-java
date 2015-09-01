@@ -11,6 +11,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.core.enums.PayType"%>
 <%@page import="com.edaisong.core.enums.OrderPlatform"%>
+<%@page import="com.edaisong.core.enums.MealsSettleMode"%>
 <%@page import="java.lang.StringBuilder"%>
 <%
 	String basePath =PropertyUtils.getProperty("static.admin.url");
@@ -96,10 +97,13 @@
 			%>
 		</tr>
 		<tr class="trclass">
-			<td>备注：<%=ParseHelper.ShowString(orderListModel.getRemark())%></td>
 			<td>订单数：<%=orderListModel.getOrderCount()%></td>
-			<td>审核推荐处理： <%=ParseHelper.ShowString(orderListModel.getDeductCommissionReason())%></td>
+	        <td>支付来源：<%=MealsSettleMode.getEnum(orderListModel.getMealsSettleMode()).desc()%></td>
 			<td>订单是否需要审核：<%=orderListModel.getIsOrderChecked()==1? "是":"否"%></td>
+		    <td>备注：<%=ParseHelper.ShowString(orderListModel.getRemark())%></td>
+		</tr>
+		<tr class="trclass">
+					<td>审核推荐处理： <%=ParseHelper.ShowString(orderListModel.getDeductCommissionReason())%></td>
 		</tr>
 	</table>
 	<hr />
@@ -111,7 +115,7 @@
 				                for (int i = 0; i < orderListModel.getOrderDetailList().size(); i++)
 				                {
 				                    caiPin.append(orderListModel.getOrderDetailList().get(i).getProductname() + "*" + orderListModel.getOrderDetailList().get(i).getQuantity());
-				                    if (i > 0 && i != orderListModel.getOrderDetailList().size() )
+				                    if (i >= 0 && i != orderListModel.getOrderDetailList().size() -1)
 				                    {
 				                        caiPin.append(",");
 				                    }
@@ -140,13 +144,6 @@
 																                    String curPuth = "";
 																                    String curPhost ="";
 																   for (OrderChild curOrderChild :orderChildList){
-																	   String bigFileName = "";
-																	   if (curOrderChild.getTicketurl()!=null&&!curOrderChild.getTicketurl().isEmpty())
-															                    {
-															                        int fileLastDot = curOrderChild.getTicketurl().lastIndexOf('.');
-															                        String fileHandHouZhui = curOrderChild.getTicketurl().substring(fileLastDot, curOrderChild.getTicketurl().length());
-															                        bigFileName = curPhost + curPuth + curOrderChild.getTicketurl().substring(0, fileLastDot) + "_0_0" + fileHandHouZhui;
-															                    }
 				%>
 				<tr>
 					<td><%=ParseHelper.ShowString(curOrderChild.getChildid())%></td>
@@ -176,9 +173,9 @@
 					<td></td>
 					<td>
 						<%
-							if (bigFileName!=null&&!bigFileName.isEmpty())
-																										                   {
-						%> <a href="<%=bigFileName%>">查看</a> <%
+							if (curOrderChild.getTicketurl()!=null&&!curOrderChild.getTicketurl().isEmpty())
+			             {
+						%> <a href="<%=PropertyUtils.getProperty("ImageServicePath")%><%=curOrderChild.getTicketurl()%>">查看</a> <%
  	}
  %>
 
@@ -417,6 +414,12 @@
 		var orderOptionLog = $('#deductWebSubsidyReason').val();
 		if (orderOptionLog.trim() == "") {
 			layer.alert('扣除网站补贴原因不能为空！', {
+			    icon: 2
+			});
+			return false;
+		}
+		if (orderOptionLog.trim().length < 5 || orderOptionLog.trim().length > 50) {
+			layer.alert('请保证输入内容在5到50个字符！', {
 			    icon: 2
 			});
 			return false;
