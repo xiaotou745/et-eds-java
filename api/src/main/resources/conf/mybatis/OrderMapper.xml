@@ -1082,6 +1082,6 @@
 	</select>
 		<!-- 更新订单真实佣金 add by caoheyang 20150831 -->
 	<update id="updateOrderRealCommission" parameterType="com.edaisong.entity.req.OrderOtherSearch">
-		update [Order] set RealOrderCommission=#{realOrderCommission,jdbcType=NVARCHAR}  where id=@orderId
+		update [Order] set RealOrderCommission=#{realOrderCommission,jdbcType=NVARCHAR}  where id=#{orderId,jdbcType=INTEGER}
 	</update>
 </mapper>

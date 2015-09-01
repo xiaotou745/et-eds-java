@@ -14,7 +14,7 @@ public enum OrderOperationCommon {
 	/**
 	 * 审核拒绝
 	 */
-	AuditStatusRefuse(1, "审核拒绝");
+	AuditStatusRefuse(2, "审核拒绝");
 	private int value = 0;
 	private String desc;
 
