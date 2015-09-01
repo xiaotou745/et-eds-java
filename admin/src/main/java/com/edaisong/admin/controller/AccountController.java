@@ -27,12 +27,14 @@ import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.IPUtil;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.AccountLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.SimpleUserInfoModel;
 import com.edaisong.entity.req.PagedAccountReq;
 
 
@@ -137,7 +139,15 @@ public class AccountController {
 		error = "成功";
 		log.setRemark(error);
 		accountLoginLogService.addLog(log);
-		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(account), cookieMaxAge,
+		SimpleUserInfoModel loginUser = new SimpleUserInfoModel();
+		loginUser.setAccountType(ParseHelper.ToInt(account.getAccounttype(), 1));
+		loginUser.setGroupId(ParseHelper.ToInt(account.getGroupid(), 0));
+		loginUser.setId(account.getId());
+		loginUser.setLoginName(account.getLoginname());
+		loginUser.setPassword(password);
+		loginUser.setRoleId(account.getRoleid());
+		loginUser.setUserName(account.getUsername());
+		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
 				true);
 		List<Integer> menuList = authorityAccountMenuSetService.getMenuIdsByAccountId(account.getId());
 		if(menuList != null){
