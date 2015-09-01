@@ -21,4 +21,13 @@ public interface IClienterBalanceRecordDao {
     
     
     PagedResponse<ClienterBalanceRecord> query(ClienterBalanceRecordReq req) ;
+    
+  /**
+   * 根据订单获取对象
+   * @author CaoHeYang
+   * @param id
+   * @date 20150831
+   * @return
+   */
+     ClienterBalanceRecord getByOrderId(long id);
 }

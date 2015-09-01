@@ -2,6 +2,8 @@ package com.edaisong.admin.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
@@ -33,6 +36,8 @@ public class OrderController {
     private IGroupService iGroupService;
 	 @Autowired
 	 private IOrderSubsidiesLogService orderSubsidiesLogService;
+	 @Autowired
+	 private HttpServletRequest request;
 	/**
 	 * 订单列表页面 
 	 * @author CaoHeYang
@@ -96,15 +101,33 @@ public class OrderController {
 	   if (orderListModel==null) {
 		   throw new RuntimeException("没有找到orderno="+orderno+"的订单");
 	   }
-	   List<OrderSubsidiesLog> orderSubsidiesLogs=orderSubsidiesLogService.GetOrderOptionLog(orderid);
+	    List<OrderSubsidiesLog> orderSubsidiesLogs=orderSubsidiesLogService.GetOrderOptionLog(orderid);
 		model.addObject("subtitle", "订单列表");
 		model.addObject("currenttitle", "订单详情");
 		model.addObject("viewPath", "order/detail");
 		model.addObject("orderListModel", orderListModel);
 		model.addObject("orderSubsidiesLogs", orderSubsidiesLogs);
+		model.addObject("isShowAuditBtn", isShowAuditBtn(orderListModel));
 		return model;
 	}
 	
+	/**
+	 * 订单详情页面是否显示审核按钮
+	 * @author CaoHeYang
+	 * @param orderModel
+	 * @date 20150901
+	 * @return
+	 */
+	  private boolean isShowAuditBtn(OrderListModel orderModel)
+      {
+          //只有在已完成订单并且已上传完小票的情况下显示该按钮
+          if (orderModel != null && /*已完成*/ orderModel.getFinishAll() == 1 && /*订单未分账*/ orderModel.getIsJoinWithdraw() == 0
+              && orderModel.getIsEnable() == 1)
+          {
+              return true;
+          }
+          return false;
+      }
 	/**
 	 * 订单审核通过
 	 * @author CaoHeYang
@@ -114,11 +137,11 @@ public class OrderController {
 	 */
 	@RequestMapping(value="auditok",method= {RequestMethod.POST})
 	@ResponseBody
-	public ResponseBase auditok(int orderid){
-		OptOrder auditOkOrder=new OptOrder();
-		auditOkOrder.setOrderId(orderid);
+	public ResponseBase auditok(OptOrder auditOkOrder){
+		auditOkOrder.setOptUserId(UserContext.getCurrentContext(request).getId());
+		auditOkOrder.setOptUserName(UserContext.getCurrentContext(request).getName());
 		ResponseBase responseBase= orderService.auditOk(auditOkOrder);
-		return new ResponseBase();
+		return responseBase;
 	}
 	/**
 	 * 订单审核拒绝
@@ -129,8 +152,11 @@ public class OrderController {
 	 */
 	@RequestMapping(value="auditrefuse",method= {RequestMethod.POST})
 	@ResponseBody
-	public ResponseBase auditrefuse(OptOrder auditOkOrder){
-		return new ResponseBase();
+	public ResponseBase auditrefuse(OptOrder auditrefuse){
+		auditrefuse.setOptUserId(UserContext.getCurrentContext(request).getId());
+		auditrefuse.setOptUserName(UserContext.getCurrentContext(request).getName());
+		ResponseBase responseBase= orderService.auditRefuse(auditrefuse);
+		return responseBase;
 	}
 	/**
 	 * 取消订单
@@ -142,10 +168,10 @@ public class OrderController {
 	 */
 	@RequestMapping(value="cancelorder",method= {RequestMethod.POST})
 	@ResponseBody
-	public ResponseBase cancelorder(OptOrder auditokorder){
-		auditokorder.setOptUserId(1);
-		auditokorder.setOptUserName("caoheyang");
-		ResponseBase responseBase= orderService.cancelOrder(auditokorder);
+	public ResponseBase cancelorder(OptOrder cancelorder){
+		cancelorder.setOptUserId(UserContext.getCurrentContext(request).getId());
+		cancelorder.setOptUserName(UserContext.getCurrentContext(request).getName());
+		ResponseBase responseBase= orderService.cancelOrder(cancelorder);
 		return responseBase;
 	}
 }

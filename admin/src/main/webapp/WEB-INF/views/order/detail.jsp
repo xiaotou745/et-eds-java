@@ -16,6 +16,7 @@
 	String basePath =PropertyUtils.getProperty("static.admin.url");
     OrderListModel orderListModel=	(OrderListModel)request.getAttribute("orderListModel");
 	List<OrderSubsidiesLog> orderSubsidiesLogs=	(List<OrderSubsidiesLog>)request.getAttribute("orderSubsidiesLogs");
+	boolean isShowAuditBtn=(boolean)request.getAttribute("isShowAuditBtn");
 %>
 <style type="text/css">
 .trclass {
@@ -242,10 +243,17 @@
 			<tr>
 				<td><input type="button" value="取消订单" class="searchBtn"
 					id="btnCancel" /></td>
+										<%
+						if (isShowAuditBtn) 
+						{
+					%>
 				<td><input type="button" value="审核通过" class="searchBtn"
 					id="btnAuditOk" style="margin-left: 10px;" /> <input type="button"
 					value="审核拒绝" class="searchBtn" id="btnAuditCancel"
 					style="margin-left: 10px;" /></td>
+			 <%
+					}
+				%>
 			</tr>
 		</table>
 	</div>
@@ -377,15 +385,26 @@
 				url :  "<%=basePath%>/order/cancelorder",
 				data :  {
 					"orderId" : orderId,
-					"OrderOptionLog" : orderOptionLog
+					"optLog" : orderOptionLog,
+					"orderNo":orderNo
 				},
 				success : function(result) {
 					layer.alert(result.message, {
 					    icon: 1
 					});
 					if (result.responseCode==0) {
-						window.location.reload();
-					} 
+						layer.alert(result.message, {
+						    icon: 1
+						},function(){
+							window.location.reload();
+						});
+
+					} else
+					{
+						layer.alert(result.message, {
+						    icon: 2
+				    	});
+					}
 				}
 			});
 		});
@@ -402,6 +421,12 @@
 			});
 			return false;
 		}
+		if (orderOptionLog.trim().length < 5 || orderOptionLog.trim().length > 50) {
+			layer.alert('请保证输入内容在5到50个字符！', {
+			    icon: 2
+			});
+			return false;
+		}
 		layer.confirm('确定要扣除该订单网站补贴吗？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
@@ -411,15 +436,22 @@
 							url : "<%=basePath%>/order/auditrefuse",
 							data : {
 								"orderId" : orderId,
-								"OrderOptionLog" : orderOptionLog
+								"optLog" : orderOptionLog,
+								"orderNo":orderNo
 							},
 							success : function(result) {
-								layer.alert(result.message, {
-								    icon: 1
-								});
-								if (result.responseCode==0) {					
-									window.location.reload();
-								} 
+								if (result.responseCode==0) {		
+									layer.alert(result.message, {
+									    icon: 1
+									},function(){
+										window.location.reload();
+									});
+								}else
+								{
+									layer.alert(result.message, {
+									    icon: 2
+							    	});
+								}
 							}
 			 });
 		});
@@ -427,24 +459,29 @@
 	});
     //审核通过按钮
 	$('#btnAuditOk').click(function() {
+		var orderNo = $('#OrderNo').val();
+		var orderId = $('#OrderId').val();
 		layer.confirm('是否审核通过？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
-		},function(){$.ajax({
+		},function(){
+			$.ajax({
 			type : 'POST',
 			url : "<%=basePath%>/order/auditok",
 			data : {
-				"orderId" : orderId
+				"orderId" : orderId,
+				"orderNo":orderNo
 			},
 			success : function(result) {
 				if (result.responseCode==0) {
 					layer.alert('审核成功！', {
 					    icon: 1
+					},function(){
+						window.location.reload();
 					});
-					window.location.reload();
 				} else {
 					layer.alert(result.message, {
-					    icon: 1
+					    icon: 2
 					});
 				}
 			}

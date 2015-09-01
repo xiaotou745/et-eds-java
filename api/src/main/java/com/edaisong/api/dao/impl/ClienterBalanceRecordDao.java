@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -16,6 +17,7 @@ import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.ClienterBalanceRecordReq;
 import com.edaisong.entity.req.ClienterReq;
+import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 
 @Repository
 public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanceRecordDao {
@@ -88,6 +90,21 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
 		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
 		return resp;
+	}
+
+	  /**
+	   * 根据订单获取对象
+	   * 引处使用了 nolock
+	   * @author CaoHeYang
+	   * @param id
+	   * @date 20150831
+	   * @return
+	   */
+	@Override
+	public ClienterBalanceRecord getByOrderId(long id) {
+		Map< String, Object> map=new HashedMap();
+		map.put("id", id);
+		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.getByOrderId", map);
 	}
 
 }

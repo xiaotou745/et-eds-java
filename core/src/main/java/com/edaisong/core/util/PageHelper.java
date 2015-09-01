@@ -40,7 +40,7 @@ public class PageHelper {
 
 		//跳转到指定页
 		sb.append("<input type=\"hidden\" id=\"pagesearchmax\" value=\""+totalPage+"\">");
-		sb.append("<input type=\"text\" id=\"pagesearchvalue\"  value=\"1\" style=\"width:30px;height:28px;\">");
+		sb.append("<input type=\"text\" id=\"pagesearchvalue\"  value=\""+currentPage+"\" style=\"width:30px;height:28px;\">");
 		sb.append("<input type=\"button\" id=\"pagesearch\" value=\"跳转\" data-submitbutton=\"true\">");
 		sb.append("</ul></div></div></div>");
 

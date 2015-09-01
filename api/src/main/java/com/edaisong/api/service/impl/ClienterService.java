@@ -27,9 +27,6 @@ import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
 import com.edaisong.entity.resp.AccountResp;
 
-
-
-
 @Service
 public class ClienterService implements IClienterService {
 

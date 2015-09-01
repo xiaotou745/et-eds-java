@@ -20,6 +20,7 @@ import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
@@ -158,6 +159,23 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		paramMap.put("orderId", orderId);  //订单id
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderDao.getOrderByNoId", paramMap);
 	}
+	
+	 /**
+	  *  根据订单号/订单id查订单信息(写库),
+	  *  此处查询使用了 nolock
+	  * @author 胡灵波
+	  * @param ordernNo 订单号
+	  * @param orderId  订单id
+	  * @Date 2015年9月1日 14:20:22
+	  * @return
+	  */
+	@Override
+	public OrderListModel getOrderWriteByNoId(String ordernNo, int orderId) {
+		Map<String, Object> paramMap = new HashedMap();
+		paramMap.put("orderNo", ordernNo);  //订单号
+		paramMap.put("orderId", orderId);  //订单id
+		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderDao.getOrderByNoId", paramMap);
+	}
 	/**
 	 * update 任意列 根据id 
 	 * @author CaoHeYang
@@ -167,4 +185,15 @@ public class OrderDao extends DaoBase implements IOrderDao {
   public int updateByPrimaryKeySelective(Order order){
 	  return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderDao.updateByPrimaryKeySelective", order);
   }
+  /**
+   * 更新订单真实佣金
+   * @author CaoHeYang
+   * @param orderOtherSearch
+   * @date 20150831
+   * @return
+   */
+	@Override
+	public int updateOrderRealCommission(OrderOtherSearch orderOtherSearch) {
+		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderDao.updateOrderRealCommission", orderOtherSearch);
+	}
 }
