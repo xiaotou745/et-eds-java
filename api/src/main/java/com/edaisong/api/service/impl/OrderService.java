@@ -714,7 +714,7 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	//@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public ResponseBase auditRefuse(OptOrder auditRefuseOrder) {
 		OrderListModel orderModel = orderDao.getOrderWriteByNoId(auditRefuseOrder.getOrderNo(), auditRefuseOrder.getOrderId());
 		ResponseBase responseBase = auditRefuseCheck(auditRefuseOrder, orderModel);
@@ -728,7 +728,7 @@ public class OrderService implements IOrderService {
 				double diffOrderCommission = orderModel.getSettleMoney() - orderModel.getOrderCommission();
 				double disOrderCommission = -diffOrderCommission;
 				// 更新骑士余额
-				ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel);
+				ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel,auditRefuseOrder);
 				clienterMoney.setRemark(auditRefuseOrder.getOptLog());
 				clienterMoney.setAmount(diffOrderCommission);
 				clienterMoney.setStatus(ClienterBalanceRecordStatus.Success.value());
@@ -749,7 +749,7 @@ public class OrderService implements IOrderService {
 		double realOrderCommission = orderModel.getOrderCommission() == null ? 0 : orderModel.getOrderCommission();
 		realOrderCommission = realOrderCommission > orderModel.getSettleMoney() ? orderModel.getSettleMoney() : realOrderCommission;
 		// 更新骑士可提现余额
-		ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel);
+		ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel,auditRefuseOrder);
 		clienterMoney.setRemark(auditRefuseOrder.getOptLog());
 		clienterMoney.setAmount(realOrderCommission);
 		clienterMoney.setStatus(ClienterAllowWithdrawRecordStatus.Success.value());
@@ -824,13 +824,14 @@ public class OrderService implements IOrderService {
 	 * 
 	 * @author CaoHeYang
 	 * @param orderModel
+	 * @param auditRefuseOrder
 	 * @date 20150901
 	 * @return
 	 */
-	private ClienterMoney auditRefuseGetClienterMoney(OrderListModel orderModel) {
+	private ClienterMoney auditRefuseGetClienterMoney(OrderListModel orderModel, OptOrder auditRefuseOrder) {
 		ClienterMoney clienterMoney = new ClienterMoney();
 		clienterMoney.setClienterId(orderModel.getClienterId());
-		clienterMoney.setOperator(orderModel.getOptUserName());
+		clienterMoney.setOperator(auditRefuseOrder.getOptUserName());
 		clienterMoney.setWithwardId(orderModel.getId());
 		clienterMoney.setRelationNo(orderModel.getOrderNo());
 		return clienterMoney;
