@@ -335,7 +335,7 @@ public class OrderService implements IOrderService {
 		if (object != null) {
 			redisService.remove(timespanKey);
 		}
-		redisService.set(timespanKey, "", 30);
+		redisService.set(timespanKey, "", 1);
 	}
 
 	/**
@@ -396,12 +396,12 @@ public class OrderService implements IOrderService {
 		order.setPickupaddress(businessModel.getAddress());
 		order.setRecevicelongitude(0d); // TODO 暂时默认0
 		order.setRecevicelatitude(0d);// TODO 暂时默认0
-
+		order.setTimespan(String.valueOf((new Date()).getTime()));
 		order.setRecevicecity(businessModel.getCity()); // TODO 配送城市 暂时取商家的
 
 		order.setCommissionformulamode(businessModel.getStrategyId());
 		order.setBusinesscommission(businessModel.getBusinesscommission());
-		order.setBusinessgroupid(businessModel.getGroupid());
+		order.setBusinessgroupid(businessModel.getBusinessgroupid());
 		order.setCommissiontype(businessModel.getCommissiontype());
 		order.setCommissionfixvalue(businessModel.getCommissionfixvalue());
 		order.setMealssettlemode(businessModel.getMealssettlemode()); // 餐费结算方式（0：线下结算

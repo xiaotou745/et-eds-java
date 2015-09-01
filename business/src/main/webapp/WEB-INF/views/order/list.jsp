@@ -35,9 +35,10 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 				<select class="fl"  name="orderStatus"  id="orderStatus">
 					<option value="-1">全部</option>
 					<option value="0">待接单</option>
+					<option value="2">已接单</option>
+					<option value="4">取货中</option>
 					<option value="1">已完成</option>
 					<option value="3">已取消</option>
-					<option value="4">取货中</option>
 				</select>
 				<span class="fl">发单时间</span>
 				<label class="fl">
@@ -87,6 +88,17 @@ jss.search(1);
 $("#btnSearch").click(function() {
 	searchType=0;
 	$("#customerInfo").val("");
+	var startDate = $('#orderPubStart').val();
+    var endDate = $('#orderPubEnd').val();
+    if (startDate != "" && endDate != "") {
+        var intStartDate = startDate.replace(/-/g, "");
+        var intEndDate = endDate.replace(/-/g, "");
+        if (intStartDate > intEndDate) {
+            alert('开始日期不能大于结束日期');
+            $('#orderPubStart').val("");
+            return;
+        }
+    }
 	jss.search(1);
 });
 $("#customerSearch").click(function() {

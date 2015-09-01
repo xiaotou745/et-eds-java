@@ -33,9 +33,12 @@
 	JOIN AuthorityMenuClass amc(nolock) ON aam.MenuId = amc.Id
 	WHERE aam.AccoutId=#{accountId} and  amc.BeLock=CAST(0 as bit)) and BeLock=CAST(0 as bit)
   </select>
-   <select id="getMenuList" resultType="com.edaisong.entity.MenuEntity">
-	 select 
-    <include refid="Base_Column_List" />
-    from AuthorityMenuClass with(nolock)
+   <select id="getAuthList" resultType="com.edaisong.entity.MenuEntity"  parameterType="java.lang.Integer" >
+SELECT  *
+FROM    AuthorityMenuClass a WITH ( NOLOCK )
+        LEFT JOIN ( SELECT  b.MenuId
+                    FROM    AuthorityAccountMenuSet b WITH ( NOLOCK )
+                    WHERE   b.AccoutId = 1
+                  ) t ON a.Id = t.MenuId 
   </select>
 </mapper>
