@@ -61,10 +61,12 @@
 			</div>
 		</div>
 		<div class="right">
-			<div class="r-top">
-				<iframe allowtransparency="true" frameborder="0" width="290"
+			<div class="r-top" style="position:relative">
+				<iframe allowtransparency="true" frameborder="0" width="290" stype="z-index:-1;position:absolutely;left:0;top:0"
 					height="96" scrolling="no"
 					src="http://tianqi.2345.com/plugin/widget/index.htm?s=2&z=3&t=0&v=0&d=2&bd=0&k=&f=&q=1&e=1&a=1&c=54511&w=290&h=96&align=center"></iframe>
+				<!-- 遮罩层 -->
+				<div style="position:absolute;width:100%;height:100%;z-index:1;left:0;top:0"></div>
 			</div>
 			<div class="r-bottom">
 				<h2>
@@ -76,8 +78,9 @@
 					<%
 						if(message != null){
 					%>
-					<span class="fl" id="notice" style="height:70px;overflow:scroll;"> <%=message.getContent()%>
+					<a class="fr" href="<%=basePath%>/message/list"><span class="fl" id="notice" > <%=message.getContent()%>
 					</span>
+					</a>
 					<%
 						}else{
 					%>
@@ -121,10 +124,10 @@
 		}
 	}
 	$(function() {
-/* 		var notice = $("#notice").text();
-		if (notice.length > 70) {
-			$("#notice").text(notice.substr(0, 60) + "...");
-		} */
+ 		var notice = $("#notice").text();
+		if (notice.length > 30) {
+			$("#notice").text(notice.substr(0, 30) + "...");
+		} 
 
 		//统计图
 		$('#container').highcharts({
