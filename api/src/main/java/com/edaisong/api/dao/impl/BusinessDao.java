@@ -144,4 +144,13 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public BusinessRechargeDetailModel getRechargeDetail(String orderNo) {
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getRechargeDetail", orderNo);
 	}
+
+	@Override
+	public boolean updateBusinessIsBind(int businessId, int isBind) {
+		Map<String, Object> parasMap = new HashMap();
+		parasMap.put("businessId", businessId);
+		parasMap.put("isBind", isBind);
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IBusinessDao.updateBusinessIsBind",parasMap) > 0;
+	}
 }

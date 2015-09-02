@@ -37,7 +37,7 @@
 			订单来源：
 			<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getGroupName())%></h5>
-		<h5>
+		<h5 >
 			备注：<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getRemark())%></h5>
 	</div>
@@ -156,7 +156,7 @@
 				<td>配送费</td>
 				<td>支付状态</td>
 				<td>支付类型</td>
-				<td>状态</td>
+				<td>小票</td>
 			</tr>
 			<%
 				for (int i = 0; i < modelDatas.getOrderChilds().size(); i++) {
@@ -182,9 +182,11 @@
 				 {
 				%>
 				<a
-					href="<%=PropertyUtils.getProperty("ImageServicePath")%><%=modelDatas.getOrderChilds().get(i).getTicketurl()%>">查看</a>
+					href="<%=PropertyUtils.getProperty("ImageServicePath")%><%=modelDatas.getOrderChilds().get(i).getTicketurl()%>"  target="_blank">查看</a>
 				<%
-				} %>
+				} else{%>
+			      未上传
+					<% }%>
 				</td>
 			</tr>
 

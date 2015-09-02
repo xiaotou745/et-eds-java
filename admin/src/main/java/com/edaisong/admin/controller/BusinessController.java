@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IBusinessBalanceRecordService;
+import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessExpressRelationService;
 import com.edaisong.api.service.inter.IBusinessFinanceAccountService;
 import com.edaisong.api.service.inter.IBusinessGroupService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IBusinessThirdRelationService;
+import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.IGroupService;
@@ -31,17 +34,23 @@ import com.edaisong.entity.BusinessGroup;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.BusinesRechargeModel;
+import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessThirdRelationModel;
+import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
+import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.PagedBusinessReq;
+import com.edaisong.entity.req.PagedClienterSearchReq;
+import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
 
 /*
@@ -81,6 +90,12 @@ public class BusinessController {
 
 	@Autowired
 	private IBusinessBalanceRecordService businessBalanceRecordService;
+	
+	@Autowired
+	private IBusinessClienterRelationService businessClienterRelationService;
+	
+	@Autowired
+	private IClienterService clienterService;
 
 	@RequestMapping("list")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse res) {
@@ -313,6 +328,120 @@ public class BusinessController {
 	public ModelAndView getBalanceDetailListDo(PagedTransDetailReq req) {
 		PagedResponse<BusinessBalanceRecord> resp = businessBalanceRecordService.getTransDetailList(req);
 		ModelAndView model = new ModelAndView("business/balancedetaillistdo");
+		model.addObject("listData", resp);
+		return model;
+	}
+	
+	@RequestMapping("clienterbindlist")
+	public ModelAndView clienterBindList(int businessId) throws Exception {
+		BusinessDetailModel detail = iBusinessService.getBusinessDetailByID(businessId);
+		if (detail == null) {
+			throw new Exception("没找到businessID为" + businessId + "的详细信息");
+		}
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "商户");
+		model.addObject("currenttitle", "骑士绑定");
+		model.addObject("detail", detail);
+		model.addObject("bindClienterQty", businessClienterRelationService.getBusinessBindClienterQty(businessId));
+		return model;
+	}
+	
+	@RequestMapping("clienterbindlistdo")
+	public ModelAndView clienterBindListDo(int businessId) throws Exception {
+		ModelAndView model = new ModelAndView("business/clienterbindlistdo");
+		PagedCustomerSearchReq req = new PagedCustomerSearchReq();
+		req.setBusinessID(businessId);
+		PagedResponse<BusinessClienterRelationModel> resp = businessClienterRelationService.getBusinessClienterRelationList(req);
+		model.addObject("listData", resp);
+		return model;
+	}
+	
+	@RequestMapping("modifyclienterbind")
+	public int modifyClienterBind(ClienterBindOptionReq req,HttpServletRequest request){
+		req.setOptId(UserContext.getCurrentContext(request).getId());
+		req.setOptName(UserContext.getCurrentContext(request).getName());
+		if(businessClienterRelationService.modifyClienterBind(req)){
+			return 1;
+		}
+		return 0;
+	}
+	
+	@RequestMapping("removeclienterbind")
+	public int removeclienterbind(ClienterBindOptionReq req,HttpServletRequest request){
+		req.setOptId(UserContext.getCurrentContext(request).getId());
+		req.setOptName(UserContext.getCurrentContext(request).getName());
+		if(businessClienterRelationService.removeclienterbind(req)){
+			return 1;
+		}
+		return 0;
+	}
+	
+	@RequestMapping("addclienterbindlist")
+	public ModelAndView addclienterbindlist(int businessId) throws Exception {
+		BusinessDetailModel detail = iBusinessService.getBusinessDetailByID(businessId);
+		if (detail == null) {
+			throw new Exception("没找到businessID为" + businessId + "的详细信息");
+		}
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "商户");
+		model.addObject("currenttitle", "添加骑士绑定");
+		model.addObject("detail", detail);
+		return model;
+	}
+	
+	@RequestMapping("addclienterbindlistdo")
+	public ModelAndView addclienterbindlistdo(int businessId,String clienterName,String clienterPhone) throws Exception {
+		ModelAndView model = new ModelAndView("business/addclienterbindlistdo");
+		PagedClienterSearchReq req = new PagedClienterSearchReq();
+		req.setClienterName(clienterName);
+		req.setClienterPhone(clienterPhone);
+		PagedResponse<ClienterModel> resp = clienterService.getClienterList(req);
+		model.addObject("listData", resp);
+		return model;
+	}
+	
+	@RequestMapping("addclienterbind")
+	public @ResponseBody ResponseBase addclienterbind(int businessId,int clienterId,HttpServletRequest request){
+		ResponseBase response = new ResponseBase();
+		ClienterBindOptionReq req = new ClienterBindOptionReq();
+		req.setBusinessId(businessId);
+		req.setClienterId(clienterId);
+		if(!businessClienterRelationService.checkHaveBind(req)){
+			response.setMessage("此条绑定关系已存在！");
+		}else {
+			req.setOptId(UserContext.getCurrentContext(request).getId());
+			req.setOptName(UserContext.getCurrentContext(request).getName());
+			req.setRemark("添加绑定");
+			if(!businessClienterRelationService.addClienterBind(req)){
+				response.setMessage("绑定关系失败！");
+			}else{
+				response.setMessage("绑定关系成功！");
+				response.setResponseCode(1);
+			}
+		}
+		return response;
+	}
+	
+	@RequestMapping("clienterbathbindlist")
+	public ModelAndView clienterbathbindlist(int businessId) throws Exception {
+		BusinessDetailModel detail = iBusinessService.getBusinessDetailByID(businessId);
+		if (detail == null) {
+			throw new Exception("没找到businessID为" + businessId + "的详细信息");
+		}
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "商户");
+		model.addObject("currenttitle", "批量添加骑士绑定");
+		model.addObject("detail", detail);
+		return model;
+	}
+	
+	@RequestMapping("clienterbathbindlistdo")
+	public ModelAndView clienterbathbindlistdo(int businessId,String clienterName,String clienterPhone) throws Exception {
+		ModelAndView model = new ModelAndView("business/addclienterbindlistdo");
+		PagedClienterSearchReq req = new PagedClienterSearchReq();
+		req.setClienterName(clienterName);
+		req.setClienterPhone(clienterPhone);
+		PagedResponse<ClienterModel> resp = clienterService.getClienterList(req);
 		model.addObject("listData", resp);
 		return model;
 	}

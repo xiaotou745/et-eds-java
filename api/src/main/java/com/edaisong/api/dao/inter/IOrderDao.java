@@ -39,7 +39,17 @@ public interface IOrderDao {
 	  */
 	 OrderListModel getOrderByNoId(String ordernNo,int orderId);
 	 
-	
+	 /**
+	  * 根据订单号/订单id查订单信息(写库)
+	  * 此处使用了nolock
+	  * @author 胡灵波
+	  * @param ordernNo 订单号
+	  * @param orderId  订单id
+	  * @Date 2015年9月1日 14:23:15
+	  * @return
+	  */
+	 OrderListModel getOrderWriteByNoId(String ordernNo, int orderId);
+	 
 	/**
 	 * 商家中心订单列表页面右上角自定义查询 
 	 * @author zhaohailong
@@ -56,7 +66,7 @@ public interface IOrderDao {
 	 * @Date 20150730
 	 * @return
 	 */
-	OrderMapDetail getOrderMapDetail(long orderId);
+	OrderMapDetail getOrderMapDetail(int orderId);
 
 	/**
 	 * 商家后台 订单详情页面基础数据

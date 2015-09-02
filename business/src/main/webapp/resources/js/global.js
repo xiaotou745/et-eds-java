@@ -22,7 +22,7 @@ function iphone() {
 	var reg = /^1[0-9]{10}$/i;// 验证手机正则(输入前7位至11位)
 
 	if ($(".ex_iphone").val() == "" || $(".ex_iphone").val() == "输入您的手机号") {
-		$(".error1").html("输入手机格式错误");
+		$(".error1").html("请输入手机号");
 		$(".error1").css("display", "block");
 		return false;
 	} else if ($(".ex_iphone").val().length < 11) {
@@ -40,12 +40,12 @@ function iphone() {
 function password() {
 
 	if ($(".ex_pord").val() == "" || $(".ex_pord").val() == "输入密码") {
-		$(".error2").html("密码输入错误");
+		$(".error2").html("请输入密码");
 		$(".error2").css("display", "block");
 		return false;
 	}
 	if ($(".ex_pord").val().length > 6) {
-		$(".error2").html("密码输入错误！");
+		$(".error2").html("密码格式错误！");
 		$(".error2").css("display", "block");
 		return false;
 	}

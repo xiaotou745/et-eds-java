@@ -121,7 +121,7 @@
 	min(c.AccountBalance) accountbalance
 	 FROM dbo.clienter c (nolock)
 	 JOIN dbo.BusinessClienterRelation bcr ON bcr.ClienterId = c.Id AND bcr.BusinessId=${businessId}
-	join dbo.[order] o (nolock) on o.clienterId=c.Id
+	left join dbo.[order] o (nolock) on o.clienterId=c.Id
 	where 1=1
 	<if test="!(workStatus>=2)">
 	and c.WorkStatus=${workStatus}
@@ -132,29 +132,7 @@
 	group by c.Id) as mp
   </sql>
 	
-	<!-- 获得商家下的所有骑士  add by pengyi 20150824-->
-<!-- 	<select id="getBusinessClienters" resultType="com.edaisong.entity.domain.BusinessClientersModel"
-		parameterType="java.util.Map" statementType="CALLABLE">
- 
-{call Sp_CustomPage2015_V1(
-' c.id desc ',
-' c.id id,MIN(c.TrueName) truename,MIN(c.PhoneNo) phoneno,MIN(c.WorkStatus) workstatus,
-	MIN(c.allowwithdrawprice) allowwithdrawprice,
-	sum(o.OrderCount) finishedOrderCount,
-	min(c.AccountBalance) accountbalance ',
-#{selectTable,mode=IN,jdbcType=VARCHAR},
-	' <include refid="getBusinessClientersWhere"/> ',
-#{PageSize,mode=IN,jdbcType=INTEGER},
-#{CurrentPage,mode=IN,jdbcType=INTEGER},
-1,
-#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
-#{TotalPage,mode=OUT,jdbcType=VARCHAR}
-)}
-
-	</select> -->
-	
-	
-	
+	<!-- 获得商家下的所有骑士 ,包含骑士已接单的数量   add by pengyi 20150901 -->
 	<select id="getBusinessClienters" resultType="com.edaisong.entity.domain.BusinessClientersModel"
 		parameterType="java.util.Map" statementType="CALLABLE">
  
@@ -174,7 +152,6 @@
 )}
 
 	</select>
-
 
 	<select id="getClienterList" resultType="com.edaisong.entity.domain.ClienterModel"
 		parameterType="java.util.Map">
@@ -556,4 +533,36 @@
 		AccountBalance=AccountBalance + #{Money,jdbcType=DECIMAL} 
 		where  Id= #{Id,jdbcType=INTEGER}
 	</update>
+	
+	<!-- 更新骑士是否绑定  add by pengyi  20150901 -->
+	<update id="updateClienterIsBind" parameterType="java.util.Map">
+		update clienter set IsBind = #{isBind,jdbcType=INTEGER}  where Id = #{clienterId,jdbcType=INTEGER};
+	</update>
+	
+	
+	<sql id="getClienterListWhere">
+		1=1 
+		<if test="clienterName != null and clienterName!=''">
+			AND C.TrueName LIKE ''%${clienterName}%''
+		</if>
+		<if test="clienterPhone != null and clienterPhone!=''">
+			AND C.PhoneNo=''%${clienterPhone}%'' 
+		</if>
+	</sql>
+	<!-- 获得骑士和绑定信息列表 ,不包含骑士已接单的数量   add by pengyi 20150901 -->
+	<select id="getClienterBindInfoList" resultType="com.edaisong.entity.domain.ClienterModel"
+		parameterType="com.edaisong.entity.req.PagedClienterSearchReq" statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+' C.Id DESC ',
+'   C.[Id],C.[PhoneNo],C.[TrueName],ISNULL(bcr.IsBind,0) IsBind ',
+' clienter C WITH (NOLOCK) left JOIN BusinessClienterRelation bcr with(nolock) on  C.Id=bcr.ClienterId and bcr.BusinessId=${businessId} and bcr.IsEnable=1 and bcr.IsBind=1 ',
+' <include refid="getClienterListWhere"></include> ',
+#{PageSize,mode=IN,jdbcType=INTEGER},
+#{CurrentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
+#{TotalPage,mode=OUT,jdbcType=VARCHAR}
+)}
+
+	</select>
 </mapper>

@@ -4,11 +4,11 @@ public enum OrderIsPay {
 	/**
 	 * 未付
 	 */
-	WaitPay(0,"未付"),
+	WaitPay(0,"顾客未付款"),
 	/**
 	 * 已付
 	 */
-	HadPay(1,"已付");
+	HadPay(1,"顾客已付款");
 
 	private int value = 0;
 	private String desc;

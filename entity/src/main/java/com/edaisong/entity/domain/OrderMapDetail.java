@@ -1,36 +1,137 @@
 package com.edaisong.entity.domain;
 
+import java.util.List;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.edaisong.entity.common.Location;
+
 public class OrderMapDetail {
 
     private long orderId;
     // 商户发单经度
+
     private double pubLongitude;
     // 商户发单纬度
-    private double hubLatitude;
+
+    private double pubLatitude;
     // 商户发单时间
+
     private String pubDate;
     // 骑士抢单经度
+
     private double grabLongitude;
     // 骑士抢单纬度
+
     private double grabLatitude;
     // 骑士抢单时间
+
     private String grabTime;
     // 骑士取货经度
+   
     private double takeLongitude;
     // 骑士取货纬度
+
     private double takeLatitude;
     // 骑士取货时间
+
     private String takeTime;
     // 骑士完成订单经度
+
     private double completeLongitude;
     // 骑士完成订单纬度
+
     private double completeLatitude;
     // 骑士完成订单时间
+
     private String actualDoneDate;
     // 抢单和完成点之间的距离
-    private double grabToCompleteDistance;
 
+    private double grabToCompleteDistance;
+    //订单实时坐标
+
+    public List<Location> locations;
+   // 发单坐标是否是实时坐标
+    private int isPubDateTimely;
+ // 抢单坐标是否是实时坐标
+    private int isGrabTimely;
+ // 取货坐标是否是实时坐标
+    private int isTakeTimely;
+ // 完成坐标是否是实时坐标
+    private int isCompleteTimely;
+ // 骑士Id 
+    private int clienterId;
+     /**
+      * 发单坐标是否是实时坐标
+      * @return
+      */
+    public int getIsPubDateTimely() {
+		return isPubDateTimely;
+	}
     /**
+     * 发单坐标是否是实时坐标
+     * @param isPubDateTimely
+     */
+	public void setIsPubDateTimely(int isPubDateTimely) {
+		this.isPubDateTimely = isPubDateTimely;
+	}
+	/**
+	 * 抢单坐标是否是实时坐标
+	 * @return
+	 */
+	public int getIsGrabTimely() {
+		return isGrabTimely;
+	}
+	/**
+	 * 抢单坐标是否是实时坐标
+	 * @param isGrabTimely
+	 */
+	public void setIsGrabTimely(int isGrabTimely) {
+		this.isGrabTimely = isGrabTimely;
+	}
+	/**
+	 * 取货坐标是否是实时坐标
+	 * @return
+	 */
+	public int getIsTakeTimely() {
+		return isTakeTimely;
+	}
+	/**
+	 * 取货坐标是否是实时坐标
+	 * @param isTakeTimely
+	 */
+	public void setIsTakeTimely(int isTakeTimely) {
+		this.isTakeTimely = isTakeTimely;
+	}
+	/**
+	 * 完成坐标是否是实时坐标
+	 * @return
+	 */
+	public int getIsCompleteTimely() {
+		return isCompleteTimely;
+	}
+	/**
+	 * 完成坐标是否是实时坐标
+	 * @param isCompleteTimely
+	 */
+	public void setIsCompleteTimely(int isCompleteTimely) {
+		this.isCompleteTimely = isCompleteTimely;
+	}
+	/**
+	 *  骑士Id
+	 * @return
+	 */
+	public int getClienterId() {
+		return clienterId;
+	}
+	/**
+	 *  骑士Id
+	 * @param clienterId
+	 */
+	public void setClienterId(int clienterId) {
+		this.clienterId = clienterId;
+	}
+	/**
      *  订单id
      */
 	public long getOrderId() {
@@ -57,14 +158,14 @@ public class OrderMapDetail {
 	/**
      *   商户发单纬度
      */
-	public double getHubLatitude() {
-		return hubLatitude;
+	public double getPubLatitude() {
+		return pubLatitude;
 	}
 	/**
      *   商户发单纬度
      */
-	public void setHubLatitude(double hubLatitude) {
-		this.hubLatitude = hubLatitude;
+	public void setPubLatitude(double pubLatitude) {
+		this.pubLatitude = pubLatitude;
 	}
 	/**
      *  商户发单时间
@@ -197,6 +298,20 @@ public class OrderMapDetail {
      */
 	public void setGrabToCompleteDistance(double grabToCompleteDistance) {
 		this.grabToCompleteDistance = grabToCompleteDistance;
+	}
+	/**
+	 * 实时坐标
+	 * @return
+	 */
+	public List<Location> getLocations() {
+		return locations;
+	}
+	/**
+	 * 实时坐标
+	 * @param locations
+	 */
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
 	}
     
 }

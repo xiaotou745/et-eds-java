@@ -2,7 +2,6 @@ package com.edaisong.admin.common;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 import com.edaisong.api.service.inter.IAuthorityMenuClassService;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.util.CookieUtils;
@@ -10,10 +9,11 @@ import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.Account;
+import com.edaisong.entity.domain.SimpleUserInfoModel;
 
 
 public class UserContext {
-	private Account account;
+	private SimpleUserInfoModel account;
 	private boolean isEmpty;
 	private int id;
 	private int groupId;
@@ -31,12 +31,12 @@ public class UserContext {
 	}
 
 	
-	public UserContext(Account account,boolean isEmpty){
+	public UserContext(SimpleUserInfoModel account,boolean isEmpty){
 		this.account = account;
 		this.isEmpty = isEmpty;
 	}
 
-	public Account getAccount() {
+	public SimpleUserInfoModel getAccount() {
 		return account;
 	}
 	
@@ -79,19 +79,18 @@ public class UserContext {
 		return name;
 	}
 
-
 	public static UserContext getCurrentContext(HttpServletRequest request) {
 		final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
 		if (cookieValue != null) {
-			Account account = JsonUtil.str2obj(cookieValue, Account.class);
+			SimpleUserInfoModel account = JsonUtil.str2obj(cookieValue, SimpleUserInfoModel.class);
 			if(account != null){
 				UserContext context = new UserContext(account,false);
 				context.id = account.getId();
-				context.accountType = ParseHelper.ToInt(account.getAccounttype());
-				context.groupId = ParseHelper.ToInt(account.getGroupid());
-				context.name = account.getLoginname();
-				context.roleId = ParseHelper.ToInt(account.getRoleid());
+				context.accountType = ParseHelper.ToInt(account.getAccountType());
+				context.groupId = ParseHelper.ToInt(account.getGroupId());
+				context.name = account.getLoginName();
+				context.roleId = ParseHelper.ToInt(account.getRoleId());
 				return context;
 			}
 		}

@@ -246,6 +246,26 @@ public class CookieUtils {
     }
     
     /**
+     * 删除cookie
+     * @param request
+     * @param response
+     * @param cookieName
+     */
+    public static void deleteCookie(HttpServletRequest request,
+            HttpServletResponse response, String cookieName) {
+    	Cookie cookie = getCookieByName(cookieName, request);
+        if (cookie != null) {
+        	String path = cookie.getPath();
+        	if(path == null){
+        		path = getPath(request);
+        	}
+            cookie.setPath(path);
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        }
+    }
+    
+    /**
      * 获得cookie路径    目前先指定为根目录,因为使用的是nginx负载均衡,如果设置为contextPath地址操作cookie的时候会有问题
      * @param request
      * @return

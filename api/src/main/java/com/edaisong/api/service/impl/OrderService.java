@@ -1,6 +1,9 @@
 package com.edaisong.api.service.impl;
 
 import java.lang.Double;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +19,7 @@ import com.edaisong.api.common.OrderSettleMoneyHelper;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
+import com.edaisong.api.dao.inter.IClienterLocationDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
@@ -52,6 +56,7 @@ import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
+import com.edaisong.entity.common.Location;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
@@ -100,6 +105,8 @@ public class OrderService implements IOrderService {
 	private IOrderDetailDao orderDetailDao;
 	@Autowired
 	private IClienterBalanceRecordDao clienterBalanceRecordDao;
+	@Autowired 
+	IClienterLocationDao clienterLocationDao;
 
 	/**
 	 * 后台订单列表页面
@@ -125,8 +132,57 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	public OrderMapDetail getOrderMapDetail(long orderid) {
-		return orderDao.getOrderMapDetail(orderid);
+	public OrderMapDetail getOrderMapDetail(int orderid) {
+		OrderMapDetail orderMapDetail=orderDao.getOrderMapDetail(orderid);
+		if (orderMapDetail!=null) {
+			Date startTime=new Date();
+			Date endTime=new Date();
+            if(orderMapDetail.getPubDate()==null||orderMapDetail.getPubDate().indexOf("1900-01-01")>=0){
+            	  orderMapDetail.setPubDate("暂无");
+            }else {
+					startTime= ParseHelper.ToDate(orderMapDetail.getPubDate()) ;
+			}
+            if(orderMapDetail.getGrabTime()==null||orderMapDetail.getGrabTime().indexOf("1900-01-01")>=0){
+          	  orderMapDetail.setGrabTime("暂无");
+             }else{
+            	 endTime= ParseHelper.ToDate(orderMapDetail.getGrabTime()) ;
+             }
+            if(orderMapDetail.getTakeTime()==null||orderMapDetail.getTakeTime().indexOf("1900-01-01")>=0){
+            	  orderMapDetail.setTakeTime("暂无");
+            }else{
+           	 endTime= ParseHelper.ToDate(orderMapDetail.getTakeTime()) ;
+            }
+            if(orderMapDetail.getActualDoneDate()==null||orderMapDetail.getActualDoneDate().indexOf("1900-01-01")>=0){
+            	  orderMapDetail.setActualDoneDate("暂无");
+            }else{
+              	 endTime= ParseHelper.ToDate(orderMapDetail.getActualDoneDate()) ;
+             }
+            if (orderMapDetail.getGrabLatitude() == 0 || orderMapDetail.getGrabLongitude() == 0)
+            {
+            	orderMapDetail.setGrabLongitude( orderMapDetail.getPubLongitude()) ;
+            	orderMapDetail.setGrabLatitude(orderMapDetail.getPubLatitude()) ;
+            }
+            if (orderMapDetail.getTakeLatitude() == 0 || orderMapDetail.getTakeLongitude() == 0)
+            {
+            	orderMapDetail.setTakeLongitude( orderMapDetail.getPubLongitude()) ;
+            	orderMapDetail.setTakeLatitude(orderMapDetail.getPubLatitude()) ;
+            }
+            if (orderMapDetail.getCompleteLatitude() == 0 || orderMapDetail.getCompleteLongitude() == 0)
+            {
+            	orderMapDetail.setCompleteLongitude( orderMapDetail.getPubLongitude()) ;
+            	orderMapDetail.setCompleteLatitude (orderMapDetail.getPubLatitude()) ;
+            }
+            //开始时间小于结束时间才获取实时坐标 
+	         if (startTime.compareTo(endTime)<0&&orderMapDetail.getClienterId()>0) {
+	        		orderMapDetail.setLocations(
+	        				clienterLocationDao.getLocationsByTime(startTime, endTime, orderMapDetail.getClienterId()));
+			 }
+		    if (orderMapDetail.getLocations()==null) {
+			  orderMapDetail.setLocations(new ArrayList<Location>());
+		    }
+		}
+		return orderMapDetail;
+		
 	}
 
 	/**
@@ -575,7 +631,7 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	@Transactional(rollbackFor = Exception.class, timeout = 1000)
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public ResponseBase cancelOrder(OptOrder cancelOrder) {
 		ResponseBase responseBase = new ResponseBase();
 		OrderListModel orderModel = orderDao.getOrderByNoId(cancelOrder.getOrderNo(), cancelOrder.getOrderId());
@@ -701,6 +757,7 @@ public class OrderService implements IOrderService {
 		orderSubsidiesLog.setOptid(auditOkOrder.getOptUserId());
 		orderSubsidiesLog.setOrderstatus(OrderOperationCommon.AuditStatusOk.value());
 		orderSubsidiesLog.setPlatform(SuperPlatform.ManagementBackGround.value());
+		orderSubsidiesLogDao.insert(orderSubsidiesLog);
 		return responseBase;
 	}
 
@@ -715,9 +772,9 @@ public class OrderService implements IOrderService {
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public ResponseBase auditRefuse(OptOrder auditRefuseOrder) {
-		OrderListModel orderModel = orderDao.getOrderByNoId(auditRefuseOrder.getOrderNo(), auditRefuseOrder.getOrderId());
-		ResponseBase responseBase =auditRefuseCheck(auditRefuseOrder, orderModel);
-		if (responseBase.getResponseCode()!=ResponseCode.SUCESS) {
+		OrderListModel orderModel = orderDao.getOrderWriteByNoId(auditRefuseOrder.getOrderNo(), auditRefuseOrder.getOrderId());
+		ResponseBase responseBase = auditRefuseCheck(auditRefuseOrder, orderModel);
+		if (responseBase.getResponseCode() != ResponseCode.SUCESS) {
 			return responseBase;
 		}
 		// 如果要扣除的金额大于0， 写流水
@@ -727,78 +784,78 @@ public class OrderService implements IOrderService {
 				double diffOrderCommission = orderModel.getSettleMoney() - orderModel.getOrderCommission();
 				double disOrderCommission = -diffOrderCommission;
 				// 更新骑士余额
-				ClienterMoney clienterMoney =auditRefuseGetClienterMoney(orderModel);  
+				ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel,auditRefuseOrder);
 				clienterMoney.setRemark(auditRefuseOrder.getOptLog());
 				clienterMoney.setAmount(diffOrderCommission);
 				clienterMoney.setStatus(ClienterBalanceRecordStatus.Success.value());
 				clienterMoney.setRecordType(ClienterBalanceRecordRecordType.Abnormal.value());
 				clienterService.updateCAccountBalance(clienterMoney);
-       
+
 				// 更新订单真实佣金 更新无效订单(状态，原因)
-				OrderOtherSearch orderOtherSearch =auditRefuseGetOrderOtherSearch( orderModel, auditRefuseOrder); 
+				OrderOtherSearch orderOtherSearch = auditRefuseGetOrderOtherSearch(orderModel, auditRefuseOrder);
 				orderOtherSearch.setRealOrderCommission(disOrderCommission);
 				// 写入订单日志
-				OrderSubsidiesLog orderSubsidiesLog = auditRefuseGetOrderSubsidiesLog(orderModel,auditRefuseOrder);
+				OrderSubsidiesLog orderSubsidiesLog = auditRefuseGetOrderSubsidiesLog(orderModel, auditRefuseOrder);
 				orderSubsidiesLog.setPrice(diffOrderCommission);
 				orderSubsidiesLog.setRemark("扣除" + disOrderCommission + "元无效订单金额");
-				auditRefusePartial(orderOtherSearch,orderSubsidiesLog);
+				auditRefusePartial(orderOtherSearch, orderSubsidiesLog);
 			}
 		}
 		// 更新订单真实佣金
 		double realOrderCommission = orderModel.getOrderCommission() == null ? 0 : orderModel.getOrderCommission();
 		realOrderCommission = realOrderCommission > orderModel.getSettleMoney() ? orderModel.getSettleMoney() : realOrderCommission;
 		// 更新骑士可提现余额
-		ClienterMoney clienterMoney =auditRefuseGetClienterMoney(orderModel);  
+		ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel,auditRefuseOrder);
 		clienterMoney.setRemark(auditRefuseOrder.getOptLog());
 		clienterMoney.setAmount(realOrderCommission);
 		clienterMoney.setStatus(ClienterAllowWithdrawRecordStatus.Success.value());
 		clienterMoney.setRecordType(ClienterAllowWithdrawRecordType.OrderCommission.value());
 		clienterMoney.setRemark("管理后台审核拒绝加可提现");
 		clienterService.updateCAllowWithdrawPrice(clienterMoney);
-		
-		//订单other操作
-		OrderOtherSearch orderOtherSearch =auditRefuseGetOrderOtherSearch( orderModel, auditRefuseOrder); 
+
+		// 订单other操作
+		OrderOtherSearch orderOtherSearch = auditRefuseGetOrderOtherSearch(orderModel, auditRefuseOrder);
 		orderOtherSearch.setRealOrderCommission(realOrderCommission);
 		// 写入订单日志
-		OrderSubsidiesLog orderSubsidiesLog = auditRefuseGetOrderSubsidiesLog(orderModel,auditRefuseOrder);
+		OrderSubsidiesLog orderSubsidiesLog = auditRefuseGetOrderSubsidiesLog(orderModel, auditRefuseOrder);
 		orderSubsidiesLog.setPrice(realOrderCommission);
 		orderSubsidiesLog.setRemark("增加" + realOrderCommission + "元可提现金额");
-		auditRefusePartial(orderOtherSearch,orderSubsidiesLog);
+		auditRefusePartial(orderOtherSearch, orderSubsidiesLog);
 		// 更新已提现状态
 		orderOtherDao.updateJoinWithdraw(auditRefuseOrder.getOrderId());
 		// 更新审核状态
 		orderOtherDao.updateAuditStatus(auditRefuseOrder.getOrderId(), OrderAuditStatus.Refuse.value());
 		return responseBase;
 	}
+
 	/**
-	 * 取消订单 
-	 * 1.更新订单真实佣金
-	 * 2.更新无效订单(状态，原因)
-	 * 3.插入订单操作日志
+	 * 取消订单 1.更新订单真实佣金 2.更新无效订单(状态，原因) 3.插入订单操作日志
+	 * 
 	 * @author CaoHeYang
 	 * @param orderOtherSearch
 	 * @param orderSubsidiesLog
 	 * @date 20150901
 	 */
-	private void auditRefusePartial(OrderOtherSearch orderOtherSearch,OrderSubsidiesLog orderSubsidiesLog){
+	private void auditRefusePartial(OrderOtherSearch orderOtherSearch, OrderSubsidiesLog orderSubsidiesLog) {
 		// 更新订单真实佣金
 		orderDao.updateOrderRealCommission(orderOtherSearch);
 		// 更新无效订单(状态，原因)
 		orderOtherDao.updateOrderIsReal(orderOtherSearch);
-		//插入订单操作日志
+		// 插入订单操作日志
 		orderSubsidiesLogDao.insert(orderSubsidiesLog);
 	}
-	
+
 	/**
 	 * 订单审核拒绝 数据服务器端验证
+	 * 
 	 * @author CaoHeYang
 	 * @param auditRefuseOrder
 	 * @param orderModel
 	 * @date 20150901
 	 * @return
 	 */
-	private ResponseBase auditRefuseCheck(OptOrder auditRefuseOrder,OrderListModel orderModel){
-		ResponseBase responseBase=new ResponseBase();
+	private ResponseBase auditRefuseCheck(OptOrder auditRefuseOrder, OrderListModel orderModel) {
+		ResponseBase responseBase = new ResponseBase();
 		if (auditRefuseOrder.getOptLog() == null || auditRefuseOrder.getOptLog().isEmpty()) {
 			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
 			responseBase.setMessage("请填写扣除网站补贴原因");
@@ -817,31 +874,36 @@ public class OrderService implements IOrderService {
 		}
 		return responseBase;
 	}
+
 	/**
 	 * 订单审核拒绝 获取更新骑士余额或者可提现余额的基础数据实体
-	 * @author CaoHeYang
-	 * @param orderModel
-	 * @date 20150901
-	 * @return
-	 */
-	private ClienterMoney auditRefuseGetClienterMoney(OrderListModel orderModel){
-		ClienterMoney clienterMoney=new ClienterMoney();
-		clienterMoney.setClienterId(orderModel.getClienterId());
-		clienterMoney.setOperator(orderModel.getOptUserName());
-		clienterMoney.setWithwardId(orderModel.getId());
-		clienterMoney.setRelationNo(orderModel.getOrderNo());
-		return clienterMoney;
-	}
-	/**
-	 *  订单审核拒绝 获取订单日志的基础数据实体
+	 * 
 	 * @author CaoHeYang
 	 * @param orderModel
 	 * @param auditRefuseOrder
 	 * @date 20150901
 	 * @return
 	 */
-	private OrderSubsidiesLog auditRefuseGetOrderSubsidiesLog(OrderListModel orderModel,OptOrder auditRefuseOrder) {
-		OrderSubsidiesLog orderSubsidiesLog=new OrderSubsidiesLog();
+	private ClienterMoney auditRefuseGetClienterMoney(OrderListModel orderModel, OptOrder auditRefuseOrder) {
+		ClienterMoney clienterMoney = new ClienterMoney();
+		clienterMoney.setClienterId(orderModel.getClienterId());
+		clienterMoney.setOperator(auditRefuseOrder.getOptUserName());
+		clienterMoney.setWithwardId(orderModel.getId());
+		clienterMoney.setRelationNo(orderModel.getOrderNo());
+		return clienterMoney;
+	}
+
+	/**
+	 * 订单审核拒绝 获取订单日志的基础数据实体
+	 * 
+	 * @author CaoHeYang
+	 * @param orderModel
+	 * @param auditRefuseOrder
+	 * @date 20150901
+	 * @return
+	 */
+	private OrderSubsidiesLog auditRefuseGetOrderSubsidiesLog(OrderListModel orderModel, OptOrder auditRefuseOrder) {
+		OrderSubsidiesLog orderSubsidiesLog = new OrderSubsidiesLog();
 		orderSubsidiesLog.setOrderid(orderModel.getId());
 		orderSubsidiesLog.setOrderstatus(OrderOperationCommon.AuditStatusRefuse.value());
 		orderSubsidiesLog.setPlatform(SuperPlatform.ManagementBackGround.value());
@@ -849,15 +911,17 @@ public class OrderService implements IOrderService {
 		orderSubsidiesLog.setOptid(auditRefuseOrder.getOptUserId());
 		return orderSubsidiesLog;
 	}
+
 	/**
-	 *  订单审核拒绝 获取更新订单other的基础数据
+	 * 订单审核拒绝 获取更新订单other的基础数据
+	 * 
 	 * @author CaoHeYang
 	 * @param orderModel
 	 * @param auditRefuseOrder
 	 * @date 20150901
 	 * @return
 	 */
-	private OrderOtherSearch auditRefuseGetOrderOtherSearch(OrderListModel orderModel,OptOrder auditRefuseOrder) {
+	private OrderOtherSearch auditRefuseGetOrderOtherSearch(OrderListModel orderModel, OptOrder auditRefuseOrder) {
 		OrderOtherSearch orderOtherSearch = new OrderOtherSearch();
 		orderOtherSearch.setOrderId(orderModel.getId());
 		orderOtherSearch.setDeductCommissionReason(auditRefuseOrder.getOptLog());
