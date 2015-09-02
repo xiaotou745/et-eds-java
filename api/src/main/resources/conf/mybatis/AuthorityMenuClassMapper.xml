@@ -24,6 +24,7 @@
       #{belock,jdbcType=BIT}, #{url,jdbcType=VARCHAR}, #{isbutton,jdbcType=BIT})
   </insert>
   <select id="getMenuListByUserID" resultType="com.edaisong.entity.MenuEntity" parameterType="java.util.Map" >
+	select distinct * from (
 	SELECT AccoutId,MenuId,ParId,MenuName,isnull(Url,'') as Url,amc.IsButton,isnull(javaUrl,'/order/list') as javaUrl FROM dbo.AuthorityAccountMenuSet  aam (nolock)
 	JOIN AuthorityMenuClass amc(nolock) ON aam.MenuId = amc.Id
 	WHERE aam.AccoutId=#{accountId}  and  amc.BeLock=CAST(0 as bit)
@@ -32,13 +33,29 @@
 	SELECT #{accountId} AS AccoutId,id AS MenuId,ParId,MenuName,isnull(Url,'') as Url,IsButton,isnull(javaUrl,'/order/list') as javaUrl  FROM AuthorityMenuClass WHERE ParId=0 AND id IN(SELECT ParId FROM dbo.AuthorityAccountMenuSet  aam (nolock)
 	JOIN AuthorityMenuClass amc(nolock) ON aam.MenuId = amc.Id
 	WHERE aam.AccoutId=#{accountId} and  amc.BeLock=CAST(0 as bit)) and BeLock=CAST(0 as bit)
+  ) mb
   </select>
-   <select id="getAuthList" resultType="com.edaisong.entity.MenuEntity"  parameterType="java.lang.Integer" >
-SELECT  *
+   <select id="getAuthSettingList" resultType="com.edaisong.entity.MenuEntity"  parameterType="java.lang.Integer" >
+IF 0>=#{userID}
+    SELECT  * ,
+            NULL AS MenuId ,
+            -1 AS accoutid
+    FROM    AuthorityMenuClass a WITH ( NOLOCK )
+ELSE
+    SELECT  * ,
+            -1 AS accoutid
+    FROM    AuthorityMenuClass a WITH ( NOLOCK )
+            LEFT JOIN ( SELECT  b.MenuId
+                        FROM    AuthorityAccountMenuSet b WITH ( NOLOCK )
+                        WHERE   b.AccoutId = #{userID}
+                      ) t ON a.Id = t.MenuId 
+  </select>
+     <select id="getRoleAuthSettingList" resultType="com.edaisong.entity.MenuEntity"  parameterType="java.lang.Integer" >
+SELECT  *,-1 as accoutid 
 FROM    AuthorityMenuClass a WITH ( NOLOCK )
         LEFT JOIN ( SELECT  b.MenuId
-                    FROM    AuthorityAccountMenuSet b WITH ( NOLOCK )
-                    WHERE   b.AccoutId = #{userID}
+                    FROM    AuthorityRoleMentMenuSet b WITH ( NOLOCK )
+                    WHERE   b.roleid = #{roleID}
                   ) t ON a.Id = t.MenuId 
   </select>
 </mapper>

@@ -10,18 +10,7 @@ import com.edaisong.entity.resp.AccountResp;
 public interface IAccountDao {
 	
 	PagedResponse<Account> query(PagedAccountReq req);
-	
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(Account record);
-
-    int insertSelective(Account record);
-
-    Account selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Account record);
-
-    int updateByPrimaryKey(Account record);
-    
     Account login(String username,String password);
+	Account getByID(int userID);
+	int updateRoleID(int userID,int newRoleID);
 }

@@ -26,4 +26,14 @@ public class AccountService implements IAccountService{
 		password = MD5Util.MD5(password);
 		return accountDao.login(username, password);
 	}
+
+	@Override
+	public Account getByID(int userID) {
+		return accountDao.getByID(userID);
+	}
+
+	@Override
+	public int updateRoleID(int userID, int newRoleID) {
+		return accountDao.updateRoleID(userID,newRoleID);
+	}
 }
