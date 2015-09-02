@@ -65,7 +65,7 @@ public interface IOrderService {
 	 * @Date 20150730
 	 * @return
 	 */
-	OrderMapDetail getOrderMapDetail(long orderId);
+	OrderMapDetail getOrderMapDetail(int orderId);
 
 	/**
 	 * 商家后台 订单详情页面完整数据

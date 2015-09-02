@@ -1,6 +1,9 @@
 package com.edaisong.api.service.impl;
 
 import java.lang.Double;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +19,7 @@ import com.edaisong.api.common.OrderSettleMoneyHelper;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
+import com.edaisong.api.dao.inter.IClienterLocationDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
@@ -52,6 +56,7 @@ import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
+import com.edaisong.entity.common.Location;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
@@ -100,6 +105,8 @@ public class OrderService implements IOrderService {
 	private IOrderDetailDao orderDetailDao;
 	@Autowired
 	private IClienterBalanceRecordDao clienterBalanceRecordDao;
+	@Autowired 
+	IClienterLocationDao clienterLocationDao;
 
 	/**
 	 * 后台订单列表页面
@@ -125,8 +132,57 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	public OrderMapDetail getOrderMapDetail(long orderid) {
-		return orderDao.getOrderMapDetail(orderid);
+	public OrderMapDetail getOrderMapDetail(int orderid) {
+		OrderMapDetail orderMapDetail=orderDao.getOrderMapDetail(orderid);
+		if (orderMapDetail!=null) {
+			Date startTime=new Date();
+			Date endTime=new Date();
+            if(orderMapDetail.getPubDate()==null||orderMapDetail.getPubDate().indexOf("1900-01-01")>=0){
+            	  orderMapDetail.setPubDate("暂无");
+            }else {
+					startTime= ParseHelper.ToDate(orderMapDetail.getPubDate()) ;
+			}
+            if(orderMapDetail.getGrabTime()==null||orderMapDetail.getGrabTime().indexOf("1900-01-01")>=0){
+          	  orderMapDetail.setGrabTime("暂无");
+             }else{
+            	 endTime= ParseHelper.ToDate(orderMapDetail.getGrabTime()) ;
+             }
+            if(orderMapDetail.getTakeTime()==null||orderMapDetail.getTakeTime().indexOf("1900-01-01")>=0){
+            	  orderMapDetail.setTakeTime("暂无");
+            }else{
+           	 endTime= ParseHelper.ToDate(orderMapDetail.getTakeTime()) ;
+            }
+            if(orderMapDetail.getActualDoneDate()==null||orderMapDetail.getActualDoneDate().indexOf("1900-01-01")>=0){
+            	  orderMapDetail.setActualDoneDate("暂无");
+            }else{
+              	 endTime= ParseHelper.ToDate(orderMapDetail.getActualDoneDate()) ;
+             }
+            if (orderMapDetail.getGrabLatitude() == 0 || orderMapDetail.getGrabLongitude() == 0)
+            {
+            	orderMapDetail.setGrabLongitude( orderMapDetail.getPubLongitude()) ;
+            	orderMapDetail.setGrabLatitude(orderMapDetail.getPubLatitude()) ;
+            }
+            if (orderMapDetail.getTakeLatitude() == 0 || orderMapDetail.getTakeLongitude() == 0)
+            {
+            	orderMapDetail.setTakeLongitude( orderMapDetail.getPubLongitude()) ;
+            	orderMapDetail.setTakeLatitude(orderMapDetail.getPubLatitude()) ;
+            }
+            if (orderMapDetail.getCompleteLatitude() == 0 || orderMapDetail.getCompleteLongitude() == 0)
+            {
+            	orderMapDetail.setCompleteLongitude( orderMapDetail.getPubLongitude()) ;
+            	orderMapDetail.setCompleteLatitude (orderMapDetail.getPubLatitude()) ;
+            }
+            //开始时间小于结束时间才获取实时坐标 
+	         if (startTime.compareTo(endTime)<0&&orderMapDetail.getClienterId()>0) {
+	        		orderMapDetail.setLocations(
+	        				clienterLocationDao.getLocationsByTime(startTime, endTime, orderMapDetail.getClienterId()));
+			 }
+		    if (orderMapDetail.getLocations()==null) {
+			  orderMapDetail.setLocations(new ArrayList<Location>());
+		    }
+		}
+		return orderMapDetail;
+		
 	}
 
 	/**

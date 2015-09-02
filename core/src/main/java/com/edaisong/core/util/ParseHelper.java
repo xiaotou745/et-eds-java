@@ -86,6 +86,23 @@ public class ParseHelper {
 	 * @return
 	 * @throws ParseException
 	 */
+	public static Date ToDate(String o) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
+		Date defaultDate = null;
+		try {
+			defaultDate = sdf.parse(o);
+		} catch (ParseException e) {
+		}
+		return defaultDate;
+	}
+
+	/**
+	 * 
+	 * @param o
+	 * @param strFormat
+	 * @return
+	 * @throws ParseException
+	 */
 	public static Date ToDate(String o, String strFormat) throws ParseException {
 		if (strFormat == null || strFormat.isEmpty()) {
 			strFormat = "yyyy-MM-dd hh:MM:ss";
@@ -94,7 +111,6 @@ public class ParseHelper {
 		Date defaultDate = sdf.parse(o);
 		return defaultDate;
 	}
-
 	/**
 	 * 
 	 * @param o

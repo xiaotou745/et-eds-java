@@ -32,8 +32,8 @@
 		%>
 		<tr>
 			<td style="word-break:break-word; width:50px;"><%=count%></td>
-			<td style="word-break:break-word; width:200px;"><%=model.getTruename()%></td>
-			<td style="word-break:break-word; width:200px;"><%=model.getPhoneno()%></td>
+			<td style="word-break:break-word; width:200px;"><%=model.getTruename() == null ?"":model.getTruename() %></td>
+			<td style="word-break:break-word; width:200px;"><%=model.getPhoneno() == null ?"":model.getPhoneno()%></td>
 			<td style="word-break:break-word; width:200px;"><%=model.getWorkstatus().equals(0) ?"上班":"下班"%></td>
 			<td style="word-break:break-word; width:200px;">￥<%=model.getAccountbalance()%></td>
 			<td style="word-break:break-word; width:200px;">￥<%=model.getAllowwithdrawprice()%></td>

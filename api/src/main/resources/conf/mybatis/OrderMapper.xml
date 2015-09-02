@@ -964,7 +964,7 @@
 
 	<!--后台订单列表百度地图打点基础数据 add by caoheyang 20150728 -->
 	<select id="getOrderMapDetail" resultType="com.edaisong.entity.domain.OrderMapDetail"
-		parameterType="long">
+		parameterType="java.lang.Integer">
 		select ord.OrderId,
 		CASE WHEN ISNULL(PubLongitude, 0) = 0 THEN c.Longitude
 		ELSE PubLongitude
@@ -972,27 +972,32 @@
 		CASE WHEN ISNULL(PubLatitude, 0) = 0 THEN c.Latitude
 		ELSE PubLatitude
 		END AS PubLatitude ,
-		ISNULL(ab.PubDate, '') AS PubDate,
+		CONVERT(varchar(100), ab.PubDate, 20)   as PubDate,
 		ISNULL(GrabLongitude, 0) AS GrabLongitude,
 		ISNULL(GrabLatitude, 0) AS GrabLatitude,
-		ISNULL(GrabTime, '') AS GrabTime,
+		CONVERT(varchar(100), GrabTime, 20)   as GrabTime,
 		ISNULL(TakeLongitude, 0) AS TakeLongitude ,
 		ISNULL(TakeLatitude, 0) AS TakeLatitude,
-		ISNULL(TakeTime, '') AS TakeTime,
+		CONVERT(varchar(100), TakeTime, 20)   as TakeTime,
 		ISNULL(CompleteLongitude, 0) AS CompleteLongitude,
 		ISNULL(CompleteLatitude, 0) AS CompleteLatitude,
-		ISNULL(ab.ActualDoneDate, '') AS ActualDoneDate,
+		CONVERT(varchar(100), ab.ActualDoneDate, 20)   as ActualDoneDate,
 		CASE ISNULL(ord.GrabLatitude, 0)
 		WHEN 0 THEN -1
 		ELSE CASE ISNULL(ord.CompleteLatitude, 0)
 		WHEN 0 THEN -1
 		ELSE ord.GrabToCompleteDistance
 		END
-		END AS GrabToCompleteDistance
+		END AS GrabToCompleteDistance,
+		ISNULL(ord.IsPubDateTimely, 0) as IsPubDateTimely ,
+        ISNULL(ord.IsGrabTimely, 0) as IsGrabTimely ,
+        ISNULL(ord.IsTakeTimely, 0) as IsTakeTimely,
+        ISNULL(ord.IsCompleteTimely, 0) as IsCompleteTimely ,
+         ISNULL(ab.clienterId, 0)  as  ClienterId
 		FROM [order] (NOLOCK) ab
 		JOIN OrderOther (NOLOCK) ord ON ord.OrderId = ab.Id
 		JOIN business (NOLOCK) c ON c.id = ab.businessId
-		WHERE ab.Id = @orderID
+		WHERE ab.Id =#{orderId,jdbcType=INTEGER} 
 	</select>
 
 	<!--商家后台 订单详情页面基础数据 add by caoheyang 20150804 -->

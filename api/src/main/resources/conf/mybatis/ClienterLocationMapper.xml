@@ -90,4 +90,10 @@
       CreateTime = #{createtime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+  <!--  获得实时坐标 add by caoheyang  20150901 -->
+  <select id="com.edaisong.api.dao.inter.IClienterLocationDao.getLocationsByTime"  parameterType="java.util.Map"
+  resultType="com.edaisong.entity.common.Location">
+  select Longitude,Latitude from ClienterLocation (Nolock) where clienterId=#{clienterId,jdbcType=INTEGER}
+   and CreateTime>='${start} '   <![CDATA[ and CreateTime  <=]]> '${end}'
+  </select>
 </mapper>
