@@ -104,6 +104,9 @@ public class ExcelUtils {
                 if (fieldNames != null) {
                     for (int num = 0; num < fieldNames.length; num++) {
                         Object value = ReflectionUtil.invokeGetterMethod(obj, fieldNames[num]);
+                        if(value instanceof Date){
+                        	value = ParseHelper.ToDateString((Date)value);
+                        }
                         cells[cellNum].setCellValue(value == null ? "" : value.toString());
                         cellNum++;
                     }

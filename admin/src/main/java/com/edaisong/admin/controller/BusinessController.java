@@ -1,6 +1,8 @@
 package com.edaisong.admin.controller;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +27,11 @@ import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.core.util.ExcelUtils;
+import com.edaisong.core.util.ExcelUtils.ExcelExportData;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
+import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessFinanceAccount;
@@ -37,6 +42,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.BusinesRechargeModel;
+import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
@@ -444,5 +450,77 @@ public class BusinessController {
 		PagedResponse<ClienterModel> resp = clienterService.getClienterList(req);
 		model.addObject("listData", resp);
 		return model;
+	}
+	
+	/**
+	 * 导出商户收支记录报表
+	 * @author pengyi
+	 * @date 2015年9月2日 下午3:31:40
+	 * @version 1.0
+	 * @param businessId
+	 * @param recordType
+	 * @param startDate
+	 * @param endDate
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("exportbusinessbalancerecord")
+	public void exportBusinessBalanceRecord(int businessId,String recordType,String startDate,String endDate
+			,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		BusinessDetailModel detail = iBusinessService.getBusinessDetailByID(businessId);
+		if (detail == null) {
+			throw new Exception("没找到businessID为" + businessId + "的详细信息");
+		}
+		PagedTransDetailReq req = new PagedTransDetailReq();
+		req.setEndDate(endDate);
+		req.setStartDate(startDate);
+		req.setRecordType(recordType);
+		req.setBusinessID(businessId);
+		req.setCurrentPage(1);
+		req.setPageSize(Integer.MAX_VALUE);
+		List<BusinessBalanceRecordModel> records = businessBalanceRecordService.getBusinessBalanceRecordListForExport(req);
+		if(records.size() > 0){
+			//导出数据
+			String filename = "商户提款流水记录%s";
+	        if (!StringUtils.isEmpty(req.getStartDate())&& !StringUtils.isEmpty(req.getEndDate())){
+	            filename = String.format(filename, req.getStartDate() + "~" + req.getEndDate());
+	        }
+	        //解密records的账号
+	        for (int i = 0; i < records.size(); i++) {
+				records.get(i).setAccountNo(ParseHelper.toDecrypt(records.get(i).getAccountNo()));
+			}
+			byte[] data = exportBusinessBalanceRecord2Bytes(filename, records);
+			response.setContentType("application/ms-excel");
+			response.setHeader("Content-Disposition", "attachment; filename="+new String((filename+".xls").getBytes("utf-8"),"iso8859-1"));
+			response.setHeader("Content-Length",String.valueOf(data.length));
+			response.getOutputStream().write(data);
+			return;
+		}
+		//如果查询到的数据为空,则跳转到收支详情页
+		String basePath = PropertyUtils.getProperty("static.admin.url");
+		response.sendRedirect(basePath+"/business/balancedetail?businessId="+businessId);
+	}
+	
+	/**
+	 * 导出商户收支记录excel二进制数据
+	 * @author pengyi
+	 * @date 20150902
+	 * @param fileName
+	 * @param records
+	 * @return
+	 * @throws Exception
+	 */
+	private byte[] exportBusinessBalanceRecord2Bytes(String fileName,List<BusinessBalanceRecordModel> records) throws Exception{
+		ExcelExportData data = new ExcelUtils.ExcelExportData();
+		data.setTitles(new String[]{"商户提款流水记录"});
+		data.setColumnNames(new ArrayList<String[]>());
+		data.setFieldNames(new ArrayList<String[]>());
+		data.setDataMap(new LinkedHashMap<String, List<?>>());
+		//add data
+		data.getColumnNames().add(new String[]{"任务单号/交易流水号","所属银行","卡号","收支金额","余额","完成时间","操作人"});
+		data.getFieldNames().add(new String[]{"relationno","openBank","accountNo","amount","balance","operatetime","operator"});
+		data.getDataMap().put(fileName, records);
+		return ExcelUtils.export2ByteArray(data);
 	}
 }

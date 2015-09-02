@@ -61,7 +61,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">提款单号:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="relationNo" />
+								<input type="text" class="form-control" name="relationNo" id="relationNo" />
 							</div>
 						</div>
 					</div>
@@ -72,7 +72,7 @@
 								<div class="input-group date">
 									<span class="input-group-addon"><i
 										class="fa fa-calendar"></i></span> <input type="text"
-										class="form-control" value="" name="startDate" />
+										class="form-control" value="" name="startDate" id="startDate"/>
 								</div>
 							</div>
 						</div>
@@ -84,7 +84,7 @@
 								<div class="input-group date">
 									<span class="input-group-addon"><i
 										class="fa fa-calendar"></i></span> <input type="text"
-										class="form-control" value="" name="endDate" />
+										class="form-control" value="" name="endDate" id="endDate"/>
 								</div>
 							</div>
 						</div>
@@ -95,11 +95,11 @@
 						value="1" /> <input type="hidden" name="businessID"
 						id="businessID" value="<%=detail.getId()%>" />
 					<div class="col-lg-3">
-						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+						<button type="button" class="btn btn-w-m btn-primary" id="btnSearch"
 							style="margin-left: 3px; height: 30px;">查询</button>
 					</div>
 					<div class="col-lg-3">
-						<button type="button" class="btn btn-w-m btn-primary" id=btnExport
+						<button type="button" class="btn btn-w-m btn-primary" id="btnExport"
 							style="margin-left: 3px; height: 30px;">导出</button>
 					</div>
 				</div>
@@ -242,6 +242,26 @@
 	$("#btnSearch").click(function() {
 		jss.search(1);
 	});
+	
+	//导出
+	$("#btnExport").click(function(){
+        var businessId = $("#businessID").val();
+        var recordType = $("#recordType").val();
+        var relationNo = $("#relationNo").val();
+        var startDate = $("#startDate").val();
+        var endDate = $("#endDate").val();
+        if (startDate == "" || endDate == "") {
+            alert("请输入时间范围!");
+            return;
+        }
+        if((Date.parse(endDate) - Date.parse(startDate)) < 0){
+        	alert("结束时间必须大于开始时间!");
+            return;
+        }
+        var url = "<%=basePath%>/business/exportbusinessbalancerecord?businessId=" + businessId + "&recordType=" + recordType + "&relationNo=" + relationNo + "&startDate=" + startDate + "&endDate=" + endDate;
+        window.location.href = url;
+        return;
+	});	
 
 	function funLookDetail(withwardId) {
 		 var paramaters = { "withwardId": withwardId };
