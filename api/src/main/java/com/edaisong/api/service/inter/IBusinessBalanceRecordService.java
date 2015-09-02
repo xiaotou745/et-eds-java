@@ -1,9 +1,11 @@
 package com.edaisong.api.service.inter;
 
 import java.text.ParseException;
+import java.util.List;
 
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
@@ -33,4 +35,13 @@ public interface IBusinessBalanceRecordService {
 	PagedResponse<BusinessBalanceRecord> customerGetTransDetailList(PagedCustomerSearchReq par);
 	
 	double queryBusinessRechargeTotalAmount(BussinessBalanceQueryReq par) throws ParseException;
+	
+	/**
+	 * 导出商家收支记录数据
+	 * @author pengyi
+	 * @date 20150902
+	 * @param par
+	 * @return
+	 */
+	List<BusinessBalanceRecordModel> getBusinessBalanceRecordListForExport(PagedTransDetailReq par);
 }

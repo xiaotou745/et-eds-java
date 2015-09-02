@@ -14,6 +14,7 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
@@ -57,5 +58,18 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 		}
 		return getReadOnlySqlSessionUtil().selectOne(
 				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.queryBusinessRechargeTotalAmount", par);
+	}
+
+	/**
+	 * 导出商家收支记录数据
+	 * @author pengyi
+	 * @date 20150902
+	 * @param par
+	 * @return
+	 */
+	@Override
+	public List<BusinessBalanceRecordModel> getBusinessBalanceRecordListForExport(PagedTransDetailReq par) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getBusinessBalanceRecordListForExport", par);
 	}
 }
