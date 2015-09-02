@@ -43,7 +43,7 @@ public class GlobalConfigService implements IGlobalConfigService {
 		GlobalConfigModel model = iGlobalConfigDao.getGlobalConfigByPrimaryId(par.getId());
 		int ret = iGlobalConfigDao.update(par);
 		if(model != null){
-			redisService.remove(getConfigCacheKey(model.getGroupId()));
+			redisService.remove(RedissCacheKey.GlobalConfig_Key+model.getGroupId());
 		}
 		return ret;
 	}
@@ -60,7 +60,7 @@ public class GlobalConfigService implements IGlobalConfigService {
 	 * */
 	@Override
 	public int insert(GlobalConfig par) {
-		redisService.remove(getConfigCacheKey(par.getGroupid()));
+		redisService.remove(RedissCacheKey.GlobalConfig_Key+par.getGroupid());
 		return iGlobalConfigDao.insert(par);
 	}
 
@@ -78,13 +78,4 @@ public class GlobalConfigService implements IGlobalConfigService {
 		return iGlobalConfigDao.getPagedGlobalConfigModels(search);
 	}
 
-	/**
-	 * 获得全局配置缓存key
-	 * @param groupId
-	 * @return
-	 */
-	private String getConfigCacheKey(int groupId){
-		String globalVersion = PropertyUtils.getProperty("GlobalVersion");
-		return String.format(RedissCacheKey.Ets_Dao_GlobalConfig_GlobalConfigGet+globalVersion, groupId);
-	}
 }

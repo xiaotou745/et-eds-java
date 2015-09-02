@@ -36,7 +36,7 @@
 
 <div class="modal inmodal fade" id="myModal" tabindex="-1" role="dialog"
 	aria-hidden="true">
-	<div class="modal-dialog modal-lg">
+	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">
@@ -44,12 +44,20 @@
 				</button>
 				<h4 class="modal-title">分配权限</h4>
 			</div>
-			<div class="modal-body">
+
+			<div class="modal-body" style="height: 500px; overflow: auto; margin-top: 10px; border-bottom: solid 1px #dcdcdc;">
+
 				<div class="test treeview" id="treeview11"></div>
+				<div class="control-group">
+               <button class="btn btn-success" id="btnExpanAll" type="button">展开/折叠</button>    
+              <button class="btn btn-success" id="btn-check-all" type="button">全选/全消</button>                      
+            </div>
 			</div>
 			<div class="modal-footer">
+			<input id="userid" type="hidden" name="userid" />
 				<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-				<button type="button" class="btn btn-primary">保存</button>
+				<button type="button" class="btn btn-primary" id="saveauth">保存</button>
+				
 			</div>
 		</div>
 	</div>
@@ -69,4 +77,26 @@ var jss={search:function(currentPage){
 	$("#btnSearch").click(function() {
 		jss.search(1);
 	});
+	//全选全消
+    $('#btn-check-all').on('click', function (e) {
+	      if(checkstatus==0){
+	    	  checkstatus=1;
+	        $checkableTree.treeview('checkAll', { silent: true });
+	      }else{
+	    	  checkstatus=0;
+	    	  $checkableTree.treeview('uncheckAll', { silent: true }); 
+	      }
+    });
+
+    // 展开/折叠
+    $('#btnExpanAll').on('click', function (e) {
+    	if(expandstatus==0){
+    		expandstatus=1;
+    		 $checkableTree.treeview('expandAll', { levels: 10, silent: true });
+	      }else{
+	    	  expandstatus=0;
+	    	  $checkableTree.treeview('collapseAll', { silent: true });
+	      }
+      
+    });
 </script>

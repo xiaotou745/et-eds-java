@@ -142,6 +142,7 @@
 
 			// Search methods
 			search: $.proxy(this.search, this),
+			findNodes: $.proxy(this.findNodes, this),
 			clearSearch: $.proxy(this.clearSearch, this)
 		};
 	};

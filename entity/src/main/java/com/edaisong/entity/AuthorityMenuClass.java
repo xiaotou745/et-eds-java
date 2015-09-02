@@ -1,6 +1,8 @@
 package com.edaisong.entity;
 
-public class AuthorityMenuClass {
+import java.io.Serializable;
+
+public class AuthorityMenuClass implements Serializable{
     private Integer id;
 
     private Integer parid;

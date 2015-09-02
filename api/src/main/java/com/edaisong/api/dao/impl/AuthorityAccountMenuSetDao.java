@@ -54,4 +54,12 @@ public class AuthorityAccountMenuSetDao extends DaoBase implements IAuthorityAcc
 				"com.edaisong.api.dao.inter.IAuthorityAccountMenuSetDao.getMenuIdsByAccountId",id);
 	}
 
+	@Override
+	public boolean modifyAuthList(List<AuthorityAccountMenuSet> authList) {
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dao.inter.IAuthorityAccountMenuSetDao.modifyAuthList",
+						authList) > 0;
+
+	}
+
 }

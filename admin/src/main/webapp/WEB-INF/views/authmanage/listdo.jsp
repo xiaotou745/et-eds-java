@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-	<%@page import="com.edaisong.entity.common.PagedResponse"%>
+<%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.entity.resp.AccountResp"%>
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
@@ -34,7 +34,8 @@
 			<td><%=list.get(i).getId()%></td>
 			<td><%=list.get(i).getLoginname()%></td>
 			<td><%=list.get(i).getStatus() > 0 ? "可用" : "锁定"%></td>
-			<td><a href="javascript:void(0)" onclick="setauth(<%=list.get(i).getId()%>)">分配权限</a></td>
+			<td><a href="javascript:void(0)"
+				onclick="setauth(<%=list.get(i).getId()%>)">分配权限</a></td>
 		</tr>
 		<%
 			}
@@ -44,8 +45,49 @@
 <%=PageHelper.getPage(data.getPageSize(),
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
-	<script type="text/javascript">
-
+<script type="text/javascript">
+    var oldAuth="";
+	var checkstatus=0;
+	var expandstatus=0;
+	var $checkableTree;
+  //保存权限设置
+	$("#saveauth").click(function() {
+		var newAuth = "";
+        var newChecked=$checkableTree.treeview('getChecked');
+		if(newChecked!=undefined&&newChecked.length>0){
+			 for (var i = 0; i < newChecked.length; i++){
+				 newAuth += (newChecked[i].id+ ",");
+			}
+			 newAuth=newAuth.substring(0,newAuth.length-1);
+		 }
+		if(newAuth==oldAuth){
+			alert("没有任何修改，不需要保存");
+			return;
+		}
+		if (!confirm("确定要提交保存吗？")){
+			return;
+		}
+		var paramaters = {
+			"userID" :  $("#userid").val(),
+			"newAuth" : newAuth,
+			"oldAuth" : oldAuth,
+		};
+		var url = "<%=basePath%>/authmanage/saveauth";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				if (result=="") {
+					alert("操作成功");
+					window.location.href = window.location.href;
+					 //$('#myModal').modal('hidden');
+				} else {
+					alert(result);
+				}
+			}
+		});		
+		});
 	//分配权限
     function setauth(id) {
     	var paramaters = { "userID": id};
@@ -69,32 +111,72 @@
             	        	checkNode(1,event, node);
             	        }
             	      });
+            		 var oldChecked=$checkableTree.treeview('getChecked');
+            		 if(oldChecked!=undefined&&oldChecked.length>0){
+            			 for (var i = 0; i < oldChecked.length; i++){
+            				 oldAuth+=(oldChecked[i].id+",");
+            			}
+            			 oldAuth=oldAuth.substring(0,oldAuth.length-1);
+            		 }
+            		 $("#userid").val(id+"");
                     $('#myModal').modal('show');
                 } 
             }
         });
     }
-	var $checkableTree;
-	var hascall=false;
+
 	function checkNode(type,event, node){
-		//if(hascall){
-			//hascall=false;
-			//return;
-		//}
-		//hascall=true;
+		var parent=$checkableTree.treeview('getParent', node);
 		if(type==0){//选中一个节点时，所有父节点选中，选中所有子节点选中
-			if(node.nodes!=undefined&&node.nodes.length>0){
-			   $checkableTree.treeview('checkNode', [ node.nodes, { silent: true } ]);
-			}
-			var parent=$checkableTree.treeview('getParent', node);
+			checkChild(node);
 			while(parent!=undefined&&parent.nodes!=undefined&&parent.nodes.length>0){
-				$checkableTree.treeview('checkNode', [ parent, { silent: true } ]);
+				$checkableTree.treeview('checkNode', [ parent.nodeId, { silent: true } ]);
 				parent=$checkableTree.treeview('getParent', parent);
 			}
 		}else{
-			if(node.nodes!=undefined&&node.nodes.length>0){
-				$checkableTree.treeview('uncheckNode', [ node.nodes, { silent: true } ]);
+			uncheckChild(node);
+			//取消时，如果当前节点的兄弟节点都已经被取消选中了，则当前节点的父节点也应该取消选中
+			if(parent!=undefined&&parent.nodes!=undefined&&parent.state.checked){
+				var siblingNodes=$checkableTree.treeview('getSiblings', node);
+				var needUncheckParent=true;
+				if(siblingNodes.length>0){
+					for (var i = 0; i < siblingNodes.length; i++){
+						if(siblingNodes[i].state.checked){
+							needUncheckParent=false;
+							break;
+						}
+					}
+				}
+				if(needUncheckParent){
+					$checkableTree.treeview('uncheckNode', [ parent.nodeId, { silent: false } ]);
+				}
 			}
 		}
 	}
+	//选中当前节点的所有子节点和孙子节点
+	function checkChild(node){
+		if(node.nodes!=undefined&&node.nodes.length>0){
+	          var childs = $checkableTree.treeview('findNodes', ['^'+node.id+'$','g','parentid']);
+	          if(childs!=undefined&&childs.length>0){
+	        	  $checkableTree.treeview('checkNode', [ childs, { silent: true } ]);
+	   			for (var i = 0; i < node.nodes.length; i++){
+	 				 checkChild(node.nodes[i]);
+	 			}
+	          }
+		}
+	}
+	//取消选中当前节点的所有子节点和孙子节点
+	function uncheckChild(node){
+		if(node.nodes!=undefined&&node.nodes.length>0){
+			 var childs = $checkableTree.treeview('findNodes', ['^'+node.id+'$','g','parentid']);
+	         if(childs!=undefined&&childs.length>0){
+		        	$checkableTree.treeview('uncheckNode', [ childs, { silent: true } ]);
+					for (var i = 0; i < node.nodes.length; i++){
+						 uncheckChild(node.nodes[i]);
+					}
+			  }
+		}
+	}
+
+	
     </script>
