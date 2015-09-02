@@ -144,7 +144,7 @@ public class AccountController {
 		loginUser.setGroupId(ParseHelper.ToInt(account.getGroupid(), 0));
 		loginUser.setId(account.getId());
 		loginUser.setLoginName(account.getLoginname());
-		loginUser.setPassword(password);
+		loginUser.setPassword("");
 		loginUser.setRoleId(account.getRoleid());
 		loginUser.setUserName(account.getUsername());
 		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
@@ -169,14 +169,10 @@ public class AccountController {
 	@RequestMapping(value = "logoff")
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
-		Cookie cookie = CookieUtils.getCookieByName(LoginUtil.LOGIN_COOKIE_NAME, request);
-		if (cookie != null) {
-			CookieUtils.deleteCookie(request, response, cookie);
-		}
-		Cookie menuList = CookieUtils.getCookieByName(LoginUtil.MENU_LIST_COOKIE_NAME, request);
-		if (menuList != null) {
-			CookieUtils.deleteCookie(request, response, menuList);
-		}
+		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME);
+		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME_NET);
+		CookieUtils.deleteCookie(request, response, LoginUtil.MENU_LIST_COOKIE_NAME);
+		CookieUtils.deleteCookie(request, response, LoginUtil.MENU_LIST_COOKIE_NAME_NET);
 		response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
 	}
 }
