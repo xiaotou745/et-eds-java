@@ -33,11 +33,11 @@ public enum BusinessBalanceRecordRecordType {
 	/**
 	 * 系统奖励
 	 */
-	SystemReward(6, "系统奖励"),
+	//SystemReward(6, "系统奖励"),
 	/**
 	 * 系统赔偿
 	 */
-	SystemCompensation(7, "系统赔偿"),
+	//SystemCompensation(7, "系统赔偿"),
 	/**
 	 * 订单菜品费
 	 */
@@ -49,7 +49,7 @@ public enum BusinessBalanceRecordRecordType {
 	/**
 	 * 系统金额归零
 	 */
-	SysClearMoney(10, "系统金额归零"),
+	//SysClearMoney(10, "系统金额归零"),
 	/**
 	 * 手续费
 	 */
