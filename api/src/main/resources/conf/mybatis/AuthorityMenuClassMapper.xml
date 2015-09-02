@@ -38,7 +38,7 @@ SELECT  *
 FROM    AuthorityMenuClass a WITH ( NOLOCK )
         LEFT JOIN ( SELECT  b.MenuId
                     FROM    AuthorityAccountMenuSet b WITH ( NOLOCK )
-                    WHERE   b.AccoutId = 1
+                    WHERE   b.AccoutId = #{userID}
                   ) t ON a.Id = t.MenuId 
   </select>
 </mapper>

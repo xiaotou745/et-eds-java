@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dao.inter.IAuthorityMenuClassDao;
 import com.edaisong.api.service.inter.IAuthorityMenuClassService;
+import com.edaisong.entity.AuthorityAccountMenuSet;
 import com.edaisong.entity.AuthorityMenuClass;
 import com.edaisong.entity.MenuEntity;
 
@@ -35,8 +36,10 @@ public class AuthorityMenuClassService implements IAuthorityMenuClassService {
 	}
 
 	@Override
-	public List<MenuEntity> getAuthList(int userID) {
+	public List<MenuEntity> getAuthSettingList(int userID) {
 		return dao.getAuthList(userID);
 	}
+
+
 
 }

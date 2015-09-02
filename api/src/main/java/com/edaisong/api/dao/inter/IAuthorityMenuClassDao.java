@@ -2,6 +2,7 @@ package com.edaisong.api.dao.inter;
 
 import java.util.List;
 
+import com.edaisong.entity.AuthorityAccountMenuSet;
 import com.edaisong.entity.AuthorityMenuClass;
 import com.edaisong.entity.MenuEntity;
 
@@ -19,4 +20,5 @@ public interface IAuthorityMenuClassDao {
 	 * @return
 	 */
 	public List<MenuEntity> getAuthList(int userID) ;
+	
 }
