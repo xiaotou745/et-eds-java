@@ -61,7 +61,27 @@
 		</div>
 	</div>
 </div>
-
+<div class="modal inmodal fade" id="modifyModal" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal-dialog modal-sm">
+    <div class="modal-content">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	    <h4 class="modal-title">修改角色</h4>
+	</div>
+<div class="modal-body">
+  角色名称：<input id="roleName"/><br/><br/>
+是否启用：<input type="radio" value="0" name="radstatus" id="radyes"/>
+	  <label for="radyes">启用</label>
+	  <input type="radio" value="1" name="radstatus" id="radno"/>
+	  <label for="radno">不启用</label>
+</div>
+	<div class="modal-footer">
+	    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+	    <button type="button" class="btn btn-primary" id="saverole">保存</button>
+	</div>
+    </div>
+</div>
+</div>
 <script>
 $(document).ready(function() {
 	var data=null;
@@ -93,6 +113,10 @@ $(document).ready(function() {
 				}
 			});		
 	});
+    var oldAuth="";
+	var checkstatus=0;
+	var expandstatus=0;
+	var $checkableTree;
 	//全选全消
     $('#btn-check-all').on('click', function (e) {
 	      if(checkstatus==0){
@@ -115,10 +139,6 @@ $(document).ready(function() {
 	      }
       
     });
-    var oldAuth="";
-	var checkstatus=0;
-	var expandstatus=0;
-	var $checkableTree;
   //保存权限设置
 	$("#saveauth").click(function() {
 		var newAuth = "";
@@ -249,4 +269,48 @@ $(document).ready(function() {
 			  }
 		}
 	}
+	var oldRole="";
+	$("#saverole").click(function(){
+		var belock=$("input[name='radstatus']:checked").val();
+		var newRole=$("#roleid").val()+";"+belock+";"+$('#roleName').val();
+		if(oldRole==newRole){
+			alert("没有修改，不需要保存");
+			return;
+		}
+
+		var paramaters = {
+				"roleID" :  $("#roleid").val(),
+				"belock" : belock,
+				"newName" : $('#roleName').val(),
+			};
+			var url = "<%=basePath%>/role/saverole";
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data : paramaters,
+				success : function(result) {
+					if (result>0) {
+						alert("操作成功");
+						window.location.href = window.location.href;
+						//$('#myModal').modal('hidden');
+					} else {
+						alert("操作失败");
+					}
+				}
+			});
+	});
+	
+    function modify(id,belock,rolename) {
+    	oldRole=id+";"+belock+";"+rolename;
+		if(belock==0){
+			$("#radyes").prop('checked',true); 
+			$("#radno").prop('checked',false); 
+		}else{
+			$("#radyes").prop('checked',false); 
+			$("#radno").prop('checked',true); 
+		}
+		$("#roleid").val(id);
+    	$('#roleName').val(rolename);
+        $('#modifyModal').modal('show');
+    }
 </script>
