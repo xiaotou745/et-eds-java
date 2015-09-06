@@ -3,6 +3,7 @@ package com.edaisong.admin.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,14 @@ import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.core.util.ParseHelper;
+import com.edaisong.core.util.PropertyUtils;
+import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.OptOrder;
@@ -40,6 +45,8 @@ public class OrderController {
 	 private IOrderSubsidiesLogService orderSubsidiesLogService;
 	 @Autowired
 	 private HttpServletRequest request;
+	 @Autowired
+	 private HttpServletResponse response;
 	/**
 	 * 订单列表页面 
 	 * @author CaoHeYang
@@ -103,10 +110,22 @@ public class OrderController {
 	 * @param groupId 集团id
 	 */
 	@RequestMapping(value="exportorder" )
-	public void exportorder(PagedOrderSearchReq searchReq){
-		PagedOrderSearchReq searchReq11=new PagedOrderSearchReq();
-
-		
+	public void exportorder(PagedOrderSearchReq searchReq)throws Exception{
+	   List<ExportOrder> records=	 orderService.exportOrder(searchReq) ;
+	   if(records.size() > 0){
+			//导出数据
+			String filename = "商户提款流水记录%s";
+			byte[] data = null;
+			response.setContentType("application/ms-excel");
+			response.setHeader("Content-Disposition", "attachment; filename="+new String((filename+".xls").getBytes("utf-8"),"iso8859-1"));
+			response.setHeader("Content-Length",String.valueOf(data.length));
+			response.getOutputStream().write(data);
+			return;
+		}else {
+			//如果查询到的数据为空,则跳转到收支详情页
+			String basePath = PropertyUtils.getProperty("static.admin.url");
+			response.sendRedirect(basePath+"/order/list");
+		}
 	}
 	
 	
