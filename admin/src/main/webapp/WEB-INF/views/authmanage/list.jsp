@@ -75,7 +75,7 @@ List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleD
 <script>
 var jss={search:function(currentPage){
 			var keywordvalue=$("#txtKeyword").val();
-			var data={Keyword:keywordvalue,CurrentPage:currentPage};
+			var data={Keyword:keywordvalue,currentPage:currentPage};
 			$.post("<%=basePath%>/authmanage/listdo", data, function(d) {
 				$("#content").html(d);
 			});

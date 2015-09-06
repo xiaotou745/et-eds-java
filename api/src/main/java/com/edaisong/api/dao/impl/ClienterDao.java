@@ -87,12 +87,12 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 			
 		
 		int PageSize = 15;
-		int CurrentPage = req.getCurrentPage();
+		int currentPage = req.getCurrentPage();
 		map.put("Where", Where);
 		map.put("TotalRecord", 0);
 		map.put("TotalPage", 0);
 		map.put("PageSize", PageSize);
-		map.put("CurrentPage", CurrentPage);
+		map.put("currentPage", currentPage);
 		List<ClienterModel> list = getMasterSqlSessionUtil()
 				.selectList("com.edaisong.api.dao.inter.IClienterDao.query",
 						map);
@@ -100,7 +100,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		PagedResponse<ClienterModel> resp = new PagedResponse<ClienterModel>();		
 		resp.setResultList(list);
 		resp.setPageSize(PageSize);
-		resp.setCurrentPage(CurrentPage);
+		resp.setCurrentPage(currentPage);
 		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
 		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
 		return resp;
@@ -115,14 +115,14 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {
 		Map<String, Object> map = new HashMap<String, Object>();				
 		int PageSize = 15;
-		int CurrentPage = req.getCurrentPage();
+		int currentPage = req.getCurrentPage();
 		map.put("workStatus", req.getWorkStatus());
 		map.put("search", req.getSearch());
 		map.put("businessId", req.getBusinessId());
 		map.put("TotalRecord", 0);
 		map.put("TotalPage", 0);
 		map.put("PageSize", PageSize);
-		map.put("CurrentPage", CurrentPage);
+		map.put("currentPage", currentPage);
 		List<BusinessClientersModel> list = getReadOnlySqlSessionUtil()
 				.selectList("com.edaisong.api.dao.inter.IClienterDao.getBusinessClienters",
 						map);
@@ -130,7 +130,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		PagedResponse<BusinessClientersModel> resp = new PagedResponse<BusinessClientersModel>();		
 		resp.setResultList(list);
 		resp.setPageSize(PageSize);
-		resp.setCurrentPage(CurrentPage);
+		resp.setCurrentPage(currentPage);
 		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
 		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
 		return resp;

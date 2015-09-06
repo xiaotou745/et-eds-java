@@ -8,11 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IAccountDao;
-import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.PagedAccountReq;
-import com.edaisong.entity.resp.AccountResp;
 
 @Repository
 public class AccountDao extends DaoBase implements IAccountDao {

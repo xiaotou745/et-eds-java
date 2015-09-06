@@ -58,7 +58,7 @@ var jss={
 		search:function(currentPage){
 			$("#_hiddenCurrentPage").val(currentPage);
 			 var paramaters = { 
-					 "CurrentPage":currentPage,
+					 "currentPage":currentPage,
 					 "groupId" : 0
 			 };
 			$.post("<%=basePath%>/admintools/globalconfigmanagerlistdo",paramaters,function(d){
