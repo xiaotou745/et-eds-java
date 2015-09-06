@@ -12,6 +12,8 @@
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.util.EnumHelper"%>
 <%@page import="com.edaisong.core.enums.OrderStatus"%>
+<%@page import="com.edaisong.core.enums.OrderAuditStatus"%>
+
 
 <%	
 String basePath =PropertyUtils.getProperty("static.admin.url");
@@ -142,12 +144,22 @@ width: 100%;
 					</div>
 					<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 					<div class="col-lg-3">
+					<div class="form-group">
+							<label class="col-sm-4 control-label">审核状态:</label>
+							<div class="col-sm-8">
+									<%=HtmlHelper.getSelect("auditStatus", EnumHelper.GetEnumItems(OrderAuditStatus.class), "desc", "value",null,"-1","全部","","form-control m-b") %>
+							</div>
+						</div>
+					</div>
+				</div>
+			    <div class="row">
+						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 							style="margin-left: 3px;height:30px;">查询</button>
 					   <button type="button" class="btn btn-w-m btn-primary" id=btnExport
-							style="margin-left: 3px;height:30px;">查询</button>
+							style="margin-left: 3px;height:30px;">订单数据导出</button>
 					</div>
-				</div>
+			</div>
 			</form>
 		</div>
 	</div>
