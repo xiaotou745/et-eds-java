@@ -30,7 +30,7 @@
 	</tr>
 </table>
 	<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
-	<input type="hidden" name="businessId" id="businessId" value="<%=detail.getId()%>"/>
+	<input type="hidden" name="businessID" id="businessId" value="<%=detail.getId()%>"/>
 </form>
 </div>
 
