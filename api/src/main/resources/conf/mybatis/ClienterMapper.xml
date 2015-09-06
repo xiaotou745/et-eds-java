@@ -101,34 +101,10 @@
    left join dbo.[Group] g   with(nolock) on c.GroupId=g.id
    left join dbo.DeliveryCompany dc with(nolock) on c.DeliveryCompanyId=dc.id
    left join  dbo.clienter cl with(nolock) on c.recommendPhone=cl.PhoneNo
-	</sql>
-	
-	<sql id="queryWhere">
-	  1=1  
-     
-      <if test="trueName!=null and trueName!=''">
-     	and c.trueName like ''%${trueName}%''
-     </if>
-     <if test="status!=null and status>-1">
-     	and c.status=${status}
-     </if>
-     <if test="phoneNo!=null and phoneNo!=''">
-     	and c.phoneNo like ''%${phoneNo}%''
-     </if> 
-     <if test="recommendPhone!=null and recommendPhone!=''">
-     	and c.phoneNo like ''%${recommendPhone}%''
-     </if> 
-     <if test="deliveryCompanyId>0">
-     	and c.DeliveryCompanyId =${deliveryCompanyId}
-     </if>
-     <if test="code>0">
-     	and c.CityId =${code}
-     </if>  
-	</sql>
-	
+	</sql>	
 
 	<select id="query" resultType="com.edaisong.entity.domain.ClienterModel"
-		parameterType="com.edaisong.entity.req.ClienterReq" statementType="CALLABLE">
+		parameterType="com.edaisong.entity.req.PagedClienterReq" statementType="CALLABLE">
  
 {call Sp_CustomPage2015_V1(
 ' c.id desc ',
