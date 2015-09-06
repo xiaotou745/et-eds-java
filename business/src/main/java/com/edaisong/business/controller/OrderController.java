@@ -1,6 +1,7 @@
 package com.edaisong.business.controller;
 
 import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.business.common.UserContext;
+import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 
@@ -178,6 +180,7 @@ public class OrderController {
 			resp.setMessage("没有获取到登录信息，请重新登录");
 			return resp;
 		}
+		req.setOrderfrom(OrderFrom.BusinessWeb.value()); // 订单来源 商家版后台
 		req.setBusinessid(context.getBusiness().getId());
 		resp = orderService.AddOrder(req);
 		return resp;

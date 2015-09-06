@@ -86,7 +86,7 @@
                 ,[GroupId]
                 ,[RoleId]
             FROM [account] with(nolock)
-            where status=1 and LoginName=#{username,jdbcType=NVARCHAR} AND Password=#{password,jdbcType=NVARCHAR}
+            where LoginName=#{username,jdbcType=NVARCHAR} AND Password=#{password,jdbcType=NVARCHAR}
   </select>
   <update id="updateRoleID"  parameterType="java.util.Map" >
     update account set roleid=#{newRoleID,jdbcType=INTEGER}
