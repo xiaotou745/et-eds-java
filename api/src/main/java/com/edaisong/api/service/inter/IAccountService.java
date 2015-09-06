@@ -9,4 +9,6 @@ import com.edaisong.entity.resp.BusinessLoginResp;
 public interface IAccountService {
 	public  PagedResponse<Account>  queryAccount(PagedAccountReq req);
 	Account login(String username,String password);
+	Account getByID(int userID);
+	int updateRoleID(int userID,int newRoleID);
 }

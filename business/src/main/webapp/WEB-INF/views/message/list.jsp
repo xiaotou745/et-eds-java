@@ -21,7 +21,7 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 <div class="top cb">
 		<h3 class="cb">消息中心</h3>
 		<form method="POST" action="#" class="form-horizontal" id="searchForm">
-			<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
+			<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 		</form>
 		</div>
 		<div class="bottom bottom2 bottom3" id="content">

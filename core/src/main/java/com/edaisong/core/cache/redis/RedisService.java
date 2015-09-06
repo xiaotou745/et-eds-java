@@ -37,7 +37,7 @@ public class RedisService {
 	 * @param value value
 	 */
 	public void set(String key, Object value) {
-		set(suffxKey(key), value, 1, TimeUnit.HOURS);
+		set(key, value, 1, TimeUnit.HOURS);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class RedisService {
 	 *            value, long timeout, TimeUnit timeUnit)}
 	 */
 	public void set(String key, Object value, long timeout) {
-		set(suffxKey(key), value, timeout, TimeUnit.SECONDS);
+		set(key, value, timeout, TimeUnit.SECONDS);
 	}
 
 	/**

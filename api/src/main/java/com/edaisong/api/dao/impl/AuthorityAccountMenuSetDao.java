@@ -19,36 +19,6 @@ import com.edaisong.entity.AuthorityAccountMenuSet;
 public class AuthorityAccountMenuSetDao extends DaoBase implements IAuthorityAccountMenuSetDao{
 
 	@Override
-	public int deleteByPrimaryKey(Integer id) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public int insert(AuthorityAccountMenuSet record) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public int insertSelective(AuthorityAccountMenuSet record) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public AuthorityAccountMenuSet selectByPrimaryKey(Integer id) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(AuthorityAccountMenuSet record) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public int updateByPrimaryKey(AuthorityAccountMenuSet record) {
-		throw new NotImplementedException();
-	}
-
-	@Override
 	public List<Integer> getMenuIdsByAccountId(Integer id) {
 		return getReadOnlySqlSessionUtil().selectList(
 				"com.edaisong.api.dao.inter.IAuthorityAccountMenuSetDao.getMenuIdsByAccountId",id);

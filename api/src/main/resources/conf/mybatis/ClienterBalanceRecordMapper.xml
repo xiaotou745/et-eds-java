@@ -40,7 +40,7 @@
 ' dbo.ClienterBalanceRecord ',
 #{Where,mode=IN,jdbcType=VARCHAR},
 #{PageSize,mode=IN,jdbcType=INTEGER},
-#{CurrentPage,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
 1,
 #{TotalRecord,mode=OUT,jdbcType=VARCHAR},
 #{TotalPage,mode=OUT,jdbcType=VARCHAR}

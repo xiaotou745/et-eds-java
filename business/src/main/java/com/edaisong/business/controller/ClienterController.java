@@ -57,11 +57,11 @@ public class ClienterController {
 	 * @return
 	 */
 	@RequestMapping("customerlistdo")
-	public ModelAndView customerlistdo(String search,Integer CurrentPage,HttpServletRequest request) {
+	public ModelAndView customerlistdo(String search,Integer currentPage,HttpServletRequest request) {
 		PagedBusinessClientersReq req=new PagedBusinessClientersReq();
 		req.setBusinessId(UserContext.getCurrentContext(request).getBusiness().getId());
 		req.setSearch(search);
-		req.setCurrentPage(CurrentPage);
+		req.setCurrentPage(currentPage);
 		req.setWorkStatus(2);//2为查询全部上班状态,查询骑士名字或手机号时不需要查询上班状态
 		PagedResponse<BusinessClientersModel> resp = clienterService.getBusinessClienters(req);
 		ModelAndView view = new ModelAndView("clienter/listdo");

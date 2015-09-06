@@ -91,7 +91,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage"
+					<input type="hidden" name="currentPage" id="_hiddenCurrentPage"
 						value="1" /> <input type="hidden" name="businessID"
 						id="businessID" value="<%=detail.getId()%>" />
 					<div class="col-lg-3">

@@ -51,11 +51,19 @@ public class AuthorityMenuClassDao extends DaoBase implements
 	}
 
 	@Override
-	public List<MenuEntity> getAuthList(int userID) {
+	public List<MenuEntity> getAuthSettingList(int userID) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getAuthList",
+						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getAuthSettingList",
 						userID);
+	}
+
+	@Override
+	public List<MenuEntity> getRoleAuthSettingList(int roleID) {
+		return getReadOnlySqlSessionUtil()
+				.selectList(
+						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getRoleAuthSettingList",
+						roleID);
 	}
 
 

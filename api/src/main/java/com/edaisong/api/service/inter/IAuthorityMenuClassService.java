@@ -32,5 +32,11 @@ public interface IAuthorityMenuClassService {
 	 */
 	public List<MenuEntity> getAuthSettingList(int userID) ;
 	
-
+	/**
+	 * 修改权限时，获取给定角色的权限列表（包括没有权限的menu）
+	 * @author hailongzhao
+	 * @date 20150902
+	 * @return
+	 */
+	public List<MenuEntity> getRoleAuthSettingList(int roleID) ;
 }

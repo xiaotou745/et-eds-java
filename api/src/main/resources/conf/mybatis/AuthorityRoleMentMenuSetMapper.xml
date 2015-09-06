@@ -1,71 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edaisong.api.dao.inter.IAuthorityRoleMentMenuSetDao" >
-  <resultMap id="BaseResultMap" type="com.edaisong.entity.AuthorityRoleMentMenuSet" >
-    <id column="Id" property="id" jdbcType="INTEGER" />
-    <result column="RoleId" property="roleid" jdbcType="INTEGER" />
-    <result column="MenuId" property="menuid" jdbcType="INTEGER" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    Id, RoleId, MenuId
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from AuthorityRoleMentMenuSet
-    where Id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from AuthorityRoleMentMenuSet
-    where Id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.edaisong.entity.AuthorityRoleMentMenuSet" >
-    insert into AuthorityRoleMentMenuSet (Id, RoleId, MenuId
-      )
-    values (#{id,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER}, #{menuid,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.AuthorityRoleMentMenuSet" >
-    insert into AuthorityRoleMentMenuSet
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="roleid != null" >
-        RoleId,
-      </if>
-      <if test="menuid != null" >
-        MenuId,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="roleid != null" >
-        #{roleid,jdbcType=INTEGER},
-      </if>
-      <if test="menuid != null" >
-        #{menuid,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.AuthorityRoleMentMenuSet" >
-    update AuthorityRoleMentMenuSet
-    <set >
-      <if test="roleid != null" >
-        RoleId = #{roleid,jdbcType=INTEGER},
-      </if>
-      <if test="menuid != null" >
-        MenuId = #{menuid,jdbcType=INTEGER},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.AuthorityRoleMentMenuSet" >
-    update AuthorityRoleMentMenuSet
-    set RoleId = #{roleid,jdbcType=INTEGER},
-      MenuId = #{menuid,jdbcType=INTEGER}
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
+  <update id="modifyAuthList" parameterType="java.util.List">
+	 <foreach collection="list" index="index" item="item">    
+IF EXISTS ( SELECT  1
+            FROM    AuthorityRoleMentMenuSet with(nolock)
+            WHERE   RoleId = #{item.roleid,jdbcType=INTEGER} 
+                    AND MenuId = #{item.menuid,jdbcType=INTEGER} )
+    BEGIN
+        DELETE  AuthorityRoleMentMenuSet
+        WHERE   RoleId = #{item.roleid,jdbcType=INTEGER}
+                AND MenuId = #{item.menuid,jdbcType=INTEGER}
+    END
+ELSE
+    INSERT  INTO AuthorityRoleMentMenuSet
+            (RoleId, MenuId)
+    VALUES  ( #{item.roleid,jdbcType=INTEGER}, #{item.menuid,jdbcType=INTEGER} )
+     </foreach>
+	</update>
 </mapper>

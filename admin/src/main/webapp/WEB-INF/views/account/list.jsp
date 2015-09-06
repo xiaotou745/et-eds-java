@@ -93,7 +93,7 @@ for(AreaModel item:listArea)
 var jss={
 		search:function(currentPage){
 			var keyword=$("#txtKeyword").val();
-			$.post("<%=basePath%>/account/listdo",{CurrentPage:currentPage,Keyword:keyword,m:Math.random()},function(d){
+			$.post("<%=basePath%>/account/listdo",{currentPage:currentPage,Keyword:keyword,m:Math.random()},function(d){
 				$("#content").html(d);
 			});
 		},

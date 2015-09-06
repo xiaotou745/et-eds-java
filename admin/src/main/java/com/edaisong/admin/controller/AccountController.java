@@ -150,11 +150,6 @@ public class AccountController {
 		loginUser.setUserName(account.getUsername());
 		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
 				true);
-		List<Integer> menuList = authorityAccountMenuSetService.getMenuIdsByAccountId(account.getId());
-		if(menuList != null){
-			CookieUtils.setCookie(request,response, LoginUtil.MENU_LIST_COOKIE_NAME, JsonUtil.obj2string(menuList), cookieMaxAge,
-					false);
-		}
 		response.sendRedirect(basePath+"/order/list");
 	}
 	
@@ -172,8 +167,8 @@ public class AccountController {
 		// 删除登录cookie
 		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME);
 		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME_NET);
-		CookieUtils.deleteCookie(request, response, LoginUtil.MENU_LIST_COOKIE_NAME);
-		CookieUtils.deleteCookie(request, response, LoginUtil.MENU_LIST_COOKIE_NAME_NET);
+//		CookieUtils.deleteCookie(request, response, LoginUtil.MENU_LIST_COOKIE_NAME);
+//		CookieUtils.deleteCookie(request, response, LoginUtil.MENU_LIST_COOKIE_NAME_NET);
 		response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
 	}
 }

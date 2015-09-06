@@ -29,7 +29,7 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 			
 
 		<form method="POST" action="#" class="form-horizontal" id="searchForm">
-			<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
+			<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 			<div class="function">
 				<span class="fl">状态</span>
 				<label class="fl">
@@ -60,7 +60,7 @@ var jss = {
 					$("#content").html(d);
 				});
 		}else{//点击了右上角的放大镜查询
-			 var data={CurrentPage:currentPage,search:$("#customerInfo").val()};
+			 var data={currentPage:currentPage,search:$("#customerInfo").val()};
 				$.post("<%=basePath%>/clienter/customerlistdo",data, function(d) {
 					$("#content").html(d);
 				});

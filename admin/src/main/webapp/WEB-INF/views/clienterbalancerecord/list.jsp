@@ -26,7 +26,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
                  var clienterId = <%=clienterId%>;            
                  //参数不能为""值
 				 var paramaters = { 
-						 "CurrentPage":currentPage,
+						 "currentPage":currentPage,
 						 "clienterId": clienterId						
 						 };        
 			        var url = "<%=basePath%>/clienter/clienterbalancerecordlistdo";
