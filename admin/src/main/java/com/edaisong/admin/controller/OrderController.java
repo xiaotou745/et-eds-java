@@ -1,5 +1,7 @@
 package com.edaisong.admin.controller;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +19,12 @@ import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.core.util.ExcelUtils;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StringUtils;
+import com.edaisong.core.util.ExcelUtils.ExcelExportData;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
@@ -45,8 +49,7 @@ public class OrderController {
 	 private IOrderSubsidiesLogService orderSubsidiesLogService;
 	 @Autowired
 	 private HttpServletRequest request;
-	 @Autowired
-	 private HttpServletResponse response;
+	 
 	/**
 	 * 订单列表页面 
 	 * @author CaoHeYang
@@ -110,16 +113,28 @@ public class OrderController {
 	 * @param groupId 集团id
 	 */
 	@RequestMapping(value="exportorder" )
-	public void exportorder(PagedOrderSearchReq searchReq)throws Exception{
+	public void exportorder(PagedOrderSearchReq searchReq,HttpServletResponse response)throws Exception{
 	   List<ExportOrder> records=	 orderService.exportOrder(searchReq) ;
 	   if(records.size() > 0){
 			//导出数据
-			String filename = "商户提款流水记录%s";
-			byte[] data = null;
+			String fileName = "e代送-%s-订单数据";
+			fileName = String.format(fileName, searchReq.getOrderPubStart() + "到" +searchReq.getOrderPubEnd());
+			ExcelExportData data = new ExcelUtils.ExcelExportData();
+			data.setTitles(new String[]{"商户提款流水记录"});
+			data.setColumnNames(new ArrayList<String[]>());
+			data.setFieldNames(new ArrayList<String[]>());
+			data.setDataMap(new LinkedHashMap<String, List<?>>());
+			//add data
+			data.getColumnNames().add(new String[]{"订单号","商户信息","骑士信息","发布时间","完成时间","订单金额",
+					"订单总金额","订单佣金","订单数量","外送费用","每单补贴","任务补贴","商家结算"});
+			data.getFieldNames().add(new String[]{"orderNo","businessInfo","clienterInfo","pubDate","actualDoneDate","amount"
+					,"totalAmount","orderCommission","orderCount","distribSubsidy","websiteSubsidy","adjustment","settleMoney"});
+			data.getDataMap().put(fileName, records);
+			byte[] datas = ExcelUtils.export2ByteArray(data);
 			response.setContentType("application/ms-excel");
-			response.setHeader("Content-Disposition", "attachment; filename="+new String((filename+".xls").getBytes("utf-8"),"iso8859-1"));
-			response.setHeader("Content-Length",String.valueOf(data.length));
-			response.getOutputStream().write(data);
+			response.setHeader("Content-Disposition", "attachment; filename="+new String((fileName+".xls").getBytes("utf-8"),"iso8859-1"));
+			response.setHeader("Content-Length",String.valueOf(datas.length));
+			response.getOutputStream().write(datas,0,datas.length);
 			return;
 		}else {
 			//如果查询到的数据为空,则跳转到收支详情页
@@ -192,7 +207,7 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value="auditrefuse",method= {RequestMethod.POST})
-	@ResponseBody
+	@ResponseBody 
 	public ResponseBase auditrefuse(OptOrder auditrefuse){
 		auditrefuse.setOptUserId(UserContext.getCurrentContext(request).getId());
 		auditrefuse.setOptUserName(UserContext.getCurrentContext(request).getName());
