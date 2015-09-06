@@ -37,12 +37,10 @@ public class AuthorityMenuClassDao extends DaoBase implements
 		String key=RedissCacheKey.Menu_Auth+accountId;
 		List<MenuEntity> result=redisService.get(key, List.class);
 		if (result==null||result.size()==0) {
-			Map<String, Object> paramMap = new HashMap<>();
-			paramMap.put("accountId", accountId);
 			List<MenuEntity> list = getReadOnlySqlSessionUtil()
 					.selectList(
 							"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getMenuListByUserID",
-							paramMap);
+							accountId);
 			redisService.set(key, list);
 			return list;
 		}
