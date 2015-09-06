@@ -546,7 +546,7 @@
 			AND C.TrueName LIKE ''%${clienterName}%''
 		</if>
 		<if test="clienterPhone != null and clienterPhone!=''">
-			AND C.PhoneNo=''%${clienterPhone}%'' 
+			AND C.PhoneNo LIKE ''%${clienterPhone}%'' 
 		</if>
 	</sql>
 	

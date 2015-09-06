@@ -64,7 +64,7 @@
             return;
         }
         var paramaters = { "businessId": businessId, "clienterId": clienterId };
-        var url = "/business/addclienterbind";
+        var url = "<%=basePath%>/business/addclienterbind";
         $.ajax({
             type: 'POST',
             url: url,
@@ -72,7 +72,7 @@
             success: function (result) {
             	alert(result.message);
                 if (result.responseCode > 0) {
-                    window.location.href = "/business/clienterbindlist?businessId=" + businessId;
+                    window.location.href = "<%=basePath%>/business/clienterbindlist?businessId=" + businessId;
                 }
             }
         });

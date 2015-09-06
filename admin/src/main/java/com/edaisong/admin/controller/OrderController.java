@@ -89,6 +89,28 @@ public class OrderController {
 	}
 	
 	/**
+	 * 订单列表导出数据
+	 * @author CaoHeYang
+	 * @date 20150906
+	 * @param superManPhone 骑士电话
+	 * @param superManName  骑士姓名
+	 * @param businessPhone  商户电话
+	 * @param businessName 商户姓名
+	 * @param orderStatus 订单状态
+	 * @param businessCity 城市
+	 * @param orderPubStart 开始时间
+	 * @param orderPubEnd 结束时间
+	 * @param groupId 集团id
+	 */
+	@RequestMapping(value="exportorder" )
+	public void exportorder(PagedOrderSearchReq searchReq){
+		PagedOrderSearchReq searchReq11=new PagedOrderSearchReq();
+
+		
+	}
+	
+	
+	/**
 	 * 订单详情页面
 	 * @author CaoHeYang
 	 * @Date 20150827
