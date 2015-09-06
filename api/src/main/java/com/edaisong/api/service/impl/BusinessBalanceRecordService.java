@@ -1,6 +1,7 @@
 package com.edaisong.api.service.impl;
 
 import java.text.ParseException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.service.inter.IBusinessBalanceRecordService;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
@@ -29,6 +31,10 @@ public class BusinessBalanceRecordService implements IBusinessBalanceRecordServi
 	@Override
 	public double queryBusinessRechargeTotalAmount(BussinessBalanceQueryReq par) throws ParseException {
 		return businessBalanceRecordDao.queryBusinessRechargeTotalAmount(par);
+	}
+	@Override
+	public List<BusinessBalanceRecordModel> getBusinessBalanceRecordListForExport(PagedTransDetailReq par) {
+		return businessBalanceRecordDao.getBusinessBalanceRecordListForExport(par);
 	}
 
 }

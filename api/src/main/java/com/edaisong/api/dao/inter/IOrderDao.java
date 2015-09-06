@@ -11,6 +11,7 @@ import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
@@ -38,7 +39,17 @@ public interface IOrderDao {
 	  */
 	 OrderListModel getOrderByNoId(String ordernNo,int orderId);
 	 
-	
+	 /**
+	  * 根据订单号/订单id查订单信息(写库)
+	  * 此处使用了nolock
+	  * @author 胡灵波
+	  * @param ordernNo 订单号
+	  * @param orderId  订单id
+	  * @Date 2015年9月1日 14:23:15
+	  * @return
+	  */
+	 OrderListModel getOrderWriteByNoId(String ordernNo, int orderId);
+	 
 	/**
 	 * 商家中心订单列表页面右上角自定义查询 
 	 * @author zhaohailong
@@ -55,7 +66,7 @@ public interface IOrderDao {
 	 * @Date 20150730
 	 * @return
 	 */
-	OrderMapDetail getOrderMapDetail(long orderId);
+	OrderMapDetail getOrderMapDetail(int orderId);
 
 	/**
 	 * 商家后台 订单详情页面基础数据
@@ -108,4 +119,21 @@ public interface IOrderDao {
 	 * @return
 	 */
 	List<BusiPubOrderTimeStatisticsModel> getBusiPubOrderTimeStatistics(int businessId,Date startTime,Date endTime);
+	
+	/**
+	 * update 任意列 根据id 
+	 * @author CaoHeYang
+	 * @param order
+	 * @return
+	 */
+   int updateByPrimaryKeySelective(Order order);
+   
+   /**
+    * 更新订单真实佣金
+    * @author CaoHeYang
+    * @param orderOtherSearch
+    * @date 20150831
+    * @return
+    */
+    int updateOrderRealCommission(OrderOtherSearch orderOtherSearch);
 }

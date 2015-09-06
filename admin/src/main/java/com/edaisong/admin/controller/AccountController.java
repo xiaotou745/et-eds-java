@@ -24,15 +24,18 @@ import com.edaisong.api.service.inter.IAuthorityAccountMenuSetService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.IPUtil;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.AccountLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.SimpleUserInfoModel;
 import com.edaisong.entity.req.PagedAccountReq;
 
 
@@ -90,9 +93,9 @@ public class AccountController {
 			 Integer rememberMe) throws ServletException, IOException {
 		String basePath = PropertyUtils.getProperty("static.admin.url");
 		Date loginTime = new Date();
-		String sessionCode = LoginHelper.getAuthCode(request);
+		String sessionCode = LoginHelper.getAuthCode(request,GlobalSettings.ADMIN_JSESSIONID);
 		//一次性验证码,防止暴力破解
-		LoginHelper.removeAuthCodeCookie(request, response);
+		LoginHelper.removeAuthCodeCookie(request, response,GlobalSettings.ADMIN_JSESSIONID);
 		// 如果已登录,直接返回
 		boolean isLogin = LoginUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
@@ -137,13 +140,16 @@ public class AccountController {
 		error = "成功";
 		log.setRemark(error);
 		accountLoginLogService.addLog(log);
-		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(account), cookieMaxAge,
+		SimpleUserInfoModel loginUser = new SimpleUserInfoModel();
+		loginUser.setAccountType(ParseHelper.ToInt(account.getAccounttype(), 1));
+		loginUser.setGroupId(ParseHelper.ToInt(account.getGroupid(), 0));
+		loginUser.setId(account.getId());
+		loginUser.setLoginName(account.getLoginname());
+		loginUser.setPassword("");
+		loginUser.setRoleId(account.getRoleid());
+		loginUser.setUserName(account.getUsername());
+		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
 				true);
-		List<Integer> menuList = authorityAccountMenuSetService.getMenuIdsByAccountId(account.getId());
-		if(menuList != null){
-			CookieUtils.setCookie(request,response, LoginUtil.MENU_LIST_COOKIE_NAME, JsonUtil.obj2string(menuList), cookieMaxAge,
-					false);
-		}
 		response.sendRedirect(basePath+"/order/list");
 	}
 	
@@ -159,14 +165,10 @@ public class AccountController {
 	@RequestMapping(value = "logoff")
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
-		Cookie cookie = CookieUtils.getCookieByName(LoginUtil.LOGIN_COOKIE_NAME, request);
-		if (cookie != null) {
-			CookieUtils.deleteCookie(request, response, cookie);
-		}
-		Cookie menuList = CookieUtils.getCookieByName(LoginUtil.MENU_LIST_COOKIE_NAME, request);
-		if (menuList != null) {
-			CookieUtils.deleteCookie(request, response, menuList);
-		}
+		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME);
+		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME_NET);
+//		CookieUtils.deleteCookie(request, response, LoginUtil.MENU_LIST_COOKIE_NAME);
+//		CookieUtils.deleteCookie(request, response, LoginUtil.MENU_LIST_COOKIE_NAME_NET);
 		response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
 	}
 }

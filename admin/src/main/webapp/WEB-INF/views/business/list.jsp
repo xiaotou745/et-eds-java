@@ -16,7 +16,7 @@ int groupId=(int)request.getAttribute("groupId");
 
 <div class="SearchMd">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
-	<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
+	<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 	<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td><span class="">商户名称: </span> <input id="businessName"

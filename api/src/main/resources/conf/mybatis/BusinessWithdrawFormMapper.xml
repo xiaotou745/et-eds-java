@@ -280,4 +280,35 @@
       OpenSubBank = #{opensubbank,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <select id="getBusinessWithdrawListById" parameterType="java.lang.String" resultType="com.edaisong.entity.domain.BusinessWithdrawFormModel">
+  	select bwf.Id,
+       bwf.WithwardNo,
+       bwf.BusinessId,
+       b.[Name] BusinessName,
+       b.PhoneNo BusinessPhoneNo,
+       b.HasWithdrawPrice,
+       bwf.BalancePrice,
+       bwf.AllowWithdrawPrice,
+       bwf.Amount,
+       bwf.Balance,
+       bwf.Status,
+       bwf.WithdrawTime,
+       bwf.Auditor,
+       bwf.AuditTime,
+       bwf.Payer,
+       bwf.PayTime,
+       bwf.AuditFailedReason,
+       bwf.PayFailedReason,
+       bwf.OpenBank,
+       bwf.OpenSubBank,
+       bwf.TrueName,
+       bwf.AccountNo,
+       bwf.OpenProvince,
+       bwf.OpenCity,
+       bwf.BelongType,
+       bwf.IDCard
+from BusinessWithdrawForm bwf with(nolock)
+  join business b with(nolock) on bwf.BusinessId=b.Id and bwf.Id=#{withwardId,jdbcType=VARCHAR};
+  </select>
 </mapper>

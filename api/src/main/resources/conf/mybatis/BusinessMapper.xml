@@ -417,4 +417,24 @@ MERGE INTO BusinessExpressRelation ber
         update business set LastLoginTime=#{lastLoginTime,jdbcType=TIMESTAMP}
 		where  Id= #{businessID,jdbcType=INTEGER}
 	</update>
+	
+	<select id="getRechargeDetail" resultType="com.edaisong.entity.domain.BusinessRechargeDetailModel" parameterType="java.lang.String">
+		 SELECT  b.BusinessId ,
+                                a.Name ,
+                                c.PayTime ,
+                                b.Amount ,
+                                b.Balance ,
+                                c.OrderNo ,
+                                c.PayType ,
+                                c.PayStatus
+                        FROM    dbo.business a ( NOLOCK )
+                                JOIN BusinessBalanceRecord b ( NOLOCK ) ON a.id = b.BusinessId
+                                JOIN BusinessRecharge c ( NOLOCK ) ON a.id = c.BusinessId AND b.RelationNo=c.OrderNo 
+                        WHERE   c.OrderNo=#{orderNo,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 更新商户是否绑定骑士  add by pengyi 20150901 -->
+	<update id="updateBusinessIsBind" parameterType="java.util.Map">
+		update business set IsBind = #{isBind,jdbcType=INTEGER} where Id = #{businessId,jdbcType=INTEGER};
+	</update>
 </mapper>

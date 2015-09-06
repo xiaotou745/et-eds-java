@@ -220,7 +220,7 @@
   </select>
   
   <select id="queryBusinessRechargeTotalAmount" resultType="double" parameterType="java.util.HashMap">
-  	SELECT  SUM(bbr.amount) AS totalAmount
+  	SELECT  ISNULL(SUM(bbr.amount),0) AS totalAmount
     FROM    BusinessBalanceRecord bbr ( NOLOCK )
     INNER JOIN dbo.business b ( NOLOCK ) ON bbr.BusinessId = b.Id 
     where bbr.status=1
@@ -263,5 +263,38 @@
 	      and (bbr.RecordType=9 or RecordType=12)
 	    </otherwise>
      </choose>     
+  </select>
+  
+  <select id="getBusinessBalanceRecordListForExport" resultType="com.edaisong.entity.domain.BusinessBalanceRecordModel"
+  		 parameterType="com.edaisong.entity.req.PagedTransDetailReq">
+  	SELECT bbr.[Id]
+      ,bbr.[BusinessId]
+      ,bbr.[Amount]
+      ,bbr.[Status]
+      ,bbr.[Balance]
+      ,bbr.[RecordType]
+      ,bbr.[Operator]
+      ,bbr.[OperateTime]
+      ,bbr.[WithwardId]
+      ,bbr.[RelationNo]
+      ,bbr.[Remark]
+      ,bfa.AccountNo
+      ,bfa.OpenBank
+	FROM [BusinessBalanceRecord] bbr WITH(NOLOCK)
+	LEFT JOIN BusinessFinanceAccount bfa WITH(NOLOCK) ON bbr.BusinessId=bfa.BusinessId
+	WHERE bbr.BusinessId=#{businessID,jdbcType=INTEGER}
+ 	<if test="recordType>0">
+	      AND bbr.[RecordType]=#{recordType,jdbcType=INTEGER}
+    </if> 
+	<if test="relationNo != null and relationNo != ''">
+	      AND bbr.[RelationNo]=#{relationNo,jdbcType=VARCHAR}
+    </if>
+    <if test="startDate != null and startDate != ''">
+	    AND CONVERT(CHAR(10),bbr.OperateTime,120)>=CONVERT(CHAR(10),#{startDate,jdbcType=VARCHAR},120)
+    </if>
+    <if test="endDate != null and endDate != ''">
+	    AND CONVERT(CHAR(10),#{endDate,jdbcType=VARCHAR},120) > CONVERT(CHAR(10),bbr.OperateTime,120)
+    </if>
+    ORDER BY bbr.Id DESC
   </select>
 </mapper>

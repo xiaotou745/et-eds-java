@@ -30,37 +30,43 @@
     from ClienterBalanceRecord
     where ClienterId =#{clienterid,jdbcType=INTEGER}
   </select>
-  
-  <select id="query" resultType="com.edaisong.entity.ClienterBalanceRecord" parameterType="java.util.Map" statementType="CALLABLE">
-<![CDATA[  
+  <sql id="queryWhere">
+		1=1
+		<if test="clienterId != null and clienterId>0">
+			and clienterId=${clienterId}
+		</if>
+	</sql>
+  <select id="query" resultType="com.edaisong.entity.ClienterBalanceRecord" 
+  parameterType="com.edaisong.entity.req.PagedClienterBalanceRecordReq" 
+  statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
 ' id desc ',
 ' id,clienterid,amount,status,balance,recordtype,
  operator,operatetime, withwardid, relationno, remark ',
 ' dbo.ClienterBalanceRecord ',
-#{Where,mode=IN,jdbcType=VARCHAR},
-#{PageSize,mode=IN,jdbcType=INTEGER},
-#{CurrentPage,mode=IN,jdbcType=INTEGER},
-1,
-#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
-#{TotalPage,mode=OUT,jdbcType=VARCHAR}
+'<include refid="queryWhere" />',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER}
+,1,
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
 )}
-	]]>  
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from ClienterBalanceRecord
     where Id = #{id,jdbcType=BIGINT}
   </delete>
+  
   <insert id="insert" parameterType="com.edaisong.entity.ClienterBalanceRecord" >
-    insert into ClienterBalanceRecord (Id, ClienterId, Amount, 
-      Status, Balance, RecordType, 
-      Operator, OperateTime, WithwardId, 
-      RelationNo, Remark)
-    values (#{id,jdbcType=BIGINT}, #{clienterid,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
-      #{status,jdbcType=SMALLINT}, #{balance,jdbcType=DECIMAL}, #{recordtype,jdbcType=SMALLINT}, 
-      #{operator,jdbcType=NVARCHAR}, #{operatetime,jdbcType=TIMESTAMP}, #{withwardid,jdbcType=BIGINT}, 
-      #{relationno,jdbcType=VARCHAR}, #{remark,jdbcType=NVARCHAR})
+    insert into
+		ClienterBalanceRecord
+		(ClienterId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark)
+		select #{clienterid,jdbcType=INTEGER},
+		#{amount,jdbcType=DECIMAL},#{status,jdbcType=SMALLINT},c.AccountBalance,#{recordtype,jdbcType=SMALLINT},#{operator,jdbcType=NVARCHAR}
+		,#{withwardid,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
+		from dbo.clienter  as c where Id=#{clienterid,jdbcType=INTEGER} ;
+		select @@IDENTITY
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.ClienterBalanceRecord" >
     insert into ClienterBalanceRecord
@@ -185,4 +191,11 @@
       Remark = #{remark,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <!-- 根据订单获取对象 add by caoheyang  20150831 -->
+     <select id="getByOrderId" resultType="com.edaisong.entity.ClienterBalanceRecord" parameterType="java.util.Map" >   
+  select top 1  Id,ClienterId,Amount,Status,Balance,RecordType,Operator,OperateTime,RelationNo,Remark
+from  ClienterBalanceRecord (nolock)
+where  WithwardId= #{id,jdbcType=BIGINT} and Remark='无效订单'
+  </select>
 </mapper>

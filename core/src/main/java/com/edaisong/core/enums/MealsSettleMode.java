@@ -1,7 +1,13 @@
 package com.edaisong.core.enums;
 
 public enum MealsSettleMode {
+	/**
+	 * 线下结算
+	 */
 	LineOff(0, "线下结算"),
+	/**
+	 * 线上结算
+	 */
 	LineOn(1, "线上结算");
 	private int value = 0;
 	private String desc;

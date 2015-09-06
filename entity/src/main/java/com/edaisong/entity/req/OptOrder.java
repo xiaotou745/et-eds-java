@@ -7,7 +7,7 @@ import com.edaisong.entity.common.RequestBase;
  * @author CaoHeYang
  * @date 20150828
  */
-public class AuditOkOrder extends RequestBase{
+public class OptOrder extends RequestBase{
     private int optUserId ;
     private String optUserName ;
     private String optLog ;

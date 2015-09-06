@@ -17,4 +17,14 @@ public interface IOrderChildDao {
      * @return
      */
     List<OrderChild> getOrderChildByOrderInfo(String orderNo,int businessId);
+    
+    
+   /**
+    *  获取任务支付状态（0：未支付 1：部分支付 2：已支付）
+    *  @author CaoHeYang
+    * @param orderId
+    * @date  20150831
+    * @return
+    */
+    int   getOrderTaskPayStatus(int orderId);
 }

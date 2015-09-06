@@ -172,7 +172,7 @@ public class HtmlHelper {
 	public static <T> String getSelect(String selectName, List<T> list,
 			String textName, String valueName, Object selectedValue,
 			Object defaultValue, String defaultText, String styleString) {
-		return getSelect(selectName, list, textName, valueName, null, "-1",
-				"全部", styleString,null);
+		return getSelect(selectName, list, textName, valueName, null, defaultValue,
+				defaultText, styleString,null);
 	}
 }

@@ -14,6 +14,7 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
@@ -59,42 +60,16 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.queryBusinessRechargeTotalAmount", par);
 	}
 
-	private String getBussinessBalanceQueryWhere(BussinessBalanceQueryReq par) throws ParseException {
-		StringBuilder sbSqlWhere = new StringBuilder(" bbr.status=1  ");
-		if (!StringUtils.isEmpty(par.getBusinessId())) {
-			sbSqlWhere.append(" AND bbr.BusinessId='" + par.getBusinessId() + "' ");
-		}
-		if (!StringUtils.isEmpty(par.getStartDate())) {
-			sbSqlWhere.append(" AND bbr.operatetime>='" + par.getStartDate() + "' ");
-		}
-		if (!StringUtils.isEmpty(par.getEndDate())) {
-			Date finalDt = ParseHelper.ToDate(par.getEndDate(), "yyyy-MM-dd");
-			finalDt = ParseHelper.plusDate(finalDt, 2, 1);
-			sbSqlWhere.append(" AND bbr.operatetime<='" + ParseHelper.ToDateString(finalDt, "yyyy-MM-dd") + "' ");
-		}
-		if (!StringUtils.isEmpty(par.getName())) {
-			sbSqlWhere.append(" AND Name='" + par.getName() + "' ");
-		}
-		if (!StringUtils.isEmpty(par.getPhoneNo())) {
-			sbSqlWhere.append(" AND PhoneNo='" + par.getPhoneNo() + "' ");
-		}
-		if (!StringUtils.isEmpty(par.getCityId())) {
-			sbSqlWhere.append(" AND CityId=" + par.getCityId() + " ");
-		}
-		if (par.getRechargePrice() > 0) {
-			sbSqlWhere.append(" AND Amount>=" + par.getRechargePrice() + " ");
-		}
-		if (par.getRechargeType() > 0) {
-			if (par.getRechargeType() == 3) {// 充值赠送
-				sbSqlWhere.append(" and RecordType=12  ");
-			}else if (par.getRechargeType() == 1) {// 系统充值
-				sbSqlWhere.append("and  bbr.RecordType=9 AND Remark!='商家客户端充值'");
-			} else if (par.getRechargeType() == 2) {// 客户端充值
-				sbSqlWhere.append(" and bbr.RecordType=9 AND Remark='商家客户端充值'");
-			}
-		} else {
-			sbSqlWhere.append("  and (bbr.RecordType=9 or RecordType=12) ");
-		}
-		return sbSqlWhere.toString();
+	/**
+	 * 导出商家收支记录数据
+	 * @author pengyi
+	 * @date 20150902
+	 * @param par
+	 * @return
+	 */
+	@Override
+	public List<BusinessBalanceRecordModel> getBusinessBalanceRecordListForExport(PagedTransDetailReq par) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getBusinessBalanceRecordListForExport", par);
 	}
 }

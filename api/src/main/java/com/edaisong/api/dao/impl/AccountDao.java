@@ -8,11 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IAccountDao;
-import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.PagedAccountReq;
-import com.edaisong.entity.resp.AccountResp;
 
 @Repository
 public class AccountDao extends DaoBase implements IAccountDao {
@@ -24,48 +22,33 @@ public class AccountDao extends DaoBase implements IAccountDao {
 	}
 
 	@Override
-	public int deleteByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insert(Account record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertSelective(Account record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Account selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(Account record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(Account record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public Account login(String username, String password) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username", username);
 		params.put("password", password);
 		return getReadOnlySqlSessionUtil().selectOne(
 				"com.edaisong.api.dao.inter.IAccountDao.login", params);
+	}
+
+	@Override
+	public Account getByID(int userID) {
+		return getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IAccountDao.getByID", userID);
+	}
+
+	@Override
+	public int updateRoleID(int userID, int newRoleID) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userID", userID);
+		params.put("newRoleID", newRoleID);
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IAccountDao.updateRoleID", params);
+	}
+
+	@Override
+	public List<Account> getByRoleID(int roleID) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IAccountDao.getByRoleID", roleID);
 	}
 
 }

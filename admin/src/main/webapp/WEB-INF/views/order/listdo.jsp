@@ -106,7 +106,7 @@
 			<td><%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td><%=data.get(i).getHadUploadCount()%>/<%=data.get(i).getOrderCount()%></td>
 			<td style="<%=grabToCompleteStyle%>"><%=grabToCompleteStr%></td>
-			<td><a href="javascript:showMapData('@item.Id')">地图</a></td>
+			<td><a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a></td>
 		</tr>
 		<%
 			}

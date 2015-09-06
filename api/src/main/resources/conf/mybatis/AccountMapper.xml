@@ -44,11 +44,17 @@
 		)} 
   </select>
   
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from account
     where Id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="getByRoleID" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from account
+    where RoleId = #{roleID,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from account
@@ -66,141 +72,7 @@
       #{lcuser,jdbcType=NVARCHAR}, #{groupid,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.Account" >
-    insert into account
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="password != null" >
-        Password,
-      </if>
-      <if test="username != null" >
-        UserName,
-      </if>
-      <if test="loginname != null" >
-        LoginName,
-      </if>
-      <if test="status != null" >
-        Status,
-      </if>
-      <if test="accounttype != null" >
-        AccountType,
-      </if>
-      <if test="fadatetime != null" >
-        FADateTime,
-      </if>
-      <if test="fauser != null" >
-        FAUser,
-      </if>
-      <if test="lcdatetime != null" >
-        LCDateTime,
-      </if>
-      <if test="lcuser != null" >
-        LCUser,
-      </if>
-      <if test="groupid != null" >
-        GroupId,
-      </if>
-      <if test="roleid != null" >
-        RoleId,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=NVARCHAR},
-      </if>
-      <if test="username != null" >
-        #{username,jdbcType=NVARCHAR},
-      </if>
-      <if test="loginname != null" >
-        #{loginname,jdbcType=NVARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="accounttype != null" >
-        #{accounttype,jdbcType=INTEGER},
-      </if>
-      <if test="fadatetime != null" >
-        #{fadatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="fauser != null" >
-        #{fauser,jdbcType=NVARCHAR},
-      </if>
-      <if test="lcdatetime != null" >
-        #{lcdatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lcuser != null" >
-        #{lcuser,jdbcType=NVARCHAR},
-      </if>
-      <if test="groupid != null" >
-        #{groupid,jdbcType=INTEGER},
-      </if>
-      <if test="roleid != null" >
-        #{roleid,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Account" >
-    update account
-    <set >
-      <if test="password != null" >
-        Password = #{password,jdbcType=NVARCHAR},
-      </if>
-      <if test="username != null" >
-        UserName = #{username,jdbcType=NVARCHAR},
-      </if>
-      <if test="loginname != null" >
-        LoginName = #{loginname,jdbcType=NVARCHAR},
-      </if>
-      <if test="status != null" >
-        Status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="accounttype != null" >
-        AccountType = #{accounttype,jdbcType=INTEGER},
-      </if>
-      <if test="fadatetime != null" >
-        FADateTime = #{fadatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="fauser != null" >
-        FAUser = #{fauser,jdbcType=NVARCHAR},
-      </if>
-      <if test="lcdatetime != null" >
-        LCDateTime = #{lcdatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lcuser != null" >
-        LCUser = #{lcuser,jdbcType=NVARCHAR},
-      </if>
-      <if test="groupid != null" >
-        GroupId = #{groupid,jdbcType=INTEGER},
-      </if>
-      <if test="roleid != null" >
-        RoleId = #{roleid,jdbcType=INTEGER},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Account" >
-    update account
-    set Password = #{password,jdbcType=NVARCHAR},
-      UserName = #{username,jdbcType=NVARCHAR},
-      LoginName = #{loginname,jdbcType=NVARCHAR},
-      Status = #{status,jdbcType=INTEGER},
-      AccountType = #{accounttype,jdbcType=INTEGER},
-      FADateTime = #{fadatetime,jdbcType=TIMESTAMP},
-      FAUser = #{fauser,jdbcType=NVARCHAR},
-      LCDateTime = #{lcdatetime,jdbcType=TIMESTAMP},
-      LCUser = #{lcuser,jdbcType=NVARCHAR},
-      GroupId = #{groupid,jdbcType=INTEGER},
-      RoleId = #{roleid,jdbcType=INTEGER}
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  
-  <select id="login" parameterType="java.util.Map" resultMap="BaseResultMap">
+   <select id="login" parameterType="java.util.Map" resultMap="BaseResultMap">
   	SELECT TOP 1 [Id]
                 ,[Password]
                 ,[UserName]
@@ -214,6 +86,10 @@
                 ,[GroupId]
                 ,[RoleId]
             FROM [account] with(nolock)
-            where LoginName=#{username,jdbcType=NVARCHAR} AND Password=#{password,jdbcType=NVARCHAR}
+            where status=1 and LoginName=#{username,jdbcType=NVARCHAR} AND Password=#{password,jdbcType=NVARCHAR}
   </select>
+  <update id="updateRoleID"  parameterType="java.util.Map" >
+    update account set roleid=#{newRoleID,jdbcType=INTEGER}
+    where Id = #{userID,jdbcType=INTEGER}
+  </update>
 </mapper>

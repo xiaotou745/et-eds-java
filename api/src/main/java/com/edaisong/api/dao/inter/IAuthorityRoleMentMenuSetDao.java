@@ -1,17 +1,15 @@
 package com.edaisong.api.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.AuthorityRoleMentMenuSet;
 
 public interface IAuthorityRoleMentMenuSetDao {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(AuthorityRoleMentMenuSet record);
-
-    int insertSelective(AuthorityRoleMentMenuSet record);
-
-    AuthorityRoleMentMenuSet selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(AuthorityRoleMentMenuSet record);
-
-    int updateByPrimaryKey(AuthorityRoleMentMenuSet record);
+	/**
+	 * 修改给定角色的权限列表
+	 * @author hailongzhao
+	 * @date 20150902
+	 * @return
+	 */
+	public boolean modifyAuthList(List<AuthorityRoleMentMenuSet> authList) ;
 }

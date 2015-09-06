@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public class LoginUtil {
-	public final static String LOGIN_COOKIE_NAME = "userinfo_edaisong";
-	public final static String MENU_LIST_COOKIE_NAME = "menulist";
+	public final static String LOGIN_COOKIE_NAME = "userinfo_edaisong_java";
+	public final static String LOGIN_COOKIE_NAME_NET = "userinfo_edaisong";//.net版后台login cookie name
+	public final static String MENU_LIST_COOKIE_NAME = "menulist_java";
+	public final static String MENU_LIST_COOKIE_NAME_NET = "menulist";//.net版后台menulist cookie name
 	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response){
 		UserContext context = UserContext.getCurrentContext(request);
 		return context.getAccount() != null && context.getAccount().getId() > 0;

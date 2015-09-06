@@ -28,16 +28,17 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 				</p>
 			</h3>
 				<form method="POST" action="#" class="form-horizontal" id="searchForm">
-	<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
+	<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 			<div class="function">
 				<input type="button" class="fr" value="搜索" id="btnSearch">
 				<span class="fl">订单状态</span>
 				<select class="fl"  name="orderStatus"  id="orderStatus">
 					<option value="-1">全部</option>
 					<option value="0">待接单</option>
+					<option value="2">已接单</option>
+					<option value="4">取货中</option>
 					<option value="1">已完成</option>
 					<option value="3">已取消</option>
-					<option value="4">取货中</option>
 				</select>
 				<span class="fl">发单时间</span>
 				<label class="fl">
@@ -75,7 +76,7 @@ var jss = {
 					$("#content").html(d);
 				});
 		}else{//点击了右上角的放大镜查询
-			 var data={CurrentPage:currentPage,search:$("#customerInfo").val()};
+			 var data={currentPage:currentPage,search:$("#customerInfo").val()};
 				$.post("<%=basePath%>/order/customerlistdo",data, function(d) {
 					$("#content").html(d);
 				});
@@ -87,6 +88,17 @@ jss.search(1);
 $("#btnSearch").click(function() {
 	searchType=0;
 	$("#customerInfo").val("");
+	var startDate = $('#orderPubStart').val();
+    var endDate = $('#orderPubEnd').val();
+    if (startDate != "" && endDate != "") {
+        var intStartDate = startDate.replace(/-/g, "");
+        var intEndDate = endDate.replace(/-/g, "");
+        if (intStartDate > intEndDate) {
+            alert('开始日期不能大于结束日期');
+            $('#orderPubStart').val("");
+            return;
+        }
+    }
 	jss.search(1);
 });
 $("#customerSearch").click(function() {

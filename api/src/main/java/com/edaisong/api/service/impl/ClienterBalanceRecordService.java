@@ -14,9 +14,8 @@ import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.PagedAccountReq;
-import com.edaisong.entity.req.ClienterBalanceRecordReq;
-import com.edaisong.entity.req.ClienterReq;
-import com.edaisong.entity.resp.AccountResp;
+import com.edaisong.entity.req.PagedClienterBalanceRecordReq;
+import com.edaisong.entity.req.PagedClienterReq;
 
 @Service
 public class ClienterBalanceRecordService implements IClienterBalanceRecordService{
@@ -26,7 +25,7 @@ public class ClienterBalanceRecordService implements IClienterBalanceRecordServi
 
 
 	@Override
-	public  PagedResponse<ClienterBalanceRecord>  query(ClienterBalanceRecordReq req)
+	public  PagedResponse<ClienterBalanceRecord>  query(PagedClienterBalanceRecordReq req)
 	{
 		return  clienterBalanceRecordDao.query(req);
 	}	

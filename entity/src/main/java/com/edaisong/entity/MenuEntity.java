@@ -1,6 +1,8 @@
 package com.edaisong.entity;
 
-public class MenuEntity extends AuthorityMenuClass{
+import java.io.Serializable;
+
+public class MenuEntity extends AuthorityMenuClass implements Serializable{
     public Integer getAccoutid() {
 		return accoutid;
 	}

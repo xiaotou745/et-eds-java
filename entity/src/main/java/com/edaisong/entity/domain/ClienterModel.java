@@ -36,6 +36,17 @@ public class ClienterModel {
     private String recommendPhone;
     
     private String recommendName;
+    
+    // 是否绑定（0：否 1：是）
+    private int isBind;
+
+	public int getIsBind() {
+		return isBind;
+	}
+
+	public void setIsBind(int isBind) {
+		this.isBind = isBind;
+	}
 
 	public Integer getId() {
 		return id;

@@ -1,18 +1,11 @@
 package com.edaisong.entity.domain;
 
-import java.math.BigDecimal;
+import com.edaisong.entity.BusinessClienterRelation;
 
-public class BusinessClienterRelationModel {
-	private int id;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+public class BusinessClienterRelationModel extends BusinessClienterRelation{
+	private String trueName;
+	private String phoneNo;
+	
 	public String getTrueName() {
 		return trueName;
 	}
@@ -29,7 +22,7 @@ public class BusinessClienterRelationModel {
 		this.phoneNo = phoneNo;
 	}
 
-	public String getWorkStatus() {
+	/*public String getWorkStatus() {
 		return workStatus;
 	}
 
@@ -61,10 +54,9 @@ public class BusinessClienterRelationModel {
 		this.status = status;
 	}
 
-	private String trueName;
-	private String phoneNo;
+
 	private String workStatus;
 	private BigDecimal accountBalance;
 	private BigDecimal allowWithdrwaPrice;
-	private String status;
+	private String status;*/
 }
