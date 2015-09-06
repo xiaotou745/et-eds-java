@@ -88,6 +88,10 @@ var jss={search:function(currentPage){
 		   jss.search(1);
 		}
 	});
+    var oldAuth="";
+	var checkstatus=0;
+	var expandstatus=0;
+	var $checkableTree;
 	//全选全消
     $('#btn-check-all').on('click', function (e) {
 	      if(checkstatus==0){
@@ -122,10 +126,6 @@ var jss={search:function(currentPage){
           }
     }); 
     
-    var oldAuth="";
-	var checkstatus=0;
-	var expandstatus=0;
-	var $checkableTree;
   //保存权限设置
 	$("#saveauth").click(function() {
 		var typeid=$("input[name='objtype']:checked").val();

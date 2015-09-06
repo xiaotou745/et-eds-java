@@ -92,4 +92,14 @@ public class RoleController {
 
 		return "";
 	}
+
+	@RequestMapping("saverole")
+	@ResponseBody
+	public int saverole(int roleID,int belock,String newName) {
+		AuthorityRole record=new AuthorityRole();
+		record.setId(roleID);
+		record.setBelock(belock==1);
+		record.setRolename(newName);
+		return authorityRoleService.update(record);
+	}
 }
