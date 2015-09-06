@@ -196,7 +196,7 @@
     <select id="getBusinessClienterRelationList" resultType="com.edaisong.entity.domain.BusinessClienterRelationModel" parameterType="com.edaisong.entity.req.PagedCustomerSearchReq"  statementType="CALLABLE" >
   	{call Sp_CustomPage2015_V1(
 	' bcr.Id DESC ',
-	' c.TrueName ClienterName,c.PhoneNo,bcr.CreateTime,bcr.IsBind,bcr.CreateBy,bcr.UpdateBy,bcr.UpdateTime,bcr.BusinessId,bcr.ClienterId,bcr.IsEnable ',
+	' bcr.Id id,c.TrueName trueName,c.phoneNo,bcr.createTime,bcr.isBind,bcr.createBy,bcr.updateBy,bcr.updateTime,bcr.businessId,bcr.clienterId,bcr.isEnable ',
 	' BusinessClienterRelation bcr WITH(NOLOCK) JOIN dbo.clienter c WITH(NOLOCK) ON bcr.ClienterId=c.Id ',
 	' <include refid="getBusinessClienterRelationListWhere" /> ',
 	#{pageSize,mode=IN,jdbcType=INTEGER},
@@ -253,6 +253,25 @@
            ,[ClienterId]
            ,[CreateBy]
            ,[UpdateBy])
-	<include refid="modifyClienterBindOutput"></include>;
+	OUTPUT
+	  Inserted.BusinessId,
+	  Inserted.ClienterId,
+	  #{optId,jdbcType=INTEGER},
+	  #{optName,jdbcType=NVARCHAR},
+	  getdate(),
+	  #{remark,jdbcType=NVARCHAR}
+	INTO ClienterBindOptionLog
+	  ( BusinessId
+	   ,ClienterId
+	   ,OptId
+	   ,OptName
+	   ,InsertTime
+	   ,Remark)
+	Values(
+		#{businessId,jdbcType=INTEGER},
+		#{clienterId,jdbcType=INTEGER},
+        #{optId,jdbcType=INTEGER},
+        #{optName,jdbcType=NVARCHAR}
+	);
   </insert>
 </mapper>

@@ -34,8 +34,8 @@ if(data == null){
 						<tbody>
 							<%for (int i = 0; i < data.size(); i++) { %>
 							<tr class="info">
-								<td><%=data.get(i).getId().toString() %></td>
-								<td><%=data.get(i).getTrueName()%></td>
+								<td><%=data.get(i).getId().toString()%></td>
+								<td><%=ParseHelper.ShowString(data.get(i).getTrueName())%></td>
 								<td><%=data.get(i).getPhoneNo()%></td>
 		                        <td><%=ParseHelper.ToDateString(data.get(i).getUpdatetime()) %></td>
 		                        <td><%=data.get(i).getIsbind()==(short)0? "未绑定":"已绑定"%></td>
