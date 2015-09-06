@@ -16,7 +16,6 @@ import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.PagedAccountReq;
 import com.edaisong.entity.req.ClienterBalanceRecordReq;
 import com.edaisong.entity.req.ClienterReq;
-import com.edaisong.entity.resp.AccountResp;
 
 @Service
 public class ClienterBalanceRecordService implements IClienterBalanceRecordService{

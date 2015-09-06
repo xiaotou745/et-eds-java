@@ -253,7 +253,21 @@ public class CookieUtils {
      */
     public static void deleteCookie(HttpServletRequest request,
             HttpServletResponse response, String cookieName) {
-    	Cookie cookie = getCookieByName(cookieName, request);
+    	Cookie[] cookies = request.getCookies();
+    	for (Cookie cookie : cookies) {
+    		String name = cookie.getName();
+    		if(name.equals(cookieName)){
+    			String path = cookie.getPath();
+            	if(path == null){
+            		path = getPath(request);
+            	}
+                cookie.setPath(path);
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+    		}
+		}
+    	
+/*    	Cookie cookie = getCookieByName(cookieName, request);
         if (cookie != null) {
         	String path = cookie.getPath();
         	if(path == null){
@@ -262,7 +276,7 @@ public class CookieUtils {
             cookie.setPath(path);
             cookie.setMaxAge(0);
             response.addCookie(cookie);
-        }
+        }*/
     }
     
     /**

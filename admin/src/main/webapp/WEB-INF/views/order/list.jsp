@@ -140,7 +140,7 @@ width: 100%;
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
+					<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 							style="margin-left: 3px;height:30px;">查询</button>
@@ -189,7 +189,7 @@ width: 100%;
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
 		 var data=$("#searchForm").serialize();
-// 			data.CurrentPage=currentPage;
+// 			data.currentPage=currentPage;
 			$.post("<%=basePath%>/order/listdo",data, function(d) {
 				$("#content").html(d);
 			});

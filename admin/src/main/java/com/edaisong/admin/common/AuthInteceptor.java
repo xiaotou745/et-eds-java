@@ -30,7 +30,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				response.sendRedirect(basePath + "/");
 				return false;
 			}
-			if (isLogin) {//用户登录后，检查用户是否有当前页面的权限，没有则跳转到订单列表页
+			/*if (isLogin) {//用户登录后，检查用户是否有当前页面的权限，没有则跳转到订单列表页
 				if (needCheckPageAuth(request)) {
 					List<MenuEntity> menuList=authorityMenuClassService.getMenuListByUserID(UserContext.getCurrentContext(request).getAccount().getId());
 					for (MenuEntity menuEntity : menuList) {
@@ -41,7 +41,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 					response.sendRedirect(basePath+"/order/list");
 					return false;
 				}
-			}
+			}*/
 		}
 		
 		return true;

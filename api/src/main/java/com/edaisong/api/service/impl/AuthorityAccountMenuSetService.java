@@ -28,8 +28,10 @@ public class AuthorityAccountMenuSetService implements IAuthorityAccountMenuSetS
 			return true;
 		}
 		boolean result=authorityAccountMenuSetDao.modifyAuthList(authList);
-		String key=RedissCacheKey.Menu_Auth+authList.get(0).getAccoutid();
-		redisService.remove(key);
+		if (result) {
+			String key=RedissCacheKey.Menu_Auth+authList.get(0).getAccoutid();
+			redisService.remove(key);
+		}
 		return result;
 	}
 }

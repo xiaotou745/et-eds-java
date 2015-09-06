@@ -123,7 +123,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
                
                  //参数不能为""值
 				 var paramaters = { 
-						 "CurrentPage":currentPage,
+						 "currentPage":currentPage,
 						 "trueName": trueName,
 						 "phoneNo": phoneNo,
 						 "recommendPhone": recommendPhone,

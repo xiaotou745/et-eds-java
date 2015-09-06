@@ -52,7 +52,7 @@
 
 <div class="SearchMd">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
-	<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
+	<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 	<input type="hidden" name="businessId" id="businessId" value="<%=detail.getId()%>"/>
 	<table border="0" cellspacing="0" cellpadding="0">
 		<tr>

@@ -1,6 +1,5 @@
 package com.edaisong.admin.controller;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -49,6 +48,7 @@ import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessThirdRelationModel;
+import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
@@ -347,6 +347,7 @@ public class BusinessController {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "商户");
 		model.addObject("currenttitle", "骑士绑定");
+		model.addObject("viewPath", "business/clienterbindlist");
 		model.addObject("detail", detail);
 		model.addObject("bindClienterQty", businessClienterRelationService.getBusinessBindClienterQty(businessId));
 		return model;
@@ -391,6 +392,7 @@ public class BusinessController {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "商户");
 		model.addObject("currenttitle", "添加骑士绑定");
+		model.addObject("viewPath", "business/addclienterbindlist");
 		model.addObject("detail", detail);
 		return model;
 	}
@@ -401,7 +403,7 @@ public class BusinessController {
 		PagedClienterSearchReq req = new PagedClienterSearchReq();
 		req.setClienterName(clienterName);
 		req.setClienterPhone(clienterPhone);
-		PagedResponse<ClienterModel> resp = clienterService.getClienterList(req);
+		PagedResponse<ClienterBindInfoModel> resp = clienterService.getClienterList(req);
 		model.addObject("listData", resp);
 		return model;
 	}
@@ -437,6 +439,7 @@ public class BusinessController {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "商户");
 		model.addObject("currenttitle", "批量添加骑士绑定");
+		model.addObject("viewPath", "business/clienterbathbindlist");
 		model.addObject("detail", detail);
 		return model;
 	}
@@ -447,7 +450,7 @@ public class BusinessController {
 		PagedClienterSearchReq req = new PagedClienterSearchReq();
 		req.setClienterName(clienterName);
 		req.setClienterPhone(clienterPhone);
-		PagedResponse<ClienterModel> resp = clienterService.getClienterList(req);
+		PagedResponse<ClienterBindInfoModel> resp = clienterService.getClienterList(req);
 		model.addObject("listData", resp);
 		return model;
 	}

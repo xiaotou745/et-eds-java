@@ -87,7 +87,7 @@
    left join  dbo.clienter cl with(nolock) on c.recommendPhone=cl.PhoneNo ',
 #{Where,mode=IN,jdbcType=VARCHAR},
 #{PageSize,mode=IN,jdbcType=INTEGER},
-#{CurrentPage,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
 1,
 #{TotalRecord,mode=OUT,jdbcType=VARCHAR},
 #{TotalPage,mode=OUT,jdbcType=VARCHAR}
@@ -145,7 +145,7 @@
 	' <include refid="getBusinessClientersTables"/> ',
 	' 1=1 ',
 #{PageSize,mode=IN,jdbcType=INTEGER},
-#{CurrentPage,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
 1,
 #{TotalRecord,mode=OUT,jdbcType=VARCHAR},
 #{TotalPage,mode=OUT,jdbcType=VARCHAR}
@@ -549,19 +549,27 @@
 			AND C.PhoneNo=''%${clienterPhone}%'' 
 		</if>
 	</sql>
+	
+	<sql id="getClienterBindInfoListTables">
+		clienter C WITH (NOLOCK) left JOIN BusinessClienterRelation bcr with(nolock) on C.Id=bcr.ClienterId
+		<if test="businessId!=null and businessId!=0">
+			and bcr.BusinessId=${businessId}
+		</if>
+		 and bcr.IsEnable=1 and bcr.IsBind=1
+	</sql>
 	<!-- 获得骑士和绑定信息列表 ,不包含骑士已接单的数量   add by pengyi 20150901 -->
-	<select id="getClienterBindInfoList" resultType="com.edaisong.entity.domain.ClienterModel"
+	<select id="getClienterBindInfoList" resultType="com.edaisong.entity.domain.ClienterBindInfoModel"
 		parameterType="com.edaisong.entity.req.PagedClienterSearchReq" statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
 ' C.Id DESC ',
-'   C.[Id],C.[PhoneNo],C.[TrueName],ISNULL(bcr.IsBind,0) IsBind ',
-' clienter C WITH (NOLOCK) left JOIN BusinessClienterRelation bcr with(nolock) on  C.Id=bcr.ClienterId and bcr.BusinessId=${businessId} and bcr.IsEnable=1 and bcr.IsBind=1 ',
+'   C.[Id] id,C.[PhoneNo] phoneNo,C.[TrueName] trueName,ISNULL(bcr.IsBind,0) isBind ',
+' <include refid="getClienterBindInfoListTables"></include> ',
 ' <include refid="getClienterListWhere"></include> ',
-#{PageSize,mode=IN,jdbcType=INTEGER},
-#{CurrentPage,mode=IN,jdbcType=INTEGER},
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
 1,
-#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
-#{TotalPage,mode=OUT,jdbcType=VARCHAR}
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
 )}
 
 	</select>
