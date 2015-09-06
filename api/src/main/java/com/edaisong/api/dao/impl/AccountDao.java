@@ -45,4 +45,10 @@ public class AccountDao extends DaoBase implements IAccountDao {
 				"com.edaisong.api.dao.inter.IAccountDao.updateRoleID", params);
 	}
 
+	@Override
+	public List<Account> getByRoleID(int roleID) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IAccountDao.getByRoleID", roleID);
+	}
+
 }

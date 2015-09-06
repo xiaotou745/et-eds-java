@@ -1,10 +1,14 @@
 package com.edaisong.api.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dao.inter.IAccountDao;
 import com.edaisong.api.service.inter.IAccountService;
+import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.common.PagedResponse;
@@ -15,7 +19,8 @@ public class AccountService implements IAccountService{
 
 	@Autowired
 	private IAccountDao accountDao;
-	
+	@Autowired
+	private RedisService redisService;
 	@Override
 	public PagedResponse<Account> queryAccount(PagedAccountReq req) {
 		return  accountDao.query(req);
@@ -34,6 +39,16 @@ public class AccountService implements IAccountService{
 
 	@Override
 	public int updateRoleID(int userID, int newRoleID) {
-		return accountDao.updateRoleID(userID,newRoleID);
+		int result= accountDao.updateRoleID(userID,newRoleID);
+		if (result>0) {
+			String key=RedissCacheKey.Menu_Auth+userID;
+			redisService.remove(key);
+		}
+		return result;
+	}
+
+	@Override
+	public List<Account> getByRoleID(int roleID) {
+		return accountDao.getByRoleID(roleID);
 	}
 }

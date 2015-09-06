@@ -35,9 +35,11 @@ public class MenuHelper {
 					htmlStrBuffer.append("\"text\":\"" + menuEntity.getMenuname()+ "\"");
 					htmlStrBuffer.append(",\"id\":\"" + menuEntity.getId() + "\"");
 					htmlStrBuffer.append(",\"parentid\":\"" + menuEntity.getParid()+ "\"");
-					// if (menuEntity.getIsbutton()) {
-					//
-					// }
+					 if (menuEntity.getIsbutton()) {
+						 htmlStrBuffer.append(",\"isbutton\":\"1\"");
+					 }else{
+						 htmlStrBuffer.append(",\"isbutton\":\"0\"");
+					 }
 					// 当前用户有权限的菜单处于选中状态
 					if (menuEntity.getMenuid() != null
 							&& menuEntity.getMenuid() > 0) {
