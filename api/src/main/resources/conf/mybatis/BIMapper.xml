@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IBIDao" >
+
+  <select id="queryEveryDayDao" resultMap="BaseResultMap" parameterType="java.lang.String" >
+select 
+insertTime,businessCount,rzqsCount,ddrzqsCount,
+orderPrice,misstionCount,orderCount,
+businessAverageOrderCount,missionAverageOrderCount,
+clienterAverageOrderCount,ysPrice,yfPrice,ykPrice,
+zeroSubsidyOrderCount,OneSubsidyOrderCount,
+twoSubsidyOrderCount,threeSubsidyOrderCount,activeBusiness,
+activeClienter, rechargeTotal, systemRecharge,systemPresented,
+( ZhiFuBaoRecharge + WeiXinRecharge ) clientRecharge, incomeTotal
+from    dbo.Statistic s(nolock) 
+  </select>
+ 
+</mapper>

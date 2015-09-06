@@ -1,3 +1,5 @@
+<%@page import="com.edaisong.entity.Everyday"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -8,6 +10,14 @@
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script> 
+<%
+List<Everyday> list= (List<Everyday>) request.getAttribute("everyDayData");
+StringBuilder time=new StringBuilder();
+for(Everyday item:list)
+{
+	time.append(item.getInsertTime().replace(" '00:00:00.000',", ""));
+}
+%>
 $(function () {
     $('#container').highcharts({
         chart: {
@@ -15,17 +25,17 @@ $(function () {
              zoomType: 'x'
         },
         title: {
-            text: 'Monthly Average Temperature'
+            text: '每日数据统计'
         },
         subtitle: {
-            text: 'Source: WorldClimate.com'
+            text: 'Source: edaisong.com'
         },
         xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: [<%=time.toString()%>]
         },
         yAxis: {
             title: {
-                text: 'Temperature (°C)'
+                text: '时间(天)'
             }
         },
         tooltip: {
@@ -56,6 +66,6 @@ $(function () {
 <title>每日数据统计</title>
 </head>
 <body>
-<div id="container" style="min-width:700px;height:400px">
+<div id="container" style="min-width:700px;height:400px"></div>
 </body>
 </html>
