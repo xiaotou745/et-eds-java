@@ -66,6 +66,14 @@
 		from clienter
 		where Id = #{id,jdbcType=INTEGER}
 	</select>
+
+	<sql id="queryColumns">
+	c.id,isnull(c.trueName,'''') as trueName ,c.phoneNo,isnull(c.idCard,'''') as idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
+	c.insertTime,c.workStatus,c.allowWithdrawPrice,c.status,
+      isnull(g.groupName,'''') as groupName,
+      isnull(dc.deliveryCompanyName,'''') as deliveryCompanyName,
+      isnull(cl.PhoneNo,'''') as recommendPhone,isnull(cl.TrueName,'''') as recommendName
+    </sql>
   <sql id="queryWhere">
 		1=1
 		<if test="trueName != null and trueName!=''">
@@ -87,26 +95,27 @@
 	     and c.CityId=${code}
 		</if>
 	</sql>
-	<select id="query" resultType="com.edaisong.entity.domain.ClienterModel"
-		parameterType="com.edaisong.entity.req.PagedClienterReq" statementType="CALLABLE">
-{call Sp_CustomPage2015_V1(
-' c.id desc ',
-' c.id,isnull(c.trueName,'''') as trueName ,c.phoneNo,isnull(c.idCard,'''') as idCard,
-	c.accountBalance, c.picWithHandUrl,c.picUrl,
-      c.insertTime,c.workStatus,c.allowWithdrawPrice,c.status,
-      isnull(g.groupName,'''') as groupName,
-      isnull(dc.deliveryCompanyName,'''') as deliveryCompanyName,
-      isnull(cl.PhoneNo,'''') as recommendPhone,isnull(cl.TrueName,'''') as recommendName ',
-' dbo.clienter c   with(nolock)
+	
+	<sql id="queryTables">
+	dbo.clienter c   with(nolock)
    left join dbo.[Group] g   with(nolock) on c.GroupId=g.id
    left join dbo.DeliveryCompany dc with(nolock) on c.DeliveryCompanyId=dc.id
-   left join  dbo.clienter cl with(nolock) on c.recommendPhone=cl.PhoneNo ',
-'<include refid="queryWhere" />',
+   left join  dbo.clienter cl with(nolock) on c.recommendPhone=cl.PhoneNo
+	</sql>	
+
+	<select id="query" resultType="com.edaisong.entity.domain.ClienterModel"
+		parameterType="com.edaisong.entity.req.PagedClienterReq" statementType="CALLABLE">
+ 
+{call Sp_CustomPage2015_V1(
+' c.id desc ',
+' <include refid="queryColumns"></include>  ',
+' <include refid="queryTables"></include> ',
+' <include refid="queryWhere"></include> ',
 #{pageSize,mode=IN,jdbcType=INTEGER},
-#{currentPage,mode=IN,jdbcType=INTEGER}
-,1,
-#{totalRecord,mode=OUT,jdbcType=INTEGER},
-#{totalPage,mode=OUT,jdbcType=INTEGER}
+#{currentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+#{totalPage,mode=OUT,jdbcType=VARCHAR}
 )}
 	</select>
 	
@@ -149,7 +158,7 @@
 	
 	<!-- 获得商家下的所有骑士 ,包含骑士已接单的数量   add by pengyi 20150901 -->
 	<select id="getBusinessClienters" resultType="com.edaisong.entity.domain.BusinessClientersModel"
-		parameterType="java.util.Map" statementType="CALLABLE">
+		parameterType="com.edaisong.entity.req.PagedBusinessClientersReq" statementType="CALLABLE">
  
 {call Sp_CustomPage2015_V1(
 ' mp.id desc ',
@@ -159,11 +168,11 @@
 	mp.AccountBalance accountbalance ',
 	' <include refid="getBusinessClientersTables"/> ',
 	' 1=1 ',
-#{PageSize,mode=IN,jdbcType=INTEGER},
+#{pageSize,mode=IN,jdbcType=INTEGER},
 #{currentPage,mode=IN,jdbcType=INTEGER},
 1,
-#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
-#{TotalPage,mode=OUT,jdbcType=VARCHAR}
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
 )}
 
 	</select>
