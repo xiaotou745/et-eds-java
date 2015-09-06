@@ -848,7 +848,7 @@
 	    <if test="groupId != null and groupId != -1">
 			and o.OrderFrom = ${groupId}
 		</if>
-		<if test="auditStatus != null auditStatus!=-1">
+		<if test="auditStatus != null and  auditStatus!=-1">
 			and oo.auditStatus= ${auditStatus}
 		</if>
 		<if test="authorityCityNameList != null">
