@@ -144,6 +144,8 @@ width: 100%;
 					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 							style="margin-left: 3px;height:30px;">查询</button>
+					   <button type="button" class="btn btn-w-m btn-primary" id=btnExport
+							style="margin-left: 3px;height:30px;">查询</button>
 					</div>
 				</div>
 			</form>
@@ -196,6 +198,10 @@ width: 100%;
 	jss.search(1);
 	$("#btnSearch").click(function() {
 		jss.search(1);
+	});
+	
+	$("#btnExport").click(function() {
+		alert("asa");
 	});
 	
 	
