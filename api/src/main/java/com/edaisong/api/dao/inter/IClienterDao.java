@@ -6,7 +6,7 @@ import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.ClienterOptionReq;
-import com.edaisong.entity.req.ClienterReq;
+import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
 
@@ -19,7 +19,7 @@ public interface IClienterDao {
     
     int updateMoneyById(ClienterOptionReq req) ;    
     
-    PagedResponse<ClienterModel> query(ClienterReq req);
+    PagedResponse<ClienterModel> query(PagedClienterReq req);
     
     PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req);
 

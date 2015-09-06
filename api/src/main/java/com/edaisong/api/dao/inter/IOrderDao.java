@@ -7,6 +7,7 @@ import com.edaisong.entity.Order;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
+import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -136,4 +137,15 @@ public interface IOrderDao {
     * @return
     */
     int updateOrderRealCommission(OrderOtherSearch orderOtherSearch);
+    
+	/**
+	 * 导出订单
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	List<ExportOrder> exportOrder(PagedOrderSearchReq search);
 }

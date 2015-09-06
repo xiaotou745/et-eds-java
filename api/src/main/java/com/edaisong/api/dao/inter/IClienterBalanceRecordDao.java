@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.req.ClienterBalanceRecordReq;
+import com.edaisong.entity.req.PagedClienterBalanceRecordReq;
 
 public interface IClienterBalanceRecordDao {
     int deleteByPrimaryKey(Long id);
@@ -20,7 +20,7 @@ public interface IClienterBalanceRecordDao {
     int updateByPrimaryKey(ClienterBalanceRecord record);
     
     
-    PagedResponse<ClienterBalanceRecord> query(ClienterBalanceRecordReq req) ;
+    PagedResponse<ClienterBalanceRecord> query(PagedClienterBalanceRecordReq req) ;
     
   /**
    * 根据订单获取对象

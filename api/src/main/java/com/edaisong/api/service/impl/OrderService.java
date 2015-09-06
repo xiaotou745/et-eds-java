@@ -63,6 +63,7 @@ import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
+import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -927,6 +928,15 @@ public class OrderService implements IOrderService {
 		orderOtherSearch.setDeductCommissionReason(auditRefuseOrder.getOptLog());
 		orderOtherSearch.setDeductCommissionType(DeductCommissionType.People.value());
 		return orderOtherSearch;
+	}
+
+	/**
+	 * 订单导出数据
+	 * @author CaoHeYang
+	 * @date 20150906
+	 */
+	public List<ExportOrder> exportOrder(PagedOrderSearchReq search) {
+		return orderDao.exportOrder(search);
 	}
 
 }

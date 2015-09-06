@@ -12,12 +12,13 @@ import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.Clienter;
+import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.ClienterOptionReq;
-import com.edaisong.entity.req.ClienterReq;
+import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
 
@@ -62,52 +63,12 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	}	
 	
 	@Override
-	public PagedResponse<ClienterModel> query(ClienterReq req) {
-
-/*		Map<String, Object> map = new HashMap<String, Object>();		
-		String Where = " 1=1 ";		
-		
-		if (!StringUtils.isEmpty(req.getTrueName())) {
-			Where += " and c.trueName like '%" + req.getTrueName() + "%'";
-		}
-		if (req.getStatus() !=null && req.getStatus().intValue()>-1) {
-			Where += " and c.status= '" + req.getStatus() + "'";
-		}		
-		if (!StringUtils.isEmpty(req.getPhoneNo())) {
-			Where += " and c.phoneNo like '%" + req.getPhoneNo() + "%'";
-		}
-		if (!StringUtils.isEmpty(req.getRecommendPhone())) {
-			Where += " and cl.PhoneNo like '%" + req.getRecommendPhone() + "%'";
-		}
-		if (req.getDeliveryCompanyId() >0) {
-			Where += " and c.DeliveryCompanyId = '" + req.getDeliveryCompanyId() + "'";
-		}
-		if(req.getCode()>0) {
-			Where += " and c.CityId = '" + req.getCode() + "'";
-		}
-			
-		
-		int PageSize = 15;
-		int currentPage = req.getCurrentPage();
-		map.put("Where", Where);
-		map.put("TotalRecord", 0);
-		map.put("TotalPage", 0);
-		map.put("PageSize", PageSize);
-		map.put("currentPage", currentPage);
-		List<ClienterModel> list = getMasterSqlSessionUtil()
-				.selectList("com.edaisong.api.dao.inter.IClienterDao.query",
-						map);
-		
-		PagedResponse<ClienterModel> resp = new PagedResponse<ClienterModel>();		
-		resp.setResultList(list);
-		resp.setPageSize(PageSize);
-		resp.setCurrentPage(currentPage);
-		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
-		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
-		return resp;
-		*/
-		
-		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IClienterDao.query", req);
+	public PagedResponse<ClienterModel> query(PagedClienterReq req) {
+		PagedResponse<ClienterModel> model = getReadOnlySqlSessionUtil()
+				.selectPageList(
+						"com.edaisong.api.dao.inter.IClienterDao.query",
+						req);
+		return model;	
 	}
 
 	/**

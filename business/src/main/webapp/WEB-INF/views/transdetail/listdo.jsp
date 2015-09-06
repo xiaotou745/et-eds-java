@@ -27,7 +27,7 @@ PagedResponse<BusinessBalanceRecord> responsePageList = (PagedResponse<BusinessB
 				{%>
 				<tr>
 					<td><%=BusinessBalanceRecordRecordType.getEnum((int)responsePageList.getResultList().get(i).getRecordtype()).desc() %></td>
-					<td>(<%=responsePageList.getResultList().get(i).getRelationno() %>)(<%=responsePageList.getResultList().get(i).getWithwardid() %>)</td>
+					<td><%=responsePageList.getResultList().get(i).getRelationno() %>/<%=responsePageList.getResultList().get(i).getWithwardid() %></td>
 					<td>￥<%=responsePageList.getResultList().get(i).getAmount() %></td>
 					<td>￥<%=responsePageList.getResultList().get(i).getBalance() %></td>
 					<td><%=BusinessBalanceRecordStatus.getEnum((int)responsePageList.getResultList().get(i).getStatus()).desc()%></td>

@@ -7,7 +7,7 @@ import java.util.Date;
 import com.edaisong.entity.common.PagedRequestBase;
 import com.edaisong.entity.common.RequestBase;
 
-public class ClienterReq extends PagedRequestBase{
+public class PagedClienterReq extends PagedRequestBase{
 		
 	private String trueName;
 	private String phoneNo;	
@@ -15,7 +15,6 @@ public class ClienterReq extends PagedRequestBase{
 	private String recommendPhone;
 	private int code;
 	private int deliveryCompanyId ;	
-	//private int currentPage;
 	public String getTrueName() {
 		return trueName;
 	}
@@ -52,12 +51,5 @@ public class ClienterReq extends PagedRequestBase{
 	public void setDeliveryCompanyId(int deliveryCompanyId) {
 		this.deliveryCompanyId = deliveryCompanyId;
 	}
-/*	public int getCurrentPage() {
-		return currentPage;
-	}
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}	*/
-	
 }
 

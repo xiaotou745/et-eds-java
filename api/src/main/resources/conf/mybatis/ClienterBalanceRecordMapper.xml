@@ -30,22 +30,27 @@
     from ClienterBalanceRecord
     where ClienterId =#{clienterid,jdbcType=INTEGER}
   </select>
-  
-  <select id="query" resultType="com.edaisong.entity.ClienterBalanceRecord" parameterType="java.util.Map" statementType="CALLABLE">
-<![CDATA[  
+  <sql id="queryWhere">
+		1=1
+		<if test="clienterId != null and clienterId>0">
+			and clienterId=${clienterId}
+		</if>
+	</sql>
+  <select id="query" resultType="com.edaisong.entity.ClienterBalanceRecord" 
+  parameterType="com.edaisong.entity.req.PagedClienterBalanceRecordReq" 
+  statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
 ' id desc ',
 ' id,clienterid,amount,status,balance,recordtype,
  operator,operatetime, withwardid, relationno, remark ',
 ' dbo.ClienterBalanceRecord ',
-#{Where,mode=IN,jdbcType=VARCHAR},
-#{PageSize,mode=IN,jdbcType=INTEGER},
-#{currentPage,mode=IN,jdbcType=INTEGER},
-1,
-#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
-#{TotalPage,mode=OUT,jdbcType=VARCHAR}
+'<include refid="queryWhere" />',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER}
+,1,
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
 )}
-	]]>  
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >

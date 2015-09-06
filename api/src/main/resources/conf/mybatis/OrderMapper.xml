@@ -883,6 +883,65 @@
 		)}
 	</select>
 
+  <select id="exportOrder" resultType="com.edaisong.entity.domain.ExportOrder"
+  		 parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
+  	   select 	 o.[OrderNo] ,
+                ISNULL(b.Name, '匿名') + ':' + ISNULL(b.PhoneNo, '无') as BusinessInfo ,
+                ISNULL(c.TrueName, '匿名') + ':' + ISNULL(c.PhoneNo, '无') as ClienterInfo ,
+                CONVERT(VARCHAR(100), o.[PubDate], 120) as PubDate ,
+                ISNULL(CONVERT(VARCHAR(100), o.[ActualDoneDate], 120),'') as ActualDoneDate ,
+                o.[Amount] ,
+                ISNULL(o.[Amount], 0) + ISNULL(o.[OrderCount], 0)
+                * ISNULL(o.[DistribSubsidy], 0) as TotalAmount ,
+                ISNULL(o.[OrderCommission], 0) as OrderCommission ,
+                ISNULL(o.[OrderCount], 0) as OrderCount ,
+                ISNULL(o.[DistribSubsidy], 0) as DistribSubsidy ,
+                ISNULL(o.[WebsiteSubsidy], 0) as WebsiteSubsidy ,
+                ISNULL(o.[Adjustment], 0) as Adjustment ,
+                ISNULL(o.[SettleMoney], 0) as SettleMoney
+		from [order] o with ( nolock )
+		left join clienter c with ( nolock ) on c.Id = o.clienterId
+		join business b with ( nolock ) on b.Id = o.businessId
+		left join [group] g with ( nolock ) on g.id = o.OrderFrom
+		join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
+		where 1=1    
+ 		<if test="businessName != null  and businessName !=''">
+			and b.Name=#{businessName}
+		</if>
+		<if test="businessPhone != null and businessPhone!=''">
+			and b.PhoneNo=#{businessPhone}
+		</if>
+		<if test="orderStatus != null and orderStatus>-1">
+			and o.Status=#{orderStatus}
+		</if>
+		<if test="superManName != null and superManName!=''">
+			and c.TrueName=#{superManName}
+		</if>
+		<if test="superManPhone != null and superManPhone!='' ">
+			and c.PhoneNo=#{superManPhone}
+		</if>
+		<if test="orderPubStart != null and orderPubStart!=''">
+			and o.PubDate>= '${orderPubStart} 00:00:00'
+		</if>
+		<if test="orderPubEnd != null and orderPubEnd!=''">
+         <![CDATA[ and o.PubDate<=]]>
+			'${orderPubEnd} 23:59:59'
+		</if>
+		<if test="groupId != null and groupId != -1">
+			and o.OrderFrom = #{groupId}
+		</if>
+		<if test="businessCity != null and businessCity!='' and businessCity!='-1'">
+			and b.City= #{businessCity}
+		</if>
+	<!-- 	<if test="authorityCityNameList != null">
+			and b.city in
+			<foreach item="item" index="index" collection="authorityCityNameList"
+				open="(''" separator="'',''" close="'')">
+				#{item}
+			</foreach>
+		</if> -->
+  </select>
+  
 	<!-- 根据订单号/订单id查订单信息 Caoheyang 20150827 -->
 	<select id="getOrderByNoId" resultType="com.edaisong.entity.domain.OrderListModel"
 		parameterType="java.util.Map">
@@ -1089,4 +1148,6 @@
 	<update id="updateOrderRealCommission" parameterType="com.edaisong.entity.req.OrderOtherSearch">
 		update [Order] set RealOrderCommission=#{realOrderCommission,jdbcType=NVARCHAR}  where id=#{orderId,jdbcType=INTEGER}
 	</update>
+	
+	
 </mapper>
