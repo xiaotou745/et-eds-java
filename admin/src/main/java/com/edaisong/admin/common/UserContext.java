@@ -16,8 +16,6 @@ public class UserContext {
 	private SimpleUserInfoModel account;
 	private boolean isEmpty;
 	private int id;
-	private int groupId;
-	private int roleId;
 	private int accountType;
 	private String name;
 
@@ -63,14 +61,6 @@ public class UserContext {
 		return id;
 	}
 
-	public int getGroupId() {
-		return groupId;
-	}
-
-	public int getRoleId() {
-		return roleId;
-	}
-
 	public int getAccountType() {
 		return accountType;
 	}
@@ -88,9 +78,7 @@ public class UserContext {
 				UserContext context = new UserContext(account,false);
 				context.id = account.getId();
 				context.accountType = ParseHelper.ToInt(account.getAccountType());
-				context.groupId = ParseHelper.ToInt(account.getGroupId());
 				context.name = account.getLoginName();
-				context.roleId = ParseHelper.ToInt(account.getRoleId());
 				return context;
 			}
 		}

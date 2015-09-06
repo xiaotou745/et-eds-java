@@ -38,10 +38,6 @@
 		<result column="DeliveryCompanyId" property="deliverycompanyid"
 			jdbcType="INTEGER" />
 	</resultMap>
-	<resultMap id="PageResultMap" type="com.edaisong.entity.Page">
-		<result column="TotalRecord" property="totalRecord" jdbcType="INTEGER" />
-		<result column="TotalPage" property="totalPage" jdbcType="INTEGER" />
-	</resultMap>
 
 	<resultMap id="BusinessClientersModelMap"
 		type="com.edaisong.entity.domain.BusinessClientersModel">
@@ -70,13 +66,33 @@
 		from clienter
 		where Id = #{id,jdbcType=INTEGER}
 	</select>
-
+  <sql id="queryWhere">
+		1=1
+		<if test="trueName != null and trueName!=''">
+	    and c.trueName like ''%${trueName}%''
+		</if>
+		<if test="status != null and status>-1">
+	    and  c.status=${status}
+		</if>
+		<if test="phoneNo != null and phoneNo!=''">
+	     and c.phoneNo like ''%${phoneNo}%''
+		</if>
+		<if test="recommendPhone != null and recommendPhone!=''">
+	     and cl.phoneNo like ''%${recommendPhone}%''
+		</if>
+		<if test="deliveryCompanyId != null and deliveryCompanyId>0">
+	     and c.DeliveryCompanyId=${deliveryCompanyId}
+		</if>
+		<if test="code != null and code>0">
+	     and c.CityId=${code}
+		</if>
+	</sql>
 	<select id="query" resultType="com.edaisong.entity.domain.ClienterModel"
-		parameterType="java.util.Map" statementType="CALLABLE">
-<![CDATA[  
+		parameterType="com.edaisong.entity.req.PagedClienterReq" statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
 ' c.id desc ',
-' c.id,isnull(c.trueName,'''') as trueName ,c.phoneNo,isnull(c.idCard,'''') as idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
+' c.id,isnull(c.trueName,'''') as trueName ,c.phoneNo,isnull(c.idCard,'''') as idCard,
+	c.accountBalance, c.picWithHandUrl,c.picUrl,
       c.insertTime,c.workStatus,c.allowWithdrawPrice,c.status,
       isnull(g.groupName,'''') as groupName,
       isnull(dc.deliveryCompanyName,'''') as deliveryCompanyName,
@@ -85,14 +101,13 @@
    left join dbo.[Group] g   with(nolock) on c.GroupId=g.id
    left join dbo.DeliveryCompany dc with(nolock) on c.DeliveryCompanyId=dc.id
    left join  dbo.clienter cl with(nolock) on c.recommendPhone=cl.PhoneNo ',
-#{Where,mode=IN,jdbcType=VARCHAR},
-#{PageSize,mode=IN,jdbcType=INTEGER},
-#{currentPage,mode=IN,jdbcType=INTEGER},
-1,
-#{TotalRecord,mode=OUT,jdbcType=VARCHAR},
-#{TotalPage,mode=OUT,jdbcType=VARCHAR}
+'<include refid="queryWhere" />',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER}
+,1,
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
 )}
-	]]>
 	</select>
 	
 	

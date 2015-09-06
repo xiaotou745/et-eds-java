@@ -3,7 +3,7 @@ package com.edaisong.entity.req;
 
 import com.edaisong.entity.common.PagedRequestBase;
 
-public class ClienterBalanceRecordReq extends PagedRequestBase{
+public class PagedClienterBalanceRecordReq extends PagedRequestBase{
 	
 	public Integer getClienterId() {
 		return clienterId;

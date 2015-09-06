@@ -7,7 +7,7 @@ import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
-import com.edaisong.entity.req.ClienterReq;
+import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
 
@@ -17,7 +17,7 @@ public interface IClienterService {
 
 	int modifyMoneyById(ClienterOptionReq record);
 
-	PagedResponse<ClienterModel> query(ClienterReq req);
+	PagedResponse<ClienterModel> query(PagedClienterReq req);
 
 	PagedResponse<BusinessClientersModel> getBusinessClienters(
 			PagedBusinessClientersReq req);

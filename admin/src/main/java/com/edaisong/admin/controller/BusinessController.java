@@ -364,6 +364,7 @@ public class BusinessController {
 	}
 	
 	@RequestMapping("modifyclienterbind")
+	@ResponseBody
 	public int modifyClienterBind(ClienterBindOptionReq req,HttpServletRequest request){
 		req.setOptId(UserContext.getCurrentContext(request).getId());
 		req.setOptName(UserContext.getCurrentContext(request).getName());
@@ -374,6 +375,7 @@ public class BusinessController {
 	}
 	
 	@RequestMapping("removeclienterbind")
+	@ResponseBody
 	public int removeclienterbind(ClienterBindOptionReq req,HttpServletRequest request){
 		req.setOptId(UserContext.getCurrentContext(request).getId());
 		req.setOptName(UserContext.getCurrentContext(request).getName());

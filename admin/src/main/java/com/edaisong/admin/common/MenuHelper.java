@@ -32,14 +32,26 @@ public class MenuHelper {
 				if (menuEntity.getParid() == parentID) {
 					hasSub = 1;
 					htmlStrBuffer.append("{");
-					htmlStrBuffer.append("\"text\":\"" + menuEntity.getMenuname()+ "\"");
-					htmlStrBuffer.append(",\"id\":\"" + menuEntity.getId() + "\"");
+					htmlStrBuffer.append("\"id\":\"" + menuEntity.getId() + "\"");
 					htmlStrBuffer.append(",\"parentid\":\"" + menuEntity.getParid()+ "\"");
-					 if (menuEntity.getIsbutton()) {
-						 htmlStrBuffer.append(",\"isbutton\":\"1\"");
-					 }else{
-						 htmlStrBuffer.append(",\"isbutton\":\"0\"");
-					 }
+					if (menuEntity.getIsbutton()) {
+						htmlStrBuffer.append(",\"isbutton\":\"1\"");
+					} else {
+						htmlStrBuffer.append(",\"isbutton\":\"0\"");
+					}
+					if (parentID == 0) {
+						htmlStrBuffer.append(",\"text\":\""
+								+ menuEntity.getMenuname() + "\"");
+					} else {
+						if (menuEntity.getIsbutton()) {
+							htmlStrBuffer.append(",\"text\":\"<font color='#A5A552'>"
+									+ menuEntity.getMenuname() + "</font>\"");
+						} 
+						else {
+							htmlStrBuffer.append(",\"text\":\"<font color='#AAAAFF'>"
+									+ menuEntity.getMenuname() + "</font>\"");
+						}
+					}
 					// 当前用户有权限的菜单处于选中状态
 					if (menuEntity.getMenuid() != null
 							&& menuEntity.getMenuid() > 0) {

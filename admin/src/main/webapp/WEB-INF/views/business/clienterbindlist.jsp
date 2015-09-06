@@ -71,7 +71,7 @@
             success: function (result) {
                 if (result>0) {
                 	alert("操作成功");
-                	window.location.href = "/business/clienterbindlist?businessId=" + businessId;
+                	window.location.href = "<%=basePath%>/business/clienterbindlist?businessId=" + businessId;
                 } else {
                     alert("操作失败");
                 }

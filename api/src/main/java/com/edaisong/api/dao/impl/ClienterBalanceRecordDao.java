@@ -13,10 +13,11 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.GroupModel;
-import com.edaisong.entity.req.ClienterBalanceRecordReq;
-import com.edaisong.entity.req.ClienterReq;
+import com.edaisong.entity.req.PagedClienterBalanceRecordReq;
+import com.edaisong.entity.req.PagedClienterReq;
 import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 
 @Repository
@@ -63,33 +64,13 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	}
 	
 	@Override
-	public PagedResponse<ClienterBalanceRecord> query(ClienterBalanceRecordReq req) {
+	public PagedResponse<ClienterBalanceRecord> query(PagedClienterBalanceRecordReq req) {
 
-		Map<String, Object> map = new HashMap<String, Object>();		
-		String Where = " 1=1 ";				
-
-		if (req.getClienterId()>0) {
-			Where += " and clienterid='" + req.getClienterId() + "'";
-		}
-		
-		int PageSize = 15;
-		int currentPage = req.getCurrentPage();
-		map.put("Where", Where);
-		map.put("TotalRecord", 0);
-		map.put("TotalPage", 0);
-		map.put("PageSize", PageSize);
-		map.put("currentPage", currentPage);
-		List<ClienterBalanceRecord> list = getMasterSqlSessionUtil()
-				.selectList("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.query",
-						map);
-		
-		PagedResponse<ClienterBalanceRecord> resp = new PagedResponse<ClienterBalanceRecord>();		
-		resp.setResultList(list);
-		resp.setPageSize(PageSize);
-		resp.setCurrentPage(currentPage);
-		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
-		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
-		return resp;
+		PagedResponse<ClienterBalanceRecord> model = getReadOnlySqlSessionUtil()
+				.selectPageList(
+						"com.edaisong.api.dao.inter.IClienterBalanceRecordDao.query",
+						req);
+		return model;
 	}
 
 	  /**
