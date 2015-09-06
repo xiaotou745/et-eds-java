@@ -46,7 +46,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">超人电话:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="superManPhone" />
+								<input type="text" class="form-control" name="superManPhone"  id="txtSuperManPhone" />
 							</div>
 						</div>
 					</div>
@@ -54,7 +54,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">超人姓名:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control"  name="superManName"/>
+								<input type="text" class="form-control"  name="superManName"  id="txtSuperManName"/>
 							</div>
 						</div>
 					</div>
@@ -62,7 +62,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">商户电话:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="businessPhone"/>
+								<input type="text" class="form-control" name="businessPhone"  id="txtBusinessPhone"/>
 							</div>
 						</div>
 					</div>
@@ -70,7 +70,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">商户名称:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="businessName" />
+								<input type="text" class="form-control" name="businessName"  id="txtBusinessName"/>
 							</div>
 						</div>
 					</div>
@@ -90,7 +90,7 @@ width: 100%;
 							<div class="col-sm-8">
 							<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" value="" name="OrderPubStart" />
+                                        <input type="text" class="form-control" value="" name="OrderPubStart"  id="txtOrderPubStart"/>
                                     </div>
 							</div>
 						</div>
@@ -101,7 +101,7 @@ width: 100%;
 							<div class="col-sm-8">
 							     <div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" value="" name="OrderPubEnd" />
+                                        <input type="text" class="form-control" value="" name="OrderPubEnd"  id="txtOrderPubEnd"/>
                                     </div>
    						</div>
 						</div>
@@ -200,8 +200,30 @@ width: 100%;
 		jss.search(1);
 	});
 	
+	//导出功能
 	$("#btnExport").click(function() {
-		alert("asa");
+		    var superManPhone = $("#txtSuperManPhone").val();
+	        var txtSuperManName = $("#txtSuperManName").val();
+	        var txtBusinessPhone = $("#txtBusinessPhone").val();
+	        var txtBusinessName = $("#txtBusinessName").val();
+	        var txtOrderPubStart = $("#txtOrderPubStart").val();
+	        var txtOrderPubEnd = $("#txtOrderPubEnd").val();
+	        var businessCity = $("#businessCity").val();
+	        var orderStatus = $("#orderStatus").val();
+	        var groupId = $("#groupId").val();
+	        if (txtOrderPubStart == "" || txtOrderPubEnd == "") {
+	        	layer.alert('请输入时间范围!', {
+				    icon: 2
+				});
+	            return;
+	        }
+	        var url = "<%=basePath%>/order/exportorder?superManPhone=" + superManPhone 
+	        		+ "&superManName=" + txtSuperManName + "&businessPhone=" + txtBusinessPhone
+	        		+ "&businessName=" + txtBusinessName + "&orderStatus=" + orderStatus 
+	        		+ "&businessCity=" + businessCity + "&orderPubStart=" + txtOrderPubStart 
+	        		+ "&orderPubEnd=" + txtOrderPubEnd + "&groupId=" + groupId;
+	        window.location.href = url;
+	        return true;
 	});
 	
 	
