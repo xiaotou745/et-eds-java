@@ -55,10 +55,10 @@ public class LoginHelper {
 	 * @author pengyi
 	 * @param code
 	 */
-	public static void storeAuthCode2Redis(String code, HttpServletRequest request, HttpServletResponse response) {
+	public static void storeAuthCode2Redis(String code , String cookieKey, HttpServletRequest request, HttpServletResponse response) {
 		String redisKey = UUID.randomUUID().toString();
 		redisService.set(redisKey, code);
-		CookieUtils.setCookie(request, response, GlobalSettings.JSESSIONID, redisKey, 5 * 24);
+		CookieUtils.setCookie(request, response, cookieKey, redisKey, 5 * 24);
 	}
 
 	/**
@@ -68,8 +68,8 @@ public class LoginHelper {
 	 * @author pengyi
 	 * @return
 	 */
-	public static String getAuthCode(HttpServletRequest request) {
-		String codeCookie = CookieUtils.getCookie(request, GlobalSettings.JSESSIONID);
+	public static String getAuthCode(HttpServletRequest request,String cookieKey) {
+		String codeCookie = CookieUtils.getCookie(request, cookieKey);
 		if (codeCookie != null) {
 			return redisService.get(codeCookie, String.class);
 		}
@@ -81,11 +81,7 @@ public class LoginHelper {
 	 * @param request
 	 * @param response
 	 */
-	public static void removeAuthCodeCookie(HttpServletRequest request, HttpServletResponse response) {
-		Cookie cookie = CookieUtils.getCookieByName(GlobalSettings.JSESSIONID, request);
-		if (cookie != null) {
-			redisService.remove(cookie.getValue());
-			CookieUtils.deleteCookie(request, response, cookie);
-		}
+	public static void removeAuthCodeCookie(HttpServletRequest request, HttpServletResponse response,String cookieKey) {
+		CookieUtils.deleteCookie(request, response, cookieKey);
 	}
 }

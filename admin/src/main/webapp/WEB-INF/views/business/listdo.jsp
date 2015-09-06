@@ -96,7 +96,7 @@ boolean business_WithDraw=UserContext.getCurrentContext(request).isHasAuth(AuthC
 				<%}
 				if(business_ClienterBind)
 				{%>
-				<a href="/BusinessManager/ClienterBindManage?businessId=<%=data.get(i).getId()%>">骑士绑定</a>
+				<a href="<%=basePath%>/business/clienterbindlist?businessId=<%=data.get(i).getId()%>">骑士绑定</a>
 				<%}
 				if(business_WithDraw)
 				{%>

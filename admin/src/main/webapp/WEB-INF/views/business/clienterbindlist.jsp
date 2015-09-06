@@ -13,6 +13,8 @@
 	int bindClienterQty = (int) request
 			.getAttribute("bindClienterQty");
 %>
+<div class="SearchMd">
+<form method="POST" action="#" class="form-horizontal" id="searchForm">
 <table class="tbstyle222" border="0"
 	style="font-size: 14px; font-weight: bold; line-height: 300%; width: 900px">
 	<tr class="trclass">
@@ -26,8 +28,11 @@
 			onclick="window.location.href='<%=basePath%>/business/addclienterbindlist?businessId=<%=detail.getId()%>'">
 			添加骑士绑定</button></td>
 	</tr>
-	
 </table>
+	<input type="hidden" name="CurrentPage" id="_hiddenCurrentPage" value="1"/>
+	<input type="hidden" name="businessId" id="businessId" value="<%=detail.getId()%>"/>
+</form>
+</div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">

@@ -3,6 +3,7 @@ package com.edaisong.api.dao.inter;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
+import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
@@ -60,5 +61,5 @@ public interface IClienterDao {
 	 * @param req
 	 * @return
 	 */
-	PagedResponse<ClienterModel> getClienterBindInfoList(PagedClienterSearchReq req);
+	PagedResponse<ClienterBindInfoModel> getClienterBindInfoList(PagedClienterSearchReq req);
 }

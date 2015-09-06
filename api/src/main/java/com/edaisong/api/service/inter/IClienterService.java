@@ -3,8 +3,8 @@ package com.edaisong.api.service.inter;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
+import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
-import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
@@ -54,5 +54,5 @@ public interface IClienterService {
 	 * @author pengyi
 	 * @date 20150901
 	 */
-	PagedResponse<ClienterModel> getClienterList(PagedClienterSearchReq req);
+	PagedResponse<ClienterBindInfoModel> getClienterList(PagedClienterSearchReq req);
 }
