@@ -64,7 +64,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	public PagedResponse<ClienterModel> query(ClienterReq req) {
 
-		Map<String, Object> map = new HashMap<String, Object>();		
+/*		Map<String, Object> map = new HashMap<String, Object>();		
 		String Where = " 1=1 ";		
 		
 		if (!StringUtils.isEmpty(req.getTrueName())) {
@@ -105,6 +105,9 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
 		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
 		return resp;
+		*/
+		
+		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IClienterDao.query", req);
 	}
 
 	/**
@@ -113,28 +116,8 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	 * @date 20150901
 	 */
 	@Override
-	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {
-		Map<String, Object> map = new HashMap<String, Object>();				
-		int PageSize = 15;
-		int currentPage = req.getCurrentPage();
-		map.put("workStatus", req.getWorkStatus());
-		map.put("search", req.getSearch());
-		map.put("businessId", req.getBusinessId());
-		map.put("TotalRecord", 0);
-		map.put("TotalPage", 0);
-		map.put("PageSize", PageSize);
-		map.put("currentPage", currentPage);
-		List<BusinessClientersModel> list = getReadOnlySqlSessionUtil()
-				.selectList("com.edaisong.api.dao.inter.IClienterDao.getBusinessClienters",
-						map);
-		
-		PagedResponse<BusinessClientersModel> resp = new PagedResponse<BusinessClientersModel>();		
-		resp.setResultList(list);
-		resp.setPageSize(PageSize);
-		resp.setCurrentPage(currentPage);
-		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
-		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
-		return resp;
+	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {		
+		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IClienterDao.getBusinessClienters", req);
 	}
 
     /**
