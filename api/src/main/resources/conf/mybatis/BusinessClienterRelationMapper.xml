@@ -157,7 +157,7 @@
 	            and Status = 1
 	) OrderCount
   </sql>
-  <select id="selectByBusinessId" parameterType="com.edaisong.entity.req.ClienterBalanceRecordReq"  statementType="CALLABLE" >
+  <select id="selectByBusinessId" parameterType="com.edaisong.entity.req.PagedClienterBalanceRecordReq"  statementType="CALLABLE" >
   	{call Sp_CustomPage2015_V1(
 	' bcr.Id desc ',
 	' <include refid="SelectByBusinessIdColumn"/>',

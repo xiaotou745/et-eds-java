@@ -25,9 +25,9 @@ import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.ClienterModel;
-import com.edaisong.entity.req.ClienterBalanceRecordReq;
+import com.edaisong.entity.req.PagedClienterBalanceRecordReq;
 import com.edaisong.entity.req.ClienterOptionReq;
-import com.edaisong.entity.req.ClienterReq;
+import com.edaisong.entity.req.PagedClienterReq;
 
 
 
@@ -77,7 +77,7 @@ public class ClienterController {
 	 * @return
 	 */	
 	@RequestMapping("listdo")
-	public ModelAndView listdo(ClienterReq req) {		
+	public ModelAndView listdo(PagedClienterReq req) {		
 		
 		PagedResponse<ClienterModel> resp = clienterService.query(req);
 		//ModelAndView model = new ModelAndView();//默认listdo.jsp
@@ -114,7 +114,7 @@ public class ClienterController {
 	 * @return
 	 */	
 	@RequestMapping("clienterbalancerecordlistdo")
-	public ModelAndView clienterbalancerecordlist(ClienterBalanceRecordReq req) {		
+	public ModelAndView clienterbalancerecordlist(PagedClienterBalanceRecordReq req) {		
 		
 		PagedResponse<ClienterBalanceRecord> resp = clienterBalanceRecordService.query(req);
 		ModelAndView model = new ModelAndView("clienterbalancerecord/listdo");		
