@@ -14,6 +14,7 @@ import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
+import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
@@ -203,7 +204,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	 * @date 20150901
 	 */
 	@Override
-	public PagedResponse<ClienterModel> getClienterBindInfoList(PagedClienterSearchReq req) {
+	public PagedResponse<ClienterBindInfoModel> getClienterBindInfoList(PagedClienterSearchReq req) {
 		return getReadOnlySqlSessionUtil()
 				.selectPageList("com.edaisong.api.dao.inter.IClienterDao.getClienterBindInfoList",
 						req);

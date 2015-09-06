@@ -1,8 +1,6 @@
 package com.edaisong.api.service.impl;
 
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,22 +8,18 @@ import com.edaisong.api.dao.inter.IClienterAllowWithdrawRecordDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.service.inter.IClienterService;
-import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
-import com.edaisong.entity.Account;
-import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterAllowWithdrawRecord;
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
+import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.ClienterMoney;
-import com.edaisong.entity.req.PagedAccountReq;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.ClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
-import com.edaisong.entity.resp.AccountResp;
 
 @Service
 public class ClienterService implements IClienterService {
@@ -153,7 +147,7 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	 * @date 20150901
 	 */
 	@Override
-	public PagedResponse<ClienterModel> getClienterList(PagedClienterSearchReq req) {
+	public PagedResponse<ClienterBindInfoModel> getClienterList(PagedClienterSearchReq req) {
 		return clienterDao.getClienterBindInfoList(req);
 	}
 }

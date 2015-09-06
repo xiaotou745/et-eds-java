@@ -24,6 +24,7 @@ import com.edaisong.api.service.inter.IAuthorityAccountMenuSetService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.IPUtil;
 import com.edaisong.core.util.JsonUtil;
@@ -92,9 +93,9 @@ public class AccountController {
 			 Integer rememberMe) throws ServletException, IOException {
 		String basePath = PropertyUtils.getProperty("static.admin.url");
 		Date loginTime = new Date();
-		String sessionCode = LoginHelper.getAuthCode(request);
+		String sessionCode = LoginHelper.getAuthCode(request,GlobalSettings.ADMIN_JSESSIONID);
 		//一次性验证码,防止暴力破解
-		LoginHelper.removeAuthCodeCookie(request, response);
+		LoginHelper.removeAuthCodeCookie(request, response,GlobalSettings.ADMIN_JSESSIONID);
 		// 如果已登录,直接返回
 		boolean isLogin = LoginUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录

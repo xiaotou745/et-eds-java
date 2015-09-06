@@ -46,10 +46,10 @@ public class AccountController {
 			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
 			@RequestParam int rememberMe) {
 		//Object sessionCode = request.getSession().getAttribute("code");
-		String sessionCode = LoginHelper.getAuthCode(request);
+		String sessionCode = LoginHelper.getAuthCode(request,GlobalSettings.BUSINESS_JSESSIONID);
 		//一次性验证码,防止暴力破解
 		//request.getSession().removeAttribute("code");
-		LoginHelper.removeAuthCodeCookie(request, response);
+		LoginHelper.removeAuthCodeCookie(request, response,GlobalSettings.BUSINESS_JSESSIONID);
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
 		boolean isLogin = LoginHelper.checkIsLogin(request,response,GlobalSettings.BUSINESS_LOGIN_COOKIE_NAME);

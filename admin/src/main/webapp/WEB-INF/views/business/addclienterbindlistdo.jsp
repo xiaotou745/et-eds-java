@@ -7,16 +7,16 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 	<%@page import="com.edaisong.entity.common.PagedResponse"%>
-<%@page import="com.edaisong.entity.domain.ClienterModel"%>
+<%@page import="com.edaisong.entity.domain.ClienterBindInfoModel"%>
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%
-PagedResponse<ClienterModel> responsePageList=	(PagedResponse<ClienterModel>)request.getAttribute("listData");
-List<ClienterModel> data = responsePageList.getResultList();
+PagedResponse<ClienterBindInfoModel> responsePageList=	(PagedResponse<ClienterBindInfoModel>)request.getAttribute("listData");
+List<ClienterBindInfoModel> data = responsePageList.getResultList();
 String basePath =PropertyUtils.getProperty("static.admin.url");
 if(data == null){
-	data = new ArrayList<ClienterModel>();
+	data = new ArrayList<ClienterBindInfoModel>();
 }%>
 <table
 						class="table table-striped table-bordered table-hover dataTables-example">
@@ -31,7 +31,7 @@ if(data == null){
 						<tbody>
 							<%for (int i = 0; i < data.size(); i++) { %>
 							<tr class="info">
-								<td><%=data.get(i).getId().toString() %></td>
+								<td><%=data.get(i).getId() %></td>
 								<td><%=data.get(i).getTrueName()%></td>
 								<td><%=data.get(i).getPhoneNo()%></td>
 		                        <td>
