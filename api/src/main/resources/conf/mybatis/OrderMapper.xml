@@ -797,7 +797,7 @@
 		else oo.GrabToCompleteDistance
 		end
 		end as GrabToCompleteDistance ,
-		o.BusinessCommission ,oo.IsNotRealOrder
+		o.BusinessCommission ,oo.IsNotRealOrder,oo.auditStatus
 	</sql>
 
 	<!-- 后台订单列表页面 查询列集来源 add by caoheyang 20150728 -->
@@ -842,15 +842,16 @@
          <![CDATA[ and o.PubDate<=]]>
 			''${orderPubEnd} 23:59:59''
 		</if>
+		<if test="auditStatus != null and auditStatus>-1">
+			and oo.auditStatus= ${auditStatus}
+		</if>
 		<if test="groupId != null and groupId != -1">
 			and o.OrderFrom = ${groupId}
 		</if>
 	    <if test="groupId != null and groupId != -1">
 			and o.OrderFrom = ${groupId}
 		</if>
-		<if test="auditStatus != null and  auditStatus!=-1">
-			and oo.auditStatus= ${auditStatus}
-		</if>
+
 		<if test="authorityCityNameList != null">
 			and b.city in
 			<foreach item="item" index="index" collection="authorityCityNameList"

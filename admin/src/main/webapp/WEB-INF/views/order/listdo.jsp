@@ -9,6 +9,7 @@
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.enums.OrderStatus"%>
+<%@page import="com.edaisong.core.enums.OrderAuditStatus"%>
 
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
@@ -103,7 +104,7 @@
 				}
 			%>
 			<td><%=data.get(i).getBusinessCommission()%></td>
-			<td><%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
+			<td><%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%><br/> <%=OrderAuditStatus.getEnum(data.get(i).getAuditStatus()).desc()%></td>
 			<td><%=data.get(i).getHadUploadCount()%>/<%=data.get(i).getOrderCount()%></td>
 			<td style="<%=grabToCompleteStyle%>"><%=grabToCompleteStr%></td>
 			<td><a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a></td>

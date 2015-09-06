@@ -354,10 +354,8 @@ public class BusinessController {
 	}
 	
 	@RequestMapping("clienterbindlistdo")
-	public ModelAndView clienterBindListDo(int businessId) throws Exception {
+	public ModelAndView clienterBindListDo(PagedCustomerSearchReq req) throws Exception {
 		ModelAndView model = new ModelAndView("business/clienterbindlistdo");
-		PagedCustomerSearchReq req = new PagedCustomerSearchReq();
-		req.setBusinessID(businessId);
 		PagedResponse<BusinessClienterRelationModel> resp = businessClienterRelationService.getBusinessClienterRelationList(req);
 		model.addObject("listData", resp);
 		return model;
@@ -400,11 +398,12 @@ public class BusinessController {
 	}
 	
 	@RequestMapping("addclienterbindlistdo")
-	public ModelAndView addclienterbindlistdo(int businessId,String clienterName,String clienterPhone) throws Exception {
+	public ModelAndView addclienterbindlistdo(int businessId,String clienterName,String clienterPhone,int currentPage) throws Exception {
 		ModelAndView model = new ModelAndView("business/addclienterbindlistdo");
 		PagedClienterSearchReq req = new PagedClienterSearchReq();
 		req.setClienterName(clienterName);
 		req.setClienterPhone(clienterPhone);
+		req.setCurrentPage(currentPage);
 		PagedResponse<ClienterBindInfoModel> resp = clienterService.getClienterList(req);
 		model.addObject("listData", resp);
 		return model;
