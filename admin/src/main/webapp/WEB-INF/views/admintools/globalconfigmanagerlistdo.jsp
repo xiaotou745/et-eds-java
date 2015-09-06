@@ -1,8 +1,7 @@
 <%@page import="com.edaisong.entity.domain.GlobalConfigModel"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-	<%@page import="com.edaisong.entity.common.PagedResponse"%>
-<%@page import="com.edaisong.entity.resp.AccountResp"%>
+<%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.Account"%>
