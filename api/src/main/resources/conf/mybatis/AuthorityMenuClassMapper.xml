@@ -54,7 +54,7 @@ UNION
             SELECT  ParId
             FROM    dbo.AuthorityRoleMentMenuSet aam ( NOLOCK )
                     JOIN AuthorityMenuClass amc ( NOLOCK ) ON aam.MenuId = amc.Id
-            WHERE   aam.AccoutId = #{accountId} and amc.IsButton=0 
+            WHERE   aam.RoleId = @roleID and amc.IsButton=0 
                     AND amc.BeLock = CAST(0 AS BIT) )
 ELSE
     SELECT  AccoutId ,
