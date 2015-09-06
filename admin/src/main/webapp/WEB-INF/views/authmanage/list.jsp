@@ -111,8 +111,9 @@ var jss={search:function(currentPage){
       
     });
 
-    $("#roletype").change(function() { 
-    	if($("#roletype").attr("checked")==true){
+    $("input[type='radio'][name='objtype']").change(function() { 
+    	var typeid=$("input[name='objtype']:checked").val();
+    	if(typeid=="0"){
       		$("#userdiv").hide();
               $("#rolediv").show();
           }else{
@@ -120,23 +121,25 @@ var jss={search:function(currentPage){
                 $("#rolediv").hide();
           }
     }); 
-    $("#usertype").change(function() { 
-    	if($("#roletype").attr("checked")==true){
-      		$("#userdiv").hide();
-              $("#rolediv").show();
-          }else{
-        		$("#userdiv").show();
-                $("#rolediv").hide();
-          }
-    }); 
+    
     var oldAuth="";
 	var checkstatus=0;
 	var expandstatus=0;
 	var $checkableTree;
   //保存权限设置
 	$("#saveauth").click(function() {
-		 if($("#roletype").attr("checked")==true){
-			 updateRole($("#roleid").val(),true);
+		var typeid=$("input[name='objtype']:checked").val();
+		 if(typeid=="0"){
+			 if($("#userroleid").val()==$("#roleid").val()){
+				 alert("没有变更，不需要保存");
+				 return;
+			 }
+			 //原来用户没有角色，则此时需要删掉原来的权限
+			 var needUpdateAuth=true;
+			if(parseInt($("#userroleid").val())>0){
+				needUpdateAuth=false;
+			}
+			 updateRole($("#roleid").val(),needUpdateAuth);
 		 }
 		 else{
 				var newAuth = "";
@@ -172,7 +175,7 @@ var jss={search:function(currentPage){
 				url : url,
 				data : paramaters,
 				success : function(result) {
-					if (result == "") {
+					if (result>0) {
 						if(updateauth){
 							//用户原来是单独配置的角色，现在改为了按照角色配置，则应该将原来的权限删掉
 							updateAuth("",oldAuth);
@@ -181,7 +184,7 @@ var jss={search:function(currentPage){
 							window.location.href = window.location.href;
 						}
 					} else {
-						alert(result);
+						alert("操作失败");
 					}
 				}
 			});
@@ -217,20 +220,21 @@ var jss={search:function(currentPage){
           url: url,
           data: paramaters,
           success: function (result) {
+              $("#userroleid").val(result);
+              createAuthTree(id);
           	if (result>0) {//当前用户已经有所属角色
           		$("#usertype").removeAttr("checked");
           		$("#userdiv").hide();
-                  $("#roletype").attr("checked",true);
+           		$("#roletype").attr("checked","checked");
                   $("#rolediv").show();
                   $("#roleid").val(result);
               }else{
               	$("#roletype").removeAttr("checked");
           		$("#rolediv").hide();
-                  $("#usertype").attr("checked",true);
+                  $("#usertype").attr("checked","checked");
                   $("#userdiv").show();
-                  createAuthTree(id);
               }
-              $("#userroleid").val(result);
+
       		$("#userid").val(id+"");
               $('#myModal').modal('show');
           }
