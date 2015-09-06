@@ -114,7 +114,7 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	 */
 	@Override
 	public boolean addClienterBind(ClienterBindOptionReq req){
-		return getMasterSqlSessionUtil().update(
+		return getMasterSqlSessionUtil().insert(
 				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.addClienterBind", req) > 0;
 	}
 }

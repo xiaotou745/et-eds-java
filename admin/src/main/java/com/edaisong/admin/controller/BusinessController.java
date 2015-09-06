@@ -414,7 +414,7 @@ public class BusinessController {
 		ClienterBindOptionReq req = new ClienterBindOptionReq();
 		req.setBusinessId(businessId);
 		req.setClienterId(clienterId);
-		if(!businessClienterRelationService.checkHaveBind(req)){
+		if(businessClienterRelationService.checkHaveBind(req)){
 			response.setMessage("此条绑定关系已存在！");
 		}else {
 			req.setOptId(UserContext.getCurrentContext(request).getId());
