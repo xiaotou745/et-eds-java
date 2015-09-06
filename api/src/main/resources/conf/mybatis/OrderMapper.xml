@@ -845,8 +845,11 @@
 		<if test="groupId != null and groupId != -1">
 			and o.OrderFrom = ${groupId}
 		</if>
-		<if test="businessCity != null and businessCity!='' and businessCity!='-1'">
-			and b.City= ''${businessCity}''
+	    <if test="groupId != null and groupId != -1">
+			and o.OrderFrom = ${groupId}
+		</if>
+		<if test="auditStatus != null auditStatus!=-1">
+			and oo.auditStatus= ${auditStatus}
 		</if>
 		<if test="authorityCityNameList != null">
 			and b.city in

@@ -289,7 +289,6 @@ public class OrderService implements IOrderService {
 	 */
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public OrderResp AddOrder(OrderReq req) {
-		req.setOrderfrom(OrderFrom.BusinessWeb.value()); // 订单来源 商家版后台
 		OrderResp resp = new OrderResp();
 		BusinessModel businessModel = businessDao.getBusiness(req.getBusinessid());
 		// 校验是否可以正常发单
