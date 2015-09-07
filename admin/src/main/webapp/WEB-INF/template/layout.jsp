@@ -174,7 +174,7 @@
 					<small class="font-bold">
 						<div class="modal-body">
 						<div id="gloablErrorParam"></div>
-						<div><a id="gloablShowError">显示详细信息</a></div>
+						<div><a id="gloablShowError"  href="javascript:void(0)">显示详细信息</a></div>
 						<pre id="gloablErrorContent" style="width: 560px;display: none; "></pre>
 						</div>
 						<div class="modal-footer">

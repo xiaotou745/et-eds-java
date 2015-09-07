@@ -23,7 +23,7 @@ $(document).ready(function() {
             服务器好像出错了...
             <br/>您可以返回主页看看
             <br/><a href="<%=basePath%>/order/list"  class="btn btn-primary m-t">主页</a>
-            <br/><a id="showErrorMessageButton" href="javascript:void">详细错误信息</a>
+            <br/><a id="showErrorMessageButton"  href="javascript:void(0)">详细错误信息</a>
         </div>
     </div>
 <div id="errorMessageDiv" style="display:none;">
