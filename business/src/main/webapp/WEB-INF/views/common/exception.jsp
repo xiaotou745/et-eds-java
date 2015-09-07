@@ -14,22 +14,18 @@ $(document).ready(function() {
 	});
 });
 </script>
+    <div style="text-align: center;">
+   <h1 style="font-size: 176px; margin-bottom: -6px;">500</h1>
+       
+        <h3 class="font-bold">服务器内部错误</h3>
 
-<div></div>
-<table width="100%">
-	<tr>
-		<td style="border-bottom: dotted 1px Gray;" colspan="2"><img
-			src="<%=basePath%>/images/500.jpg" id="img1" /></td>
-		<td></td>
-	</tr>
-	<tr>
-
-		<td>尊敬的用户：<br />系统出现了异常，请重试。 <br />如果问题重复出现，请向系统管理员反馈。<br />
-		<br /> <a id="showErrorMessageButton" href="javascript:void">详细错误信息</a>
-		</td>
-				<td style="width: 130px"></td>
-	</tr>
-</table>
+        <div class="error-desc">
+            服务器好像出错了...
+            <br/>您可以返回主页看看
+            <br/><a href="<%=basePath%>/order/list"  class="btn btn-primary m-t">主页</a>
+            <br/><a id="showErrorMessageButton" href="javascript:void">详细错误信息</a>
+        </div>
+    </div>
 <div id="errorMessageDiv" style="display:none;">
 	<pre>
                 <%

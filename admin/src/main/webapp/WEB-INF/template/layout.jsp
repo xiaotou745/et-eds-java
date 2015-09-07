@@ -76,12 +76,19 @@
 <script>
     $(document).ajaxError( function(event, jqXHR, options, errorMsg){
     	 var start=jqXHR.responseText.indexOf("<body>");
-    	 var end=jqXHR.responseText.indexOf("</body>");
-    	 var content=jqXHR.responseText.substring(start+6,end);
-    	 content=content.replace("h1","h4");
-    	
+    	 var content="内部服务器错误";
+    	 if(start>0){
+        	 var end=jqXHR.responseText.indexOf("</body>");
+        	 content=jqXHR.responseText.substring(start+6,end);
+        	 content=content.replace("h1","h4"); 
+    	 }else{
+    		 var start2=jqXHR.responseText.indexOf("<pre>");
+    		 var end2=jqXHR.responseText.indexOf("</pre>");
+        	 content=jqXHR.responseText.substring(start2,end2+6);
+    	 }
+
     	 $("#gloablErrorParam").html(options.url+"调用出错了！");
-    	 $("#gloablErrorContent").html("<pre>param:"+options.data+"</pre>"+content);
+    	 $("#gloablErrorContent").html(content);
     	 $("#gloablShowError").html("显示详细信息");
     	 $("#gloablErrorContent").hide();
     	 $('#gloablErrorDiv').modal('show');
