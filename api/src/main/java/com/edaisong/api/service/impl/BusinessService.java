@@ -259,8 +259,10 @@ public class BusinessService implements IBusinessService {
 					.getProperty("JuWangKeBusiAuditCallBack");
 			// 调用第三方接口 ，聚网客商户审核通过后调用接口
 			// 这里不建议使用 1 数字，而是根据 配置文件中的 appkey来获取 groupid
-			if (business.getGroupid() == 1 && business.getOriginalbusiid() > 0
-					&& status == BusinessStatus.AuditPass.value()) {
+			if (business.getGroupid()!=null &&
+				business.getGroupid() == 1 && 
+				business.getOriginalbusiid() > 0 && 
+				status == BusinessStatus.AuditPass.value()) {
 				String str = HttpUtil.sendPost(juWangKeBusiAuditCallBack,
 						"supplier_id=" + business.getOriginalbusiid());
 			}

@@ -851,6 +851,7 @@
 	    <if test="groupId != null and groupId != -1">
 			and o.OrderFrom = ${groupId}
 		</if>
+
 		<if test="authorityCityNameList != null">
 			and b.city in
 			<foreach item="item" index="index" collection="authorityCityNameList"

@@ -50,10 +50,10 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			Object obj = request.getAttribute("stackTrace");
 			if (obj != null) {
 				Object objMsg = request.getAttribute("exception");
-				exceptionMsg = "系统异常:" + (objMsg == null ? "null" : objMsg.toString());
+				exceptionMsg = (objMsg == null ? "null" : objMsg.toString());
 				stackTrace = obj.toString();
 			} else if (ex != null) {
-				exceptionMsg = "页面解析异常:" + ex.getMessage();
+				exceptionMsg = ex.getMessage();
 				stackTrace = StringUtils.getStackTrace(ex);
 			}
 			if (exceptionMsg != null && !exceptionMsg.isEmpty()) {
