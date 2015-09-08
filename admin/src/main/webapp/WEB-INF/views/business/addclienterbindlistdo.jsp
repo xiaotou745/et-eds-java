@@ -32,7 +32,7 @@ if(data == null){
 							<%for (int i = 0; i < data.size(); i++) { %>
 							<tr class="info">
 								<td><%=data.get(i).getId() %></td>
-								<td><%=data.get(i).getTrueName()%></td>
+								<td><%=ParseHelper.ShowString(data.get(i).getTrueName())%></td>
 								<td><%=data.get(i).getPhoneNo()%></td>
 		                        <td>
 		                        	<%if(data.get(i).getIsBind() == 1){%>

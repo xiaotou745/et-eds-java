@@ -1,5 +1,8 @@
 package com.edaisong.api.dao.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -116,5 +119,14 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	public boolean addClienterBind(ClienterBindOptionReq req){
 		return getMasterSqlSessionUtil().insert(
 				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.addClienterBind", req) > 0;
+	}
+
+	@Override
+	public BusinessClienterRelation getDetails(int businessId, int clienterId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("businessId", businessId);
+		map.put("clienterId", clienterId);
+		return getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getDetails", map);
 	}
 }
