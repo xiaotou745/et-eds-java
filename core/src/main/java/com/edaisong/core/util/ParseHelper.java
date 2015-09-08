@@ -27,9 +27,17 @@ public class ParseHelper {
 	public static short ToShort(Object o) {
 		return ToShort(o, (short) 0);
 	}
-
+	public static String ToString(Object o,String defaultValue) {
+		if (o==null) {
+		   return defaultValue;	
+		}
+		return o.toString();
+	}
 	public static int ToInt(Object o, int defaultValue) {
 		int result = defaultValue;
+		if (o==null) {
+			return result;
+		}
 		try {
 			result = Integer.parseInt(o.toString());
 		} catch (Exception e) {

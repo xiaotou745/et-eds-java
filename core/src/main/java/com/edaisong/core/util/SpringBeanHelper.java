@@ -10,8 +10,10 @@ public class SpringBeanHelper {
 	static {
 		try {
 		    ctx_bean = ContextLoader.getCurrentWebApplicationContext();
-//			ctx_bean = new ClassPathXmlApplicationContext(
-//					"conf/core/spring-context.xml");
+		    //ctx_bean = new ClassPathXmlApplicationContext("conf/core/dev-context.xml");
+		    if (ctx_bean==null) {
+				throw new RuntimeException("没有获取到springcontext");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

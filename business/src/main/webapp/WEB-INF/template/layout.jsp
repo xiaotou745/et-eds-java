@@ -171,7 +171,7 @@ function regTrEvent(){
 			<tiles:insertAttribute name="footer" ignore="true"></tiles:insertAttribute>	
 		</div>	
 	</div>
-	<div tabindex="-1" class="modal inmodal" id="gloablErrorDiv" role="dialog"
+	<div tabindex="-1" class="modal inmodal" id="gloablErrorDiv" role="dialog" style="display:none"
 			aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content animated bounceInRight">

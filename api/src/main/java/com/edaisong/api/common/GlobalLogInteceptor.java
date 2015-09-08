@@ -1,9 +1,9 @@
-package com.edaisong.admin.common;
+package com.edaisong.api.common;
 
 import java.util.Date;
 import java.util.List;
 
-import javassist.expr.NewArray;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +22,15 @@ import com.edaisong.entity.domain.ActionLog;
 public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 	@Autowired
 	LogServiceBLL logServiceBLL;
+	private String sourceSys;
+
+	public String getSourceSys() {
+		return sourceSys;
+	}
+
+	public void setSourceSys(String sourceSys) {
+		this.sourceSys = sourceSys;
+	}
 
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
@@ -52,10 +61,10 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			Object obj = request.getAttribute("stackTrace");
 			if (obj != null) {
 				Object objMsg = request.getAttribute("exception");
-				exceptionMsg =(objMsg == null ? "" : objMsg.toString());
+				exceptionMsg = (objMsg == null ? "" : objMsg.toString());
 				stackTrace = obj.toString();
 			} else if (ex != null) {
-				exceptionMsg = ex.getMessage()==null?"":ex.getMessage();
+				exceptionMsg = ex.getMessage() == null ? "" : ex.getMessage();
 				stackTrace = StringUtils.getStackTrace(ex);
 			}
 			if (exceptionMsg != null && !exceptionMsg.isEmpty()) {
@@ -68,27 +77,30 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 				appServerIP = ipinfoList.get(0);
 			}
 
-
 			ActionLog logEngity = new ActionLog();
-			logEngity.setSourceSys("admin");
-			logEngity.setClientFrom(0);
+			logEngity.setSourceSys(getSourceSys());
+			logEngity.setClientFrom(0);//暂时没用
 			logEngity.setAppServer(appServerIP);
-			logEngity.setClassName(handlerMethod.getBeanType().getName());
 			logEngity.setMethodName(methodName);
 			logEngity.setParam(param);
 			logEngity.setException(exceptionMsg);
 			logEngity.setStackTrace(stackTrace);
 			logEngity.setExecuteTime((end - start));
 
-			Date requestTime=(Date)request.getAttribute("requestTime");
-			logEngity.setRequestTime(ParseHelper.ToDateString(requestTime,""));
-			logEngity.setRequestEndTime(ParseHelper.ToDateString(new Date(),""));
-			logEngity.setUserID(UserContext.getCurrentContext(request).getId());
-			logEngity.setUserName(UserContext.getCurrentContext(request).getName());
-			String requestType = request.getHeader("X-Requested-With"); 
-			if (requestType!=null&&requestType.equals("XMLHttpRequest")){
+			Date requestTime = (Date) request.getAttribute("requestTime");
+			logEngity.setRequestTime(ParseHelper.ToDateString(requestTime, ""));
+			logEngity.setRequestEndTime(ParseHelper
+					.ToDateString(new Date(), ""));
+
+			int userID=ParseHelper.ToInt(request.getAttribute("userID"),-1);
+			String userName = ParseHelper.ToString(request.getAttribute("userName"),"");
+			
+			logEngity.setUserID(userID);
+			logEngity.setUserName(userName);
+			String requestType = request.getHeader("X-Requested-With");
+			if (requestType != null && requestType.equals("XMLHttpRequest")) {
 				logEngity.setRequestType(1);
-			}else {
+			} else {
 				logEngity.setRequestType(0);
 			}
 			logServiceBLL.SystemActionLog(logEngity);
@@ -98,5 +110,4 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			System.out.println("执行时间,精确到毫秒:" + (end - start));
 		}
 	}
-
 }

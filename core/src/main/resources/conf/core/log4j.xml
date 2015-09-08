@@ -57,10 +57,10 @@
 <!--         <param name="user" value="sa"/> -->
 <!--         <param name="password" value="110"/> -->
         <param name="sql" value="INSERT INTO ActionLog (AppServer, UserID, UserName, SourceSys,ClientFrom,
-						        ClassName,MethodName,ExecuteTime,Param,StackTrace,
+						        MethodName,ExecuteTime,Param,StackTrace,
 						        Exception,RequestTime,RequestEndTime,RequestType) 
         VALUES ('%X{appServer}', '%X{userID}', '%X{userName}', '%X{sourceSys}', '%X{clientFrom}'
-        , '%X{className}', '%X{methodName}', '%X{executeTime}', '%X{param}', '%X{stackTrace}'
+        , '%X{methodName}', '%X{executeTime}', '%X{param}', '%X{stackTrace}'
         , '%X{exception}', '%X{requestTime}', '%X{requestEndTime}', '%X{requestType}')"/>
     </appender>
 	<category name="businessLogger" additivity="false">

@@ -23,12 +23,14 @@
 	<mvc:annotation-driven />
 	<mvc:resources mapping="/**" location="/resources/" />
 	<mvc:interceptors>
-			<bean class="com.edaisong.business.common.GlobalLogInteceptor" />
+ 		<bean class="com.edaisong.api.common.GlobalLogInteceptor">
+ 			<property name="sourceSys" value="business"></property> 
+ 		</bean>
 			<bean class="com.edaisong.business.common.AuthInteceptor" />
 	</mvc:interceptors>
 
 	<!-- 全局异常 -->
-<!-- 	<bean id="exceptionResolver" class="com.edaisong.business.common.GlobalExceptionHandler" /> -->
+<!-- 	<bean id="exceptionResolver" class="com.edaisong.api.common.GlobalExceptionHandler" /> -->
 
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 	<property name="definitions">

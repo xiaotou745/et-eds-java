@@ -1,6 +1,6 @@
-package com.edaisong.admin.common;
+package com.edaisong.api.common;
 
-import org.apache.log4j.Logger;
+
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;

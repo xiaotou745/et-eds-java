@@ -19,7 +19,7 @@ public class LogServiceBLL {
 	private static Logger businessLogger = Logger.getLogger("businessLogger");
 	private static Logger adminLogger = Logger.getLogger("adminLogger");
 	private static Logger apiHttpLogger = Logger.getLogger("apiHttpLogger");
-
+	private static Field[] fields = ActionLog.class.getDeclaredFields();
 	/**
 	 * 系统级，记录方法的ActionLog（异步写入db和log文件）
 	 * 
@@ -62,7 +62,6 @@ public class LogServiceBLL {
 
 	private void initLog4DB(ActionLog logEngity) {
 		try {
-			Field[] fields = ActionLog.class.getDeclaredFields();
 			MDC.clear();
 			for (Field field : fields) {
 				field.setAccessible(true);

@@ -15,48 +15,33 @@ public class JDBCPoolAppender extends org.apache.log4j.jdbc.JDBCAppender {
 
 	public JDBCPoolAppender() {
 		super();
-		logSqlServerSessionFactory = (SqlSessionFactory) SpringBeanHelper
-				.getCustomBean("superManLogSqlServerSessionFactory");
 	}
 
 	@Override
 	protected void execute(String sql) throws SQLException {
 		Connection con = null;
 		Statement stmt = null;
+		SqlSession session = null;
 		try {
-			con = getConnection();
+			if (logSqlServerSessionFactory==null) {
+				logSqlServerSessionFactory = (SqlSessionFactory) SpringBeanHelper
+						.getCustomBean("superManLogSqlServerSessionFactory");
+			}
+			session = logSqlServerSessionFactory.openSession();
+			con = session.getConnection();
 			stmt = con.createStatement();
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
 			if (stmt != null) {
 				stmt.close();
 			}
-			e.printStackTrace();
-		}
-		stmt.close();
-		closeConnection(con);
-		System.out.println("Execute: " + sql);
-	}
 
-	@Override
-	protected void closeConnection(Connection con) {
-		try {
-			if (connection != null && !connection.isClosed())
-				connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			if (session != null) {
+				session.close();
+			}
 		}
+		// System.out.println("Execute: " + sql);
 	}
-
-	@Override
-	protected Connection getConnection() throws SQLException {
-		try {
-			SqlSession session = logSqlServerSessionFactory.openSession();
-			return session.getConnection();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 }

@@ -7,7 +7,6 @@ import java.util.Date;
 public class ActionLog {
 	private int userID;
 	private String userName;
-	private String className;
 	private String methodName;
 	private String param;
 	private String exception;
@@ -78,12 +77,6 @@ public class ActionLog {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-	public String getClassName() {
-		return className;
-	}
-	public void setClassName(String className) {
-		this.className = className;
 	}
 	public String getRequestTime() {
 		return requestTime;
