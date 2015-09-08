@@ -474,38 +474,4 @@ public class ExcelUtils {
 		}
 
 	}
-
-/*	public static class ImportClienterInfo {
-		private String name;
-		private String phoneNo;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String getPhoneNo() {
-			return phoneNo;
-		}
-
-		public void setPhoneNo(String phoneNo) {
-			this.phoneNo = phoneNo;
-		}
-	}
-
-	public static void main(String[] args) throws Exception {
-		File file = new File("E:/download/BatchImport.xls");
-		InputStream ins = new FileInputStream(file);
-		byte[] buffers = new byte[1024];
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		int len = 0;
-		while ((len = ins.read(buffers)) != -1) {
-			bos.write(buffers, 0, len);
-		}
-		readExcel(bos.toByteArray(), 0, 50, ImportClienterInfo.class);
-		ins.close();
-	}*/
 }
