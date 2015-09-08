@@ -49,15 +49,15 @@
 		<property name="order" value="2"></property>
 	</bean>
 
-<!-- 	<bean id="multipartResolver"
+ 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="UTF-8" />
 		<property name="maxInMemorySize" value="10240000" />
-	</bean> -->
+	</bean> 
 	
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+<!-- 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 
         <property name="maxUploadSize" value="100000"/>
 
-    </bean>
+    </bean> -->
 </beans>
