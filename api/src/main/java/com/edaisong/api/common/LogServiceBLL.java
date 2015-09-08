@@ -1,11 +1,11 @@
 package com.edaisong.api.common;
 
+import java.lang.reflect.Field;
+
 import org.apache.log4j.Logger;
+import org.apache.log4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-
-
 
 import com.edaisong.api.dao.inter.IActionLogDao;
 import com.edaisong.core.util.JsonUtil;
@@ -15,20 +15,23 @@ import com.edaisong.entity.domain.ActionLog;
 public class LogServiceBLL {
 	@Autowired
 	private IActionLogDao iActionLogDao;
-	
-    private static Logger businessLogger = Logger.getLogger("businessLogger");
-    private static Logger adminLogger = Logger.getLogger("adminLogger");
-    private static Logger apiHttpLogger = Logger.getLogger("apiHttpLogger");
-    /**
-     * 系统级，记录方法的ActionLog（异步写入db和log文件）
-     * @param
-     */
+
+	private static Logger businessLogger = Logger.getLogger("businessLogger");
+	private static Logger adminLogger = Logger.getLogger("adminLogger");
+	private static Logger apiHttpLogger = Logger.getLogger("apiHttpLogger");
+
+	/**
+	 * 系统级，记录方法的ActionLog（异步写入db和log文件）
+	 * 
+	 * @param
+	 */
 	public void SystemActionLog(ActionLog logEngity) {
-		if (logEngity.getException()==null||
-		    logEngity.getException().isEmpty()) {
+		if (logEngity.getStackTrace() == null
+				|| logEngity.getStackTrace().isEmpty()) {
 			return;
 		}
-		String jsonMsg=JsonUtil.obj2string(logEngity);
+		initLog4DB(logEngity);
+		String jsonMsg = JsonUtil.obj2string(logEngity);
 		switch (logEngity.getSourceSys()) {
 		case "admin":
 			adminLogger.info(jsonMsg);
@@ -42,16 +45,31 @@ public class LogServiceBLL {
 		default:
 			break;
 		}
-		//应该异步调用dao写入db
-		//iActionLogDao.WriteActionLog(logEngity);
 	}
+
 	public void LogInfo(ActionLog logEngity) {
 	}
+
 	public void LogInfo(String msg) {
 	}
+
 	public void LogError(ActionLog logEngity) {
 	}
+
 	public void LogError(String msg) {
 
+	}
+
+	private void initLog4DB(ActionLog logEngity) {
+		try {
+			Field[] fields = ActionLog.class.getDeclaredFields();
+			MDC.clear();
+			for (Field field : fields) {
+				field.setAccessible(true);
+				MDC.put(field.getName(), field.get(logEngity));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

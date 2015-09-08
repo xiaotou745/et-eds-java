@@ -1,6 +1,13 @@
 package com.edaisong.entity.domain;
 
+import java.util.Date;
+
+
+
 public class ActionLog {
+	private int userID;
+	private String userName;
+	private String className;
 	private String methodName;
 	private String param;
 	private String exception;
@@ -8,6 +15,10 @@ public class ActionLog {
 	private Long executeTime;
 	private String sourceSys;
 	private int clientFrom;
+	private String requestTime;
+	private String requestEndTime;
+	private String appServer;
+	private int requestType;
 	public String getMethodName() {
 		return methodName;
 	}
@@ -56,5 +67,40 @@ public class ActionLog {
 	public void setAppServer(String appServer) {
 		this.appServer = appServer;
 	}
-	private String appServer;
+	public int getUserID() {
+		return userID;
+	}
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getClassName() {
+		return className;
+	}
+	public void setClassName(String className) {
+		this.className = className;
+	}
+	public String getRequestTime() {
+		return requestTime;
+	}
+	public void setRequestTime(String requestTime) {
+		this.requestTime = requestTime;
+	}
+	public String getRequestEndTime() {
+		return requestEndTime;
+	}
+	public void setRequestEndTime(String requestEndTime) {
+		this.requestEndTime = requestEndTime;
+	}
+	public int getRequestType() {
+		return requestType;
+	}
+	public void setRequestType(int requestType) {
+		this.requestType = requestType;
+	}
 }
