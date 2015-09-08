@@ -8,6 +8,7 @@ import com.edaisong.api.dao.inter.IBusinessClienterRelationDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
+import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.req.ClienterBindOptionReq;
@@ -140,5 +141,10 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 			throw new RuntimeException("添加骑士绑定失败");
 		}
         return reg;
+	}
+
+	@Override
+	public BusinessClienterRelation getDetails(int businessId, int clienterId) {
+		return businessClienterRelationDao.getDetails(businessId,clienterId);
 	}
 }

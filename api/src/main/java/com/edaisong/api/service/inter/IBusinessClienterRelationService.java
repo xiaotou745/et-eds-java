@@ -1,5 +1,6 @@
 package com.edaisong.api.service.inter;
 
+import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.req.ClienterBindOptionReq;
@@ -29,4 +30,6 @@ public interface IBusinessClienterRelationService {
 	 * @return
 	 */
 	boolean addClienterBind(ClienterBindOptionReq req);
+	
+	BusinessClienterRelation getDetails(int businessId,int clienterId);
 }

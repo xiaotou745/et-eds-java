@@ -1,10 +1,13 @@
 package com.edaisong.api.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
+import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
@@ -62,4 +65,27 @@ public interface IClienterDao {
 	 * @return
 	 */
 	PagedResponse<ClienterBindInfoModel> getClienterBindInfoList(PagedClienterSearchReq req);
+	
+	/**
+	 * 根据电话获得骑士姓名
+	 * @author pengyi
+	 * @date 2015年9月7日 下午1:49:29
+	 * @version 1.0
+	 * @param phoneNos
+	 * @return
+	 */
+	List<ImportClienterInfo> getInfosByPhones(List<String> phoneNos);
+	
+	String getNameByPhone(String phoneNo);
+	
+	/**
+	 * 根据电话和姓名获得骑士id
+	 * @author pengyi
+	 * @date 2015年9月7日 下午2:47:04
+	 * @version 1.0
+	 * @param phoneNo
+	 * @param trueName
+	 * @return
+	 */
+	Integer getId(String phoneNo, String trueName);
 }

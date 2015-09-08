@@ -274,4 +274,10 @@
         #{optName,jdbcType=NVARCHAR}
 	);
   </insert>
+  
+  <select id="getDetails" resultType="com.edaisong.entity.BusinessClienterRelation" parameterType="java.util.Map">
+  	select id,businessid,clienterid,isenable,createby,createtime,updateby,updatetime,isbind
+ from   dbo.[BusinessClienterRelation] (nolock ) 
+ where IsEnable=1 and  BusinessId=#{businessId,jdbcType=INTEGER}  and ClienterId=#{ClienterId,jdbcType=INTEGER}
+  </select>
 </mapper>

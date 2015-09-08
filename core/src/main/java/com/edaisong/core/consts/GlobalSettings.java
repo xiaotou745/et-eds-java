@@ -7,4 +7,5 @@ public final class GlobalSettings {
 	public final static String ADMIN_LOGIN_COOKIE_NAME = "ltoken_admin";//登录Cookie name
 	public final static String ADMIN_JSESSIONID = "ADMIN_JSESSIONID";
 	public final static String BUSINESS_JSESSIONID = "BUSINESS_JSESSIONID";
+	public final static String PHONE_REGEX = "^1\\d{10}$";
 }

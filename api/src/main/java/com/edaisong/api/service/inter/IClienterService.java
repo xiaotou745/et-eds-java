@@ -1,10 +1,13 @@
 package com.edaisong.api.service.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
+import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.PagedClienterReq;
@@ -55,4 +58,26 @@ public interface IClienterService {
 	 * @date 20150901
 	 */
 	PagedResponse<ClienterBindInfoModel> getClienterList(PagedClienterSearchReq req);
+	
+	/**
+	 * 根据电话获得骑士姓名
+	 * @author pengyi
+	 * @date 2015年9月7日 下午1:49:29
+	 * @version 1.0
+	 * @param phoneNos
+	 * @return
+	 */
+	List<ImportClienterInfo> getInfosByPhones(List<String> phoneNos);
+	
+	/**
+	 * 根据电话获得名字
+	 * @author pengyi
+	 * @date 2015年9月7日 下午2:18:08
+	 * @version 1.0
+	 * @param phoneNo
+	 * @return
+	 */
+	String getNameByPhone(String phoneNo);
+	
+	Integer getId(String phoneNo, String trueName);
 }
