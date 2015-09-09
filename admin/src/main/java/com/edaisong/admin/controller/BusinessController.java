@@ -498,27 +498,22 @@ public class BusinessController {
 		req.setPageSize(Integer.MAX_VALUE);
 		List<BusinessBalanceRecordModel> records = businessBalanceRecordService
 				.getBusinessBalanceRecordListForExport(req);
-		if (records.size() > 0) {
-			// 导出数据
-			String filename = "商户提款流水记录%s";
-			if (!StringUtils.isEmpty(req.getStartDate()) && !StringUtils.isEmpty(req.getEndDate())) {
-				filename = String.format(filename, req.getStartDate() + "~" + req.getEndDate());
-			}
-			// 解密records的账号
-			for (int i = 0; i < records.size(); i++) {
-				records.get(i).setAccountNo(ParseHelper.toDecrypt(records.get(i).getAccountNo()));
-			}
-			byte[] data = exportBusinessBalanceRecord2Bytes(filename, records);
-			response.setContentType("application/ms-excel");
-			response.setHeader("Content-Disposition",
-					"attachment; filename=" + new String((filename + ".xls").getBytes("utf-8"), "iso8859-1"));
-			response.setHeader("Content-Length", String.valueOf(data.length));
-			response.getOutputStream().write(data);
-			return;
+		// 导出数据
+		String filename = "商户提款流水记录%s";
+		if (!StringUtils.isEmpty(req.getStartDate()) && !StringUtils.isEmpty(req.getEndDate())) {
+			filename = String.format(filename, req.getStartDate() + "~" + req.getEndDate());
 		}
-		// 如果查询到的数据为空,则跳转到收支详情页
-		String basePath = PropertyUtils.getProperty("static.admin.url");
-		response.sendRedirect(basePath + "/business/balancedetail?businessId=" + businessId);
+		// 解密records的账号
+		for (int i = 0; i < records.size(); i++) {
+			records.get(i).setAccountNo(ParseHelper.toDecrypt(records.get(i).getAccountNo()));
+		}
+		byte[] data = exportBusinessBalanceRecord2Bytes(filename, records);
+		response.setContentType("application/ms-excel");
+		response.setHeader("Content-Disposition",
+				"attachment; filename=" + new String((filename + ".xls").getBytes("utf-8"), "iso8859-1"));
+		response.setHeader("Content-Length", String.valueOf(data.length));
+		response.getOutputStream().write(data);
+		return;
 	}
 
 	/**
@@ -530,12 +525,13 @@ public class BusinessController {
 	 * @param businessId
 	 * @param files
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@RequestMapping("clienterimport")
 	@ResponseBody
 	public ResponseBase clienterImport(@RequestParam(value = "businessId", required = false) Integer businessId,
-			@RequestParam(value = "file1", required = true) MultipartFile files[],HttpServletRequest request,HttpServletResponse response) throws Exception {
+			@RequestParam(value = "file1", required = true) MultipartFile files[], HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		ResponseBase resp = new ResponseBase();
 		if (files.length <= 0) {
 			resp.setMessage("上传文件不能为空");
@@ -543,10 +539,9 @@ public class BusinessController {
 			// 读取文件记录
 			MultipartFile file = files[0];
 			byte[] buffers = file.getBytes();
-			if(buffers.length <= 0){
+			if (buffers.length <= 0) {
 				resp.setMessage("上传文件不能为空");
-			}
-			else{
+			} else {
 				List<ImportClienterInfo> infos = ExcelUtils.readExcel(buffers, 0, 50, ImportClienterInfo.class);
 				resp.setMessage(JsonUtil.obj2string(checkClienterImport(infos)));
 				resp.setResponseCode(1);
@@ -559,8 +554,7 @@ public class BusinessController {
 	@ResponseBody
 	public ResponseBase clienterBatchSave(int businessId, String overallS, HttpServletRequest request) {
 		ResponseBase rsp = new ResponseBase();
-		List<BusinessBindClienter> binds = JsonUtil.str2list(overallS,
-				BusinessBindClienter.class);
+		List<BusinessBindClienter> binds = JsonUtil.str2list(overallS, BusinessBindClienter.class);
 		if (binds == null || binds.size() <= 0) {
 			rsp.setMessage("导入数据不能为空或数据格式有问题");
 			rsp.setResponseCode(0);
@@ -591,7 +585,7 @@ public class BusinessController {
 					successCount++;
 				}
 			}
-			rsp.setMessage("导入数据成功,共导入数据:"+successCount+"条");
+			rsp.setMessage("导入数据成功,共导入数据:" + successCount + "条");
 			rsp.setResponseCode(1);
 		}
 		return rsp;
