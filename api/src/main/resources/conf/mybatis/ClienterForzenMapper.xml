@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IClienterForzenDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.ClienterForzen" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ClienterID" property="clienterid" jdbcType="INTEGER" />
+    <result column="ForzenAmount" property="forzenamount" jdbcType="DECIMAL" />
+    <result column="ForzenReason" property="forzenreason" jdbcType="NVARCHAR" />
+    <result column="ForzenDate" property="forzendate" jdbcType="TIMESTAMP" />
+    <result column="ThawReason" property="thawreason" jdbcType="NVARCHAR" />
+    <result column="ThawDate" property="thawdate" jdbcType="TIMESTAMP" />
+    <result column="Status" property="status" jdbcType="INTEGER" />
+    <result column="Operator" property="operator" jdbcType="NVARCHAR" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ClienterID, ForzenAmount, ForzenReason, ForzenDate, ThawReason, ThawDate, Status, 
+    Operator, CreateDate
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ClienterForzen
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ClienterForzen
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.ClienterForzen" >
+    insert into ClienterForzen (ID, ClienterID, ForzenAmount, 
+      ForzenReason, ForzenDate, ThawReason, 
+      ThawDate, Status, Operator, 
+      CreateDate)
+    values (#{id,jdbcType=INTEGER}, #{clienterid,jdbcType=INTEGER}, #{forzenamount,jdbcType=DECIMAL}, 
+      #{forzenreason,jdbcType=NVARCHAR}, #{forzendate,jdbcType=TIMESTAMP}, #{thawreason,jdbcType=NVARCHAR}, 
+      #{thawdate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{operator,jdbcType=NVARCHAR}, 
+      #{createdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.ClienterForzen" >
+    insert into ClienterForzen
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="clienterid != null" >
+        ClienterID,
+      </if>
+      <if test="forzenamount != null" >
+        ForzenAmount,
+      </if>
+      <if test="forzenreason != null" >
+        ForzenReason,
+      </if>
+      <if test="forzendate != null" >
+        ForzenDate,
+      </if>
+      <if test="thawreason != null" >
+        ThawReason,
+      </if>
+      <if test="thawdate != null" >
+        ThawDate,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="operator != null" >
+        Operator,
+      </if>
+      <if test="createdate != null" >
+        CreateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="clienterid != null" >
+        #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="forzenamount != null" >
+        #{forzenamount,jdbcType=DECIMAL},
+      </if>
+      <if test="forzenreason != null" >
+        #{forzenreason,jdbcType=NVARCHAR},
+      </if>
+      <if test="forzendate != null" >
+        #{forzendate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="thawreason != null" >
+        #{thawreason,jdbcType=NVARCHAR},
+      </if>
+      <if test="thawdate != null" >
+        #{thawdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.ClienterForzen" >
+    update ClienterForzen
+    <set >
+      <if test="clienterid != null" >
+        ClienterID = #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="forzenamount != null" >
+        ForzenAmount = #{forzenamount,jdbcType=DECIMAL},
+      </if>
+      <if test="forzenreason != null" >
+        ForzenReason = #{forzenreason,jdbcType=NVARCHAR},
+      </if>
+      <if test="forzendate != null" >
+        ForzenDate = #{forzendate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="thawreason != null" >
+        ThawReason = #{thawreason,jdbcType=NVARCHAR},
+      </if>
+      <if test="thawdate != null" >
+        ThawDate = #{thawdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        Operator = #{operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="createdate != null" >
+        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.ClienterForzen" >
+    update ClienterForzen
+    set ClienterID = #{clienterid,jdbcType=INTEGER},
+      ForzenAmount = #{forzenamount,jdbcType=DECIMAL},
+      ForzenReason = #{forzenreason,jdbcType=NVARCHAR},
+      ForzenDate = #{forzendate,jdbcType=TIMESTAMP},
+      ThawReason = #{thawreason,jdbcType=NVARCHAR},
+      ThawDate = #{thawdate,jdbcType=TIMESTAMP},
+      Status = #{status,jdbcType=INTEGER},
+      Operator = #{operator,jdbcType=NVARCHAR},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

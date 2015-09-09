@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IClienterForzenLogDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.ClienterForzenLog" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ClienterForzenID" property="clienterforzenid" jdbcType="INTEGER" />
+    <result column="Operator" property="operator" jdbcType="NVARCHAR" />
+    <result column="OperaType" property="operatype" jdbcType="INTEGER" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ClienterForzenID, Operator, OperaType, CreateDate, Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ClienterForzenLog
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ClienterForzenLog
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.ClienterForzenLog" >
+    insert into ClienterForzenLog (ID, ClienterForzenID, Operator, 
+      OperaType, CreateDate, Remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{clienterforzenid,jdbcType=INTEGER}, #{operator,jdbcType=NVARCHAR}, 
+      #{operatype,jdbcType=INTEGER}, #{createdate,jdbcType=TIMESTAMP}, #{remark,jdbcType=NVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.ClienterForzenLog" >
+    insert into ClienterForzenLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="clienterforzenid != null" >
+        ClienterForzenID,
+      </if>
+      <if test="operator != null" >
+        Operator,
+      </if>
+      <if test="operatype != null" >
+        OperaType,
+      </if>
+      <if test="createdate != null" >
+        CreateDate,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="clienterforzenid != null" >
+        #{clienterforzenid,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="operatype != null" >
+        #{operatype,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.ClienterForzenLog" >
+    update ClienterForzenLog
+    <set >
+      <if test="clienterforzenid != null" >
+        ClienterForzenID = #{clienterforzenid,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        Operator = #{operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="operatype != null" >
+        OperaType = #{operatype,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null" >
+        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.ClienterForzenLog" >
+    update ClienterForzenLog
+    set ClienterForzenID = #{clienterforzenid,jdbcType=INTEGER},
+      Operator = #{operator,jdbcType=NVARCHAR},
+      OperaType = #{operatype,jdbcType=INTEGER},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      Remark = #{remark,jdbcType=NVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
