@@ -174,6 +174,27 @@ public class ClienterController {
 		ClienterOptionReq  record=clienteroptionreq;	
 		record.setOptName("admin");		
 		clienterService.modifyMoneyById(record);
-	}		
+	}	
+	/**
+	 * 冻结单列表管理页面 
+	 * @author 茹化肖
+	 * @Date 2015年9月9日11:43:32
+	 * @param search 查询条件实体
+	 * @return
+	 */
+	@RequestMapping("forzenlist")
+	public ModelAndView forzenlist(){		
+	
+		//List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();
+		//List<DeliveryCompany> dCListData=deliveryCompanyService.getDeliveryCompanyList();	
+		
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "管理员");
+		model.addObject("currenttitle", "冻结单管理");
+		//model.addObject("areaListData", areaListData);
+		//model.addObject("dCListData", dCListData);
+		model.addObject("viewPath", "clienter/forzenlist");
+		return model;
+	}
 
 }
