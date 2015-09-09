@@ -42,7 +42,10 @@ public class CustomerRqeustInterceptor extends
 	 */
 	public void handleMessage(Message message) throws Fault {
 		InputStream is = message.getContent(InputStream.class);
-		String msg = StreamUtils.copyToString(is);
+		 if (is==null) {
+			return;
+		}
+		String msg = is.toString();
 		Exchange exchange = message.getExchange();
 		BindingOperationInfo bop = exchange.get(BindingOperationInfo.class);
 		MethodDispatcher md = (MethodDispatcher) exchange.get(Service.class)
@@ -53,4 +56,12 @@ public class CustomerRqeustInterceptor extends
 		}
 		System.out.println("*********In****Helloworld******" + msg);
 	}
+	public void handleFault(Message message) {  
+
+        Exception exeption=message.getContent(Exception.class);
+        if (exeption!=null) {
+            System.out.println("出错了啊"+exeption.getMessage());
+            //logger.error(exeption.getMessage(),exeption);  
+		}
+    }  
 }

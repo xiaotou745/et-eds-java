@@ -68,7 +68,7 @@
     </error-page>
     <error-page> 
         <exception-type>java.lang.Exception</exception-type>                           
-       <location>/WEB-INF/views/common/exception.jsp</location> 
+       <location>/WEB-INF/views/common/500.jsp</location> 
     </error-page>
 	<welcome-file-list>
 		<welcome-file>login.jsp</welcome-file>

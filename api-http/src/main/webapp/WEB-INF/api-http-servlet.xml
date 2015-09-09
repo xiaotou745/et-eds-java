@@ -19,26 +19,27 @@
 
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-	<import resource="classpath:conf/core/spring-context.xml" />
+	<import resource="classpath:conf/core/dev-context.xml" />
 
-	<!-- <context:component-scan base-package="com.edaisong.api_http.service.impl" 
-		/> -->
+<context:component-scan base-package="com.edaisong.api_http.service.impl"/> 
 
 	<jaxrs:server id="myService" address="/">
 		<jaxrs:serviceBeans>
 			<ref bean="testService" />
+			<ref bean="commonService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:inInterceptors>
 			<!-- <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean> -->
-			<bean class="com.edaisong.api_http.common.CustomerRqeustInterceptor"></bean>
+		
 		</jaxrs:inInterceptors>
 		<jaxrs:outInterceptors>
 			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+				<bean class="com.edaisong.api_http.common.CustomerRqeustInterceptor"></bean>
 		</jaxrs:outInterceptors>
-		<jaxrs:extensionMappings>
-			<entry key="json" value="application/json" />
-			<entry key="xml" value="application/xml" />
-		</jaxrs:extensionMappings>
+<!-- 		<jaxrs:extensionMappings> -->
+<!-- 			<entry key="json" value="application/json" /> -->
+<!-- 			<entry key="xml" value="application/xml" /> -->
+<!-- 		</jaxrs:extensionMappings> -->
 		<jaxrs:languageMappings>
 			<entry key="en" value="en-gb" />
 		</jaxrs:languageMappings>
