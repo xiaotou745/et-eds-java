@@ -3,6 +3,8 @@ package com.edaisong.api.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import org.springframework.stereotype.Service;
+
 import com.edaisong.api.dao.inter.IClienterForzenDao;
 import com.edaisong.api.service.inter.IClienterForzenService;
 import com.edaisong.entity.ClienterForzen;
@@ -10,7 +12,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.PagedClienterForzenReq;
 
 
-
+@Service
 public class ClienterForzenService implements IClienterForzenService{
 	@Autowired
 	private IClienterForzenDao clienterForzenDao;	

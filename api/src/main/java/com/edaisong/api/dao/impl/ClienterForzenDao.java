@@ -1,11 +1,13 @@
 package com.edaisong.api.dao.impl;
 
+import org.springframework.stereotype.Repository;
+
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IClienterForzenDao;
 import com.edaisong.entity.ClienterForzen;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.PagedClienterForzenReq;
-
+@Repository
 public class ClienterForzenDao  extends DaoBase implements IClienterForzenDao{
 
 	@Override
