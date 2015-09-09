@@ -72,6 +72,7 @@ public enum BusinessBalanceRecordRecordType {
 	private BusinessBalanceRecordRecordType(int value, String desc,int type) { // 必须是private的，否则编译错误
 		this.value = value;
 		this.desc = desc;
+		this.type=type;
 	}
 
 	/**
@@ -94,7 +95,7 @@ public enum BusinessBalanceRecordRecordType {
 	 * @return
 	 */
 	public int type() {
-		return this.type();
+		return this.type;
 	}
 	public static BusinessBalanceRecordRecordType getEnum(int index) {
 		for (BusinessBalanceRecordRecordType c : BusinessBalanceRecordRecordType

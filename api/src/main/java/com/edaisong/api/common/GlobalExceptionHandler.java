@@ -50,6 +50,6 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
 		ext.put("param", param);
 		ext.put("exception", msg);
 		ext.put("stackTrace", stackTrace.replace("\r\n\t", "<br/>"));
-		return new ModelAndView("common/exception", ext);
+		return new ModelAndView("common/500", ext);
 	}
 }
