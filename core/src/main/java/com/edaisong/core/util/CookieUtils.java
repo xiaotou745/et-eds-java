@@ -142,6 +142,7 @@ public class CookieUtils {
 		Cookie cookie = new Cookie(name, null);
 		cookie.setPath(getPath(request));
 		cookie.setMaxAge(maxAge);
+		//cookie.setDomain(".edaisong.com.cn");
 		try {
 			cookie.setValue(URLEncoder.encode(value, "utf-8"));
 			cookie.setHttpOnly(httpOnly);
@@ -213,6 +214,7 @@ public class CookieUtils {
 				if (cookie.getName().equals(name)) {
 					try {
 						value = URLDecoder.decode(cookie.getValue(), "utf-8");
+						return value;
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
 					}
