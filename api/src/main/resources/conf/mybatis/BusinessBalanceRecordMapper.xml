@@ -13,10 +13,14 @@
     <result column="WithwardId" property="withwardid" jdbcType="BIGINT" />
     <result column="RelationNo" property="relationno" jdbcType="VARCHAR" />
     <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+    <result column="IsEnable" jdbcType="SMALLINT" property="isenable" />
+    <result column="GroupBizId" jdbcType="INTEGER" property="groupbizid" />
+    <result column="GroupBizBeforeBalance" jdbcType="DECIMAL" property="groupbizbeforebalance" />
+    <result column="GroupBizAfterBalance" jdbcType="DECIMAL" property="groupbizafterbalance" />
   </resultMap>
   <sql id="Base_Column_List" >
     Id, BusinessId, Amount, Status, Balance, RecordType, Operator, OperateTime, WithwardId, 
-    RelationNo, Remark
+    RelationNo, Remark, IsEnable, GroupBizId, GroupBizBeforeBalance, GroupBizAfterBalance
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -31,10 +35,11 @@
   <insert id="insert" parameterType="com.edaisong.entity.BusinessBalanceRecord">
 		insert into
 		BusinessBalanceRecord
-		(BusinessId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark)
+		(BusinessId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark,GroupBizId, GroupBizBeforeBalance, GroupBizAfterBalance)
 		select #{businessid,jdbcType=INTEGER},
 		#{amount,jdbcType=DECIMAL},#{status,jdbcType=SMALLINT},b.BalancePrice,#{recordtype,jdbcType=SMALLINT},#{operator,jdbcType=NVARCHAR}
 		,#{withwardid,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
+		,#{groupbizid,jdbcType=INTEGER}, #{groupbizbeforebalance,jdbcType=DECIMAL}, #{groupbizafterbalance,jdbcType=DECIMAL}
 		from dbo.business as b where Id=#{businessid,jdbcType=INTEGER} ;
 		select @@IDENTITY
   </insert>
@@ -74,6 +79,18 @@
       <if test="remark != null" >
         Remark,
       </if>
+      <if test="isenable != null">
+        IsEnable,
+      </if>
+      <if test="groupbizid != null">
+        GroupBizId,
+      </if>
+      <if test="groupbizbeforebalance != null">
+        GroupBizBeforeBalance,
+      </if>
+      <if test="groupbizafterbalance != null">
+        GroupBizAfterBalance,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -108,6 +125,18 @@
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=NVARCHAR},
+      </if>
+      <if test="isenable != null">
+        #{isenable,jdbcType=SMALLINT},
+      </if>
+      <if test="groupbizid != null">
+        #{groupbizid,jdbcType=INTEGER},
+      </if>
+      <if test="groupbizbeforebalance != null">
+        #{groupbizbeforebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="groupbizafterbalance != null">
+        #{groupbizafterbalance,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -144,6 +173,18 @@
       <if test="remark != null" >
         Remark = #{remark,jdbcType=NVARCHAR},
       </if>
+      <if test="isenable != null">
+        IsEnable = #{isenable,jdbcType=SMALLINT},
+      </if>
+      <if test="groupbizid != null">
+        GroupBizId = #{groupbizid,jdbcType=INTEGER},
+      </if>
+      <if test="groupbizbeforebalance != null">
+        GroupBizBeforeBalance = #{groupbizbeforebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="groupbizafterbalance != null">
+        GroupBizAfterBalance = #{groupbizafterbalance,jdbcType=DECIMAL},
+      </if>
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
@@ -158,7 +199,11 @@
       OperateTime = #{operatetime,jdbcType=TIMESTAMP},
       WithwardId = #{withwardid,jdbcType=BIGINT},
       RelationNo = #{relationno,jdbcType=VARCHAR},
-      Remark = #{remark,jdbcType=NVARCHAR}
+      Remark = #{remark,jdbcType=NVARCHAR},
+      IsEnable = #{isenable,jdbcType=SMALLINT},
+      GroupBizId = #{groupbizid,jdbcType=INTEGER},
+      GroupBizBeforeBalance = #{groupbizbeforebalance,jdbcType=DECIMAL},
+      GroupBizAfterBalance = #{groupbizafterbalance,jdbcType=DECIMAL}
     where Id = #{id,jdbcType=BIGINT}
   </update>
   <!-- 获取交易明细的Where条件 -->
@@ -278,6 +323,10 @@
       ,bbr.[WithwardId]
       ,bbr.[RelationNo]
       ,bbr.[Remark]
+      ,bbr.[IsEnable]
+      ,bbr.[GroupBizId]
+      ,bbr.[GroupBizBeforeBalance]
+      ,bbr.[GroupBizAfterBalance]
       ,bfa.AccountNo
       ,bfa.OpenBank
 	FROM [BusinessBalanceRecord] bbr WITH(NOLOCK)
