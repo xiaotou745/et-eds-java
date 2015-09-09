@@ -8,8 +8,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.edaisong.api_http.entity.ResultModel;
-import com.edaisong.api_http.entity.TestServiceReq;
-import com.edaisong.api_http.entity.TestServiceResp;
 import com.edaisong.entity.common.RecordType;
 
 /**
@@ -29,7 +27,8 @@ public interface ICommonService {
 	 */
 	@POST
 	@Path("/getrecordtypeb")
-	 public ResultModel<List<RecordType>> getRecordtypeB ();
+	 public ResultModel<List<RecordType>> getRecordtypeB();
+
 	/**
 	 * C端获取所有的筛选条件类型
 	 * @author CaoHeYang
@@ -38,6 +37,6 @@ public interface ICommonService {
 	 */
 	@POST
 	@Path("/getrecordtypec")
-	public ResultModel<List<RecordType>> getRecordtypeC();
+	 public ResultModel<List<RecordType>> getRecordtypeC();
 }
 

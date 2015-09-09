@@ -4,12 +4,26 @@
 }
 .content img{
 	display: block;
-	margin:30px auto 42px;
+	margin:30px auto 0;
 }
-.content h1{
+.content .img{
+	margin-top: 58px;
+}
+.content h1,
+.content h2{
 	line-height: 50px;
 	color:#000;
 	font-size: 18px;
+	margin-top: 42px;
+}
+.content h2{
+	margin-top: 0;
+}
+.content h3{
+	line-height: 34px;
+	color:#000;
+	font-size: 18px;
+	margin-top: -34px;
 }
 .content input[type="button"]{
 	width: 130px;
