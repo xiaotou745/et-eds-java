@@ -161,11 +161,11 @@
         c.PhoneNo AS clienterPhone ,
         cf.ForzenAmount ,
         cf.ForzenDate ,
-        ISNULL(cf.ThawDate, '') AS ThawDate ,
+        cf.ThawDate ,
         cf.Status ,
         cf.Operator ,
         cf.ForzenReason ,
-        ISNULL(cf.ThawReason, '') AS ThawReason
+        ISNULL(cf.ThawReason, '''') AS ThawReason
 	</sql>
 	
 	<!-- 获取冻结单列表的分页存储过程_条件 茹化肖 2015年9月9日10:30:13 -->
@@ -177,13 +177,13 @@
 		<if test="dateType =1 and startDate != null and startDate != ''">
 			AND cf.ForzenDate>''${startDate}''
 		</if>
-		<if test="dateType =1 and endtDate != null and endDate != ''">
+		<if test="dateType =1 and endDate != null and endDate != ''">
 			AND ''${endDate}''>cf.ForzenDate
 		</if>
 		<if test="dateType =2 and startDate != null and startDate != ''">
 			AND cf.ThawDate>''${startDate}''
 		</if>
-		<if test="dateType =2 and endtDate != null and endDate != ''">
+		<if test="dateType =2 and endDate != null and endDate != ''">
 			AND ''${endDate}''>cf.ThawDate
 		</if>
 		<if test="clienterPhone != null and clienterPhone != ''">

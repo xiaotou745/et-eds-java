@@ -6,6 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,17 +19,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IClienterBalanceRecordService;
+import com.edaisong.api.service.inter.IClienterForzenService;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterBalanceRecord;
+import com.edaisong.entity.ClienterForzen;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.req.PagedClienterBalanceRecordReq;
 import com.edaisong.entity.req.ClienterOptionReq;
+import com.edaisong.entity.req.PagedClienterForzenReq;
 import com.edaisong.entity.req.PagedClienterReq;
 
 
@@ -46,6 +52,9 @@ public class ClienterController {
 	 //集团
 	 @Autowired
 	 private IDeliveryCompanyService  deliveryCompanyService;
+	//冻结单
+	 @Autowired
+	 private IClienterForzenService clienterForzenService;
 	 
 	/**
 	 * 骑士列表管理页面 
@@ -184,16 +193,26 @@ public class ClienterController {
 	 */
 	@RequestMapping("forzenlist")
 	public ModelAndView forzenlist(){		
-	
-		//List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();
-		//List<DeliveryCompany> dCListData=deliveryCompanyService.getDeliveryCompanyList();	
 		
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "管理员");
+		model.addObject("subtitle", "骑士管理");
 		model.addObject("currenttitle", "冻结单管理");
-		//model.addObject("areaListData", areaListData);
-		//model.addObject("dCListData", dCListData);
 		model.addObject("viewPath", "clienter/forzenlist");
+		return model;
+	}
+	
+	/**
+	 * 冻结单列表管理页面 --异步列表
+	 * @author 茹化肖
+	 * @Date 2015年9月9日11:43:32
+	 * @param search 查询条件实体
+	 * @return
+	 */
+	@RequestMapping("forzenlistdo")
+	public ModelAndView forzenlistdo(PagedClienterForzenReq par){		
+		PagedResponse<ClienterForzen> result= clienterForzenService.getForzenList(par);
+		ModelAndView model = new ModelAndView("clienter/forzenlistdo");
+		model.addObject("listData", result);
 		return model;
 	}
 
