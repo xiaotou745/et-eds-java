@@ -25,8 +25,16 @@ public interface ICommonService {
 	 * @date 20150909
 	 * @return
 	 */
-	@Post
+	@POST
 	@Path("/getrecordtypeb")
 	 public ResultModel<List<RecordType>> getRecordtypeB();
-
+	/**
+	 * C端获取所有的筛选条件类型
+	 * @author CaoHeYang
+	 * @date 20150909
+	 * @return
+	 */
+	@POST
+	@Path("/getrecordtypeb")
+	 public ResultModel<List<RecordType>> getRecordtypeC();
 }

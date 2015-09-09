@@ -3,7 +3,7 @@ package com.edaisong.api_http.entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.edaisong.entity.common.RequestBase;
-@XmlRootElement(name = "testServiceReq")  
+
 public class TestServiceReq extends OpenRequestBase{
 private	int recordType;
 public int getRecordType() {
