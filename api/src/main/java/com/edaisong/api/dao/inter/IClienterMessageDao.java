@@ -14,4 +14,12 @@ public interface IClienterMessageDao {
     int updateByPrimaryKeySelective(ClienterMessage record);
 
     int updateByPrimaryKey(ClienterMessage record);
+	/**
+	 * 获取最新消息
+	 * @author CaoHeYang
+	 * @param clienterId
+	 * @date 20150909
+	 * @return
+	 */
+	ClienterMessage getLatestMessage(int clienterId);
 }
