@@ -92,17 +92,18 @@ function regTrEvent(){
 		//var info=jqXHR.responseText;
 		//alert(options.url + "调用出错了！");
 		//alert(info);
-   	 var start=jqXHR.responseText.indexOf("<body>");
-	 var content="内部服务器错误";
-	 if(start>0){
-    	 var end=jqXHR.responseText.indexOf("</body>");
-    	 content=jqXHR.responseText.substring(start+6,end);
-    	 content=content.replace("h1","h4"); 
-	 }else{
+	var content="内部服务器错误";
+   	 //var start=jqXHR.responseText.indexOf("<body>");
+
+// 	 if(start>0){
+//     	 var end=jqXHR.responseText.indexOf("</body>");
+//     	 content=jqXHR.responseText.substring(start+6,end);
+//     	 content=content.replace("h1","h4"); 
+// 	 }else{
 		 var start2=jqXHR.responseText.indexOf("<pre>");
 		 var end2=jqXHR.responseText.indexOf("</pre>");
     	 content=jqXHR.responseText.substring(start2,end2+6);
-	 }
+	 //}
 
 	 $("#gloablErrorParam").html(options.url+"调用出错了！");
 	 $("#gloablErrorContent").html(content);

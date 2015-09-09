@@ -60,6 +60,9 @@
 .lh15{
 	line-height: 15px!important;
 }
+.fz14{
+	font-size: 14px!important;
+}
 
 
 .header{
@@ -586,4 +589,150 @@
 
 .dn .del{
 	display: none!important;
+}
+
+/*********************************************************************************/
+/*********************************************************************************/
+/*********************************************************************************/
+/*************************************充值****************************************/
+/*********************************************************************************/
+/*********************************************************************************/
+/*********************************************************************************/
+
+.content .nav>p{
+	line-height: 32px;
+	text-align: center;
+	color:#333;
+	font-size: 16px;
+	margin:0 auto 34px;
+}
+.content .nav span a.eight{
+	background:url(../images/icon-15.png) no-repeat 40px center;
+}
+.content .nav .on .eight,
+.content .nav span .eight:hover{
+	background:url(../images/icon-15h.png) no-repeat 40px center #e7e9ef;
+}
+
+.recharge .box3{
+	margin-left: 8%;
+	padding-top:30px;
+	border-bottom:1px dashed #ccc;
+}
+.recharge .box3 .sBox{
+	line-height: 30px;
+	margin-bottom: 17px;
+}
+.recharge .box3 .sBox span{
+	width: 16%;
+	text-align: right;
+	color:#000;
+	font-size: 18px;
+	margin-right: 30px;
+}
+.recharge .box3 .sBox em{
+	color:#f7585d;
+	font-size: 20px;
+}
+.recharge .box3 .sBox em i{
+	font-size: 14px;
+	font-style: normal;
+}
+.recharge .box3 .sBox b{
+	width: 16%;
+	text-align: right;
+	font-weight: normal;
+	color:#888;
+	font-size: 14px;
+	margin-right: 30px;
+}
+.recharge .box3 .sBox s{
+	text-decoration:none;
+	color:#888;
+	font-size: 16px;
+}
+.recharge .box3 .sBox s i{
+	font-size: 12px;
+	font-style: normal;
+}
+
+.recharge .box3 .sBox label{
+	color:#000;
+	font-size: 14px;
+	margin-right: 25px;
+}
+.recharge .box3 .sBox label input[type="radio"]{
+	margin:8px 5px 0 0;
+}
+.recharge .box3 .sBox input[type="radio"]{
+	margin:15px 5px 0 0;
+}
+.recharge .box3 .sBox input[type="text"]{
+	width: 123px;
+	height: 36px;
+	margin-right: 6px;
+	padding:0 0 0 5px;
+}
+.recharge .box3 .sBox>i{
+	display: block;
+	line-height: 40px;
+	color:#000;
+	font-size: 14px;
+	font-style: normal;
+}
+.recharge .box3 .sBox em.tishiyu{
+	line-height: 40px;
+	color:#f7585d;
+	font-size: 14px;
+	margin-left: 20px;
+	display: none;
+}
+.recharge .box3 .sBox p{
+	width: 550px;
+	margin-left: -20px;
+}
+.recharge .box3 .sBox p a{
+	display: block;
+	width: 154px;
+	height: 38px;
+	line-height: 38px;
+	text-indent: 70px;
+	color:#000;
+	font-size: 14px;
+	margin:0 0 20px 20px;
+	background:url(../images/zhifubao.png) no-repeat 38px center;
+	border:1px solid #c0c2cb;
+	border-radius:3px;
+}
+.recharge .box3 .sBox p a.on{
+	background-color:#fff;
+	border:1px solid #006699;
+}
+.recharge>input[type="button"]{
+	width: 200px;
+	height: 50px;
+	color:#fff;
+	font-size: 16px;
+	margin:30px 0 65px 26%;
+	background-color:#006699;
+	border:none;
+	border-radius:3px;
+	cursor:pointer;
+}
+.recharge .wxtsBox{
+	line-height: 30px;
+	color:#000;
+	margin-left: 8%;
+	padding:20px 30px;
+	background-color:#e7e9ef;
+	border:1px dashed #c1c7d7;
+}
+.recharge .wxtsBox h2{
+	font-size: 16px;
+}
+.recharge .wxtsBox p{
+	font-size: 14px;
+}
+.recharge .wxtsBox p span{
+	color:#006699;
 }
