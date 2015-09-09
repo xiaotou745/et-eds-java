@@ -28,6 +28,7 @@ public interface ICommonService {
 	@POST
 	@Path("/getrecordtypeb")
 	 public ResultModel<List<RecordType>> getRecordtypeB();
+
 	/**
 	 * C端获取所有的筛选条件类型
 	 * @author CaoHeYang
@@ -35,6 +36,7 @@ public interface ICommonService {
 	 * @return
 	 */
 	@POST
-	@Path("/getrecordtypeb")
+	@Path("/getrecordtypec")
 	 public ResultModel<List<RecordType>> getRecordtypeC();
 }
+
