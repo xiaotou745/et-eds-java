@@ -27,6 +27,12 @@ public class BusinessBalanceRecord {
     private String remark;
 
     private Short isenable;
+    
+    private Integer groupbizid;
+
+    private double groupbizbeforebalance;
+
+    private double groupbizafterbalance;
 
     public Long getId() {
         return id;
@@ -121,5 +127,29 @@ public class BusinessBalanceRecord {
 
     public void setIsenable(Short isenable) {
         this.isenable = isenable;
+    }
+    
+    public Integer getGroupbizid() {
+        return groupbizid;
+    }
+
+    public void setGroupbizid(Integer groupbizid) {
+        this.groupbizid = groupbizid;
+    }
+
+    public double getGroupbizbeforebalance() {
+        return groupbizbeforebalance;
+    }
+
+    public void setGroupbizbeforebalance(double groupbizbeforebalance) {
+        this.groupbizbeforebalance = groupbizbeforebalance;
+    }
+
+    public double getGroupbizafterbalance() {
+        return groupbizafterbalance;
+    }
+
+    public void setGroupbizafterbalance(double groupbizafterbalance) {
+        this.groupbizafterbalance = groupbizafterbalance;
     }
 }
