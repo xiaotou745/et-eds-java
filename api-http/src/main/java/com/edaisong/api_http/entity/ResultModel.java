@@ -1,8 +1,8 @@
 package com.edaisong.api_http.entity;
 
 public class ResultModel  <T> {
-	private int Status;
-    private String Message;
+	private int Status=ReturnRnums.Success.value();
+    private String Message=ReturnRnums.Success.desc();
     private T Result;
     /**
      * 状态

@@ -29,4 +29,16 @@ public class CommonService implements ICommonService {
        return resultModel;
 	}
 
+	/**
+	 * C端获取所有的筛选条件类型
+	 * @author CaoHeYang
+	 * @date 20150909
+	 * @return
+	 */
+	@Override
+	public ResultModel<List<RecordType>> getRecordtypeC() {
+	   ResultModel<List<RecordType>> resultModel=new ResultModel<List<RecordType>>();
+       resultModel.setResult(RecordtypeHelper.getRecordtypeC());
+       return resultModel;
+	}
 }

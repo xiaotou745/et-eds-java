@@ -17,7 +17,7 @@ import com.edaisong.entity.common.RecordType;
  * @author CaoHeYang
  * @date 20150909
  */
-@Path("/common ")
+@Path("/common")
 @Consumes("application/json")//当前方法接收的参数类型
 @Produces("application/json")//当前类的所有方法都返回json格式的数据
 public interface ICommonService {
@@ -30,5 +30,13 @@ public interface ICommonService {
 	@POST
 	@Path("/getrecordtypeb")
 	 public ResultModel<List<RecordType>> getRecordtypeB ();
-
+	/**
+	 * C端获取所有的筛选条件类型
+	 * @author CaoHeYang
+	 * @date 20150909
+	 * @return
+	 */
+	@POST
+	@Path("/getrecordtypec")
+	public ResultModel<List<RecordType>> getRecordtypeC();
 }
