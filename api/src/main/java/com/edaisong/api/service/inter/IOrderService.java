@@ -2,7 +2,6 @@ package com.edaisong.api.service.inter;
 
 import java.util.Date;
 import java.util.List;
-
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
@@ -18,11 +17,13 @@ import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.req.QueryOrderBReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
 
 public interface IOrderService {
 	/**
@@ -184,4 +185,12 @@ public interface IOrderService {
 	 */
     OrderStatisticsBResp getOrderStatisticsB(OrderStatisticsBReq orderStatisticsBReq);
 
+	/**
+	 * B 端首页 订单列表
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+    QueryOrderBResp queryOrderB(QueryOrderBReq query) ;
 }

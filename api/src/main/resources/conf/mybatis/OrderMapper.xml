@@ -1224,5 +1224,78 @@ where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
         and businessId=#{businessId}  
 	</select>
+	<!--  移动端 订单列表  add by caoheyang 20150910-->
+	<select id="queryOrder" resultType="com.edaisong.entity.domain.QueryOrder"
+		parameterType="com.edaisong.entity.req.QueryOrderBReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' o.PubDate desc ',
+		'
+		<include refid="queryOrderColums" />
+		',
+		'
+		<include refid="queryOrderFrom" />
+		',
+		'
+		<include refid="queryOrderWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 	
+	<!--   移动端 订单列表add by caoheyang 20150910 -->
+	<sql id="queryOrderColums">
+		 CONVERT(VARCHAR(5),o.ActualDoneDate,108) AS ActualDoneDate,
+                                    o.Amount,
+                                    o.OrderCount,
+                                    o.IsPay,
+                                    o.OrderNo,
+                                    o.PickUpAddress,
+                                    CONVERT(VARCHAR(5),o.PubDate,108) AS PubDate,
+                                    isnull(o.ReceviceAddress,'''') as ReceviceAddress ,
+                                    isnull(o.ReceviceName,'''') as ReceviceName ,
+                                    isnull(o.RecevicePhoneNo,'''') as RecevicePhoneNo ,
+                                    o.Remark,
+                                    o.Status,
+                                    o.ReceviceLongitude,
+                                    o.ReceviceLatitude,
+                                    b.Id as BusinessId,
+                                    b.Name as BusinessName,
+                                    b.Longitude,
+                                    b.Latitude,
+                                    b.Name as PickUpName,
+                                    c.TrueName as SuperManName,
+                                    c.PhoneNo as SuperManPhone,
+                                    o.OrderFrom,
+                                    o.id as OrderId,
+                                    o.MealsSettleMode,
+                                    (o.Amount+isnull(o.DistribSubsidy,0)*isnull(o.OrderCount,0)) as TotalAmount
+                                    ,isnull(o.OriginalOrderNo,'''') as OriginalOrderNo
+	</sql>
+	<!--   移动端 订单列表add by caoheyang 20150910 -->
+	<sql id="queryOrderFrom">
+		[order](nolock) as o 
+                                   join business(nolock) as b on o.businessId=b.Id
+                                   left join clienter(nolock) as c on o.clienterId=c.Id
+	</sql>
+	<!--   移动端 订单列表add by caoheyang 20150910 -->
+	<sql id="queryOrderWhere">
+		1=1 and o.IsEnable=1  
+	   <if test="clienterId != null and  clienterId !=0 ">
+			and o.clienterId=${clienterId}
+		</if> 
+		<if test="businessId != null and  businessId !=0 ">
+			and o.businessId=${businessId}
+		</if> 
+		 <if test="status != null">
+			and o.status=${status}
+		</if> 
+		<if test="dateInfo != null">
+			and o.PubDate=''${dateInfo}''
+		</if> 
+	</sql>
 </mapper>

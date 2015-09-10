@@ -4,29 +4,28 @@ import com.edaisong.entity.common.PagedRequestBase;
 
 /**
  * 移动端查询订单列表
+ * 
  * @author CaoHeYang
  * @date 20150910
  */
 public class QueryOrderBaseReq extends PagedRequestBase {
-	private int userId;
-	private int status;
+	private Integer businessId;
+	private Integer status;
 
 	/**
-	 * 用户id
 	 * 
 	 * @return
 	 */
-	public int getUserId() {
-		return userId;
+	public Integer getBusinessId() {
+		return businessId;
 	}
 
 	/**
-	 * 用户id
 	 * 
-	 * @param userId
+	 * @param businessId
 	 */
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setBusinessId(Integer businessId) {
+		this.businessId = businessId;
 	}
 
 	/**
@@ -34,7 +33,7 @@ public class QueryOrderBaseReq extends PagedRequestBase {
 	 * 
 	 * @return
 	 */
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
@@ -43,7 +42,7 @@ public class QueryOrderBaseReq extends PagedRequestBase {
 	 * 
 	 * @param status
 	 */
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 }

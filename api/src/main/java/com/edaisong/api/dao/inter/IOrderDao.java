@@ -12,13 +12,16 @@ import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.req.QueryOrderBReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
 
 public interface IOrderDao {
 
@@ -172,5 +175,12 @@ public interface IOrderDao {
 	 */
 	OrderStatisticsBResp  getOrderStatistics(OrderStatisticsBReq orderStatisticsBReq);
 	
-	
+	/**
+	 * B 端首页 订单列表
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	List<QueryOrder> queryOrder(QueryOrderBReq query) ;
 }

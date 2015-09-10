@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 
 import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
 
 /**
  * 订单模块 
@@ -36,5 +37,5 @@ public interface IOrderHttpService {
 	 */
 	@POST
 	@Path("/queryorderb")
-	 public ResultModel<OrderStatisticsBResp> queryOrderB(String data);
+	 public ResultModel<QueryOrderBResp> queryOrderB(String data);
 }

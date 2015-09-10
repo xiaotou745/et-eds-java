@@ -6,8 +6,8 @@ package com.edaisong.entity.req;
  *
  */
 public class QueryOrderBReq extends QueryOrderBaseReq {
-	private String DateInfo;
-	private int clienterId;
+	private String dateInfo;
+	private Integer clienterId;
 
 	/**
 	 * 日期 可空
@@ -15,7 +15,7 @@ public class QueryOrderBReq extends QueryOrderBaseReq {
 	 * @return
 	 */
 	public String getDateInfo() {
-		return DateInfo;
+		return dateInfo;
 	}
 
 	/**
@@ -24,7 +24,7 @@ public class QueryOrderBReq extends QueryOrderBaseReq {
 	 * @param dateInfo
 	 */
 	public void setDateInfo(String dateInfo) {
-		DateInfo = dateInfo;
+		this.dateInfo = dateInfo;
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class QueryOrderBReq extends QueryOrderBaseReq {
 	 * 
 	 * @return
 	 */
-	public int getClienterId() {
+	public Integer getClienterId() {
 		return clienterId;
 	}
 
@@ -41,7 +41,7 @@ public class QueryOrderBReq extends QueryOrderBaseReq {
 	 * 
 	 * @param clienterId
 	 */
-	public void setClienterId(int clienterId) {
+	public void setClienterId(Integer clienterId) {
 		this.clienterId = clienterId;
 	}
 }

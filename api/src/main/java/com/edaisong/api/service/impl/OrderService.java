@@ -83,11 +83,13 @@ import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.req.QueryOrderBReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
 
 @Service
 public class OrderService implements IOrderService {
@@ -965,6 +967,20 @@ public class OrderService implements IOrderService {
 		}
 		orderStatisticsResp.setDatas(daySatisticsBs);
 		return orderStatisticsResp;
+	}
+
+	/**
+	 * B 端首页 订单列表
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	public QueryOrderBResp queryOrderB(QueryOrderBReq query) {
+		QueryOrderBResp queryOrderBResp=new QueryOrderBResp();
+		queryOrderBResp.setOrders(orderDao.queryOrder(query));
+		return queryOrderBResp;
 	}
 
 }
