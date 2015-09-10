@@ -14,6 +14,7 @@ import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.entity.AuthorityAccountMenuSet;
 import com.edaisong.entity.AuthorityMenuClass;
 import com.edaisong.entity.MenuEntity;
+import com.edaisong.entity.req.AddNewMenuReq;
 
 @Repository
 public class AuthorityMenuClassDao extends DaoBase implements
@@ -35,7 +36,7 @@ public class AuthorityMenuClassDao extends DaoBase implements
 	@Override
 	public List<MenuEntity> getMenuListByUserID(int accountId) {
 		String key=RedissCacheKey.Menu_Auth+accountId;
-		List<MenuEntity> result=redisService.get(key, List.class);
+		List<MenuEntity> result=null;//redisService.get(key, List.class); 茹化肖暂时注释
 		if (result==null||result.size()==0) {
 			List<MenuEntity> list = getReadOnlySqlSessionUtil()
 					.selectList(
@@ -64,6 +65,29 @@ public class AuthorityMenuClassDao extends DaoBase implements
 						roleID);
 	}
 
+	@Override
+	public List<AuthorityMenuClass> getListMenuByParId(int parId) {
+		return getReadOnlySqlSessionUtil()
+				.selectList(
+						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getListMenuByParId",
+						parId);
+	}
+
+	@Override
+	public AuthorityMenuClass getMenuById(int id) {
+		return getReadOnlySqlSessionUtil()
+				.selectOne(
+						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getMenuById",
+						id);
+	}
+
+	@Override
+	public boolean addMenu(AuthorityMenuClass req) {
+		return getMasterSqlSessionUtil()
+				.insert(
+						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.addMenu",
+						req) > 0;
+	}
 
 
 }

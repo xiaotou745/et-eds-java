@@ -11,6 +11,15 @@
   <sql id="Base_Column_List" >
     Id, ClienterId, Content, IsRead, PubDate
   </sql>
+  <!-- 获取最新消息  add by caoheyang 20150908-->
+    <select id="getLatestMessage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+     SELECT TOP 1 
+	 <include refid="Base_Column_List" />
+	 FROM ClienterMessage WHERE 
+	 ClienterId= #{clienterId,jdbcType=INTEGER}
+	 ORDER BY PubDate desc;
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

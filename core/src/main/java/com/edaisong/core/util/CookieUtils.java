@@ -139,16 +139,13 @@ public class CookieUtils {
 	 * @param httpOnly 是否是httpOnly
 	 */
 	public static void setCookie(HttpServletRequest request,HttpServletResponse response, String name, String value, int maxAge,boolean httpOnly) {
-		Cookie cookie = new Cookie(name, null);
-		cookie.setPath(getPath(request));
-		cookie.setMaxAge(maxAge);
-		try {
-			cookie.setValue(URLEncoder.encode(value, "utf-8"));
-			cookie.setHttpOnly(httpOnly);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+		String domain=null;
+		String netDomain=".edaisong.com.cn";
+		String host=request.getHeader("host");
+		if (host!=null&&host.indexOf(netDomain)>0) {
+			domain=netDomain;
 		}
-		response.addCookie(cookie);
+		setCookie(request,response,name,value,maxAge,httpOnly,domain,null);
 	}
 	
 	/**
@@ -213,6 +210,7 @@ public class CookieUtils {
 				if (cookie.getName().equals(name)) {
 					try {
 						value = URLDecoder.decode(cookie.getValue(), "utf-8");
+						return value;
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
 					}
@@ -225,25 +223,6 @@ public class CookieUtils {
 		}
 		return value;
 	}
-	
-	/**
-     * 删除cookie
-     * @param request
-     * @param response
-     * @param cookie
-     */
-    public static void deleteCookie(HttpServletRequest request,
-            HttpServletResponse response, Cookie cookie) {
-        if (cookie != null) {
-        	String path = cookie.getPath();
-        	if(path == null){
-        		path = getPath(request);
-        	}
-            cookie.setPath(path);
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-        }
-    }
     
     /**
      * 删除cookie
@@ -253,30 +232,10 @@ public class CookieUtils {
      */
     public static void deleteCookie(HttpServletRequest request,
             HttpServletResponse response, String cookieName) {
-    	Cookie[] cookies = request.getCookies();
-    	for (Cookie cookie : cookies) {
-    		String name = cookie.getName();
-    		if(name.equals(cookieName)){
-    			String path = cookie.getPath();
-            	if(path == null){
-            		path = getPath(request);
-            	}
-                cookie.setPath(path);
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-    		}
-		}
-    	
-/*    	Cookie cookie = getCookieByName(cookieName, request);
-        if (cookie != null) {
-        	String path = cookie.getPath();
-        	if(path == null){
-        		path = getPath(request);
-        	}
-            cookie.setPath(path);
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-        }*/
+    	 Cookie cookie = new Cookie(cookieName,null);
+         cookie.setMaxAge(0);
+         cookie.setPath("/");
+         response.addCookie(cookie);
     }
     
     /**

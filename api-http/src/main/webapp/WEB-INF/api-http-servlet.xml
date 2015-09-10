@@ -21,35 +21,38 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	<import resource="classpath:conf/core/dev-context.xml" />
 
-<context:component-scan base-package="com.edaisong.api_http.service.impl"/> 
+	<context:component-scan base-package="com.edaisong.api_http.service.impl" />
 
 	<jaxrs:server id="myService" address="/">
 		<jaxrs:serviceBeans>
 			<ref bean="testService" />
 			<ref bean="commonService" />
+			<ref bean="messageHttpService" />
+			<ref bean="orderHttpService" />
+			<ref bean="accountBillService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:inInterceptors>
 			<!-- <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean> -->
-		
+
 		</jaxrs:inInterceptors>
 		<jaxrs:outInterceptors>
 			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
-				<bean class="com.edaisong.api_http.common.CustomerRqeustInterceptor"></bean>
+			<bean class="com.edaisong.api_http.common.CustomerRqeustInterceptor"></bean>
 		</jaxrs:outInterceptors>
-<!-- 		<jaxrs:extensionMappings> -->
-<!-- 			<entry key="json" value="application/json" /> -->
-<!-- 			<entry key="xml" value="application/xml" /> -->
-<!-- 		</jaxrs:extensionMappings> -->
+		<!-- <jaxrs:extensionMappings> -->
+		<!-- <entry key="json" value="application/json" /> -->
+		<!-- <entry key="xml" value="application/xml" /> -->
+		<!-- </jaxrs:extensionMappings> -->
 		<jaxrs:languageMappings>
 			<entry key="en" value="en-gb" />
 		</jaxrs:languageMappings>
 		<jaxrs:providers>
 			<ref bean="jacksonProvider" />
 			<!-- <ref bean="jaxbProvider" /> -->
-<!-- 			<ref bean="exceptionHandler" /> -->
+			<!-- <ref bean="exceptionHandler" /> -->
 		</jaxrs:providers>
 	</jaxrs:server>
- 	<bean id="exceptionHandler" class="com.edaisong.api_http.common.GlobalExceptionHandler" /> 
+	<bean id="exceptionHandler" class="com.edaisong.api_http.common.GlobalExceptionHandler" />
 
 	<!-- 返回值中会自动删除值为null的属性 ,反序列化时，会自动忽略无效的属性 -->
 	<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">

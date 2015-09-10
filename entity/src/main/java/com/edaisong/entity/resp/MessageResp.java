@@ -7,7 +7,7 @@ package com.edaisong.entity.resp;
  *
  */
 public class MessageResp {
-	private int id;
+	private long id;
 	private String Content;
 
 	/**
@@ -15,7 +15,7 @@ public class MessageResp {
 	 * 
 	 * @return
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -24,7 +24,7 @@ public class MessageResp {
 	 * 
 	 * @param id
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
