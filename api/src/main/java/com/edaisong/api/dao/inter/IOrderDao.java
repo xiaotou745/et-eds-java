@@ -19,7 +19,7 @@ import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
-import com.edaisong.entity.req.QueryOrderBReq;
+import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 
@@ -182,5 +182,5 @@ public interface IOrderDao {
 	 * @param data 
 	 * @return
 	 */
-	List<QueryOrder> queryOrder(QueryOrderBReq query) ;
+	List<QueryOrder> queryOrder(QueryOrderReq query) ;
 }

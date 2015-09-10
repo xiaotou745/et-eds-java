@@ -2,6 +2,7 @@ package com.edaisong.api.service.inter;
 
 import java.util.Date;
 import java.util.List;
+
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
@@ -9,6 +10,7 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OptOrder;
@@ -17,7 +19,7 @@ import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
-import com.edaisong.entity.req.QueryOrderBReq;
+import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
@@ -192,5 +194,14 @@ public interface IOrderService {
 	 * @param data 
 	 * @return
 	 */
-    QueryOrderBResp queryOrderB(QueryOrderBReq query) ;
+    QueryOrderBResp queryOrderB(QueryOrderReq query) ;
+    
+    /**
+     * B端已完成任务列表或者配送员配送列表
+     * @author CaoHeYang
+     * @date 20150910
+     * @param data
+     * @return
+     */
+     List<QueryOrder> getCompliteOrder(QueryOrderReq query);
 }

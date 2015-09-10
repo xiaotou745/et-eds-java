@@ -1226,7 +1226,7 @@ where   Status = 1
 	</select>
 	<!--  移动端 订单列表  add by caoheyang 20150910-->
 	<select id="queryOrder" resultType="com.edaisong.entity.domain.QueryOrder"
-		parameterType="com.edaisong.entity.req.QueryOrderBReq"
+		parameterType="com.edaisong.entity.req.QueryOrderReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
 		' o.PubDate desc ',
@@ -1295,7 +1295,7 @@ where   Status = 1
 			and o.status=${status}
 		</if> 
 		<if test="dateInfo != null">
-			and o.PubDate=''${dateInfo}''
+			and  CONVERT(VARCHAR(100), PubDate, 23)=''${dateInfo}''
 		</if> 
 	</sql>
 </mapper>

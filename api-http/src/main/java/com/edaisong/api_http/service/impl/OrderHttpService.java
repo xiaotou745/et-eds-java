@@ -1,14 +1,18 @@
 package com.edaisong.api_http.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api_http.entity.ResultModel;
+import com.edaisong.api_http.entity.ReturnRnums;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.OrderStatisticsBReq;
-import com.edaisong.entity.req.QueryOrderBReq;
+import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 
@@ -49,11 +53,54 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public ResultModel<QueryOrderBResp> queryOrderB(String data) {
-		QueryOrderBReq para=	new QueryOrderBReq();
+		QueryOrderReq para=	new QueryOrderReq();
 		para.setBusinessId(2092);
 		para.setStatus(OrderStatus.Delivery.value());
 		ResultModel<QueryOrderBResp> resultModel=new ResultModel<QueryOrderBResp>();
 		resultModel.setResult(orderService.queryOrderB(para));
+		return resultModel;
+	}
+	/**
+	 * 端已完成任务列表或者配送员配送列表
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	public ResultModel<List<QueryOrder>> getCompliteOrderB(String data) {
+		QueryOrderReq para=	new QueryOrderReq();
+		para.setBusinessId(2092);
+		para.setDateInfo("2015-09-06");
+		para.setClienterId(3245);
+		
+		ResultModel<List<QueryOrder>> resultModel=new ResultModel<List<QueryOrder>>();
+		if (para.getDateInfo()==null||para.getDateInfo().trim().isEmpty()||para.getBusinessId()==null||para.getBusinessId()==0) {
+			resultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
+			return resultModel;
+		}
+		resultModel.setResult(orderService.getCompliteOrder(para));
+		return resultModel;
+	}
+	
+	/**
+	 * 端已完成任务列表或者配送员配送列表
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	public ResultModel<List<QueryOrder>> getCompliteOrderC(String data) {
+		QueryOrderReq para=	new QueryOrderReq();
+		para.setDateInfo("2015-09-06");
+		para.setClienterId(3245);
+		ResultModel<List<QueryOrder>> resultModel=new ResultModel<List<QueryOrder>>();
+		if (para.getDateInfo()==null||para.getDateInfo().trim().isEmpty()||para.getClienterId()==null||para.getClienterId()==0) {
+			resultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
+			return resultModel;
+		}
+		resultModel.setResult(orderService.getCompliteOrder(para));
 		return resultModel;
 	}
 
