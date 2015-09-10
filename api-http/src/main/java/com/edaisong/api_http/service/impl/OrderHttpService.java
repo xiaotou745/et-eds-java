@@ -1,5 +1,9 @@
 package com.edaisong.api_http.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.entity.resp.OrderStatisticsResp;
@@ -10,8 +14,11 @@ import com.edaisong.entity.resp.OrderStatisticsResp;
  * @author CaoHeYang
  * @date 20150910
  */
+@Service
 public class OrderHttpService implements IOrderHttpService {
 
+	@Autowired
+	private IOrderService orderService;
 	/**
 	 * B端任务统计接口
 	 * @author CaoHeYang
@@ -21,6 +28,7 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public ResultModel<OrderStatisticsResp> orderStatisticsB(String data) {
+		OrderStatisticsResp orderStatisticsResp=orderService.getOrderStatisticsB();
 		return null;
 	}
 

@@ -11,8 +11,16 @@ import java.util.List;
 public class DaySatisticsB {
 	private int orderCount;
 	private int serviceClienterCount;
-	private int dateInfo;
+	private String dateInfo;
+	private String monthDate;
 	private List<ServiceClienter> serviceClienters;
+	
+	public String getMonthDate() {
+		return monthDate;
+	}
+	public void setMonthDate(String monthDate) {
+		this.monthDate = monthDate;
+	}
 	/**
 	 * 日订单量
 	 * @return
@@ -45,14 +53,14 @@ public class DaySatisticsB {
 	 * 日期概述
 	 * @return
 	 */
-	public int getDateInfo() {
+	public String getDateInfo() {
 		return dateInfo;
 	}
 	/**.
 	 * 日期概述
 	 * @param dateInfo
 	 */
-	public void setDateInfo(int dateInfo) {
+	public void setDateInfo(String dateInfo) {
 		this.dateInfo = dateInfo;
 	}
 	/**
