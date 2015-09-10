@@ -32,7 +32,7 @@ public class UserContext {
 	}
 
 	public static UserContext getCurrentContext(HttpServletRequest request) {
-		final String cookieKey = GlobalSettings.BUSINESS_LOGIN_COOKIE_NAME;
+		final String cookieKey = LoginUtil.BUSINESS_LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
 		if (cookieValue != null) {
 			return new UserContext(redisService.get(cookieValue, Business.class),false);

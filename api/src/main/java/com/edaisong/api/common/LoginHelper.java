@@ -18,36 +18,7 @@ public class LoginHelper {
 		redisService = SpringBeanHelper.getCustomBeanByType(RedisService.class);
 	}
 
-	/**
-	 * 是否登录
-	 * 
-	 * @param request
-	 * @return
-	 */
-	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response,String cookieKey) {
-		// 如果已登录,直接返回
-		boolean isLogin = false;
-		String cookieValue = CookieUtils.getCookie(request, cookieKey);
-		if (cookieValue != null) {
-			Object loginStatusValue = redisService.get(cookieValue, Object.class);
-			if (loginStatusValue != null){// && loginStatusValue instanceof Business) {
-				isLogin = true;
-			}
-		}
-		// 如果没有登录,清除旧的登录cookie
-		if (!isLogin) {
-			Cookie[] cookies = request.getCookies();
-			if (cookies != null) {
-				for (Cookie cookie : cookies) {
-					if (cookie.getName().equals(cookieKey)) {
-						CookieUtils.deleteCookie(request, response, cookie);
-					}
-				}
-			}
-		}
-
-		return isLogin;
-	}
+	
 
 	/**
 	 * 存储验证码到redis中
