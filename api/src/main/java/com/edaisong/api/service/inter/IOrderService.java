@@ -10,6 +10,7 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OptOrder;
@@ -19,11 +20,13 @@ import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 
 public interface IOrderService {
@@ -193,4 +196,21 @@ public interface IOrderService {
      */
     OrderStatisticsCResp getOrderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
 
+	/**
+	 * B 端首页 订单列表
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+    QueryOrderBResp queryOrderB(QueryOrderReq query) ;
+    
+    /**
+     * B端已完成任务列表或者配送员配送列表
+     * @author CaoHeYang
+     * @date 20150910
+     * @param data
+     * @return
+     */
+     List<QueryOrder> getCompliteOrder(QueryOrderReq query);
 }

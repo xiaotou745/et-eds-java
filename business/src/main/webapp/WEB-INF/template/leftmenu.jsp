@@ -6,10 +6,6 @@
 	String basePath = PropertyUtils.getProperty("static.business.url");
     String viewPath =request.getAttribute("viewPath").toString();
     UserContext context = UserContext.getCurrentContext(request);
-    
-if(!context.isEmpty()){
-	
-}
 %>
 	<div class="nav">
 		<img src="<%=basePath%>/images/dun.png" width="55" height="74" alt="">
