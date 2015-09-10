@@ -10,33 +10,38 @@ import com.edaisong.entity.Business;
 
 public class UserContext {
 	private Business business;
-	private boolean isEmpty;
-
-	private final static UserContext empty = new UserContext(null,true);
+	private int businessType;
+	private final static UserContext empty = new UserContext(null);
 	private final static RedisService redisService;
 	static{
 		redisService = SpringBeanHelper.getCustomBeanByType(RedisService.class);
 	}
 	
-	public UserContext(Business business,boolean isEmpty){
+	public UserContext(Business business){
 		this.business = business;
-		this.isEmpty = isEmpty;
+		this.businessType=0;
 	}
-
-	public Business getBusiness() {
-		return business;
-	}
-	
 	public boolean isEmpty() {
-		return isEmpty;
+		return business==null;
 	}
 
 	public static UserContext getCurrentContext(HttpServletRequest request) {
 		final String cookieKey = LoginUtil.BUSINESS_LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
 		if (cookieValue != null) {
-			return new UserContext(redisService.get(cookieValue, Business.class),false);
+			return new UserContext(redisService.get(cookieValue, Business.class));
 		}
 		return empty;
 	}
+
+	public int getBusinessType() {
+		return businessType;
+	}
+	public int getBusinessID() {
+		return business.getId();
+	}
+	public String getBusinessName() {
+		return business.getName();
+	}
+
 }

@@ -23,6 +23,7 @@ import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
@@ -57,7 +58,7 @@ public class BusinessService implements IBusinessService {
 				.get(loginCountCacheKey, Integer.class);
 		loginCount = loginCount == null ? 0 : loginCount;
 		if (loginCount >= GlobalSettings.MAX_LOGIN_COUNT) {
-			resp.setLoginSuccess(false);
+			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 			resp.setMessage("您当前登录的次数大于10，请5分钟后重试");
 			addLoginLog(phoneNo == null ? "" : phoneNo, "5分钟内登录次数超过10次", false);
 			return resp;
@@ -67,26 +68,26 @@ public class BusinessService implements IBusinessService {
 				|| password.isEmpty()) {
 			addLoginLog(phoneNo == null ? "" : phoneNo, "用户名或密码为空", false);
 			resp.setMessage("用户名或密码为空");
-			resp.setLoginSuccess(false);
+			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 			return resp;
 		}
 		String pwd = MD5Util.MD5(password);
 		Business b = iBusinessDao.login(phoneNo, pwd);
 		if (b == null) {
 			resp.setMessage("用户名或密码错误");
-			resp.setLoginSuccess(false);
+			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 			return resp;
 		}
 		// 审核未通过
 		if (b.getStatus() != 1) {
 			resp.setMessage("您的商铺尚未验证通过");
-			resp.setLoginSuccess(false);
+			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 			addLoginLog(phoneNo, "商铺尚未验证通过", false);
 			return resp;
 		}
 		redisService.set(loginCountCacheKey, loginCount + 1, 5 * 60);
 		resp.setBusiness(b);
-		resp.setLoginSuccess(true);
+		resp.setResponseCode(ResponseCode.SUCESS);
 		return resp;
 	}
 
@@ -330,4 +331,5 @@ public class BusinessService implements IBusinessService {
 		businessBalanceRecord.setRemark(businessMoney.getRemark()); // 注释
 		businessBalanceRecordDao.insert(businessBalanceRecord); 
 	}
+
 }

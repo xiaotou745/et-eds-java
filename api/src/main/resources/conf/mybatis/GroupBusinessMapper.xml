@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.edaisong.entity.GroupBusiness" >
     <id column="Id" property="id" jdbcType="INTEGER" />
     <result column="GroupBusiName" property="groupbusiname" jdbcType="NVARCHAR" />
-    <result column="PhoneNo" property="phoneno" jdbcType="VARCHAR" />
+    <result column="LoginName" property="loginname" jdbcType="VARCHAR" />
     <result column="Password" property="password" jdbcType="NVARCHAR" />
     <result column="CreateName" property="createname" jdbcType="NCHAR" />
     <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
@@ -140,7 +140,7 @@
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GroupBusiness" >
     update GroupBusiness
     set GroupBusiName = #{groupbusiname,jdbcType=NVARCHAR},
-      PhoneNo = #{phoneno,jdbcType=VARCHAR},
+      loginname = #{phoneno,jdbcType=VARCHAR},
       Password = #{password,jdbcType=NVARCHAR},
       CreateName = #{createname,jdbcType=NCHAR},
       CreateTime = #{createtime,jdbcType=TIMESTAMP},
@@ -150,4 +150,12 @@
       IsValid = #{isvalid,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getByPhoneNoAndPwd" resultType="com.edaisong.entity.GroupBusiness"
+		parameterType="java.util.Map">
+		select 
+		 <include refid="Base_Column_List" />
+    from GroupBusiness  b WITH ( NOLOCK )
+		WHERE b.loginname = #{phoneNo,jdbcType=NVARCHAR}
+		AND Password = #{password,jdbcType=NVARCHAR} 
+	</select>
 </mapper>
