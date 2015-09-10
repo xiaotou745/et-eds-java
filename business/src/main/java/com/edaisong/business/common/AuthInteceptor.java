@@ -22,8 +22,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 			}
 			if (isLogin){
 				//用户登录后，将当前用户id和名称保存起来，用于记录操作日志
-				request.setAttribute("userID", UserContext.getCurrentContext(request).getBusiness().getId());
-				request.setAttribute("userName", UserContext.getCurrentContext(request).getBusiness().getName());
+				request.setAttribute("userID", UserContext.getCurrentContext(request).getBusinessID());
+				request.setAttribute("userName", UserContext.getCurrentContext(request).getBusinessName());
 			}
 		}
 		return true;
