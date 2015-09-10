@@ -1,7 +1,6 @@
 package com.edaisong.admin.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,12 +15,15 @@ import com.edaisong.api.service.inter.IAccountService;
 import com.edaisong.api.service.inter.IAuthorityAccountMenuSetService;
 import com.edaisong.api.service.inter.IAuthorityMenuClassService;
 import com.edaisong.api.service.inter.IAuthorityRoleService;
+import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.AuthorityAccountMenuSet;
 import com.edaisong.entity.AuthorityMenuClass;
 import com.edaisong.entity.AuthorityRole;
 import com.edaisong.entity.MenuEntity;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseBase;
+import com.edaisong.entity.req.AddNewMenuReq;
 import com.edaisong.entity.req.PagedAccountReq;
 
 @Controller
@@ -106,4 +108,36 @@ public class AuthManageController {
 		return "";
 	}
 
+	@RequestMapping("menulist")
+	public ModelAndView menuList(Integer parId) {
+		parId = (parId == null ? 0 : parId);
+		List<AuthorityMenuClass> resp = authorityMenuClassService.getListMenuByParId(parId);
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "权限");
+		view.addObject("currenttitle", "菜单管理");
+		view.addObject("viewPath", "authmanage/menulist");
+		view.addObject("listData", resp);
+		view.addObject("currentMenu", authorityMenuClassService.getMenuById(parId));
+		return view;
+	}
+	
+	@RequestMapping("addnewmenu")
+	@ResponseBody
+	public ResponseBase addNewMenu(AuthorityMenuClass req){
+		ResponseBase resp = new ResponseBase();
+		if(StringUtils.isEmpty(req.getMenuname())){
+			resp.setMessage("请填写菜单名称");
+		}else{
+			int curId = req.getParid() == null ? 0 : req.getParid();
+			req.setParid(curId);
+			req.setBelock(false);
+			authorityMenuClassService.addMenu(req);
+			
+			resp.setMessage("添加菜单成功");
+			resp.setResponseCode(1);
+		}
+		
+		
+		return resp;
+	}
 }
