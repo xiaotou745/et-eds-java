@@ -28,6 +28,7 @@
 			<ref bean="testService" />
 			<ref bean="commonService" />
 			<ref bean="messageHttpService" />
+			<ref bean="orderHttpService" />
 			<ref bean="accountBillService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:inInterceptors>

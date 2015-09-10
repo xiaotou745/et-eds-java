@@ -5,7 +5,7 @@ import java.util.Date;
 public class GroupBusinessBindOptionLog {
     private Integer id;
 
-    private Integer groupbizid;
+    private Integer groupid;
 
     private Integer businessid;
 
@@ -16,21 +16,31 @@ public class GroupBusinessBindOptionLog {
     private Date inserttime;
 
     private String remark;
+    
+    private Short opttype;//1绑定   2解绑
 
-    public Integer getId() {
+    public Integer getGroupid() {
+		return groupid;
+	}
+
+	public void setGroupid(Integer groupid) {
+		this.groupid = groupid;
+	}
+
+	public Short getOpttype() {
+		return opttype;
+	}
+
+	public void setOpttype(Short opttype) {
+		this.opttype = opttype;
+	}
+
+	public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getGroupbizid() {
-        return groupbizid;
-    }
-
-    public void setGroupbizid(Integer groupbizid) {
-        this.groupbizid = groupbizid;
     }
 
     public Integer getBusinessid() {

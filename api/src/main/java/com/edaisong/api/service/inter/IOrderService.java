@@ -21,6 +21,7 @@ import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
+import com.edaisong.entity.resp.OrderStatisticsResp;
 
 public interface IOrderService {
 	/**
@@ -173,5 +174,13 @@ public interface IOrderService {
 	 */
 	ResponseBase auditRefuse(OptOrder auditRefuseOrder);
 	
+	/**
+	 * B端任务统计接口
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+    OrderStatisticsResp getOrderStatisticsB();
 
 }
