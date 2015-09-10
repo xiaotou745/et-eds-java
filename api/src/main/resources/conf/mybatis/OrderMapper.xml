@@ -1152,6 +1152,48 @@
 	<update id="updateOrderRealCommission" parameterType="com.edaisong.entity.req.OrderOtherSearch">
 		update [Order] set RealOrderCommission=#{realOrderCommission,jdbcType=NVARCHAR}  where id=#{orderId,jdbcType=INTEGER}
 	</update>
+	<!-- B端任务统计接口 add by caoheyang 20150910 -->
+	<select id="getOrderStatisticsServiceClienterB" parameterType="java.util.Map"   resultType="com.edaisong.entity.domain.ServiceClienter">
+select  b.Id as ClienterId ,
+        b.PhoneNo as ClienterPhone ,
+        b.TrueName as ClienterName ,
+        SUM(a.OrderCount) as OrderCount ,
+        CONVERT(VARCHAR(100), a.PubDate, 23) as PubDate
+        -- , CONVERT(VARCHAR(4),DATEPART(day, a.PubDate))+'日' as DayInfo
+from    dbo.[order] a
+        join dbo.clienter b on a.clienterId = b.Id
+where   a.Status = 1  --and businessId=2008  
+group by b.Id ,
+        b.PhoneNo,
+        b.TrueName ,
+        CONVERT(VARCHAR(100), a.PubDate, 23) ,
+        DATEPART(day, a.PubDate)
+order by PubDate desc 
+	</select>
 	
+		<!-- B端任务统计接口  天数据列表  add by caoheyang 20150910 -->
+	<select id="getOrderStatisticsDaySatistics" parameterType="java.util.Map"   resultType="com.edaisong.entity.domain.DaySatisticsB">
+declare @sdate DATETIME
+set @sdate = '2015-09-01'
+select  a.MonthDate ,
+        ISNULL(b.OrderCount, 0) as OrderCount ,
+        ISNULL(b.ServiceClienterCount, 0) as ServiceClienterCount ,
+        a.DateInfo
+from    ( select    CONVERT(VARCHAR(100), DATEADD(dd, number, @sdate), 23) as MonthDate ,
+                    CONVERT(VARCHAR(4), DATEPART(day,
+                                                 DATEADD(dd, number, @sdate)))
+                    + '日' as DateInfo
+          from      master..spt_values
+          where     type = 'P'
+                    and DATEADD(dd, number, @sdate)   <![CDATA[ <]]> DATEADD(mm, 1, @sdate)
+        ) a
+        left join ( select  SUM(OrderCount) as OrderCount ,
+                            COUNT(distinct clienterId) as ServiceClienterCount ,
+                            CONVERT(VARCHAR(100), PubDate, 23) as OrderDate
+                    from    dbo.[order]
+                    where   Status = 1
+                    group by CONVERT(VARCHAR(100), PubDate, 23)
+                  ) as b on a.MonthDate = b.OrderDate
+	</select>
 	
 </mapper>
