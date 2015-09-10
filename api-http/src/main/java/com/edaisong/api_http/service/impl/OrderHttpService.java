@@ -37,5 +37,17 @@ public class OrderHttpService implements IOrderHttpService {
 		resultModel.setResult(orderStatisticsResp);
 		return resultModel;
 	}
+	/**
+	 * B端任务统计接口
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	public ResultModel<OrderStatisticsBResp> queryOrderB(String data) {
+	   
+		return null;
+	}
 
 }

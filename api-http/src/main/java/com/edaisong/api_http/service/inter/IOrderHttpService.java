@@ -6,7 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.edaisong.api_http.entity.ResultModel;
-import com.edaisong.entity.resp.MessageResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 
 /**
@@ -28,4 +27,14 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/orderstatisticsb")
 	 public ResultModel<OrderStatisticsBResp> orderStatisticsB(String data);
+	/**
+	 * B端任务统计接口
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@POST
+	@Path("/queryorderb")
+	 public ResultModel<OrderStatisticsBResp> queryOrderB(String data);
 }
