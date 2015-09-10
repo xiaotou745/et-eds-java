@@ -126,7 +126,7 @@ public class GroupBusinessController {
 		GroupBusinessReq gbr1 = new GroupBusinessReq();
 		gbr1.setgroupBusinessName(bgm.getbusinessGroupName());
 	 	GroupBusinessModel gbm1 = groupBusinessService.getSingle(gbr1);
-		if(gbm1.getGroupbusiname()!=null){
+		if(gbm1!=null && gbm1.getGroupbusiname()!=null){
 			if(gbm1.getId() != bgm.getId()){
 				response.setMessage("集团商铺名称已存在");
 				response.setResponseCode(0);
@@ -137,7 +137,7 @@ public class GroupBusinessController {
 		GroupBusinessReq gbr2 = new GroupBusinessReq();
 		gbr2.setloginName(bgm.getloginName());
 	 	GroupBusinessModel gbm2 = groupBusinessService.getSingle(gbr2);
-		if(gbm2.getGroupbusiname()!=null){ 
+		if(gbm2!=null &&gbm2.getGroupbusiname()!=null){ 
 			if(gbm2.getId() != bgm.getId()){
 				response.setMessage("此登陆账号已经存在");
 				response.setResponseCode(0);
@@ -177,7 +177,7 @@ public class GroupBusinessController {
 		sb.append("</table>");
 	}
 		response.setMessage(sb.toString());
-		return response;
+		return response; 
 	} 
 	/**
 	 * 绑定列表(分页)

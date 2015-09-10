@@ -23,7 +23,7 @@ public class GroupBusinessService implements IGroupBusinessService {
 	public PagedResponse<GroupBusinessModel> getPageList(
 			PagedGroupBusinessReq req) {
 		// TODO Auto-generated method stub
-		return dao.getPageList(req);
+		return dao.getBusinessList(req);
 	}
 
 	@Override
