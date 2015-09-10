@@ -5,7 +5,7 @@ import java.util.Date;
 public class GroupBusinessRelation {
     private Integer id;
 
-    private Integer groupbizid;
+    private Integer groupid;
 
     private Integer businessid;
 
@@ -29,15 +29,15 @@ public class GroupBusinessRelation {
         this.id = id;
     }
 
-    public Integer getGroupbizid() {
-        return groupbizid;
-    }
+    public Integer getGroupid() {
+		return groupid;
+	}
 
-    public void setGroupbizid(Integer groupbizid) {
-        this.groupbizid = groupbizid;
-    }
+	public void setGroupid(Integer groupid) {
+		this.groupid = groupid;
+	}
 
-    public Integer getBusinessid() {
+	public Integer getBusinessid() {
         return businessid;
     }
 
