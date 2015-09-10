@@ -352,9 +352,10 @@ select
   SUM(CASE WHEN Amount>0 THEN Amount ELSE 0 END)  as  InMoney,
   SUM(CASE WHEN 0>=Amount THEN Amount ELSE 0 END)  as  OutMoney
 FROM
-  BusinessBalanceRecord
+  BusinessBalanceRecord (NOLOCK)
   WHERE BusinessId=#{businessId,jdbcType=INTEGER}
   AND OperateTime > #{startDate,jdbcType=VARCHAR} AND #{endDate,jdbcType=VARCHAR} > OperateTime
+  AND RecordType IN (1,2,3,5,8,9,12)
 GROUP by
   Convert ( VARCHAR(10),  OperateTime,  120)
 </select>

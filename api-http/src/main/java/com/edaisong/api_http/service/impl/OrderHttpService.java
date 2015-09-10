@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
-import com.edaisong.entity.resp.OrderStatisticsResp;
+import com.edaisong.entity.req.OrderStatisticsBReq;
+import com.edaisong.entity.resp.OrderStatisticsBResp;
 
 
 /**
@@ -27,9 +28,12 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<OrderStatisticsResp> orderStatisticsB(String data) {
-		OrderStatisticsResp orderStatisticsResp=orderService.getOrderStatisticsB();
-		ResultModel<OrderStatisticsResp> resultModel=new ResultModel<OrderStatisticsResp>();
+	public ResultModel<OrderStatisticsBResp> orderStatisticsB(String data) {
+		OrderStatisticsBReq orderStatisticsBReq=new OrderStatisticsBReq();
+		orderStatisticsBReq.setBusinessId(2008);
+		orderStatisticsBReq.setMonthInfo("2015-09");
+		OrderStatisticsBResp orderStatisticsResp=orderService.getOrderStatisticsB(orderStatisticsBReq);
+		ResultModel<OrderStatisticsBResp> resultModel=new ResultModel<OrderStatisticsBResp>();
 		resultModel.setResult(orderStatisticsResp);
 		return resultModel;
 	}
