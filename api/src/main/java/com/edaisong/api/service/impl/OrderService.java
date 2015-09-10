@@ -68,6 +68,7 @@ import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
+import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
@@ -81,6 +82,7 @@ import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
+import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
@@ -88,6 +90,7 @@ import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.OrderStatisticsCResp;
 
 @Service
 public class OrderService implements IOrderService {
@@ -964,6 +967,20 @@ public class OrderService implements IOrderService {
 			daySatisticsB.setServiceClienters(temp);
 		}
 		orderStatisticsResp.setDatas(daySatisticsBs);
+		return orderStatisticsResp;
+	}
+	
+	/**
+	 *  C端任务统计接口
+	 * @author WangXuDan
+	 * @date 20150910
+	 * @param orderStatisticsCReq
+	 */
+	@Override
+	public OrderStatisticsCResp getOrderStatisticsC(OrderStatisticsCReq orderStatisticsCReq) {
+		OrderStatisticsCResp orderStatisticsResp=orderDao.getOrderStatisticsC(orderStatisticsCReq);
+		List<DaySatisticsC> daySatisticsCs=  orderDao.getOrderStatisticsDaySatisticsC(orderStatisticsCReq); 
+		orderStatisticsResp.setDatas(daySatisticsCs);
 		return orderStatisticsResp;
 	}
 

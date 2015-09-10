@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.entity.resp.MessageResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.OrderStatisticsCResp;
 
 /**
  * 订单模块 
@@ -28,4 +29,16 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/orderstatisticsb")
 	 public ResultModel<OrderStatisticsBResp> orderStatisticsB(String data);
+	
+	/**
+	 * C端任务统计接口
+	 * @author Danny
+	 * @date 20150910
+	 * @param data
+	 */
+	@POST
+	@Path("/orderStatisticsc")
+	public ResultModel<OrderStatisticsCResp> orderStatisticsC(String data);
+	
+	
 }

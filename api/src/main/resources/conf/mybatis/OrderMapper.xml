@@ -1224,5 +1224,48 @@ where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
         and businessId=#{businessId}  
 	</select>
+	<!-- C端任务统计接口  天数据列表  wangxudan 20150910 -->
+	<select id="getOrderStatisticsDaySatisticsC" parameterType="com.edaisong.entity.req.OrderStatisticsCReq"   resultType="com.edaisong.entity.domain.DaySatisticsC">
+declare @sdate DATETIME
+set @sdate = '${monthInfo}-01'
+declare @startDate date ;
+declare @endDate date ;
+set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate) ; 
+set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
+SELECT  tbldate.MonthDate,
+		tbldate.DateInfo,
+		ISNULL(tbl.TotalCount,0) OrderCount,
+		ISNULL(tbl.TotalCommission,0) OrderCommission
+FROM(
+	  SELECT CONVERT(VARCHAR(100), DATEADD(dd, number, @sdate), 23) as MonthDate ,
+			 CONVERT(VARCHAR(4), DATEPART(day,DATEADD(dd, number, @sdate)))+ '日' as DateInfo
+      FROM master..spt_values
+      WHERE type = 'P'
+		AND DATEADD(dd, number, @sdate)<![CDATA[ <]]> DATEADD(mm, 1, @sdate)) tbldate
+LEFT JOIN (  SELECT  SUM(OrderCommission) TotalCommission,
+				CONVERT (VARCHAR(10),PubDate,120) PubDate,
+				COUNT(OrderCount) TotalCount
+		FROM dbo.[order] o WITH(NOLOCK)
+		WHERE clienterId=#{clienter} AND Status = 1
+		GROUP BY  Convert (VARCHAR(10),PubDate,120)
+		) tbl ON tbl.PubDate=tbldate.MonthDate
+WHERE tbldate.MonthDate <![CDATA[ <=]]>GETDATE()
+ORDER BY tbldate.MonthDate   
+	</select>
+	<select id="getOrderStatisticsC" parameterType="com.edaisong.entity.req.OrderStatisticsCReq"   resultType="com.edaisong.entity.resp.OrderStatisticsCResp">
+declare @sdate DATETIME
+set @sdate = '${monthInfo}-01'
+declare @startDate date ;
+declare @endDate date ;
+set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate) ; 
+set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
+  
+select  SUM(ISNULL(OrderCount,0)) as TotalOrderCount ,
+        ISNULL(SUM(OrderCommission),0)  as TotalOrderCommission
+from    dbo.[order]
+where   Status = 1
+        and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
+        and clienterId=#{clienterId}  
+	</select>
 	
 </mapper>
