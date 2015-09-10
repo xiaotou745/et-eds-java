@@ -15,9 +15,10 @@ import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
+import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
-import com.edaisong.entity.resp.OrderStatisticsResp;
+import com.edaisong.entity.resp.OrderStatisticsBResp;
 
 public interface IOrderDao {
 
@@ -156,20 +157,20 @@ public interface IOrderDao {
 	 * @author CaoHeYang
 	 * @return
 	 */
-	List<ServiceClienter> getOrderStatisticsServiceClienterB();
+	List<ServiceClienter> getOrderStatisticsServiceClienterB(OrderStatisticsBReq orderStatisticsBReq);
 	
 	/**
 	 * B端任务统计接口  天数据列表  add by caoheyang 20150910
 	 * @author CaoHeYang
 	 * @return
 	 */
-	List<DaySatisticsB> getOrderStatisticsDaySatistics();
+	List<DaySatisticsB> getOrderStatisticsDaySatistics(OrderStatisticsBReq orderStatisticsBReq);
 	/**
 	 * B端任务统计接口   add by caoheyang 20150910
 	 * @author CaoHeYang
 	 * @return
 	 */
-	OrderStatisticsResp  getOrderStatistics();
+	OrderStatisticsBResp  getOrderStatistics(OrderStatisticsBReq orderStatisticsBReq);
 	
 	
 }

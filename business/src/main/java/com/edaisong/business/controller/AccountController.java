@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.common.LoginHelper;
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.business.common.LoginResp;
 import com.edaisong.business.common.LoginUtil;
 import com.edaisong.core.cache.redis.RedisService;
@@ -26,6 +27,8 @@ import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
+import com.edaisong.entity.GroupBusiness;
+import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
 @Controller
@@ -33,6 +36,8 @@ import com.edaisong.entity.resp.BusinessLoginResp;
 public class AccountController {
 	@Autowired
 	private IBusinessService businessService;
+	@Autowired
+	private IGroupBusinessService groupBusinessService;
 	@Autowired
 	private RedisService redisService;
 
@@ -43,9 +48,10 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "login", method = { RequestMethod.POST })
-	public @ResponseBody LoginResp login(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
-			@RequestParam int rememberMe) {
+	@ResponseBody
+	public LoginResp login(HttpServletRequest request, HttpServletResponse response,
+			String phoneNo, String password,String code,
+			int rememberMe,int userType) {
 		//Object sessionCode = request.getSession().getAttribute("code");
 		String sessionCode = LoginHelper.getAuthCode(request,LoginUtil.BUSINESS_JSESSIONID);
 		//一次性验证码,防止暴力破解
@@ -67,8 +73,14 @@ public class AccountController {
 			resp.setSuccess(false);
 			return resp;
 		}
-		BusinessLoginResp businessResp = businessService.login(phoneNo, password);
-		if (!businessResp.isLoginSuccess()) {
+
+		BusinessLoginResp businessResp=null;
+		if (userType==0) {
+			businessResp = businessService.login(phoneNo, password);
+		}else {
+			GroupBusiness business = groupBusinessService.login(phoneNo, password);
+		}
+		if (businessResp.getResponseCode()!=ResponseCode.SUCESS) {
 			resp.setMessage(businessResp.getMessage());
 			resp.setSuccess(false);
 			return resp;

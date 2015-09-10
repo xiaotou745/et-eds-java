@@ -15,13 +15,14 @@ import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
+import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
-import com.edaisong.entity.resp.OrderStatisticsResp;
+import com.edaisong.entity.resp.OrderStatisticsBResp;
 
 public interface IOrderService {
 	/**
@@ -181,6 +182,6 @@ public interface IOrderService {
 	 * @param data 
 	 * @return
 	 */
-    OrderStatisticsResp getOrderStatisticsB();
+    OrderStatisticsBResp getOrderStatisticsB(OrderStatisticsBReq orderStatisticsBReq);
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.domain.GroupBusinessModel;
 import com.edaisong.entity.req.PagedGroupBusinessReq;
 import com.edaisong.admin.common.UserContext;
@@ -59,7 +60,7 @@ public class GroupBusinessController {
 	 */
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedGroupBusinessReq req) {	 
-		PagedResponse<GroupBusinessModel> resp = groupBusinessService.getPageList(req); 
+		PagedResponse<GroupBusiness> resp = groupBusinessService.getBusinessList(req); 
 		ModelAndView model = new ModelAndView("groupbusiness/listdo");
 		model.addObject("listData", resp);
 		return model;
