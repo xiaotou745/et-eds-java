@@ -1,10 +1,10 @@
-package com.edaisong.entity;
+package com.edaisong.entity.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class GroupBusiness {
-    private Integer id;
+public class GroupBusinessModel {
+	private Integer id;
 
     private String groupbusiname;
 
