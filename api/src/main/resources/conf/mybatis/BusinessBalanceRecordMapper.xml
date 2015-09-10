@@ -346,4 +346,16 @@
     </if>
     ORDER BY bbr.Id DESC
   </select>
+<select id="getAccountBillBList" resultType="com.edaisong.entity.domain.AccountBillModel">
+select 
+  Convert ( varchar(10),  OperateTime,  120)  as  DayInfo,
+  SUM(CASE WHEN Amount>0 THEN Amount ELSE 0 END)  as  InMoney,
+  SUM(CASE WHEN 0>=Amount THEN Amount ELSE 0 END)  as  OutMoney
+FROM
+  BusinessBalanceRecord
+  WHERE BusinessId=#{businessId,jdbcType=INTEGER}
+  AND OperateTime > #{startDate,jdbcType=VARCHAR} AND #{endDate,jdbcType=VARCHAR} > OperateTime
+GROUP by
+  Convert ( VARCHAR(10),  OperateTime,  120)
+</select>
 </mapper>

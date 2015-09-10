@@ -2,6 +2,8 @@ package com.edaisong.entity.domain;
 
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * B端任务统计接口 日服务骑士信息
  * @author CaoHeYang
@@ -13,6 +15,7 @@ public class ServiceClienter {
 	private  String clienterPhone;
 	private  String clienterPhoto;
 	private  int orderCount;
+	@JsonIgnore
 	private  String pubDate; 
 	public String getPubDate() {
 		return pubDate;

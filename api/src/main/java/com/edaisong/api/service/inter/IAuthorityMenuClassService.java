@@ -2,9 +2,9 @@ package com.edaisong.api.service.inter;
 
 import java.util.List;
 
-import com.edaisong.entity.AuthorityAccountMenuSet;
 import com.edaisong.entity.AuthorityMenuClass;
 import com.edaisong.entity.MenuEntity;
+import com.edaisong.entity.req.AddNewMenuReq;
 
 public interface IAuthorityMenuClassService {
 	/**
@@ -39,4 +39,34 @@ public interface IAuthorityMenuClassService {
 	 * @return
 	 */
 	public List<MenuEntity> getRoleAuthSettingList(int roleID) ;
+	
+	/**
+	 * 根据父id获得所有子菜单
+	 * @author pengyi
+	 * @date 2015年9月10日 上午11:50:57
+	 * @version 1.0
+	 * @param parId
+	 * @return
+	 */
+	List<AuthorityMenuClass> getListMenuByParId(int parId);
+	
+	/**
+	 * 获得指定id的菜单
+	 * @author pengyi
+	 * @date 2015年9月10日 下午2:36:04
+	 * @version 1.0
+	 * @param id
+	 * @return
+	 */
+	AuthorityMenuClass getMenuById(int id);
+	
+	/**
+	 * 新加菜单
+	 * @author pengyi
+	 * @date 2015年9月10日 下午2:36:33
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	boolean addMenu(AuthorityMenuClass req);
 }

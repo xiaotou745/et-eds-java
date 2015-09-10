@@ -10,6 +10,7 @@ import com.edaisong.api.service.inter.IAuthorityMenuClassService;
 import com.edaisong.entity.AuthorityAccountMenuSet;
 import com.edaisong.entity.AuthorityMenuClass;
 import com.edaisong.entity.MenuEntity;
+import com.edaisong.entity.req.AddNewMenuReq;
 
 @Service
 public class AuthorityMenuClassService implements IAuthorityMenuClassService {
@@ -43,6 +44,21 @@ public class AuthorityMenuClassService implements IAuthorityMenuClassService {
 	@Override
 	public List<MenuEntity> getRoleAuthSettingList(int roleID) {
 		return dao.getRoleAuthSettingList(roleID);
+	}
+
+	@Override
+	public List<AuthorityMenuClass> getListMenuByParId(int parId) {
+		return dao.getListMenuByParId(parId);
+	}
+
+	@Override
+	public AuthorityMenuClass getMenuById(int id) {
+		return dao.getMenuById(id);
+	}
+
+	@Override
+	public boolean addMenu(AuthorityMenuClass req) {
+		return dao.addMenu(req);
 	}
 
 
