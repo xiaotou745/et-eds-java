@@ -1,8 +1,11 @@
 package com.edaisong.admin.controller;
 
+import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.UserContext;
@@ -26,12 +31,15 @@ import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.util.ExcelUtils;
 import com.edaisong.core.util.ExcelUtils.ExcelExportData;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
+import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessFinanceAccount;
 import com.edaisong.entity.BusinessGroup;
@@ -42,6 +50,7 @@ import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.BusinesRechargeModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
+import com.edaisong.entity.domain.BusinessBindClienter;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
@@ -49,8 +58,8 @@ import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessThirdRelationModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
-import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.GroupModel;
+import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.GroupReq;
@@ -96,10 +105,10 @@ public class BusinessController {
 
 	@Autowired
 	private IBusinessBalanceRecordService businessBalanceRecordService;
-	
+
 	@Autowired
 	private IBusinessClienterRelationService businessClienterRelationService;
-	
+
 	@Autowired
 	private IClienterService clienterService;
 
@@ -337,7 +346,7 @@ public class BusinessController {
 		model.addObject("listData", resp);
 		return model;
 	}
-	
+
 	@RequestMapping("clienterbindlist")
 	public ModelAndView clienterBindList(int businessId) throws Exception {
 		BusinessDetailModel detail = iBusinessService.getBusinessDetailByID(businessId);
@@ -352,39 +361,38 @@ public class BusinessController {
 		model.addObject("bindClienterQty", businessClienterRelationService.getBusinessBindClienterQty(businessId));
 		return model;
 	}
-	
+
 	@RequestMapping("clienterbindlistdo")
-	public ModelAndView clienterBindListDo(int businessId) throws Exception {
+	public ModelAndView clienterBindListDo(PagedCustomerSearchReq req) throws Exception {
 		ModelAndView model = new ModelAndView("business/clienterbindlistdo");
-		PagedCustomerSearchReq req = new PagedCustomerSearchReq();
-		req.setBusinessID(businessId);
-		PagedResponse<BusinessClienterRelationModel> resp = businessClienterRelationService.getBusinessClienterRelationList(req);
+		PagedResponse<BusinessClienterRelationModel> resp = businessClienterRelationService
+				.getBusinessClienterRelationList(req);
 		model.addObject("listData", resp);
 		return model;
 	}
-	
+
 	@RequestMapping("modifyclienterbind")
 	@ResponseBody
-	public int modifyClienterBind(ClienterBindOptionReq req,HttpServletRequest request){
+	public int modifyClienterBind(ClienterBindOptionReq req, HttpServletRequest request) {
 		req.setOptId(UserContext.getCurrentContext(request).getId());
 		req.setOptName(UserContext.getCurrentContext(request).getName());
-		if(businessClienterRelationService.modifyClienterBind(req)){
+		if (businessClienterRelationService.modifyClienterBind(req)) {
 			return 1;
 		}
 		return 0;
 	}
-	
+
 	@RequestMapping("removeclienterbind")
 	@ResponseBody
-	public int removeclienterbind(ClienterBindOptionReq req,HttpServletRequest request){
+	public int removeclienterbind(ClienterBindOptionReq req, HttpServletRequest request) {
 		req.setOptId(UserContext.getCurrentContext(request).getId());
 		req.setOptName(UserContext.getCurrentContext(request).getName());
-		if(businessClienterRelationService.removeclienterbind(req)){
+		if (businessClienterRelationService.removeclienterbind(req)) {
 			return 1;
 		}
 		return 0;
 	}
-	
+
 	@RequestMapping("addclienterbindlist")
 	public ModelAndView addclienterbindlist(int businessId) throws Exception {
 		BusinessDetailModel detail = iBusinessService.getBusinessDetailByID(businessId);
@@ -398,42 +406,44 @@ public class BusinessController {
 		model.addObject("detail", detail);
 		return model;
 	}
-	
+
 	@RequestMapping("addclienterbindlistdo")
-	public ModelAndView addclienterbindlistdo(int businessId,String clienterName,String clienterPhone) throws Exception {
+	public ModelAndView addclienterbindlistdo(int businessId, String clienterName, String clienterPhone, int currentPage)
+			throws Exception {
 		ModelAndView model = new ModelAndView("business/addclienterbindlistdo");
 		PagedClienterSearchReq req = new PagedClienterSearchReq();
 		req.setClienterName(clienterName);
 		req.setClienterPhone(clienterPhone);
+		req.setCurrentPage(currentPage);
 		PagedResponse<ClienterBindInfoModel> resp = clienterService.getClienterList(req);
 		model.addObject("listData", resp);
 		return model;
 	}
-	
+
 	@RequestMapping("addclienterbind")
-	public @ResponseBody ResponseBase addclienterbind(int businessId,int clienterId,HttpServletRequest request){
+	public @ResponseBody ResponseBase addclienterbind(int businessId, int clienterId, HttpServletRequest request) {
 		ResponseBase response = new ResponseBase();
 		ClienterBindOptionReq req = new ClienterBindOptionReq();
 		req.setBusinessId(businessId);
 		req.setClienterId(clienterId);
-		if(businessClienterRelationService.checkHaveBind(req)){
+		if (businessClienterRelationService.checkHaveBind(req)) {
 			response.setMessage("此条绑定关系已存在！");
-		}else {
+		} else {
 			req.setOptId(UserContext.getCurrentContext(request).getId());
 			req.setOptName(UserContext.getCurrentContext(request).getName());
 			req.setRemark("添加绑定");
-			if(!businessClienterRelationService.addClienterBind(req)){
+			if (!businessClienterRelationService.addClienterBind(req)) {
 				response.setMessage("绑定关系失败！");
-			}else{
+			} else {
 				response.setMessage("绑定关系成功！");
 				response.setResponseCode(1);
 			}
 		}
 		return response;
 	}
-	
-	@RequestMapping("clienterbathbindlist")
-	public ModelAndView clienterbathbindlist(int businessId) throws Exception {
+
+	@RequestMapping("clienterbatchbind")
+	public ModelAndView clienterBatchBind(int businessId) throws Exception {
 		BusinessDetailModel detail = iBusinessService.getBusinessDetailByID(businessId);
 		if (detail == null) {
 			throw new Exception("没找到businessID为" + businessId + "的详细信息");
@@ -441,13 +451,14 @@ public class BusinessController {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "商户");
 		model.addObject("currenttitle", "批量添加骑士绑定");
-		model.addObject("viewPath", "business/clienterbathbindlist");
+		model.addObject("viewPath", "business/clienterbatchbind");
 		model.addObject("detail", detail);
 		return model;
 	}
-	
-	@RequestMapping("clienterbathbindlistdo")
-	public ModelAndView clienterbathbindlistdo(int businessId,String clienterName,String clienterPhone) throws Exception {
+
+	@RequestMapping("clienterbatchbindlistdo")
+	public ModelAndView clienterBatchBindlistdo(int businessId, String clienterName, String clienterPhone)
+			throws Exception {
 		ModelAndView model = new ModelAndView("business/addclienterbindlistdo");
 		PagedClienterSearchReq req = new PagedClienterSearchReq();
 		req.setClienterName(clienterName);
@@ -456,9 +467,10 @@ public class BusinessController {
 		model.addObject("listData", resp);
 		return model;
 	}
-	
+
 	/**
 	 * 导出商户收支记录报表
+	 * 
 	 * @author pengyi
 	 * @date 2015年9月2日 下午3:31:40
 	 * @version 1.0
@@ -471,8 +483,8 @@ public class BusinessController {
 	 * @throws Exception
 	 */
 	@RequestMapping("exportbusinessbalancerecord")
-	public void exportBusinessBalanceRecord(int businessId,String recordType,String startDate,String endDate
-			,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	public void exportBusinessBalanceRecord(int businessId, String recordType, String startDate, String endDate,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		BusinessDetailModel detail = iBusinessService.getBusinessDetailByID(businessId);
 		if (detail == null) {
 			throw new Exception("没找到businessID为" + businessId + "的详细信息");
@@ -484,31 +496,104 @@ public class BusinessController {
 		req.setBusinessID(businessId);
 		req.setCurrentPage(1);
 		req.setPageSize(Integer.MAX_VALUE);
-		List<BusinessBalanceRecordModel> records = businessBalanceRecordService.getBusinessBalanceRecordListForExport(req);
-		if(records.size() > 0){
-			//导出数据
-			String filename = "商户提款流水记录%s";
-	        if (!StringUtils.isEmpty(req.getStartDate())&& !StringUtils.isEmpty(req.getEndDate())){
-	            filename = String.format(filename, req.getStartDate() + "~" + req.getEndDate());
-	        }
-	        //解密records的账号
-	        for (int i = 0; i < records.size(); i++) {
-				records.get(i).setAccountNo(ParseHelper.toDecrypt(records.get(i).getAccountNo()));
-			}
-			byte[] data = exportBusinessBalanceRecord2Bytes(filename, records);
-			response.setContentType("application/ms-excel");
-			response.setHeader("Content-Disposition", "attachment; filename="+new String((filename+".xls").getBytes("utf-8"),"iso8859-1"));
-			response.setHeader("Content-Length",String.valueOf(data.length));
-			response.getOutputStream().write(data);
-			return;
+		List<BusinessBalanceRecordModel> records = businessBalanceRecordService
+				.getBusinessBalanceRecordListForExport(req);
+		// 导出数据
+		String filename = "商户提款流水记录%s";
+		if (!StringUtils.isEmpty(req.getStartDate()) && !StringUtils.isEmpty(req.getEndDate())) {
+			filename = String.format(filename, req.getStartDate() + "~" + req.getEndDate());
 		}
-		//如果查询到的数据为空,则跳转到收支详情页
-		String basePath = PropertyUtils.getProperty("static.admin.url");
-		response.sendRedirect(basePath+"/business/balancedetail?businessId="+businessId);
+		// 解密records的账号
+		for (int i = 0; i < records.size(); i++) {
+			records.get(i).setAccountNo(ParseHelper.toDecrypt(records.get(i).getAccountNo()));
+		}
+		byte[] data = exportBusinessBalanceRecord2Bytes(filename, records);
+		response.setContentType("application/ms-excel");
+		response.setHeader("Content-Disposition",
+				"attachment; filename=" + new String((filename + ".xls").getBytes("utf-8"), "iso8859-1"));
+		response.setHeader("Content-Length", String.valueOf(data.length));
+		response.getOutputStream().write(data);
+		return;
 	}
-	
+
+	/**
+	 * 上传文件导入骑士
+	 * 
+	 * @author pengyi
+	 * @date 2015年9月7日 上午10:43:40
+	 * @version 1.0
+	 * @param businessId
+	 * @param files
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("clienterimport")
+	@ResponseBody
+	public ResponseBase clienterImport(@RequestParam(value = "businessId", required = false) Integer businessId,
+			@RequestParam(value = "file1", required = true) MultipartFile files[], HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		ResponseBase resp = new ResponseBase();
+		if (files.length <= 0) {
+			resp.setMessage("上传文件不能为空");
+		} else {
+			// 读取文件记录
+			MultipartFile file = files[0];
+			byte[] buffers = file.getBytes();
+			if (buffers.length <= 0) {
+				resp.setMessage("上传文件不能为空");
+			} else {
+				List<ImportClienterInfo> infos = ExcelUtils.readExcel(buffers, 0, 50, ImportClienterInfo.class);
+				resp.setMessage(JsonUtil.obj2string(checkClienterImport(infos)));
+				resp.setResponseCode(1);
+			}
+		}
+		return resp;
+	}
+
+	@RequestMapping("clienterbatchsave")
+	@ResponseBody
+	public ResponseBase clienterBatchSave(int businessId, String overallS, HttpServletRequest request) {
+		ResponseBase rsp = new ResponseBase();
+		List<BusinessBindClienter> binds = JsonUtil.str2list(overallS, BusinessBindClienter.class);
+		if (binds == null || binds.size() <= 0) {
+			rsp.setMessage("导入数据不能为空或数据格式有问题");
+			rsp.setResponseCode(0);
+		} else {
+			int successCount = 0;
+			for (BusinessBindClienter bind : binds) {
+				if (bind.isBind()) {
+					String phone = bind.getClienterPhoneNo();
+					String name = bind.getClienterName();
+					Integer clienterId = clienterService.getId(phone, name);
+					if (clienterId == null)
+						continue;
+					BusinessClienterRelation model = businessClienterRelationService.getDetails(businessId, clienterId);
+					ClienterBindOptionReq req = new ClienterBindOptionReq();
+					req.setBusinessId(businessId);
+					req.setClienterId(clienterId);
+					req.setOptId(UserContext.getCurrentContext(request).getId());
+					req.setOptName(UserContext.getCurrentContext(request).getName());
+					if (model == null) {// 插入
+						req.setRemark("添加绑定");
+						businessClienterRelationService.addClienterBind(req);
+					} else if (model != null && model.getIsbind() == 0)// 更新
+					{
+						req.setRemark("修改绑定");
+						req.setIsBind(1);
+						businessClienterRelationService.modifyClienterBind(req);
+					}
+					successCount++;
+				}
+			}
+			rsp.setMessage("导入数据成功,共导入数据:" + successCount + "条");
+			rsp.setResponseCode(1);
+		}
+		return rsp;
+	}
+
 	/**
 	 * 导出商户收支记录excel二进制数据
+	 * 
 	 * @author pengyi
 	 * @date 20150902
 	 * @param fileName
@@ -516,16 +601,55 @@ public class BusinessController {
 	 * @return
 	 * @throws Exception
 	 */
-	private byte[] exportBusinessBalanceRecord2Bytes(String fileName,List<BusinessBalanceRecordModel> records) throws Exception{
+	private byte[] exportBusinessBalanceRecord2Bytes(String fileName, List<BusinessBalanceRecordModel> records)
+			throws Exception {
 		ExcelExportData data = new ExcelUtils.ExcelExportData();
-		data.setTitles(new String[]{"商户提款流水记录"});
+		data.setTitles(new String[] { "商户提款流水记录" });
 		data.setColumnNames(new ArrayList<String[]>());
 		data.setFieldNames(new ArrayList<String[]>());
 		data.setDataMap(new LinkedHashMap<String, List<?>>());
-		//add data
-		data.getColumnNames().add(new String[]{"任务单号/交易流水号","所属银行","卡号","收支金额","余额","完成时间","操作人"});
-		data.getFieldNames().add(new String[]{"relationno","openBank","accountNo","amount","balance","operatetime","operator"});
+		// add data
+		data.getColumnNames().add(new String[] { "任务单号/交易流水号", "所属银行", "卡号", "收支金额", "余额", "完成时间", "操作人" });
+		data.getFieldNames().add(
+				new String[] { "relationno", "openBank", "accountNo", "amount", "balance", "operatetime", "operator" });
 		data.getDataMap().put(fileName, records);
 		return ExcelUtils.export2ByteArray(data);
+	}
+
+	private List<BusinessBindClienter> checkClienterImport(List<ImportClienterInfo> infos) {
+		List<BusinessBindClienter> binds = new ArrayList<BusinessBindClienter>();
+		for (int i = 0; i < infos.size(); i++) {
+			ImportClienterInfo info = infos.get(i);
+			BusinessBindClienter bind = new BusinessBindClienter();
+			bind.setRowCount(i + 1);
+			bind.setClienterName(info.getName());
+			bind.setClienterPhoneNo(info.getPhoneNo());
+			if (StringUtils.isEmpty(info.getPhoneNo())) {// 手机号为空
+				bind.setClienterRemarks("骑士手机错误");
+				binds.add(bind);
+				continue;
+			}
+			if (!Pattern.matches(GlobalSettings.PHONE_REGEX, info.getPhoneNo())) {// 验证收货人手机号
+				bind.setClienterRemarks("骑士手机错误");
+				binds.add(bind);
+				continue;
+			}
+			String trueName = clienterService.getNameByPhone(info.getPhoneNo());
+			if (StringUtils.isEmpty(trueName)) {
+				bind.setClienterRemarks("骑士手机不存在");
+				binds.add(bind);
+				continue;
+			}
+			if (!trueName.equals(info.getName())) {
+				bind.setClienterRemarks("骑士名称错误");
+				binds.add(bind);
+				continue;
+			}
+			bind.setClienterRemarks("");
+			bind.setBind(true);
+			bind.setEnable(true);
+			binds.add(bind);
+		}
+		return binds;
 	}
 }

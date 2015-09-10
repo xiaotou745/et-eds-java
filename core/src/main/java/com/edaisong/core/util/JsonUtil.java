@@ -19,6 +19,9 @@ public class JsonUtil {
      * @throws Exception 
      */  
     public static String obj2string(Object obj) {  
+    	if (obj==null) {
+			return "";
+		}
         StringWriter sw = new StringWriter();  
         ObjectMapper mapper = new ObjectMapper(); 
         mapper.setDateFormat(dateFormat);

@@ -71,7 +71,7 @@
 				<em class="fl impo">*</em>
 				<span class="fl"> 订单1 </span> <b class="fl"> <input type="text" class="price">
 					元
-				</b> <a href="javascript:;" class="fl del">删除</a> <em class="fl ts">订单金额必须大于等于5元且小于1000元</em>
+				</b> <a href="javascript:;" class="fl del">删除</a> <em class="fl ts">订单金额必须在5-1000元之间</em>
 			</p>
 		</div>
 		<p class="cb">

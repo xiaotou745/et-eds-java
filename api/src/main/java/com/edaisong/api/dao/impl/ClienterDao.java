@@ -17,6 +17,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
+import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
@@ -77,28 +78,8 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	 * @date 20150901
 	 */
 	@Override
-	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {
-		Map<String, Object> map = new HashMap<String, Object>();				
-		int PageSize = 15;
-		int currentPage = req.getCurrentPage();
-		map.put("workStatus", req.getWorkStatus());
-		map.put("search", req.getSearch());
-		map.put("businessId", req.getBusinessId());
-		map.put("TotalRecord", 0);
-		map.put("TotalPage", 0);
-		map.put("PageSize", PageSize);
-		map.put("currentPage", currentPage);
-		List<BusinessClientersModel> list = getReadOnlySqlSessionUtil()
-				.selectList("com.edaisong.api.dao.inter.IClienterDao.getBusinessClienters",
-						map);
-		
-		PagedResponse<BusinessClientersModel> resp = new PagedResponse<BusinessClientersModel>();		
-		resp.setResultList(list);
-		resp.setPageSize(PageSize);
-		resp.setCurrentPage(currentPage);
-		resp.setTotalRecord(ParseHelper.ToInt(map.get("TotalRecord"), 0));
-		resp.setTotalPage(ParseHelper.ToInt(map.get("TotalPage"), 0));
-		return resp;
+	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {		
+		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IClienterDao.getBusinessClienters", req);
 	}
 
     /**
@@ -172,5 +153,29 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return getReadOnlySqlSessionUtil()
 				.selectPageList("com.edaisong.api.dao.inter.IClienterDao.getClienterBindInfoList",
 						req);
+	}
+
+	@Override
+	public List<ImportClienterInfo> getInfosByPhones(List<String> phoneNos) {
+		return getReadOnlySqlSessionUtil()
+				.selectList("com.edaisong.api.dao.inter.IClienterDao.getInfosByPhones",
+						phoneNos);
+	}
+
+	@Override
+	public String getNameByPhone(String phoneNo) {
+		return getReadOnlySqlSessionUtil()
+				.selectOne("com.edaisong.api.dao.inter.IClienterDao.getNameByPhone",
+						phoneNo);
+	}
+
+	@Override
+	public Integer getId(String phoneNo, String trueName) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("phoneNo", phoneNo);
+		map.put("trueName", trueName);
+		return getReadOnlySqlSessionUtil()
+				.selectOne("com.edaisong.api.dao.inter.IClienterDao.getId",
+						map);
 	}
 }

@@ -1,5 +1,6 @@
 package com.edaisong.admin.common;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,11 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				response.sendRedirect(basePath + "/");
 				return false;
 			}
-			/*if (isLogin) {//用户登录后，检查用户是否有当前页面的权限，没有则跳转到订单列表页
+			if (isLogin) {//用户登录后，检查用户是否有当前页面的权限，没有则跳转到订单列表页
+				//用户登录后，将当前用户id和名称保存起来，用于记录操作日志
+				request.setAttribute("userID", UserContext.getCurrentContext(request).getId());
+				request.setAttribute("userName", UserContext.getCurrentContext(request).getName());
+
 				if (needCheckPageAuth(request)) {
 					List<MenuEntity> menuList=authorityMenuClassService.getMenuListByUserID(UserContext.getCurrentContext(request).getAccount().getId());
 					for (MenuEntity menuEntity : menuList) {
@@ -41,7 +46,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 					response.sendRedirect(basePath+"/order/list");
 					return false;
 				}
-			}*/
+			}
 		}
 		
 		return true;
@@ -52,7 +57,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 		if (!(requestType!=null&&requestType.equals("XMLHttpRequest"))&&
 			!request.getServletPath().equals("/account/code")&&
 			!request.getServletPath().equals("/order/list")&&
-			!request.getServletPath().equals("/order/exportorder")) {
+			!request.getServletPath().equals("/order/exportorder")&&
+			!request.getServletPath().equals("/account/logoff")) {
 			return true;
 		}
 		return false;

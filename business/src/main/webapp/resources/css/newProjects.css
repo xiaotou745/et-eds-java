@@ -11,16 +11,21 @@
 	font-size: 16px;
 }
 .content2 .center .box2 h4 span{
-	width: 90px;
-	background-color:#fff;
+	/*width: 90px;*/
+	width: 6em;
+	/*background-color:#fff;*/
 	z-index:2;
 }
 .content2 .center .box2 h4 i{
+	position: absolute;
+	top: 12px;
+	left: 6em;
 	display: block;
-	width: 998px;
+	/*width: 998px;*/
+	width: 85%;
 	height: 1px;
 	text-indent: -9999px;
-	margin-top: 12px;
+	/*margin-top: 12px;*/
 	border-top:1px dashed #ccc;
 	z-index:1;
 }
@@ -39,7 +44,8 @@
 	text-align: right;
 	color:#000;
 	font-size: 14px;
-	margin-right: 20px;
+	/*margin-right: 20px;*/
+	margin-right: 3%;
 }
 .content2 .center .box2 .box2-ny p span em{
 	line-height: 53px;
@@ -114,7 +120,8 @@
 	margin: 17px 5px 0 0;
 }
 .content2 .center .box2 .box2-ny .orderBox{
-	width: 744px;
+	/*width: 744px;*/
+	width: 100%;
 	/*min-height:200px;*/
 	margin-left: -75px;
 	padding:10px 0;
@@ -150,6 +157,7 @@
 }
 .content2 .center .box2 .box2-ny .orderBox p a.del{
 	color:#006699;
+	margin-right: 3%;
 	background:url(../images/del.png) no-repeat 11px center#fff;
 }
 .content2 .center .box2 .box2-ny .orderBox p b{
@@ -169,6 +177,7 @@
 }
 .content2 .center .box2 .box2-ny .orderBox p em.ts{
 	display: none;
+	margin-left: 0;
 }
 .content2 .center .box2 .box2-ny .orderBox .copy{
 	position: relative;
@@ -188,8 +197,8 @@
 }
 
 .content2 .center .projects{
-	width: 746px;
-	margin-left: 60px;
+	/*width: 746px;*/
+	/*margin-left: 60px;*/
 	padding-bottom:30px;
 }
 .content2 .center .projects input[type="button"]{
@@ -198,7 +207,8 @@
 	height: 50px;
 	color:#fff;
 	font-size: 16px;
-	margin-left:190px;
+	/*margin-left:190px;*/
+	margin-left:250px;
 	background-color:#006699;
 	border:none;
 	border-radius:3px;

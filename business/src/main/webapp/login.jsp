@@ -36,7 +36,11 @@
 					<div class="cont_right">
 						<div class="ex_error"><p id="error"></p></div>
 						<div class="right_for">
-							<h3>商铺帐号登录</h3>
+							<h3 class="cb">
+								<span id="new0" onclick="setTab('new',0,2)" href="javascript:;" class="on">门店登录</span>
+								<a id="new1" onclick="setTab('new',1,2)" href="javascript:;">集团登录</a>
+							</h3>
+
 								<input type="text" placeholder="输入手机号码" class="ex_iphone" maxlength="11" name="phoneNo" id="phoneNo">
 								<p><b class="error error1"></b></p>
 								<input type="password" placeholder="输入密码"  class="ex_pord" name="password" id="password">
@@ -58,6 +62,14 @@
 			</div>	
 			
 			<script type="text/javascript">
+			function setTab(name,cursel,n){
+				for(i=0;i<n;i++){
+					var menu=document.getElementById(name+i);
+					var con=document.getElementById("con_"+name+"_"+i);
+					menu.className=i==cursel?"on":"";
+				}
+			}
+
 			//读取cookie
 			function getCookie(c_name)
 			{

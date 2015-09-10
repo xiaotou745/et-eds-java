@@ -29,6 +29,15 @@
 		<property name="username" value="${jdbc.readonlysqlserver.username}" />
 		<property name="password" value="${jdbc.readonlysqlserver.password}" />
 	</bean>
+		<bean id="superManLogSqlServerDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${jdbc.logsqlserver.driver}" />
+		<property name="url" value="${jdbc.logsqlserver.url}" />
+		<property name="username" value="${jdbc.logsqlserver.username}" />
+		<property name="password" value="${jdbc.logsqlserver.password}" />
+	</bean>
+	<bean id="superManLogSqlServerSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="superManLogSqlServerDataSource" />
+	</bean>
 	<bean id="superManSqlServerSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="superManSqlServerDataSource" />
 		<property name="mapperLocations" value="classpath:conf/mybatis/*.xml" /> 
@@ -37,7 +46,6 @@
 		<property name="dataSource" ref="superManReadOnlySqlServerDataSource" />
 		 <property name="mapperLocations" value="classpath:conf/mybatis/*.xml" /> 
 	</bean>
-
 
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

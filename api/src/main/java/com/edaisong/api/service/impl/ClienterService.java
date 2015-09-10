@@ -1,6 +1,8 @@
 package com.edaisong.api.service.impl;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
+import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.PagedClienterReq;
@@ -149,5 +152,21 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	@Override
 	public PagedResponse<ClienterBindInfoModel> getClienterList(PagedClienterSearchReq req) {
 		return clienterDao.getClienterBindInfoList(req);
+	}
+
+	@Override
+	public List<ImportClienterInfo> getInfosByPhones(List<String> phoneNos) {
+		return clienterDao.getInfosByPhones(phoneNos);
+	}
+
+
+	@Override
+	public String getNameByPhone(String phoneNo) {
+		return clienterDao.getNameByPhone(phoneNo);
+	}
+
+	@Override
+	public Integer getId(String phoneNo, String trueName) {
+		return clienterDao.getId(phoneNo,trueName);
 	}
 }

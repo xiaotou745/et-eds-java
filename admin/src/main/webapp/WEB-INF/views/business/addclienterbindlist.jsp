@@ -12,44 +12,6 @@
 			.getAttribute("detail");
 %>
 
-<%-- <div class="col-lg-6">
-	<div class="panel blank-panel">
-		<div class="panel-heading">
-			<div class="panel-title m-b-md">
-				<h4>商户名称:<%=ParseHelper.ShowString(detail.getName())%></h4>
-			</div>
-			<div class="panel-options">
-				<ul class="nav nav-tabs">
-					<li><a data-toggle="tab" href="tabs_panels.html#tab-1"
-						tppabs="http://www.zi-han.net/theme/hplus/tabs_panels.html#tab-1">第一个选项卡</a>
-					</li>
-					<li class=""><a data-toggle="tab"
-						href="tabs_panels.html#tab-2"
-						tppabs="http://www.zi-han.net/theme/hplus/tabs_panels.html#tab-2">第二个选项卡</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-
-		<div class="panel-body">
-			<div class="tab-content">
-				<div id="tab-1" class="tab-pane active">
-					<strong>HTML5 文档类型</strong>
-					<p>Bootstrap 使用到的某些 HTML 元素和 CSS 属性需要将页面设置为 HTML5
-						文档类型。在你项目中的每个页面都要参照下面的格式进行设置。</p>
-				</div>
-				<div id="tab-2" class="tab-pane">
-					<strong>移动设备优先</strong>
-					<p>在 Bootstrap 2 中，我们对框架中的某些关键部分增加了对移动设备友好的样式。而在 Bootstrap 3
-						中，我们重写了整个框架，使其一开始就是对移动设备友好的。这次不是简单的增加一些可选的针对移动设备的样式，而是直接融合进了框架的内核中。也就是说，Bootstrap
-						是移动设备优先的。针对移动设备的样式融合进了框架的每个角落，而不是增加一个额外的文件。</p>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
- --%>
-
 <div class="SearchMd">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
 	<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
@@ -61,7 +23,7 @@
 		<tr>
 			<td>
 				<button type="button" class="btn btn-default btn-lg" onclick="window.location.href='<%=basePath%>/business/addclienterbindlist?businessId=<%=detail.getId()%>'">手动绑定</button>
-				<%-- <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='<%=basePath%>/business/clienterbathbindlist?businessId=<%=detail.getId()%>'">批量绑定</button> --%>
+				<button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='<%=basePath%>/business/clienterbatchbind?businessId=<%=detail.getId()%>'">批量绑定</button>
 			</td>
 		</tr>
 		<tr>
@@ -89,7 +51,7 @@
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
 		 var data=$("#searchForm").serialize();
-			$.post("<%=basePath%>/business/addclienterbindlistdo", data,
+		 $.post("<%=basePath%>/business/addclienterbindlistdo", data,
 					function(d) {
 						$("#content").html(d);
 					});

@@ -7,6 +7,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
+import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.OptOrder;
@@ -20,6 +21,7 @@ import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
+import com.edaisong.entity.resp.OrderStatisticsResp;
 
 public interface IOrderService {
 	/**
@@ -32,6 +34,17 @@ public interface IOrderService {
 	 * @return
 	 */
 	PagedResponse<OrderListModel> getOrders(PagedOrderSearchReq search);
+	
+	/**
+	 * 导出订单
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	List<ExportOrder> exportOrder(PagedOrderSearchReq search);
 
 	/**
 	 * 根据订单号/订单id查订单信息
@@ -160,5 +173,14 @@ public interface IOrderService {
 	 * @return
 	 */
 	ResponseBase auditRefuse(OptOrder auditRefuseOrder);
+	
+	/**
+	 * B端任务统计接口
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+    OrderStatisticsResp getOrderStatisticsB();
 
 }

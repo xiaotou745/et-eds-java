@@ -797,7 +797,7 @@
 		else oo.GrabToCompleteDistance
 		end
 		end as GrabToCompleteDistance ,
-		o.BusinessCommission ,oo.IsNotRealOrder
+		o.BusinessCommission ,oo.IsNotRealOrder,oo.auditStatus
 	</sql>
 
 	<!-- 后台订单列表页面 查询列集来源 add by caoheyang 20150728 -->
@@ -842,12 +842,16 @@
          <![CDATA[ and o.PubDate<=]]>
 			''${orderPubEnd} 23:59:59''
 		</if>
+		<if test="auditStatus != null and auditStatus>-1">
+			and oo.auditStatus= ${auditStatus}
+		</if>
 		<if test="groupId != null and groupId != -1">
 			and o.OrderFrom = ${groupId}
 		</if>
-		<if test="businessCity != null and businessCity!='' and businessCity!='-1'">
-			and b.City= ''${businessCity}''
+	    <if test="groupId != null and groupId != -1">
+			and o.OrderFrom = ${groupId}
 		</if>
+
 		<if test="authorityCityNameList != null">
 			and b.city in
 			<foreach item="item" index="index" collection="authorityCityNameList"
@@ -883,6 +887,65 @@
 		)}
 	</select>
 
+  <select id="exportOrder" resultType="com.edaisong.entity.domain.ExportOrder"
+  		 parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
+  	   select 	 o.[OrderNo] ,
+                ISNULL(b.Name, '匿名') + ':' + ISNULL(b.PhoneNo, '无') as BusinessInfo ,
+                ISNULL(c.TrueName, '匿名') + ':' + ISNULL(c.PhoneNo, '无') as ClienterInfo ,
+                CONVERT(VARCHAR(100), o.[PubDate], 120) as PubDate ,
+                ISNULL(CONVERT(VARCHAR(100), o.[ActualDoneDate], 120),'') as ActualDoneDate ,
+                o.[Amount] ,
+                ISNULL(o.[Amount], 0) + ISNULL(o.[OrderCount], 0)
+                * ISNULL(o.[DistribSubsidy], 0) as TotalAmount ,
+                ISNULL(o.[OrderCommission], 0) as OrderCommission ,
+                ISNULL(o.[OrderCount], 0) as OrderCount ,
+                ISNULL(o.[DistribSubsidy], 0) as DistribSubsidy ,
+                ISNULL(o.[WebsiteSubsidy], 0) as WebsiteSubsidy ,
+                ISNULL(o.[Adjustment], 0) as Adjustment ,
+                ISNULL(o.[SettleMoney], 0) as SettleMoney
+		from [order] o with ( nolock )
+		left join clienter c with ( nolock ) on c.Id = o.clienterId
+		join business b with ( nolock ) on b.Id = o.businessId
+		left join [group] g with ( nolock ) on g.id = o.OrderFrom
+		join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
+		where 1=1    
+ 		<if test="businessName != null  and businessName !=''">
+			and b.Name=#{businessName}
+		</if>
+		<if test="businessPhone != null and businessPhone!=''">
+			and b.PhoneNo=#{businessPhone}
+		</if>
+		<if test="orderStatus != null and orderStatus>-1">
+			and o.Status=#{orderStatus}
+		</if>
+		<if test="superManName != null and superManName!=''">
+			and c.TrueName=#{superManName}
+		</if>
+		<if test="superManPhone != null and superManPhone!='' ">
+			and c.PhoneNo=#{superManPhone}
+		</if>
+		<if test="orderPubStart != null and orderPubStart!=''">
+			and o.PubDate>= '${orderPubStart} 00:00:00'
+		</if>
+		<if test="orderPubEnd != null and orderPubEnd!=''">
+         <![CDATA[ and o.PubDate<=]]>
+			'${orderPubEnd} 23:59:59'
+		</if>
+		<if test="groupId != null and groupId != -1">
+			and o.OrderFrom = #{groupId}
+		</if>
+		<if test="businessCity != null and businessCity!='' and businessCity!='-1'">
+			and b.City= #{businessCity}
+		</if>
+	<!-- 	<if test="authorityCityNameList != null">
+			and b.city in
+			<foreach item="item" index="index" collection="authorityCityNameList"
+				open="(''" separator="'',''" close="'')">
+				#{item}
+			</foreach>
+		</if> -->
+  </select>
+  
 	<!-- 根据订单号/订单id查订单信息 Caoheyang 20150827 -->
 	<select id="getOrderByNoId" resultType="com.edaisong.entity.domain.OrderListModel"
 		parameterType="java.util.Map">
@@ -1089,4 +1152,48 @@
 	<update id="updateOrderRealCommission" parameterType="com.edaisong.entity.req.OrderOtherSearch">
 		update [Order] set RealOrderCommission=#{realOrderCommission,jdbcType=NVARCHAR}  where id=#{orderId,jdbcType=INTEGER}
 	</update>
+	<!-- B端任务统计接口 add by caoheyang 20150910 -->
+	<select id="getOrderStatisticsServiceClienterB" parameterType="java.util.Map"   resultType="com.edaisong.entity.domain.ServiceClienter">
+select  b.Id as ClienterId ,
+        b.PhoneNo as ClienterPhone ,
+        b.TrueName as ClienterName ,
+        SUM(a.OrderCount) as OrderCount ,
+        CONVERT(VARCHAR(100), a.PubDate, 23) as PubDate
+        -- , CONVERT(VARCHAR(4),DATEPART(day, a.PubDate))+'日' as DayInfo
+from    dbo.[order] a
+        join dbo.clienter b on a.clienterId = b.Id
+where   a.Status = 1  --and businessId=2008  
+group by b.Id ,
+        b.PhoneNo,
+        b.TrueName ,
+        CONVERT(VARCHAR(100), a.PubDate, 23) ,
+        DATEPART(day, a.PubDate)
+order by PubDate desc 
+	</select>
+	
+		<!-- B端任务统计接口  天数据列表  add by caoheyang 20150910 -->
+	<select id="getOrderStatisticsDaySatistics" parameterType="java.util.Map"   resultType="com.edaisong.entity.domain.DaySatisticsB">
+declare @sdate DATETIME
+set @sdate = '2015-09-01'
+select  a.MonthDate ,
+        ISNULL(b.OrderCount, 0) as OrderCount ,
+        ISNULL(b.ServiceClienterCount, 0) as ServiceClienterCount ,
+        a.DateInfo
+from    ( select    CONVERT(VARCHAR(100), DATEADD(dd, number, @sdate), 23) as MonthDate ,
+                    CONVERT(VARCHAR(4), DATEPART(day,
+                                                 DATEADD(dd, number, @sdate)))
+                    + '日' as DateInfo
+          from      master..spt_values
+          where     type = 'P'
+                    and DATEADD(dd, number, @sdate)   <![CDATA[ <]]> DATEADD(mm, 1, @sdate)
+        ) a
+        left join ( select  SUM(OrderCount) as OrderCount ,
+                            COUNT(distinct clienterId) as ServiceClienterCount ,
+                            CONVERT(VARCHAR(100), PubDate, 23) as OrderDate
+                    from    dbo.[order]
+                    where   Status = 1
+                    group by CONVERT(VARCHAR(100), PubDate, 23)
+                  ) as b on a.MonthDate = b.OrderDate
+	</select>
+	
 </mapper>

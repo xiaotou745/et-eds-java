@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.GroupBusinessRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.GroupBusinessRelation" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="groupid" property="groupid" jdbcType="INTEGER" />
+    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
+    <result column="CreateBy" property="createby" jdbcType="NVARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="UpdateBy" property="updateby" jdbcType="NVARCHAR" />
+    <result column="UpdateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="IsBind" property="isbind" jdbcType="SMALLINT" />
+    <result column="IsEnable" property="isenable" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, groupid, BusinessId, CreateBy, CreateTime, UpdateBy, UpdateTime, IsBind, IsEnable
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from GroupBusinessRelation
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from GroupBusinessRelation
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.GroupBusinessRelation" >
+    insert into GroupBusinessRelation (Id, groupid, BusinessId, 
+      CreateBy, CreateTime, UpdateBy, 
+      UpdateTime, IsBind, IsEnable
+      )
+    values (#{id,jdbcType=INTEGER}, #{groupid,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, 
+      #{createby,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updateby,jdbcType=NVARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{isbind,jdbcType=SMALLINT}, #{isenable,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.GroupBusinessRelation" >
+    insert into GroupBusinessRelation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="groupid != null" >
+        groupid,
+      </if>
+      <if test="businessid != null" >
+        BusinessId,
+      </if>
+      <if test="createby != null" >
+        CreateBy,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="updateby != null" >
+        UpdateBy,
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime,
+      </if>
+      <if test="isbind != null" >
+        IsBind,
+      </if>
+      <if test="isenable != null" >
+        IsEnable,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="groupid != null" >
+        #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="createby != null" >
+        #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isbind != null" >
+        #{isbind,jdbcType=SMALLINT},
+      </if>
+      <if test="isenable != null" >
+        #{isenable,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.GroupBusinessRelation" >
+    update GroupBusinessRelation
+    <set >
+      <if test="groupid != null" >
+        groupid = #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="createby != null" >
+        CreateBy = #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isbind != null" >
+        IsBind = #{isbind,jdbcType=SMALLINT},
+      </if>
+      <if test="isenable != null" >
+        IsEnable = #{isenable,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GroupBusinessRelation" >
+    update GroupBusinessRelation
+    set groupid = #{groupid,jdbcType=INTEGER},
+      BusinessId = #{businessid,jdbcType=INTEGER},
+      CreateBy = #{createby,jdbcType=NVARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      IsBind = #{isbind,jdbcType=SMALLINT},
+      IsEnable = #{isenable,jdbcType=SMALLINT}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <sql id="getBusinessBindListWhere">
+  	gbr.IsEnable=1 AND gbr.IsBind=1
+  	<if test="groupBusinessId != 0" >
+  		AND gbr.[groupid]=${groupBusinessId}
+  	</if>
+  	<if test="bizName != null and bizName!=''">
+	    and b.Name like ''%${bizName}%''
+	</if>
+	<if test="startDate != null and startDate != ''">
+	      AND gbr.OperateTime >=''${startDate}''
+     </if>
+     <if test="endDate != null and endDate != ''">
+	      AND ''${endDate}'' > gbr.OperateTime 
+     </if>
+  </sql>
+  
+  <sql id="getBusinessBindListColumns">
+  	gbr.Id id,b.Name name,b.phoneNo,b.BalancePrice balancePrice,gbr.createTime,gbr.isBind,gbr.createBy
+  	,gbr.updateBy,gbr.updateTime,gbr.businessId,gbr.groupid groupid,gbr.isEnable,r.useGroupMoney
+  </sql>
+  
+  <sql id="getBusinessBindListTables">
+  	GroupBusinessRelation gbr WITH(NOLOCK) JOIN dbo.business b WITH(NOLOCK) ON gbr.BusinessId=b.Id
+  	left join (SELECT SUM(Amount) AS useGroupMoney,bbr.BusinessId FROM dbo.BusinessBalanceRecord bbr
+  	<if test="groupBusinessId != 0" >
+  		WHERE bbr.groupid=${groupBusinessId}
+  	</if>
+  	GROUP BY bbr.BusinessId) r on gbr.BusinessId=r.BusinessId
+  </sql>
+  
+    <!-- 集团绑定门店列表  add by pengyi 20150909-->
+  <select id="getBusinessBindList" resultType="com.edaisong.entity.domain.GroupBusinessRelationModel" 
+    parameterType="com.edaisong.entity.req.PagedBizBindsReq"  statementType="CALLABLE" >
+  	{call Sp_CustomPage2015_V1(
+	' gbr.Id DESC ',
+	' <include refid="getBusinessBindListColumns" /> ',
+	' <include refid="getBusinessBindListTables" /> ',
+	' <include refid="getBusinessBindListWhere" /> ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER}
+	,1,
+	#{totalRecord,mode=OUT,jdbcType=INTEGER},
+	#{totalPage,mode=OUT,jdbcType=INTEGER}
+	)}
+  </select>
+  
+  <sql id="modifyBusinessBindOutput">
+  	OUTPUT
+	  Inserted.GroupId,
+	  Inserted.BusinessId,
+	  ${optId},
+	  '${optName}',
+	  ${optType},
+	  getdate(),
+	  '${remark}'
+	INTO BusinessBindOptionLog
+	  ( GroupId
+	   ,BusinessId
+	   ,OptId
+	   ,OptName
+	   ,OptType
+	   ,UpdateTime
+	   ,Remark)
+  </sql>
+  
+      <!-- 移除门店绑定  add by pengyi 20150909 -->
+  <update id="removeBusinessBind" parameterType="com.edaisong.entity.req.BusinessBindOptionReq">
+  	update gbr
+	set    gbr.IsEnable=0
+	<include refid="modifyBusinessBindOutput"></include>
+	from GroupBusinessRelation gbr WITH ( ROWLOCK )
+	where gbr.BusinessId=#{businessId,jdbcType=INTEGER} AND gbr.GroupId=#{groupId,jdbcType=INTEGER};
+  </update>
+  
+  <!-- 确认是否已绑定   add by pengyi 20150909 -->
+  <select id="checkHaveBind" resultType="int" parameterType="com.edaisong.entity.req.BusinessBindOptionReq">
+  	SELECT COUNT(1) FROM GroupBusinessRelation gbr WITH(NOLOCK) 
+  	WHERE  gbr.IsEnable=1 AND gbr.IsBind=1 AND BusinessId=#{businessId,jdbcType=INTEGER} AND GroupId=#{groupId,jdbcType=INTEGER};
+  </select>
+  
+  <insert id="addBusinessBind" parameterType="com.edaisong.entity.req.BusinessBindOptionReq">
+  	INSERT INTO [GroupBusinessRelation]
+           ([BusinessId]
+           ,[GroupId]
+           ,[CreateBy]
+           ,[UpdateBy])
+	OUTPUT
+	  Inserted.BusinessId,
+	  Inserted.GroupId,
+	  #{optId,jdbcType=INTEGER},
+	  #{optName,jdbcType=NVARCHAR},
+	  #{optType,jdbcType=SMALLINT},
+	  getdate(),
+	  #{remark,jdbcType=NVARCHAR}
+	INTO ClienterBindOptionLog
+	  ( BusinessId
+	   ,ClienterId
+	   ,OptId
+	   ,OptName
+	   ,OptType
+	   ,InsertTime
+	   ,Remark)
+	Values(
+		#{businessId,jdbcType=INTEGER},
+		#{groupId,jdbcType=INTEGER},
+        #{optId,jdbcType=INTEGER},
+        #{optName,jdbcType=NVARCHAR}
+	);
+  </insert>
+  
+  <sql id="getBusinessListWhere">
+  	gbr.IsEnable=1
+  	<if test="bizName != null and bizName!=''">
+	    and b.Name like ''%${bizName}%''
+	</if>
+  </sql>
+  
+  <sql id="getBusinessListColumns">
+  	gbr.Id id,b.Name name,b.phoneNo,b.BalancePrice balancePrice,gbr.createTime,gbr.isBind,gbr.createBy
+  	,gbr.updateBy,gbr.updateTime,gbr.businessId,gbr.groupid groupid,gbr.isEnable,gb.GroupBusiName groupName
+  </sql>
+  
+  <sql id="getBusinessListTables">
+  	dbo.business b WITH(NOLOCK) left join GroupBusinessRelation gbr WITH(NOLOCK) ON gbr.BusinessId=b.Id
+  	left join GroupBusiness gb WITH(NOLOCK) on gb.Id=gbr.GroupId
+  </sql>
+  
+  <!-- 获得门店列表信息(包含已绑定和未绑定的所有门店)  add by pengyi 20150910-->
+  <select id="getBusinessList" resultType="com.edaisong.entity.domain.GroupBusinessRelationModel" 
+    parameterType="com.edaisong.entity.req.PagedBizBindsReq"  statementType="CALLABLE" >
+  	{call Sp_CustomPage2015_V1(
+	' gbr.Id DESC ',
+	' <include refid="getBusinessListColumns" /> ',
+	' <include refid="getBusinessListTables" /> ',
+	' <include refid="getBusinessListWhere" /> ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER}
+	,1,
+	#{totalRecord,mode=OUT,jdbcType=INTEGER},
+	#{totalPage,mode=OUT,jdbcType=INTEGER}
+	)}
+  </select>
+</mapper>

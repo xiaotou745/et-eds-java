@@ -86,12 +86,12 @@
 		    <%} %>
 		</div>
 		<div class="liuc">
-			<img src="<%=basePath%>/images/icon-13.png" width="618" height="35"
+			<img src="<%=basePath%>/images/icon-13.png" width="420" height="35"
 				alt="置灰状态">
 			
 			<!-- w1 w2 w3 w4 分别为四种状态的选中效果选择器 -->
 			<span class="on <%=checkStyle%>"> <img
-				src="<%=basePath%>/images/icon-14.png" width="618" height="35"
+				src="<%=basePath%>/images/icon-14.png" width="420" height="35"
 				alt="选中状态">
 			</span>
 		</div>

@@ -27,8 +27,38 @@ public class BusinessBalanceRecord {
     private String remark;
 
     private Short isenable;
+    
+    private Integer groupid;
 
-    public Long getId() {
+    private double groupbeforebalance;
+
+    private double groupafterbalance;
+
+    public Integer getGroupid() {
+		return groupid;
+	}
+
+	public void setGroupid(Integer groupid) {
+		this.groupid = groupid;
+	}
+
+	public double getGroupbeforebalance() {
+		return groupbeforebalance;
+	}
+
+	public void setGroupbeforebalance(double groupbeforebalance) {
+		this.groupbeforebalance = groupbeforebalance;
+	}
+
+	public double getGroupafterbalance() {
+		return groupafterbalance;
+	}
+
+	public void setGroupafterbalance(double groupafterbalance) {
+		this.groupafterbalance = groupafterbalance;
+	}
+
+	public Long getId() {
         return id;
     }
 

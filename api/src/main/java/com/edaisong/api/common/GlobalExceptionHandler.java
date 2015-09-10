@@ -1,6 +1,6 @@
-package com.edaisong.admin.common;
+package com.edaisong.api.common;
 
-import org.apache.log4j.Logger;
+
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,6 +50,6 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
 		ext.put("param", param);
 		ext.put("exception", msg);
 		ext.put("stackTrace", stackTrace.replace("\r\n\t", "<br/>"));
-		return new ModelAndView("common/exception", ext);
+		return new ModelAndView("common/500", ext);
 	}
 }

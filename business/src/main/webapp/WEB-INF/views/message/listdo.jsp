@@ -13,7 +13,7 @@
 <table class="stripe" width="100%">
 	<tbody>
 			<tr>
-			<td >时间</td>
+			<td>时间</td>
 			<td >消息内容</td>
 		</tr>
 		<%
@@ -26,8 +26,8 @@
 										
 		%>
 		<tr>
-			<td style="word-break:break-word; width:50px;"><%=ParseHelper.ToDateString(message.getPubdate())%></td>
-			<td style="word-break:break-word; width:200px;"><%=message.getContent()%></td>
+			<td><%=ParseHelper.ToDateString(message.getPubdate())%></td>
+			<td width="87%" style="text-align: left;word-break : break-all; "><%=message.getContent()%></td>
 		</tr>
 		<%
 			}

@@ -22,6 +22,7 @@ public class PagedOrderSearchReq extends PagedRequestBase{
      private String hidDaochu ;  
      private String deliveryCompany ;
      private Integer businessID ; 
+     private Integer auditStatus;
      /**
       * 超人电话
       */
@@ -183,6 +184,20 @@ public class PagedOrderSearchReq extends PagedRequestBase{
 	}
 	public void setBusinessID(Integer businessID) {
 		this.businessID = businessID;
+	}
+	/**
+	 * 订单审核状态
+	 * @return
+	 */
+	public Integer getAuditStatus() {
+		return auditStatus;
+	}
+	/**
+	 *  订单审核状态
+	 * @param auditStatus
+	 */
+	public void setAuditStatus(Integer auditStatus) {
+		this.auditStatus = auditStatus;
 	}
 
 

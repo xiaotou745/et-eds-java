@@ -44,4 +44,15 @@ public interface IBusinessClienterRelationDao {
 	 * @return
 	 */
 	boolean addClienterBind(ClienterBindOptionReq req);
+	
+	/**
+	 * 获得骑士关系详情
+	 * @author pengyi
+	 * @date 2015年9月7日 下午3:00:15
+	 * @version 1.0
+	 * @param businessId
+	 * @param clienterId
+	 * @return
+	 */
+    BusinessClienterRelation getDetails(int businessId,int clienterId);
 }

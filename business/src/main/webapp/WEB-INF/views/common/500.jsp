@@ -3,28 +3,51 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@ page import="java.io.*"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("static.business.url");
     //response.setStatus(HttpServletResponse.SC_OK);
 %>
-<script src="<%=basePath%>/js/jquery-2.1.1.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>报错</title>
+	<meta charset="utf-8" />
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/base.css">
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/commen.css">
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/noFound.css">
+	<script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.2.min.js"></script>
 <script>
 $(document).ready(function() {
+	function countH(){
+		var WinHeight = $(window).height();
+		var headerHeight = $('.header').height();
+		var contentHeight = $('.content').height();
+		$(".content").css({
+			"minHeight":WinHeight-headerHeight
+		})
+	};
+	countH();
 	$("#showErrorMessageButton").click(function() {
 		$("#errorMessageDiv").toggle();
 	});
+	$("#indexbtn").click(function() {
+		window.location.href = "<%=basePath%>/index";
+	});
 });
 </script>
-    <div class="middle-box text-center animated fadeInDown">
-        <h1>500</h1>
-        <h3 class="font-bold">服务器内部错误</h3>
+</head>
+<body>
 
-        <div class="error-desc">
-            服务器好像出错了...
-            <br/>您可以返回主页看看
-            <br/><a href="<%=basePath%>/order/list"  class="btn btn-primary m-t">主页</a>
-            <br/><a id="showErrorMessageButton" href="javascript:void">详细错误信息</a>
-        </div>
-    </div>
+<div class="header">
+	<a class="logo fl" href="javascript:;"><img src="<%=basePath%>/images/logo.png" width="74" height="25" alt=""></a>
+	<b class="fl">商家中心</b>
+</div>
+<div class="content cb">
+	<img class="img" src="<%=basePath%>/images/500.png" width="598" height="348" alt="500图片">
+	<h3>服务器内部错误</h3>
+	<h2>服务器好像出错了…您可以访问首页看看</h2>
+	<input type="button" id="indexbtn" value="商家中心首页">
+	<a id="showErrorMessageButton"  href="javascript:void(0)">详细错误信息</a>
+</div>
 <div id="errorMessageDiv" style="display:none;">
 	<pre>
                 <%
@@ -70,6 +93,5 @@ $(document).ready(function() {
                 %>
             </pre>
 </div>
-
-
-
+</body>
+</html>

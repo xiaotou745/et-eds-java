@@ -72,7 +72,16 @@ public class OrderListModel {
     private String receiptPic ;
     private String otherCancelReason ;
      private List<OrderChild> OrderChildList ;
-    /**
+     private Integer auditStatus;
+    public Integer getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(Integer auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+	/**
     / 子订单
     */
     private List<OrderDetail> OrderDetailList ;
