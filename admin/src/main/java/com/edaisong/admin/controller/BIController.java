@@ -28,7 +28,7 @@ public class BIController {
 	public ModelAndView everyday(){
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "每日数据统计");
-		view.addObject("currenttitle", "每日数据统计");
+		view.addObject("currenttitle", "每日数据统计"); 
 		view.addObject("viewPath", "bi/everyday");
 		List<Everyday> list= biService.queryEveryDay();
 		view.addObject("everyDayData",list);
