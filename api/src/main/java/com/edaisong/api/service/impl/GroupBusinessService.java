@@ -18,9 +18,8 @@ public class GroupBusinessService implements IGroupBusinessService {
 @Autowired 
 IGroupBusinessDao groupBusinessDao;
 	@Override
-	public PagedResponse<GroupBusiness> getBusinessList(
-			PagedGroupBusinessReq req) {
-return groupBusinessDao.getBusinessList(req);
+	public PagedResponse<GroupBusiness> getBusinessList(PagedGroupBusinessReq req) {
+			return groupBusinessDao.getBusinessList(req);
 	}
 
 	@Override

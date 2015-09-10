@@ -1159,10 +1159,9 @@ select  b.Id as ClienterId ,
         b.TrueName as ClienterName ,
         SUM(a.OrderCount) as OrderCount ,
         CONVERT(VARCHAR(100), a.PubDate, 23) as PubDate
-        -- , CONVERT(VARCHAR(4),DATEPART(day, a.PubDate))+'日' as DayInfo
 from    dbo.[order] a
         join dbo.clienter b on a.clienterId = b.Id
-where   a.Status = 1  --and businessId=2008  
+where   a.Status = 1   --and businessId=2008  
 group by b.Id ,
         b.PhoneNo,
         b.TrueName ,
@@ -1194,6 +1193,15 @@ from    ( select    CONVERT(VARCHAR(100), DATEADD(dd, number, @sdate), 23) as Mo
                     where   Status = 1
                     group by CONVERT(VARCHAR(100), PubDate, 23)
                   ) as b on a.MonthDate = b.OrderDate
+	</select>
+			<!-- B端任务统计接口  天数据列表  add by caoheyang 20150910 -->
+	<select id="getOrderStatistics" parameterType="java.util.Map"   resultType="com.edaisong.entity.resp.OrderStatisticsResp">
+select  SUM(ordercount) as OrderCount ,
+        COUNT(distinct clienterId) as ServiceClienterCount ,
+        SUM(Amount) as TotalAmount
+from    dbo.[order]
+where   Status = 1
+        and PubDate >= '2015-09-01' 
 	</select>
 	
 </mapper>

@@ -26,6 +26,7 @@ import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.resp.OrderStatisticsResp;
 
 @Repository
 public class OrderDao extends DaoBase implements IOrderDao {	
@@ -241,6 +242,19 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		 Map< String, Object> maspHashMap=new HashedMap(); 
 			return getReadOnlySqlSessionUtil().selectList(
 					"com.edaisong.api.dao.inter.IOrderDao.getOrderStatisticsDaySatistics", 
+					maspHashMap);
+	}
+
+	/**
+	 * B端任务统计接口   add by caoheyang 20150910
+	 * @author CaoHeYang
+	 * @return
+	 */
+	@Override
+	public OrderStatisticsResp getOrderStatistics() {
+		 Map< String, Object> maspHashMap=new HashedMap(); 
+			return getReadOnlySqlSessionUtil().selectOne(
+					"com.edaisong.api.dao.inter.IOrderDao.getOrderStatistics", 
 					maspHashMap);
 	}
 	

@@ -8,7 +8,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.objenesis.instantiator.basic.NewInstanceInstantiator;
 import org.springframework.stereotype.Service;
@@ -953,19 +955,14 @@ public class OrderService implements IOrderService {
 	 */
 	@Override
 	public OrderStatisticsResp getOrderStatisticsB() {
-		OrderStatisticsResp orderStatisticsResp=new OrderStatisticsResp();
-		List<ServiceClienter> serviceClienters=orderDao.getOrderStatisticsServiceClienterB();
-		List<DaySatisticsB>   daySatisticsBs=  orderDao.getOrderStatisticsDaySatistics();
-//		Predicate<String> matched = s -> s.equalsIgnoreCase("2015-09-10");
-//		
-//		serviceClienters.filter(matched);
-		for (DaySatisticsB serviceClienter : daySatisticsBs) {
-			System.out.println(JsonUtil.obj2string(serviceClienter));
-			}
-		for (ServiceClienter serviceClienter : serviceClienters) {
-		System.out.println(JsonUtil.obj2string(serviceClienter));
+		OrderStatisticsResp orderStatisticsResp=orderDao.getOrderStatistics();
+		List<ServiceClienter> serviceClienters=orderDao.getOrderStatisticsServiceClienterB();  //B端任务统计接口 
+		List<DaySatisticsB>   daySatisticsBs=  orderDao.getOrderStatisticsDaySatistics(); //B端任务统计接口 天数据列表 
+		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
+			List<ServiceClienter>  temp=serviceClienters.stream().filter(t ->t.getPubDate().equals(daySatisticsB.getMonthDate())).collect(Collectors.toList());;
+			daySatisticsB.setServiceClienters(temp);
 		}
-		// TODO Auto-generated method stub
+		orderStatisticsResp.setDatas(daySatisticsBs);
 		return orderStatisticsResp;
 	}
 

@@ -7,6 +7,7 @@
     <result column="MenuName" property="menuname" jdbcType="VARCHAR" />
     <result column="BeLock" property="belock" jdbcType="BIT" />
     <result column="Url" property="url" jdbcType="VARCHAR" />
+    <result column="JavaUrl" property="javaUrl" jdbcType="VARCHAR" />
     <result column="IsButton" property="isbutton" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -18,9 +19,9 @@
     where Id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.AuthorityMenuClass" >
-    insert into AuthorityMenuClass (Id, ParId, MenuName, 
+    insert into AuthorityMenuClass (ParId, MenuName, 
       BeLock, Url, IsButton)
-    values (#{id,jdbcType=INTEGER}, #{parid,jdbcType=INTEGER}, #{menuname,jdbcType=VARCHAR}, 
+    values (#{parid,jdbcType=INTEGER}, #{menuname,jdbcType=VARCHAR}, 
       #{belock,jdbcType=BIT}, #{url,jdbcType=VARCHAR}, #{isbutton,jdbcType=BIT})
   </insert>
   <select id="getMenuListByUserID" resultType="com.edaisong.entity.MenuEntity" parameterType="java.lang.Integer" >
@@ -107,5 +108,13 @@ FROM    AuthorityMenuClass a WITH ( NOLOCK )
                     FROM    AuthorityRoleMentMenuSet b WITH ( NOLOCK )
                     WHERE   b.roleid = #{roleID}
                   ) t ON a.Id = t.MenuId 
+  </select>
+  
+  <select id="getListMenuByParId" resultMap="BaseResultMap" parameterType="int">
+  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,JavaUrl FROM AuthorityMenuClass with(nolock) where ParId=#{parId,jdbcType=INTEGER} 
+  </select>
+  
+    <select id="getMenuById" resultMap="BaseResultMap" parameterType="int">
+  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,JavaUrl FROM AuthorityMenuClass with(nolock) where Id=#{Id,jdbcType=INTEGER} 
   </select>
 </mapper>

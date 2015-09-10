@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IFeedbackDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.Feedback" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="FeedbackId" property="feedbackid" jdbcType="INTEGER" />
+    <result column="UserType" property="usertype" jdbcType="SMALLINT" />
+    <result column="FeedbackType" property="feedbacktype" jdbcType="SMALLINT" />
+    <result column="Content" property="content" jdbcType="NVARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, FeedbackId, UserType, FeedbackType, Content, CreateTime
+  </sql>
+  
+  <sql id="queryWhere">
+		1=1
+		<if test="usertype != null and usertype>-1">
+			and t.UserType=${usertype}
+		</if>
+		<if test="feedbacktype != null and feedbacktype>-1">
+			and t.FeedbackType=${feedbacktype}			
+		</if>
+		<if test="city != null and city!='-1'">
+		    and t.City=''${city}''			
+		</if>
+		<if test="statrTime != null and statrTime!=''">
+			and t.CreateTime>= ''${statrTime}''
+		</if>
+	     <if test="endTime != null and endTime!=''">
+			and ''${endTime}''>=t.CreateTime
+		</if>	
+	</sql>
+	
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from Feedback
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  
+    <select id="query" resultType="com.edaisong.entity.domain.FeedbackModel" 
+  parameterType="com.edaisong.entity.req.PagedFeedbackReq" 
+  statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+' UserType,  id DESC',
+'UserType, FeedbackType,Content,CreateTime,	 id, Name, PhoneNo, City',
+' (
+	SELECT f.Id,f.UserType, f.FeedbackType,f.Content,f.CreateTime,
+	 b.Name, b.PhoneNo, b.City FROM Feedback f with(nolock) 
+	JOIN dbo.business   b with(nolock)  ON f.FeedbackId= b.Id AND f.userType=1
+	UNION
+	SELECT f.Id,f.UserType,f.FeedbackType,f.Content,f.CreateTime,
+       c.TrueName as Name , c.PhoneNo, c.City FROM Feedback f with(nolock) 
+	JOIN dbo.clienter   c with(nolock)  ON f.FeedbackId= c.Id AND f.userType=2
+) AS t',
+'<include refid="queryWhere" />',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER}
+,1,
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
+)}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from Feedback
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.Feedback" >
+    insert into Feedback (Id, FeedbackId, UserType, 
+      FeedbackType, Content, CreateTime
+      )
+    values (#{id,jdbcType=BIGINT}, #{feedbackid,jdbcType=INTEGER}, #{usertype,jdbcType=SMALLINT}, 
+      #{feedbacktype,jdbcType=SMALLINT}, #{content,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.Feedback" >
+    insert into Feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="feedbackid != null" >
+        FeedbackId,
+      </if>
+      <if test="usertype != null" >
+        UserType,
+      </if>
+      <if test="feedbacktype != null" >
+        FeedbackType,
+      </if>
+      <if test="content != null" >
+        Content,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="feedbackid != null" >
+        #{feedbackid,jdbcType=INTEGER},
+      </if>
+      <if test="usertype != null" >
+        #{usertype,jdbcType=SMALLINT},
+      </if>
+      <if test="feedbacktype != null" >
+        #{feedbacktype,jdbcType=SMALLINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Feedback" >
+    update Feedback
+    <set >
+      <if test="feedbackid != null" >
+        FeedbackId = #{feedbackid,jdbcType=INTEGER},
+      </if>
+      <if test="usertype != null" >
+        UserType = #{usertype,jdbcType=SMALLINT},
+      </if>
+      <if test="feedbacktype != null" >
+        FeedbackType = #{feedbacktype,jdbcType=SMALLINT},
+      </if>
+      <if test="content != null" >
+        Content = #{content,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Feedback" >
+    update Feedback
+    set FeedbackId = #{feedbackid,jdbcType=INTEGER},
+      UserType = #{usertype,jdbcType=SMALLINT},
+      FeedbackType = #{feedbacktype,jdbcType=SMALLINT},
+      Content = #{content,jdbcType=NVARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
