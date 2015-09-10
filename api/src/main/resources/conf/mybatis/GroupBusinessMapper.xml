@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dao.inter.IGroupBusinessMapper" >
+<mapper namespace="com.edaisong.api.dao.inter.IGroupBusinessDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.GroupBusiness" >
     <id column="Id" property="id" jdbcType="INTEGER" />
     <result column="GroupBusiName" property="groupbusiname" jdbcType="NVARCHAR" />
@@ -14,8 +14,17 @@
     <result column="IsValid" property="isvalid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, GroupBusiName, PhoneNo, Password, CreateName, CreateTime, ModifyName, ModifyTime, 
+    Id, GroupBusiName, LoginName, Password, CreateName, CreateTime, ModifyName, ModifyTime, 
     Amount, IsValid
+  </sql>
+  <sql id="GetGroupBusinessTable" >
+     dbo.groupbusiness(nolock) 
+  </sql>
+  <sql id="GetGroupBusinessWhere" >
+     1=1
+		<if test="GroupBusiName != null and GroupBusiName!=''">
+			and GroupBusiName like ''%${GroupBusiName}%''
+		</if> 
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -23,10 +32,7 @@
     from GroupBusiness
     where Id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from GroupBusiness
-    where Id = #{id,jdbcType=INTEGER}
-  </delete>
+ 
   <insert id="insert" parameterType="com.edaisong.entity.GroupBusiness" >
     insert into GroupBusiness (Id, GroupBusiName, PhoneNo, 
       Password, CreateName, CreateTime, 
@@ -150,4 +156,27 @@
       IsValid = #{isvalid,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!--后台集团商户管理页面 WangChao -->
+	<select id="getPageList" resultType="com.edaisong.entity.domain.GroupBusinessModel"
+		parameterType="com.edaisong.entity.req.PagedGroupBusinessReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' Id desc ',
+		'
+		<include refid="Base_Column_List" />
+		',
+		'
+		<include refid="GetGroupBusinessTable" />
+		',
+		'
+		<include refid="GetGroupBusinessWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 </mapper>
