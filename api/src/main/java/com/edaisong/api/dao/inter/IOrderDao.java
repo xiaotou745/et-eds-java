@@ -17,6 +17,7 @@ import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.resp.OrderStatisticsResp;
 
 public interface IOrderDao {
 
@@ -163,5 +164,12 @@ public interface IOrderDao {
 	 * @return
 	 */
 	List<DaySatisticsB> getOrderStatisticsDaySatistics();
+	/**
+	 * B端任务统计接口   add by caoheyang 20150910
+	 * @author CaoHeYang
+	 * @return
+	 */
+	OrderStatisticsResp  getOrderStatistics();
+	
 	
 }
