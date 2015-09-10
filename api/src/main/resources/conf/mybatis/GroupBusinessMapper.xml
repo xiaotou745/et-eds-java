@@ -22,94 +22,23 @@
   </sql>
   <sql id="GetGroupBusinessWhere" >
      1=1
-		<if test="GroupBusiName != null and GroupBusiName!=''">
-			and GroupBusiName like ''%${GroupBusiName}%''
+		<if test="groupBusinessName != null and groupBusinessName !=''">
+			and GroupBusiName like ''%${groupBusinessName}%''
 		</if> 
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from GroupBusiness
+    from GroupBusiness (nolock)
     where Id = #{id,jdbcType=INTEGER}
   </select>
  
   <insert id="insert" parameterType="com.edaisong.entity.GroupBusiness" >
-    insert into GroupBusiness (Id, GroupBusiName, PhoneNo, 
-      Password, CreateName, CreateTime, 
-      ModifyName, ModifyTime, Amount, 
-      IsValid)
-    values (#{id,jdbcType=INTEGER}, #{groupbusiname,jdbcType=NVARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
-      #{password,jdbcType=NVARCHAR}, #{createname,jdbcType=NCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{modifyname,jdbcType=NCHAR}, #{modifytime,jdbcType=TIMESTAMP}, #{amount,jdbcType=DECIMAL}, 
-      #{isvalid,jdbcType=INTEGER})
+    insert into GroupBusiness ( GroupBusiName, LoginName, 
+      Password, CreateName) output Inserted.Id,Inserted.CreateName,Inserted.CreateTime,'添加集团商户' into dbo.GroupBusinessLog(GroupBusinessId,OptName,OptTime,Remark) 
+    values (#{groupbusiname,jdbcType=NVARCHAR}, #{loginname,jdbcType=VARCHAR}, #{password,jdbcType=NVARCHAR}, #{createname,jdbcType=NCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.GroupBusiness" >
-    insert into GroupBusiness
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="groupbusiname != null" >
-        GroupBusiName,
-      </if>
-      <if test="phoneno != null" >
-        PhoneNo,
-      </if>
-      <if test="password != null" >
-        Password,
-      </if>
-      <if test="createname != null" >
-        CreateName,
-      </if>
-      <if test="createtime != null" >
-        CreateTime,
-      </if>
-      <if test="modifyname != null" >
-        ModifyName,
-      </if>
-      <if test="modifytime != null" >
-        ModifyTime,
-      </if>
-      <if test="amount != null" >
-        Amount,
-      </if>
-      <if test="isvalid != null" >
-        IsValid,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="groupbusiname != null" >
-        #{groupbusiname,jdbcType=NVARCHAR},
-      </if>
-      <if test="phoneno != null" >
-        #{phoneno,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=NVARCHAR},
-      </if>
-      <if test="createname != null" >
-        #{createname,jdbcType=NCHAR},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyname != null" >
-        #{modifyname,jdbcType=NCHAR},
-      </if>
-      <if test="modifytime != null" >
-        #{modifytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="amount != null" >
-        #{amount,jdbcType=DECIMAL},
-      </if>
-      <if test="isvalid != null" >
-        #{isvalid,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+   
   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.GroupBusiness" >
     update GroupBusiness
     <set >
@@ -146,14 +75,17 @@
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GroupBusiness" >
     update GroupBusiness
     set GroupBusiName = #{groupbusiname,jdbcType=NVARCHAR},
-      PhoneNo = #{phoneno,jdbcType=VARCHAR},
-      Password = #{password,jdbcType=NVARCHAR},
-      CreateName = #{createname,jdbcType=NCHAR},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      LoginName = #{loginname,jdbcType=VARCHAR},
+      <if test="password != ''">
+        Password = #{password,jdbcType=NVARCHAR},
+      </if>  
       ModifyName = #{modifyname,jdbcType=NCHAR},
-      ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
-      Amount = #{amount,jdbcType=DECIMAL},
-      IsValid = #{isvalid,jdbcType=INTEGER}
+      ModifyTime = getdate() 
+      output  Inserted.Id ,
+        Inserted.CreateName ,
+        Inserted.CreateTime ,
+        '修改集团名称' + Deleted.GroupBusiName + '为' + Inserted.GroupBusiName + ',登陆名' + Deleted.LoginName + '修改为' + Inserted.LoginName + ',修改密码'
+        into dbo.GroupBusinessLog ( GroupBusinessId, OptName, OptTime, Remark )
     where Id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -179,4 +111,22 @@
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
+  <!--查询单条商户管理 -->
+	<select id="getSingle" resultType="com.edaisong.entity.domain.GroupBusinessModel"
+		parameterType="com.edaisong.entity.req.GroupBusinessReq"
+		statementType="CALLABLE">
+		select
+		<include refid="Base_Column_List" />
+		from GroupBusiness (nolock) where 1=1 
+	  <if test="id != null" >
+        and id= #{id,jdbcType=INTEGER} 
+      </if>
+      <if test="groupBusinessName != null" >
+        and GroupBusiName=#{groupBusinessName,jdbcType=NVARCHAR}
+      </if>
+      <if test="loginName != null" >
+        and loginName=#{loginName,jdbcType=VARCHAR}
+      </if>
+	</select>
+	
 </mapper>
