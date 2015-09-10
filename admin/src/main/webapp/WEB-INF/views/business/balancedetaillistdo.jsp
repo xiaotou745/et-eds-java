@@ -28,6 +28,7 @@ if(data == null){
 								<th>交易类型</th>
 								<th>任务单号/交易流水号</th>
 								<th>收支金额</th>
+								<th>支出方</th>
 								<th>余额</th>
 								<th>状态</th>
 								<th>时间</th>
@@ -51,6 +52,7 @@ if(data == null){
 								<%}%>
 								</td>
 						<td>￥<%=data.get(i).getAmount() %></td>
+						<td><%=data.get(i).getGroupid() != null && data.get(i).getGroupid() > 0 ? "集团" : "门店" %></td>
                         <td>￥<%=data.get(i).getBalance() %></td>
                         <td><%=data.get(i).getStatus()==BusinessBalanceRecordStatus.Success.value()? "交易成功" : "交易中"%></td>
                         <td><%=ParseHelper.ToDateString(data.get(i).getOperatetime()) %></td>

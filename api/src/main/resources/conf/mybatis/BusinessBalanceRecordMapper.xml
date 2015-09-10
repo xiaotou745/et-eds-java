@@ -14,13 +14,13 @@
     <result column="RelationNo" property="relationno" jdbcType="VARCHAR" />
     <result column="Remark" property="remark" jdbcType="NVARCHAR" />
     <result column="IsEnable" jdbcType="SMALLINT" property="isenable" />
-    <result column="GroupBizId" jdbcType="INTEGER" property="groupbizid" />
-    <result column="GroupBizBeforeBalance" jdbcType="DECIMAL" property="groupbizbeforebalance" />
-    <result column="GroupBizAfterBalance" jdbcType="DECIMAL" property="groupbizafterbalance" />
+    <result column="groupid" jdbcType="INTEGER" property="groupid" />
+    <result column="groupbeforebalance" jdbcType="DECIMAL" property="groupbeforebalance" />
+    <result column="groupafterbalance" jdbcType="DECIMAL" property="groupafterbalance" />
   </resultMap>
   <sql id="Base_Column_List" >
     Id, BusinessId, Amount, Status, Balance, RecordType, Operator, OperateTime, WithwardId, 
-    RelationNo, Remark, IsEnable, GroupBizId, GroupBizBeforeBalance, GroupBizAfterBalance
+    RelationNo, Remark, IsEnable, groupid, groupbeforebalance, groupafterbalance
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -35,11 +35,11 @@
   <insert id="insert" parameterType="com.edaisong.entity.BusinessBalanceRecord">
 		insert into
 		BusinessBalanceRecord
-		(BusinessId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark,GroupBizId, GroupBizBeforeBalance, GroupBizAfterBalance)
+		(BusinessId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark,groupid, groupbeforebalance, groupafterbalance)
 		select #{businessid,jdbcType=INTEGER},
 		#{amount,jdbcType=DECIMAL},#{status,jdbcType=SMALLINT},b.BalancePrice,#{recordtype,jdbcType=SMALLINT},#{operator,jdbcType=NVARCHAR}
 		,#{withwardid,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
-		,#{groupbizid,jdbcType=INTEGER}, #{groupbizbeforebalance,jdbcType=DECIMAL}, #{groupbizafterbalance,jdbcType=DECIMAL}
+		,#{groupid,jdbcType=INTEGER}, #{groupbeforebalance,jdbcType=DECIMAL}, #{groupafterbalance,jdbcType=DECIMAL}
 		from dbo.business as b where Id=#{businessid,jdbcType=INTEGER} ;
 		select @@IDENTITY
   </insert>
@@ -82,14 +82,14 @@
       <if test="isenable != null">
         IsEnable,
       </if>
-      <if test="groupbizid != null">
-        GroupBizId,
+      <if test="groupid != null">
+        groupid,
       </if>
-      <if test="groupbizbeforebalance != null">
-        GroupBizBeforeBalance,
+      <if test="groupbeforebalance != null">
+        groupbeforebalance,
       </if>
-      <if test="groupbizafterbalance != null">
-        GroupBizAfterBalance,
+      <if test="groupafterbalance != null">
+        groupafterbalance,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -129,14 +129,14 @@
       <if test="isenable != null">
         #{isenable,jdbcType=SMALLINT},
       </if>
-      <if test="groupbizid != null">
-        #{groupbizid,jdbcType=INTEGER},
+      <if test="groupid != null">
+        #{groupid,jdbcType=INTEGER},
       </if>
-      <if test="groupbizbeforebalance != null">
-        #{groupbizbeforebalance,jdbcType=DECIMAL},
+      <if test="groupbeforebalance != null">
+        #{groupbeforebalance,jdbcType=DECIMAL},
       </if>
-      <if test="groupbizafterbalance != null">
-        #{groupbizafterbalance,jdbcType=DECIMAL},
+      <if test="groupafterbalance != null">
+        #{groupafterbalance,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -176,14 +176,14 @@
       <if test="isenable != null">
         IsEnable = #{isenable,jdbcType=SMALLINT},
       </if>
-      <if test="groupbizid != null">
-        GroupBizId = #{groupbizid,jdbcType=INTEGER},
+      <if test="groupid != null">
+        groupid = #{groupid,jdbcType=INTEGER},
       </if>
-      <if test="groupbizbeforebalance != null">
-        GroupBizBeforeBalance = #{groupbizbeforebalance,jdbcType=DECIMAL},
+      <if test="groupbeforebalance != null">
+        groupbeforebalance = #{groupbeforebalance,jdbcType=DECIMAL},
       </if>
-      <if test="groupbizafterbalance != null">
-        GroupBizAfterBalance = #{groupbizafterbalance,jdbcType=DECIMAL},
+      <if test="groupafterbalance != null">
+        groupafterbalance = #{groupafterbalance,jdbcType=DECIMAL},
       </if>
     </set>
     where Id = #{id,jdbcType=BIGINT}
@@ -201,9 +201,9 @@
       RelationNo = #{relationno,jdbcType=VARCHAR},
       Remark = #{remark,jdbcType=NVARCHAR},
       IsEnable = #{isenable,jdbcType=SMALLINT},
-      GroupBizId = #{groupbizid,jdbcType=INTEGER},
-      GroupBizBeforeBalance = #{groupbizbeforebalance,jdbcType=DECIMAL},
-      GroupBizAfterBalance = #{groupbizafterbalance,jdbcType=DECIMAL}
+      groupid = #{groupid,jdbcType=INTEGER},
+      groupbeforebalance = #{groupbeforebalance,jdbcType=DECIMAL},
+      groupafterbalance = #{groupafterbalance,jdbcType=DECIMAL}
     where Id = #{id,jdbcType=BIGINT}
   </update>
   <!-- 获取交易明细的Where条件 -->
@@ -230,7 +230,7 @@
   parameterType="com.edaisong.entity.req.PagedTransDetailReq" statementType="CALLABLE">  
 {call Sp_CustomPage2015_V1(
 ' bbr.OperateTime DESC ',
-' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,isnull(bbr.WithwardId,0) as WithwardId,bbr.Amount,bbr.Balance,bbr.Status,OperateTime,Remark,Operator ',
+' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,isnull(bbr.WithwardId,0) as WithwardId,bbr.Amount,bbr.Balance,bbr.Status,OperateTime,Remark,Operator,bbr.groupid ',
 ' BusinessBalanceRecord AS bbr (nolock) ',
 ' <include refid="getTransDetailListWhere"/> ',
 #{pageSize,mode=IN,jdbcType=INTEGER},
@@ -324,9 +324,9 @@
       ,bbr.[RelationNo]
       ,bbr.[Remark]
       ,bbr.[IsEnable]
-      ,bbr.[GroupBizId]
-      ,bbr.[GroupBizBeforeBalance]
-      ,bbr.[GroupBizAfterBalance]
+      ,bbr.[groupid]
+      ,bbr.[groupbeforebalance]
+      ,bbr.[groupafterbalance]
       ,bfa.AccountNo
       ,bfa.OpenBank
 	FROM [BusinessBalanceRecord] bbr WITH(NOLOCK)
