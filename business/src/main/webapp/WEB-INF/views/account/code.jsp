@@ -2,7 +2,7 @@
 <%@ page contentType="image/jpeg" language="java" import="java.util.*,java.awt.*,java.awt.image.*,javax.imageio.*" pageEncoding="utf-8"%>  
 <%@ page import="com.edaisong.core.util.RandomCodeImgHelper" %>
 <%@ page import="com.edaisong.core.util.RandomCodeStrGenerator" %>
-<%@ page import="com.edaisong.core.consts.GlobalSettings" %>
+<%@ page import="com.edaisong.business.common.LoginUtil" %>
 <%
 	//设置页面不缓存  
     response.setHeader("Pragma","no-cache");  
@@ -11,7 +11,7 @@
       
     String sRand = RandomCodeStrGenerator.generateCode(4);
     BufferedImage image = RandomCodeImgHelper.getCodeImg(sRand);
-    LoginHelper.storeAuthCode2Redis(sRand,GlobalSettings.BUSINESS_JSESSIONID, request, response);
+    LoginHelper.storeAuthCode2Redis(sRand,LoginUtil.BUSINESS_JSESSIONID, request, response);
 
     //输出图像到页面  
     ImageIO.write(image,"JPEG",response.getOutputStream());  
