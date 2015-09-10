@@ -28,6 +28,7 @@
 			<ref bean="testService" />
 			<ref bean="commonService" />
 			<ref bean="messageHttpService" />
+			<ref bean="accountBillService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:inInterceptors>
 			<!-- <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean> -->
