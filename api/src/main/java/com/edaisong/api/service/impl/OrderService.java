@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.objenesis.instantiator.basic.NewInstanceInstantiator;
@@ -956,16 +957,11 @@ public class OrderService implements IOrderService {
 		OrderStatisticsResp orderStatisticsResp=new OrderStatisticsResp();
 		List<ServiceClienter> serviceClienters=orderDao.getOrderStatisticsServiceClienterB();
 		List<DaySatisticsB>   daySatisticsBs=  orderDao.getOrderStatisticsDaySatistics();
-//		Predicate<String> matched = s -> s.equalsIgnoreCase("2015-09-10");
-//		
-//		serviceClienters.filter(matched);
-		for (DaySatisticsB serviceClienter : daySatisticsBs) {
-			System.out.println(JsonUtil.obj2string(serviceClienter));
-			}
-		for (ServiceClienter serviceClienter : serviceClienters) {
-		System.out.println(JsonUtil.obj2string(serviceClienter));
+		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
+			List<ServiceClienter>  temp=serviceClienters.stream().filter(t ->t.getPubDate().equals(daySatisticsB.getMonthDate())).collect(Collectors.toList());;
+			daySatisticsB.setServiceClienters(temp);
 		}
-		// TODO Auto-generated method stub
+		orderStatisticsResp.setDatas(daySatisticsBs);
 		return orderStatisticsResp;
 	}
 
