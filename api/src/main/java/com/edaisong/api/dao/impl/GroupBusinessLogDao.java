@@ -1,8 +1,10 @@
 package com.edaisong.api.dao.impl;
 
+import org.springframework.stereotype.Repository;
+
 import com.edaisong.api.dao.inter.IGroupBusinessLogDao;
 import com.edaisong.entity.GroupBusinessLog;
-
+@Repository
 public class GroupBusinessLogDao implements IGroupBusinessLogDao {
 
 	@Override

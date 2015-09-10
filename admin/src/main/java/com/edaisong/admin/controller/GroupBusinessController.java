@@ -7,7 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.edaisong.entity.domain.GroupBusinessModel;
+import com.edaisong.entity.req.PagedGroupBusinessReq;
 import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IGroupBusinessBindOptionLogService;
 import com.edaisong.api.service.inter.IGroupBusinessRelationService;
@@ -21,7 +22,7 @@ import com.edaisong.entity.req.PagedBizBindsReq;
 import com.edaisong.entity.req.PagedBusinessBindLogReq;
 
 /**
- * 集团controller
+ * 集团商户controller
  * @author  pengyi 
  * @date 2015年9月9日 上午10:20:39
  * @version 1.0
@@ -29,13 +30,38 @@ import com.edaisong.entity.req.PagedBusinessBindLogReq;
  * @since
  */
 @Controller
+@RequestMapping("groupbusiness")
 public class GroupBusinessController {
 	
 	@Autowired
 	private IGroupBusinessRelationService groupBusinessRelationService;
 	@Autowired
 	private IGroupBusinessBindOptionLogService groupBusinessBindOptionLogService;
-	
+	@Autowired
+	 private IGroupBusinessService  groupBusinessService;
+	/*
+	 * 集团商户管理
+	 * WangChao
+	 */
+	@RequestMapping("list")
+	public ModelAndView list(){ 
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "集团商户管理");
+		model.addObject("currenttitle", "集团商户管理"); 
+		model.addObject("viewPath", "groupbusiness/list");
+		return model;
+	}
+	/*
+	 * 集团管理列表
+	 * WangChao
+	 */
+	@RequestMapping("listdo")
+	public ModelAndView listdo(PagedGroupBusinessReq req) {	 
+		PagedResponse<GroupBusinessModel> resp = groupBusinessService.getPageList(req); 
+		ModelAndView model = new ModelAndView("groupbusiness/listdo");
+		model.addObject("listData", resp);
+		return model;
+	}	
 	/**
 	 * 绑定列表(分页)
 	 * @author pengyi
