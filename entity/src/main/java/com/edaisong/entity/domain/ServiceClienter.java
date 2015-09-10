@@ -1,5 +1,9 @@
 package com.edaisong.entity.domain;
 
+import java.util.Date;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * B端任务统计接口 日服务骑士信息
  * @author CaoHeYang
@@ -7,10 +11,18 @@ package com.edaisong.entity.domain;
  */
 public class ServiceClienter {
 	private  int clienterId;
-	private  int clienterName;
-	private  int clienterPhone;
-	private  int clienterPhoto;
+	private  String clienterName;
+	private  String clienterPhone;
+	private  String clienterPhoto;
 	private  int orderCount;
+	@JsonIgnore
+	private  String pubDate; 
+	public String getPubDate() {
+		return pubDate;
+	}
+	public void setPubDate(String pubDate) {
+		this.pubDate = pubDate;
+	}
 	/**
 	 * 骑士id
 	 * @return
@@ -29,42 +41,42 @@ public class ServiceClienter {
 	 *骑士名称
 	 * @return
 	 */
-	public int getClienterName() {
+	public String getClienterName() {
 		return clienterName;
 	}
 	/**
 	 * 骑士名称
 	 * @param clienterName
 	 */
-	public void setClienterName(int clienterName) {
+	public void setClienterName(String clienterName) {
 		this.clienterName = clienterName;
 	}
 	/**
 	 * 骑士手机号
 	 * @return
 	 */
-	public int getClienterPhone() {
+	public String getClienterPhone() {
 		return clienterPhone;
 	}
 	/**
 	 * 骑士手机号
 	 * @param clienterPhone
 	 */
-	public void setClienterPhone(int clienterPhone) {
+	public void setClienterPhone(String clienterPhone) {
 		this.clienterPhone = clienterPhone;
 	}
 	/**
 	 * 骑士头像
 	 * @return
 	 */
-	public int getClienterPhoto() {
+	public String getClienterPhoto() {
 		return clienterPhoto;
 	}
 	/**
 	 * 骑士头像
 	 * @param clienterPhoto
 	 */
-	public void setClienterPhoto(int clienterPhoto) {
+	public void setClienterPhoto(String clienterPhoto) {
 		this.clienterPhoto = clienterPhoto;
 	}
 	/**

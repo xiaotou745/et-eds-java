@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.objenesis.instantiator.basic.NewInstanceInstantiator;
@@ -47,6 +49,7 @@ import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.BusinessBalanceRecord;
@@ -63,10 +66,12 @@ import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
+import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
@@ -80,6 +85,7 @@ import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
+import com.edaisong.entity.resp.OrderStatisticsResp;
 
 @Service
 public class OrderService implements IOrderService {
@@ -936,6 +942,27 @@ public class OrderService implements IOrderService {
 	 */
 	public List<ExportOrder> exportOrder(PagedOrderSearchReq search) {
 		return orderDao.exportOrder(search);
+	}
+
+
+	/**
+	 * B端任务统计接口
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	public OrderStatisticsResp getOrderStatisticsB() {
+		OrderStatisticsResp orderStatisticsResp=new OrderStatisticsResp();
+		List<ServiceClienter> serviceClienters=orderDao.getOrderStatisticsServiceClienterB();
+		List<DaySatisticsB>   daySatisticsBs=  orderDao.getOrderStatisticsDaySatistics();
+		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
+			List<ServiceClienter>  temp=serviceClienters.stream().filter(t ->t.getPubDate().equals(daySatisticsB.getMonthDate())).collect(Collectors.toList());;
+			daySatisticsB.setServiceClienters(temp);
+		}
+		orderStatisticsResp.setDatas(daySatisticsBs);
+		return orderStatisticsResp;
 	}
 
 }

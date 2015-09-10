@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edaisong.api.common.LoginHelper;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.business.common.LoginResp;
+import com.edaisong.business.common.LoginUtil;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
@@ -46,13 +47,13 @@ public class AccountController {
 			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
 			@RequestParam int rememberMe) {
 		//Object sessionCode = request.getSession().getAttribute("code");
-		String sessionCode = LoginHelper.getAuthCode(request,GlobalSettings.BUSINESS_JSESSIONID);
+		String sessionCode = LoginHelper.getAuthCode(request,LoginUtil.BUSINESS_JSESSIONID);
 		//一次性验证码,防止暴力破解
 		//request.getSession().removeAttribute("code");
-		LoginHelper.removeAuthCodeCookie(request, response,GlobalSettings.BUSINESS_JSESSIONID);
+		LoginHelper.removeAuthCodeCookie(request, response,LoginUtil.BUSINESS_JSESSIONID);
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
-		boolean isLogin = LoginHelper.checkIsLogin(request,response,GlobalSettings.BUSINESS_LOGIN_COOKIE_NAME);
+		boolean isLogin = LoginUtil.checkIsLogin(request,response,LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
 			resp.setSuccess(true);
@@ -87,7 +88,7 @@ public class AccountController {
 		if(!(rememberMe==1)){
 			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走
 		}
-		CookieUtils.setCookie(request,response, GlobalSettings.BUSINESS_LOGIN_COOKIE_NAME, key, cookieMaxAge,
+		CookieUtils.setCookie(request,response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, key, cookieMaxAge,
 				true);
 		//设置账户cookie
 		CookieUtils.setCookie(request,response, "username", phoneNo, 365 * 60 * 60 * 24,
@@ -108,10 +109,10 @@ public class AccountController {
 	@RequestMapping(value = "logoff")
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
-		Cookie cookie = CookieUtils.getCookieByName(GlobalSettings.BUSINESS_LOGIN_COOKIE_NAME, request);
+		Cookie cookie = CookieUtils.getCookieByName(LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, request);
 		if (cookie != null) {
-		    	redisService.remove(cookie.getValue());
-			CookieUtils.deleteCookie(request, response, cookie);
+		    redisService.remove(cookie.getValue());
+			CookieUtils.deleteCookie(request, response, cookie.getName());
 		}
 		response.sendRedirect(PropertyUtils.getProperty("static.business.url") + "/");
 	}
