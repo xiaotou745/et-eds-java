@@ -2,6 +2,7 @@ package com.edaisong.api_http.service.impl;
 
 import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
+import com.edaisong.entity.resp.OrderStatisticsResp;
 
 
 /**
@@ -19,7 +20,7 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<Object> orderStatisticsB(String data) {
+	public ResultModel<OrderStatisticsResp> orderStatisticsB(String data) {
 		return null;
 	}
 
