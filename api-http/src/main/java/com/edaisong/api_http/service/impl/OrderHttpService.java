@@ -29,7 +29,9 @@ public class OrderHttpService implements IOrderHttpService {
 	@Override
 	public ResultModel<OrderStatisticsResp> orderStatisticsB(String data) {
 		OrderStatisticsResp orderStatisticsResp=orderService.getOrderStatisticsB();
-		return null;
+		ResultModel<OrderStatisticsResp> resultModel=new ResultModel<OrderStatisticsResp>();
+		resultModel.setResult(orderStatisticsResp);
+		return resultModel;
 	}
 
 }
