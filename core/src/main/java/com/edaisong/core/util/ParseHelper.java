@@ -210,4 +210,25 @@ public class ParseHelper {
 			return text;
 		}
 	}
+	
+	/**
+	 * 判断当月有几天
+	 * @author 茹化肖
+	 * @date 20150828
+	 * @param text
+	 * @return
+	 */
+	public static Integer GetMixDay(String year,String month) {
+		try {
+			Calendar cal = Calendar.getInstance(); 
+			cal.set(Calendar.YEAR,Integer.parseInt(year)); 
+			cal.set(Calendar.MONTH, Integer.parseInt(month) - 1);//Java月份从0开始算 
+			int dateOfMonth = cal.getActualMaximum(Calendar.DATE); 
+			return dateOfMonth;
+			
+		} catch (Exception ex) {
+			return 0;
+		}
+		
+	}
 }

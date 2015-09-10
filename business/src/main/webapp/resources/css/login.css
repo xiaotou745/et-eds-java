@@ -7,6 +7,14 @@ p{text-align:justify; text-justify:inter-ideograph}/*对齐*/
 ul,ol {list-style-type:none;}
 img,input,textarea,h1,h2,h3,h4,h5,h6 {border:0px;font-family:Microsoft YaHei;}
 .clear{clear:both;height:0px;overflow:hidden;}
+.cb:after{
+	display:block;
+	content:"";
+	clear:both;
+}
+.cb{
+	zoom:1;
+}
 /*页面样式开始*/
 .ex_box{
 	width:100%;
@@ -50,10 +58,31 @@ img,input,textarea,h1,h2,h3,h4,h5,h6 {border:0px;font-family:Microsoft YaHei;}
 	background:#fff;
 }
 .right_for h3{
-	padding:26px 0 20px 25px;
-	font-size:20px;
-	color:#1c2831;
-	font-weight:normal;
+	padding-bottom:23px;
+}
+.right_for h3 span,
+.right_for h3 a{
+	float: left;
+	display: block;
+	width: 175px;
+	height: 54px;
+	line-height: 54px;
+	text-align: center;
+	color:#444;
+	font-size: 18px;
+	text-decoration:none;
+	font-weight: normal;
+	background-color:#f9f9f9;
+	border-bottom:1px solid #d9dbe2;
+}
+.right_for h3 span{
+	width: 174px;
+	border-right:1px solid #d9dbe2;
+}
+.right_for h3 .on{
+	color:#000;
+	background-color:#fff;
+	border-bottom:1px solid #fff;
 }
 .right_for input[type="text"],.right_for input[type="password"]{
 	margin-left:25px;
@@ -64,18 +93,7 @@ img,input,textarea,h1,h2,h3,h4,h5,h6 {border:0px;font-family:Microsoft YaHei;}
 	border:1px solid #c0c2cb;
 	border-radius:3px;
 }
-.right_for input[type="submit"]{
-	margin:26px 0 26px 25px;
-	width:298px;
-	height:43px;
-	color:#fff;
-	text-align:center;
-	line-height:43px;
-	background:#006699;
-	border-radius:3px;
-	cursor:pointer;
-}
-.ex_submit{
+.right_for input[type="button"]{
 	margin:26px 0 26px 25px;
 	width:298px;
 	height:43px;

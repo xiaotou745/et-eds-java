@@ -22,8 +22,30 @@ public class ClienterForzen {
     private String operator;
 
     private Date createdate;
+    
+    private String clienterName;
+    
+    private String clienterPhone;
+    
+    
 
-    public Integer getId() {
+    public String getClienterName() {
+		return clienterName;
+	}
+
+	public void setClienterName(String clienterName) {
+		this.clienterName = clienterName;
+	}
+
+	public String getClienterPhone() {
+		return clienterPhone;
+	}
+
+	public void setClienterPhone(String clienterPhone) {
+		this.clienterPhone = clienterPhone;
+	}
+
+	public Integer getId() {
         return id;
     }
 

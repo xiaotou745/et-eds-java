@@ -1,8 +1,8 @@
 package com.edaisong.api_http.entity;
 
 public class ResultModel  <T> {
-	private int Status;
-    private String Message;
+	private int Status=ReturnRnums.Success.value();
+    private String Message=ReturnRnums.Success.desc();
     private T Result;
     /**
      * 状态
@@ -15,8 +15,9 @@ public class ResultModel  <T> {
 	 * 状态
 	 * @param status
 	 */
-	public void setStatus(int status) {
+	public ResultModel<T>  setStatus(int status) {
 		Status = status;
+		return this;
 	}
 	/**
 	 * 状态
@@ -29,8 +30,9 @@ public class ResultModel  <T> {
 	 * 状态
 	 * @param message
 	 */
-	public void setMessage(String message) {
+	public ResultModel<T> setMessage(String message) {
 		Message = message;
+		return this;
 	}
 	/**
 	 * 
@@ -43,8 +45,9 @@ public class ResultModel  <T> {
 	 * 
 	 * @param result
 	 */
-	public void setResult(T result) {
+	public ResultModel<T> setResult(T result) {
 		Result = result;
+		return this;
 	}
 
 }

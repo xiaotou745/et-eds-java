@@ -1,117 +1,163 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dao.inter.GroupBusinessBindOptionLogMapper" >
-  <resultMap id="BaseResultMap" type="com.edaisong.entity.GroupBusinessBindOptionLog" >
-    <id column="Id" property="id" jdbcType="INTEGER" />
-    <result column="GroupBizId" property="groupbizid" jdbcType="INTEGER" />
-    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
-    <result column="OptId" property="optid" jdbcType="INTEGER" />
-    <result column="OptName" property="optname" jdbcType="NVARCHAR" />
-    <result column="InsertTime" property="inserttime" jdbcType="TIMESTAMP" />
-    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edaisong.api.dao.inter.IGroupBusinessBindOptionLogDao">
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.GroupBusinessBindOptionLog">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="groupid" jdbcType="INTEGER" property="groupid" />
+    <result column="BusinessId" jdbcType="INTEGER" property="businessid" />
+    <result column="OptId" jdbcType="INTEGER" property="optid" />
+    <result column="OptName" jdbcType="NVARCHAR" property="optname" />
+    <result column="InsertTime" jdbcType="TIMESTAMP" property="inserttime" />
+    <result column="Remark" jdbcType="NVARCHAR" property="remark" />
+    <result column="OptType" jdbcType="SMALLINT" property="opttype" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    Id, GroupBizId, BusinessId, OptId, OptName, InsertTime, Remark
+  <sql id="Base_Column_List">
+    Id, groupid, BusinessId, OptId, OptName, InsertTime, Remark, OptType
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from GroupBusinessBindOptionLog
     where Id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from GroupBusinessBindOptionLog
     where Id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.edaisong.entity.GroupBusinessBindOptionLog" >
-    insert into GroupBusinessBindOptionLog (Id, GroupBizId, BusinessId, 
+  <insert id="insert" parameterType="com.edaisong.entity.GroupBusinessBindOptionLog">
+    insert into GroupBusinessBindOptionLog (Id, groupid, BusinessId, 
       OptId, OptName, InsertTime, 
-      Remark)
-    values (#{id,jdbcType=INTEGER}, #{groupbizid,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, 
+      Remark, OptType)
+    values (#{id,jdbcType=INTEGER}, #{groupid,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, 
       #{optid,jdbcType=INTEGER}, #{optname,jdbcType=NVARCHAR}, #{inserttime,jdbcType=TIMESTAMP}, 
-      #{remark,jdbcType=NVARCHAR})
+      #{remark,jdbcType=NVARCHAR}, #{opttype,jdbcType=SMALLINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.GroupBusinessBindOptionLog" >
+  <insert id="insertSelective" parameterType="com.edaisong.entity.GroupBusinessBindOptionLog">
     insert into GroupBusinessBindOptionLog
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         Id,
       </if>
-      <if test="groupbizid != null" >
-        GroupBizId,
+      <if test="groupid != null">
+        groupid,
       </if>
-      <if test="businessid != null" >
+      <if test="businessid != null">
         BusinessId,
       </if>
-      <if test="optid != null" >
+      <if test="optid != null">
         OptId,
       </if>
-      <if test="optname != null" >
+      <if test="optname != null">
         OptName,
       </if>
-      <if test="inserttime != null" >
+      <if test="inserttime != null">
         InsertTime,
       </if>
-      <if test="remark != null" >
+      <if test="remark != null">
         Remark,
       </if>
+      <if test="opttype != null">
+        OptType,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="groupbizid != null" >
-        #{groupbizid,jdbcType=INTEGER},
+      <if test="groupid != null">
+        #{groupid,jdbcType=INTEGER},
       </if>
-      <if test="businessid != null" >
+      <if test="businessid != null">
         #{businessid,jdbcType=INTEGER},
       </if>
-      <if test="optid != null" >
+      <if test="optid != null">
         #{optid,jdbcType=INTEGER},
       </if>
-      <if test="optname != null" >
+      <if test="optname != null">
         #{optname,jdbcType=NVARCHAR},
       </if>
-      <if test="inserttime != null" >
+      <if test="inserttime != null">
         #{inserttime,jdbcType=TIMESTAMP},
       </if>
-      <if test="remark != null" >
+      <if test="remark != null">
         #{remark,jdbcType=NVARCHAR},
+      </if>
+      <if test="opttype != null">
+        #{opttype,jdbcType=SMALLINT},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.GroupBusinessBindOptionLog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.GroupBusinessBindOptionLog">
     update GroupBusinessBindOptionLog
-    <set >
-      <if test="groupbizid != null" >
-        GroupBizId = #{groupbizid,jdbcType=INTEGER},
+    <set>
+      <if test="groupid != null">
+        groupid = #{groupid,jdbcType=INTEGER},
       </if>
-      <if test="businessid != null" >
+      <if test="businessid != null">
         BusinessId = #{businessid,jdbcType=INTEGER},
       </if>
-      <if test="optid != null" >
+      <if test="optid != null">
         OptId = #{optid,jdbcType=INTEGER},
       </if>
-      <if test="optname != null" >
+      <if test="optname != null">
         OptName = #{optname,jdbcType=NVARCHAR},
       </if>
-      <if test="inserttime != null" >
+      <if test="inserttime != null">
         InsertTime = #{inserttime,jdbcType=TIMESTAMP},
       </if>
-      <if test="remark != null" >
+      <if test="remark != null">
         Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+      <if test="opttype != null">
+        OptType = #{opttype,jdbcType=SMALLINT},
       </if>
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GroupBusinessBindOptionLog" >
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GroupBusinessBindOptionLog">
     update GroupBusinessBindOptionLog
-    set GroupBizId = #{groupbizid,jdbcType=INTEGER},
+    set groupid = #{groupid,jdbcType=INTEGER},
       BusinessId = #{businessid,jdbcType=INTEGER},
       OptId = #{optid,jdbcType=INTEGER},
       OptName = #{optname,jdbcType=NVARCHAR},
       InsertTime = #{inserttime,jdbcType=TIMESTAMP},
-      Remark = #{remark,jdbcType=NVARCHAR}
+      Remark = #{remark,jdbcType=NVARCHAR},
+      OptType = #{opttype,jdbcType=SMALLINT}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <sql id="getBusinessBindLogListWhere">
+  	1=1
+  	<if test="groupBusinessId != 0" >
+  		AND gbbo.[groupid]=${groupBusinessId}
+  	</if>
+  	<if test="bizName != null and bizName!=''">
+	    and b.Name like ''%${bizName}%''
+	</if>
+  </sql>
+  
+  <sql id="getBusinessBindLogListColumns">
+  	gbbo.Id id,b.Name name,b.phoneNo,b.BalancePrice balancePrice,gbbo.GroupId,gbbo.BusinessId,gbbo.OptId,
+  	gbbo.OptName,gbbo.InsertTime,gbbo.Remark,gbbo.OptType
+  </sql>
+  
+  <sql id="getBusinessBindLogListTables">
+  	GroupBusinessBindOptionLog gbbo WITH(NOLOCK) JOIN dbo.business b WITH(NOLOCK) ON gbbo.BusinessId=b.Id
+  </sql>
+  
+      <!-- 集团绑定门店日志列表  add by pengyi 20150909-->
+  <select id="getBusinessBindLogList" resultType="com.edaisong.entity.domain.GroupBusinessBindOptionLogModel" 
+    parameterType="com.edaisong.entity.req.PagedBusinessBindLogReq"  statementType="CALLABLE" >
+  	{call Sp_CustomPage2015_V1(
+	' gbr.Id DESC ',
+	' <include refid="getBusinessBindLogListColumns" /> ',
+	' <include refid="getBusinessBindLogListTables" /> ',
+	' <include refid="getBusinessBindLogListWhere" /> ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER}
+	,1,
+	#{totalRecord,mode=OUT,jdbcType=INTEGER},
+	#{totalPage,mode=OUT,jdbcType=INTEGER}
+	)}
+  </select>
 </mapper>

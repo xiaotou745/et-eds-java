@@ -3,7 +3,7 @@
   <display-name>api-http</display-name>
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/api-http-servlet.xml	</param-value>
+    <param-value>/WEB-INF/api-http-servlet.xml</param-value>
   </context-param>
   <listener>
     <listener-class>

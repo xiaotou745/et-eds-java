@@ -629,7 +629,7 @@ public class BusinessController {
 				binds.add(bind);
 				continue;
 			}
-			if (!Pattern.matches(GlobalSettings.PHONE_REGEX, info.getPhoneNo())) {// 验证收货人手机号
+			if (!Pattern.matches("^1\\d{10}$", info.getPhoneNo())) {// 验证收货人手机号
 				bind.setClienterRemarks("骑士手机错误");
 				binds.add(bind);
 				continue;
