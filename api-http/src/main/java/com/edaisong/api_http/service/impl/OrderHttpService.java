@@ -57,6 +57,12 @@ public class OrderHttpService implements IOrderHttpService {
 		para.setBusinessId(2092);
 		para.setStatus(OrderStatus.Delivery.value());
 		ResultModel<QueryOrderBResp> resultModel=new ResultModel<QueryOrderBResp>();
+		if (para.getDateInfo()==null||para.getDateInfo().trim().isEmpty()||para.getBusinessId()==null||para.getBusinessId()==0
+				||(para.getStatus()!=OrderStatus.New.value()&&para.getStatus()!=OrderStatus.Taking.value()&&para.getStatus()!=OrderStatus.Delivery.value())) {
+			resultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
+			return resultModel;
+		}
+		
 		resultModel.setResult(orderService.queryOrderB(para));
 		return resultModel;
 	}
