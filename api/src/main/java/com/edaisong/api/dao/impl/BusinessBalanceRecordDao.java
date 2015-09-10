@@ -2,9 +2,12 @@ package com.edaisong.api.dao.impl;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +17,9 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
+import com.edaisong.entity.req.AccountBillBReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
@@ -71,5 +76,38 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 	public List<BusinessBalanceRecordModel> getBusinessBalanceRecordListForExport(PagedTransDetailReq par) {
 		return getReadOnlySqlSessionUtil().selectList(
 				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getBusinessBalanceRecordListForExport", par);
+	}
+	/**
+	 * API 获取商户月账单信息
+	 * 茹化肖
+	 * 2015年9月10日10:25:04
+	 * 
+	 * */
+	@Override
+	public Map<String,AccountBillModel>  getAccountBillListB(AccountBillBReq par) {
+		String startDate=par.getMonthInfo()+"-01 00:00:00";
+		String year=par.getMonthInfo().split("-")[0];//年
+		String month=par.getMonthInfo().split("-")[1];//月
+		String endDate="";
+		if(month=="12")
+		{
+			year=String.valueOf(Integer.parseInt(year, 10)+1);//十二月将年+1
+			endDate=year+"-01-01 00:00:00";//结束时间为 2016-01-01 00:00:00
+		}
+		else {
+			//结束时间为下个月一号之前
+			month=String.valueOf(Integer.parseInt(month,10)+1);//将月份+1
+			endDate=year+"-"+month+"-01 00:00:00";//结束时间为 2015-12-01 00:00:00
+		}
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("businessId", par.getBusinessId());
+		params.put("startDate", startDate);
+		params.put("endDate", endDate);
+		List<AccountBillModel> list= getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getAccountBillBList", params);
+		Map<String,AccountBillModel> map=new HashMap<String,AccountBillModel>();
+		for (int i = 0; i < list.size(); i++) {
+			map.put(list.get(i).getDayInfo(), list.get(i));
+		}
+		return map;
 	}
 }
