@@ -57,7 +57,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 		if (!(requestType!=null&&requestType.equals("XMLHttpRequest"))&&
 			!request.getServletPath().equals("/account/code")&&
 			!request.getServletPath().equals("/order/list")&&
-			!request.getServletPath().equals("/order/exportorder")) {
+			!request.getServletPath().equals("/order/exportorder")&&
+			!request.getServletPath().equals("/account/logoff")) {
 			return true;
 		}
 		return false;

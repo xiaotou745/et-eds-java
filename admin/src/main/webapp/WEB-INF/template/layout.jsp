@@ -75,8 +75,12 @@
 <%-- <script src="<%=basePath%>/js/hplus.js"></script> --%>
 <script>
     $(document).ajaxError( function(event, jqXHR, options, errorMsg){
+   	 var content="内部服务器错误";
+    	if(jqXHR.responseText==undefined){
+    		content=jqXHR.statusText;
+    	}else{
     	 var start=jqXHR.responseText.indexOf("<body>");
-    	 var content="内部服务器错误";
+
     	 if(start>0){
         	 var end=jqXHR.responseText.indexOf("</body>");
         	 content=jqXHR.responseText.substring(start+6,end);
@@ -85,6 +89,7 @@
     		 var start2=jqXHR.responseText.indexOf("<pre>");
     		 var end2=jqXHR.responseText.indexOf("</pre>");
         	 content=jqXHR.responseText.substring(start2,end2+6);
+    	 }
     	 }
 
     	 $("#gloablErrorParam").html(options.url+"调用出错了！");

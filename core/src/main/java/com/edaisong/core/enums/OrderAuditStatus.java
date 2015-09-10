@@ -6,10 +6,6 @@ package com.edaisong.core.enums;
  * @date 20150831
  */
 public enum OrderAuditStatus {
-	/**
-	 * 审核拒绝
-	 */
-    Refuse (2,"审核拒绝"),
     /**
      * 待审
      */
@@ -17,7 +13,11 @@ public enum OrderAuditStatus {
     /**
      * 审核通过
      */
-    Through (1,"审核通过");
+    Through (1,"审核通过"),
+	/**
+	 * 审核拒绝
+	 */
+    Refuse (2,"审核拒绝");
 	private int value = 0;
 	private String desc;
 

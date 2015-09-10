@@ -4,6 +4,7 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.admin.common.LoginUtil" %>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="com.edaisong.admin.common.LoginUtil"%>
 <%
 	String basePath = PropertyUtils.getProperty("static.admin.url");
 %>

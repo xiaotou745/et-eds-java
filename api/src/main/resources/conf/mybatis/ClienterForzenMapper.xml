@@ -150,4 +150,62 @@
       CreateDate = #{createdate,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+
+
+
+
+  <!-- 获取冻结单列表的分页存储过程_列名 茹化肖 2015年9月9日10:30:13 -->
+  <sql id="getFrozenList_Column">
+		cf.id ,
+        c.TrueName AS clienterName ,
+        c.PhoneNo AS clienterPhone ,
+        cf.ForzenAmount ,
+        cf.ForzenDate ,
+        cf.ThawDate ,
+        cf.Status ,
+        cf.Operator ,
+        cf.ForzenReason ,
+        ISNULL(cf.ThawReason, '''') AS ThawReason
+	</sql>
+	
+	<!-- 获取冻结单列表的分页存储过程_条件 茹化肖 2015年9月9日10:30:13 -->
+  	<sql id="getFrozenList_Where">
+		1=1
+		<if test="forzenStatus !=0">
+			AND CF.Status=${forzenStatus}
+		</if>
+		<if test="dateType =1 and startDate != null and startDate != ''">
+			AND cf.ForzenDate>''${startDate}''
+		</if>
+		<if test="dateType =1 and endDate != null and endDate != ''">
+			AND ''${endDate}''>cf.ForzenDate
+		</if>
+		<if test="dateType =2 and startDate != null and startDate != ''">
+			AND cf.ThawDate>''${startDate}''
+		</if>
+		<if test="dateType =2 and endDate != null and endDate != ''">
+			AND ''${endDate}''>cf.ThawDate
+		</if>
+		<if test="clienterPhone != null and clienterPhone != ''">
+			AND c.PhoneNo=''${clienterPhone}''
+		</if>
+		<if test="clienterName != null and clienterName != ''">
+			AND c.TrueName LIKE ''%${clienterName}%''
+		</if>
+	</sql>
+   <!-- 获取冻结单列表的分页存储过程 茹化肖 2015年9月9日10:30:13 -->
+  <select id="getFrozenList" resultType="com.edaisong.entity.ClienterForzen" 
+  parameterType="com.edaisong.entity.req.PagedClienterForzenReq" statementType="CALLABLE">  
+{call Sp_CustomPage2015_V1(
+' cf.id DESC ',
+'<include refid="getFrozenList_Column"/> ',
+' dbo.ClienterForzen AS cf ( NOLOCK ) JOIN dbo.clienter AS c ( NOLOCK ) ON cf.ClienterID = c.Id ',
+' <include refid="getFrozenList_Where"/> ',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+#{totalPage,mode=OUT,jdbcType=VARCHAR}
+)} 
+  </select>
 </mapper>
