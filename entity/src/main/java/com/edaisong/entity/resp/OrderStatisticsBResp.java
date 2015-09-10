@@ -8,9 +8,9 @@ import com.edaisong.entity.domain.DaySatisticsB;
 /**
  * B端任务统计接口 返回值
  * @author CaoHeYang
- *
+ *@date 20150910
  */
-public class OrderStatisticsResp  implements Serializable{
+public class OrderStatisticsBResp  implements Serializable{
 	private int orderCount;
 	private Double totalAmount;
 	private int serviceClienterCount;
