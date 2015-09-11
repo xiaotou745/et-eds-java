@@ -212,6 +212,23 @@ public class ParseHelper {
 	}
 	
 	/**
+	 * DES加密
+	 * @author pengyi
+	 * @date 20150911
+	 * @param text
+	 * @return
+	 */
+	public static String encrypt(String text) {
+		try {
+			if (StringUtils.isEmpty(text))
+				return "";
+			return DES.encrypt(text);
+		} catch (Exception ex) {
+			return text;
+		}
+	}
+	
+	/**
 	 * 判断当月有几天
 	 * @author 茹化肖
 	 * @date 20150828

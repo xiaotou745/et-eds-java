@@ -151,6 +151,7 @@ public class AccountController {
 		loginUser.setUserName(account.getUsername());
 		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
 				true);
+		UserContext.resetContext();
 		response.sendRedirect(basePath+"/order/list");
 	}
 	

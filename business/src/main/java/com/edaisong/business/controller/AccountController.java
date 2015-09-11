@@ -117,6 +117,7 @@ public class AccountController {
 		//设置账户cookie
 		CookieUtils.setCookie(request,response, "username", phoneNo, 365 * 60 * 60 * 24,
 				false);
+		UserContext.resetContext();
 		resp.setSuccess(true);
 		return resp;
 	}
