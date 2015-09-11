@@ -21,6 +21,8 @@
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.Map"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="com.edaisong.business.common.UserContext"%>
+<%@page import="com.edaisong.core.util.OrderNoHelper"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
@@ -28,11 +30,16 @@
 		<title>支付宝纯网关接口</title>
 	</head>
 	<%
-	if(request.getParameter("WIDout_trade_no")==null){
-		%>没有传必须的参数<%
+    UserContext context = UserContext.getCurrentContext(request);
+	
+	if(request.getParameter("WIDtotal_fee")==null||
+		request.getParameter("WIDdefaultbank")==null||
+		context.isEmpty()){
+		%>充值金额或支付方式没有传递或没有登录<%
 	}else{
 		////////////////////////////////////请求参数//////////////////////////////////////
 		String basePath =PropertyUtils.getProperty("static.business.url");
+		String groupInfo="集团商家["+context.getBusinessName()+"("+context.getBusinessID()+")]充值";
 		//支付类型
 		String payment_type = "1";
 		//必填，不能修改
@@ -40,33 +47,34 @@
 		String notify_url = basePath+"/group/notify_url";
 		//需http://格式的完整路径，不能加?id=123这类自定义参数
 		//页面跳转同步通知页面路径
-		String return_url = basePath+"/group/return_url.jsp";
+		String return_url = basePath+"/group/return_url";
 		//需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
 		//商户订单号
-		String out_trade_no = new String(request.getParameter("WIDout_trade_no").getBytes("ISO-8859-1"),"UTF-8");
+		String out_trade_no =OrderNoHelper.generateOrderCode(context.getBusinessID());// new String(request.getParameter("WIDout_trade_no").getBytes("ISO-8859-1"),"UTF-8");
 		//商户网站订单系统中唯一订单号，必填
 		//订单名称
-		String subject = new String(request.getParameter("WIDsubject").getBytes("ISO-8859-1"),"UTF-8");
-		//必填
-		//付款金额
-		String total_fee = new String(request.getParameter("WIDtotal_fee").getBytes("ISO-8859-1"),"UTF-8");
-		//必填
+		String subject =groupInfo;// new String(request.getParameter("WIDsubject").getBytes("ISO-8859-1"),"UTF-8");
+		//必填
 		//订单描述
-		String body = new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");
+		String body ="集团商家充值";// new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");
 		//默认支付方式
 		String paymethod = "bankPay";
 		//必填
 		//默认网银
 		String defaultbank = new String(request.getParameter("WIDdefaultbank").getBytes("ISO-8859-1"),"UTF-8");
-		//必填，银行简码请参考接口技术文档
+		//必填，银行简码请参考接口技术文档
+		
+		//付款金额
+		String total_fee = new String(request.getParameter("WIDtotal_fee").getBytes("ISO-8859-1"),"UTF-8");
+		//必填
 		//商品展示地址
-		String show_url = new String(request.getParameter("WIDshow_url").getBytes("ISO-8859-1"),"UTF-8");
+		String show_url =basePath;// new String(request.getParameter("WIDshow_url").getBytes("ISO-8859-1"),"UTF-8");
 		//需以http://开头的完整路径，例如：http://www.商户网址.com/myorder.html
 		//防钓鱼时间戳
-		String anti_phishing_key = "";
+		String anti_phishing_key = AlipaySubmit.query_timestamp();
 		//若要使用请调用类文件submit中的query_timestamp函数
 		//客户端的IP地址
-		String exter_invoke_ip = "127.0.0.1";
+		String exter_invoke_ip = request.getRemoteAddr();
 		//非局域网的外网IP地址，如：221.0.0.1
 		
 		
