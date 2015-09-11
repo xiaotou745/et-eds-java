@@ -41,16 +41,16 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq para) {
-		HttpResultModel<OrderStatisticsBResp> HttpResultModel = new HttpResultModel<OrderStatisticsBResp>();
+		HttpResultModel<OrderStatisticsBResp> httpResultModel = new HttpResultModel<OrderStatisticsBResp>();
 		if (para.getMonthInfo() == null || para.getMonthInfo().trim().isEmpty() || para.getBusinessId() == 0 ) {
-			HttpResultModel
+			httpResultModel
 			.setStatus(HttpReturnRnums.ParaError.value())
 			.setMessage(HttpReturnRnums.ParaError.desc());
-			return HttpResultModel;
+			return httpResultModel;
 		}
 		OrderStatisticsBResp orderStatisticsResp = orderService.getOrderStatisticsB(para);
-		HttpResultModel.setResult(orderStatisticsResp);
-		return HttpResultModel;
+		httpResultModel.setResult(orderStatisticsResp);
+		return httpResultModel;
 	}
 
 	/**
@@ -63,18 +63,18 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq para) {
-		HttpResultModel<QueryOrderBResp> HttpResultModel = new HttpResultModel<QueryOrderBResp>();
+		HttpResultModel<QueryOrderBResp> httpResultModel = new HttpResultModel<QueryOrderBResp>();
 		if ( para.getBusinessId() == null
 				|| para.getBusinessId() == 0
 				|| (para.getStatus() != OrderStatus.New.value() && para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
-			HttpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
-			return HttpResultModel;
+			httpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
+			return httpResultModel;
 		}
 		para.setDateInfo(null);
 		para.setClienterId(null);
-		HttpResultModel.setResult(orderService.queryOrderB(para));
-		return HttpResultModel;
+		httpResultModel.setResult(orderService.queryOrderB(para));
+		return httpResultModel;
 	}
 
 	/**
@@ -87,18 +87,18 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq para) {
-		HttpResultModel<QueryOrderCResp> HttpResultModel = new HttpResultModel<QueryOrderCResp>();
+		HttpResultModel<QueryOrderCResp> httpResultModel = new HttpResultModel<QueryOrderCResp>();
 		if ( para.getClienterId() == null
 				|| para.getClienterId() == 0
 				|| ( para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
-			HttpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
-			return HttpResultModel;
+			httpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
+			return httpResultModel;
 		}
 		para.setDateInfo(null);
 		para.setBusinessId(null);
-		HttpResultModel.setResult(orderService.queryOrderC(para));
-		return HttpResultModel;
+		httpResultModel.setResult(orderService.queryOrderC(para));
+		return httpResultModel;
 	}
 	/**
 	 * B端已完成任务列表或者配送员配送列表
@@ -110,13 +110,13 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para) {
-		HttpResultModel<List<QueryOrder>> HttpResultModel = new HttpResultModel<List<QueryOrder>>();
+		HttpResultModel<List<QueryOrder>> httpResultModel = new HttpResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getBusinessId() == null || para.getBusinessId() == 0) {
-			HttpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
-			return HttpResultModel;
+			httpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
+			return httpResultModel;
 		}
-		HttpResultModel.setResult(orderService.getCompliteOrder(para));
-		return HttpResultModel;
+		httpResultModel.setResult(orderService.getCompliteOrder(para));
+		return httpResultModel;
 	}
 
 	/**
@@ -129,15 +129,15 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<List<QueryOrder>> getCompliteOrderC(QueryOrderReq para) {
-		HttpResultModel<List<QueryOrder>> HttpResultModel = new HttpResultModel<List<QueryOrder>>();
+		HttpResultModel<List<QueryOrder>> httpResultModel = new HttpResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getClienterId() == null || para.getClienterId() == 0) {
-			HttpResultModel
+			httpResultModel
 			.setStatus(HttpReturnRnums.ParaError.value())
 			.setMessage(HttpReturnRnums.ParaError.desc());
-			return HttpResultModel;
+			return httpResultModel;
 		}
-		HttpResultModel.setResult(orderService.getCompliteOrder(para));
-		return HttpResultModel;
+		httpResultModel.setResult(orderService.getCompliteOrder(para));
+		return httpResultModel;
 	}
 
 	/**
@@ -153,9 +153,9 @@ public class OrderHttpService implements IOrderHttpService {
 		// orderStatisticsCReq.setClienterId(3233) ;
 		// orderStatisticsCReq.setMonthInfo("2015-09");
 		OrderStatisticsCResp orderStatisticsResp = orderService.getOrderStatisticsC(orderStatisticsCReq);
-		HttpResultModel<OrderStatisticsCResp> HttpResultModel = new HttpResultModel<OrderStatisticsCResp>();
-		HttpResultModel.setResult(orderStatisticsResp);
-		return HttpResultModel;
+		HttpResultModel<OrderStatisticsCResp> httpResultModel = new HttpResultModel<OrderStatisticsCResp>();
+		httpResultModel.setResult(orderStatisticsResp);
+		return httpResultModel;
 	}
 
 }
