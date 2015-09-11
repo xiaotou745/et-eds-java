@@ -37,7 +37,7 @@ public class GroupBusinessLog {
         this.optname = optname == null ? "" : optname.trim();
     }
 
-    public Date getCreatetime() {
+    public Date getOpttime() {
         return opttime;
     }
 
