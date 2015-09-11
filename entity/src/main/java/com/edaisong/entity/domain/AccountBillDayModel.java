@@ -1,6 +1,6 @@
 package com.edaisong.entity.domain;
 
-
+import com.edaisong.core.enums.*;;
 /**
  * 日账单返回参数商户
  * 
@@ -22,8 +22,8 @@ public Double getAmount() {
 public void setAmount(Double amount) {
 	Amount = amount;
 }
-public int getRecordType() {
-	return recordType;
+public String getRecordType() {
+	return BusinessBalanceRecordRecordType.getEnum(this.recordType).desc();//.recordType;
 }
 public void setRecordType(int recordType) {
 	this.recordType = recordType;

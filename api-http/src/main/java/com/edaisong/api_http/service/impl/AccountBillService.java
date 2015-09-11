@@ -13,8 +13,10 @@ import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.service.inter.IAccountBillService;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.AccountBillResultModel;
+import com.edaisong.entity.domain.AccountBillDayResultModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.PagedAccountBillDayReq;
 
 /*
  * 商户 骑士账单相关实现
@@ -43,5 +45,17 @@ public class AccountBillService implements IAccountBillService {
 		return null;
 		
 	}
+	/**
+	 * 商家获取日账单
+	 * 茹化肖
+	 * 2015年9月11日10:55:46
+	 */
+	@Override
+	public ResultModel<AccountBillDayResultModel> getBillListDayB(
+			PagedAccountBillDayReq par) {
+		AccountBillDayResultModel model=businessBalanceRecordService.getAccountBillListDayB(par);
+		return new ResultModel<AccountBillDayResultModel>().setMessage("成功").setStatus(1).setResult(model);
+	}
+	
 
 }

@@ -9,7 +9,9 @@ import javax.ws.rs.Produces;
 
 import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.entity.AccountBillResultModel;
+import com.edaisong.entity.domain.AccountBillDayResultModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.PagedAccountBillDayReq;
 /*
  * 商户 骑士对账单接口
  * 茹化肖
@@ -28,5 +30,16 @@ public interface IAccountBillService {
 	@POST
 	@Path("/getbilllistb")
 	 public ResultModel<AccountBillResultModel> getBillListB(AccountBillBReq par);
+	
+	
+	/**
+	 * B端获取日账单
+	 * @author 茹化肖
+	 * @date 2015年9月10日12:54:55
+	 * @return
+	 */
+	@POST
+	@Path("/getbilllistdayb")
+	 public ResultModel<AccountBillDayResultModel> getBillListDayB(PagedAccountBillDayReq par);
 
 }
