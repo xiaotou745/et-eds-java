@@ -10,6 +10,8 @@ import com.edaisong.api_http.service.inter.IMessageHttpService;
 import com.edaisong.core.enums.returnenums.NewMessageReturnEnum;
 import com.edaisong.entity.BusinessMessage;
 import com.edaisong.entity.ClienterMessage;
+import com.edaisong.entity.req.NewMessageBReq;
+import com.edaisong.entity.req.NewMessageCReq;
 import com.edaisong.entity.resp.MessageResp;
 
 @Service
@@ -20,27 +22,24 @@ public class MessageHttpService implements IMessageHttpService {
 	@Autowired
 	private IClienterMessageService clienterMessageService;
 
-	// @Autowired
-	// private IClienterMessageService clienterMessageService;
 	/**
 	 * B端商户登陆后获取顶端未读公告
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150909
-	 * @param data
+	 * @param para
 	 * @return
 	 */
 	@Override
-	public ResultModel<MessageResp> newMessageB(String data) {
+	public ResultModel<MessageResp> newMessageB(NewMessageBReq para) {
 		ResultModel<MessageResp> returnmodel = new ResultModel<MessageResp>();
-		int businessId = 36;
-		BusinessMessage message = businessMessageService.getLatestMessage(businessId);
+		BusinessMessage message = businessMessageService.getLatestMessage(para.getBusinessId());
 		if (message.getIsread() == 0) { // 有未读消息
 			MessageResp messageResp = new MessageResp();
 			messageResp.setId(message.getId());
 			messageResp.setContent(message.getContent());
 			returnmodel.setResult(messageResp);
-		}else {
+		} else {
 			returnmodel.setStatus(NewMessageReturnEnum.NoNews.value());
 			returnmodel.setMessage(NewMessageReturnEnum.NoNews.desc());
 		}
@@ -48,24 +47,23 @@ public class MessageHttpService implements IMessageHttpService {
 	}
 
 	/**
-	 * B端商户登陆后获取顶端未读公告
+	 * C端商户登陆后获取顶端未读公告
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150909
-	 * @param data
+	 * @param para
 	 * @return
 	 */
 	@Override
-	public ResultModel<MessageResp> newMessageC(String data) {
+	public ResultModel<MessageResp> newMessageC(NewMessageCReq para) {
 		ResultModel<MessageResp> returnmodel = new ResultModel<MessageResp>();
-		int clienterId = 2090;
-		ClienterMessage message = clienterMessageService.getLatestMessage(clienterId);
+		ClienterMessage message = clienterMessageService.getLatestMessage(para.getClienterId());
 		if (message.getIsread() == 0) { // 有未读消息
 			MessageResp messageResp = new MessageResp();
 			messageResp.setId(message.getId());
 			messageResp.setContent(message.getContent());
 			returnmodel.setResult(messageResp);
-		}else {
+		} else {
 			returnmodel.setStatus(NewMessageReturnEnum.NoNews.value());
 			returnmodel.setMessage(NewMessageReturnEnum.NoNews.desc());
 		}

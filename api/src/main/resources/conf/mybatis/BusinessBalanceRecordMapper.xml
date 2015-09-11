@@ -359,31 +359,29 @@ FROM
 GROUP by
   Convert ( VARCHAR(10),  OperateTime,  120)
 </select>
-  <!-- 获取商户日账单分页 的Where条件 -->
+  <!-- 获取商户日账单分页 的Where条件 茹化肖 -->
   <sql id="getAccountBillDayBList_Where">
-    	1=1  
-	 <if test="businessId != null and businessId != 0">
-	      AND BusinessId=${businessId}
-     </if>
-     <if test="dayInfo != null and dayInfo != '' ">
-	      AND OperateTime>''
-  		  AND ''> OperateTime
-     </if>
+		  BusinessId=${businessId}
+	      AND OperateTime > ''${stratDate}''
+  		  AND ''${endDate}'' >= OperateTime
      <if test="billType == 1"><!-- 出账 -->
 	      AND RecordType IN (1,3)
      </if>
      <if test="billType == 2"><!-- 入账 -->
 	      AND RecordType IN (2,5,8,9,12)
      </if>
-     
+      <if test="recordType !=0"><!--非全部 -->
+	      AND RecordType = ${recordType}
+     </if>
+     	 AND  RecordType IN (1,2,3,5,8,9,12)
   </sql>
 <!-- 获取商户日账单分页 茹化肖 2015年9月10日19:06:57 -->
   <select id="getAccountBillDayBList" resultType="com.edaisong.entity.domain.AccountBillDayModel" 
   parameterType="com.edaisong.entity.req.PagedAccountBillDayReq" statementType="CALLABLE">  
 {call Sp_CustomPage2015_V1(
 ' OperateTime DESC ',
-' RelationNo,Amount,RecordType,OperateTime ',
-' FROM BusinessBalanceRecord (NOLOCK) ',
+' RelationNo,Amount,RecordType,OperateTime,id AS RecordId ',
+' BusinessBalanceRecord (NOLOCK) ',
 ' <include refid="getAccountBillDayBList_Where"/> ',
 #{pageSize,mode=IN,jdbcType=INTEGER},
 #{currentPage,mode=IN,jdbcType=INTEGER},
