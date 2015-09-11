@@ -6,10 +6,17 @@ import com.edaisong.core.enums.*;;
  * 
  * */
 public class AccountBillDayModel {
-public String relationNo;
-public Double amount;
-public int recordType;
-public String operateTime;
+private String relationNo;
+private int recordId;
+public int getRecordId() {
+	return recordId;
+}
+public void setRecordId(int recordId) {
+	this.recordId = recordId;
+}
+private Double amount;
+private int recordType;
+private String operateTime;
 public String getRelationNo() {
 	return relationNo;
 }
