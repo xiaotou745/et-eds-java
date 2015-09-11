@@ -39,12 +39,15 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq orderStatisticsBReq) {
-		// = new OrderStatisticsBReq();
-//		orderStatisticsBReq.setBusinessId(2008);
-//		orderStatisticsBReq.setMonthInfo("2015-09");
-		OrderStatisticsBResp orderStatisticsResp = orderService.getOrderStatisticsB(orderStatisticsBReq);
+	public ResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq para) {
 		ResultModel<OrderStatisticsBResp> resultModel = new ResultModel<OrderStatisticsBResp>();
+		if (para.getMonthInfo() == null || para.getMonthInfo().trim().isEmpty() || para.getBusinessId() == 0 ) {
+			resultModel
+			.setStatus(ReturnRnums.ParaError.value())
+			.setMessage(ReturnRnums.ParaError.desc());
+			return resultModel;
+		}
+		OrderStatisticsBResp orderStatisticsResp = orderService.getOrderStatisticsB(para);
 		resultModel.setResult(orderStatisticsResp);
 		return resultModel;
 	}
@@ -59,26 +62,22 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public ResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq para) {
-		 //= new QueryOrderReq();
-//		para.setBusinessId(2092);
-//		para.setStatus(OrderStatus.Delivery.value());
 		ResultModel<QueryOrderBResp> resultModel = new ResultModel<QueryOrderBResp>();
-		if (para.getDateInfo() == null
-				|| para.getDateInfo().trim().isEmpty()
-				|| para.getBusinessId() == null
+		if ( para.getBusinessId() == null
 				|| para.getBusinessId() == 0
 				|| (para.getStatus() != OrderStatus.New.value() && para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
 			resultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
 			return resultModel;
 		}
-
+		para.setDateInfo(null);
+		para.setClienterId(null);
 		resultModel.setResult(orderService.queryOrderB(para));
 		return resultModel;
 	}
 
 	/**
-	 * 端已完成任务列表或者配送员配送列表
+	 * B端已完成任务列表或者配送员配送列表
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150910
@@ -87,10 +86,6 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public ResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para) {
-//		para.setBusinessId(2092);
-//		para.setDateInfo("2015-09-06");
-//		para.setClienterId(3245);
-
 		ResultModel<List<QueryOrder>> resultModel = new ResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getBusinessId() == null || para.getBusinessId() == 0) {
 			resultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
@@ -101,7 +96,7 @@ public class OrderHttpService implements IOrderHttpService {
 	}
 
 	/**
-	 * 端已完成任务列表或者配送员配送列表
+	 * C端已完成任务列表
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150910
@@ -110,8 +105,6 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public ResultModel<List<QueryOrder>> getCompliteOrderC(QueryOrderReq para) {
-//		para.setDateInfo("2015-09-06");
-//		para.setClienterId(3245);
 		ResultModel<List<QueryOrder>> resultModel = new ResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getClienterId() == null || para.getClienterId() == 0) {
 			resultModel

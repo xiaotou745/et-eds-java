@@ -53,7 +53,7 @@ public interface IOrderHttpService {
 	public ResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq para);
 
 	/**
-	 * 端已完成任务列表或者配送员配送列表
+	 * B端已完成任务列表或者配送员配送列表
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150910
@@ -65,7 +65,7 @@ public interface IOrderHttpService {
 	public ResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para);
 
 	/**
-	 * 端已完成任务列表或者配送员配送列表
+	 * C端已完成任务列表
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150910
