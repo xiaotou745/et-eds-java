@@ -9,14 +9,15 @@ package com.edaisong.core.enums;
  * @since
  */
 public enum CardModifyC {
-	Success(0,"成功"),
-	NotExists(1,"该骑士未绑定过金融账号"),
-	AccountNotSame(2,"两次录入的金融账号不一致"),
-	NameError(3,"帐户名不能为空"),
-	NoClienter(4,"骑士不存在"),
-	NoAccount(5,"账户不存在"),
-	NoModify(6,"信息没有任何更改"),
-	SystemError(-1,"系统错误"),
+	Success(1,"成功"),
+	NotExists(2,"该骑士未绑定过金融账号"),
+	AccountNotSame(3,"两次录入的金融账号不一致"),
+	NameError(4,"帐户名不能为空"),
+	NoClienter(5,"骑士不存在"),
+	NoAccount(6,"账户不存在"),
+	NoModify(7,"信息没有任何更改"),
+	NoCreateBy(8,"修改人名称不能为空"),
+	SystemError(0,"系统错误"),
 	ParamError(-2,"未传参或者参数错误,参数错误时返回所有的错误信息文本");
 	
 	private int value = 0;

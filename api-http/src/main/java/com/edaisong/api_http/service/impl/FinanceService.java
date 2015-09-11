@@ -59,7 +59,7 @@ public class FinanceService implements IFinanceService{
 		record.setAccounttype((short)PayType.ZhiFuBao.value());
 		record.setBelongtype((short)0);
 		record.setClienterid(req.getUserId());
-		record.setCreateby(clienter.getTruename());
+		record.setCreateby(req.getCreateBy());
 		record.setCreatetime(now);
 		record.setIsenable(true);
 		clienterFinanceAccountService.insertSelective(record);
@@ -103,7 +103,7 @@ public class FinanceService implements IFinanceService{
 		record.setAccounttype((short)PayType.ZhiFuBao.value());
 		record.setBelongtype((short)0);
 		record.setClienterid(req.getUserId());
-		record.setUpdateby(clienter.getTruename());
+		record.setUpdateby(req.getCreateBy());
 		record.setUpdatetime(now);
 		record.setIsenable(true);
 		clienterFinanceAccountService.updateByPrimaryKeySelective(record);
@@ -123,6 +123,9 @@ public class FinanceService implements IFinanceService{
 	private CardBindC checkCardBindAlipayC(CardBindAlipayReq req){
 		if(StringUtils.isEmpty(req.getTrueName())){
 			return CardBindC.NameError;
+		}
+		if(StringUtils.isEmpty(req.getCreateBy())){
+			return CardBindC.NoCreateBy;
 		}
 		if(StringUtils.isEmpty(req.getAccount())){
 			return CardBindC.AccountNotSame;
@@ -147,6 +150,9 @@ public class FinanceService implements IFinanceService{
 	private CardModifyC checkCardModifyAlipayC(CardBindAlipayReq req){
 		if(StringUtils.isEmpty(req.getTrueName())){
 			return CardModifyC.NameError;
+		}
+		if(StringUtils.isEmpty(req.getCreateBy())){
+			return CardModifyC.NoCreateBy;
 		}
 		if(StringUtils.isEmpty(req.getAccount())){
 			return CardModifyC.AccountNotSame;

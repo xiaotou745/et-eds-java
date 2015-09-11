@@ -23,6 +23,7 @@ import com.edaisong.core.enums.BindOptType;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
+import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.GroupBusinessBindOptionLogModel;
 import com.edaisong.entity.domain.GroupBusinessRelationModel;
 import com.edaisong.entity.req.BusinessBindOptionReq;
@@ -189,11 +190,19 @@ public class GroupBusinessController {
 	 * @return
 	 */
 	@RequestMapping("businessbindlist")
-	public ModelAndView businessBindList(int groupBusinessId){
+	public ModelAndView businessBindList(Integer groupBusinessId) throws Exception{
+		GroupBusinessReq req = new GroupBusinessReq();
+		groupBusinessId = groupBusinessId == null ? 0 : groupBusinessId;
+		req.setId(groupBusinessId);
+		GroupBusinessModel detail = groupBusinessService.getSingle(req);
+		if (detail == null) {
+			throw new Exception("没找到groupBusinessId为" + groupBusinessId + "的详细信息");
+		}
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "集团管理");
 		model.addObject("currenttitle", "集团门店管理");
 		model.addObject("viewPath", "groupbusiness/businessbindlist");
+		model.addObject("detail", detail);
 		return model;
 	}
 	
@@ -214,11 +223,19 @@ public class GroupBusinessController {
 	 * @return
 	 */
 	@RequestMapping("businessbindloglist")
-	public ModelAndView businessBindLogList(int groupBusinessId){
+	public ModelAndView businessBindLogList(Integer groupBusinessId) throws Exception{
+		GroupBusinessReq req = new GroupBusinessReq();
+		groupBusinessId = groupBusinessId == null ? 0 : groupBusinessId;
+		req.setId(groupBusinessId);
+		GroupBusinessModel detail = groupBusinessService.getSingle(req);
+		if (detail == null) {
+			throw new Exception("没找到groupBusinessId为" + groupBusinessId + "的详细信息");
+		}
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "集团管理");
 		model.addObject("currenttitle", "绑定记录");
 		model.addObject("viewPath", "groupbusiness/businessbindloglist");
+		model.addObject("detail", detail);
 		return model;
 	}
 	
@@ -239,18 +256,26 @@ public class GroupBusinessController {
 	 * @return
 	 */
 	@RequestMapping("businesslist")
-	public ModelAndView businessList(int groupBusinessId){
+	public ModelAndView businessList(Integer groupBusinessId) throws Exception{
+		GroupBusinessReq req = new GroupBusinessReq();
+		groupBusinessId = groupBusinessId == null ? 0 : groupBusinessId;
+		req.setId(groupBusinessId);
+		GroupBusinessModel detail = groupBusinessService.getSingle(req);
+		if (detail == null) {
+			throw new Exception("没找到groupBusinessId为" + groupBusinessId + "的详细信息");
+		}
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "集团管理");
 		model.addObject("currenttitle", "绑定记录");
 		model.addObject("viewPath", "groupbusiness/businesslist");
+		model.addObject("detail", detail);
 		return model;
 	}
 	
 	@RequestMapping("businesslistdo")
 	public ModelAndView businessListdo(PagedBizBindsReq req){
 		PagedResponse<GroupBusinessRelationModel> resp = groupBusinessRelationService.getBusinessList(req);
-		ModelAndView model = new ModelAndView("groupbusiness/businesslist");
+		ModelAndView model = new ModelAndView("groupbusiness/businesslistdo");
 		model.addObject("listData", resp);
 		return model;
 	}
@@ -263,9 +288,8 @@ public class GroupBusinessController {
 		req.setOptType((short)BindOptType.RemoveBind.value());
 		req.setOptName(UserContext.getCurrentContext(request).getName());
 		req.setRemark("解除绑定");
-		req.setBusinessId(req.getBusinessId());
-		req.setGroupId(req.getGroupId());
 		if (groupBusinessRelationService.removeBusinessBind(req)) {
+			response.setResponseCode(1);
 			response.setMessage("绑定成功");
 			return response;
 		}
@@ -281,8 +305,6 @@ public class GroupBusinessController {
 		req.setOptType((short)BindOptType.Bind.value());
 		req.setOptName(UserContext.getCurrentContext(request).getName());
 		req.setRemark("添加绑定");
-		req.setBusinessId(req.getBusinessId());
-		req.setGroupId(req.getGroupId());
 		if (groupBusinessRelationService.checkHaveBind(req)) {
 			response.setMessage("此条绑定关系已存在！");
 		}else{

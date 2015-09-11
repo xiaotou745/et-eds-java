@@ -15,6 +15,7 @@ public enum CardBindC {
 	AccountNotSame(3,"两次录入的金融账号不一致"),
 	NameError(4,"帐户名不能为空"),
 	NoClienter(5,"骑士不存在"),
+	NoCreateBy(6,"创建人名称不存在"),
 	SystemError(0,"系统错误"),
 	ParamError(-2,"未传参或者参数错误,参数错误时返回所有的错误信息文本");
 	
