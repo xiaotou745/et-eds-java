@@ -69,25 +69,6 @@
     where Id = #{id,jdbcType=INTEGER}
   </select>
 
-	<sql id="Base_Column_List">
-		Id, PhoneNo, LoginName, recommendPhone, Password, TrueName,
-		IDCard,
-		PicWithHandUrl,
-		PicUrl, Status, AccountBalance, InsertTime,
-		InviteCode, City, CityId,
-		GroupId, HealthCardID,
-		InternalDepart,
-		ProvinceCode, AreaCode, CityCode, Province, BussinessID, WorkStatus,
-		AllowWithdrawPrice, HasWithdrawPrice, IsBind, DeliveryCompanyId
-	</sql>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-		parameterType="java.lang.Integer">
-		select
-		<include refid="Base_Column_List" />
-		from clienter
-		where Id = #{id,jdbcType=INTEGER}
-	</select>
-
 	<sql id="queryColumns">
 		c.id,isnull(c.trueName,'''') as trueName ,c.phoneNo,isnull(c.idCard,'''') as
 		idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
