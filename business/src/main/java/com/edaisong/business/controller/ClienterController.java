@@ -43,7 +43,7 @@ public class ClienterController {
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedBusinessClientersReq searchWebReq,HttpServletRequest request) {
 		ModelAndView view = new ModelAndView("clienter/listdo");   
-		int businessId = UserContext.getCurrentContext(request).getBusiness().getId();
+		int businessId = UserContext.getCurrentContext(request).getBusinessID();
 		searchWebReq.setBusinessId(businessId);
 		PagedResponse<BusinessClientersModel> resp = clienterService.getBusinessClienters(searchWebReq);
 		view.addObject("listData", resp);
@@ -59,7 +59,7 @@ public class ClienterController {
 	@RequestMapping("customerlistdo")
 	public ModelAndView customerlistdo(String search,Integer currentPage,HttpServletRequest request) {
 		PagedBusinessClientersReq req=new PagedBusinessClientersReq();
-		req.setBusinessId(UserContext.getCurrentContext(request).getBusiness().getId());
+		req.setBusinessId(UserContext.getCurrentContext(request).getBusinessID());
 		req.setSearch(search);
 		req.setCurrentPage(currentPage);
 		req.setWorkStatus(2);//2为查询全部上班状态,查询骑士名字或手机号时不需要查询上班状态

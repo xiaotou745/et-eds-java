@@ -11,6 +11,7 @@ import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
+import com.edaisong.entity.resp.OrderStatisticsCResp;
 
 /**
  * 订单模块 
@@ -64,5 +65,14 @@ public interface IOrderHttpService {
 	@Path("/getcompliteorderc")
 	 public ResultModel<List<QueryOrder>> getCompliteOrderC(String data);
 	
+	/**
+	 * C端任务统计接口
+	 * @author WangXuDan
+	 * @date 20150910
+	 * @param data
+	 */
+	@POST
+	@Path("/orderstatisticsc")
+	public ResultModel<OrderStatisticsCResp> orderStatisticsC(String data);
 	
 }
