@@ -7,7 +7,7 @@ import com.edaisong.core.enums.*;;
  * */
 public class AccountBillDayModel {
 public String relationNo;
-public Double Amount;
+public Double amount;
 public int recordType;
 public String operateTime;
 public String getRelationNo() {
@@ -17,10 +17,10 @@ public void setRelationNo(String relationNo) {
 	this.relationNo = relationNo;
 }
 public Double getAmount() {
-	return Amount;
+	return this.amount;
 }
 public void setAmount(Double amount) {
-	Amount = amount;
+	this.amount = amount;
 }
 public String getRecordType() {
 	return BusinessBalanceRecordRecordType.getEnum(this.recordType).desc();//.recordType;
