@@ -13,6 +13,13 @@ public class CardBindAlipayReq {
 	private String trueName;
 	private String account;
 	private String account2;
+	private String createBy;
+	public String getCreateBy() {
+		return createBy;
+	}
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
 	public Integer getUserId() {
 		return userId;
 	}
