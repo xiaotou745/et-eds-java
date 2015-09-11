@@ -22,8 +22,6 @@ public class MessageHttpService implements IMessageHttpService {
 	@Autowired
 	private IClienterMessageService clienterMessageService;
 
-	// @Autowired
-	// private IClienterMessageService clienterMessageService;
 	/**
 	 * B端商户登陆后获取顶端未读公告
 	 * 
@@ -41,7 +39,7 @@ public class MessageHttpService implements IMessageHttpService {
 			messageResp.setId(message.getId());
 			messageResp.setContent(message.getContent());
 			returnmodel.setResult(messageResp);
-		}else {
+		} else {
 			returnmodel.setStatus(NewMessageReturnEnum.NoNews.value());
 			returnmodel.setMessage(NewMessageReturnEnum.NoNews.desc());
 		}
@@ -53,7 +51,7 @@ public class MessageHttpService implements IMessageHttpService {
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150909
-	 * @param  para
+	 * @param para
 	 * @return
 	 */
 	@Override
@@ -65,7 +63,7 @@ public class MessageHttpService implements IMessageHttpService {
 			messageResp.setId(message.getId());
 			messageResp.setContent(message.getContent());
 			returnmodel.setResult(messageResp);
-		}else {
+		} else {
 			returnmodel.setStatus(NewMessageReturnEnum.NoNews.value());
 			returnmodel.setMessage(NewMessageReturnEnum.NoNews.desc());
 		}
