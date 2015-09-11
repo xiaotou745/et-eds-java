@@ -96,8 +96,8 @@ public class OrderHttpService implements IOrderHttpService {
 			return resultModel;
 		}
 		para.setDateInfo(null);
-		para.setClienterId(null);
-		//resultModel.setResult(orderService.queryOrderB(para));
+		para.setBusinessId(null);
+		resultModel.setResult(orderService.queryOrderC(para));
 		return resultModel;
 	}
 	/**

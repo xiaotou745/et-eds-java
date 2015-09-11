@@ -28,6 +28,7 @@ import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.resp.QueryOrderCResp;
 
 public interface IOrderService {
 	/**
@@ -206,6 +207,15 @@ public interface IOrderService {
     QueryOrderBResp queryOrderB(QueryOrderReq query) ;
     
     /**
+	 * C 端我的任务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150911
+	 * @param para
+	 */
+	QueryOrderCResp queryOrderC(QueryOrderReq query);
+    
+    /**
      * B端已完成任务列表或者配送员配送列表
      * @author CaoHeYang
      * @date 20150910
@@ -213,4 +223,6 @@ public interface IOrderService {
      * @return
      */
      List<QueryOrder> getCompliteOrder(QueryOrderReq query);
+
+
 }
