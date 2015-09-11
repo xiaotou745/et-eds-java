@@ -1,14 +1,15 @@
 package com.edaisong.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class GroupBusiness {
+public class GroupBusiness  implements Serializable{
     private Integer id;
 
     private String groupbusiname;
 
-    private String phoneno;
+    private String loginname;
 
     private String password;
 
@@ -40,13 +41,7 @@ public class GroupBusiness {
         this.groupbusiname = groupbusiname == null ? null : groupbusiname.trim();
     }
 
-    public String getPhoneno() {
-        return phoneno;
-    }
-
-    public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno == null ? null : phoneno.trim();
-    }
+    
 
     public String getPassword() {
         return password;
@@ -103,4 +98,12 @@ public class GroupBusiness {
     public void setIsvalid(Integer isvalid) {
         this.isvalid = isvalid;
     }
+
+	public String getLoginname() {
+		return loginname;
+	}
+
+	public void setLoginname(String loginname) {
+		this.loginname = loginname;
+	}
 }

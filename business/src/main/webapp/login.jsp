@@ -1,14 +1,13 @@
-<%@page import="com.edaisong.core.consts.GlobalSettings"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.edaisong.api.common.LoginHelper" %>
+<%@ page import="com.edaisong.business.common.LoginUtil" %>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
 	String basePath =PropertyUtils.getProperty("static.business.url");
 %>
 
 <%
-	boolean isLogin = LoginHelper.checkIsLogin(request,response,GlobalSettings.BUSINESS_LOGIN_COOKIE_NAME);
+	boolean isLogin = LoginUtil.checkIsLogin(request,response,LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
 	if(isLogin){
 		//如果登录,跳转到首页
 		response.sendRedirect(basePath+"/index");
@@ -39,6 +38,7 @@
 							<h3 class="cb">
 								<span id="new0" onclick="setTab('new',0,2)" href="javascript:;" class="on">门店登录</span>
 								<a id="new1" onclick="setTab('new',1,2)" href="javascript:;">集团登录</a>
+								<input type="hidden" name="userType" id="userType" value="0"/>
 							</h3>
 
 								<input type="text" placeholder="输入手机号码" class="ex_iphone" maxlength="11" name="phoneNo" id="phoneNo">
@@ -63,6 +63,7 @@
 			
 			<script type="text/javascript">
 			function setTab(name,cursel,n){
+				$("#userType").val(cursel);
 				for(i=0;i<n;i++){
 					var menu=document.getElementById(name+i);
 					var con=document.getElementById("con_"+name+"_"+i);
@@ -102,7 +103,8 @@
 							"phoneNo":$("#phoneNo").val(),
 						  	"password":$("#password").val(),
 						  	"code":$("#code").val(),
-						  	"rememberMe":isRem ? $("#rememberMe").val() : 0
+						  	"rememberMe":isRem ? $("#rememberMe").val() : 0,
+						  	"userType":$("#userType").val()
 						  };
 					//请求接口
 					    $.ajax({
@@ -112,7 +114,11 @@
 						async:true,
 						success:function(data){
 							if(data.success){
-								window.location.href = "<%=basePath %>/index";
+								if($("#userType").val()=="0"){
+								   window.location.href = "<%=basePath %>/index";
+								}else{
+									window.location.href = "<%=basePath %>/group/recharge";
+								}
 							}else{
 								$("#error").text(data.message);
 								$("#error").show();

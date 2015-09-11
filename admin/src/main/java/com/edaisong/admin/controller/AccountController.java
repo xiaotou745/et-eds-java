@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.LoginUtil;
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.common.LoginHelper;
 import com.edaisong.api.service.inter.IAccountLoginLogService;
 import com.edaisong.api.service.inter.IAccountService;
@@ -93,9 +94,9 @@ public class AccountController {
 			 Integer rememberMe) throws ServletException, IOException {
 		String basePath = PropertyUtils.getProperty("static.admin.url");
 		Date loginTime = new Date();
-		String sessionCode = LoginHelper.getAuthCode(request,GlobalSettings.ADMIN_JSESSIONID);
+		String sessionCode = LoginHelper.getAuthCode(request,LoginUtil.ADMIN_JSESSIONID);
 		//一次性验证码,防止暴力破解
-		LoginHelper.removeAuthCodeCookie(request, response,GlobalSettings.ADMIN_JSESSIONID);
+		LoginHelper.removeAuthCodeCookie(request, response,LoginUtil.ADMIN_JSESSIONID);
 		// 如果已登录,直接返回
 		boolean isLogin = LoginUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
@@ -150,6 +151,7 @@ public class AccountController {
 		loginUser.setUserName(account.getUsername());
 		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
 				true);
+		UserContext.resetContext();
 		response.sendRedirect(basePath+"/order/list");
 	}
 	
@@ -166,9 +168,7 @@ public class AccountController {
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
 		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME);
-		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME_NET);
-//		CookieUtils.deleteCookie(request, response, LoginUtil.MENU_LIST_COOKIE_NAME);
-//		CookieUtils.deleteCookie(request, response, LoginUtil.MENU_LIST_COOKIE_NAME_NET);
+		UserContext.resetContext();
 		response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
 	}
 }

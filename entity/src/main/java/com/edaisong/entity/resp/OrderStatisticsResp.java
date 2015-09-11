@@ -1,5 +1,6 @@
 package com.edaisong.entity.resp;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.edaisong.entity.domain.DaySatisticsB;
@@ -9,7 +10,7 @@ import com.edaisong.entity.domain.DaySatisticsB;
  * @author CaoHeYang
  *
  */
-public class OrderStatisticsResp {
+public class OrderStatisticsResp  implements Serializable{
 	private int orderCount;
 	private Double totalAmount;
 	private int serviceClienterCount;

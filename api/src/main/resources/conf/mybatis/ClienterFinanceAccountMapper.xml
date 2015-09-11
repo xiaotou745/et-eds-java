@@ -31,12 +31,12 @@
     where Id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.ClienterFinanceAccount" >
-    insert into ClienterFinanceAccount (Id, ClienterId, TrueName, 
+    insert into ClienterFinanceAccount (ClienterId, TrueName, 
       AccountNo, IsEnable, AccountType, 
       BelongType, OpenBank, OpenSubBank, 
       CreateBy, CreateTime, UpdateBy, 
       UpdateTime)
-    values (#{id,jdbcType=INTEGER}, #{clienterid,jdbcType=INTEGER}, #{truename,jdbcType=NVARCHAR}, 
+    values (#{jdbcType=INTEGER}, #{clienterid,jdbcType=INTEGER}, #{truename,jdbcType=NVARCHAR}, 
       #{accountno,jdbcType=VARCHAR}, #{isenable,jdbcType=BIT}, #{accounttype,jdbcType=SMALLINT}, 
       #{belongtype,jdbcType=SMALLINT}, #{openbank,jdbcType=NVARCHAR}, #{opensubbank,jdbcType=NVARCHAR}, 
       #{createby,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updateby,jdbcType=NVARCHAR}, 
@@ -185,4 +185,11 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 根据骑士ID获取当前骑士的指定账户类型有效金融账户数量  add by pengyi 20150910 -->
+  <select id="getCountByClientId" resultType="int" parameterType="java.util.Map">
+  	select  Count(Id)
+	from  ClienterFinanceAccount  
+	where  ClienterId=#{clienterId,jdbcType=INTEGER} and AccountType=#{accountType,jdbcType=INTEGER} and IsEnable=1
+  </select>
 </mapper>

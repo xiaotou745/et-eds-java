@@ -1,31 +1,103 @@
 package com.edaisong.api_http.service.inter;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.edaisong.api_http.entity.ResultModel;
-import com.edaisong.entity.resp.MessageResp;
-import com.edaisong.entity.resp.OrderStatisticsResp;
+import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.OrderStatisticsBReq;
+import com.edaisong.entity.req.OrderStatisticsCReq;
+import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
+import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.resp.QueryOrderCResp;
 
 /**
- * 订单模块 
+ * 订单模块
+ * 
  * @author CaoHeYang
  * @date 20150910
  */
 @Path("/order")
-@Consumes("application/json")//当前方法接收的参数类型
-@Produces("application/json")//当前类的所有方法都返回json格式的数据
+@Consumes("application/json")
+// 当前方法接收的参数类型
+@Produces("application/json")
+// 当前类的所有方法都返回json格式的数据
 public interface IOrderHttpService {
 	/**
 	 * B端任务统计接口
+	 * 
 	 * @author CaoHeYang
 	 * @date 20150910
-	 * @param data 
+	 * @param orderStatisticsBReq
 	 * @return
 	 */
 	@POST
 	@Path("/orderstatisticsb")
-	 public ResultModel<OrderStatisticsResp> orderStatisticsB(String data);
+	public HttpResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq orderStatisticsBReq);
+
+	/**
+	 * B端任务统计接口
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param  para
+	 * @return
+	 */
+	@POST
+	@Path("/queryorderb")
+	public HttpResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq para);
+	
+	/**
+	 * C 端我的任务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150911
+	 * @param para
+	 */
+	@POST
+	@Path("/queryorderc")
+	HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq para);
+
+	/**
+	 * B端已完成任务列表或者配送员配送列表
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param para
+	 * @return
+	 */
+	@POST
+	@Path("/getcompliteorderb")
+	public HttpResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para);
+
+	/**
+	 * C端已完成任务列表
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param para
+	 * @return
+	 */
+	@POST
+	@Path("/getcompliteorderc")
+	public HttpResultModel<List<QueryOrder>> getCompliteOrderC(QueryOrderReq para);
+
+	/**
+	 * C端任务统计接口
+	 * 
+	 * @author WangXuDan
+	 * @date 20150910
+	 * @param data
+	 */
+	@POST
+	@Path("/orderstatisticsc")
+	public HttpResultModel<OrderStatisticsCResp> orderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
+
+
 }

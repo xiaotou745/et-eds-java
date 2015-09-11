@@ -20,7 +20,7 @@
 		response.sendRedirect(basePath);
 		return;
 	}
-	List<MenuEntity> menuList = menuService.getMenuListByUserID(UserContext.getCurrentContext(request).getAccount().getId());
+	List<MenuEntity> menuList = menuService.getMenuListByUserID(UserContext.getCurrentContext(request).getId());
     String viewPath =request.getAttribute("viewPath").toString();
     		
 %>

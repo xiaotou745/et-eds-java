@@ -8,7 +8,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.objenesis.instantiator.basic.NewInstanceInstantiator;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import com.edaisong.api.common.OrderSettleMoneyHelper;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
+import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.dao.inter.IClienterLocationDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
@@ -33,12 +36,13 @@ import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
-import com.edaisong.core.enums.BusinessStatus;
+import com.edaisong.core.enums.BusinessStatusEnum;
 import com.edaisong.core.enums.CancelOrderBusinessReturnEnum;
 import com.edaisong.core.enums.ClienterAllowWithdrawRecordStatus;
 import com.edaisong.core.enums.ClienterAllowWithdrawRecordType;
 import com.edaisong.core.enums.ClienterBalanceRecordRecordType;
 import com.edaisong.core.enums.ClienterBalanceRecordStatus;
+import com.edaisong.core.enums.ClienterStatusEnum;
 import com.edaisong.core.enums.DeductCommissionType;
 import com.edaisong.core.enums.MealsSettleMode;
 import com.edaisong.core.enums.OrderAuditStatus;
@@ -65,11 +69,14 @@ import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
+import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.DaySatisticsB;
+import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
@@ -78,13 +85,19 @@ import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderReq;
+import com.edaisong.entity.req.OrderStatisticsBReq;
+import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
-import com.edaisong.entity.resp.OrderStatisticsResp;
+import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
+import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.resp.QueryOrderCResp;
 
 @Service
 public class OrderService implements IOrderService {
@@ -113,6 +126,8 @@ public class OrderService implements IOrderService {
 	private IClienterBalanceRecordDao clienterBalanceRecordDao;
 	@Autowired 
 	IClienterLocationDao clienterLocationDao;
+	@Autowired
+	private IClienterDao clienterDao;
 
 	/**
 	 * 后台订单列表页面
@@ -516,7 +531,7 @@ public class OrderService implements IOrderService {
 		if (businessModel != null && businessModel.getOnekeypuborder() == 1) {
 			isOneKeyPubOrder = true;
 		}
-		if (businessModel.getStatus() != BusinessStatus.AuditPass.value())// 验证该商户有无发布订单资格
+		if (businessModel.getStatus() != BusinessStatusEnum.AuditPass.value())// 验证该商户有无发布订单资格
 																			// 审核通过下不允许发单
 		{
 			return PublishOrderReturnEnum.HadCancelQualification;
@@ -952,21 +967,77 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	public OrderStatisticsResp getOrderStatisticsB() {
-		OrderStatisticsResp orderStatisticsResp=new OrderStatisticsResp();
-		List<ServiceClienter> serviceClienters=orderDao.getOrderStatisticsServiceClienterB();
-		List<DaySatisticsB>   daySatisticsBs=  orderDao.getOrderStatisticsDaySatistics();
-//		Predicate<String> matched = s -> s.equalsIgnoreCase("2015-09-10");
-//		
-//		serviceClienters.filter(matched);
-		for (DaySatisticsB serviceClienter : daySatisticsBs) {
-			System.out.println(JsonUtil.obj2string(serviceClienter));
-			}
-		for (ServiceClienter serviceClienter : serviceClienters) {
-		System.out.println(JsonUtil.obj2string(serviceClienter));
+	public OrderStatisticsBResp getOrderStatisticsB(OrderStatisticsBReq orderStatisticsBReq) {
+		OrderStatisticsBResp orderStatisticsResp=orderDao.getOrderStatistics(orderStatisticsBReq);
+		List<ServiceClienter> serviceClienters=orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq);  //B端任务统计接口 
+		List<DaySatisticsB>   daySatisticsBs=  orderDao.getOrderStatisticsDaySatistics(orderStatisticsBReq); //B端任务统计接口 天数据列表 
+		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
+			List<ServiceClienter>  temp=serviceClienters.stream().filter(t ->t.getPubDate().equals(daySatisticsB.getMonthDate())).collect(Collectors.toList());;
+			daySatisticsB.setServiceClienters(temp);
 		}
-		// TODO Auto-generated method stub
+		orderStatisticsResp.setDatas(daySatisticsBs);
 		return orderStatisticsResp;
+	}
+	
+	/**
+	 *  C端任务统计接口
+	 * @author WangXuDan
+	 * @date 20150910
+	 * @param orderStatisticsCReq
+	 */
+	@Override
+	public OrderStatisticsCResp getOrderStatisticsC(OrderStatisticsCReq orderStatisticsCReq) {
+		OrderStatisticsCResp orderStatisticsResp=orderDao.getOrderStatisticsC(orderStatisticsCReq);
+		List<DaySatisticsC> daySatisticsCs=  orderDao.getOrderStatisticsDaySatisticsC(orderStatisticsCReq); 
+		orderStatisticsResp.setDatas(daySatisticsCs);
+		return orderStatisticsResp;
+	}
+
+	/**
+	 * B 端首页 订单列表
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	public QueryOrderBResp queryOrderB(QueryOrderReq query) {
+		QueryOrderBResp queryOrderBResp=new QueryOrderBResp();
+		if (businessDao.getUserStatus(query.getBusinessId()).getStatus()!=BusinessStatusEnum.AuditPass.value()) {
+			
+		}
+		queryOrderBResp.setOrders(orderDao.queryOrder(query));
+		return queryOrderBResp;
+	}
+	
+	/**
+	 * C 端我的任务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150911
+	 * @param para
+	 */
+	@Override
+	public QueryOrderCResp queryOrderC(QueryOrderReq query) {
+		if(clienterService.getUserStatus(query.getClienterId()).getStatus()!=ClienterStatusEnum.AuditPass.value())
+		{
+			
+		}
+		QueryOrderCResp m=new QueryOrderCResp();
+		m.setOrders(orderDao.queryOrder(query));
+		return m;
+	}
+	 /**
+     * B端已完成任务列表或者配送员配送列表 或者C 端已完成任务
+     * @author CaoHeYang
+     * @date 20150910
+     * @param data
+     * @return
+     */
+	@Override
+	public List<QueryOrder> getCompliteOrder(QueryOrderReq query) {
+		query.setStatus(OrderStatus.Complite.value());
+		return orderDao.queryOrder(query);
 	}
 
 }

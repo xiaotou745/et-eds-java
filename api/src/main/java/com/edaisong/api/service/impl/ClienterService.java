@@ -17,6 +17,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
+import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
@@ -169,4 +170,21 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	public Integer getId(String phoneNo, String trueName) {
 		return clienterDao.getId(phoneNo,trueName);
 	}
+
+
+	@Override
+	public Clienter selectByPrimaryKey(Integer id) {
+		return clienterDao.selectByPrimaryKey(id);
+	}
+
+	/**
+	 * 获取用户状态信息
+	 * @author CaoHeYang
+	 * @param userid
+	 * @date 20150911
+	 * @return
+	 */
+	  public ClienterStatus getUserStatus(int userid){
+		  return clienterDao.getUserStatus(userid);
+	  }
 }

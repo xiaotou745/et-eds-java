@@ -1,6 +1,8 @@
 package com.edaisong.entity.req;
 
-public class PagedGroupBusinessReq {
+import com.edaisong.entity.common.PagedRequestBase;
+
+public class PagedGroupBusinessReq extends PagedRequestBase {
 	private String groupBusinessName;
 	
 	public String getbusinessGroupName() {

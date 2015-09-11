@@ -34,15 +34,15 @@ if(data == null){
 						<tbody>
 							<%for (int i = 0; i < data.size(); i++) { %>
 							<tr class="info">
-								<td><%=data.get(i).getId() %></td>
+								<td><%=data.get(i).getBusinessid() %></td>
 								<td><%=ParseHelper.ShowString(data.get(i).getName())%></td>
 								<td><%=data.get(i).getPhoneNo()%></td>
 								<td><%=data.get(i).getBalancePrice()%></td>
-								<td><%=data.get(i).getIsbind() != null ? "已绑定" : "未绑定"  %></td>
-								<td><%=data.get(i).getGroupName()%></td>
+								<td><%=data.get(i).getIsbind() == null || data.get(i).getIsenable()==0 ? "未绑定" : "已绑定"  %></td>
+								<td><%=data.get(i).getIsbind() == null || data.get(i).getIsenable()==0 ? "" : ParseHelper.ShowString(data.get(i).getGroupName())%></td>
 		                        <td>
-		                        	<%if(data.get(i).getIsbind() == null){%>
-		                        		<button type="button" class="btn btn-primary btn-sm" onclick="funAddBusinessBind(<%=data.get(i).getId()%>)">绑定</button>
+		                        	<%if(data.get(i).getIsbind() == null || data.get(i).getIsenable()==0){%>
+		                        		<button type="button" class="btn btn-primary btn-sm" onclick="funAddBusinessBind(<%=data.get(i).getBusinessid()%>)">绑定</button>
 		                        	<% }%>
 		                        </td>
 							</tr>
