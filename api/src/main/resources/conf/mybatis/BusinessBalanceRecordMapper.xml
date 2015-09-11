@@ -380,7 +380,7 @@ GROUP by
   parameterType="com.edaisong.entity.req.PagedAccountBillDayReq" statementType="CALLABLE">  
 {call Sp_CustomPage2015_V1(
 ' OperateTime DESC ',
-' RelationNo,Amount,RecordType,OperateTime ',
+' RelationNo,Amount,RecordType,OperateTime,id AS RecordId ',
 ' BusinessBalanceRecord (NOLOCK) ',
 ' <include refid="getAccountBillDayBList_Where"/> ',
 #{pageSize,mode=IN,jdbcType=INTEGER},
