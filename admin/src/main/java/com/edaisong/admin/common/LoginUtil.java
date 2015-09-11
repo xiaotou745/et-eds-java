@@ -14,6 +14,6 @@ public class LoginUtil {
 	public final static String LOGIN_COOKIE_NAME = "userinfo_edaisong";
 	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response){
 		UserContext context = UserContext.getCurrentContext(request);
-		return context.getAccount() != null && context.getAccount().getId() > 0;
+		return !context.isEmpty()&& context.getId() > 0;
 	}
 }

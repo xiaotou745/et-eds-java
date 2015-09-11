@@ -7,17 +7,17 @@ package com.edaisong.core.enums;
  */
 public enum PayType {
 	/**
+	 * 网银
+	 */
+    WangYin (1,"网银"),
+	/**
 	 * 支付宝
 	 */
-    ZhiFuBao(1,"支付宝"),
+    ZhiFuBao(2,"支付宝"),
     /**
 	 * 微信
 	 */
-    WeiXin(2,"微信"),
-    /**
-	 * 网银
-	 */
-    WangYin (3,"网银"),
+    WeiXin(3,"微信"),
     /**
 	 * 财付通
 	 */

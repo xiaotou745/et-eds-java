@@ -178,4 +178,9 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 				.selectOne("com.edaisong.api.dao.inter.IClienterDao.getId",
 						map);
 	}
+
+	@Override
+	public Clienter selectByPrimaryKey(Integer id) {
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.selectByPrimaryKey",id);
+	}
 }
