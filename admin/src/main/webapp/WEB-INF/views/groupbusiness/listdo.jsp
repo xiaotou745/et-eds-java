@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
-<%@page import="com.edaisong.entity.domain.GroupBusinessModel"%>
+<%@page import="com.edaisong.entity.GroupBusiness"%>
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
@@ -24,14 +24,15 @@
 			<th width="%5">操作</th>
 		</tr>
 	</thead>
+
 	<tbody>
 
 		<%
-			PagedResponse<GroupBusinessModel> data = (PagedResponse<GroupBusinessModel>) request
+			PagedResponse<GroupBusiness> data = (PagedResponse<GroupBusiness>) request
 					.getAttribute("listData");
-			List<GroupBusinessModel> list = data.getResultList();
+			List<GroupBusiness> list = data.getResultList();
 			if (list == null) {
-				list = new ArrayList<GroupBusinessModel>();
+				list = new ArrayList<GroupBusiness>();
 			}
 			for (int i = 0; i < list.size(); i++) {
 		%>
@@ -40,9 +41,9 @@
 			<td><%=list.get(i).getGroupbusiname()%></td>
 			<td><%=list.get(i).getAmount()%></td>
 			<td><%=list.get(i).getLoginname()%></td>
-			<td><%=ParseHelper.ToDateString(list.get(i).getCreatetime())%></td>
+			<td><%=list.get(i).getCreatetime()%></td>
 			<td><%=list.get(i).getCreatename()%></td>
-			<td><a href="javascript:void(0)" class="businessOk" onclick="showMidfyGroupBusiness(<%=list.get(i).getId()%>,'<%=list.get(i).getGroupbusiname()%>','<%=list.get(i).getLoginname()%>')">修改</a></td>
+			<td><a href="javascript:void(0)" class="businessOk" onclick="">修改</a></td>
 		</tr>
 		<%
 			}
@@ -52,23 +53,3 @@
 <%=PageHelper.getPage(data.getPageSize(),
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
-<script>
-function showMidfyGroupBusiness(id,groupbusiName,loginName){
-	$("#modifyGroupBusinessLog").html(""); 
-	 $('#txtModifyGroupBusinessName').val(groupbusiName);
-     $('#txtModifyLoginName').val(loginName);
-     $("#txtModifyGroupBusinessId").val(id);
-     var url = "<%=basePath%>/groupbusiness/getgroupbusinesslog";
-     $.ajax({
-         type: 'POST',
-         url: url,
-         data: {"id":id},
-         success: function (result) {
-      	   $("#modifyGroupBusinessLog").html(result.message);        	  
-         }
-     });
-     
-     $('#modifyGroupBusiness').modal('show');
-}
-
-</script>
