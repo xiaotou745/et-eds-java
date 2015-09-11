@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.edaisong.api.service.impl.BIService;
-import com.edaisong.api.service.inter.IBIService;
+import com.edaisong.api.service.impl.BiService;
+import com.edaisong.api.service.inter.IBiService;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.Everyday;
 import com.edaisong.entity.domain.AreaModel;
@@ -23,7 +23,8 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 @Controller
 @RequestMapping("bi")
 public class BIController {
-	private IBIService biService;
+	@Autowired
+	private IBiService biService;
 	@RequestMapping("everyday")
 	public ModelAndView everyday(){
 		ModelAndView view = new ModelAndView("adminView");

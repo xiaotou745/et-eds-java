@@ -4,6 +4,6 @@ import java.util.List;
 
 import com.edaisong.entity.Everyday;
 
-public interface IBIService {
+public interface IBiService {
 	List<Everyday> queryEveryDay();
 }

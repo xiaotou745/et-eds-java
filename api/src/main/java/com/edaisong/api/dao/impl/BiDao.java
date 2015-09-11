@@ -2,16 +2,19 @@ package com.edaisong.api.dao.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.edaisong.api.common.DaoBase;
-import com.edaisong.api.dao.inter.IBIDao;
+import com.edaisong.api.dao.inter.IBiDao;
 import com.edaisong.entity.Everyday;
 
-public class BIDao extends DaoBase implements IBIDao {
+@Repository
+public class BiDao extends DaoBase implements IBiDao {
 
 	@Override
 	public List<Everyday> queryEveryDayDao() {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IBIDao.queryEveryDayDao");
+				"com.edaisong.api.dao.inter.IBiDao.queryEveryDayDao");
 	}
 
 }
