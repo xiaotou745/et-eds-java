@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.service.inter.IBusinessFinanceAccountService;
 import com.edaisong.api.service.inter.IClienterFinanceAccountService;
 import com.edaisong.api.service.inter.IClienterService;
-import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.service.inter.IFinanceService;
 import com.edaisong.core.enums.CardBindC;
 import com.edaisong.core.enums.CardModifyC;
@@ -17,6 +16,7 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterFinanceAccount;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.CardBindAlipayReq;
 import com.edaisong.entity.req.CardModifyAlipayReq;
 
@@ -39,9 +39,9 @@ public class FinanceService implements IFinanceService{
 	 * c端绑定支付宝 add by pengyi 20150911
 	 */
 	@Override
-	public ResultModel<Object> cardBindAlipayC(CardBindAlipayReq req) {
+	public HttpResultModel<Object> cardBindAlipayC(CardBindAlipayReq req) {
 		CardBindC checkRet = checkCardBindAlipayC(req);
-		ResultModel<Object> result = new ResultModel<Object>();
+		HttpResultModel<Object> result = new HttpResultModel<Object>();
 		if(checkRet != CardBindC.Success){
 			result.setMessage(checkRet.desc());
 			result.setStatus(checkRet.value());
@@ -69,9 +69,9 @@ public class FinanceService implements IFinanceService{
 	}
 
 	@Override
-	public ResultModel<Object> cardModifyAlipayC(CardModifyAlipayReq req) {
+	public HttpResultModel<Object> cardModifyAlipayC(CardModifyAlipayReq req) {
 		CardModifyC checkRet = checkCardModifyAlipayC(req);
-		ResultModel<Object> result = new ResultModel<Object>();
+		HttpResultModel<Object> result = new HttpResultModel<Object>();
 		if(checkRet != CardModifyC.Success){
 			result.setMessage(checkRet.desc());
 			result.setStatus(checkRet.value());

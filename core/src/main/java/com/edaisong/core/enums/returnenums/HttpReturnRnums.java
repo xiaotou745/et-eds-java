@@ -1,7 +1,4 @@
-package com.edaisong.entity.common;
-
-import com.edaisong.core.enums.OrderFrom;
-
+package com.edaisong.core.enums.returnenums;
 /**
  * api-http 返回值公用 enum
  * @author CaoHeYang

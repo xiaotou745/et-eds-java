@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IOrderService;
-import com.edaisong.api_http.entity.ReturnRnums;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
+import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.OrderStatisticsBReq;
@@ -44,8 +44,8 @@ public class OrderHttpService implements IOrderHttpService {
 		HttpResultModel<OrderStatisticsBResp> HttpResultModel = new HttpResultModel<OrderStatisticsBResp>();
 		if (para.getMonthInfo() == null || para.getMonthInfo().trim().isEmpty() || para.getBusinessId() == 0 ) {
 			HttpResultModel
-			.setStatus(ReturnRnums.ParaError.value())
-			.setMessage(ReturnRnums.ParaError.desc());
+			.setStatus(HttpReturnRnums.ParaError.value())
+			.setMessage(HttpReturnRnums.ParaError.desc());
 			return HttpResultModel;
 		}
 		OrderStatisticsBResp orderStatisticsResp = orderService.getOrderStatisticsB(para);
@@ -68,7 +68,7 @@ public class OrderHttpService implements IOrderHttpService {
 				|| para.getBusinessId() == 0
 				|| (para.getStatus() != OrderStatus.New.value() && para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
-			HttpResultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
+			HttpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
 			return HttpResultModel;
 		}
 		para.setDateInfo(null);
@@ -92,7 +92,7 @@ public class OrderHttpService implements IOrderHttpService {
 				|| para.getClienterId() == 0
 				|| ( para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
-			HttpResultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
+			HttpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
 			return HttpResultModel;
 		}
 		para.setDateInfo(null);
@@ -112,7 +112,7 @@ public class OrderHttpService implements IOrderHttpService {
 	public HttpResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para) {
 		HttpResultModel<List<QueryOrder>> HttpResultModel = new HttpResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getBusinessId() == null || para.getBusinessId() == 0) {
-			HttpResultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
+			HttpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
 			return HttpResultModel;
 		}
 		HttpResultModel.setResult(orderService.getCompliteOrder(para));
@@ -132,8 +132,8 @@ public class OrderHttpService implements IOrderHttpService {
 		HttpResultModel<List<QueryOrder>> HttpResultModel = new HttpResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getClienterId() == null || para.getClienterId() == 0) {
 			HttpResultModel
-			.setStatus(ReturnRnums.ParaError.value())
-			.setMessage(ReturnRnums.ParaError.desc());
+			.setStatus(HttpReturnRnums.ParaError.value())
+			.setMessage(HttpReturnRnums.ParaError.desc());
 			return HttpResultModel;
 		}
 		HttpResultModel.setResult(orderService.getCompliteOrder(para));

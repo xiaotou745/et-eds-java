@@ -1,5 +1,7 @@
 package com.edaisong.entity.common;
 
+import com.edaisong.core.enums.returnenums.HttpReturnRnums;
+
 public class HttpResultModel<T> {
 	private int Status = HttpReturnRnums.Success.value();
 	private String Message = HttpReturnRnums.Success.desc();
