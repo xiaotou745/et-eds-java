@@ -6,9 +6,9 @@
     <result column="GroupBusiName" property="groupbusiname" jdbcType="NVARCHAR" />
     <result column="PhoneNo" property="phoneno" jdbcType="VARCHAR" />
     <result column="Password" property="password" jdbcType="NVARCHAR" />
-    <result column="CreateName" property="createname" jdbcType="NCHAR" />
+    <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
     <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-    <result column="ModifyName" property="modifyname" jdbcType="NCHAR" />
+    <result column="ModifyName" property="modifyname" jdbcType="NVARCHAR" />
     <result column="ModifyTime" property="modifytime" jdbcType="TIMESTAMP" />
     <result column="Amount" property="amount" jdbcType="DECIMAL" />
     <result column="IsValid" property="isvalid" jdbcType="INTEGER" />
@@ -36,7 +36,7 @@
   <insert id="insert" parameterType="com.edaisong.entity.GroupBusiness" >
     insert into GroupBusiness ( GroupBusiName, LoginName, 
       Password, CreateName) output Inserted.Id,Inserted.CreateName,Inserted.CreateTime,'添加集团商户' into dbo.GroupBusinessLog(GroupBusinessId,OptName,OptTime,Remark) 
-    values (#{groupbusiname,jdbcType=NVARCHAR}, #{loginname,jdbcType=VARCHAR}, #{password,jdbcType=NVARCHAR}, #{createname,jdbcType=NCHAR})
+    values (#{groupbusiname,jdbcType=NVARCHAR}, #{loginname,jdbcType=VARCHAR}, #{password,jdbcType=NVARCHAR}, #{createname,jdbcType=NVARCHAR})
   </insert>
    
   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.GroupBusiness" >
@@ -52,7 +52,7 @@
         Password = #{password,jdbcType=NVARCHAR},
       </if>
       <if test="createname != null" >
-        CreateName = #{createname,jdbcType=NCHAR},
+        CreateName = #{createname,jdbcType=NVARCHAR},
       </if>
       <if test="createtime != null" >
         CreateTime = #{createtime,jdbcType=TIMESTAMP},
@@ -79,7 +79,7 @@
       <if test="password != ''">
         Password = #{password,jdbcType=NVARCHAR},
       </if>  
-      ModifyName = #{modifyname,jdbcType=NCHAR},
+      ModifyName = #{modifyname,jdbcType=NVARCHAR},
       ModifyTime = getdate() 
       output  Inserted.Id ,
         Inserted.CreateName ,
