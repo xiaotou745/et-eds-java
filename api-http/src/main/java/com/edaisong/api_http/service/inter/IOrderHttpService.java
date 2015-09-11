@@ -67,12 +67,12 @@ public interface IOrderHttpService {
 	
 	/**
 	 * C端任务统计接口
-	 * @author Danny
+	 * @author WangXuDan
 	 * @date 20150910
 	 * @param data
 	 */
 	@POST
-	@Path("/orderStatisticsc")
+	@Path("/orderstatisticsc")
 	public ResultModel<OrderStatisticsCResp> orderStatisticsC(String data);
 	
 }
