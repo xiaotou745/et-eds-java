@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.edaisong.entity.GroupBusiness" >
     <id column="Id" property="id" jdbcType="INTEGER" />
     <result column="GroupBusiName" property="groupbusiname" jdbcType="NVARCHAR" />
-    <result column="PhoneNo" property="phoneno" jdbcType="VARCHAR" />
+    <result column="LoginName" property="loginname" jdbcType="VARCHAR" />
     <result column="Password" property="password" jdbcType="NVARCHAR" />
     <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
     <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
