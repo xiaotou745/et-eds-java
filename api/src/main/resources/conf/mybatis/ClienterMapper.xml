@@ -53,25 +53,31 @@
 		<result column="finishedOrderCount" property="finishedOrderCount"
 			jdbcType="INTEGER" />
 	</resultMap>
-	
-	  <sql id="Base_Column_List">
-    Id, PhoneNo, LoginName, recommendPhone, Password, TrueName, IDCard, PicWithHandUrl, 
-    PicUrl, Status, AccountBalance, InsertTime, InviteCode, City, CityId, GroupId, HealthCardID, 
-    InternalDepart, ProvinceCode, AreaCode, CityCode, Province, BussinessID, WorkStatus, 
-    AllowWithdrawPrice, HasWithdrawPrice, IsBind, DeliveryCompanyId, Timespan, Appkey, 
-    IsReceivePush
-  </sql>
-	
-	  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from clienter
-    where Id = #{id,jdbcType=INTEGER}
-  </select>
+
+	<sql id="Base_Column_List">
+		Id, PhoneNo, LoginName, recommendPhone, Password, TrueName, IDCard,
+		PicWithHandUrl,
+		PicUrl, Status, AccountBalance, InsertTime, InviteCode, City, CityId,
+		GroupId, HealthCardID,
+		InternalDepart, ProvinceCode, AreaCode, CityCode, Province, BussinessID, WorkStatus,
+		AllowWithdrawPrice, HasWithdrawPrice, IsBind, DeliveryCompanyId,
+		Timespan, Appkey,
+		IsReceivePush
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from clienter
+		where Id = #{id,jdbcType=INTEGER}
+	</select>
 
 	<sql id="queryColumns">
-		c.id,isnull(c.trueName,'''') as trueName ,c.phoneNo,isnull(c.idCard,'''') as
-		idCard,c.accountBalance, c.picWithHandUrl,c.picUrl,
+		c.id,isnull(c.trueName,'''') as trueName
+		,c.phoneNo,isnull(c.idCard,'''') as
+		idCard,c.accountBalance,
+		c.picWithHandUrl,c.picUrl,
 		c.insertTime,c.workStatus,c.allowWithdrawPrice,c.status,
 		isnull(g.groupName,'''') as groupName,
 		isnull(dc.deliveryCompanyName,'''') as deliveryCompanyName,
@@ -102,9 +108,12 @@
 
 	<sql id="queryTables">
 		dbo.clienter c with(nolock)
-		left join dbo.[Group] g with(nolock) on c.GroupId=g.id
-		left join dbo.DeliveryCompany dc with(nolock) on c.DeliveryCompanyId=dc.id
-		left join dbo.clienter cl with(nolock) on c.recommendPhone=cl.PhoneNo
+		left join dbo.[Group] g
+		with(nolock) on c.GroupId=g.id
+		left join dbo.DeliveryCompany dc
+		with(nolock) on c.DeliveryCompanyId=dc.id
+		left join dbo.clienter cl
+		with(nolock) on c.recommendPhone=cl.PhoneNo
 	</sql>
 
 	<select id="query" resultType="com.edaisong.entity.domain.ClienterModel"
@@ -139,7 +148,8 @@
 			and c.workstatus=${workStatus}
 		</if>
 		<if test="search != null and search!=''">
-			and (c.trueName like ''%${search}%'' or c.phoneNo like ''%${search}%'')
+			and (c.trueName like ''%${search}%'' or c.phoneNo like
+			''%${search}%'')
 		</if>
 
 		group by c.Id
@@ -148,22 +158,28 @@
 
 	<sql id="getBusinessClientersTables">
 		(SELECT c.id Id,MIN(bcr.businessid) businessid,
-		MIN(c.TrueName) truename,
+		MIN(c.TrueName)
+		truename,
 		MIN(c.PhoneNo) phoneno,
 		MIN(c.WorkStatus) workstatus,
 		MIN(c.AllowWithdrawPrice) allowwithdrawprice,
-		sum(o.OrderCount) finishedOrderCount,
+		sum(o.OrderCount)
+		finishedOrderCount,
 		min(c.AccountBalance) accountbalance
-		FROM dbo.clienter c (nolock)
-		JOIN dbo.BusinessClienterRelation bcr ON bcr.ClienterId = c.Id AND
+		FROM
+		dbo.clienter c (nolock)
+		JOIN dbo.BusinessClienterRelation bcr ON
+		bcr.ClienterId = c.Id AND
 		bcr.BusinessId=${businessId}
-		left join dbo.[order] o (nolock) on o.clienterId=c.Id
+		left join
+		dbo.[order] o (nolock) on o.clienterId=c.Id
 		where 1=1
 		<if test="!(workStatus>=2)">
 			and c.WorkStatus=${workStatus}
 		</if>
 		<if test="search != null and search!=''">
-			and (c.trueName like ''%${search}%'' or c.phoneNo like ''%${search}%'')
+			and (c.trueName like ''%${search}%'' or c.phoneNo like
+			''%${search}%'')
 		</if>
 		group by c.Id) as mp
 	</sql>
@@ -175,10 +191,12 @@
 
 		{call Sp_CustomPage2015_V1(
 		' mp.id desc ',
-		' mp.id id,mp.TrueName truename,mp.PhoneNo phoneno,mp.WorkStatus
+		' mp.id id,mp.TrueName
+		truename,mp.PhoneNo phoneno,mp.WorkStatus
 		workstatus,
 		mp.allowwithdrawprice allowwithdrawprice,
-		mp.finishedOrderCount finishedOrderCount,
+		mp.finishedOrderCount
+		finishedOrderCount,
 		mp.AccountBalance accountbalance ',
 		'
 		<include refid="getBusinessClientersTables" />
@@ -601,7 +619,8 @@
 	<update id="updateCAccountBalance" parameterType="java.util.Map">
 		update clienter
 		set AccountBalance=AccountBalance+ #{Money,jdbcType=DECIMAL}
-		where Id= #{Id,jdbcType=INTEGER}
+		where Id=
+		#{Id,jdbcType=INTEGER}
 	</update>
 	<!-- 更新骑士可提现金额 add by caoheyang 20150831 -->
 	<update id="updateCAllowWithdrawPrice" parameterType="java.util.Map">
@@ -654,7 +673,8 @@
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
 		' C.Id DESC ',
-		' C.[Id] id,C.[PhoneNo] phoneNo,C.[TrueName]
+		' C.[Id] id,C.[PhoneNo]
+		phoneNo,C.[TrueName]
 		trueName,ISNULL(bcr.IsBind,0) isBind ',
 		'
 		<include refid="getClienterBindInfoListTables"></include>
@@ -686,14 +706,37 @@
 		parameterType="java.lang.String">
 		select TrueName
 		from dbo.[clienter] (nolock)
-		where phoneNo = #{phoneNo,jdbcType=VARCHAR};
+		where phoneNo
+		= #{phoneNo,jdbcType=VARCHAR};
 	</select>
 
 	<!-- 根据电话和姓名获得骑士id add by pengyi 20150907 -->
 	<select id="getId" resultType="java.lang.Integer" parameterType="java.util.Map">
 		select ISNULL(Id,0) id
 		from dbo.[clienter] (nolock)
-		where phoneNo = #{phoneNo,jdbcType=VARCHAR} and
+		where phoneNo =
+		#{phoneNo,jdbcType=VARCHAR} and
 		TrueName=#{trueName,jdbcType=NVARCHAR};
+	</select>
+
+	<!-- 获取用户状态信息 add by caoheyang 20150911 -->
+	<select id="getUserStatus" resultType="com.edaisong.entity.domain.ClienterStatus"
+		parameterType="java.lang.Long">
+		select
+		c.WorkStatus,
+		c.Id as userid ,
+		c.[status] ,
+		c.phoneno ,
+		c.AccountBalance as amount ,
+		c.AllowWithdrawPrice as AllowWithdrawPrice ,
+		c.IsBind,
+		ISNULL(d.Id,0) as DeliveryCompanyId,
+		isnull(d.DeliveryCompanyName,'') DeliveryCompanyName,
+		(case when c.DeliveryCompanyId=0 or
+		(d.SettleType=1 and ClienterSettleRatio>0) or
+		(d.SettleType=2 and d.ClienterFixMoney>0) then 1 else 0 end) IsDisplay
+		from dbo.clienter c ( nolock )
+		left join dbo.DeliveryCompany d ( nolock ) on c.DeliveryCompanyId = d.Id
+		where c.Id= #{userid,jdbcType=INTEGER}
 	</select>
 </mapper>
