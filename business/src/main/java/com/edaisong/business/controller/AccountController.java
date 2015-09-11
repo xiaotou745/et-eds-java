@@ -73,33 +73,44 @@ public class AccountController {
 			resp.setSuccess(false);
 			return resp;
 		}
-
-		BusinessLoginResp businessResp=null;
-		if (userType==0) {
-			businessResp = businessService.login(phoneNo, password);
-		}else {
-			GroupBusiness business = groupBusinessService.login(phoneNo, password);
-		}
-		if (businessResp.getResponseCode()!=ResponseCode.SUCESS) {
-			resp.setMessage(businessResp.getMessage());
-			resp.setSuccess(false);
-			return resp;
-		}
 		// 登录成功,写cookie
 		int cookieMaxAge = 2 * 60 * 24;
 		// 选择记住我,默认cookie24小时,否则随浏览器的关闭而失效
 		if (rememberMe==1) {
 			cookieMaxAge = 60 * 60 * 24;
 		}
-		Business business = businessResp.getBusiness();
-		Date lastLoginTime = new Date();//更新最后登录时间
-		businessService.updateLastLoginTime(business.getId(), lastLoginTime);
-		business.setLastLoginTime(lastLoginTime);
-		String key = String.format("%s_business_%s_%s", RedissCacheKey.LOGIN_COOKIE_KEY,business.getPhoneno(),UUID.randomUUID().toString());
-		redisService.set(key, business, cookieMaxAge);
-		if(!(rememberMe==1)){
-			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走
+
+		BusinessLoginResp businessResp=null;
+		String key="";
+		if (userType==0) {
+			businessResp = businessService.login(phoneNo, password);
+			if (businessResp.getResponseCode()!=ResponseCode.SUCESS) {
+				resp.setMessage(businessResp.getMessage());
+				resp.setSuccess(false);
+				return resp;
+			}
+			Business business = businessResp.getBusiness();
+			Date lastLoginTime = new Date();//更新最后登录时间
+			business.setLastLoginTime(lastLoginTime);
+			businessService.updateLastLoginTime(business.getId(), lastLoginTime);
+			key = RedissCacheKey.Business_LOGIN_COOKIE+business.getPhoneno()+UUID.randomUUID().toString();
+			redisService.set(key, business, cookieMaxAge);
+		}else {
+			GroupBusiness groupBusiness = groupBusinessService.login(phoneNo, password);
+			if (groupBusiness==null) {
+				resp.setMessage("用户名或密码错误");
+				resp.setSuccess(false);
+				return resp;
+			}
+			if (groupBusiness.getIsvalid()==0) {
+				resp.setMessage("您的商铺尚未验证通过");
+				resp.setSuccess(false);
+				return resp;
+			}
+			key = RedissCacheKey.GroupBusiness_LOGIN_COOKIE+groupBusiness.getLoginname()+UUID.randomUUID().toString();
+			redisService.set(key, groupBusiness, cookieMaxAge);
 		}
+
 		CookieUtils.setCookie(request,response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, key, cookieMaxAge,
 				true);
 		//设置账户cookie

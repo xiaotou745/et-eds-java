@@ -11,7 +11,11 @@ public enum ReturnRnums {
 	/**
 	 * 成功
 	 */
-	Success(1,"成功");
+	Success(1,"成功"),
+	/**
+	 * 参数错误
+	 */
+	ParaError(-2,"参数错误");
 	private int value = 0;
 	private String desc;
 	private ReturnRnums(int value, String desc) { // 必须是private的，否则编译错误
