@@ -42,7 +42,7 @@ if(data == null){
 								<td><%=ParseHelper.ToDateString(data.get(i).getUpdatetime())%></td>
 		                        <td>
 		                        	<%if(data.get(i).getIsbind() == 1){%>
-		                        		<button type="button" class="btn btn-primary btn-sm" onclick="funRemoveBusinessBind(<%=data.get(i).getId()%>)">移除绑定</button>
+		                        		<button type="button" class="btn btn-primary btn-sm" onclick="funRemoveBusinessBind(<%=data.get(i).getBusinessid()%>)">移除绑定</button>
 		                        	<% }%>
 		                        </td>
 							</tr>

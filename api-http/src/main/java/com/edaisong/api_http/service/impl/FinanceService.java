@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.service.inter.IBusinessFinanceAccountService;
 import com.edaisong.api.service.inter.IClienterFinanceAccountService;
 import com.edaisong.api.service.inter.IClienterService;
-import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.service.inter.IFinanceService;
 import com.edaisong.core.enums.CardBindC;
 import com.edaisong.core.enums.CardModifyC;
@@ -17,6 +16,7 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterFinanceAccount;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.CardBindAlipayReq;
 import com.edaisong.entity.req.CardModifyAlipayReq;
 
@@ -39,9 +39,9 @@ public class FinanceService implements IFinanceService{
 	 * c端绑定支付宝 add by pengyi 20150911
 	 */
 	@Override
-	public ResultModel<Object> cardBindAlipayC(CardBindAlipayReq req) {
+	public HttpResultModel<Object> cardBindAlipayC(CardBindAlipayReq req) {
 		CardBindC checkRet = checkCardBindAlipayC(req);
-		ResultModel<Object> result = new ResultModel<Object>();
+		HttpResultModel<Object> result = new HttpResultModel<Object>();
 		if(checkRet != CardBindC.Success){
 			result.setMessage(checkRet.desc());
 			result.setStatus(checkRet.value());
@@ -59,7 +59,7 @@ public class FinanceService implements IFinanceService{
 		record.setAccounttype((short)PayType.ZhiFuBao.value());
 		record.setBelongtype((short)0);
 		record.setClienterid(req.getUserId());
-		record.setCreateby(clienter.getTruename());
+		record.setCreateby(req.getCreateBy());
 		record.setCreatetime(now);
 		record.setIsenable(true);
 		clienterFinanceAccountService.insertSelective(record);
@@ -69,9 +69,9 @@ public class FinanceService implements IFinanceService{
 	}
 
 	@Override
-	public ResultModel<Object> cardModifyAlipayC(CardModifyAlipayReq req) {
+	public HttpResultModel<Object> cardModifyAlipayC(CardModifyAlipayReq req) {
 		CardModifyC checkRet = checkCardModifyAlipayC(req);
-		ResultModel<Object> result = new ResultModel<Object>();
+		HttpResultModel<Object> result = new HttpResultModel<Object>();
 		if(checkRet != CardModifyC.Success){
 			result.setMessage(checkRet.desc());
 			result.setStatus(checkRet.value());
@@ -103,7 +103,7 @@ public class FinanceService implements IFinanceService{
 		record.setAccounttype((short)PayType.ZhiFuBao.value());
 		record.setBelongtype((short)0);
 		record.setClienterid(req.getUserId());
-		record.setUpdateby(clienter.getTruename());
+		record.setUpdateby(req.getCreateBy());
 		record.setUpdatetime(now);
 		record.setIsenable(true);
 		clienterFinanceAccountService.updateByPrimaryKeySelective(record);
@@ -123,6 +123,9 @@ public class FinanceService implements IFinanceService{
 	private CardBindC checkCardBindAlipayC(CardBindAlipayReq req){
 		if(StringUtils.isEmpty(req.getTrueName())){
 			return CardBindC.NameError;
+		}
+		if(StringUtils.isEmpty(req.getCreateBy())){
+			return CardBindC.NoCreateBy;
 		}
 		if(StringUtils.isEmpty(req.getAccount())){
 			return CardBindC.AccountNotSame;
@@ -147,6 +150,9 @@ public class FinanceService implements IFinanceService{
 	private CardModifyC checkCardModifyAlipayC(CardBindAlipayReq req){
 		if(StringUtils.isEmpty(req.getTrueName())){
 			return CardModifyC.NameError;
+		}
+		if(StringUtils.isEmpty(req.getCreateBy())){
+			return CardModifyC.NoCreateBy;
 		}
 		if(StringUtils.isEmpty(req.getAccount())){
 			return CardModifyC.AccountNotSame;

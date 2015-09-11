@@ -13,7 +13,7 @@ import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
-import com.edaisong.core.enums.BusinessStatus;
+import com.edaisong.core.enums.BusinessStatusEnum;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.HttpUtil;
 import com.edaisong.core.util.PropertyUtils;
@@ -249,8 +249,8 @@ public class BusinessService implements IBusinessService {
 
 	@Override
 	public int updateAuditStatus(int businessID, int status) {
-		if (status != BusinessStatus.AuditPass.value()
-				&& status != BusinessStatus.AuditRefuse.value()) {
+		if (status != BusinessStatusEnum.AuditPass.value()
+				&& status != BusinessStatusEnum.AuditRefuse.value()) {
 			return -1;
 		}
 		int result = iBusinessDao.updateAuditStatus(businessID, status);
@@ -263,7 +263,7 @@ public class BusinessService implements IBusinessService {
 			if (business.getGroupid()!=null &&
 				business.getGroupid() == 1 && 
 				business.getOriginalbusiid() > 0 && 
-				status == BusinessStatus.AuditPass.value()) {
+				status == BusinessStatusEnum.AuditPass.value()) {
 				String str = HttpUtil.sendPost(juWangKeBusiAuditCallBack,
 						"supplier_id=" + business.getOriginalbusiid());
 			}

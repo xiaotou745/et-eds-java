@@ -8,9 +8,11 @@ import java.util.Map;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AccountBillDayModel;
+import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedAccountBillDayReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
@@ -64,4 +66,11 @@ public interface IBusinessBalanceRecordDao {
 	 * 2015年9月10日10:24:07
 	 * */
 	List<AccountBillDayModel>  getAccountBillListDayB(PagedAccountBillDayReq par);
+	/**
+	 * API 获取商户账单详情
+	 * 茹化肖
+	 * 2015年9月10日10:25:04
+	 * 
+	 * */
+	AccountBillDetailModel getAccountBillDetailB(AccountBillDetailReq par);
 }

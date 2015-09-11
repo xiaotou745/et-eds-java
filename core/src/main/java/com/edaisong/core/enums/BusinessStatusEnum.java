@@ -1,6 +1,6 @@
 package com.edaisong.core.enums;
 
-public enum BusinessStatus {
+public enum BusinessStatusEnum {
 	/**
 	 * 待审核
 	 */
@@ -23,7 +23,7 @@ public enum BusinessStatus {
     AuditRefuse (4,"审核拒绝");
 	private int value = 0;
 	private String desc;
-	private BusinessStatus(int value, String desc) { // 必须是private的，否则编译错误
+	private BusinessStatusEnum(int value, String desc) { // 必须是private的，否则编译错误
 		this.value = value;
 		this.desc = desc;
 	}
@@ -34,8 +34,8 @@ public enum BusinessStatus {
 		return this.desc;
 	}
 
-	public static BusinessStatus getEnum(int index) {
-		for (BusinessStatus c : BusinessStatus.values()) {
+	public static BusinessStatusEnum getEnum(int index) {
+		for (BusinessStatusEnum c : BusinessStatusEnum.values()) {
 			if (c.value() == index) {
 				return c;
 			}

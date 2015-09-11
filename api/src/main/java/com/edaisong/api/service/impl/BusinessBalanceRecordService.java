@@ -18,9 +18,11 @@ import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AccountBillDayModel;
 import com.edaisong.entity.domain.AccountBillDayResultModel;
+import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedAccountBillDayReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
@@ -130,6 +132,16 @@ public class BusinessBalanceRecordService implements IBusinessBalanceRecordServi
 		resultModel.setOutMoney(outmoney);
 		resultModel.setListRecordS((ArrayList<AccountBillDayModel>)list);
 		return resultModel;
+	}
+	/**
+	 * B端获取账单详情
+	 * 茹化肖
+	 * 2015年9月11日15:43:07
+	 */
+	@Override
+	public AccountBillDetailModel getAccountBillDetailB(AccountBillDetailReq par) {
+		return businessBalanceRecordDao.getAccountBillDetailB(par);
+		
 	}
 
 }

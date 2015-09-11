@@ -37,7 +37,7 @@
 		%>
 		<tr>
 			<td><%=list.get(i).getId()%></td>
-			<td><%=list.get(i).getGroupbusiname()%></td>
+			<td><a href="<%=basePath%>/groupbusiness/businessbindlist?groupBusinessId=<%=list.get(i).getId()%>"><%=list.get(i).getGroupbusiname()%></a></td>
 			<td><%=list.get(i).getAmount()%></td>
 			<td><%=list.get(i).getLoginname()%></td>
 			<td><%=ParseHelper.ToDateString(list.get(i).getCreatetime())%></td>

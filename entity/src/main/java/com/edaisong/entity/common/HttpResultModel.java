@@ -1,8 +1,10 @@
-package com.edaisong.api_http.entity;
+package com.edaisong.entity.common;
 
-public class ResultModel<T> {
-	private int Status = ReturnRnums.Success.value();
-	private String Message = ReturnRnums.Success.desc();
+import com.edaisong.core.enums.returnenums.HttpReturnRnums;
+
+public class HttpResultModel<T> {
+	private int Status = HttpReturnRnums.Success.value();
+	private String Message = HttpReturnRnums.Success.desc();
 	private T Result;
 
 	/**
@@ -19,7 +21,7 @@ public class ResultModel<T> {
 	 * 
 	 * @param status
 	 */
-	public ResultModel<T> setStatus(int status) {
+	public HttpResultModel<T> setStatus(int status) {
 		Status = status;
 		return this;
 	}
@@ -38,7 +40,7 @@ public class ResultModel<T> {
 	 * 
 	 * @param message
 	 */
-	public ResultModel<T> setMessage(String message) {
+	public HttpResultModel<T> setMessage(String message) {
 		Message = message;
 		return this;
 	}
@@ -55,7 +57,7 @@ public class ResultModel<T> {
 	 * 
 	 * @param result
 	 */
-	public ResultModel<T> setResult(T result) {
+	public HttpResultModel<T> setResult(T result) {
 		Result = result;
 		return this;
 	}
