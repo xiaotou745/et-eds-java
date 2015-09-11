@@ -21,6 +21,7 @@ import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.business.common.LoginResp;
 import com.edaisong.business.common.LoginUtil;
+import com.edaisong.business.common.UserContext;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
@@ -116,6 +117,7 @@ public class AccountController {
 		//设置账户cookie
 		CookieUtils.setCookie(request,response, "username", phoneNo, 365 * 60 * 60 * 24,
 				false);
+		UserContext.resetContext();
 		resp.setSuccess(true);
 		return resp;
 	}
@@ -137,6 +139,7 @@ public class AccountController {
 		    redisService.remove(cookie.getValue());
 			CookieUtils.deleteCookie(request, response, cookie.getName());
 		}
+		UserContext.resetContext();
 		response.sendRedirect(PropertyUtils.getProperty("static.business.url") + "/");
 	}
 }

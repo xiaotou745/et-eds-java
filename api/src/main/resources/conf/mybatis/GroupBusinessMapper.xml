@@ -6,9 +6,9 @@
     <result column="GroupBusiName" property="groupbusiname" jdbcType="NVARCHAR" />
     <result column="LoginName" property="loginname" jdbcType="VARCHAR" />
     <result column="Password" property="password" jdbcType="NVARCHAR" />
-    <result column="CreateName" property="createname" jdbcType="NCHAR" />
+    <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
     <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-    <result column="ModifyName" property="modifyname" jdbcType="NCHAR" />
+    <result column="ModifyName" property="modifyname" jdbcType="NVARCHAR" />
     <result column="ModifyTime" property="modifytime" jdbcType="TIMESTAMP" />
     <result column="Amount" property="amount" jdbcType="DECIMAL" />
     <result column="IsValid" property="isvalid" jdbcType="INTEGER" />
@@ -17,25 +17,26 @@
     Id, GroupBusiName, LoginName, Password, CreateName, CreateTime, ModifyName, ModifyTime, 
     Amount, IsValid
   </sql>
+  <sql id="GetGroupBusinessTable" >
+     dbo.groupbusiness(nolock) 
+  </sql>
+  <sql id="GetGroupBusinessWhere" >
+     1=1
+		<if test="groupBusinessName != null and groupBusinessName !=''">
+			and GroupBusiName like ''%${groupBusinessName}%''
+		</if> 
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from GroupBusiness
     where Id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from GroupBusiness
-    where Id = #{id,jdbcType=INTEGER}
-  </delete>
+   
   <insert id="insert" parameterType="com.edaisong.entity.GroupBusiness" >
-    insert into GroupBusiness (Id, GroupBusiName, PhoneNo, 
-      Password, CreateName, CreateTime, 
-      ModifyName, ModifyTime, Amount, 
-      IsValid)
-    values (#{id,jdbcType=INTEGER}, #{groupbusiname,jdbcType=NVARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
-      #{password,jdbcType=NVARCHAR}, #{createname,jdbcType=NCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{modifyname,jdbcType=NCHAR}, #{modifytime,jdbcType=TIMESTAMP}, #{amount,jdbcType=DECIMAL}, 
-      #{isvalid,jdbcType=INTEGER})
+    insert into GroupBusiness ( GroupBusiName, LoginName, 
+      Password, CreateName) output Inserted.Id,Inserted.CreateName,Inserted.CreateTime,'添加集团商户' into dbo.GroupBusinessLog(GroupBusinessId,OptName,OptTime,Remark) 
+    values (#{groupbusiname,jdbcType=NVARCHAR}, #{loginname,jdbcType=VARCHAR}, #{password,jdbcType=NVARCHAR}, #{createname,jdbcType=NVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.GroupBusiness" >
     insert into GroupBusiness
@@ -137,19 +138,7 @@
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GroupBusiness" >
-    update GroupBusiness
-    set GroupBusiName = #{groupbusiname,jdbcType=NVARCHAR},
-      loginname = #{phoneno,jdbcType=VARCHAR},
-      Password = #{password,jdbcType=NVARCHAR},
-      CreateName = #{createname,jdbcType=NCHAR},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      ModifyName = #{modifyname,jdbcType=NCHAR},
-      ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
-      Amount = #{amount,jdbcType=DECIMAL},
-      IsValid = #{isvalid,jdbcType=INTEGER}
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
+  
   <select id="getByPhoneNoAndPwd" resultType="com.edaisong.entity.GroupBusiness"
 		parameterType="java.util.Map">
 		select 
@@ -157,5 +146,61 @@
     from GroupBusiness  b WITH ( NOLOCK )
 		WHERE b.loginname = #{phoneNo,jdbcType=NVARCHAR}
 		AND Password = #{password,jdbcType=NVARCHAR} 
+	</select>
+	<update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GroupBusiness" >
+    update GroupBusiness
+    set GroupBusiName = #{groupbusiname,jdbcType=NVARCHAR},
+      LoginName = #{loginname,jdbcType=VARCHAR},
+      <if test="password != ''">
+        Password = #{password,jdbcType=NVARCHAR},
+      </if>  
+      ModifyName = #{modifyname,jdbcType=NVARCHAR},
+      ModifyTime = getdate() 
+      output  Inserted.Id ,
+        Inserted.CreateName ,
+        Inserted.CreateTime ,
+        '修改集团名称' + Deleted.GroupBusiName + '为' + Inserted.GroupBusiName + ',登陆名' + Deleted.LoginName + '修改为' + Inserted.LoginName + ',修改密码'
+        into dbo.GroupBusinessLog ( GroupBusinessId, OptName, OptTime, Remark )
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!--后台集团商户管理页面 WangChao -->
+	<select id="getPageList" resultType="com.edaisong.entity.domain.GroupBusinessModel"
+		parameterType="com.edaisong.entity.req.PagedGroupBusinessReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' Id desc ',
+		'
+		<include refid="Base_Column_List" />
+		',
+		'
+		<include refid="GetGroupBusinessTable" />
+		',
+		'
+		<include refid="GetGroupBusinessWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+  <!--查询单条商户管理 -->
+	<select id="getSingle" resultType="com.edaisong.entity.domain.GroupBusinessModel"
+		parameterType="com.edaisong.entity.req.GroupBusinessReq"
+		statementType="CALLABLE">
+		select
+		<include refid="Base_Column_List" />
+		from GroupBusiness (nolock) where 1=1 
+	  <if test="id != null" >
+        and id= #{id,jdbcType=INTEGER} 
+      </if>
+      <if test="groupBusinessName != null" >
+        and GroupBusiName=#{groupBusinessName,jdbcType=NVARCHAR}
+      </if>
+      <if test="loginName != null" >
+        and loginName=#{loginName,jdbcType=VARCHAR}
+      </if>
 	</select>
 </mapper>
