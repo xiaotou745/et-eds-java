@@ -17,7 +17,6 @@ import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
-import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
@@ -27,7 +26,6 @@ import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
-import com.edaisong.entity.resp.OrderStatisticsCResp;
 
 public interface IOrderService {
 	/**
@@ -188,13 +186,6 @@ public interface IOrderService {
 	 * @return
 	 */
     OrderStatisticsBResp getOrderStatisticsB(OrderStatisticsBReq orderStatisticsBReq);
-    /**
-     * C端任务统计接口
-     * @author WangXuDan
-     * @date 20150910
-     * @param orderStatisticsCReq
-     */
-    OrderStatisticsCResp getOrderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
 
 	/**
 	 * B 端首页 订单列表

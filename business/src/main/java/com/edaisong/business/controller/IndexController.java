@@ -32,13 +32,14 @@ public class IndexController {
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UserContext context = UserContext.getCurrentContext(request);
 		ModelAndView model = new ModelAndView("businessView");
-		if (context.isEmpty()) {
+		Business business = context.getBusiness();
+		if (context.isEmpty() || business == null) {
 			response.sendRedirect(request.getContextPath() + "/");
 			return model;
 		}
 
-		BusinessOrderSummaryModel bos = orderService.getBusinessOrderSummary(context.getBusinessID());
-		BusinessMessage message = businessMessageDao.getLatestMessage(context.getBusinessID());
+		BusinessOrderSummaryModel bos = orderService.getBusinessOrderSummary(business.getId());
+		BusinessMessage message = businessMessageDao.getLatestMessage(business.getId());
 		//获得查询订单统计的开始时间和结束时间
 		Calendar c = Calendar.getInstance();
 		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), 0, 0, 0);
@@ -46,7 +47,7 @@ public class IndexController {
 		c.add(Calendar.DATE, 1);
 		Date endTime = c.getTime();
 		List<BusiPubOrderTimeStatisticsModel> statistics = orderService
-				.getBusiPubOrderTimeStatistics(context.getBusinessID(),startTime,endTime);
+				.getBusiPubOrderTimeStatistics(business.getId(),startTime,endTime);
 		model.addObject("subtitle", "商户主页");
 		model.addObject("currenttitle", "商户主页");
 		model.addObject("viewPath", "index");

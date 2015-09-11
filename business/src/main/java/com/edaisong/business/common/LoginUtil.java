@@ -34,7 +34,7 @@ public class LoginUtil {
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
 		if (cookieValue != null) {
 			Object loginStatusValue = redisService.get(cookieValue, Object.class);
-			if (loginStatusValue != null){
+			if (loginStatusValue != null){// && loginStatusValue instanceof Business) {
 				isLogin = true;
 			}
 		}

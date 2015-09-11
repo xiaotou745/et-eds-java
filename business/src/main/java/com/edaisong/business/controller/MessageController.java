@@ -44,7 +44,7 @@ public class MessageController {
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedBusinessMessageReq searchWebReq,HttpServletRequest request) {
 		ModelAndView view = new ModelAndView("message/listdo");
-		int businessId = UserContext.getCurrentContext(request).getBusinessID();
+		int businessId = UserContext.getCurrentContext(request).getBusiness().getId();
 		searchWebReq.setBusinessId(businessId);
 		PagedResponse<BusinessMessage> resp = businessMessageService.getMessages(searchWebReq);
 		view.addObject("listData", resp);

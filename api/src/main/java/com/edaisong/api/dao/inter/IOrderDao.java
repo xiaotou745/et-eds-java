@@ -8,7 +8,6 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
-import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
@@ -18,13 +17,11 @@ import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderStatisticsBReq;
-import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
-import com.edaisong.entity.resp.OrderStatisticsCResp;
 
 public interface IOrderDao {
 
@@ -177,20 +174,6 @@ public interface IOrderDao {
 	 * @return
 	 */
 	OrderStatisticsBResp  getOrderStatistics(OrderStatisticsBReq orderStatisticsBReq);
-	/**
-	 * C端任务统计接口
-	 * @author WangXuDan
-	 * @date 20150910
-	 * @param data
-	 */
-	OrderStatisticsCResp  getOrderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
-	/**
-	 * C端任务统计接口  天数据列表
-	 * @author WangXuDan
-	 * @date 20150910
-	 * @param data
-	 */
-	List<DaySatisticsC> getOrderStatisticsDaySatisticsC(OrderStatisticsCReq orderStatisticsCReq);
 	
 	/**
 	 * B 端首页 订单列表

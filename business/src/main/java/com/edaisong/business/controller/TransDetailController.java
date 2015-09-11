@@ -64,7 +64,7 @@ public class TransDetailController {
 		default:
 			break;
 		}
-		searchWebReq.setBusinessID(UserContext.getCurrentContext(request).getBusinessID());
+		searchWebReq.setBusinessID(UserContext.getCurrentContext(request).getBusiness().getId());
 		PagedResponse<BusinessBalanceRecord> result=businessBalanceRecordService.getTransDetailList(searchWebReq);
 		ModelAndView view = new ModelAndView("transdetail/listdo");
 		view.addObject("result", result);
@@ -79,7 +79,7 @@ public class TransDetailController {
 	@RequestMapping("customerlistdo")
 	public ModelAndView customerlistdo(String search,HttpServletRequest request) {
 		PagedCustomerSearchReq req=new PagedCustomerSearchReq();
-		req.setBusinessID(UserContext.getCurrentContext(request).getBusinessID());
+		req.setBusinessID(UserContext.getCurrentContext(request).getBusiness().getId());
 		req.setSearch(search);
 		PagedResponse<BusinessBalanceRecord> resp = businessBalanceRecordService.customerGetTransDetailList(req);
 		ModelAndView view = new ModelAndView("transdetail/listdo");

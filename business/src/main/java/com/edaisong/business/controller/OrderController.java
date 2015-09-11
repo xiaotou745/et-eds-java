@@ -82,7 +82,7 @@ public class OrderController {
 		default:
 			break;
 		}
-		searchWebReq.setBusinessID(UserContext.getCurrentContext(request).getBusinessID());
+		searchWebReq.setBusinessID(UserContext.getCurrentContext(request).getBusiness().getId());
 		PagedResponse<OrderListModel> resp = orderService
 				.getOrders(searchWebReq);
 		ModelAndView view = new ModelAndView("order/listdo");
@@ -98,7 +98,7 @@ public class OrderController {
 	@RequestMapping("customerlistdo")
 	public ModelAndView customerlistdo(String search,HttpServletRequest request) {
 		PagedCustomerSearchReq req=new PagedCustomerSearchReq();
-		req.setBusinessID(UserContext.getCurrentContext(request).getBusinessID());
+		req.setBusinessID(UserContext.getCurrentContext(request).getBusiness().getId());
 		req.setSearch(search);
 		PagedResponse<OrderListModel> resp = orderService.customerGetOrders(req);
 		ModelAndView view = new ModelAndView("order/listdo");
@@ -116,7 +116,7 @@ public class OrderController {
 	public ModelAndView detail(String orderno,HttpServletRequest request) {
 		OrderDetailBusinessReq req=new OrderDetailBusinessReq();
 		req.setOrderNo(orderno);
-		req.setBusinessId(UserContext.getCurrentContext(request).getBusinessID());
+		req.setBusinessId(UserContext.getCurrentContext(request).getBusiness().getId());
 		ModelAndView model = new ModelAndView("businessView");
 		model.addObject("subtitle", "订单中心");
 		model.addObject("currenttitle", "订单详情");
@@ -139,7 +139,7 @@ public class OrderController {
 	@RequestMapping(value = "canelorder", method = { RequestMethod.POST })
 	@ResponseBody
 	public CancelOrderBusinessResp canelorder(CancelOrderBusinessReq req,HttpServletRequest request) {
-		req.setBusinessId(UserContext.getCurrentContext(request).getBusinessID());
+		req.setBusinessId(UserContext.getCurrentContext(request).getBusiness().getId());
 		CancelOrderBusinessResp resp = orderService.cancelOrderBusiness(req);
 		return resp;
 	}
@@ -156,7 +156,7 @@ public class OrderController {
 		ModelAndView model = new ModelAndView("businessView");
 		model.addObject("subtitle", "发布任务");
 		model.addObject("currenttitle", "发布任务");
-		model.addObject("businessModel",businessService.getBusiness(UserContext.getCurrentContext(request).getBusinessID()));
+		model.addObject("businessModel",businessService.getBusiness(UserContext.getCurrentContext(request).getBusiness().getId()));
 		model.addObject("viewPath", "order/publish");
 		return model;
 
@@ -175,13 +175,13 @@ public class OrderController {
 		req.setListOrderChild(JsonUtil.str2list(req.getChildstr(),OrderChild.class));  //序列化得到子订单信息汇总
 		OrderResp resp = new OrderResp();
 		UserContext context = UserContext.getCurrentContext(request);
-		if (context==null||context.isEmpty()||context.getBusinessID()<=0) {
+		if (context==null||context.getBusiness()==null||context.getBusiness().getId()<=0) {
 			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 			resp.setMessage("没有获取到登录信息，请重新登录");
 			return resp;
 		}
 		req.setOrderfrom(OrderFrom.BusinessWeb.value()); // 订单来源 商家版后台
-		req.setBusinessid(context.getBusinessID());
+		req.setBusinessid(context.getBusiness().getId());
 		resp = orderService.AddOrder(req);
 		return resp;
 	}
@@ -198,7 +198,7 @@ public class OrderController {
 	public BusinessBalanceInfoResp getbalanceinfo(OrderReq req,HttpServletRequest request) {
 		req.setListOrderChild(JsonUtil.str2list(req.getChildstr(),OrderChild.class));  //序列化得到子订单信息汇总
 		OrderResp resp = new OrderResp();
-		req.setBusinessid(UserContext.getCurrentContext(request).getBusinessID());
+		req.setBusinessid(UserContext.getCurrentContext(request).getBusiness().getId());
 		return orderService.getBalanceInfo(req);
 	}
 }

@@ -38,7 +38,6 @@
 							<h3 class="cb">
 								<span id="new0" onclick="setTab('new',0,2)" href="javascript:;" class="on">门店登录</span>
 								<a id="new1" onclick="setTab('new',1,2)" href="javascript:;">集团登录</a>
-								<input type="hidden" name="userType" id="userType" value="0"/>
 							</h3>
 
 								<input type="text" placeholder="输入手机号码" class="ex_iphone" maxlength="11" name="phoneNo" id="phoneNo">
@@ -63,7 +62,6 @@
 			
 			<script type="text/javascript">
 			function setTab(name,cursel,n){
-				$("#userType").val(cursel);
 				for(i=0;i<n;i++){
 					var menu=document.getElementById(name+i);
 					var con=document.getElementById("con_"+name+"_"+i);
@@ -103,8 +101,7 @@
 							"phoneNo":$("#phoneNo").val(),
 						  	"password":$("#password").val(),
 						  	"code":$("#code").val(),
-						  	"rememberMe":isRem ? $("#rememberMe").val() : 0,
-						  	"userType":$("#userType").val()
+						  	"rememberMe":isRem ? $("#rememberMe").val() : 0
 						  };
 					//请求接口
 					    $.ajax({
@@ -114,11 +111,7 @@
 						async:true,
 						success:function(data){
 							if(data.success){
-								if($("#userType").val()=="0"){
-								   window.location.href = "<%=basePath %>/index";
-								}else{
-									window.location.href = "<%=basePath %>/group/recharge";
-								}
+								window.location.href = "<%=basePath %>/index";
 							}else{
 								$("#error").text(data.message);
 								$("#error").show();

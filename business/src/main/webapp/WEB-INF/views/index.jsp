@@ -20,7 +20,7 @@
 <script type="text/javascript"
 	src="<%=basePath%>/js/highcharts/js/modules/exporting.js"></script>
 
-<div class="">
+<div class="center">
 	<div class="top cb">
 		<div class="left">
 			<div class="l-top">

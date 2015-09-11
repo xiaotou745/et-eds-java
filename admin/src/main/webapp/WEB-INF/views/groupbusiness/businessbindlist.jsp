@@ -79,7 +79,7 @@
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
 		 var data=$("#searchForm").serialize();
-		 $.post("<%=basePath%>/groupbusiness/businessbindlist", data,
+		 $.post("<%=basePath%>/business/addclienterbindlistdo", data,
 					function(d) {
 						$("#content").html(d);
 					});

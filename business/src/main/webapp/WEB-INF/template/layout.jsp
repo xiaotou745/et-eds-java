@@ -166,7 +166,7 @@ function regTrEvent(){
 	<tiles:insertAttribute name="header"></tiles:insertAttribute>
 	<div class="content content2  cb">
 		<tiles:insertAttribute name="leftmenu"></tiles:insertAttribute>
-			<div class="center recharge">
+		<div class="center">
 			<tiles:insertAttribute name="breadcrumbs"></tiles:insertAttribute>
 			<tiles:insertAttribute name="body"></tiles:insertAttribute>
 			<tiles:insertAttribute name="footer" ignore="true"></tiles:insertAttribute>	

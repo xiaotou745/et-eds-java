@@ -15,8 +15,7 @@ import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
-import com.edaisong.entity.req.OrderStatisticsCReq;
-import com.edaisong.entity.resp.OrderStatisticsCResp;
+
 
 /**
  * 订单模块 
@@ -108,22 +107,6 @@ public class OrderHttpService implements IOrderHttpService {
 			return resultModel;
 		}
 		resultModel.setResult(orderService.getCompliteOrder(para));
-		return resultModel;
-	}
-	/**
-	 * C端任务统计接口
-	 * @author WangXuDan
-	 * @date 20150910
-	 * @param data
-	 */
-	@Override
-	public ResultModel<OrderStatisticsCResp>  orderStatisticsC(String data){
-		OrderStatisticsCReq orderStatisticsCReq=new OrderStatisticsCReq();
-		orderStatisticsCReq.setClienterId(3233) ;
-		orderStatisticsCReq.setMonthInfo("2015-09");
-		OrderStatisticsCResp orderStatisticsResp=orderService.getOrderStatisticsC(orderStatisticsCReq);
-		ResultModel<OrderStatisticsCResp> resultModel=new ResultModel<OrderStatisticsCResp>();
-		resultModel.setResult(orderStatisticsResp);
 		return resultModel;
 	}
 

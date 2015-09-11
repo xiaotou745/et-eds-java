@@ -13,25 +13,17 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 		if (handler instanceof HandlerMethod) {
 			// 判断是否登录
 			boolean isLogin = LoginUtil.checkIsLogin(request,response,LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
-			String basePath =PropertyUtils.getProperty("static.business.url");
-			if (!isLogin&& 
-				!request.getServletPath().equals("/account/login") && 
-				!request.getServletPath().equals("/account/code")) {
+			if (!isLogin
+					&& (!request.getServletPath().equals("/account/login") && !request.getServletPath().equals(
+							"/account/code"))) {
+				String basePath =PropertyUtils.getProperty("static.business.url");
 				response.sendRedirect(basePath + "/");
 				return false;
 			}
 			if (isLogin){
-				UserContext userContext=UserContext.getCurrentContext(request);
 				//用户登录后，将当前用户id和名称保存起来，用于记录操作日志
-				request.setAttribute("userID", userContext.getBusinessID());
-				request.setAttribute("userName", userContext.getBusinessName());
-				if (!userContext.isEmpty()&&
-						userContext.getBusinessType()==1&&
-						!request.getServletPath().equals("/group/recharge")&&
-						!request.getServletPath().equals("/account/logoff")) {
-						response.sendRedirect(basePath + "/group/recharge");
-						return false;
-					}
+				request.setAttribute("userID", UserContext.getCurrentContext(request).getBusiness().getId());
+				request.setAttribute("userName", UserContext.getCurrentContext(request).getBusiness().getName());
 			}
 		}
 		return true;

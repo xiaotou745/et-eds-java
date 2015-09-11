@@ -4,8 +4,8 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
 	String basePath = PropertyUtils.getProperty("static.business.url");
-    UserContext userContext = UserContext.getCurrentContext(request);
-	String name = userContext.isEmpty() ? "游客" : userContext.getBusinessName();
+	Business business = UserContext.getCurrentContext(request).getBusiness();
+	String name = business == null ? "游客" : business.getName();
 %>
 <div class="header">
 	<a class="logo fl" href="<%=basePath%>/index"><img src="<%=basePath %>/images/logo.png" width="74" height="25" alt=""></a>

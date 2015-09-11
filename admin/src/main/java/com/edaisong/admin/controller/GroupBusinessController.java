@@ -1,26 +1,32 @@
 package com.edaisong.admin.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndView; 
 
 import com.edaisong.entity.GroupBusiness;
+import com.edaisong.entity.GroupBusinessLog;
 import com.edaisong.entity.domain.GroupBusinessModel;
 import com.edaisong.entity.req.PagedGroupBusinessReq;
 import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IGroupBusinessBindOptionLogService;
+import com.edaisong.api.service.inter.IGroupBusinessLogService;
 import com.edaisong.api.service.inter.IGroupBusinessRelationService;
 import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.core.enums.BindOptType;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.GroupBusinessBindOptionLogModel;
 import com.edaisong.entity.domain.GroupBusinessRelationModel;
 import com.edaisong.entity.req.BusinessBindOptionReq;
+import com.edaisong.entity.req.GroupBusinessReq;
 import com.edaisong.entity.req.PagedBizBindsReq;
 import com.edaisong.entity.req.PagedBusinessBindLogReq;
 
@@ -41,7 +47,9 @@ public class GroupBusinessController {
 	@Autowired
 	private IGroupBusinessBindOptionLogService groupBusinessBindOptionLogService;
 	@Autowired
-	 private IGroupBusinessService  groupBusinessService;
+	private IGroupBusinessService  groupBusinessService;
+	@Autowired
+	private IGroupBusinessLogService  groupBusinessLogService;
 	/*
 	 * 集团商户管理
 	 * WangChao
@@ -60,11 +68,117 @@ public class GroupBusinessController {
 	 */
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedGroupBusinessReq req) {	 
-		PagedResponse<GroupBusiness> resp = groupBusinessService.getBusinessList(req); 
+		PagedResponse<GroupBusinessModel> resp = groupBusinessService.getPageList(req); 
 		ModelAndView model = new ModelAndView("groupbusiness/listdo");
 		model.addObject("listData", resp);
 		return model;
 	}	
+	/*
+	 * 添加集团商户
+	 * WangChao
+	 */
+	@RequestMapping("addgroupbusiness")
+	@ResponseBody
+	public ResponseBase addGroupBusiness(GroupBusinessReq bgm, HttpServletRequest request){
+		ResponseBase response = new ResponseBase();
+		//判断集团商户是否存在
+		GroupBusinessReq gbr1 = new GroupBusinessReq();
+		gbr1.setgroupBusinessName(bgm.getbusinessGroupName());
+	 	GroupBusinessModel gbm1 = groupBusinessService.getSingle(gbr1);
+		if(gbm1!=null && gbm1.getGroupbusiname()!=null){
+			response.setMessage("集团商铺名称已存在");
+			response.setResponseCode(0);
+			return response;
+		}
+		//判断登陆名是否存在
+		GroupBusinessReq gbr2 = new GroupBusinessReq();
+		gbr2.setloginName(bgm.getloginName());
+	 	GroupBusinessModel gbm2 = groupBusinessService.getSingle(gbr2);
+		if(gbm2!=null && gbm2.getGroupbusiname()!=null){ 
+			response.setMessage("此账号已经存在");
+			response.setResponseCode(0);
+			return response;
+		}
+		GroupBusiness groupBusiness = new GroupBusiness();
+		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName());
+		groupBusiness.setLoginname(bgm.getloginName());
+		groupBusiness.setPassword(bgm.getpassWord());
+		groupBusiness.setCreatename(UserContext.getCurrentContext(request).getName());
+		int result=groupBusinessService.addGroupBusiness(groupBusiness);
+		if(result<=0){
+			response.setMessage("添加失败");
+			response.setResponseCode(0);
+			return response;
+		}
+		response.setMessage("添加成功");
+		response.setResponseCode(1);
+		return response;
+	}
+	/*
+	 * 修改集团商户
+	 * WangChao
+	 */
+	@RequestMapping("modifygroupbusiness")
+	@ResponseBody
+	public ResponseBase modifyGroupBusiness(GroupBusinessReq bgm, HttpServletRequest request){
+		ResponseBase response = new ResponseBase();
+		//判断集团商户是否存在
+		GroupBusinessReq gbr1 = new GroupBusinessReq();
+		gbr1.setgroupBusinessName(bgm.getbusinessGroupName());
+	 	GroupBusinessModel gbm1 = groupBusinessService.getSingle(gbr1);
+		if(gbm1!=null && gbm1.getGroupbusiname()!=null){
+			if(gbm1.getId() != bgm.getId()){
+				response.setMessage("集团商铺名称已存在");
+				response.setResponseCode(0);
+				return response;
+			}
+		}
+		//判断登陆名是否存在
+		GroupBusinessReq gbr2 = new GroupBusinessReq();
+		gbr2.setloginName(bgm.getloginName());
+	 	GroupBusinessModel gbm2 = groupBusinessService.getSingle(gbr2);
+		if(gbm2!=null &&gbm2.getGroupbusiname()!=null){ 
+			if(gbm2.getId() != bgm.getId()){
+				response.setMessage("此登陆账号已经存在");
+				response.setResponseCode(0);
+				return response;
+			}
+		}
+		GroupBusiness groupBusiness = new GroupBusiness();
+		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName());
+		groupBusiness.setLoginname(bgm.getloginName());
+		groupBusiness.setPassword(bgm.getpassWord());
+		groupBusiness.setId(bgm.getId());
+		groupBusiness.setModifyname(UserContext.getCurrentContext(request).getName());
+		int result=groupBusinessService.modifyGroupBusiness(groupBusiness);
+		if(result<=0){
+			response.setMessage("修改失败");
+			response.setResponseCode(0);
+			return response;
+		}
+		response.setMessage("修改成功");
+		response.setResponseCode(1);
+		return response;
+	}
+	@RequestMapping("getgroupbusinesslog")
+	@ResponseBody
+	public ResponseBase getGroupBusinessLog(int id){
+		ResponseBase response = new ResponseBase(); 
+		
+		StringBuilder sb = new StringBuilder();
+		List<GroupBusinessLog> groupBusinessLogList =groupBusinessLogService.getList(id);
+		if(groupBusinessLogList!=null && groupBusinessLogList.size()>0){
+			
+			sb.append("<table style='border-collapse: collapse;border:none;margin:0'><th style='border: #D6D6D6 1px solid'>时间</th><th style='border: #D6D6D6 1px solid'>操作</th>");
+			for (int i = 0; i < groupBusinessLogList.size(); i++) {
+		 
+			sb.append("<tr style='border: #D6D6D6 1px solid'><td style='border: #D6D6D6 1px solid'>").append(ParseHelper.ToDateString( groupBusinessLogList.get(i).getOpttime())).append("</td><td>").append(groupBusinessLogList.get(i).getRemark()).append("</td></tr>");
+		}
+		sb.append("</table>");
+	}
+		response.setMessage(sb.toString());
+		return response; 
+	} 
 	/**
 	 * 绑定列表(分页)
 	 * @author pengyi

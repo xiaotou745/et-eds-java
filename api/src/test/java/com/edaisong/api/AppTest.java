@@ -20,11 +20,9 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
-import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
-import com.edaisong.entity.resp.OrderStatisticsCResp;
 
 /**
  * Unit test for simple App.
@@ -88,16 +86,6 @@ public class AppTest extends TestCase {
 		para.setBusinessId(2008);
 		para.setOrderNo("2008150630165417002");
 		OrderDetailBusinessResp res = testService.getOrderDetailBusiness(para);
-		System.out.println(JsonUtil.obj2string(res));
-		assertTrue(true);
-
-	}
-	
-	public void testOrderStatisticsC() {
-		OrderStatisticsCReq orderStatisticsCReq=new OrderStatisticsCReq();
-		orderStatisticsCReq.setClienterId(3233) ;
-		orderStatisticsCReq.setMonthInfo("2015-09");
-		OrderStatisticsCResp res = testService.getOrderStatisticsC(orderStatisticsCReq);
 		System.out.println(JsonUtil.obj2string(res));
 		assertTrue(true);
 
