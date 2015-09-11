@@ -8,7 +8,7 @@ import javax.ws.rs.Produces;
 import com.edaisong.api_http.entity.TestServiceReq;
 import com.edaisong.api_http.entity.TestServiceResp;
 
-@Path("/urlService")
+@Path("/testservice")
 @Consumes("application/json")//当前方法接收的参数类型
 @Produces("application/json")//当前类的所有方法都返回json格式的数据
 public interface ITestService {

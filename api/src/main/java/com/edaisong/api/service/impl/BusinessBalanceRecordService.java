@@ -2,6 +2,7 @@ package com.edaisong.api.service.impl;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,12 @@ public class BusinessBalanceRecordService implements IBusinessBalanceRecordServi
 		String year = par.getMonthInfo().split("-")[0];// 年
 		String month = par.getMonthInfo().split("-")[1];// 月
 		Integer dayscount = ParseHelper.GetMixDay(year, month);// 共多少天
+		int nowmonth=ParseHelper.GetInDate(new Date(), 2);//当前月份
+		if(nowmonth==Integer.parseInt(month))//查询月份等于当前月份
+		{
+			//重置当月天数
+			dayscount=ParseHelper.GetInDate(new Date(), 3);
+		}
 		Double monthOutMoney=0.0;//月总支出
 		Double monthInMoney=0.0;//月总收入
 		

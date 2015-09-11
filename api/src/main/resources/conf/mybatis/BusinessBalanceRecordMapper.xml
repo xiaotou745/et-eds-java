@@ -352,10 +352,44 @@ select
   SUM(CASE WHEN Amount>0 THEN Amount ELSE 0 END)  as  InMoney,
   SUM(CASE WHEN 0>=Amount THEN Amount ELSE 0 END)  as  OutMoney
 FROM
-  BusinessBalanceRecord
+  BusinessBalanceRecord (NOLOCK)
   WHERE BusinessId=#{businessId,jdbcType=INTEGER}
   AND OperateTime > #{startDate,jdbcType=VARCHAR} AND #{endDate,jdbcType=VARCHAR} > OperateTime
+  AND RecordType IN (1,2,3,5,8,9,12)
 GROUP by
   Convert ( VARCHAR(10),  OperateTime,  120)
 </select>
+  <!-- 获取商户日账单分页 的Where条件 -->
+  <sql id="getAccountBillDayBList_Where">
+    	1=1  
+	 <if test="businessId != null and businessId != 0">
+	      AND BusinessId=${businessId}
+     </if>
+     <if test="dayInfo != null and dayInfo != '' ">
+	      AND OperateTime>''
+  		  AND ''> OperateTime
+     </if>
+     <if test="billType == 1"><!-- 出账 -->
+	      AND RecordType IN (1,3)
+     </if>
+     <if test="billType == 2"><!-- 入账 -->
+	      AND RecordType IN (2,5,8,9,12)
+     </if>
+     
+  </sql>
+<!-- 获取商户日账单分页 茹化肖 2015年9月10日19:06:57 -->
+  <select id="getAccountBillDayBList" resultType="com.edaisong.entity.domain.AccountBillDayModel" 
+  parameterType="com.edaisong.entity.req.PagedAccountBillDayReq" statementType="CALLABLE">  
+{call Sp_CustomPage2015_V1(
+' OperateTime DESC ',
+' RelationNo,Amount,RecordType,OperateTime ',
+' FROM BusinessBalanceRecord (NOLOCK) ',
+' <include refid="getAccountBillDayBList_Where"/> ',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+#{totalPage,mode=OUT,jdbcType=VARCHAR}
+)} 
+  </select>
 </mapper>
