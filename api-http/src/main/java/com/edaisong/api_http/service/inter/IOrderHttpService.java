@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 
 import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
@@ -73,6 +74,6 @@ public interface IOrderHttpService {
 	 */
 	@POST
 	@Path("/orderstatisticsc")
-	public ResultModel<OrderStatisticsCResp> orderStatisticsC(String data);
+	public ResultModel<OrderStatisticsCResp> orderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
 	
 }
