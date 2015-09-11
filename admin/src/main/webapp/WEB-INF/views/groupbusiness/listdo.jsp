@@ -27,8 +27,7 @@
 	<tbody>
 
 		<%
-			PagedResponse<GroupBusinessModel> data = (PagedResponse<GroupBusinessModel>) request
-					.getAttribute("listData");
+			PagedResponse<GroupBusinessModel> data = (PagedResponse<GroupBusinessModel>) request.getAttribute("listData");
 			List<GroupBusinessModel> list = data.getResultList();
 			if (list == null) {
 				list = new ArrayList<GroupBusinessModel>();
@@ -37,7 +36,7 @@
 		%>
 		<tr>
 			<td><%=list.get(i).getId()%></td>
-			<td><%=list.get(i).getGroupbusiname()%></td>
+			<td><%=list.get(i).getGroupbusiname()%></td> 
 			<td><%=list.get(i).getAmount()%></td>
 			<td><%=list.get(i).getLoginname()%></td>
 			<td><%=ParseHelper.ToDateString(list.get(i).getCreatetime())%></td>
