@@ -32,9 +32,9 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
                       <option value="1">冻结时间</option>
                       <option value="2">解冻时间</option>
                   </select>
-                  <input id="txtstartdate" type="text" name="startdate" value="" />
+                  <input id="txtstartdate" type="text" name="startdate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'txtenddate\')||\'2020-10-01\'}'})"/>
                        <span class="">到 </span>
-                  <input id="txtenddate" type="text" name="enddate" value="" />
+                  <input id="txtenddate" type="text" name="enddate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2020-10-01'})"/>
                           
       			<input type="submit" value="查询" class="searchBtn" id="btnSearch" />          
                 </td>
@@ -56,8 +56,6 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
                  var datetype=$("#selectdatetype").val();           
                  var startdate=$("#txtstartdate").val();       
                  var enddate=$("#txtenddate").val();   
-                
-
 				 var paramaters = { 
 						 "currentPage":currentPage,
 						 "clienterName": clienterName,
