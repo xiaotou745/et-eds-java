@@ -7,7 +7,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.edaisong.api_http.entity.ResultModel;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.RecordType;
 
 /**
@@ -27,7 +27,7 @@ public interface ICommonService {
 	 */
 	@POST
 	@Path("/getrecordtypeb")
-	 public ResultModel<List<RecordType>> getRecordtypeB();
+	 public HttpResultModel<List<RecordType>> getRecordtypeB();
 
 	/**
 	 * C端获取所有的筛选条件类型
@@ -37,6 +37,6 @@ public interface ICommonService {
 	 */
 	@POST
 	@Path("/getrecordtypec")
-	 public ResultModel<List<RecordType>> getRecordtypeC();
+	 public HttpResultModel<List<RecordType>> getRecordtypeC();
 }
 

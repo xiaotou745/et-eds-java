@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IOrderService;
-import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.entity.ReturnRnums;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;
@@ -40,17 +40,17 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq para) {
-		ResultModel<OrderStatisticsBResp> resultModel = new ResultModel<OrderStatisticsBResp>();
+	public HttpResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq para) {
+		HttpResultModel<OrderStatisticsBResp> HttpResultModel = new HttpResultModel<OrderStatisticsBResp>();
 		if (para.getMonthInfo() == null || para.getMonthInfo().trim().isEmpty() || para.getBusinessId() == 0 ) {
-			resultModel
+			HttpResultModel
 			.setStatus(ReturnRnums.ParaError.value())
 			.setMessage(ReturnRnums.ParaError.desc());
-			return resultModel;
+			return HttpResultModel;
 		}
 		OrderStatisticsBResp orderStatisticsResp = orderService.getOrderStatisticsB(para);
-		resultModel.setResult(orderStatisticsResp);
-		return resultModel;
+		HttpResultModel.setResult(orderStatisticsResp);
+		return HttpResultModel;
 	}
 
 	/**
@@ -62,19 +62,19 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq para) {
-		ResultModel<QueryOrderBResp> resultModel = new ResultModel<QueryOrderBResp>();
+	public HttpResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq para) {
+		HttpResultModel<QueryOrderBResp> HttpResultModel = new HttpResultModel<QueryOrderBResp>();
 		if ( para.getBusinessId() == null
 				|| para.getBusinessId() == 0
 				|| (para.getStatus() != OrderStatus.New.value() && para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
-			resultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
-			return resultModel;
+			HttpResultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
+			return HttpResultModel;
 		}
 		para.setDateInfo(null);
 		para.setClienterId(null);
-		resultModel.setResult(orderService.queryOrderB(para));
-		return resultModel;
+		HttpResultModel.setResult(orderService.queryOrderB(para));
+		return HttpResultModel;
 	}
 
 	/**
@@ -86,19 +86,19 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq para) {
-		ResultModel<QueryOrderCResp> resultModel = new ResultModel<QueryOrderCResp>();
+	public HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq para) {
+		HttpResultModel<QueryOrderCResp> HttpResultModel = new HttpResultModel<QueryOrderCResp>();
 		if ( para.getClienterId() == null
 				|| para.getClienterId() == 0
 				|| ( para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
-			resultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
-			return resultModel;
+			HttpResultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
+			return HttpResultModel;
 		}
 		para.setDateInfo(null);
 		para.setBusinessId(null);
-		resultModel.setResult(orderService.queryOrderC(para));
-		return resultModel;
+		HttpResultModel.setResult(orderService.queryOrderC(para));
+		return HttpResultModel;
 	}
 	/**
 	 * B端已完成任务列表或者配送员配送列表
@@ -109,14 +109,14 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para) {
-		ResultModel<List<QueryOrder>> resultModel = new ResultModel<List<QueryOrder>>();
+	public HttpResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para) {
+		HttpResultModel<List<QueryOrder>> HttpResultModel = new HttpResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getBusinessId() == null || para.getBusinessId() == 0) {
-			resultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
-			return resultModel;
+			HttpResultModel.setStatus(ReturnRnums.ParaError.value()).setMessage(ReturnRnums.ParaError.desc());
+			return HttpResultModel;
 		}
-		resultModel.setResult(orderService.getCompliteOrder(para));
-		return resultModel;
+		HttpResultModel.setResult(orderService.getCompliteOrder(para));
+		return HttpResultModel;
 	}
 
 	/**
@@ -128,16 +128,16 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<List<QueryOrder>> getCompliteOrderC(QueryOrderReq para) {
-		ResultModel<List<QueryOrder>> resultModel = new ResultModel<List<QueryOrder>>();
+	public HttpResultModel<List<QueryOrder>> getCompliteOrderC(QueryOrderReq para) {
+		HttpResultModel<List<QueryOrder>> HttpResultModel = new HttpResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getClienterId() == null || para.getClienterId() == 0) {
-			resultModel
+			HttpResultModel
 			.setStatus(ReturnRnums.ParaError.value())
 			.setMessage(ReturnRnums.ParaError.desc());
-			return resultModel;
+			return HttpResultModel;
 		}
-		resultModel.setResult(orderService.getCompliteOrder(para));
-		return resultModel;
+		HttpResultModel.setResult(orderService.getCompliteOrder(para));
+		return HttpResultModel;
 	}
 
 	/**
@@ -148,14 +148,14 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @param data
 	 */
 	@Override
-	public ResultModel<OrderStatisticsCResp> orderStatisticsC(OrderStatisticsCReq orderStatisticsCReq) {
+	public HttpResultModel<OrderStatisticsCResp> orderStatisticsC(OrderStatisticsCReq orderStatisticsCReq) {
 		// OrderStatisticsCReq orderStatisticsCReq=new OrderStatisticsCReq();
 		// orderStatisticsCReq.setClienterId(3233) ;
 		// orderStatisticsCReq.setMonthInfo("2015-09");
 		OrderStatisticsCResp orderStatisticsResp = orderService.getOrderStatisticsC(orderStatisticsCReq);
-		ResultModel<OrderStatisticsCResp> resultModel = new ResultModel<OrderStatisticsCResp>();
-		resultModel.setResult(orderStatisticsResp);
-		return resultModel;
+		HttpResultModel<OrderStatisticsCResp> HttpResultModel = new HttpResultModel<OrderStatisticsCResp>();
+		HttpResultModel.setResult(orderStatisticsResp);
+		return HttpResultModel;
 	}
 
 }
