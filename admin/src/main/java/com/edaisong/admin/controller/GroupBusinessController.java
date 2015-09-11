@@ -173,7 +173,7 @@ public class GroupBusinessController {
 			sb.append("<table style='border-collapse: collapse;border:none;margin:0'><th style='border: #D6D6D6 1px solid'>时间</th><th style='border: #D6D6D6 1px solid'>操作</th>");
 			for (int i = 0; i < groupBusinessLogList.size(); i++) {
 		 
-			sb.append("<tr style='border: #D6D6D6 1px solid'><td style='border: #D6D6D6 1px solid'>").append(ParseHelper.ToDateString( groupBusinessLogList.get(i).getOpttime())).append("</td><td>").append(groupBusinessLogList.get(i).getRemark()).append("</td></tr>");
+			sb.append("<tr style='border: #D6D6D6 1px solid'><td style='border: #D6D6D6 1px solid'>").append(ParseHelper.ToDateString( groupBusinessLogList.get(i).getOpttime())).append("</td><td>").append(groupBusinessLogList.get(i).getOptname()+groupBusinessLogList.get(i).getRemark()).append("</td></tr>");
 		}
 		sb.append("</table>");
 	}
