@@ -137,7 +137,7 @@
   </sql>
   
   <sql id="getBusinessBindLogListColumns">
-  	gbbo.Id id,b.Name name,b.phoneNo,b.BalancePrice balancePrice,gbbo.GroupId,gbbo.BusinessId,gbbo.OptId,
+  	gbbo.Id id,b.Name businessName,b.phoneNo,b.BalancePrice balancePrice,gbbo.GroupId,gbbo.BusinessId,gbbo.OptId,
   	gbbo.OptName,gbbo.InsertTime,gbbo.Remark,gbbo.OptType
   </sql>
   
@@ -149,7 +149,7 @@
   <select id="getBusinessBindLogList" resultType="com.edaisong.entity.domain.GroupBusinessBindOptionLogModel" 
     parameterType="com.edaisong.entity.req.PagedBusinessBindLogReq"  statementType="CALLABLE" >
   	{call Sp_CustomPage2015_V1(
-	' gbr.Id DESC ',
+	' gbbo.Id DESC ',
 	' <include refid="getBusinessBindLogListColumns" /> ',
 	' <include refid="getBusinessBindLogListTables" /> ',
 	' <include refid="getBusinessBindLogListWhere" /> ',

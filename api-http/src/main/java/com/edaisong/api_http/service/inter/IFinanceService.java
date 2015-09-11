@@ -5,7 +5,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.edaisong.api_http.entity.ResultModel;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.CardBindAlipayReq;
 import com.edaisong.entity.req.CardModifyAlipayReq;
 
@@ -30,7 +30,7 @@ public interface IFinanceService {
 	 * @param req
 	 * @return
 	 */
-	public ResultModel<Object> cardBindAlipayC(CardBindAlipayReq req);
+	public HttpResultModel<Object> cardBindAlipayC(CardBindAlipayReq req);
 	
 	/**
 	 * c端修改支付宝
@@ -40,5 +40,5 @@ public interface IFinanceService {
 	 * @param req
 	 * @return
 	 */
-	public ResultModel<Object> cardModifyAlipayC(CardModifyAlipayReq req);
+	public HttpResultModel<Object> cardModifyAlipayC(CardModifyAlipayReq req);
 }

@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IBusinessMessageService;
 import com.edaisong.api.service.inter.IClienterMessageService;
-import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.service.inter.IMessageHttpService;
 import com.edaisong.core.enums.returnenums.NewMessageReturnEnum;
 import com.edaisong.entity.BusinessMessage;
 import com.edaisong.entity.ClienterMessage;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.NewMessageBReq;
 import com.edaisong.entity.req.NewMessageCReq;
 import com.edaisong.entity.resp.MessageResp;
@@ -31,8 +31,8 @@ public class MessageHttpService implements IMessageHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<MessageResp> newMessageB(NewMessageBReq para) {
-		ResultModel<MessageResp> returnmodel = new ResultModel<MessageResp>();
+	public HttpResultModel<MessageResp> newMessageB(NewMessageBReq para) {
+		HttpResultModel<MessageResp> returnmodel = new HttpResultModel<MessageResp>();
 		BusinessMessage message = businessMessageService.getLatestMessage(para.getBusinessId());
 		if (message.getIsread() == 0) { // 有未读消息
 			MessageResp messageResp = new MessageResp();
@@ -55,8 +55,8 @@ public class MessageHttpService implements IMessageHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<MessageResp> newMessageC(NewMessageCReq para) {
-		ResultModel<MessageResp> returnmodel = new ResultModel<MessageResp>();
+	public HttpResultModel<MessageResp> newMessageC(NewMessageCReq para) {
+		HttpResultModel<MessageResp> returnmodel = new HttpResultModel<MessageResp>();
 		ClienterMessage message = clienterMessageService.getLatestMessage(para.getClienterId());
 		if (message.getIsread() == 0) { // 有未读消息
 			MessageResp messageResp = new MessageResp();

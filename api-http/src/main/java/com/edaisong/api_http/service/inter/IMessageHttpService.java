@@ -4,7 +4,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import com.edaisong.api_http.entity.ResultModel;
+
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.NewMessageBReq;
 import com.edaisong.entity.req.NewMessageCReq;
 import com.edaisong.entity.resp.MessageResp;
@@ -31,7 +32,7 @@ public interface IMessageHttpService {
 	 */
 	@POST
 	@Path("/newmessageb")
-	public ResultModel<MessageResp> newMessageB(NewMessageBReq para);
+	public HttpResultModel<MessageResp> newMessageB(NewMessageBReq para);
 
 	/**
 	 * C端商户登陆后获取顶端未读公告
@@ -43,5 +44,5 @@ public interface IMessageHttpService {
 	 */
 	@POST
 	@Path("/newmessagec")
-	public ResultModel<MessageResp> newMessageC(NewMessageCReq para);
+	public HttpResultModel<MessageResp> newMessageC(NewMessageCReq para);
 }

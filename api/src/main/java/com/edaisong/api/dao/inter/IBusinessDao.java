@@ -13,6 +13,7 @@ import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
+import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.req.PagedBusinessReq;
 
 public interface IBusinessDao {
@@ -104,4 +105,13 @@ public interface IBusinessDao {
 	BusinessRechargeDetailModel getRechargeDetail(String orderNo);
 	
 	boolean updateBusinessIsBind(int businessId, int isBind);
+	
+	/**
+	 * 获取用户状态信息
+	 * @author CaoHeYang
+	 * @param userid
+	 * @date 20150911
+	 * @return
+	 */
+	BusinessStatus getUserStatus(int userid);
 }

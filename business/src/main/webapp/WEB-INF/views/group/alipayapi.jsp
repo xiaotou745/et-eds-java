@@ -47,17 +47,14 @@
 		String notify_url = basePath+"/group/notify_url";
 		//需http://格式的完整路径，不能加?id=123这类自定义参数
 		//页面跳转同步通知页面路径
-		String return_url = basePath+"/group/return_url.jsp";
+		String return_url = basePath+"/group/return_url";
 		//需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
 		//商户订单号
 		String out_trade_no =OrderNoHelper.generateOrderCode(context.getBusinessID());// new String(request.getParameter("WIDout_trade_no").getBytes("ISO-8859-1"),"UTF-8");
 		//商户网站订单系统中唯一订单号，必填
 		//订单名称
 		String subject =groupInfo;// new String(request.getParameter("WIDsubject").getBytes("ISO-8859-1"),"UTF-8");
-		//必填
-		//付款金额
-		String total_fee = new String(request.getParameter("WIDtotal_fee").getBytes("ISO-8859-1"),"UTF-8");
-		//必填
+		//必填
 		//订单描述
 		String body ="集团商家充值";// new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");
 		//默认支付方式
@@ -65,7 +62,11 @@
 		//必填
 		//默认网银
 		String defaultbank = new String(request.getParameter("WIDdefaultbank").getBytes("ISO-8859-1"),"UTF-8");
-		//必填，银行简码请参考接口技术文档
+		//必填，银行简码请参考接口技术文档
+		
+		//付款金额
+		String total_fee = new String(request.getParameter("WIDtotal_fee").getBytes("ISO-8859-1"),"UTF-8");
+		//必填
 		//商品展示地址
 		String show_url =basePath;// new String(request.getParameter("WIDshow_url").getBytes("ISO-8859-1"),"UTF-8");
 		//需以http://开头的完整路径，例如：http://www.商户网址.com/myorder.html
