@@ -39,10 +39,10 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<OrderStatisticsBResp> orderStatisticsB(String data) {
-		OrderStatisticsBReq orderStatisticsBReq = new OrderStatisticsBReq();
-		orderStatisticsBReq.setBusinessId(2008);
-		orderStatisticsBReq.setMonthInfo("2015-09");
+	public ResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq orderStatisticsBReq) {
+		// = new OrderStatisticsBReq();
+//		orderStatisticsBReq.setBusinessId(2008);
+//		orderStatisticsBReq.setMonthInfo("2015-09");
 		OrderStatisticsBResp orderStatisticsResp = orderService.getOrderStatisticsB(orderStatisticsBReq);
 		ResultModel<OrderStatisticsBResp> resultModel = new ResultModel<OrderStatisticsBResp>();
 		resultModel.setResult(orderStatisticsResp);
@@ -58,10 +58,10 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<QueryOrderBResp> queryOrderB(String data) {
-		QueryOrderReq para = new QueryOrderReq();
-		para.setBusinessId(2092);
-		para.setStatus(OrderStatus.Delivery.value());
+	public ResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq para) {
+		 //= new QueryOrderReq();
+//		para.setBusinessId(2092);
+//		para.setStatus(OrderStatus.Delivery.value());
 		ResultModel<QueryOrderBResp> resultModel = new ResultModel<QueryOrderBResp>();
 		if (para.getDateInfo() == null
 				|| para.getDateInfo().trim().isEmpty()
@@ -86,11 +86,10 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<List<QueryOrder>> getCompliteOrderB(String data) {
-		QueryOrderReq para = new QueryOrderReq();
-		para.setBusinessId(2092);
-		para.setDateInfo("2015-09-06");
-		para.setClienterId(3245);
+	public ResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para) {
+//		para.setBusinessId(2092);
+//		para.setDateInfo("2015-09-06");
+//		para.setClienterId(3245);
 
 		ResultModel<List<QueryOrder>> resultModel = new ResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getBusinessId() == null || para.getBusinessId() == 0) {
@@ -110,10 +109,9 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<List<QueryOrder>> getCompliteOrderC(String data) {
-		QueryOrderReq para = new QueryOrderReq();
-		para.setDateInfo("2015-09-06");
-		para.setClienterId(3245);
+	public ResultModel<List<QueryOrder>> getCompliteOrderC(QueryOrderReq para) {
+//		para.setDateInfo("2015-09-06");
+//		para.setClienterId(3245);
 		ResultModel<List<QueryOrder>> resultModel = new ResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getClienterId() == null || para.getClienterId() == 0) {
 			resultModel
