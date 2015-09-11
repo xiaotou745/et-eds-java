@@ -117,10 +117,10 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @param data
 	 */
 	@Override
-	public ResultModel<OrderStatisticsCResp>  orderStatisticsC(String data){
-		OrderStatisticsCReq orderStatisticsCReq=new OrderStatisticsCReq();
-		orderStatisticsCReq.setClienterId(3233) ;
-		orderStatisticsCReq.setMonthInfo("2015-09");
+	public ResultModel<OrderStatisticsCResp>  orderStatisticsC(OrderStatisticsCReq orderStatisticsCReq){
+//		OrderStatisticsCReq orderStatisticsCReq=new OrderStatisticsCReq();
+//		orderStatisticsCReq.setClienterId(3233) ;
+//		orderStatisticsCReq.setMonthInfo("2015-09");
 		OrderStatisticsCResp orderStatisticsResp=orderService.getOrderStatisticsC(orderStatisticsCReq);
 		ResultModel<OrderStatisticsCResp> resultModel=new ResultModel<OrderStatisticsCResp>();
 		resultModel.setResult(orderStatisticsResp);

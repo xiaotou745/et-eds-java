@@ -53,6 +53,21 @@
 		<result column="finishedOrderCount" property="finishedOrderCount"
 			jdbcType="INTEGER" />
 	</resultMap>
+	
+	  <sql id="Base_Column_List">
+    Id, PhoneNo, LoginName, recommendPhone, Password, TrueName, IDCard, PicWithHandUrl, 
+    PicUrl, Status, AccountBalance, InsertTime, InviteCode, City, CityId, GroupId, HealthCardID, 
+    InternalDepart, ProvinceCode, AreaCode, CityCode, Province, BussinessID, WorkStatus, 
+    AllowWithdrawPrice, HasWithdrawPrice, IsBind, DeliveryCompanyId, Timespan, Appkey, 
+    IsReceivePush
+  </sql>
+	
+	  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from clienter
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
 
 	<sql id="Base_Column_List">
 		Id, PhoneNo, LoginName, recommendPhone, Password, TrueName,
