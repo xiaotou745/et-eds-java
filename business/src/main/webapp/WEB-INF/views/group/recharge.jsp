@@ -18,44 +18,34 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 	</div>
 </div>
 <div class="box3">
-	<div class="cb sBox" id="default">
-		<span class="fl fz14">充值金额</span>
-		<label class="fl">
-			<input class="fl" type="radio" name="money" value="500">
-			500元
-		</label>
-		<label class="fl fz14">
-			<input class="fl" type="radio" name="money" value="1000">
-			1000元
-		</label>
-		<label class="fl fz14">
-			<input class="fl" type="radio" name="money" value="2000">
-			2000元
-		</label>
-		<label class="fl fz14">
-			<input class="fl" type="radio" name="money" value="5000">
-			5000元
-		</label>
-		<label class="fl fz14">
-			<input class="fl" type="radio" name="money" value="10000">
-			10000元
-		</label>
-	</div>
-	<div class="cb sBox">
-		<span class="fl">&nbsp;</span>
-		<input class="fl" type="radio" name="money" id="orderRadio">
-		<input class="fl" type="text" id="orderBox">
-		<i class="fl">元</i>
-		<em class="fl tishiyu">请输入1-100000范围内整数</em>
-	</div>
-	<div class="cb sBox">
-		<span class="fl fz14">支付方式</span>
-		<p class="fl">
-			<a href="javascript:;" class="fl zhifu on">支付宝</a>
-			<a href="javascript:;" class="fl zhifu">财付通</a>
-		</p>
-	</div>
-</div>
+		<form name="alipayment" id="alipayment" action="alipayapi" method="post" target="_blank">
+			<div class="cb sBox" id="default">
+				<span class="fl fz14">充值金额</span> <label class="fl"> <input
+					class="fl" type="radio" name="WIDtotal_fee" value="500" checked="checked"> 500元
+				</label> <label class="fl fz14"> <input class="fl" type="radio"
+					name="WIDtotal_fee" value="1000"> 1000元
+				</label> <label class="fl fz14"> <input class="fl" type="radio"
+					name="WIDtotal_fee" value="2000"> 2000元
+				</label> <label class="fl fz14"> <input class="fl" type="radio"
+					name="WIDtotal_fee" value="5000"> 5000元
+				</label> <label class="fl fz14"> <input class="fl" type="radio"
+					name="WIDtotal_fee" value="10000"> 10000元
+				</label>
+			</div>
+			<div class="cb sBox">
+				<span class="fl">&nbsp;</span> <input class="fl" type="radio" id="customerfee"
+					name="WIDtotal_fee"> <input class="fl" type="text"
+					id="orderBox"> <i class="fl">元</i> <em class="fl tishiyu">请输入1-100000范围内整数</em>
+			</div>
+			<div class="cb sBox">
+				<span class="fl fz14">支付方式</span>
+				<p class="fl">
+				<input type="hidden" name="WIDdefaultbank" value="alipay">
+					<a href="javascript:;" class="fl zhifu on" id="alipay">支付宝</a> 
+					<a href="javascript:;" class="fl zhifu" id="ICBC">财付通</a>
+				</p>
+			</div>
+		</form></div>
 <input type="button" value="确认支付" id="pay">
 <div class="wxtsBox">
 	<h2>温馨提示</h2>
@@ -67,9 +57,10 @@ $(document).ready(function() {
 	$('.zhifu').on('click',function(){
 		$(this).siblings().removeClass('on');
 		$(this).addClass('on')
+		$("#WIDdefaultbank").val(this.id);
 	});
 	$('#orderBox').on('focus',function(){
-		$("#orderRadio").prop('checked','checked')
+		$("#customerfee").prop('checked','checked')
 	})
 	$('#orderBox').on('keydown',function(e){
 		var obj=e.srcElement || e.target;
@@ -98,10 +89,19 @@ $(document).ready(function() {
 	})
 	$('#pay').on('click',function(){
 		if(check(true)){
-			//可以提交
+			var selectedfee=$("input[name='WIDtotal_fee']:checked");
+	    	if(selectedfee.attr('id')=="customerfee"){
+	    		$("#selectedfee").val($("#orderBox").val());
+	    	}
+			$("#alipayment").submit();
 		}
 	});
-
+    $("input[type='radio'][name='WIDtotal_fee']").change(function() { 
+    	var fee=$("input[name='WIDtotal_fee']:checked");
+    	if($(fee).attr('id')!="customerfee"){
+    		$("#orderBox").val("");
+    	}
+    }); 
 	function check(pay){
 		var radio = $('.box3 input:radio:checked');
 		var money = radio.val();

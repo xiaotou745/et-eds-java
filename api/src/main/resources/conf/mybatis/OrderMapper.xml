@@ -1268,7 +1268,7 @@ LEFT JOIN (  SELECT  SUM(OrderCommission) TotalCommission,
 				CONVERT (VARCHAR(10),PubDate,120) PubDate,
 				COUNT(OrderCount) TotalCount
 		FROM dbo.[order] o WITH(NOLOCK)
-		WHERE clienterId=#{clienter} AND Status = 1
+		WHERE clienterId=#{clienterId} AND Status = 1
 		GROUP BY  Convert (VARCHAR(10),PubDate,120)
 		) tbl ON tbl.PubDate=tbldate.MonthDate
 WHERE tbldate.MonthDate <![CDATA[ <=]]>GETDATE()

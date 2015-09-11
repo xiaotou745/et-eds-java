@@ -16,7 +16,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 			String basePath =PropertyUtils.getProperty("static.business.url");
 			if (!isLogin&& 
 				!request.getServletPath().equals("/account/login") && 
-				!request.getServletPath().equals("/account/code")) {
+				!request.getServletPath().equals("/account/code")&&
+				!isPay(request)) {
 				response.sendRedirect(basePath + "/");
 				return false;
 			}
@@ -28,12 +29,21 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				if (!userContext.isEmpty()&&
 						userContext.getBusinessType()==1&&
 						!request.getServletPath().equals("/group/recharge")&&
-						!request.getServletPath().equals("/account/logoff")) {
+						!request.getServletPath().equals("/account/logoff")&&
+						!isPay(request)) {
 						response.sendRedirect(basePath + "/group/recharge");
 						return false;
 					}
 			}
 		}
 		return true;
+	}
+	private boolean isPay(HttpServletRequest request){
+		if(request.getServletPath().equals("/group/alipayapi")||
+				request.getServletPath().equals("/group/notify_url")||
+				request.getServletPath().equals("/group/return_url")){
+			return true;
+		}
+		return false;
 	}
 }

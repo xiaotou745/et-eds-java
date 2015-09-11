@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.common.RecordtypeHelper;
-import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.service.inter.ICommonService;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.RecordType;
 
 /**
@@ -23,8 +23,8 @@ public class CommonService implements ICommonService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<List<RecordType>> getRecordtypeB() {
-	   ResultModel<List<RecordType>> resultModel=new ResultModel<List<RecordType>>();
+	public HttpResultModel<List<RecordType>> getRecordtypeB() {
+		HttpResultModel<List<RecordType>> resultModel=new HttpResultModel<List<RecordType>>();
        resultModel.setResult(RecordtypeHelper.getRecordtypeB());
        return resultModel;
 	}
@@ -36,8 +36,8 @@ public class CommonService implements ICommonService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<List<RecordType>> getRecordtypeC() {
-	   ResultModel<List<RecordType>> resultModel=new ResultModel<List<RecordType>>();
+	public HttpResultModel<List<RecordType>> getRecordtypeC() {
+		HttpResultModel<List<RecordType>> resultModel=new HttpResultModel<List<RecordType>>();
        resultModel.setResult(RecordtypeHelper.getRecordtypeC());
        return resultModel;
 	}

@@ -1,11 +1,15 @@
 package com.edaisong.api.dao.impl;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
+
 
 
 
@@ -17,10 +21,14 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.AccountBillDayModel;
+import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
+import com.edaisong.entity.req.PagedAccountBillDayReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
 
@@ -109,5 +117,32 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 			map.put(list.get(i).getDayInfo(), list.get(i));
 		}
 		return map;
+	}
+	/**
+	 * api 获取商户日账单 
+	 * 茹化肖
+	 * 2015年9月11日11:10:26
+	 */
+	@Override
+	public List<AccountBillDayModel> getAccountBillListDayB(
+			PagedAccountBillDayReq par) {
+		 List<AccountBillDayModel> list=new ArrayList<AccountBillDayModel>();
+		PagedResponse<AccountBillDayModel> result =getReadOnlySqlSessionUtil().selectPageList("getAccountBillDayBList", par);
+		if(result.getResultList()!=null&&result.getResultList().size()>0)
+		{
+			list=result.getResultList();
+		}
+		return list;
+	}
+	/**
+	 * API 获取商户账单详情
+	 * 茹化肖
+	 * 2015年9月10日10:25:04
+	 * 
+	 * */
+	@Override
+	public AccountBillDetailModel getAccountBillDetailB(AccountBillDetailReq par) {
+		AccountBillDetailModel model=getReadOnlySqlSessionUtil().selectOne("getAccountBillDetailB", par);
+		return model;
 	}
 }

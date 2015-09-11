@@ -3,43 +3,28 @@ package com.edaisong.admin.common;
 import javax.servlet.http.HttpServletRequest;
 
 import com.edaisong.api.service.inter.IAuthorityMenuClassService;
-import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.JsonUtil;
-import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.SpringBeanHelper;
-import com.edaisong.entity.Account;
 import com.edaisong.entity.domain.SimpleUserInfoModel;
 
 
 public class UserContext {
 	private SimpleUserInfoModel account;
-	private boolean isEmpty;
-	private int id;
-	private int accountType;
-	private String name;
-
-
-	private final static UserContext empty = new UserContext(null,true);
-	private final static RedisService redisService;
+	private static UserContext instance = null;
+	private final static UserContext empty = new UserContext(null);
 	private final static IAuthorityMenuClassService authorityMenuClassService;
 	static{
-		redisService = SpringBeanHelper.getCustomBeanByType(RedisService.class);
 		authorityMenuClassService = SpringBeanHelper.getCustomBeanByType(IAuthorityMenuClassService.class);
 	}
 
 	
-	public UserContext(SimpleUserInfoModel account,boolean isEmpty){
+	private UserContext(SimpleUserInfoModel account){
 		this.account = account;
-		this.isEmpty = isEmpty;
-	}
-
-	public SimpleUserInfoModel getAccount() {
-		return account;
 	}
 	
 	public boolean isEmpty() {
-		return isEmpty;
+		return account==null;
 	}
 
 	/**
@@ -50,7 +35,7 @@ public class UserContext {
 	 * @return
 	 */
 	public boolean isHasAuth(int menuID) {
-		if (isEmpty) {
+		if (account==null) {
 			return false;
 		}
 		return authorityMenuClassService.checkHasAuth(account.getId(), menuID);
@@ -58,31 +43,43 @@ public class UserContext {
 
 	
 	public int getId() {
-		return id;
+		if (account==null) {
+			return -1;
+		}
+		return account.getId();
 	}
 
 	public int getAccountType() {
-		return accountType;
+		if (account==null) {
+			return -1;
+		}
+		return account.getAccountType();
 	}
 
 	public String getName() {
-		return name;
+		if (account==null) {
+			return "";
+		}
+		return account.getLoginName();
 	}
-
-	public static UserContext getCurrentContext(HttpServletRequest request) {
-		final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
-		String cookieValue = CookieUtils.getCookie(request, cookieKey);
-		if (cookieValue != null) {
-			SimpleUserInfoModel account = JsonUtil.str2obj(cookieValue, SimpleUserInfoModel.class);
-			if(account != null){
-				UserContext context = new UserContext(account,false);
-				context.id = account.getId();
-				context.accountType = ParseHelper.ToInt(account.getAccountType());
-				context.name = account.getLoginName();
-				return context;
+	public static void resetContext() {
+		instance = null;
+	}
+	public static synchronized UserContext getCurrentContext(HttpServletRequest request) {
+		if (instance==null) {
+			final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
+			String cookieValue = CookieUtils.getCookie(request, cookieKey);
+			if (cookieValue != null) {
+				SimpleUserInfoModel account = JsonUtil.str2obj(cookieValue, SimpleUserInfoModel.class);
+				if(account != null){
+					instance= new UserContext(account);
+				}
+			}
+			if (instance==null) {
+				instance=empty;
 			}
 		}
-		return empty;
+		return instance;
 	}
 }
 

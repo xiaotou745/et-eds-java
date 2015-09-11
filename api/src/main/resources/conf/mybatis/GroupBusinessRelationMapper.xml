@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dao.inter.GroupBusinessRelationMapper" >
+<mapper namespace="com.edaisong.api.dao.inter.IGroupBusinessRelationDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.GroupBusinessRelation" >
     <id column="Id" property="id" jdbcType="INTEGER" />
     <result column="groupid" property="groupid" jdbcType="INTEGER" />
@@ -148,16 +148,16 @@
 	    and b.Name like ''%${bizName}%''
 	</if>
 	<if test="startDate != null and startDate != ''">
-	      AND gbr.OperateTime >=''${startDate}''
+	      AND gbr.UpdateTime >=''${startDate}''
      </if>
      <if test="endDate != null and endDate != ''">
-	      AND ''${endDate}'' > gbr.OperateTime 
+	      AND ''${endDate}'' > gbr.UpdateTime 
      </if>
   </sql>
   
   <sql id="getBusinessBindListColumns">
   	gbr.Id id,b.Name name,b.phoneNo,b.BalancePrice balancePrice,gbr.createTime,gbr.isBind,gbr.createBy
-  	,gbr.updateBy,gbr.updateTime,gbr.businessId,gbr.groupid groupid,gbr.isEnable,r.useGroupMoney
+  	,gbr.updateBy,gbr.updateTime,gbr.businessId,gbr.groupid groupid,gbr.isEnable,ISNULL(r.useGroupMoney,0) useGroupMoney
   </sql>
   
   <sql id="getBusinessBindListTables">
@@ -194,13 +194,13 @@
 	  ${optType},
 	  getdate(),
 	  '${remark}'
-	INTO BusinessBindOptionLog
+	INTO GroupBusinessBindOptionLog
 	  ( GroupId
 	   ,BusinessId
 	   ,OptId
 	   ,OptName
 	   ,OptType
-	   ,UpdateTime
+	   ,InsertTime
 	   ,Remark)
   </sql>
   
@@ -233,9 +233,9 @@
 	  #{optType,jdbcType=SMALLINT},
 	  getdate(),
 	  #{remark,jdbcType=NVARCHAR}
-	INTO ClienterBindOptionLog
+	INTO GroupBusinessBindOptionLog
 	  ( BusinessId
-	   ,ClienterId
+	   ,GroupId
 	   ,OptId
 	   ,OptName
 	   ,OptType
@@ -250,27 +250,26 @@
   </insert>
   
   <sql id="getBusinessListWhere">
-  	gbr.IsEnable=1
+  	1=1
   	<if test="bizName != null and bizName!=''">
 	    and b.Name like ''%${bizName}%''
 	</if>
   </sql>
   
   <sql id="getBusinessListColumns">
-  	gbr.Id id,b.Name name,b.phoneNo,b.BalancePrice balancePrice,gbr.createTime,gbr.isBind,gbr.createBy
-  	,gbr.updateBy,gbr.updateTime,gbr.businessId,gbr.groupid groupid,gbr.isEnable,gb.GroupBusiName groupName
+  		b.Id businessid,b.Name name,b.phoneNo,b.BalancePrice balancePrice,gbr.createtime,gbr.isbind,gbr.createby
+  	,gbr.updateby,gbr.updatetime,gbr.groupid groupid,gbr.isenable,gb.GroupBusiName groupName
   </sql>
   
   <sql id="getBusinessListTables">
-  	dbo.business b WITH(NOLOCK) left join GroupBusinessRelation gbr WITH(NOLOCK) ON gbr.BusinessId=b.Id
-  	left join GroupBusiness gb WITH(NOLOCK) on gb.Id=gbr.GroupId
+  	dbo.business b WITH(NOLOCK) left join GroupBusinessRelation gbr on gbr.businessId=b.id and gbr.isEnable=1 left join GroupBusiness gb WITH(NOLOCK) on gb.Id=gbr.GroupId
   </sql>
   
   <!-- 获得门店列表信息(包含已绑定和未绑定的所有门店)  add by pengyi 20150910-->
   <select id="getBusinessList" resultType="com.edaisong.entity.domain.GroupBusinessRelationModel" 
     parameterType="com.edaisong.entity.req.PagedBizBindsReq"  statementType="CALLABLE" >
   	{call Sp_CustomPage2015_V1(
-	' gbr.Id DESC ',
+	' b.Id ',
 	' <include refid="getBusinessListColumns" /> ',
 	' <include refid="getBusinessListTables" /> ',
 	' <include refid="getBusinessListWhere" /> ',
