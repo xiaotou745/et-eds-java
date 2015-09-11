@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.LoginUtil;
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.common.LoginHelper;
 import com.edaisong.api.service.inter.IAccountLoginLogService;
 import com.edaisong.api.service.inter.IAccountService;
@@ -166,6 +167,7 @@ public class AccountController {
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
 		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME);
+		UserContext.resetContext();
 		response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
 	}
 }
