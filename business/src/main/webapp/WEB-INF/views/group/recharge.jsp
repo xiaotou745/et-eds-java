@@ -18,44 +18,34 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 	</div>
 </div>
 <div class="box3">
-	<div class="cb sBox" id="default">
-		<span class="fl fz14">充值金额</span>
-		<label class="fl">
-			<input class="fl" type="radio" name="money" value="500">
-			500元
-		</label>
-		<label class="fl fz14">
-			<input class="fl" type="radio" name="money" value="1000">
-			1000元
-		</label>
-		<label class="fl fz14">
-			<input class="fl" type="radio" name="money" value="2000">
-			2000元
-		</label>
-		<label class="fl fz14">
-			<input class="fl" type="radio" name="money" value="5000">
-			5000元
-		</label>
-		<label class="fl fz14">
-			<input class="fl" type="radio" name="money" value="10000">
-			10000元
-		</label>
-	</div>
-	<div class="cb sBox">
-		<span class="fl">&nbsp;</span>
-		<input class="fl" type="radio" name="money" id="orderRadio">
-		<input class="fl" type="text" id="orderBox">
-		<i class="fl">元</i>
-		<em class="fl tishiyu">请输入1-100000范围内整数</em>
-	</div>
-	<div class="cb sBox">
-		<span class="fl fz14">支付方式</span>
-		<p class="fl">
-			<a href="javascript:;" class="fl zhifu on">支付宝</a>
-			<a href="javascript:;" class="fl zhifu">财付通</a>
-		</p>
-	</div>
-</div>
+<!--  <form name="alipayment" id="alipayment" action="alipayapi" method="post" target="_blank"> -->
+		<form name="alipayment" id="alipayment" action="index" method="post" target="_blank">
+			<div class="cb sBox" id="default">
+				<span class="fl fz14">充值金额</span> <label class="fl"> <input
+					class="fl" type="radio" name="money" value="500"> 500元
+				</label> <label class="fl fz14"> <input class="fl" type="radio"
+					name="money" value="1000"> 1000元
+				</label> <label class="fl fz14"> <input class="fl" type="radio"
+					name="money" value="2000"> 2000元
+				</label> <label class="fl fz14"> <input class="fl" type="radio"
+					name="money" value="5000"> 5000元
+				</label> <label class="fl fz14"> <input class="fl" type="radio"
+					name="money" value="10000"> 10000元
+				</label>
+			</div>
+			<div class="cb sBox">
+				<span class="fl">&nbsp;</span> <input class="fl" type="radio"
+					name="money" id="orderRadio"> <input class="fl" type="text"
+					id="orderBox"> <i class="fl">元</i> <em class="fl tishiyu">请输入1-100000范围内整数</em>
+			</div>
+			<div class="cb sBox">
+				<span class="fl fz14">支付方式</span>
+				<p class="fl">
+					<a href="javascript:;" class="fl zhifu on">支付宝</a> <a
+						href="javascript:;" class="fl zhifu">财付通</a>
+				</p>
+			</div>
+		</form></div>
 <input type="button" value="确认支付" id="pay">
 <div class="wxtsBox">
 	<h2>温馨提示</h2>
@@ -98,7 +88,7 @@ $(document).ready(function() {
 	})
 	$('#pay').on('click',function(){
 		if(check(true)){
-			//可以提交
+			$("#alipayment").submit();
 		}
 	});
 

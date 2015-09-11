@@ -11,11 +11,14 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.service.inter.IBusinessBalanceRecordService;
 import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.service.inter.IAccountBillService;
+import com.edaisong.core.enums.returnenums.AccountBillReturnEnum;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.AccountBillResultModel;
 import com.edaisong.entity.domain.AccountBillDayResultModel;
+import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.PagedAccountBillDayReq;
 
 /*
@@ -33,17 +36,9 @@ public class AccountBillService implements IAccountBillService {
 	 * */
 	@Override
 	public ResultModel<AccountBillResultModel> getBillListB(AccountBillBReq par) {
-		
-		try {
-			System.out.println(par);
-			AccountBillResultModel listResult = businessBalanceRecordService.getAccountBillListB(par);
-			return new ResultModel<AccountBillResultModel>().setMessage("获取成功").setResult(listResult).setStatus(1);
 			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return null;
-		
+			AccountBillResultModel listResult = businessBalanceRecordService.getAccountBillListB(par);
+			return new ResultModel<AccountBillResultModel>().setMessage(AccountBillReturnEnum.Success.desc()).setResult(listResult).setStatus(AccountBillReturnEnum.Success.value());
 	}
 	/**
 	 * 商家获取日账单
@@ -51,11 +46,21 @@ public class AccountBillService implements IAccountBillService {
 	 * 2015年9月11日10:55:46
 	 */
 	@Override
-	public ResultModel<AccountBillDayResultModel> getBillListDayB(
-			PagedAccountBillDayReq par) {
+	public ResultModel<AccountBillDayResultModel> getBillListDayB(PagedAccountBillDayReq par) {
 		AccountBillDayResultModel model=businessBalanceRecordService.getAccountBillListDayB(par);
-		return new ResultModel<AccountBillDayResultModel>().setMessage("成功").setStatus(1).setResult(model);
+		return new ResultModel<AccountBillDayResultModel>().setMessage(AccountBillReturnEnum.Success.desc()).setStatus(AccountBillReturnEnum.Success.value()).setResult(model);
 	}
+	/**
+	 * 商家获取账单详情
+	 * 茹化肖
+	 * 2015年9月11日15:38:33
+	 */
+	@Override
+	public ResultModel<AccountBillDetailModel> getBillDetail(AccountBillDetailReq par) {
+		AccountBillDetailModel model=businessBalanceRecordService.getAccountBillDetailB(par);
+		return new ResultModel<AccountBillDetailModel>().setMessage(AccountBillReturnEnum.Success.desc()).setStatus(AccountBillReturnEnum.Success.value()).setResult(model);
+	}
+
 	
 
 }

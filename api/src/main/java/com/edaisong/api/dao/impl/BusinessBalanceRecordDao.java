@@ -12,6 +12,7 @@ import java.util.Map;
 
 
 
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -21,9 +22,11 @@ import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AccountBillDayModel;
+import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedAccountBillDayReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
@@ -130,5 +133,16 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 			list=result.getResultList();
 		}
 		return list;
+	}
+	/**
+	 * API 获取商户账单详情
+	 * 茹化肖
+	 * 2015年9月10日10:25:04
+	 * 
+	 * */
+	@Override
+	public AccountBillDetailModel getAccountBillDetailB(AccountBillDetailReq par) {
+		AccountBillDetailModel model=getReadOnlySqlSessionUtil().selectOne("getAccountBillDetailB", par);
+		return model;
 	}
 }
