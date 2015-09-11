@@ -72,6 +72,7 @@ import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
@@ -80,13 +81,16 @@ import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderReq;
+import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
-import com.edaisong.entity.resp.OrderStatisticsResp;
+import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
 
 @Service
 public class OrderService implements IOrderService {
@@ -954,16 +958,43 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
-	public OrderStatisticsResp getOrderStatisticsB() {
-		OrderStatisticsResp orderStatisticsResp=orderDao.getOrderStatistics();
-		List<ServiceClienter> serviceClienters=orderDao.getOrderStatisticsServiceClienterB();  //B端任务统计接口 
-		List<DaySatisticsB>   daySatisticsBs=  orderDao.getOrderStatisticsDaySatistics(); //B端任务统计接口 天数据列表 
+	public OrderStatisticsBResp getOrderStatisticsB(OrderStatisticsBReq orderStatisticsBReq) {
+		OrderStatisticsBResp orderStatisticsResp=orderDao.getOrderStatistics(orderStatisticsBReq);
+		List<ServiceClienter> serviceClienters=orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq);  //B端任务统计接口 
+		List<DaySatisticsB>   daySatisticsBs=  orderDao.getOrderStatisticsDaySatistics(orderStatisticsBReq); //B端任务统计接口 天数据列表 
 		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
 			List<ServiceClienter>  temp=serviceClienters.stream().filter(t ->t.getPubDate().equals(daySatisticsB.getMonthDate())).collect(Collectors.toList());;
 			daySatisticsB.setServiceClienters(temp);
 		}
 		orderStatisticsResp.setDatas(daySatisticsBs);
 		return orderStatisticsResp;
+	}
+
+	/**
+	 * B 端首页 订单列表
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	public QueryOrderBResp queryOrderB(QueryOrderReq query) {
+		QueryOrderBResp queryOrderBResp=new QueryOrderBResp();
+		queryOrderBResp.setOrders(orderDao.queryOrder(query));
+		return queryOrderBResp;
+	}
+
+	 /**
+     * B端已完成任务列表或者配送员配送列表
+     * @author CaoHeYang
+     * @date 20150910
+     * @param data
+     * @return
+     */
+	@Override
+	public List<QueryOrder> getCompliteOrder(QueryOrderReq query) {
+		query.setStatus(OrderStatus.Complite.value());
+		return orderDao.queryOrder(query);
 	}
 
 }

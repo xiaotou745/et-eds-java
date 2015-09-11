@@ -11,12 +11,22 @@ import java.util.Map;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.domain.GroupBusinessModel;
-import com.edaisong.entity.req.GroupBusinessReq;
 import com.edaisong.entity.req.PagedGroupBusinessReq;
 
 @Repository
 public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
+	@Override
+	public int insert(GroupBusiness record) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public GroupBusiness selectByPrimaryKey(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public int updateByPrimaryKey(GroupBusiness record) {
 		// TODO Auto-generated method stub
@@ -24,7 +34,7 @@ public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
 	}
 
 @Override
-	public PagedResponse<GroupBusinessModel> getBusinessList(PagedGroupBusinessReq req) {
+	public PagedResponse<GroupBusiness> getBusinessList(PagedGroupBusinessReq req) {
 		return  getReadOnlySqlSessionUtil().selectPageList(
 				"com.edaisong.api.dao.inter.IGroupBusinessDao.getPageList", req);
 	}
@@ -36,25 +46,4 @@ public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
 		return getReadOnlySqlSessionUtil()
 				.selectOne("com.edaisong.api.dao.inter.IGroupBusinessDao.getByPhoneNoAndPwd", paramMap);
 	}
-	
-	@Override
-	public GroupBusinessModel getSingle(GroupBusinessReq gbr) {
-		 
-		GroupBusinessModel result = new GroupBusinessModel();
-		result = getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IGroupBusinessDao.getSingle", gbr);
-		return result;
-	}
-	@Override
-	public int addGroupBusiness(GroupBusiness groupBusiness) {
-		// TODO Auto-generated method stub
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IGroupBusinessDao.insert", groupBusiness);
-	}
-
-	@Override
-	public int modifyGroupBusiness(GroupBusiness groupBusiness) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IGroupBusinessDao.updateByPrimaryKey", groupBusiness);
-	}
- 
-
 }

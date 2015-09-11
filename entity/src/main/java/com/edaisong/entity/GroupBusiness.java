@@ -1,9 +1,10 @@
 package com.edaisong.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class GroupBusiness {
+public class GroupBusiness  implements Serializable{
     private Integer id;
 
     private String groupbusiname;
@@ -40,20 +41,14 @@ public class GroupBusiness {
         this.groupbusiname = groupbusiname == null ? null : groupbusiname.trim();
     }
 
-    public String getLoginname() {
-        return loginname;
-    }
-
-    public void setLoginname(String loginname) {
-        this.loginname = loginname == null ? "" : loginname.trim();
-    }
+    
 
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? "" : password.trim();
+        this.password = password == null ? null : password.trim();
     }
 
     public String getCreatename() {
@@ -61,7 +56,7 @@ public class GroupBusiness {
     }
 
     public void setCreatename(String createname) {
-        this.createname = createname == null ? "" : createname.trim();
+        this.createname = createname == null ? null : createname.trim();
     }
 
     public Date getCreatetime() {
@@ -77,7 +72,7 @@ public class GroupBusiness {
     }
 
     public void setModifyname(String modifyname) {
-        this.modifyname = modifyname == null ? "" : modifyname.trim();
+        this.modifyname = modifyname == null ? null : modifyname.trim();
     }
 
     public Date getModifytime() {
@@ -103,4 +98,12 @@ public class GroupBusiness {
     public void setIsvalid(Integer isvalid) {
         this.isvalid = isvalid;
     }
+
+	public String getLoginname() {
+		return loginname;
+	}
+
+	public void setLoginname(String loginname) {
+		this.loginname = loginname;
+	}
 }
