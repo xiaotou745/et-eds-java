@@ -80,4 +80,14 @@ public interface IClienterService {
 	String getNameByPhone(String phoneNo);
 	
 	Integer getId(String phoneNo, String trueName);
+	
+	/**
+	 * 根据骑士id获得实体对象
+	 * @author pengyi
+	 * @date 2015年9月11日 上午9:51:13
+	 * @version 1.0
+	 * @param id
+	 * @return
+	 */
+	Clienter selectByPrimaryKey(Integer id);
 }

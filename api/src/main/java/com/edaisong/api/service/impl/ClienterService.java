@@ -169,4 +169,11 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	public Integer getId(String phoneNo, String trueName) {
 		return clienterDao.getId(phoneNo,trueName);
 	}
+
+
+	@Override
+	public Clienter selectByPrimaryKey(Integer id) {
+		return clienterDao.selectByPrimaryKey(id);
+	}
+
 }
