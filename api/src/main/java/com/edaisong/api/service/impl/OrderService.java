@@ -94,6 +94,7 @@ import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.resp.QueryOrderCResp;
 
 @Service
 public class OrderService implements IOrderService {
@@ -1000,7 +1001,20 @@ public class OrderService implements IOrderService {
 		queryOrderBResp.setOrders(orderDao.queryOrder(query));
 		return queryOrderBResp;
 	}
-
+	
+	/**
+	 * C 端我的任务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150911
+	 * @param para
+	 */
+	@Override
+	public QueryOrderCResp queryOrderC(QueryOrderReq query) {
+		QueryOrderCResp m=new QueryOrderCResp();
+		m.setOrders(orderDao.queryOrder(query));
+		return m;
+	}
 	 /**
      * B端已完成任务列表或者配送员配送列表
      * @author CaoHeYang

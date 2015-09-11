@@ -15,6 +15,7 @@ import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.resp.QueryOrderCResp;
 
 /**
  * 订单模块
@@ -51,9 +52,20 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/queryorderb")
 	public ResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq para);
+	
+	/**
+	 * C 端我的任务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150911
+	 * @param para
+	 */
+	@POST
+	@Path("/queryorderc")
+	ResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq para);
 
 	/**
-	 * 端已完成任务列表或者配送员配送列表
+	 * B端已完成任务列表或者配送员配送列表
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150910
@@ -65,7 +77,7 @@ public interface IOrderHttpService {
 	public ResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para);
 
 	/**
-	 * 端已完成任务列表或者配送员配送列表
+	 * C端已完成任务列表
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150910
@@ -86,5 +98,6 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/orderstatisticsc")
 	public ResultModel<OrderStatisticsCResp> orderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
+
 
 }

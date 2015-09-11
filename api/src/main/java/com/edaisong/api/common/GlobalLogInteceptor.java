@@ -51,7 +51,6 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 
 			String methodName = handlerMethod.getMethod().toString();
 			String param = JsonUtil.obj2string(request.getParameterMap());
-
 			long end = System.currentTimeMillis();
 			long start = (Long) request.getAttribute("start");
 
