@@ -12,7 +12,7 @@
 		b.phoneno2 ,
 		b.idcard ,
 		b.[address] ,
-		isnull(b.landline,'') as  landline,
+		isnull(b.landline,'') as landline,
 		b.longitude ,
 		b.latitude ,
 		b.[status] ,
@@ -44,20 +44,25 @@
 		bfa.openBank ,
 		bfa.openSubBank ,
 		g.groupName ,
-		ISNULL(g.IsModifyBind, 0) isModifyBind ,
+		ISNULL(g.IsModifyBind, 0)
+		isModifyBind ,
 		ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
 		b.isallowoverdraft ,
 		b.isemployertask ,
-		ISNULL(b.RecommendPhone, '') AS recommendphone
+		ISNULL(b.RecommendPhone, '') AS
+		recommendphone
 		FROM business b WITH ( NOLOCK )
-		LEFT JOIN BusinessFinanceAccount bfa WITH ( NOLOCK ) ON b.Id =
+		LEFT JOIN
+		BusinessFinanceAccount bfa WITH ( NOLOCK ) ON b.Id =
 		bfa.BusinessId
-		AND bfa.IsEnable = 1
-		LEFT JOIN [group] g WITH ( NOLOCK ) ON g.Id = b.GroupId
+		AND
+		bfa.IsEnable = 1
+		LEFT JOIN [group] g WITH ( NOLOCK ) ON g.Id =
+		b.GroupId
 		WHERE b.Id = #{businessID}
 	</select>
-<!-- 获取商户、集团、策略   2015年8月11日 17:48:47 胡灵波 -->
-<select id="getBusiness" resultType="com.edaisong.entity.domain.BusinessModel"
+	<!-- 获取商户、集团、策略 2015年8月11日 17:48:47 胡灵波 -->
+	<select id="getBusiness" resultType="com.edaisong.entity.domain.BusinessModel"
 		parameterType="java.lang.Long">
 		SELECT
 		b.id ,
@@ -68,7 +73,7 @@
 		b.phoneno2 ,
 		b.idcard ,
 		b.[address] ,
-		isnull(b.landline,'') as  landline,
+		isnull(b.landline,'') as landline,
 		b.longitude ,
 		b.latitude ,
 		b.[status] ,
@@ -91,16 +96,18 @@
 		b.businesslicensepic ,
 		b.mealssettlemode ,
 		isnull(b.groupid,0) as groupid ,
-		b.originalbusiid ,	
+		b.originalbusiid ,
 		ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
 		b.isallowoverdraft ,
 		b.isemployertask ,
 		b.isAllowCashPay,
-		ISNULL(b.RecommendPhone, '') AS recommendphone,
+		ISNULL(b.RecommendPhone, '') AS
+		recommendphone,
 		bg.StrategyId as StrategyId
-		FROM business b WITH ( NOLOCK )	
+		FROM business b WITH (
+		NOLOCK )
 		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON
-		b.BusinessGroupId =bg.Id		
+		b.BusinessGroupId =bg.Id
 		WHERE b.Id = #{businessID}
 	</select>
 
@@ -144,10 +151,12 @@
 				commissiontype = #{commissiontype,jdbcType=INTEGER},
 			</if>
 			<if test="businesscommission != null">
-				businesscommission = #{businesscommission,jdbcType=DECIMAL},
+				businesscommission =
+				#{businesscommission,jdbcType=DECIMAL},
 			</if>
 			<if test="commissionfixvalue != null">
-				commissionfixvalue = #{commissionfixvalue,jdbcType=DECIMAL},
+				commissionfixvalue =
+				#{commissionfixvalue,jdbcType=DECIMAL},
 			</if>
 			<if test="businessgroupid != null">
 				businessgroupid = #{businessgroupid,jdbcType=INTEGER},
@@ -178,19 +187,19 @@
 			</if>
 		</set>
 		OUTPUT
-                        Inserted.Id,
-                        #{optId,jdbcType=NVARCHAR},
-                        #{optName,jdbcType=NVARCHAR},
-                        GETDATE(),
-                        3,
-                        #{remark,jdbcType=NVARCHAR}
-                    INTO BusinessOptionLog
-                        (BusinessId,
-                        OptId,
-                        OptName,
-                        InsertTime,
-                        Platform,
-                        Remark)
+		Inserted.Id,
+		#{optId,jdbcType=NVARCHAR},
+		#{optName,jdbcType=NVARCHAR},
+		GETDATE(),
+		3,
+		#{remark,jdbcType=NVARCHAR}
+		INTO BusinessOptionLog
+		(BusinessId,
+		OptId,
+		OptName,
+		InsertTime,
+		Platform,
+		Remark)
 		where Id = #{id,jdbcType=BIGINT}
 	</update>
 
@@ -227,17 +236,20 @@
 		bg.Name businessgroupname ,
 		ISNULL(b.MealsSettleMode, 0) mealssettlemode ,
 		ISNULL(b.BalancePrice,0) balanceprice ,
-		ISNULL(b.AllowWithdrawPrice, 0) allowwithdrawprice ,
+		ISNULL(b.AllowWithdrawPrice, 0)
+		allowwithdrawprice ,
 		ISNULL(b.RecommendPhone, '''') AS recommendphone ,
-	    b.LastLoginTime,
-	    b.isAllowCashPay 
+		b.LastLoginTime,
+		b.isAllowCashPay
 	</sql>
 
 	<sql id="getBusinessListFrom">
 		business b WITH (NOLOCK)
-		LEFT JOIN dbo.[group] g WITH ( NOLOCK ) ON g.Id =
+		LEFT JOIN dbo.[group] g WITH (
+		NOLOCK ) ON g.Id =
 		b.GroupId
-		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON
+		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK )
+		ON
 		b.BusinessGroupId =bg.Id
 	</sql>
 
@@ -311,9 +323,11 @@
 		SELECT optname ,
 		inserttime ,
 		remark
-		FROM dbo.BusinessOptionLog(NOLOCK)
+		FROM
+		dbo.BusinessOptionLog(NOLOCK)
 		WHERE BusinessId = #{businessID}
-		ORDER BY Id DESC
+		ORDER BY
+		Id DESC
 	</select>
 
 	<select id="getBusinessByPhoneNoAndPwd" resultType="com.edaisong.entity.Business"
@@ -327,7 +341,7 @@
 		b.phoneno2 ,
 		b.idcard ,
 		b.[address] ,
-		isnull(b.landline,'') as  landline,
+		isnull(b.landline,'') as landline,
 		b.longitude ,
 		b.latitude ,
 		b.[status] ,
@@ -355,86 +369,111 @@
 		b.isallowoverdraft ,
 		b.isemployertask ,
 		ISNULL(b.RecommendPhone, '') AS recommendphone
-		FROM business b WITH ( NOLOCK )
-		WHERE b.PhoneNo = #{phoneNo,jdbcType=NVARCHAR}
-		AND Password = #{password,jdbcType=NVARCHAR} 
-	</select>
-	
-	<insert id="addLogingLog" parameterType="com.edaisong.entity.BusinessLoginLog" useGeneratedKeys="true" keyProperty="id">
-		insert into BusinessLoginLog([PhoneNo],[Description],[IsSuccess])
-		values(#{phoneNo,jdbcType=NVARCHAR},#{description,jdbcType=NVARCHAR},#{isSuccess,jdbcType=SMALLINT})
-	</insert>
-	<select id="getById" resultType="com.edaisong.entity.Business" parameterType="java.lang.Integer" statementType="CALLABLE">
-	  select 
-	  b.* 
-	  from dbo.business b WITH (NOLOCK) where b.Id = #{businessId,jdbcType=INTEGER} 
+		FROM
+		business b WITH ( NOLOCK )
+		WHERE b.PhoneNo =
+		#{phoneNo,jdbcType=NVARCHAR}
+		AND Password =
+		#{password,jdbcType=NVARCHAR}
 	</select>
 
-   <!-- 更新 商户 余额，可提现余额   add by caoheyang 20150804  -->	
+	<insert id="addLogingLog" parameterType="com.edaisong.entity.BusinessLoginLog"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		BusinessLoginLog([PhoneNo],[Description],[IsSuccess])
+		values(#{phoneNo,jdbcType=NVARCHAR},#{description,jdbcType=NVARCHAR},#{isSuccess,jdbcType=SMALLINT})
+	</insert>
+	<select id="getById" resultType="com.edaisong.entity.Business"
+		parameterType="java.lang.Integer" statementType="CALLABLE">
+		select
+		b.*
+		from dbo.business b WITH (NOLOCK) where b.Id =
+		#{businessId,jdbcType=INTEGER}
+	</select>
+
+	<!-- 更新 商户 余额，可提现余额 add by caoheyang 20150804 -->
 	<update id="updateForWithdraw" parameterType="java.util.Map">
-		update  business
-		set  BalancePrice=BalancePrice+ #{Money,jdbcType=DECIMAL} ,AllowWithdrawPrice=AllowWithdrawPrice+ #{Money,jdbcType=DECIMAL}
-		where  Id= #{Id,jdbcType=INTEGER}
+		update business
+		set
+		BalancePrice=BalancePrice+ #{Money,jdbcType=DECIMAL}
+		,AllowWithdrawPrice=AllowWithdrawPrice+ #{Money,jdbcType=DECIMAL}
+		where Id= #{Id,jdbcType=INTEGER}
 	</update>
 	<update id="modifyExpress" parameterType="java.util.List">
-	 <foreach collection="list" index="index" item="item">    
-MERGE INTO BusinessExpressRelation ber
-    USING ( VALUES
-        ( #{item.businessid,jdbcType=INTEGER} ,
-          #{item.expressid,jdbcType=INTEGER}
-        ) ) AS berNew ( BusinessId, ExpressId )
-    ON ber.BusinessId = berNew.BusinessId
-        AND ber.ExpressId = berNew.ExpressId
-    WHEN MATCHED
-        THEN UPDATE
-          SET       ber.IsEnable = #{item.isenable,jdbcType=SMALLINT} ,
-                    ber.UpdateBy = #{item.updateby,jdbcType=NVARCHAR} ,
-                    ber.UpdateTime = GETDATE()
-    WHEN NOT MATCHED
-        THEN INSERT (
-                      BusinessId ,
-                      ExpressId ,
-                      CreateBy ,
-                      UpdateBy ,
-                      IsEnable
-                    )
-          VALUES    ( #{item.businessid,jdbcType=INTEGER} ,
-                      #{item.expressid,jdbcType=INTEGER} ,
-                      #{item.createby,jdbcType=NVARCHAR} ,
-                      #{item.updateby,jdbcType=NVARCHAR} ,
-                      #{item.isenable,jdbcType=SMALLINT}
-                    );
-     </foreach>
+		<foreach collection="list" index="index" item="item">
+			MERGE INTO BusinessExpressRelation ber
+			USING ( VALUES
+			( #{item.businessid,jdbcType=INTEGER} ,
+			#{item.expressid,jdbcType=INTEGER}
+			) ) AS berNew ( BusinessId, ExpressId )
+			ON ber.BusinessId = berNew.BusinessId
+			AND ber.ExpressId = berNew.ExpressId
+			WHEN MATCHED
+			THEN UPDATE
+			SET ber.IsEnable = #{item.isenable,jdbcType=SMALLINT} ,
+			ber.UpdateBy = #{item.updateby,jdbcType=NVARCHAR} ,
+			ber.UpdateTime = GETDATE()
+			WHEN NOT MATCHED
+			THEN INSERT (
+			BusinessId ,
+			ExpressId ,
+			CreateBy ,
+			UpdateBy ,
+			IsEnable
+			)
+			VALUES ( #{item.businessid,jdbcType=INTEGER} ,
+			#{item.expressid,jdbcType=INTEGER} ,
+			#{item.createby,jdbcType=NVARCHAR} ,
+			#{item.updateby,jdbcType=NVARCHAR} ,
+			#{item.isenable,jdbcType=SMALLINT}
+			);
+		</foreach>
 	</update>
-   <!-- 更新 商户 余额，可提现余额   add by zhaohailong 20150811  -->	
+	<!-- 更新 商户 余额，可提现余额 add by zhaohailong 20150811 -->
 	<update id="updateAuditStatus" parameterType="java.util.Map">
-        update business set Status=#{status,jdbcType=INTEGER}
-		where  Id= #{businessID,jdbcType=INTEGER}
+		update business set Status=#{status,jdbcType=INTEGER}
+		where Id=
+		#{businessID,jdbcType=INTEGER}
 	</update>
-	
-	<!-- 更新 商户 最后登录时间   add by pengyi 20150818  -->	
+
+	<!-- 更新 商户 最后登录时间 add by pengyi 20150818 -->
 	<update id="updateLastLoginTime" parameterType="java.util.Map">
-        update business set LastLoginTime=#{lastLoginTime,jdbcType=TIMESTAMP}
-		where  Id= #{businessID,jdbcType=INTEGER}
+		update business set LastLoginTime=#{lastLoginTime,jdbcType=TIMESTAMP}
+		where
+		Id= #{businessID,jdbcType=INTEGER}
 	</update>
-	
-	<select id="getRechargeDetail" resultType="com.edaisong.entity.domain.BusinessRechargeDetailModel" parameterType="java.lang.String">
-		 SELECT  b.BusinessId ,
-                                a.Name ,
-                                c.PayTime ,
-                                b.Amount ,
-                                b.Balance ,
-                                c.OrderNo ,
-                                c.PayType ,
-                                c.PayStatus
-                        FROM    dbo.business a ( NOLOCK )
-                                JOIN BusinessBalanceRecord b ( NOLOCK ) ON a.id = b.BusinessId
-                                JOIN BusinessRecharge c ( NOLOCK ) ON a.id = c.BusinessId AND b.RelationNo=c.OrderNo 
-                        WHERE   c.OrderNo=#{orderNo,jdbcType=VARCHAR}
+
+	<select id="getRechargeDetail"
+		resultType="com.edaisong.entity.domain.BusinessRechargeDetailModel"
+		parameterType="java.lang.String">
+		SELECT b.BusinessId ,
+		a.Name ,
+		c.PayTime ,
+		b.Amount ,
+		b.Balance ,
+		c.OrderNo ,
+		c.PayType ,
+		c.PayStatus
+		FROM dbo.business a ( NOLOCK )
+		JOIN BusinessBalanceRecord b ( NOLOCK ) ON a.id = b.BusinessId
+		JOIN BusinessRecharge c ( NOLOCK ) ON a.id = c.BusinessId AND
+		b.RelationNo=c.OrderNo
+		WHERE c.OrderNo=#{orderNo,jdbcType=VARCHAR}
 	</select>
-	
-	<!-- 更新商户是否绑定骑士  add by pengyi 20150901 -->
+
+	<!-- 更新商户是否绑定骑士 add by pengyi 20150901 -->
 	<update id="updateBusinessIsBind" parameterType="java.util.Map">
-		update business set IsBind = #{isBind,jdbcType=INTEGER} where Id = #{businessId,jdbcType=INTEGER};
+		update business
+		set IsBind = #{isBind,jdbcType=INTEGER} where Id =
+		#{businessId,jdbcType=INTEGER};
 	</update>
+
+	<!-- 获取用户状态信息  add by caoheyang 20150911-->
+	<select id="getUserStatus" resultType="com.edaisong.entity.domain.BusinessStatus"
+		parameterType="java.lang.Long">
+		select Id as userid,[status] as
+		status,OneKeyPubOrder,IsAllowOverdraft,BalancePrice,IsAllowCashPay
+		from dbo.business with(nolock) WHERE id=#{userid,jdbcType=INTEGER}
+	</select>
+
 </mapper>

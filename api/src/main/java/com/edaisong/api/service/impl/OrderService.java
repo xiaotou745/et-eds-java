@@ -22,6 +22,7 @@ import com.edaisong.api.common.OrderSettleMoneyHelper;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
+import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.dao.inter.IClienterLocationDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
@@ -35,12 +36,13 @@ import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
-import com.edaisong.core.enums.BusinessStatus;
+import com.edaisong.core.enums.BusinessStatusEnum;
 import com.edaisong.core.enums.CancelOrderBusinessReturnEnum;
 import com.edaisong.core.enums.ClienterAllowWithdrawRecordStatus;
 import com.edaisong.core.enums.ClienterAllowWithdrawRecordType;
 import com.edaisong.core.enums.ClienterBalanceRecordRecordType;
 import com.edaisong.core.enums.ClienterBalanceRecordStatus;
+import com.edaisong.core.enums.ClienterStatusEnum;
 import com.edaisong.core.enums.DeductCommissionType;
 import com.edaisong.core.enums.MealsSettleMode;
 import com.edaisong.core.enums.OrderAuditStatus;
@@ -67,6 +69,7 @@ import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
+import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
@@ -123,6 +126,8 @@ public class OrderService implements IOrderService {
 	private IClienterBalanceRecordDao clienterBalanceRecordDao;
 	@Autowired 
 	IClienterLocationDao clienterLocationDao;
+	@Autowired
+	private IClienterDao clienterDao;
 
 	/**
 	 * 后台订单列表页面
@@ -526,7 +531,7 @@ public class OrderService implements IOrderService {
 		if (businessModel != null && businessModel.getOnekeypuborder() == 1) {
 			isOneKeyPubOrder = true;
 		}
-		if (businessModel.getStatus() != BusinessStatus.AuditPass.value())// 验证该商户有无发布订单资格
+		if (businessModel.getStatus() != BusinessStatusEnum.AuditPass.value())// 验证该商户有无发布订单资格
 																			// 审核通过下不允许发单
 		{
 			return PublishOrderReturnEnum.HadCancelQualification;
@@ -998,6 +1003,9 @@ public class OrderService implements IOrderService {
 	@Override
 	public QueryOrderBResp queryOrderB(QueryOrderReq query) {
 		QueryOrderBResp queryOrderBResp=new QueryOrderBResp();
+		if (businessDao.getUserStatus(query.getBusinessId()).getStatus()!=BusinessStatusEnum.AuditPass.value()) {
+			
+		}
 		queryOrderBResp.setOrders(orderDao.queryOrder(query));
 		return queryOrderBResp;
 	}
@@ -1011,12 +1019,16 @@ public class OrderService implements IOrderService {
 	 */
 	@Override
 	public QueryOrderCResp queryOrderC(QueryOrderReq query) {
+		if(clienterService.getUserStatus(query.getClienterId()).getStatus()!=ClienterStatusEnum.AuditPass.value())
+		{
+			
+		}
 		QueryOrderCResp m=new QueryOrderCResp();
 		m.setOrders(orderDao.queryOrder(query));
 		return m;
 	}
 	 /**
-     * B端已完成任务列表或者配送员配送列表
+     * B端已完成任务列表或者配送员配送列表 或者C 端已完成任务
      * @author CaoHeYang
      * @date 20150910
      * @param data
