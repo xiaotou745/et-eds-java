@@ -53,8 +53,10 @@
 				<td><%=list.get(i).getStatus()==1?"冻结中":"已解冻" %></td>
 
 				<td><%=list.get(i).getOperator()%></td>
-
-				<td><%=list.get(i).getStatus()==1?"解冻":""%></td>
+				<td><%if(list.get(i).getStatus()==1){%>
+								<a href="javascript:showUnfreeze(<%=list.get(i).getId()%>,<%=list.get(i).getClienterid()%>,<%=list.get(i).getForzenamount() %>)">解冻</a>
+								<%}else{%> <%}%>
+				</td>				
 			</tr>
 		 <%}%> 	 	
 			</tbody>
@@ -64,4 +66,11 @@
 <%=PageHelper.getPage(data.getPageSize(),
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
-					
+<script>
+function showUnfreeze(id,clienterId,forzenAmount){
+	$("#hdForzenId").val(id);
+	$("#hdForzenClienterId").val(clienterId);
+	$("#hdForzenAmount").val(forzenAmount);
+	$('#showUnfreezeClienter').modal('show');	
+}
+</script>

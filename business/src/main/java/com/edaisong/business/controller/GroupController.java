@@ -7,6 +7,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("group")
 public class GroupController {
+	/**
+	 * @author hailongzhao
+	 * @date 20150911
+	 * @return
+	 */
 	@RequestMapping("recharge")
 	public ModelAndView list() {
 		ModelAndView view = new ModelAndView("businessView");
@@ -15,11 +20,7 @@ public class GroupController {
 		view.addObject("viewPath", "group/recharge");
 		return view;
 	}
-	@RequestMapping("index")
-	public ModelAndView alipayindex() {
-		ModelAndView view = new ModelAndView("group/index");
-		return view;
-	}
+//*******以下方法为集团商户充值支付宝相关页面********//
 	@RequestMapping("alipayapi")
 	public ModelAndView alipayapi() {
 		ModelAndView view = new ModelAndView("group/alipayapi");
@@ -35,4 +36,5 @@ public class GroupController {
 		ModelAndView view = new ModelAndView("group/return_url");
 		return view;
 	}
+	//*******以上方法为集团商户充值支付宝相关页面********//
 }

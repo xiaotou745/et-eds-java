@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 
 
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,8 +30,11 @@ import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.ClienterForzen;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.ClienterModel;
+import com.edaisong.entity.req.ClienterUnfreezeReq;
+import com.edaisong.entity.req.GroupBusinessReq;
 import com.edaisong.entity.req.PagedClienterBalanceRecordReq;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.PagedClienterForzenReq;
@@ -215,5 +220,37 @@ public class ClienterController {
 		model.addObject("listData", result);
 		return model;
 	}
-
+	/*
+	 * 骑士解冻
+	 * WangChao
+	 */
+	@RequestMapping("unfreezeclienter")
+	@ResponseBody
+	public ResponseBase unfreezeClienter(ClienterUnfreezeReq clienterUnfreezeReq){
+		ResponseBase response = new ResponseBase();
+		response.setResponseCode(1);
+		response.setMessage("解冻成功");
+		return response;		
+	}
+	/*
+	 * 余额冻结
+	 * WangChao
+	 */	
+	@RequestMapping("forzenbalancelist")
+	public ModelAndView forzenBalanceList(){		
+		
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "骑士管理");
+		model.addObject("currenttitle", "余额冻结");
+		model.addObject("viewPath", "clienter/forzenbalancelist");
+		return model;
+	}
+	/*
+	 * 余额冻结列表
+	 * WangChao
+	 */	
+	@RequestMapping("forzenbalancelistdo")
+	public ModelAndView forzenBalanceListdo(){		
+		return null;
+	}
 }

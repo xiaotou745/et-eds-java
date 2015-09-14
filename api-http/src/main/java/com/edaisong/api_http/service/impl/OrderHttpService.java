@@ -41,16 +41,12 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq para) {
-		HttpResultModel<OrderStatisticsBResp> httpResultModel = new HttpResultModel<OrderStatisticsBResp>();
 		if (para.getMonthInfo() == null || para.getMonthInfo().trim().isEmpty() || para.getBusinessId() == 0 ) {
-			httpResultModel
+			return new HttpResultModel<OrderStatisticsBResp>()
 			.setStatus(HttpReturnRnums.ParaError.value())
 			.setMessage(HttpReturnRnums.ParaError.desc());
-			return httpResultModel;
 		}
-		OrderStatisticsBResp orderStatisticsResp = orderService.getOrderStatisticsB(para);
-		httpResultModel.setResult(orderStatisticsResp);
-		return httpResultModel;
+		return orderService.getOrderStatisticsB(para);
 	}
 
 	/**
@@ -63,18 +59,15 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq para) {
-		HttpResultModel<QueryOrderBResp> httpResultModel = new HttpResultModel<QueryOrderBResp>();
 		if ( para.getBusinessId() == null
 				|| para.getBusinessId() == 0
 				|| (para.getStatus() != OrderStatus.New.value() && para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
-			httpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
-			return httpResultModel;
+			return    new HttpResultModel<QueryOrderBResp>().setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
 		}
 		para.setDateInfo(null);
 		para.setClienterId(null);
-		httpResultModel.setResult(orderService.queryOrderB(para));
-		return httpResultModel;
+		return orderService.queryOrderB(para);
 	}
 
 	/**
@@ -87,18 +80,15 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq para) {
-		HttpResultModel<QueryOrderCResp> httpResultModel = new HttpResultModel<QueryOrderCResp>();
 		if ( para.getClienterId() == null
 				|| para.getClienterId() == 0
 				|| ( para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
-			httpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
-			return httpResultModel;
+			return  new HttpResultModel<QueryOrderCResp>().setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
 		}
 		para.setDateInfo(null);
 		para.setBusinessId(null);
-		httpResultModel.setResult(orderService.queryOrderC(para));
-		return httpResultModel;
+		return orderService.queryOrderC(para);
 	}
 	/**
 	 * B端已完成任务列表或者配送员配送列表
@@ -110,13 +100,10 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para) {
-		HttpResultModel<List<QueryOrder>> httpResultModel = new HttpResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getBusinessId() == null || para.getBusinessId() == 0) {
-			httpResultModel.setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
-			return httpResultModel;
+			new HttpResultModel<List<QueryOrder>>().setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
 		}
-		httpResultModel.setResult(orderService.getCompliteOrder(para));
-		return httpResultModel;
+		return orderService.getCompliteOrder(para);
 	}
 
 	/**
@@ -129,15 +116,12 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<List<QueryOrder>> getCompliteOrderC(QueryOrderReq para) {
-		HttpResultModel<List<QueryOrder>> httpResultModel = new HttpResultModel<List<QueryOrder>>();
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getClienterId() == null || para.getClienterId() == 0) {
-			httpResultModel
+			return new HttpResultModel<List<QueryOrder>>()
 			.setStatus(HttpReturnRnums.ParaError.value())
 			.setMessage(HttpReturnRnums.ParaError.desc());
-			return httpResultModel;
 		}
-		httpResultModel.setResult(orderService.getCompliteOrder(para));
-		return httpResultModel;
+		return orderService.getCompliteOrder(para);
 	}
 
 	/**
