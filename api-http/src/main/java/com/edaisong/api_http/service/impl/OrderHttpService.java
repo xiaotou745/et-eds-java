@@ -103,7 +103,7 @@ public class OrderHttpService implements IOrderHttpService {
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getBusinessId() == null || para.getBusinessId() == 0) {
 			new HttpResultModel<List<QueryOrder>>().setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
 		}
-		return orderService.getCompliteOrder(para);
+		return orderService.getCompliteOrder(para,0);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class OrderHttpService implements IOrderHttpService {
 			.setStatus(HttpReturnRnums.ParaError.value())
 			.setMessage(HttpReturnRnums.ParaError.desc());
 		}
-		return orderService.getCompliteOrder(para);
+		return orderService.getCompliteOrder(para,1);
 	}
 
 	/**

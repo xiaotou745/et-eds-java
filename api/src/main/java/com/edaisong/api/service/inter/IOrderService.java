@@ -214,15 +214,16 @@ public interface IOrderService {
 	 * @date 20150911
 	 * @param para
 	 */
-    HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq query);
+    HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq query );
     
     /**
      * B端已完成任务列表或者配送员配送列表
      * @author CaoHeYang
      * @date 20150910
-     * @param data
+     * @param query
+     * @type  0 B端 1 C端
      * @return
      */
-    HttpResultModel<List<QueryOrder>> getCompliteOrder(QueryOrderReq query);
+    HttpResultModel<List<QueryOrder>> getCompliteOrder(QueryOrderReq query,int type);
 
 }
