@@ -419,7 +419,7 @@
 	</select>
 	<!--商家获取账单详情API  茹化肖  2015年9月11日15:56:17  -->
 	<select id="getAccountBillDetailB" resultType="com.edaisong.entity.domain.AccountBillDetailModel"
-		parameterType="com.edaisong.entity.domain.AccountBillDetailModel">
+		parameterType="com.edaisong.entity.req.AccountBillDetailReq">
 		 SELECT Amount ,
         Status ,
         WithwardId ,

@@ -198,4 +198,70 @@
 from  ClienterBalanceRecord (nolock)
 where  WithwardId= #{id,jdbcType=BIGINT} and Remark='无效订单'
   </select>
+  <select id="getAccountBillCList" resultType="com.edaisong.entity.domain.AccountBillModel">
+		select
+		Convert ( varchar(10), OperateTime, 120) as DayInfo,
+		SUM(CASE WHEN Amount>0 THEN Amount ELSE 0 END) as InMoney,
+		SUM(CASE WHEN 0>=Amount THEN Amount ELSE 0 END) as OutMoney
+		FROM
+		 ClienterBalanceRecord (NOLOCK)
+ 		 WHERE ClienterId=#{clienterId,jdbcType=INTEGER}
+		AND OperateTime > #{startDate,jdbcType=VARCHAR} AND
+		#{endDate,jdbcType=VARCHAR} > OperateTime
+		GROUP by
+		Convert ( VARCHAR(10), OperateTime, 120)
+	</select>
+	<!-- 获取骑士日账单分页 的Where条件 茹化肖 -->
+	<sql id="getAccountBillDayCList_Where">
+		ClienterId=${clienterId}
+		AND OperateTime > ''${stratDate}''
+		AND ''${endDate}'' >= OperateTime
+		<if test="billType == 1"><!-- 出账 -->
+			AND 0>Amount
+		</if>
+		<if test="billType == 2"><!-- 入账 -->
+			AND Amount>=0
+		</if>
+		<if test="recordType !=0"><!--非全部 -->
+			AND RecordType = ${recordType}
+		</if>
+	</sql>
+		<!-- 获取骑士日账单分页 茹化肖 2015年9月10日19:06:57 -->
+	<select id="getAccountBillDayCList" resultType="com.edaisong.entity.domain.AccountBillDayCModel"
+		parameterType="com.edaisong.entity.req.PagedAccountBillDayCReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' OperateTime DESC ',
+		' RelationNo,Amount,RecordType,OperateTime,id AS RecordId ',
+		'   dbo.ClienterBalanceRecord AS cbr (NOLOCK)   ',
+		'
+		<include refid="getAccountBillDayCList_Where" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER},
+		1,
+		#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+		#{totalPage,mode=OUT,jdbcType=VARCHAR}
+		)}
+	</select>
+		<!--骑士获取账单详情API  茹化肖 2015年9月14日12:59:11  -->
+	<select id="getAccountBillDetailC" resultType="com.edaisong.entity.domain.AccountBillDetailCModel"
+		parameterType="com.edaisong.entity.req.AccountBillDetailCReq">
+	  		 SELECT Amount ,
+        Status ,
+        WithwardId ,
+        RelationNo ,
+        RecordType ,
+        OperateTime ,
+        Remark ,
+        CASE WHEN RecordType IN ( 1, 2 ) THEN '订单号'
+             ELSE '交易流水号'
+        END AS NoDesc ,
+        CASE WHEN RecordType IN ( 1,2 ) THEN 1
+             ELSE 0
+        END AS IsOrder
+ FROM   dbo.ClienterBalanceRecord AS bbr ( NOLOCK )
+ WHERE  bbr.id=#{recordId,jdbcType=INTEGER}
+ 		AND ClienterId=#{clienterId,jdbcType=INTEGER}
+	</select>
 </mapper>
