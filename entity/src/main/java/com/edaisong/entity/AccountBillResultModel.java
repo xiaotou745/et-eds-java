@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.edaisong.entity.domain.AccountBillModel;
 /**
- * 月账单返回类实体 商户
+ * 月账单返回类实体 商户骑士公用
  * 茹化肖
  * 2015年9月10日13:51:50
  * 

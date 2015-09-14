@@ -29,7 +29,7 @@
 <script src="<%=basePath%>/js/bootstrap.min.js"></script>
 <script src="<%=basePath%>/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="<%=basePath%>/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
+<script src="<%=basePath%>/My97DatePicker/WdatePicker.js"></script>
 <!-- Flot -->
 <%-- <script src="<%=basePath%>/js/plugins/flot/jquery.flot.js"></script>
 <script src="<%=basePath%>/js/plugins/flot/jquery.flot.tooltip.min.js"></script>

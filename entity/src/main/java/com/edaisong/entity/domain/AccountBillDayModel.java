@@ -1,6 +1,9 @@
 package com.edaisong.entity.domain;
 
-import com.edaisong.core.enums.*;;
+import java.util.Date;
+
+import com.edaisong.core.enums.*;
+import com.edaisong.core.util.ParseHelper;
 /**
  * 日账单返回参数商户
  * 
@@ -16,7 +19,7 @@ public void setRecordId(int recordId) {
 }
 private Double amount;
 private int recordType;
-private String operateTime;
+private Date operateTime;
 public String getRelationNo() {
 	return relationNo;
 }
@@ -36,9 +39,9 @@ public void setRecordType(int recordType) {
 	this.recordType = recordType;
 }
 public String getOperateTime() {
-	return operateTime;
+	return ParseHelper.ToDateString(operateTime);
 }
-public void setOperateTime(String operateTime) {
+public void setOperateTime(Date operateTime) {
 	this.operateTime = operateTime;
 }
 

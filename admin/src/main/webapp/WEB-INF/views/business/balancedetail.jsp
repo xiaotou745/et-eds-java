@@ -243,7 +243,7 @@
 		jss.search(1);
 	});
 	
-	//导出
+	//导出集团收支记录
 	$("#btnExport").click(function(){
         var businessId = $("#businessID").val();
         var recordType = $("#recordType").val();
