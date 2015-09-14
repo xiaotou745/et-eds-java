@@ -2,6 +2,7 @@ package com.edaisong.api.dao.inter;
 
 import com.edaisong.entity.Business;
 import com.edaisong.entity.GroupBusiness;
+import com.edaisong.entity.GroupBusinessRecharge;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GroupBusinessModel;
 import com.edaisong.entity.req.GroupBusinessReq;
@@ -25,4 +26,13 @@ public interface IGroupBusinessDao {
 	int addGroupBusiness(GroupBusiness groupBusiness);
 
 	int modifyGroupBusiness(GroupBusiness groupBusiness);
+	/**
+	 * 集团商家充值
+	 * @author hailongzhao
+	 * @param groupID
+	 * @param amount
+	 * @return
+	 */
+	int recharge(int groupID,double amount);
+	GroupBusiness select(int groupID);
 }

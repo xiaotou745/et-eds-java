@@ -21,7 +21,7 @@ public class GroupBusiness  implements Serializable{
 
     private Date modifytime;
 
-    private BigDecimal amount;
+    private Double amount;
 
     private Integer isvalid;
 
@@ -83,11 +83,11 @@ public class GroupBusiness  implements Serializable{
         this.modifytime = modifytime;
     }
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
