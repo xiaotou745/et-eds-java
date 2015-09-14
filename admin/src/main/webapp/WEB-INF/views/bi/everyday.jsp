@@ -2,20 +2,22 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
 <script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script> 
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script> 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script> 
 <%
 List<Everyday> list= (List<Everyday>) request.getAttribute("everyDayData");
 StringBuilder time=new StringBuilder();
+StringBuilder businessCount=new StringBuilder();
+StringBuilder rzqsCount=new StringBuilder();
+StringBuilder ddrzqsCount=new StringBuilder();
 for(Everyday item:list)
 {
-	time.append(item.getInsertTime().replace(" '00:00:00.000',", ""));
+	time.append("'").append(item.getInsertTime()).append("',");
+	businessCount.append(item.getBusinessCount()).append(",");
+	rzqsCount.append(item.getRzqsCount()).append(",");
+	ddrzqsCount.append(item.getDdrzqsCount()).append(",");
 }
 %>
 $(function () {
@@ -53,19 +55,19 @@ $(function () {
             }
         },
         series: [{
-            name: 'Tokyo',
-            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+            name: '商家数量',
+            data: [<%=businessCount%>]
         }, {
-            name: 'London',
-            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+            name: '认证骑士数量',
+            data: [<%=rzqsCount%>]
+        },{
+            name: '待认证骑士数量',
+            data: [<%=ddrzqsCount%>]
         }]
     });
 });		
 
 </script> 
-<title>每日数据统计</title>
-</head>
-<body>
+
 <div id="container" style="min-width:700px;height:400px"></div>
 </body>
-</html>

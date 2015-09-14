@@ -146,6 +146,13 @@ public class Everyday {
 	public void setIncomeTotal(double incomeTotal) {
 		this.incomeTotal = incomeTotal;
 	}
+	private int id;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	private String businessCount;
 	private String rzqsCount;
 	private String ddrzqsCount;

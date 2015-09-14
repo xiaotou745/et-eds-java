@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IBiDao" >
+<resultMap id="BaseResultMap" type="com.edaisong.entity.Everyday">
+<result column="Id" property="id" jdbcType="INTEGER" />
+<result column="InsertTime" property="insertTime" jdbcType="NVARCHAR" />
+<result column="BusinessCount" property="businessCount" jdbcType="INTEGER" />
+<result column="RzqsCount" property="rzqsCount" jdbcType="INTEGER" />
+<result column="DdrzqsCount" property="ddrzqsCount" jdbcType="INTEGER" />
+<result column="OrderPrice" property="orderPrice" jdbcType="DOUBLE" />
+<result column="MisstionCount" property="misstionCount" jdbcType="INTEGER" />
+<result column="OrderCount" property="orderCount" jdbcType="INTEGER" />
+<result column="BusinessAverageOrderCount" property="businessAverageOrderCount" jdbcType="INTEGER" />
+<result column="MissionAverageOrderCount" property="missionAverageOrderCount" jdbcType="INTEGER" />
+<result column="ClienterAverageOrderCount" property="clienterAverageOrderCount" jdbcType="INTEGER" />
+<result column="YsPrice" property="ysPrice" jdbcType="DOUBLE" />
+<result column="YfPrice" property="yfPrice" jdbcType="DOUBLE" />
+<result column="YkPrice" property="ykPrice" jdbcType="DOUBLE" />
+<result column="ZeroSubsidyOrderCount" property="zeroSubsidyOrderCount" jdbcType="INTEGER" />
+<result column="OneSubsidyOrderCount" property="oneSubsidyOrderCount" jdbcType="INTEGER" />
+<result column="TwoSubsidyOrderCount" property="twoSubsidyOrderCount" jdbcType="INTEGER" />
+<result column="ThreeSubsidyOrderCount" property="threeSubsidyOrderCount" jdbcType="INTEGER" />
+<result column="ActiveBusiness" property="activeBusiness" jdbcType="INTEGER" />
+<result column="ActiveClienter" property="activeClienter" jdbcType="INTEGER" />
+<result column="RechargeTotal" property="rechargeTotal" jdbcType="DOUBLE" />
+<result column="SystemRecharge" property="systemRecharge" jdbcType="DOUBLE" />
+<result column="SystemPresented" property="systemPresented" jdbcType="DOUBLE" />
+<result column="ClientRecharge" property="clientRecharge" jdbcType="DOUBLE" />
+<result column="IncomeTotal" property="incomeTotal" jdbcType="DOUBLE" />
+	</resultMap>
+  <select id="queryEveryDayDao" resultMap="BaseResultMap">
+select top 20
+id,convert(char(10),InsertTime,120) InsertTime,businessCount,rzqsCount,ddrzqsCount,
+orderPrice,misstionCount,orderCount,
+businessAverageOrderCount,missionAverageOrderCount,
+clienterAverageOrderCount,ysPrice,yfPrice,ykPrice,
+zeroSubsidyOrderCount,oneSubsidyOrderCount,
+twoSubsidyOrderCount,threeSubsidyOrderCount,activeBusiness,
+activeClienter, rechargeTotal, systemRecharge,systemPresented,
+( ZhiFuBaoRecharge + WeiXinRecharge ) clientRecharge, incomeTotal
+from    dbo.Statistic s(nolock) 
+order by id desc
+  </select>
+ 
+</mapper>
