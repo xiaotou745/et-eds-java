@@ -65,7 +65,7 @@
 	</div>
 	<small class="font-bold"> </small>
 </div>
-  <div tabindex="-1" class="modal inmodal" id="modifyGroupBusiness"
+<div tabindex="-1" class="modal inmodal" id="modifyGroupBusiness"
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content animated bounceInRight">
@@ -77,7 +77,7 @@
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
-					<fieldset>
+		<fieldset>
             <br>
              <div class="control-group">
                 <label >集团名称：</label> 
@@ -111,7 +111,6 @@
 			</small>
 		</div> 
 	</div>
-	 
 </div>
 <script>
 	var jss = {

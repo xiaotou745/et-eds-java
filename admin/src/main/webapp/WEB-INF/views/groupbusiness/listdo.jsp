@@ -27,8 +27,7 @@
 	<tbody>
 
 		<%
-			PagedResponse<GroupBusinessModel> data = (PagedResponse<GroupBusinessModel>) request
-					.getAttribute("listData");
+			PagedResponse<GroupBusinessModel> data = (PagedResponse<GroupBusinessModel>) request.getAttribute("listData");
 			List<GroupBusinessModel> list = data.getResultList();
 			if (list == null) {
 				list = new ArrayList<GroupBusinessModel>();
