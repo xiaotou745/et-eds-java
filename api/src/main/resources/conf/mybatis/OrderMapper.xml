@@ -1320,9 +1320,6 @@ where   Status = 1
         o.OrderFrom ,
         o.id as OrderId ,
         o.MealsSettleMode ,
-        o.CommissionRate , --补贴
-        ISNULL(o.DistribSubsidy, 0) as DistribSubsidy,
-        ISNULL(o.WebsiteSubsidy, 0) as WebsiteSubsidy,
         b.Longitude ,
         b.Latitude ,
         REPLACE(b.City, ''市'', '''') as pickUpCity ,

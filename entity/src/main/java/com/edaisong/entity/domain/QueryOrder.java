@@ -40,9 +40,6 @@ public class QueryOrder {
 	private int needPickupCode;
 	private int hadUploadCount;
 	private int orderCommission;
-	private Double commissionRate;
-	private Double distribSubsidy;
-	private Double websiteSubsidy;
 	private Double longitude;
 	private Double latitude;
 
@@ -522,61 +519,6 @@ public class QueryOrder {
 	public void setHadUploadCount(int hadUploadCount) {
 		this.hadUploadCount = hadUploadCount;
 	}
-
-	/**
-	 * 佣金比例
-	 * 
-	 * @return
-	 */
-	public Double getCommissionRate() {
-		return commissionRate;
-	}
-
-	/**
-	 * 佣金比例
-	 * 
-	 * @param commissionRate
-	 */
-	public void setCommissionRate(Double commissionRate) {
-		this.commissionRate = commissionRate;
-	}
-
-	/**
-	 * 外送费
-	 * 
-	 * @return
-	 */
-	public Double getDistribSubsidy() {
-		return distribSubsidy;
-	}
-
-	/**
-	 * 外送费
-	 * 
-	 * @param distribSubsidy
-	 */
-	public void setDistribSubsidy(Double distribSubsidy) {
-		this.distribSubsidy = distribSubsidy;
-	}
-
-	/**
-	 * 网站补贴
-	 * 
-	 * @return
-	 */
-	public Double getWebsiteSubsidy() {
-		return websiteSubsidy;
-	}
-
-	/**
-	 * 网站补贴
-	 * 
-	 * @return
-	 */
-	public void setWebsiteSubsidy(Double websiteSubsidy) {
-		this.websiteSubsidy = websiteSubsidy;
-	}
-
 	/**
 	 * 商家经度
 	 * 
