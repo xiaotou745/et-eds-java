@@ -1,8 +1,11 @@
 package com.edaisong.admin.controller;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,16 +23,24 @@ import com.edaisong.api.service.inter.IGroupBusinessLogService;
 import com.edaisong.api.service.inter.IGroupBusinessRelationService;
 import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.core.enums.BindOptType;
+import com.edaisong.core.util.ExcelUtils;
 import com.edaisong.core.util.ParseHelper;
+import com.edaisong.core.util.StringUtils;
+import com.edaisong.core.util.ExcelUtils.ExcelExportData;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
+import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
+import com.edaisong.entity.domain.GroupBusinessBalanceRecord;
 import com.edaisong.entity.domain.GroupBusinessBindOptionLogModel;
 import com.edaisong.entity.domain.GroupBusinessRelationModel;
 import com.edaisong.entity.req.BusinessBindOptionReq;
+import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.GroupBusinessReq;
+import com.edaisong.entity.req.PagedGroupBussinessBalanceReq;
 import com.edaisong.entity.req.PagedBizBindsReq;
 import com.edaisong.entity.req.PagedBusinessBindLogReq;
+import com.edaisong.entity.req.PagedTransDetailReq;
 
 /**
  * 集团商户controller
@@ -315,4 +326,89 @@ public class GroupBusinessController {
 		}
 		return response;
 	}
+	
+	/*
+	 * 集团收支管理
+	 * WangChao
+	 */
+	@RequestMapping("balancerecordlist")
+	public ModelAndView balancerecordlist(Integer groupBusinessId) throws Exception { 
+		
+		GroupBusinessReq groupBusinessReq = new GroupBusinessReq();
+		groupBusinessReq.setId(groupBusinessId);
+		//获取该集团信息
+		GroupBusinessModel groupBusinessModel= groupBusinessService.getSingle(groupBusinessReq); 
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "集团管理");
+		model.addObject("currenttitle", "收支记录");
+		model.addObject("groupBusinessModel", groupBusinessModel); 
+		model.addObject("viewPath", "groupbusiness/balancerecordlist");
+		return model;
+	}
+	/*
+	 * 集团收支列表
+	 * WangChao
+	 */
+	@RequestMapping("balancerecordlistdo")
+	public ModelAndView balancerecordlist(PagedGroupBussinessBalanceReq req) {	 
+		
+		PagedResponse<GroupBusinessBalanceRecord> resp = groupBusinessService.getGroupBusinessRecord(req); 
+		ModelAndView model = new ModelAndView("groupbusiness/balancerecordlistdo");
+		model.addObject("listData", resp);
+		return model;
+	}
+	
+	@RequestMapping("exportgroupbusinessbalancerecord")
+	public void exportGroupBusinessBalanceRecord(int groupbusinessId, String recordType, String startDate, String endDate,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		 
+		PagedGroupBussinessBalanceReq req = new PagedGroupBussinessBalanceReq();
+		req.setEndDate(endDate);
+		req.setStartDate(startDate);
+		req.setRecordType(recordType);
+		req.setGroupBusinessId(groupbusinessId);
+		req.setCurrentPage(1);
+		req.setPageSize(Integer.MAX_VALUE);
+		List<GroupBusinessBalanceRecord> records = groupBusinessService
+				.getGroupBusinessBalanceRecordForExport(req);
+		// 导出数据
+		String filename = "集团收支记录%s";
+		if (!StringUtils.isEmpty(req.getStartDate()) && !StringUtils.isEmpty(req.getEndDate())) {
+			filename = String.format(filename, req.getStartDate() + "~" + req.getEndDate());
+		}
+		 
+		byte[] data = exportGroupBusinessBalanceRecord2Bytes(filename, records);
+		response.setContentType("application/ms-excel");
+		response.setHeader("Content-Disposition",
+				"attachment; filename=" + new String((filename + ".xls").getBytes("utf-8"), "iso8859-1"));
+		response.setHeader("Content-Length", String.valueOf(data.length));
+		response.getOutputStream().write(data);
+		return;
+	}
+	
+	/**
+	 * 导出集团收支记录excel二进制数据
+	 * 
+	 * @author WangChao
+	 * @date 20150902
+	 * @param fileName
+	 * @param records
+	 * @return
+	 * @throws Exception
+	 */
+	private byte[] exportGroupBusinessBalanceRecord2Bytes(String fileName, List<GroupBusinessBalanceRecord> records)
+			throws Exception {
+		ExcelExportData data = new ExcelUtils.ExcelExportData();
+		data.setTitles(new String[] { "集团收支记录" });
+		data.setColumnNames(new ArrayList<String[]>());
+		data.setFieldNames(new ArrayList<String[]>());
+		data.setDataMap(new LinkedHashMap<String, List<?>>());
+		// add data
+		data.getColumnNames().add(new String[] { "交易类型","任务单号/交易流水号", "商铺名称", "收支金额", "集团余额", "门店余额",  "状态","交易日期", "操作人","备注" });
+		data.getFieldNames().add(
+				new String[] { "recordtypeString","relationno", "businessname", "amount", "groupafterbalance", "balance","statusString", "operatetime", "operator","remark" });
+		data.getDataMap().put(fileName, records);
+		return ExcelUtils.export2ByteArray(data);
+	}
+	
 }

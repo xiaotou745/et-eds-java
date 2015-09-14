@@ -156,7 +156,7 @@
 
   <!-- 获取冻结单列表的分页存储过程_列名 茹化肖 2015年9月9日10:30:13 -->
   <sql id="getFrozenList_Column">
-		cf.id ,
+		cf.id ,c.Id as clienterid,
         c.TrueName AS clienterName ,
         c.PhoneNo AS clienterPhone ,
         cf.ForzenAmount ,
