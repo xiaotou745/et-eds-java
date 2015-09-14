@@ -42,7 +42,7 @@ public interface IOrderHttpService {
 	public HttpResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq orderStatisticsBReq);
 
 	/**
-	 * B端任务统计接口
+	 * B端商家首页
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150910

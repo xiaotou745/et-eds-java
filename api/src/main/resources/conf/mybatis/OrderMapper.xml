@@ -1224,28 +1224,7 @@ where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
         and businessId=#{businessId}  
 	</select>
-	<!--  移动端 订单列表  add by caoheyang 20150910-->
-	<select id="queryOrder" resultType="com.edaisong.entity.domain.QueryOrder"
-		parameterType="com.edaisong.entity.req.QueryOrderReq"
-		statementType="CALLABLE">
-		{call Sp_CustomPage2015_V1(
-		' o.PubDate desc ',
-		'
-		<include refid="queryOrderColums" />
-		',
-		'
-		<include refid="queryOrderFrom" />
-		',
-		'
-		<include refid="queryOrderWhere" />
-		',
-		#{pageSize,mode=IN,jdbcType=INTEGER},
-		#{currentPage,mode=IN,jdbcType=INTEGER}
-		,1,
-		#{totalRecord,mode=OUT,jdbcType=INTEGER},
-		#{totalPage,mode=OUT,jdbcType=INTEGER}
-		)}
-	</select>	
+
     <!-- C端任务统计接口  天数据列表  wangxudan 20150910 -->
 	<select id="getOrderStatisticsDaySatisticsC" parameterType="com.edaisong.entity.req.OrderStatisticsCReq"   resultType="com.edaisong.entity.domain.DaySatisticsC">
 declare @sdate DATETIME
@@ -1290,41 +1269,78 @@ where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
         and clienterId=#{clienterId}  
 	</select>
-	
+		<!--  移动端 订单列表  add by caoheyang 20150910-->
+	<select id="queryOrder" resultType="com.edaisong.entity.domain.QueryOrder"
+		parameterType="com.edaisong.entity.req.QueryOrderReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' o.PubDate desc ',
+		'
+		<include refid="queryOrderColums" />
+		',
+		'
+		<include refid="queryOrderFrom" />
+		',
+		'
+		<include refid="queryOrderWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>	
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderColums">
-		 CONVERT(VARCHAR(5),o.ActualDoneDate,108) AS ActualDoneDate,
-                                    o.Amount,
-                                    o.OrderCount,
-                                    o.IsPay,
-                                    o.OrderNo,
-                                    o.PickUpAddress,
-                                    CONVERT(VARCHAR(5),o.PubDate,108) AS PubDate,
-                                    isnull(o.ReceviceAddress,'''') as ReceviceAddress ,
-                                    isnull(o.ReceviceName,'''') as ReceviceName ,
-                                    isnull(o.RecevicePhoneNo,'''') as RecevicePhoneNo ,
-                                    o.Remark,
-                                    o.Status,
-                                    o.ReceviceLongitude,
-                                    o.ReceviceLatitude,
-                                    b.Id as BusinessId,
-                                    b.Name as BusinessName,
-                                    b.Longitude,
-                                    b.Latitude,
-                                    b.Name as PickUpName,
-                                    c.TrueName as SuperManName,
-                                    c.PhoneNo as SuperManPhone,
-                                    o.OrderFrom,
-                                    o.id as OrderId,
-                                    o.MealsSettleMode,
-                                    (o.Amount+isnull(o.DistribSubsidy,0)*isnull(o.OrderCount,0)) as TotalAmount
-                                    ,isnull(o.OriginalOrderNo,'''') as OriginalOrderNo
+		 CONVERT(VARCHAR(5), o.ActualDoneDate, 108) as ActualDoneDate ,
+        o.Amount ,
+        o.OrderCount ,
+        o.IsPay ,
+        o.OrderNo ,
+        o.PickUpAddress ,
+        CONVERT(VARCHAR(5), o.PubDate, 108) as PubDate ,
+        case  o.ReceviceAddress  
+		when  null then ''附近3公里左右，由商户指定''
+		else o.ReceviceAddress end as ReceviceAddress,
+        o.ReceviceName ,
+        o.RecevicePhoneNo ,
+        o.ReceviceCity ,
+        o.Remark ,
+        o.Status ,
+        o.ReceviceLongitude ,
+        o.ReceviceLatitude ,
+        b.Id as BusinessId ,
+        b.Name as BusinessName ,
+        b.PhoneNo as BusinessPhone ,
+        b.PhoneNo2 as BusinessPhone2 ,
+        --b.Name as PickUpName ,   -- 去掉 
+        c.TrueName as SuperManName ,
+        c.PhoneNo as SuperManPhone ,
+        o.OrderFrom ,
+        o.id as OrderId ,
+        o.MealsSettleMode ,
+        b.Longitude ,
+        b.Latitude ,
+        REPLACE(b.City, ''市'', '''') as pickUpCity ,
+        ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
+        ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
+        o.OrderCommission ,
+        b.GroupId ,
+        ISNULL(oo.HadUploadCount, 0) HadUploadCount ,
+        CASE o.OrderFrom
+          when 0 then ''B端''
+          else g.GroupName
+        end as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderFrom">
-		[order](nolock) as o 
-                                   join business(nolock) as b on o.businessId=b.Id
-                                   left join clienter(nolock) as c on o.clienterId=c.Id
+		 [order] (nolock) as o
+        join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
+        join business (nolock) as b on o.businessId = b.Id
+        left join clienter (nolock) as c on o.clienterId = c.Id
+        left join dbo.[group] (nolock) g on o.OrderFrom = g.Id
+                                            and g.IsValid = 1
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderWhere">
@@ -1342,4 +1358,35 @@ where   Status = 1
 			and  CONVERT(VARCHAR(100), PubDate, 23)=''${dateInfo}''
 		</if> 
 	</sql>
+		<!--商家端我的任务 addby caoheyang 20150914 -->
+	<select id="queryOrderB" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderBResp">
+	   select  SUM(CASE Status
+              when 0 then 1
+              else 0
+            end) newCount ,
+        SUM(CASE Status
+              when 2 then 1
+              else 0
+            end) deliveryCount ,
+        SUM(CASE Status
+              when 4 then 1
+              else 0
+            end) takingCount
+       from    dbo.[order] (nolock)
+       where businessId=${businessId}
+	</select>
+	<!-- 骑士端我的任务 addby caoheyang 20150914 -->
+		<select id="queryOrderC" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderCResp">
+	   select  
+        SUM(CASE Status
+              when 2 then 1
+              else 0
+            end) deliveryCount ,
+        SUM(CASE Status
+              when 4 then 1
+              else 0
+            end) takingCount
+       from    dbo.[order] (nolock)
+       where  clienterId=${clienterId}
+	</select>
 </mapper>
