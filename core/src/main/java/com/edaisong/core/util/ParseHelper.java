@@ -195,7 +195,7 @@ public class ParseHelper {
 	}
 
 	/**
-	 * DES解密
+	 * DES解密   所有解密的数据都先统一转换成大写再解密,和旧版后台一致
 	 * @author pengyi
 	 * @date 20150828
 	 * @param text
@@ -203,7 +203,7 @@ public class ParseHelper {
 	 */
 	public static String toDecrypt(String text) {
 		try {
-			if (StringUtils.isEmpty(text))
+			if (StringUtils.isEmpty(text.toUpperCase()))
 				return "";
 			return DES.decrypt(text);
 		} catch (Exception ex) {
@@ -212,7 +212,7 @@ public class ParseHelper {
 	}
 	
 	/**
-	 * DES加密
+	 * DES加密   所有加密的数据都统一转换成大写,和旧版后台一致
 	 * @author pengyi
 	 * @date 20150911
 	 * @param text
@@ -222,7 +222,7 @@ public class ParseHelper {
 		try {
 			if (StringUtils.isEmpty(text))
 				return "";
-			return DES.encrypt(text);
+			return DES.encrypt(text).toUpperCase();
 		} catch (Exception ex) {
 			return text;
 		}
