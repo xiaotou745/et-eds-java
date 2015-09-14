@@ -10,12 +10,11 @@ import java.util.Map;
 
 import com.edaisong.entity.Business;
 import com.edaisong.entity.GroupBusiness;
+import com.edaisong.entity.GroupBusinessRecharge;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.domain.GroupBusinessBalanceRecord;
 import com.edaisong.entity.domain.GroupBusinessModel;
 import com.edaisong.entity.req.GroupBusinessReq;
 import com.edaisong.entity.req.PagedGroupBusinessReq;
-import com.edaisong.entity.req.PagedGroupBussinessBalanceReq;
 
 @Repository
 public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
@@ -52,5 +51,18 @@ public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
 		return getReadOnlySqlSessionUtil()
 				.selectOne("com.edaisong.api.dao.inter.IGroupBusinessDao.getByPhoneNoAndPwd", paramMap);
 	}
-	
+	@Override
+	public int recharge(int groupID, double amount) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("groupID", groupID);
+		paramMap.put("amount", amount);
+		return getMasterSqlSessionUtil()
+				.update("com.edaisong.api.dao.inter.IGroupBusinessDao.recharge", paramMap);
+	} 
+	@Override
+	public GroupBusiness select(int groupID) {
+		return getMasterSqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IGroupBusinessDao.select",
+				groupID);
+	}
 }

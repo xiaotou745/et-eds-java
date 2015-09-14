@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,7 @@ import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.resp.QueryOrderCResp;
 
 @Repository
 public class OrderDao extends DaoBase implements IOrderDao {	
@@ -301,5 +303,28 @@ public class OrderDao extends DaoBase implements IOrderDao {
 				"com.edaisong.api.dao.inter.IOrderDao.getOrderStatisticsDaySatisticsC", 
 				orderStatisticsCReq);
 	}
-	
+	/**
+	 * 骑士端我的任务
+	 * @author CaoHeYang
+	 * @date 20150914
+	 * @param data 
+	 * @return
+	 */
+   public	QueryOrderCResp queryOrderC(QueryOrderReq query) {
+	   return getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderDao.queryOrderC", 
+				query);
+   }
+	/**
+	 * 商家端我的任务
+	 * @author CaoHeYang
+	 * @date 20150914
+	 * @param data 
+	 * @return
+	 */
+	public QueryOrderBResp queryOrderB(QueryOrderReq query) {
+		   return getReadOnlySqlSessionUtil().selectOne(
+					"com.edaisong.api.dao.inter.IOrderDao.queryOrderB", 
+					query);
+	}
 }

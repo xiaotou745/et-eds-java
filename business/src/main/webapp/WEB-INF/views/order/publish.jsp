@@ -7,7 +7,6 @@
 	String basePath = PropertyUtils.getProperty("static.business.url");
     BusinessModel businessModel=(BusinessModel) request.getAttribute("businessModel");//商家基本信息
 %>
-
 <div class="top cb">
 	<h3 class="cb">发布任务</h3>
 </div>
