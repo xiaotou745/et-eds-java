@@ -60,7 +60,6 @@ public class GroupBusinessRechargeService implements
 				rechargeRecord.setRemark(remark);
 				rechargeRecord.setIsenable((short)1);
 				rechargeRecord.setGroupid(record.getGroupbusinessid());
-				rechargeRecord.setGroupafterbalance(oldGroupBusiness.getAmount()+record.getPayamount());
 				rechargeRecord.setGroupbeforebalance(oldGroupBusiness.getAmount());
 				businessBalanceRecordDao.insert(rechargeRecord);
 			}
