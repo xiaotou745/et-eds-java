@@ -28,22 +28,22 @@ public class ClienterFinanceAccountDao extends DaoBase implements IClienterFinan
 
 	@Override
 	public boolean insert(ClienterFinanceAccount record) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.entity.ClienterFinanceAccount.insert",record) > 0;
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.insert",record) > 0;
 	}
 
 	@Override
 	public boolean insertSelective(ClienterFinanceAccount record) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.entity.ClienterFinanceAccount.insertSelective",record) > 0;
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.insertSelective",record) > 0;
 	}
 
 	@Override
 	public ClienterFinanceAccount selectByPrimaryKey(Integer id) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.entity.ClienterFinanceAccount.selectByPrimaryKey",id);
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.selectByPrimaryKey",id);
 	}
 
 	@Override
 	public boolean updateByPrimaryKeySelective(ClienterFinanceAccount record) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.entity.ClienterFinanceAccount.updateByPrimaryKeySelective",record) > 0;
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.updateByPrimaryKeySelective",record) > 0;
 	}
 
 	@Override

@@ -62,6 +62,8 @@ public class FinanceService implements IFinanceService{
 		record.setCreateby(req.getCreateBy());
 		record.setCreatetime(now);
 		record.setIsenable(true);
+		record.setTruename(req.getTrueName());
+		record.setUpdateby(req.getTrueName());
 		clienterFinanceAccountService.insertSelective(record);
 		result.setMessage(CardBindC.Success.desc());
 		result.setStatus(CardBindC.Success.value());
@@ -93,7 +95,7 @@ public class FinanceService implements IFinanceService{
 		String encryptAccount = ParseHelper.encrypt(req.getAccount());
 		//check data has modify or not
 		if(record.getAccountno().equals(encryptAccount) && record.getClienterid()==req.getUserId() &&
-				record.getTruename().equals(req.getTrueName())){
+				record.getTruename().equals(req.getTrueName()) && record.getUpdateby().equals(req.getCreateBy())){
 			result.setMessage(CardModifyC.NoModify.desc());
 			result.setStatus(CardModifyC.NoModify.value());
 			return result;
@@ -106,6 +108,8 @@ public class FinanceService implements IFinanceService{
 		record.setUpdateby(req.getCreateBy());
 		record.setUpdatetime(now);
 		record.setIsenable(true);
+		record.setTruename(req.getTrueName());
+		record.setUpdateby(req.getCreateBy());
 		clienterFinanceAccountService.updateByPrimaryKeySelective(record);
 		result.setMessage(CardModifyC.Success.desc());
 		result.setStatus(CardModifyC.Success.value());
