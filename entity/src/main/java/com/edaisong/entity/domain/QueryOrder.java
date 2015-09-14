@@ -338,7 +338,7 @@ public class QueryOrder {
 	 * 
 	 * @return
 	 */
-	public Double getDistanceB2R() {
+	public String getDistanceB2R() {
 		return distanceB2R;
 	}
 
@@ -347,7 +347,7 @@ public class QueryOrder {
 	 * 
 	 * @param distanceB2R
 	 */
-	public void setDistanceB2R(Double distanceB2R) {
+	public void setDistanceB2R(String distanceB2R) {
 		this.distanceB2R = distanceB2R;
 	}
 
