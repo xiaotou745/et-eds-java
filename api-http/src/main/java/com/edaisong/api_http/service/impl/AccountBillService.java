@@ -7,6 +7,7 @@ import com.edaisong.api.service.inter.IBusinessBalanceRecordService;
 import com.edaisong.api.service.inter.IClienterBalanceRecordService;
 import com.edaisong.api_http.service.inter.IAccountBillService;
 import com.edaisong.core.enums.returnenums.AccountBillReturnEnum;
+import com.edaisong.core.util.RegexHelper;
 import com.edaisong.entity.AccountBillResultModel;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.AccountBillDayCResultModel;
@@ -37,7 +38,12 @@ public class AccountBillService implements IAccountBillService {
 	 * */
 	@Override
 	public HttpResultModel<AccountBillResultModel> getBillListB(AccountBillBReq par) {
-
+		if(!RegexHelper.yearMotnReg(par.getMonthInfo()))
+		{
+			//参数错误
+			return new HttpResultModel<AccountBillResultModel>().setMessage(AccountBillReturnEnum.ParError.desc())
+					.setStatus(AccountBillReturnEnum.ParError.value());
+		}
 		AccountBillResultModel listResult = businessBalanceRecordService.getAccountBillListB(par);
 		return new HttpResultModel<AccountBillResultModel>().setMessage(AccountBillReturnEnum.Success.desc()).setResult(listResult)
 				.setStatus(AccountBillReturnEnum.Success.value());
@@ -48,6 +54,11 @@ public class AccountBillService implements IAccountBillService {
 	 */
 	@Override
 	public HttpResultModel<AccountBillDayResultModel> getBillListDayB(PagedAccountBillDayReq par) {
+		if(!RegexHelper.yearMotnDayReg(par.getDayInfo()))
+		{
+			return new HttpResultModel<AccountBillDayResultModel>().setMessage(AccountBillReturnEnum.ParError.desc())
+					.setStatus(AccountBillReturnEnum.ParError.value());
+		}
 		AccountBillDayResultModel model = businessBalanceRecordService.getAccountBillListDayB(par);
 		return new HttpResultModel<AccountBillDayResultModel>().setMessage(AccountBillReturnEnum.Success.desc())
 				.setStatus(AccountBillReturnEnum.Success.value()).setResult(model);
@@ -68,6 +79,12 @@ public class AccountBillService implements IAccountBillService {
 	@Override
 	public HttpResultModel<AccountBillResultModel> getBillListC(
 			AccountBillCReq par) {
+		if(!RegexHelper.yearMotnReg(par.getMonthInfo()))
+		{
+			//参数错误
+			return new HttpResultModel<AccountBillResultModel>().setMessage(AccountBillReturnEnum.ParError.desc())
+					.setStatus(AccountBillReturnEnum.ParError.value());
+		}
 		AccountBillResultModel listResult = clienterBalanceRecordService.getAccountBillListC(par);
 		return new HttpResultModel<AccountBillResultModel>().setMessage(AccountBillReturnEnum.Success.desc()).setResult(listResult)
 				.setStatus(AccountBillReturnEnum.Success.value());
@@ -82,6 +99,11 @@ public class AccountBillService implements IAccountBillService {
 	@Override
 	public HttpResultModel<AccountBillDayCResultModel> getBillListDayC(
 			PagedAccountBillDayCReq par) {
+		if(!RegexHelper.yearMotnDayReg(par.getDayInfo()))
+		{
+			return new HttpResultModel<AccountBillDayCResultModel>().setMessage(AccountBillReturnEnum.ParError.desc())
+					.setStatus(AccountBillReturnEnum.ParError.value());
+		}
 		AccountBillDayCResultModel model = clienterBalanceRecordService.getAccountBillListDayC(par);
 		return new HttpResultModel<AccountBillDayCResultModel>().setMessage(AccountBillReturnEnum.Success.desc())
 				.setStatus(AccountBillReturnEnum.Success.value()).setResult(model);
