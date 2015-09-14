@@ -198,6 +198,7 @@
 from  ClienterBalanceRecord (nolock)
 where  WithwardId= #{id,jdbcType=BIGINT} and Remark='无效订单'
   </select>
+  <!-- 骑士获取月账单列表 茹化肖 2015年9月14日17:01:28 -->
   <select id="getAccountBillCList" resultType="com.edaisong.entity.domain.AccountBillModel">
 		select
 		Convert ( varchar(10), OperateTime, 120) as DayInfo,
@@ -206,8 +207,9 @@ where  WithwardId= #{id,jdbcType=BIGINT} and Remark='无效订单'
 		FROM
 		 ClienterBalanceRecord (NOLOCK)
  		 WHERE ClienterId=#{clienterId,jdbcType=INTEGER}
-		AND OperateTime > #{startDate,jdbcType=VARCHAR} AND
-		#{endDate,jdbcType=VARCHAR} > OperateTime
+ 		AND RecordType!=7
+		AND OperateTime > #{startDate,jdbcType=VARCHAR} 
+		AND #{endDate,jdbcType=VARCHAR} > OperateTime
 		GROUP by
 		Convert ( VARCHAR(10), OperateTime, 120)
 	</select>
@@ -225,6 +227,7 @@ where  WithwardId= #{id,jdbcType=BIGINT} and Remark='无效订单'
 		<if test="recordType !=0"><!--非全部 -->
 			AND RecordType = ${recordType}
 		</if>
+		AND RecordType!=7
 	</sql>
 		<!-- 获取骑士日账单分页 茹化肖 2015年9月10日19:06:57 -->
 	<select id="getAccountBillDayCList" resultType="com.edaisong.entity.domain.AccountBillDayCModel"
@@ -254,10 +257,10 @@ where  WithwardId= #{id,jdbcType=BIGINT} and Remark='无效订单'
         RecordType ,
         OperateTime ,
         Remark ,
-        CASE WHEN RecordType IN ( 1, 2 ) THEN '订单号'
+        CASE WHEN RecordType IN ( 1, 2,11 ) THEN '订单号'
              ELSE '交易流水号'
         END AS NoDesc ,
-        CASE WHEN RecordType IN ( 1,2 ) THEN 1
+        CASE WHEN RecordType IN ( 1,2,11 ) THEN 1
              ELSE 0
         END AS IsOrder
  FROM   dbo.ClienterBalanceRecord AS bbr ( NOLOCK )
