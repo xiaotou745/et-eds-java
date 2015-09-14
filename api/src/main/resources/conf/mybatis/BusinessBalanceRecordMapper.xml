@@ -17,12 +17,12 @@
 		<result column="groupid" jdbcType="INTEGER" property="groupid" />
 		<result column="groupbeforebalance" jdbcType="DECIMAL"
 			property="groupbeforebalance" />
-		<result column="groupafterbalance" jdbcType="DECIMAL" property="groupafterbalance" />
+		<result column="groupamount" jdbcType="DECIMAL" property="groupamount" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		Id, BusinessId, Amount, Status, Balance, RecordType, Operator,
 		OperateTime, WithwardId,
-		RelationNo, Remark, IsEnable, groupid, groupbeforebalance, groupafterbalance
+		RelationNo, Remark, IsEnable, groupid, groupbeforebalance, groupamount
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Long">
@@ -45,7 +45,7 @@
 		#{amount,jdbcType=DECIMAL},#{status,jdbcType=SMALLINT},b.BalancePrice,#{recordtype,jdbcType=SMALLINT},#{operator,jdbcType=NVARCHAR}
 		,#{withwardid,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
 		,#{groupid,jdbcType=INTEGER}, #{groupbeforebalance,jdbcType=DECIMAL},
-		#{groupafterbalance,jdbcType=DECIMAL}
+		#{groupamount,jdbcType=DECIMAL}
 		from dbo.business as b where
 		Id=#{businessid,jdbcType=INTEGER} ;
 		select @@IDENTITY
@@ -95,8 +95,8 @@
 			<if test="groupbeforebalance != null">
 				groupbeforebalance,
 			</if>
-			<if test="groupafterbalance != null">
-				groupafterbalance,
+			<if test="groupamount != null">
+				groupamount,
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -142,8 +142,8 @@
 			<if test="groupbeforebalance != null">
 				#{groupbeforebalance,jdbcType=DECIMAL},
 			</if>
-			<if test="groupafterbalance != null">
-				#{groupafterbalance,jdbcType=DECIMAL},
+			<if test="groupamount != null">
+				#{groupamount,jdbcType=DECIMAL},
 			</if>
 		</trim>
 	</insert>
@@ -189,8 +189,8 @@
 			<if test="groupbeforebalance != null">
 				groupbeforebalance = #{groupbeforebalance,jdbcType=DECIMAL},
 			</if>
-			<if test="groupafterbalance != null">
-				groupafterbalance = #{groupafterbalance,jdbcType=DECIMAL},
+			<if test="groupamount != null">
+				groupamount = #{groupamount,jdbcType=DECIMAL},
 			</if>
 		</set>
 		where Id = #{id,jdbcType=BIGINT}
@@ -210,7 +210,7 @@
 		IsEnable = #{isenable,jdbcType=SMALLINT},
 		groupid = #{groupid,jdbcType=INTEGER},
 		groupbeforebalance = #{groupbeforebalance,jdbcType=DECIMAL},
-		groupafterbalance = #{groupafterbalance,jdbcType=DECIMAL}
+		groupamount = #{groupamount,jdbcType=DECIMAL}
 		where Id = #{id,jdbcType=BIGINT}
 	</update>
 	<!-- 获取交易明细的Where条件 -->

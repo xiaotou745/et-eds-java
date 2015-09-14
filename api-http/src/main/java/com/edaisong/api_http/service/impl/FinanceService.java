@@ -130,7 +130,7 @@ public class FinanceService implements IFinanceService{
 		if(StringUtils.isEmpty(req.getAccount())){
 			return CardBindC.AccountNotSame;
 		}
-		if(req.getAccount().equals(req.getAccount2())){
+		if(!req.getAccount().equals(req.getAccount2())){
 			return CardBindC.AccountNotSame;
 		}
 		if(clienterFinanceAccountService.getCountByClientId(req.getUserId(), PayType.ZhiFuBao.value()) > 0){
@@ -157,7 +157,7 @@ public class FinanceService implements IFinanceService{
 		if(StringUtils.isEmpty(req.getAccount())){
 			return CardModifyC.AccountNotSame;
 		}
-		if(req.getAccount().equals(req.getAccount2())){
+		if(!req.getAccount().equals(req.getAccount2())){
 			return CardModifyC.AccountNotSame;
 		}
 		if(clienterFinanceAccountService.getCountByClientId(req.getUserId(), PayType.ZhiFuBao.value()) <= 0){
