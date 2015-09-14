@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * 移动端查询订单列表
- * 
+ *  TODO  少个距离 
  * @author CaoHeYang
  * @date 20150910
  */
@@ -13,7 +13,6 @@ public class QueryOrder {
 	private String orderNo;
 	private String superManName;
 	private String superManPhone;
-	private String pickUpName;
 	private String pickUpAddress;
 	private String receviceName;
 	private String recevicePhoneNo;
@@ -186,21 +185,6 @@ public class QueryOrder {
 	public void setSuperManPhone(String superManPhone) {
 		this.superManPhone = superManPhone;
 	}
-
-	/**
-     * 
-     */
-	public String getPickUpName() {
-		return pickUpName;
-	}
-
-	/**
-     * 
-     */
-	public void setPickUpName(String pickUpName) {
-		this.pickUpName = pickUpName;
-	}
-
 	/**
 	 * 取货地址
 	 */
