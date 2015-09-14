@@ -203,6 +203,16 @@ public interface IOrderDao {
 	List<QueryOrder> queryOrder(QueryOrderReq query) ;
 	
 	/**
+	 * c端查询待取货订单（会计算距离）
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	List<QueryOrder> queryDeliveryOrderC(QueryOrderReq query) ;
+	
+	
+	/**
 	 * 骑士端我的任务
 	 * @author CaoHeYang
 	 * @date 20150914

@@ -1039,7 +1039,15 @@ public class OrderService implements IOrderService {
 			return resultModel;
 		}
 		QueryOrderCResp m = orderDao.queryOrderC(query);
-		m.setOrders(orderDao.queryOrder(query));
+		if (query.getLongitude()!=null&&query.getLongitude()!=0		//需要计算骑士距离门店距离
+				&&query.getLatitude()!=null&&query.getLatitude()!=0
+				&&query.getStatus()==OrderStatus.Delivery.value()) {
+			m.setOrders(orderDao.queryDeliveryOrderC(query));
+		}else {  //不需要计算骑士距离门店距离
+			m.setOrders(orderDao.queryOrder(query));
+		}
+
+
 		resultModel.setResult(m);
 		return resultModel;
 	}

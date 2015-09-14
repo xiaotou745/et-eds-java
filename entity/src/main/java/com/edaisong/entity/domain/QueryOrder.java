@@ -27,7 +27,7 @@ public class QueryOrder {
 	private String actualDoneDate;
 	private boolean isPay;
 	private String remark;
-	private String distanceB2R;
+	private String distanceB2R="--";
 	private String orderFromName;
 	private int mealsSettleMode;
 	private Double income; // 骑士收入  弃用 移动端 不删除
@@ -37,11 +37,13 @@ public class QueryOrder {
 	private String businessPhone2;
 	private String receviceCity;
 	private int groupId;
-	private int needPickupCode;
+	private int needPickupCode; //无实际意义 与app同步 不能删
 	private int hadUploadCount;
 	private int orderCommission;
 	private Double longitude;
 	private Double latitude;
+	private String distance="--"; 
+	private Double distance_OrderBy=9999999.0;
 
 	/**
 	 * 订单Id
@@ -571,6 +573,34 @@ public class QueryOrder {
 	 */
 	public void setOrderCommission(int orderCommission) {
 		this.orderCommission = orderCommission;
+	}
+   /**
+    * 骑士距离门店距离 只有在骑士查询我的任务 ——待取货的任务时有效
+    * @return
+    */
+	public String getDistance() {
+		return distance;
+	}
+/**
+ * 骑士距离门店距离 只有在骑士查询我的任务 ——待取货的任务时有效
+ * @param distance
+ */
+	public void setDistance(String distance) {
+		this.distance = distance;
+	}
+/**
+ * 骑士距离门店距离用来排序 只有在骑士查询我的任务 ——待取货的任务时有效
+ * @return
+ */
+	public Double getDistance_OrderBy() {
+		return distance_OrderBy;
+	}
+/**
+ *  骑士距离门店距离用来排序 只有在骑士查询我的任务 ——待取货的任务时有效
+ * @param distance_OrderBy
+ */
+	public void setDistance_OrderBy(Double distance_OrderBy) {
+		this.distance_OrderBy = distance_OrderBy;
 	}
 
 }

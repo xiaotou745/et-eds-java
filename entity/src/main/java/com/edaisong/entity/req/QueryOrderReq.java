@@ -10,7 +10,10 @@ import com.edaisong.entity.common.PagedRequestBase;
 public class QueryOrderReq extends PagedRequestBase {
 	private String dateInfo;
 	private Integer clienterId;
-
+	private Integer businessId;
+	private Integer status;
+ private Double longitude;
+ private Double latitude;
 	/**
 	 * 日期 可空
 	 * 
@@ -47,8 +50,6 @@ public class QueryOrderReq extends PagedRequestBase {
 		this.clienterId = clienterId;
 	}
 	
-	private Integer businessId;
-	private Integer status;
 
 	/**
 	 * 
@@ -82,5 +83,33 @@ public class QueryOrderReq extends PagedRequestBase {
 	 */
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+/**
+ * 骑士经度
+ * @return
+ */
+	public Double getLongitude() {
+		return longitude;
+	}
+/**
+ * 骑士经度
+ * @param longitude
+ */
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+/**
+ * 骑士纬度
+ * @return
+ */
+	public Double getLatitude() {
+		return latitude;
+	}
+	/**
+	 * 骑士纬度
+	 * @return
+	 */
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
 	}
 }
