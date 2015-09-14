@@ -203,4 +203,12 @@
         and loginName=#{loginName,jdbcType=VARCHAR}
       </if>
 	</select>
+	<update id="recharge"  parameterType="java.util.Map">
+		update GroupBusiness set Amount=Amount+#{amount,jdbcType=DECIMAL}
+        where id=#{groupID,jdbcType=INTEGER}
+	</update>
+	<select id="select" parameterType="java.lang.Integer">
+		select top 1 * from   GroupBusiness
+		where id = #{groupID,jdbcType=INTEGER} 
+	</select>
 </mapper>

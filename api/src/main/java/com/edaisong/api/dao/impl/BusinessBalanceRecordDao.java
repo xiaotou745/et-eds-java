@@ -13,6 +13,7 @@ import java.util.Map;
 
 
 
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -26,6 +27,7 @@ import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.AccountBillCReq;
 import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedAccountBillDayReq;
@@ -127,7 +129,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 	public List<AccountBillDayModel> getAccountBillListDayB(
 			PagedAccountBillDayReq par) {
 		 List<AccountBillDayModel> list=new ArrayList<AccountBillDayModel>();
-		PagedResponse<AccountBillDayModel> result =getReadOnlySqlSessionUtil().selectPageList("getAccountBillDayBList", par);
+		PagedResponse<AccountBillDayModel> result =getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getAccountBillDayBList", par);
 		if(result.getResultList()!=null&&result.getResultList().size()>0)
 		{
 			list=result.getResultList();
@@ -142,7 +144,9 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 	 * */
 	@Override
 	public AccountBillDetailModel getAccountBillDetailB(AccountBillDetailReq par) {
-		AccountBillDetailModel model=getReadOnlySqlSessionUtil().selectOne("getAccountBillDetailB", par);
+		AccountBillDetailModel model=getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getAccountBillDetailB", par);
 		return model;
 	}
+
+
 }

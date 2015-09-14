@@ -22,6 +22,7 @@ import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.AccountBillCReq;
 import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedAccountBillDayReq;
@@ -143,5 +144,6 @@ public class BusinessBalanceRecordService implements IBusinessBalanceRecordServi
 		return businessBalanceRecordDao.getAccountBillDetailB(par);
 		
 	}
+
 
 }

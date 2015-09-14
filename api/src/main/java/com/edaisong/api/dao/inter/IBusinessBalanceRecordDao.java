@@ -11,12 +11,13 @@ import com.edaisong.entity.domain.AccountBillDayModel;
 import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
-import com.edaisong.entity.req.AccountBillBReq;
-import com.edaisong.entity.req.AccountBillDetailReq;
-import com.edaisong.entity.req.BussinessBalanceQueryReq;
-import com.edaisong.entity.req.PagedAccountBillDayReq;
-import com.edaisong.entity.req.PagedCustomerSearchReq;
-import com.edaisong.entity.req.PagedTransDetailReq;
+import com.edaisong.entity.req.*;
+//import com.edaisong.entity.req.AccountBillCReq;
+//import com.edaisong.entity.req.AccountBillDetailReq;
+//import com.edaisong.entity.req.BussinessBalanceQueryReq;
+//import com.edaisong.entity.req.PagedAccountBillDayReq;
+//import com.edaisong.entity.req.PagedCustomerSearchReq;
+//import com.edaisong.entity.req.PagedTransDetailReq;
 
 public interface IBusinessBalanceRecordDao {
     int insert(BusinessBalanceRecord record);
@@ -73,4 +74,5 @@ public interface IBusinessBalanceRecordDao {
 	 * 
 	 * */
 	AccountBillDetailModel getAccountBillDetailB(AccountBillDetailReq par);
+	
 }

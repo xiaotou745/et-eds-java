@@ -195,7 +195,7 @@ public class ParseHelper {
 	}
 
 	/**
-	 * DES解密
+	 * DES解密   所有解密的数据都先统一转换成大写再解密,和旧版后台一致
 	 * @author pengyi
 	 * @date 20150828
 	 * @param text
@@ -203,7 +203,7 @@ public class ParseHelper {
 	 */
 	public static String toDecrypt(String text) {
 		try {
-			if (StringUtils.isEmpty(text))
+			if (StringUtils.isEmpty(text.toUpperCase()))
 				return "";
 			return DES.decrypt(text);
 		} catch (Exception ex) {
@@ -212,7 +212,7 @@ public class ParseHelper {
 	}
 	
 	/**
-	 * DES加密
+	 * DES加密   所有加密的数据都统一转换成大写,和旧版后台一致
 	 * @author pengyi
 	 * @date 20150911
 	 * @param text
@@ -222,7 +222,7 @@ public class ParseHelper {
 		try {
 			if (StringUtils.isEmpty(text))
 				return "";
-			return DES.encrypt(text);
+			return DES.encrypt(text).toUpperCase();
 		} catch (Exception ex) {
 			return text;
 		}
@@ -258,7 +258,6 @@ public class ParseHelper {
 	{
 		int ret=0;
 		try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
 			int year = c.get(Calendar.YEAR);//年
 			int month = c.get(Calendar.MONTH)+1;//月
@@ -270,10 +269,9 @@ public class ParseHelper {
 			case 1: ret=year; break;
 			case 2: ret=month; break;
 			case 3: ret=day; break;
-			case 4: ret=year; break;
-			case 5: ret=year; break;
-			case 6: ret=year; break;
-			case 7: ret=year; break;
+			case 4: ret=hour; break;
+			case 5: ret=minute; break;
+			case 6: ret=second; break;
 			}
 			return ret;
 			

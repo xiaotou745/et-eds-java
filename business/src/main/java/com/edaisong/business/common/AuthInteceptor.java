@@ -41,7 +41,9 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 	private boolean isPay(HttpServletRequest request){
 		if(request.getServletPath().equals("/group/alipayapi")||
 				request.getServletPath().equals("/group/notify_url")||
-				request.getServletPath().equals("/group/return_url")){
+				request.getServletPath().equals("/group/return_url")||
+				request.getServletPath().equals("/group/getrechargestatus")||
+				request.getServletPath().equals("/group/createorderno")){
 			return true;
 		}
 		return false;
