@@ -1013,11 +1013,12 @@ public class OrderService implements IOrderService {
 	@Override
 	public HttpResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq query) {
 		HttpResultModel<QueryOrderBResp> resultModel = new HttpResultModel<QueryOrderBResp>();
-		QueryOrderBResp queryOrderBResp = new QueryOrderBResp();
+		//验证商家状态
 		if (businessDao.getUserStatus(query.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass.value()) {
 			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
 		}
+		QueryOrderBResp queryOrderBResp=orderDao.queryOrderB(query);
 		queryOrderBResp.setOrders(orderDao.queryOrder(query));
 		resultModel.setResult(queryOrderBResp);
 		return resultModel;
@@ -1037,7 +1038,7 @@ public class OrderService implements IOrderService {
 			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
 		}
-		QueryOrderCResp m = new QueryOrderCResp();
+		QueryOrderCResp m = orderDao.queryOrderC(query);
 		m.setOrders(orderDao.queryOrder(query));
 		resultModel.setResult(m);
 		return resultModel;

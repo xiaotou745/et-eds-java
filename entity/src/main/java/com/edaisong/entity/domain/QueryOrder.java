@@ -31,7 +31,7 @@ public class QueryOrder {
 	private String distanceB2R;
 	private String orderFromName;
 	private int mealsSettleMode;
-	private Double income; // 骑士收入
+	private Double income; // 骑士收入  弃用 移动端 不删除
 	private String businessName; // 发货人
 	private String pickUpCity; // 取货城市
 	private String businessPhone;

@@ -1224,28 +1224,7 @@ where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
         and businessId=#{businessId}  
 	</select>
-	<!--  移动端 订单列表  add by caoheyang 20150910-->
-	<select id="queryOrder" resultType="com.edaisong.entity.domain.QueryOrder"
-		parameterType="com.edaisong.entity.req.QueryOrderReq"
-		statementType="CALLABLE">
-		{call Sp_CustomPage2015_V1(
-		' o.PubDate desc ',
-		'
-		<include refid="queryOrderColums" />
-		',
-		'
-		<include refid="queryOrderFrom" />
-		',
-		'
-		<include refid="queryOrderWhere" />
-		',
-		#{pageSize,mode=IN,jdbcType=INTEGER},
-		#{currentPage,mode=IN,jdbcType=INTEGER}
-		,1,
-		#{totalRecord,mode=OUT,jdbcType=INTEGER},
-		#{totalPage,mode=OUT,jdbcType=INTEGER}
-		)}
-	</select>	
+
     <!-- C端任务统计接口  天数据列表  wangxudan 20150910 -->
 	<select id="getOrderStatisticsDaySatisticsC" parameterType="com.edaisong.entity.req.OrderStatisticsCReq"   resultType="com.edaisong.entity.domain.DaySatisticsC">
 declare @sdate DATETIME
@@ -1290,7 +1269,28 @@ where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
         and clienterId=#{clienterId}  
 	</select>
-	
+		<!--  移动端 订单列表  add by caoheyang 20150910-->
+	<select id="queryOrder" resultType="com.edaisong.entity.domain.QueryOrder"
+		parameterType="com.edaisong.entity.req.QueryOrderReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' o.PubDate desc ',
+		'
+		<include refid="queryOrderColums" />
+		',
+		'
+		<include refid="queryOrderFrom" />
+		',
+		'
+		<include refid="queryOrderWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>	
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderColums">
 		 CONVERT(VARCHAR(5), o.ActualDoneDate, 108) as ActualDoneDate ,
@@ -1361,4 +1361,35 @@ where   Status = 1
 			and  CONVERT(VARCHAR(100), PubDate, 23)=''${dateInfo}''
 		</if> 
 	</sql>
+		<!--商家端我的任务 addby caoheyang 20150914 -->
+	<select id="queryOrderB" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderBResp">
+	   select  SUM(CASE Status
+              when 0 then 1
+              else 0
+            end) newCount ,
+        SUM(CASE Status
+              when 2 then 1
+              else 0
+            end) deliveryCount ,
+        SUM(CASE Status
+              when 4 then 1
+              else 0
+            end) takingCount
+       from    dbo.[order] (nolock)
+       where businessId=${businessId}
+	</select>
+	<!-- 骑士端我的任务 addby caoheyang 20150914 -->
+		<select id="queryOrderC" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderCResp">
+	   select  
+        SUM(CASE Status
+              when 2 then 1
+              else 0
+            end) deliveryCount ,
+        SUM(CASE Status
+              when 4 then 1
+              else 0
+            end) takingCount
+       from    dbo.[order] (nolock)
+       where  clienterId=${clienterId}
+	</select>
 </mapper>
