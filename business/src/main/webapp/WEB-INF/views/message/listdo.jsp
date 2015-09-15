@@ -27,7 +27,7 @@
 		%>
 		<tr>
 			<td><%=ParseHelper.ToDateString(message.getPubdate())%></td>
-			<td width="87%" style="text-align: left;word-break : break-all; "><%=message.getContent()%></td>
+			<td width="80%" style="text-align: left;word-break : break-all; "><%=message.getContent()%></td>
 		</tr>
 		<%
 			}

@@ -25,6 +25,7 @@ import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.resp.QueryOrderCResp;
 
 public interface IOrderDao {
 
@@ -200,4 +201,31 @@ public interface IOrderDao {
 	 * @return
 	 */
 	List<QueryOrder> queryOrder(QueryOrderReq query) ;
+	
+	/**
+	 * c端查询待取货订单（会计算距离）
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	List<QueryOrder> queryDeliveryOrderC(QueryOrderReq query) ;
+	
+	
+	/**
+	 * 骑士端我的任务
+	 * @author CaoHeYang
+	 * @date 20150914
+	 * @param data 
+	 * @return
+	 */
+	QueryOrderCResp queryOrderC(QueryOrderReq query) ;
+	/**
+	 * 商家端我的任务
+	 * @author CaoHeYang
+	 * @date 20150914
+	 * @param data 
+	 * @return
+	 */
+	QueryOrderBResp queryOrderB(QueryOrderReq query) ;
 }

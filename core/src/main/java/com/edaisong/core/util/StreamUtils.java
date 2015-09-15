@@ -16,6 +16,7 @@
 
 package com.edaisong.core.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FilterInputStream;
 import java.io.FilterOutputStream;
@@ -85,6 +86,40 @@ public abstract class StreamUtils {
 			}
 		}
 		return out.toString();
+	}
+
+	/**
+	 * InputStream转字符串 不关闭流
+	 * 
+	 * @param in
+	 * @return
+	 */
+	public static String copyToStringNoclose(InputStream in) {
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream(BUFFER_SIZE);
+		try {
+			copy(in, out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return out.toString();
+	}
+
+	/**
+	 * String转InputStream
+	 * 
+	 * @param in
+	 * @return
+	 * @throws Exception
+	 */
+	public static InputStream StringToInputStream(String in) throws Exception {
+		// "ISO-8859-1"
+		try {
+			ByteArrayInputStream is = new ByteArrayInputStream(in.getBytes("UTF-8"));
+			return is;
+		} catch (Exception e) {
+		}
+		return null;
 	}
 
 	/**

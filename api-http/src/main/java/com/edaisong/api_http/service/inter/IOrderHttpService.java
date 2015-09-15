@@ -26,7 +26,7 @@ import com.edaisong.entity.resp.QueryOrderCResp;
 @Path("/order")
 @Consumes("application/json")
 // 当前方法接收的参数类型
-@Produces("application/json")
+@Produces("application/json; charset=utf-8")
 // 当前类的所有方法都返回json格式的数据
 public interface IOrderHttpService {
 	/**
@@ -42,7 +42,7 @@ public interface IOrderHttpService {
 	public HttpResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq orderStatisticsBReq);
 
 	/**
-	 * B端任务统计接口
+	 * B端商家首页
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150910

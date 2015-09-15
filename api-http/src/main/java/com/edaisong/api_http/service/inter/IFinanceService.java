@@ -2,6 +2,7 @@ package com.edaisong.api_http.service.inter;
 
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
@@ -19,7 +20,7 @@ import com.edaisong.entity.req.CardModifyAlipayReq;
  */
 @Path("/finance")
 @Consumes("application/json")//当前方法接收的参数类型
-@Produces("application/json")//当前类的所有方法都返回json格式的数据
+@Produces("application/json; charset=utf-8")//当前类的所有方法都返回json格式的数据
 public interface IFinanceService {
 	
 	/**
@@ -30,6 +31,8 @@ public interface IFinanceService {
 	 * @param req
 	 * @return
 	 */
+	@POST
+	@Path("/cardbindalipayc")
 	public HttpResultModel<Object> cardBindAlipayC(CardBindAlipayReq req);
 	
 	/**
@@ -40,5 +43,7 @@ public interface IFinanceService {
 	 * @param req
 	 * @return
 	 */
+	@POST
+	@Path("/cardmodifyalipayc")
 	public HttpResultModel<Object> cardModifyAlipayC(CardModifyAlipayReq req);
 }

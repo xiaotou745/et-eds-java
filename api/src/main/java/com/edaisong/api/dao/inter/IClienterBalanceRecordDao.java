@@ -1,10 +1,12 @@
 package com.edaisong.api.dao.inter;
 
 import java.util.List;
+import java.util.Map;
 
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
-import com.edaisong.entity.req.PagedClienterBalanceRecordReq;
+import com.edaisong.entity.domain.*;
+import com.edaisong.entity.req.*;
 
 public interface IClienterBalanceRecordDao {
     int deleteByPrimaryKey(Long id);
@@ -30,4 +32,26 @@ public interface IClienterBalanceRecordDao {
    * @return
    */
      ClienterBalanceRecord getByOrderId(long id);
+
+ 	/**
+ 	 * API 获取骑士月账单信息
+ 	 * 茹化肖
+ 	 * 2015年9月10日10:24:07
+ 	 * */
+ 	Map<String,AccountBillModel>  getAccountBillListC(AccountBillCReq par);
+ 	
+ 	/**
+	 * API 获取骑士日账单信息
+	 * 茹化肖
+	 * 2015年9月10日10:24:07
+	 * */
+	List<AccountBillDayCModel>  getAccountBillListDayC(PagedAccountBillDayCReq par);
+	
+	/**
+	 * API 获取商户账单详情
+	 * 茹化肖
+	 * 2015年9月10日10:25:04
+	 * 
+	 * */
+	AccountBillDetailCModel getAccountBillDetailC(AccountBillDetailCReq par);
 }

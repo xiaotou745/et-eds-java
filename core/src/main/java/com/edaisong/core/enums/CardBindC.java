@@ -16,6 +16,7 @@ public enum CardBindC {
 	NameError(4,"帐户名不能为空"),
 	NoClienter(5,"骑士不存在"),
 	NoCreateBy(6,"创建人名称不存在"),
+	AccountFormatError(7,"账户格式错误,只支持邮箱和手机号"),
 	SystemError(0,"系统错误"),
 	ParamError(-2,"未传参或者参数错误,参数错误时返回所有的错误信息文本");
 	

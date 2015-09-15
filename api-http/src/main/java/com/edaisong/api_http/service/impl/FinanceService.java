@@ -1,6 +1,7 @@
 package com.edaisong.api_http.service.impl;
 
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ import com.edaisong.entity.req.CardModifyAlipayReq;
 @Service
 public class FinanceService implements IFinanceService{
 
+	private final static String Email_Reg = "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$";
+	private final static String Phone_Reg = "^1[0-9]{10}$";
 	@Autowired
 	private IClienterFinanceAccountService clienterFinanceAccountService;
 	@Autowired
@@ -62,6 +65,8 @@ public class FinanceService implements IFinanceService{
 		record.setCreateby(req.getCreateBy());
 		record.setCreatetime(now);
 		record.setIsenable(true);
+		record.setTruename(req.getTrueName());
+		record.setUpdateby(req.getTrueName());
 		clienterFinanceAccountService.insertSelective(record);
 		result.setMessage(CardBindC.Success.desc());
 		result.setStatus(CardBindC.Success.value());
@@ -93,7 +98,7 @@ public class FinanceService implements IFinanceService{
 		String encryptAccount = ParseHelper.encrypt(req.getAccount());
 		//check data has modify or not
 		if(record.getAccountno().equals(encryptAccount) && record.getClienterid()==req.getUserId() &&
-				record.getTruename().equals(req.getTrueName())){
+				record.getTruename().equals(req.getTrueName()) && record.getUpdateby().equals(req.getCreateBy())){
 			result.setMessage(CardModifyC.NoModify.desc());
 			result.setStatus(CardModifyC.NoModify.value());
 			return result;
@@ -106,6 +111,8 @@ public class FinanceService implements IFinanceService{
 		record.setUpdateby(req.getCreateBy());
 		record.setUpdatetime(now);
 		record.setIsenable(true);
+		record.setTruename(req.getTrueName());
+		record.setUpdateby(req.getCreateBy());
 		clienterFinanceAccountService.updateByPrimaryKeySelective(record);
 		result.setMessage(CardModifyC.Success.desc());
 		result.setStatus(CardModifyC.Success.value());
@@ -130,8 +137,11 @@ public class FinanceService implements IFinanceService{
 		if(StringUtils.isEmpty(req.getAccount())){
 			return CardBindC.AccountNotSame;
 		}
-		if(req.getAccount().equals(req.getAccount2())){
+		if(!req.getAccount().equals(req.getAccount2())){
 			return CardBindC.AccountNotSame;
+		}
+		if(!Pattern.matches(Email_Reg, req.getAccount()) || !Pattern.matches(Phone_Reg, req.getAccount())){
+			return CardBindC.AccountFormatError;
 		}
 		if(clienterFinanceAccountService.getCountByClientId(req.getUserId(), PayType.ZhiFuBao.value()) > 0){
 			return CardBindC.Exists;
@@ -157,8 +167,11 @@ public class FinanceService implements IFinanceService{
 		if(StringUtils.isEmpty(req.getAccount())){
 			return CardModifyC.AccountNotSame;
 		}
-		if(req.getAccount().equals(req.getAccount2())){
+		if(!req.getAccount().equals(req.getAccount2())){
 			return CardModifyC.AccountNotSame;
+		}
+		if(!Pattern.matches(Email_Reg, req.getAccount()) || !Pattern.matches(Phone_Reg, req.getAccount())){
+			return CardModifyC.AccountFormatError;
 		}
 		if(clienterFinanceAccountService.getCountByClientId(req.getUserId(), PayType.ZhiFuBao.value()) <= 0){
 			return CardModifyC.NotExists;

@@ -332,7 +332,7 @@
 
 	<select id="getBusinessByPhoneNoAndPwd" resultType="com.edaisong.entity.Business"
 		parameterType="java.util.Map">
-		SELECT
+		SELECT top 1 
 		b.id ,
 		b.name ,
 		b.city ,

@@ -1,6 +1,5 @@
 package com.edaisong.entity.domain;
 
-import java.math.BigDecimal;
 /*
  * 月账单类型
  * */
