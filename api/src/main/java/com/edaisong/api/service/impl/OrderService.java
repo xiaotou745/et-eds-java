@@ -599,7 +599,7 @@ public class OrderService implements IOrderService {
 			if (businessModel.getGroupid()>0){
 				GroupBusiness groupBusiness=groupBusinessDao.select(businessModel.getGroupid());
 				if (groupBusiness.getAmount()<settleMoney&&
-					groupBusiness.getIsallowoverdraft()==0) {
+					groupBusiness.getIsAllowOverdraft()==0) {
 					return PublishOrderReturnEnum.GroupBalancePriceLack;
 				}
 			}else if (businessModel.getIsallowoverdraft() == 0) {

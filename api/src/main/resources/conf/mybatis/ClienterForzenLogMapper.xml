@@ -12,12 +12,13 @@
   <sql id="Base_Column_List" >
     ID, ClienterForzenID, Operator, OperaType, CreateDate, Remark
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from ClienterForzenLog
-    where ID = #{id,jdbcType=INTEGER}
-  </select>
+    from ClienterForzenLog(nolock)
+    where ClienterForzenID = #{id,jdbcType=INTEGER}
+    order by ID desc
+  </select> 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from ClienterForzenLog
     where ID = #{id,jdbcType=INTEGER}

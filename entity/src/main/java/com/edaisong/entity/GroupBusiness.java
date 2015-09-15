@@ -25,9 +25,7 @@ public class GroupBusiness  implements Serializable{
 
     private Integer isvalid;
     private Integer isallowoverdraft;
-
-    private Integer isallowoverdraft;
-    
+ 
     public Integer getId() {
         return id;
     }

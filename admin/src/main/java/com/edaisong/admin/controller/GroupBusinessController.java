@@ -175,11 +175,14 @@ public class GroupBusinessController {
 		response.setResponseCode(1);
 		return response;
 	}
+	/*
+	 * 获取商户操作日志
+	 * WangChao
+	 */
 	@RequestMapping("getgroupbusinesslog")
 	@ResponseBody
 	public ResponseBase getGroupBusinessLog(int id){
 		ResponseBase response = new ResponseBase(); 
-		
 		StringBuilder sb = new StringBuilder();
 		List<GroupBusinessLog> groupBusinessLogList =groupBusinessLogService.getList(id);
 		if(groupBusinessLogList!=null && groupBusinessLogList.size()>0){ 
@@ -187,9 +190,9 @@ public class GroupBusinessController {
 			for (int i = 0; i < groupBusinessLogList.size(); i++) {
 		 
 			sb.append("<tr style='border: #D6D6D6 1px solid'><td style='border: #D6D6D6 1px solid'>").append(ParseHelper.ToDateString( groupBusinessLogList.get(i).getOpttime())).append("</td><td>").append(groupBusinessLogList.get(i).getOptname()+groupBusinessLogList.get(i).getRemark()).append("</td></tr>");
-		}
+			}
 		sb.append("</table>");
-	}
+		}
 		response.setMessage(sb.toString());
 		return response; 
 	} 

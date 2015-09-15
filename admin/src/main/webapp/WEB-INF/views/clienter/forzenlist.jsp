@@ -47,7 +47,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 			<div class="ibox-content" id="content"></div>
 		</div>
 	</div>
-	<div tabindex="-1" class="modal inmodal" id="showUnfreezeClienter"
+<div tabindex="-1" class="modal inmodal" id="showUnfreezeClienter"
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content animated bounceInRight">
@@ -74,6 +74,50 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 					<button class="btn btn-primary" type="button" id="btnUnfreezeClienter" onclick="confirmUnfreezeClienter()">保存</button>
+				</div>
+			</small>
+		</div> 
+	</div>
+</div>
+<div tabindex="-1" class="modal inmodal" id="showForzenOrderDetail"
+	role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">余额冻结详情</h4> 
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+		<fieldset>
+            <br>
+             <div class="control-group">
+             <input type="hidden" id="hdForzenId"/>
+                <label >骑士姓名：</label><label id="lblclienterTrueName"></label>
+            </div>  
+            <div class="control-group">
+                <label >骑士电话：</label> 
+                    <label id="lblclienterPhone"></label>
+            </div> 
+            <div class="control-group">
+                <label>冻结金额：</label> <label id="lblforzenAmount"></label>
+            </div>
+            <div class="control-group">
+                <label>冻结原因：</label> <label id="lblforzenReason"></label>
+            </div>
+            <div class="control-group">
+                <label>解冻原因：</label> <label id="lblunfreezeReason"></label>
+            </div><hr/>
+            <div>
+            	<h4>操作记录</h4> 
+            	<div id="forzenRecord"></div>
+            </div>
+        </fieldset>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 				</div>
 			</small>
 		</div> 

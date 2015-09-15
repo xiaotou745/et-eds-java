@@ -55,7 +55,7 @@
 					data.getTotalPage())%>
 <script>
 function showMidfyGroupBusiness(id,groupbusiName,loginName,isAllowOverdraft){
-	$("#modifyGroupBusinessLog").html(""); 
+	 $("#modifyGroupBusinessLog").html(""); 
 	 $('#txtModifyGroupBusinessName').val(groupbusiName);
      $('#txtModifyLoginName').val(loginName);
      $("#txtModifyGroupBusinessId").val(id);

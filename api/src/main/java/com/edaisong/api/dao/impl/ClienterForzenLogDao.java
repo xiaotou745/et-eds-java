@@ -1,5 +1,7 @@
 package com.edaisong.api.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -41,6 +43,13 @@ public class ClienterForzenLogDao extends DaoBase implements IClienterForzenLogD
 	public int updateByPrimaryKey(ClienterForzenLog record) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<ClienterForzenLog> getList(int id) {
+		List<ClienterForzenLog> forzenLogList = getReadOnlySqlSessionUtil().selectList( 
+				"com.edaisong.api.dao.inter.IClienterForzenLogDao.getList", id);
+		return forzenLogList;
 	}
 
 }

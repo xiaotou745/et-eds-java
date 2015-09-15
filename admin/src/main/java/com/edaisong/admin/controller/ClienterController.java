@@ -16,14 +16,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IClienterBalanceRecordService;
+import com.edaisong.api.service.inter.IClienterForzenLogService;
 import com.edaisong.api.service.inter.IClienterForzenService;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.ClienterForzen;
+import com.edaisong.entity.ClienterForzenLog;
 import com.edaisong.entity.DeliveryCompany;
+import com.edaisong.entity.GroupBusinessLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
@@ -57,6 +61,8 @@ public class ClienterController {
 	//冻结单
 	 @Autowired
 	 private IClienterForzenService clienterForzenService;
+	 @Autowired
+	 private IClienterForzenLogService clienterForzenLogService;
 	 
 	/**
 	 * 骑士列表管理页面 
@@ -281,6 +287,23 @@ public class ClienterController {
 		response= clienterForzenService.createForzenBalance(clienterForzenBalanceReq);
 		return response;		
 	}
-	
-	
+	/*
+	 * 获取冻结操作日志
+	 */
+	@RequestMapping("getforzenlog")
+	@ResponseBody
+	public ResponseBase getForzenLog(int forzenId){
+		ResponseBase response = new ResponseBase(); 
+		StringBuilder sb = new StringBuilder();
+		List<ClienterForzenLog> forzenLogList =clienterForzenLogService.getList(forzenId);
+		if(forzenLogList!=null && forzenLogList.size()>0){ 
+			sb.append("<table style='border-collapse: collapse;border:none;margin:0'><th style='border: #D6D6D6 1px solid'>操作</th><th style='border: #D6D6D6 1px solid'>操作日期</th><th style='border: #D6D6D6 1px solid'>操作人</th>");
+			for (int i = 0; i < forzenLogList.size(); i++) {
+			sb.append("<tr style='border: #D6D6D6 1px solid'><td style='border: #D6D6D6 1px solid'>").append(forzenLogList.get(i).getOperatype() == 1?"冻结":"解冻").append("</td><td style='border: #D6D6D6 1px solid' >").append(ParseHelper.ToDateString( forzenLogList.get(i).getCreatedate())).append("</td><td style='border: #D6D6D6 1px solid' >").append(forzenLogList.get(i).getOperator()).append("</td></tr>");
+			}
+			sb.append("</table>");
+		}
+		response.setMessage(sb.toString());
+		return response; 
+	}
 }
