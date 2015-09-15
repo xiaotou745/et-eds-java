@@ -18,7 +18,7 @@ import com.edaisong.entity.resp.MessageResp;
  * @date 20150909
  */
 @Path("/message")
-@Consumes({"application/x-www-form-urlencoded;charset=UTF-8"})
+@Consumes({"application/json"})
 // 当前方法接收的参数类型
 @Produces("application/json")
 // 当前类的所有方法都返回json格式的数据
@@ -33,7 +33,7 @@ public interface IMessageHttpService {
 	 */
 	@POST
 	@Path("/newmessageb")
-	public HttpResultModel<MessageResp> newMessageB(@FormParam("") NewMessageBReq para);
+	public HttpResultModel<MessageResp> newMessageB(NewMessageBReq para);
 
 	/**
 	 * C端商户登陆后获取顶端未读公告
@@ -45,5 +45,5 @@ public interface IMessageHttpService {
 	 */
 	@POST
 	@Path("/newmessagec")
-	public HttpResultModel<MessageResp> newMessageC(@FormParam("") NewMessageCReq para);
+	public HttpResultModel<MessageResp> newMessageC(NewMessageCReq para);
 }

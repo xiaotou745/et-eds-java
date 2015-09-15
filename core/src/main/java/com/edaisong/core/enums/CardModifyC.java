@@ -17,6 +17,7 @@ public enum CardModifyC {
 	NoAccount(6,"账户不存在"),
 	NoModify(7,"信息没有任何更改"),
 	NoCreateBy(8,"修改人名称不能为空"),
+	AccountFormatError(9,"账户格式错误,只支持邮箱和手机号"),
 	SystemError(0,"系统错误"),
 	ParamError(-2,"未传参或者参数错误,参数错误时返回所有的错误信息文本");
 	

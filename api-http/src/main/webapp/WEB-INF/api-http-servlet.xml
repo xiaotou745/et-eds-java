@@ -30,7 +30,7 @@
 			<ref bean="messageHttpService" />
 			<ref bean="orderHttpService" />
 			<ref bean="accountBillService" />
-			<ref bean="financeService" />
+			<ref bean="feedbackHttpService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:inInterceptors>
 			<!-- <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean> -->

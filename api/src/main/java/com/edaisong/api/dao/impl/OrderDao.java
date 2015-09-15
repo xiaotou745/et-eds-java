@@ -310,6 +310,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	 * @param data 
 	 * @return
 	 */
+	@Override
    public	QueryOrderCResp queryOrderC(QueryOrderReq query) {
 	   return getReadOnlySqlSessionUtil().selectOne(
 				"com.edaisong.api.dao.inter.IOrderDao.queryOrderC", 
@@ -322,9 +323,25 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	 * @param data 
 	 * @return
 	 */
+	@Override
 	public QueryOrderBResp queryOrderB(QueryOrderReq query) {
 		   return getReadOnlySqlSessionUtil().selectOne(
 					"com.edaisong.api.dao.inter.IOrderDao.queryOrderB", 
 					query);
 	}
+	/**
+	 * c端查询待取货订单（会计算距离）
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	 public List<QueryOrder> queryDeliveryOrderC(QueryOrderReq query) {
+		PagedResponse<QueryOrder> result=  getReadOnlySqlSessionUtil().selectPageList(
+				"com.edaisong.api.dao.inter.IOrderDao.queryDeliveryOrderC", 
+				query);
+		return result.getResultList();
+	 }
+	
 }

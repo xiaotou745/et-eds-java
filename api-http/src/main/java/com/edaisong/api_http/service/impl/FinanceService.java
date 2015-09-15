@@ -1,6 +1,7 @@
 package com.edaisong.api_http.service.impl;
 
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ import com.edaisong.entity.req.CardModifyAlipayReq;
 @Service
 public class FinanceService implements IFinanceService{
 
+	private final static String Email_Reg = "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$";
+	private final static String Phone_Reg = "^1[0-9]{10}$";
 	@Autowired
 	private IClienterFinanceAccountService clienterFinanceAccountService;
 	@Autowired
@@ -137,6 +140,9 @@ public class FinanceService implements IFinanceService{
 		if(!req.getAccount().equals(req.getAccount2())){
 			return CardBindC.AccountNotSame;
 		}
+		if(!Pattern.matches(Email_Reg, req.getAccount()) || !Pattern.matches(Phone_Reg, req.getAccount())){
+			return CardBindC.AccountFormatError;
+		}
 		if(clienterFinanceAccountService.getCountByClientId(req.getUserId(), PayType.ZhiFuBao.value()) > 0){
 			return CardBindC.Exists;
 		}
@@ -163,6 +169,9 @@ public class FinanceService implements IFinanceService{
 		}
 		if(!req.getAccount().equals(req.getAccount2())){
 			return CardModifyC.AccountNotSame;
+		}
+		if(!Pattern.matches(Email_Reg, req.getAccount()) || !Pattern.matches(Phone_Reg, req.getAccount())){
+			return CardModifyC.AccountFormatError;
 		}
 		if(clienterFinanceAccountService.getCountByClientId(req.getUserId(), PayType.ZhiFuBao.value()) <= 0){
 			return CardModifyC.NotExists;
