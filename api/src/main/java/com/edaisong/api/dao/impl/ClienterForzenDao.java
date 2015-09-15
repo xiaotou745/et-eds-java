@@ -16,10 +16,11 @@ public class ClienterForzenDao  extends DaoBase implements IClienterForzenDao{
 		return 0;
 	}
 
+	/*
+	 */
 	@Override
 	public int insert(ClienterForzen record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterForzenDao.insert", record);
 	}
 
 	@Override
@@ -42,8 +43,7 @@ public class ClienterForzenDao  extends DaoBase implements IClienterForzenDao{
 
 	@Override
 	public int updateByPrimaryKey(ClienterForzen record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IClienterForzenDao.updateByPrimaryKey", record); 
 	}
     /*
      * 获取冻结单列表

@@ -18,4 +18,9 @@ public class GroupBusinessLogService implements IGroupBusinessLogService {
 		return dao.getList(id);
 	}
 
+	@Override
+	public int insert(GroupBusinessLog gbl) {
+		return dao.insert(gbl);
+	}
+
 }

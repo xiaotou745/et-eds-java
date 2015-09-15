@@ -50,7 +50,11 @@ public enum ClienterBalanceRecordRecordType {
 	/**
 	 * 异常订单
 	 */
-	Abnormal(11, "异常订单",1);
+	Abnormal(11, "异常订单",1),
+	/*
+	 * 骑士冻结余额
+	 */
+	ForzenBalance(12,"冻结金额",1);
 	private int value = 0;
 	private String desc;
 	private int  type;

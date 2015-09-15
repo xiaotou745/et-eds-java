@@ -9,4 +9,6 @@ import com.edaisong.entity.GroupBusinessLog;
 @Service
 public interface IGroupBusinessLogService {
 	List<GroupBusinessLog> getList(int id);
+	
+	int insert(GroupBusinessLog gbl);
 }

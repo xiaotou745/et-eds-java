@@ -24,6 +24,8 @@ public class GroupBusinessModel {
 
     private Integer isvalid;
 
+    private Integer isallowoverdraft;
+    
     public Integer getId() {
         return id;
     }
@@ -102,5 +104,12 @@ public class GroupBusinessModel {
 
     public void setIsvalid(Integer isvalid) {
         this.isvalid = isvalid;
+    }
+    public Integer getIsAllowOverdraft() {
+        return isallowoverdraft;
+    }
+
+    public void setIsAllowOverdraft(Integer isallowoverdraft) {
+        this.isallowoverdraft = isallowoverdraft;
     }
 }

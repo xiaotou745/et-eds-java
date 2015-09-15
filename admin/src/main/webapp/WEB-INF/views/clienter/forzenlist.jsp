@@ -113,16 +113,23 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 	$("#btnSearch").click(function(){
 		jss.search(1);
 	});	
+	//解冻
    function confirmUnfreezeClienter(){
 	   var unfreezeReason = $("#txtUnfreezeReason").val();
 	   if(unfreezeReason.trim().length == 0){
 		   alert("请输入解冻原因");
 		   return;
 	   }
+	   if(unfreezeReason.trim().length <5 || unfreezeReason.trim().length>50){
+			alert("解冻原因必须输入5-50个字符");
+			return;
+		}
 	   var paramaters = {
 	    	   "id":$("#hdForzenId").val(),
+	    	   
                "clienterId": $("#hdClienterId").val(),
-               "forzenAmount": $("#hdForzenAmount").val()
+               "forzenAmount": $("#hdForzenAmount").val(),
+               "unfreezeReason":unfreezeReason.trim()
            };
       var url = "<%=basePath%>/clienter/unfreezeclienter";
 	   $.ajax({

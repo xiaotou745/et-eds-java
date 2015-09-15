@@ -23,11 +23,11 @@
     where ID = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.ClienterForzenLog" >
-    insert into ClienterForzenLog (ID, ClienterForzenID, Operator, 
-      OperaType, CreateDate, Remark
+    insert into ClienterForzenLog (ClienterForzenID,Operator, 
+      OperaType,Remark
       )
-    values (#{id,jdbcType=INTEGER}, #{clienterforzenid,jdbcType=INTEGER}, #{operator,jdbcType=NVARCHAR}, 
-      #{operatype,jdbcType=INTEGER}, #{createdate,jdbcType=TIMESTAMP}, #{remark,jdbcType=NVARCHAR}
+    values (#{clienterforzenid,jdbcType=INTEGER}, #{operator,jdbcType=NVARCHAR}, 
+      #{operatype,jdbcType=INTEGER}, #{remark,jdbcType=NVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.ClienterForzenLog" >

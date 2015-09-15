@@ -68,8 +68,8 @@
 					data.getTotalPage())%>
 <script>
 function showUnfreeze(id,clienterId,forzenAmount){
-	$("#hdForzenId").val(id);
-	$("#hdForzenClienterId").val(clienterId);
+	$("#hdForzenId").val(id); 
+	$("#hdClienterId").val(clienterId);
 	$("#hdForzenAmount").val(forzenAmount);
 	$('#showUnfreezeClienter').modal('show');	
 }

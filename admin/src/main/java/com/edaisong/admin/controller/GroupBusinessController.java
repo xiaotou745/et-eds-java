@@ -113,9 +113,10 @@ public class GroupBusinessController {
 			return response;
 		}
 		GroupBusiness groupBusiness = new GroupBusiness();
-		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName());
-		groupBusiness.setLoginname(bgm.getloginName());
-		groupBusiness.setPassword(bgm.getpassWord());
+		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName().trim());
+		groupBusiness.setLoginname(bgm.getloginName().trim());
+		groupBusiness.setPassword(bgm.getpassWord().trim());
+		groupBusiness.setIsAllowOverdraft(bgm.getIsAllowOverdraft());
 		groupBusiness.setCreatename(UserContext.getCurrentContext(request).getName());
 		int result=groupBusinessService.addGroupBusiness(groupBusiness);
 		if(result<=0){
@@ -158,10 +159,11 @@ public class GroupBusinessController {
 			}
 		}
 		GroupBusiness groupBusiness = new GroupBusiness();
-		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName());
-		groupBusiness.setLoginname(bgm.getloginName());
-		groupBusiness.setPassword(bgm.getpassWord());
+		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName().trim());
+		groupBusiness.setLoginname(bgm.getloginName().trim());
+		groupBusiness.setPassword(bgm.getpassWord().trim());
 		groupBusiness.setId(bgm.getId());
+		groupBusiness.setIsAllowOverdraft(bgm.getIsAllowOverdraft());
 		groupBusiness.setModifyname(UserContext.getCurrentContext(request).getName());
 		int result=groupBusinessService.modifyGroupBusiness(groupBusiness);
 		if(result<=0){
@@ -180,8 +182,7 @@ public class GroupBusinessController {
 		
 		StringBuilder sb = new StringBuilder();
 		List<GroupBusinessLog> groupBusinessLogList =groupBusinessLogService.getList(id);
-		if(groupBusinessLogList!=null && groupBusinessLogList.size()>0){
-			
+		if(groupBusinessLogList!=null && groupBusinessLogList.size()>0){ 
 			sb.append("<table style='border-collapse: collapse;border:none;margin:0'><th style='border: #D6D6D6 1px solid'>时间</th><th style='border: #D6D6D6 1px solid'>操作</th>");
 			for (int i = 0; i < groupBusinessLogList.size(); i++) {
 		 

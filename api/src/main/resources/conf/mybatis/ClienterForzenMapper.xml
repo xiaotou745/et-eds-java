@@ -28,14 +28,13 @@
     where ID = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.ClienterForzen" >
-    insert into ClienterForzen (ID, ClienterID, ForzenAmount, 
-      ForzenReason, ForzenDate, ThawReason, 
-      ThawDate, Status, Operator, 
-      CreateDate)
-    values (#{id,jdbcType=INTEGER}, #{clienterid,jdbcType=INTEGER}, #{forzenamount,jdbcType=DECIMAL}, 
-      #{forzenreason,jdbcType=NVARCHAR}, #{forzendate,jdbcType=TIMESTAMP}, #{thawreason,jdbcType=NVARCHAR}, 
-      #{thawdate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{operator,jdbcType=NVARCHAR}, 
-      #{createdate,jdbcType=TIMESTAMP})
+  		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			select @@IDENTITY as id
+		</selectKey>
+    insert into ClienterForzen (ClienterID, ForzenAmount, ForzenReason, Status, Operator)
+    values (#{clienterid,jdbcType=INTEGER}, #{forzenamount,jdbcType=DECIMAL}, 
+      #{forzenreason,jdbcType=NVARCHAR}, #{status,jdbcType=INTEGER}, #{operator,jdbcType=NVARCHAR}); 
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.ClienterForzen" >
     insert into ClienterForzen
@@ -139,15 +138,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.ClienterForzen" >
     update ClienterForzen
-    set ClienterID = #{clienterid,jdbcType=INTEGER},
-      ForzenAmount = #{forzenamount,jdbcType=DECIMAL},
-      ForzenReason = #{forzenreason,jdbcType=NVARCHAR},
-      ForzenDate = #{forzendate,jdbcType=TIMESTAMP},
-      ThawReason = #{thawreason,jdbcType=NVARCHAR},
-      ThawDate = #{thawdate,jdbcType=TIMESTAMP},
+    set ThawReason = #{thawreason,jdbcType=NVARCHAR},
+      ThawDate = getdate(),
       Status = #{status,jdbcType=INTEGER},
-      Operator = #{operator,jdbcType=NVARCHAR},
-      CreateDate = #{createdate,jdbcType=TIMESTAMP}
+      Operator = #{operator,jdbcType=NVARCHAR} 
     where ID = #{id,jdbcType=INTEGER}
   </update>
 

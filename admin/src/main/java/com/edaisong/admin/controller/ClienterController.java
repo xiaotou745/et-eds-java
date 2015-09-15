@@ -3,13 +3,7 @@ package com.edaisong.admin.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-
-
-
-
-
+import javax.servlet.http.HttpServletRequest; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IClienterBalanceRecordService;
 import com.edaisong.api.service.inter.IClienterForzenService;
 import com.edaisong.api.service.inter.IClienterService;
@@ -33,6 +28,8 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.ClienterModel;
+import com.edaisong.entity.domain.GroupBusinessModel;
+import com.edaisong.entity.req.ClienterForzenBalanceReq;
 import com.edaisong.entity.req.ClienterUnfreezeReq;
 import com.edaisong.entity.req.GroupBusinessReq;
 import com.edaisong.entity.req.PagedClienterBalanceRecordReq;
@@ -226,10 +223,11 @@ public class ClienterController {
 	 */
 	@RequestMapping("unfreezeclienter")
 	@ResponseBody
-	public ResponseBase unfreezeClienter(ClienterUnfreezeReq clienterUnfreezeReq){
+	public ResponseBase unfreezeClienter(ClienterUnfreezeReq clienterUnfreezeReq,HttpServletRequest request){
 		ResponseBase response = new ResponseBase();
-		response.setResponseCode(1);
-		response.setMessage("解冻成功");
+		//解冻逻辑
+		clienterUnfreezeReq.setOperator(UserContext.getCurrentContext(request).getName());
+		response = clienterForzenService.unfreezeClienterBalance(clienterUnfreezeReq);
 		return response;		
 	}
 	/*
@@ -237,11 +235,12 @@ public class ClienterController {
 	 * WangChao
 	 */	
 	@RequestMapping("forzenbalancelist")
-	public ModelAndView forzenBalanceList(){		
-		
+	public ModelAndView forzenBalanceList(){ 
+		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "骑士管理");
 		model.addObject("currenttitle", "余额冻结");
+		model.addObject("areaListData", areaListData);
 		model.addObject("viewPath", "clienter/forzenbalancelist");
 		return model;
 	}
@@ -250,7 +249,38 @@ public class ClienterController {
 	 * WangChao
 	 */	
 	@RequestMapping("forzenbalancelistdo")
-	public ModelAndView forzenBalanceListdo(){		
-		return null;
+	public ModelAndView forzenBalanceListdo(PagedClienterReq pagedClienterReq ){		
+		PagedResponse<ClienterModel> resp = clienterService.query(pagedClienterReq); 
+		ModelAndView model = new ModelAndView("clienter/forzenbalancelistdo");
+		model.addObject("listData", resp);
+		return model;
 	}
+	/*
+	 * 冻结骑士余额
+	 * WangChao
+	 */
+	@RequestMapping("forzenclienterbalance")
+	@ResponseBody
+	public ResponseBase forzenClienterBalance(ClienterForzenBalanceReq clienterForzenBalanceReq,HttpServletRequest request){
+		ResponseBase response = new ResponseBase();
+		//冻结逻辑
+		//再次获取骑士信息
+		Clienter clienter=clienterService.selectByPrimaryKey(clienterForzenBalanceReq.getClienterId());
+		if(clienter!=null){
+		//骑士可提现余额小于冻结金额
+			if(clienter.getAllowwithdrawprice() < clienterForzenBalanceReq.getForzenAmount()){
+				response.setResponseCode(0);
+				response.setMessage("可提现余额不足，无法冻结");
+				return response;
+			}
+		}else{
+			response.setResponseCode(0);
+			response.setMessage("骑士信息错误");
+		}
+		clienterForzenBalanceReq.setOperator(UserContext.getCurrentContext(request).getName());
+		response= clienterForzenService.createForzenBalance(clienterForzenBalanceReq);
+		return response;		
+	}
+	
+	
 }
