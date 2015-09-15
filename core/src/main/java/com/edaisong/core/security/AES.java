@@ -26,8 +26,11 @@ public class AES {
 			SecretKeySpec skeySpec = new SecretKeySpec(password.getBytes(), "AES");
 			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-			String strTmp = "";//TODO :Base64.encodeToString(cipher.doFinal(str.getBytes()) );
+			//cipher.doFinal(str.getBytes()), Base64.DEFAULT
+			byte[] bs=cipher.doFinal(Base64.getEncoder().encode(str.getBytes()));
+			String strTmp = new String(bs);
 			return strTmp;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,8 +50,10 @@ public class AES {
 			SecretKeySpec skeySpec = new SecretKeySpec(password.getBytes(), "AES");
 			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 			cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-			String strTmp = "";//todo new String(cipher.doFinal(Base64.decode(str, Base64.DEFAULT)));
+			byte [] bs= Base64.getDecoder().decode(str);
+			String strTmp = new String(cipher.doFinal(bs));
 			return strTmp;
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
