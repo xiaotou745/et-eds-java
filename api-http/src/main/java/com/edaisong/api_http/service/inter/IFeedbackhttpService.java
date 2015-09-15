@@ -3,15 +3,12 @@ package com.edaisong.api_http.service.inter;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.edaisong.api_http.entity.ResultModel;
-import com.edaisong.core.enums.FeedbackType;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.EnumRecord;
-import com.edaisong.entity.common.RecordType;
 import com.edaisong.entity.resp.FeedbackResp;
 
 /**
@@ -32,7 +29,7 @@ public interface IFeedbackhttpService {
 	 */
 	@POST
 	@Path("/feedbackb")
-	public ResultModel<FeedbackResp> feedbackB(String data);	 
+	public HttpResultModel<FeedbackResp> feedbackB(String data);	 
 	
 	/**
 	 * B端骑士增加意见反馈
@@ -43,7 +40,7 @@ public interface IFeedbackhttpService {
 	 */
 	@POST
 	@Path("/feedbackc")
-	public ResultModel<FeedbackResp> feedbackC(String data);	 
+	public HttpResultModel<FeedbackResp> feedbackC(String data);	 
 
 	/**
 	 * 意见反馈类型列表

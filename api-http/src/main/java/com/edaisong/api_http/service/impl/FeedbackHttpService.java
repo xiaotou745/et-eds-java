@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IFeedbackService;
-import com.edaisong.api_http.entity.ResultModel;
 import com.edaisong.api_http.service.inter.IFeedbackhttpService;
 import com.edaisong.core.enums.FeedbackType;
 import com.edaisong.core.enums.SystemState;
 import com.edaisong.core.util.EnumHelper;
 import com.edaisong.entity.common.EnumRecord;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.resp.FeedbackResp;
 
 @Service
@@ -30,9 +30,9 @@ public class FeedbackHttpService implements IFeedbackhttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<FeedbackResp> feedbackB(String data) {
+	public HttpResultModel<FeedbackResp> feedbackB(String data) {
 		
-		ResultModel<FeedbackResp> returnmodel = new ResultModel<FeedbackResp>();
+		HttpResultModel<FeedbackResp> returnmodel = new HttpResultModel<FeedbackResp>();
 		int row= feedbackService.addByData(data);
 		if(row>0)
 		{
@@ -57,9 +57,9 @@ public class FeedbackHttpService implements IFeedbackhttpService {
 	 * @return
 	 */
 	@Override
-	public ResultModel<FeedbackResp> feedbackC(String data) {
+	public HttpResultModel<FeedbackResp> feedbackC(String data) {
 		
-		ResultModel<FeedbackResp> returnmodel = new ResultModel<FeedbackResp>();
+		HttpResultModel<FeedbackResp> returnmodel = new HttpResultModel<FeedbackResp>();
 		int row= feedbackService.addByData(data);
 		if(row>0)
 		{
