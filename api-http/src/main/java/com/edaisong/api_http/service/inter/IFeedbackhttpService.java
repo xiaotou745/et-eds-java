@@ -18,7 +18,7 @@ import com.edaisong.entity.resp.FeedbackResp;
  */
 @Path("/feedback")
 @Consumes("application/json")//当前方法接收的参数类型
-@Produces("application/json")//当前类的所有方法都返回json格式的数据
+@Produces("application/json; charset=utf-8")//当前类的所有方法都返回json格式的数据
 public interface IFeedbackhttpService {	             
 	/**
 	 * B端门店增加意见反馈
