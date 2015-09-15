@@ -283,7 +283,7 @@ public class QueryOrder {
 	 * 
 	 * @return
 	 */
-	public boolean isPay() {
+	public boolean getIsPay() {
 		return isPay;
 	}
 
@@ -292,7 +292,7 @@ public class QueryOrder {
 	 * 
 	 * @param isPay
 	 */
-	public void setPay(boolean isPay) {
+	public void setIsPay(boolean isPay) {
 		this.isPay = isPay;
 	}
 
