@@ -34,6 +34,10 @@ public class AESInterceptor  extends AbstractPhaseInterceptor<Message> {
 				e.printStackTrace();
 			}
 		}
+		else
+		{
+			System.out.println("暂未开启AES解密拦截器");
+		}
 	}
 
 }
