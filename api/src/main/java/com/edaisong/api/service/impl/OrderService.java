@@ -25,6 +25,7 @@ import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.dao.inter.IClienterLocationDao;
+import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
@@ -59,6 +60,7 @@ import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.ClienterBalanceRecord;
+import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
@@ -131,6 +133,8 @@ public class OrderService implements IOrderService {
 	IClienterLocationDao clienterLocationDao;
 	@Autowired
 	private IClienterDao clienterDao;
+	@Autowired
+	private IGroupBusinessDao groupBusinessDao;
 
 	/**
 	 * 后台订单列表页面
@@ -276,25 +280,44 @@ public class OrderService implements IOrderService {
 		updateModel.setAmount(orderRe.getSettlemoney()); // 取消订单涉及到的金额数目此处取到的当前订单的
 															// 结算费 即商家应付
 
-		if (orderDao.cancelOrderBusiness(updateModel) > 0 /* 取消订单 针对订单表的逻辑 */
-				&& businessDao.updateForWithdraw(orderRe.getSettlemoney(), req.getBusinessId()) > 0 /* 更新商户余额 */) { // 取消成功
-			BusinessBalanceRecord businessBalanceRecord = new BusinessBalanceRecord();
-			businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
-			businessBalanceRecord.setAmount(orderRe.getSettlemoney());
-			businessBalanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success.value()); // 流水状态(1、交易成功
-																									// 2、交易中）
-			businessBalanceRecord.setRecordtype((short) BusinessBalanceRecordRecordType.CancelOrder.value()); // 取消订单
-			businessBalanceRecord.setOperator("商家:" + req.getBusinessId()); // 商家id
-			businessBalanceRecord.setWithwardid((long) req.getOrderId()); // 订单id
-			businessBalanceRecord.setRelationno(req.getOrderNo()); // 关联单号
-			businessBalanceRecord.setRemark("商户取消订单返回配送费"); // 注释
-			businessBalanceRecordDao.insert(businessBalanceRecord); // 记录
-			OrderOther orderOther = new OrderOther();
-			orderOther.setOrderid(req.getOrderId());
-			orderOther.setCancelTime(new Date());
-			orderOtherDao.updateByPrimaryKeySelective(orderOther);
-		} else {
-			throw new RuntimeException("更新订单状态为取消失败");
+		if (orderDao.cancelOrderBusiness(updateModel) > 0){ /* 取消订单 针对订单表的逻辑 */
+			int updateResutl=0;
+			Double groupBeforeBalance=0d;
+			if (orderRe.getGroupbusinessid()>0) {//更新集团余额
+				GroupBusiness oldGroupBusiness=groupBusinessDao.select(orderRe.getGroupbusinessid());
+				groupBeforeBalance=oldGroupBusiness.getAmount();
+				updateResutl=groupBusinessDao.recharge(orderRe.getGroupbusinessid(), orderRe.getSettlemoney());
+			
+			}else {//更新商户余额 
+				updateResutl=businessDao.updateForWithdraw(orderRe.getSettlemoney(), req.getBusinessId());
+			}
+			if (updateResutl>0) {
+				BusinessBalanceRecord businessBalanceRecord = new BusinessBalanceRecord();
+				businessBalanceRecord.setAmount(orderRe.getSettlemoney());
+				businessBalanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success.value()); // 流水状态(1、交易成功																					// 2、交易中）
+				businessBalanceRecord.setRecordtype((short) BusinessBalanceRecordRecordType.CancelOrder.value()); // 取消订单
+				businessBalanceRecord.setOperator("商家:" + req.getBusinessId()); // 商家id
+				businessBalanceRecord.setWithwardid((long) req.getOrderId()); // 订单id
+				businessBalanceRecord.setRelationno(req.getOrderNo()); // 关联单号
+				businessBalanceRecord.setRemark("商户取消订单返回配送费"); // 注释
+				businessBalanceRecord.setGroupbeforebalance(groupBeforeBalance);
+				if (orderRe.getGroupbusinessid()<=0) {
+					businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
+					businessBalanceRecordDao.insert(businessBalanceRecord); // 记录
+				}
+				else {
+					businessBalanceRecord.setBusinessid(0);
+					businessBalanceRecord.setGroupid(orderRe.getGroupbusinessid());
+					businessBalanceRecordDao.groupInsert(businessBalanceRecord); // 记录
+				}
+
+				OrderOther orderOther = new OrderOther();
+				orderOther.setOrderid(req.getOrderId());
+				orderOther.setCancelTime(new Date());
+				orderOtherDao.updateByPrimaryKeySelective(orderOther);
+			}
+		}else {
+			throw new RuntimeException("更新订单状态为取消状态时失败");
 		}
 	}
 

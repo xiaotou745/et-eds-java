@@ -83,6 +83,8 @@
 		<result column="FinishAll" property="finishall" jdbcType="INTEGER" />
 		<result column="RealOrderCommission" property="realordercommission"
 			jdbcType="NUMERIC" />
+		<result column="GroupBusinessID" property="groupbusinessid"
+			jdbcType="INTEGER" />
 	</resultMap>
 	<!-- 商家订单概览信息 可扩展 add by pengyi 20180818 -->
 	<resultMap id="businessOrderSummaryResultMap"
@@ -121,7 +123,7 @@
 		CommissionType,
 		CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable,
 		MealsSettleMode,
-		FinishDateLength, FinishAll, RealOrderCommission
+		FinishDateLength, FinishAll, RealOrderCommission,GroupBusinessID
 	</sql>
 	<!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展 CaoHeYang 20150804 -->
 	<select id="getOneByCriteria" resultMap="BaseResultMap"

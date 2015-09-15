@@ -148,5 +148,12 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 		return model;
 	}
 
+	@Override
+	public int groupInsert(BusinessBalanceRecord record) {
+		int result = getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.groupInsert",
+				record);
+		return result;
+	}
+
 
 }

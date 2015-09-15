@@ -113,6 +113,8 @@ public class Order {
     private Integer finishall;
 
     private Double realordercommission;
+    
+    private Integer groupbusinessid;
 
     public int getId() {
         return id;
@@ -553,4 +555,12 @@ public class Order {
     public void setRealordercommission(Double realordercommission) {
         this.realordercommission = realordercommission;
     }
+
+	public Integer getGroupbusinessid() {
+		return groupbusinessid;
+	}
+
+	public void setGroupbusinessid(Integer groupbusinessid) {
+		this.groupbusinessid = groupbusinessid;
+	}
 }

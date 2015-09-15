@@ -50,102 +50,23 @@
 		Id=#{businessid,jdbcType=INTEGER} ;
 		select @@IDENTITY
 	</insert>
-	<insert id="insertSelective" parameterType="com.edaisong.entity.BusinessBalanceRecord">
+	<insert id="groupInsert" parameterType="com.edaisong.entity.BusinessBalanceRecord">
 		insert into BusinessBalanceRecord
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				Id,
-			</if>
-			<if test="businessid != null">
-				BusinessId,
-			</if>
-			<if test="amount != null">
-				Amount,
-			</if>
-			<if test="status != null">
-				Status,
-			</if>
-			<if test="balance != null">
-				Balance,
-			</if>
-			<if test="recordtype != null">
-				RecordType,
-			</if>
-			<if test="operator != null">
-				Operator,
-			</if>
-			<if test="operatetime != null">
-				OperateTime,
-			</if>
-			<if test="withwardid != null">
-				WithwardId,
-			</if>
-			<if test="relationno != null">
-				RelationNo,
-			</if>
-			<if test="remark != null">
-				Remark,
-			</if>
-			<if test="isenable != null">
-				IsEnable,
-			</if>
-			<if test="groupid != null">
-				groupid,
-			</if>
-			<if test="groupbeforebalance != null">
-				groupbeforebalance,
-			</if>
-			<if test="groupamount != null">
-				groupamount,
-			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				#{id,jdbcType=BIGINT},
-			</if>
-			<if test="businessid != null">
-				#{businessid,jdbcType=INTEGER},
-			</if>
-			<if test="amount != null">
-				#{amount,jdbcType=DECIMAL},
-			</if>
-			<if test="status != null">
-				#{status,jdbcType=SMALLINT},
-			</if>
-			<if test="balance != null">
-				#{balance,jdbcType=DECIMAL},
-			</if>
-			<if test="recordtype != null">
-				#{recordtype,jdbcType=SMALLINT},
-			</if>
-			<if test="operator != null">
-				#{operator,jdbcType=NVARCHAR},
-			</if>
-			<if test="operatetime != null">
-				#{operatetime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="withwardid != null">
-				#{withwardid,jdbcType=BIGINT},
-			</if>
-			<if test="relationno != null">
-				#{relationno,jdbcType=VARCHAR},
-			</if>
-			<if test="remark != null">
-				#{remark,jdbcType=NVARCHAR},
-			</if>
-			<if test="isenable != null">
-				#{isenable,jdbcType=SMALLINT},
-			</if>
-			<if test="groupid != null">
-				#{groupid,jdbcType=INTEGER},
-			</if>
-			<if test="groupbeforebalance != null">
-				#{groupbeforebalance,jdbcType=DECIMAL},
-			</if>
-			<if test="groupamount != null">
-				#{groupamount,jdbcType=DECIMAL},
-			</if>
-		</trim>
+		(BusinessId,Amount,Status,Balance,RecordType,
+		Operator,WithwardId,RelationNo,Remark,groupid,
+		groupbeforebalance, groupafterbalance)
+		values(#{businessid,jdbcType=INTEGER},
+		#{amount,jdbcType=DECIMAL},
+		#{status,jdbcType=SMALLINT},
+		#{balance,jdbcType=DECIMAL},
+		#{recordtype,jdbcType=SMALLINT},
+		#{operator,jdbcType=NVARCHAR},
+		#{withwardid,jdbcType=BIGINT},
+		#{relationno,jdbcType=VARCHAR},
+		#{remark,jdbcType=NVARCHAR},
+		#{groupid,jdbcType=INTEGER}, 
+		#{groupbeforebalance,jdbcType=DECIMAL},
+		#{groupamount,jdbcType=DECIMAL})
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.BusinessBalanceRecord">
 		update BusinessBalanceRecord
