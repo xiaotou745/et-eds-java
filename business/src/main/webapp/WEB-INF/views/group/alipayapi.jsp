@@ -93,8 +93,14 @@
 		sParaTemp.put("subject", subject);
 		sParaTemp.put("total_fee", total_fee);
 		sParaTemp.put("body", body);
-		sParaTemp.put("paymethod", paymethod);
-		sParaTemp.put("defaultbank", defaultbank);
+		if(defaultbank.equals("alipay")){
+			sParaTemp.put("paymethod", "directPay");
+			//sParaTemp.put("defaultbank", defaultbank);
+		}else{
+			sParaTemp.put("paymethod", paymethod);
+			sParaTemp.put("defaultbank", defaultbank);
+		}
+
 		sParaTemp.put("show_url", show_url);
 		sParaTemp.put("anti_phishing_key", anti_phishing_key);
 		sParaTemp.put("exter_invoke_ip", exter_invoke_ip);

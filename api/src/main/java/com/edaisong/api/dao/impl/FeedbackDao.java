@@ -35,8 +35,9 @@ public class FeedbackDao extends DaoBase implements IFeedbackDao {
 
 	@Override
 	public int insert(Feedback record) {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO Auto-generated method stub	
+		return getMasterSqlSessionUtil().insert(
+				"com.edaisong.api.dao.inter.IFeedbackDao.insert", record);
 	}
 
 	@Override

@@ -158,4 +158,13 @@ public class AppTest extends TestCase {
 		PagedResponse<BusinessClientersModel> ret = clienterService.getBusinessClienters(req);
 		Assert.assertTrue(ret.getResultList().size() > 0);
 	}
+	
+	
+	public void testAes()
+	{
+		String str="2TQvCEaWerqGpAP+SYWk7OZhAQO4ukfH+rz1ZoRdBQ9NoDwdelectGMnpL+aizupszy3LtT7HY/3LzAAaN+FrU9BPxOyGks95M73mm8NfocMhC/65pqNj7XW4MIvEnbP1M+xuwttDFCI4qWkynE4YU8CZlmVyTYI4HKffDpd7fs=";
+		String deString= com.edaisong.core.security.AES.aesDecrypt(str);
+		System.out.println(deString);
+	}
+	
 }
