@@ -51,7 +51,7 @@ public class AES {
 			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 			cipher.init(Cipher.DECRYPT_MODE, skeySpec);
 			byte [] bs= Base64.getDecoder().decode(str);
-			String strTmp = new String(cipher.doFinal(bs));
+			String strTmp = new String(cipher.doFinal(bs),"UTF-8");
 			return strTmp;
 			
 		} catch (Exception ex) {
