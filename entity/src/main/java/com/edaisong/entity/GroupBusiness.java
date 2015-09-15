@@ -24,6 +24,7 @@ public class GroupBusiness  implements Serializable{
     private Double amount;
 
     private Integer isvalid;
+    private Integer isallowoverdraft;
 
     public Integer getId() {
         return id;
@@ -105,5 +106,13 @@ public class GroupBusiness  implements Serializable{
 
 	public void setLoginname(String loginname) {
 		this.loginname = loginname;
+	}
+
+	public Integer getIsallowoverdraft() {
+		return isallowoverdraft;
+	}
+
+	public void setIsallowoverdraft(Integer isallowoverdraft) {
+		this.isallowoverdraft = isallowoverdraft;
 	}
 }

@@ -44,22 +44,21 @@ public class GroupBusinessRechargeService implements
 		
 		int result= groupBusinessRechargeDao.update(record);
 		if (result>0) {
-			GroupBusiness oldGroupBusiness=groupBusinessDao.select(record.getGroupbusinessid());
 			int rs=groupBusinessDao.recharge(record.getGroupbusinessid(), record.getPayamount());
 			if (rs>0) {
+				GroupBusiness groupBusiness=groupBusinessDao.select(record.getGroupbusinessid());
 				GroupBusinessRecharge recharge=	groupBusinessRechargeDao.getByOrderNo(record.getOrderno());
 				BusinessBalanceRecord rechargeRecord=new BusinessBalanceRecord();
 				rechargeRecord.setBusinessid(0);
-				rechargeRecord.setAmount(record.getPayamount());
+				rechargeRecord.setGroupamount(record.getPayamount());
 				rechargeRecord.setStatus((short)BusinessBalanceRecordStatus.Success.value());
-				rechargeRecord.setBalance(0d);
 				rechargeRecord.setRecordtype((short)BusinessBalanceRecordRecordType.Recharge.value());
 				rechargeRecord.setOperator(operatorName);
 				rechargeRecord.setWithwardid((long)recharge.getId());
 				rechargeRecord.setRelationno(record.getOrderno());
 				rechargeRecord.setRemark(remark);
 				rechargeRecord.setGroupid(record.getGroupbusinessid());
-				rechargeRecord.setGroupbeforebalance(oldGroupBusiness.getAmount());
+				rechargeRecord.setGroupafterbalance(groupBusiness.getAmount());
 				businessBalanceRecordDao.groupInsert(rechargeRecord);
 			}
 		}

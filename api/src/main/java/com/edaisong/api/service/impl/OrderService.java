@@ -279,43 +279,31 @@ public class OrderService implements IOrderService {
 		updateModel.setOthercancelreason("商家取消订单");
 		updateModel.setAmount(orderRe.getSettlemoney()); // 取消订单涉及到的金额数目此处取到的当前订单的
 															// 结算费 即商家应付
-
 		if (orderDao.cancelOrderBusiness(updateModel) > 0){ /* 取消订单 针对订单表的逻辑 */
-			int updateResutl=0;
-			Double groupBeforeBalance=0d;
-			if (orderRe.getGroupbusinessid()>0) {//更新集团余额
-				GroupBusiness oldGroupBusiness=groupBusinessDao.select(orderRe.getGroupbusinessid());
-				groupBeforeBalance=oldGroupBusiness.getAmount();
-				updateResutl=groupBusinessDao.recharge(orderRe.getGroupbusinessid(), orderRe.getSettlemoney());
-			
-			}else {//更新商户余额 
-				updateResutl=businessDao.updateForWithdraw(orderRe.getSettlemoney(), req.getBusinessId());
+			BusinessBalanceRecord businessBalanceRecord = new BusinessBalanceRecord();
+			businessBalanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success.value()); // 流水状态(1、交易成功																					// 2、交易中）
+			businessBalanceRecord.setRecordtype((short) BusinessBalanceRecordRecordType.CancelOrder.value()); // 取消订单
+			businessBalanceRecord.setOperator("商家:" + req.getBusinessId()); // 商家id
+			businessBalanceRecord.setWithwardid((long) req.getOrderId()); // 订单id
+			businessBalanceRecord.setRelationno(req.getOrderNo()); // 关联单号
+			businessBalanceRecord.setRemark("商户取消订单返回配送费"); // 注释
+			if (orderRe.getGroupbusinessid()>0) {
+				businessBalanceRecord.setBusinessid(0);
+				businessBalanceRecord.setAmount(0d);
+				businessBalanceRecord.setGroupamount(orderRe.getSettlemoney());
+				businessBalanceRecord.setGroupid(orderRe.getGroupbusinessid());
 			}
-			if (updateResutl>0) {
-				BusinessBalanceRecord businessBalanceRecord = new BusinessBalanceRecord();
+			else {
+				businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
 				businessBalanceRecord.setAmount(orderRe.getSettlemoney());
-				businessBalanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success.value()); // 流水状态(1、交易成功																					// 2、交易中）
-				businessBalanceRecord.setRecordtype((short) BusinessBalanceRecordRecordType.CancelOrder.value()); // 取消订单
-				businessBalanceRecord.setOperator("商家:" + req.getBusinessId()); // 商家id
-				businessBalanceRecord.setWithwardid((long) req.getOrderId()); // 订单id
-				businessBalanceRecord.setRelationno(req.getOrderNo()); // 关联单号
-				businessBalanceRecord.setRemark("商户取消订单返回配送费"); // 注释
-				businessBalanceRecord.setGroupbeforebalance(groupBeforeBalance);
-				if (orderRe.getGroupbusinessid()<=0) {
-					businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
-					businessBalanceRecordDao.insert(businessBalanceRecord); // 记录
-				}
-				else {
-					businessBalanceRecord.setBusinessid(0);
-					businessBalanceRecord.setGroupid(orderRe.getGroupbusinessid());
-					businessBalanceRecordDao.groupInsert(businessBalanceRecord); // 记录
-				}
-
-				OrderOther orderOther = new OrderOther();
-				orderOther.setOrderid(req.getOrderId());
-				orderOther.setCancelTime(new Date());
-				orderOtherDao.updateByPrimaryKeySelective(orderOther);
+				businessBalanceRecord.setGroupamount(0d);
+				businessBalanceRecord.setGroupid(0);
 			}
+			businessService.updateForWithdrawC(1,businessBalanceRecord);
+			OrderOther orderOther = new OrderOther();
+			orderOther.setOrderid(req.getOrderId());
+			orderOther.setCancelTime(new Date());
+			orderOtherDao.updateByPrimaryKeySelective(orderOther);
 		}else {
 			throw new RuntimeException("更新订单状态为取消状态时失败");
 		}
@@ -361,15 +349,25 @@ public class OrderService implements IOrderService {
 
 		// 扣除商家结算费
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
-		balanceRecord.setBusinessid(req.getBusinessid());
-		balanceRecord.setAmount(-order.getSettlemoney());
+		if (order.getGroupbusinessid()>0) {
+			balanceRecord.setBusinessid(0);
+			balanceRecord.setAmount(0d);
+			balanceRecord.setGroupamount(order.getSettlemoney());
+			balanceRecord.setGroupid(order.getGroupbusinessid());
+		}else {
+			balanceRecord.setBusinessid(req.getBusinessid());
+			balanceRecord.setAmount(order.getSettlemoney());
+			balanceRecord.setGroupamount(0);
+			balanceRecord.setGroupid(0);
+		}
+
 		balanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success.value());
 		balanceRecord.setRecordtype((short) BusinessBalanceRecordRecordType.PublishOrder.value());
 		balanceRecord.setOperator(businessModel.getName());
 		balanceRecord.setWithwardid((long) order.getId());
 		balanceRecord.setRelationno(order.getOrderno());
 		balanceRecord.setRemark("扣除商家结算费");
-		businessService.updateForWithdrawC(balanceRecord);
+		businessService.updateForWithdrawC(0,balanceRecord);
 
 		// 记录补贴日志
 		if (order.getAdjustment() > 0) {
@@ -525,6 +523,12 @@ public class OrderService implements IOrderService {
 		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(req.getAmount(), businessModel.getBusinesscommission(),
 				businessModel.getCommissionfixvalue(), req.getOrdercount(), businessModel.getDistribsubsidy(), req.getOrderfrom());
 		order.setSettlemoney(settleMoney);
+		
+		//如果当前商家的余额不够支付订单了，则消费集团的金额
+		if (businessModel.getGroupid()>0&&
+			businessModel.getBalanceprice()<settleMoney) {
+			order.setGroupbusinessid(businessModel.getGroupid());
+		}
 
 		order.setBusinessreceivable(Double.valueOf(0));// 退还商家金额
 		if (!req.getIspay() && order.getMealssettlemode() == MealsSettleMode.LineOn.value()) {
@@ -587,14 +591,23 @@ public class OrderService implements IOrderService {
 		if (req.getAmount().compareTo(amount) != 0) {
 			return PublishOrderReturnEnum.AmountIsNotEqual; // 金额有误
 		}
-		if (businessModel.getIsallowoverdraft() == 0) // 0不允许透支
-		{
-			Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(req.getAmount(), businessModel.getBusinesscommission(),
-					businessModel.getCommissionfixvalue(), req.getOrdercount(), businessModel.getDistribsubsidy(), req.getOrderfrom());
-			if (businessModel.getBalanceprice() < settleMoney) {
+		
+		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(req.getAmount(), businessModel.getBusinesscommission(),
+				businessModel.getCommissionfixvalue(), req.getOrdercount(), businessModel.getDistribsubsidy(), req.getOrderfrom());
+		
+		if (businessModel.getBalanceprice() < settleMoney) {
+			if (businessModel.getGroupid()>0){
+				GroupBusiness groupBusiness=groupBusinessDao.select(businessModel.getGroupid());
+				if (groupBusiness.getAmount()<settleMoney&&
+					groupBusiness.getIsallowoverdraft()==0) {
+					return PublishOrderReturnEnum.GroupBalancePriceLack;
+				}
+			}else if (businessModel.getIsallowoverdraft() == 0) {
+				//商家不允许透支
 				return PublishOrderReturnEnum.BusiBalancePriceLack;
 			}
 		}
+		
 		return PublishOrderReturnEnum.Success;
 	}
 

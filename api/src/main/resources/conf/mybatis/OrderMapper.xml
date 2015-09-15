@@ -169,7 +169,7 @@
 		OtherCancelReason, CommissionType, CommissionFixValue,
 		BusinessGroupId, TimeSpan, Invoice,
 		BusinessReceivable, MealsSettleMode, FinishDateLength,
-		FinishAll, RealOrderCommission)
+		FinishAll, RealOrderCommission,GroupBusinessID)
 		values (#{id,jdbcType=INTEGER}, #{orderno,jdbcType=NVARCHAR},
 		#{pickupaddress,jdbcType=NVARCHAR},
 		#{pubdate,jdbcType=TIMESTAMP}, #{recevicename,jdbcType=NVARCHAR},
@@ -206,7 +206,9 @@
 		#{invoice,jdbcType=NVARCHAR},
 		#{businessreceivable,jdbcType=DECIMAL}, #{mealssettlemode,jdbcType=INTEGER},
 		#{finishdatelength,jdbcType=INTEGER},
-		#{finishall,jdbcType=INTEGER}, #{realordercommission,jdbcType=NUMERIC})
+		#{finishall,jdbcType=INTEGER}, 
+		#{realordercommission,jdbcType=NUMERIC},
+		#{groupbusinessid,jdbcType=NUMERIC})
 	</insert>
 	<insert id="insertSelective" parameterType="com.edaisong.entity.Order">
 		<selectKey resultType="java.lang.Integer" keyProperty="id"
@@ -378,6 +380,9 @@
 			<if test="realordercommission != null">
 				RealOrderCommission,
 			</if>
+			<if test="groupbusinessid != null">
+				groupbusinessid,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderno != null">
@@ -541,6 +546,9 @@
 			</if>
 			<if test="realordercommission != null">
 				#{realordercommission,jdbcType=NUMERIC},
+			</if>
+			<if test="groupbusinessid != null">
+				#{groupbusinessid,jdbcType=NUMERIC},
 			</if>
 		</trim>
 	</insert>
@@ -709,6 +717,9 @@
 			<if test="realordercommission != null">
 				RealOrderCommission = #{realordercommission,jdbcType=NUMERIC},
 			</if>
+			<if test="groupbusinessid != null">
+				groupbusinessid = #{groupbusinessid,jdbcType=NUMERIC},
+			</if>
 		</set>
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
@@ -767,7 +778,8 @@
 		MealsSettleMode = #{mealssettlemode,jdbcType=INTEGER},
 		FinishDateLength = #{finishdatelength,jdbcType=INTEGER},
 		FinishAll = #{finishall,jdbcType=INTEGER},
-		RealOrderCommission = #{realordercommission,jdbcType=NUMERIC}
+		RealOrderCommission = #{realordercommission,jdbcType=NUMERIC},
+		groupbusinessid = #{groupbusinessid,jdbcType=NUMERIC}
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
 

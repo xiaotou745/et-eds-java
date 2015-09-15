@@ -15,14 +15,13 @@
 		<result column="Remark" property="remark" jdbcType="NVARCHAR" />
 		<result column="IsEnable" jdbcType="SMALLINT" property="isenable" />
 		<result column="groupid" jdbcType="INTEGER" property="groupid" />
-		<result column="groupbeforebalance" jdbcType="DECIMAL"
-			property="groupbeforebalance" />
+		<result column="groupafterbalance" jdbcType="DECIMAL" property="groupafterbalance" />
 		<result column="groupamount" jdbcType="DECIMAL" property="groupamount" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		Id, BusinessId, Amount, Status, Balance, RecordType, Operator,
 		OperateTime, WithwardId,
-		RelationNo, Remark, IsEnable, groupid, groupbeforebalance, groupamount
+		RelationNo, Remark, IsEnable, groupid, groupafterbalance, groupamount
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Long">
@@ -38,14 +37,13 @@
 	<insert id="insert" parameterType="com.edaisong.entity.BusinessBalanceRecord">
 		insert into
 		BusinessBalanceRecord
-		(BusinessId,Amount,Status,Balance,RecordType,Operator,WithwardId,RelationNo,Remark,groupid,
-		groupbeforebalance, groupafterbalance)
+		(BusinessId,Amount,Status,Balance,RecordType,Operator,
+		WithwardId,RelationNo,Remark,groupid,groupafterbalance,groupamount)
 		select
 		#{businessid,jdbcType=INTEGER},
 		#{amount,jdbcType=DECIMAL},#{status,jdbcType=SMALLINT},b.BalancePrice,#{recordtype,jdbcType=SMALLINT},#{operator,jdbcType=NVARCHAR}
 		,#{withwardid,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
-		,#{groupid,jdbcType=INTEGER}, #{groupbeforebalance,jdbcType=DECIMAL},
-		#{groupamount,jdbcType=DECIMAL}
+		,#{groupid,jdbcType=INTEGER}, #{groupafterbalance,jdbcType=DECIMAL}, #{groupamount,jdbcType=DECIMAL}
 		from dbo.business as b where
 		Id=#{businessid,jdbcType=INTEGER} ;
 		select @@IDENTITY
@@ -53,19 +51,18 @@
 	<insert id="groupInsert" parameterType="com.edaisong.entity.BusinessBalanceRecord">
 		insert into BusinessBalanceRecord
 		(BusinessId,Amount,Status,Balance,RecordType,
-		Operator,WithwardId,RelationNo,Remark,groupid,
-		groupbeforebalance, groupafterbalance)
+		Operator,WithwardId,RelationNo,Remark,groupid,groupafterbalance,groupamount)
 		values(#{businessid,jdbcType=INTEGER},
 		#{amount,jdbcType=DECIMAL},
 		#{status,jdbcType=SMALLINT},
-		#{balance,jdbcType=DECIMAL},
+		0,
 		#{recordtype,jdbcType=SMALLINT},
 		#{operator,jdbcType=NVARCHAR},
 		#{withwardid,jdbcType=BIGINT},
 		#{relationno,jdbcType=VARCHAR},
 		#{remark,jdbcType=NVARCHAR},
 		#{groupid,jdbcType=INTEGER}, 
-		#{groupbeforebalance,jdbcType=DECIMAL},
+		#{groupafterbalance,jdbcType=DECIMAL}, 
 		#{groupamount,jdbcType=DECIMAL})
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.BusinessBalanceRecord">
@@ -107,8 +104,8 @@
 			<if test="groupid != null">
 				groupid = #{groupid,jdbcType=INTEGER},
 			</if>
-			<if test="groupbeforebalance != null">
-				groupbeforebalance = #{groupbeforebalance,jdbcType=DECIMAL},
+			<if test="groupafterbalance != null">
+				groupafterbalance = #{groupafterbalance,jdbcType=DECIMAL},
 			</if>
 			<if test="groupamount != null">
 				groupamount = #{groupamount,jdbcType=DECIMAL},
@@ -130,7 +127,7 @@
 		Remark = #{remark,jdbcType=NVARCHAR},
 		IsEnable = #{isenable,jdbcType=SMALLINT},
 		groupid = #{groupid,jdbcType=INTEGER},
-		groupbeforebalance = #{groupbeforebalance,jdbcType=DECIMAL},
+		groupafterbalance = #{groupafterbalance,jdbcType=DECIMAL},
 		groupamount = #{groupamount,jdbcType=DECIMAL}
 		where Id = #{id,jdbcType=BIGINT}
 	</update>
@@ -266,7 +263,6 @@
 		,bbr.[Remark]
 		,bbr.[IsEnable]
 		,bbr.[groupid]
-		,bbr.[groupbeforebalance]
 		,bbr.[groupafterbalance]
 		,bfa.AccountNo
 		,bfa.OpenBank

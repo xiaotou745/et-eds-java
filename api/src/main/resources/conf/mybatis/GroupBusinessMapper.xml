@@ -12,10 +12,11 @@
     <result column="ModifyTime" property="modifytime" jdbcType="TIMESTAMP" />
     <result column="Amount" property="amount" jdbcType="DECIMAL" />
     <result column="IsValid" property="isvalid" jdbcType="INTEGER" />
+    <result column="isallowoverdraft" property="isallowoverdraft" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     Id, GroupBusiName, LoginName, Password, CreateName, CreateTime, ModifyName, ModifyTime, 
-    Amount, IsValid
+    Amount, IsValid,isallowoverdraft
   </sql>
   <sql id="GetGroupBusinessTable" >
      dbo.groupbusiness(nolock) 
@@ -207,8 +208,8 @@
 		update GroupBusiness set Amount=Amount+#{amount,jdbcType=DECIMAL}
         where id=#{groupID,jdbcType=INTEGER}
 	</update>
-	<select id="select" parameterType="java.lang.Integer">
-		select top 1 * from   GroupBusiness
+	<select id="select" parameterType="java.lang.Integer"  resultType="com.edaisong.entity.GroupBusiness">
+		select top 1 * from   GroupBusiness with(nolock)
 		where id = #{groupID,jdbcType=INTEGER} 
 	</select>
 </mapper>

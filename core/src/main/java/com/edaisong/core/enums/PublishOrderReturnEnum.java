@@ -50,7 +50,11 @@ public enum PublishOrderReturnEnum {
 	/**
 	 * 订单已经存在
 	 */
-	OrderHasExist(-10, "订单已经存在");
+	OrderHasExist(-10, "订单已经存在"),
+	/**
+	 * 您的余额和集团的余额都不足，请及时充值!
+	 */
+	GroupBalancePriceLack(-11, "您的余额和集团的余额都不足，请及时充值!");
 
 	private int value = 0;
 	private String desc;

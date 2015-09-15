@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
+import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
@@ -22,6 +23,7 @@ import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
+import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessDetailModel;
@@ -41,6 +43,8 @@ public class BusinessService implements IBusinessService {
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
 	@Autowired
 	private RedisService redisService;
+	@Autowired
+	private IGroupBusinessDao groupBusinessDao;
 
 	private static final int MAX_LOING_COUNT = 5;
 
@@ -163,13 +167,13 @@ public class BusinessService implements IBusinessService {
 			}
 
 			if (brm.getBusinesscommission().compareTo(
-							model.getBusinesscommission()) != 0) {
+					model.getBusinesscommission()) != 0) {
 				remark.append(String.format("商配比例原值:%s,修改为%s;",
 						brm.getBusinesscommission(),
 						model.getBusinesscommission()));
 			}
 			if (brm.getCommissionfixvalue().compareTo(
-							model.getCommissionfixvalue()) != 0) {
+					model.getCommissionfixvalue()) != 0) {
 				remark.append(String.format("商配定额原值:%s,修改为%s;",
 						brm.getCommissionfixvalue(),
 						model.getCommissionfixvalue()));
@@ -260,10 +264,9 @@ public class BusinessService implements IBusinessService {
 					.getProperty("JuWangKeBusiAuditCallBack");
 			// 调用第三方接口 ，聚网客商户审核通过后调用接口
 			// 这里不建议使用 1 数字，而是根据 配置文件中的 appkey来获取 groupid
-			if (business.getGroupid()!=null &&
-				business.getGroupid() == 1 && 
-				business.getOriginalbusiid() > 0 && 
-				status == BusinessStatusEnum.AuditPass.value()) {
+			if (business.getGroupid() != null && business.getGroupid() == 1
+					&& business.getOriginalbusiid() > 0
+					&& status == BusinessStatusEnum.AuditPass.value()) {
 				String str = HttpUtil.sendPost(juWangKeBusiAuditCallBack,
 						"supplier_id=" + business.getOriginalbusiid());
 			}
@@ -273,28 +276,43 @@ public class BusinessService implements IBusinessService {
 
 	/**
 	 * 更新商户最后登录时间
+	 * 
 	 * @author pengyi
 	 * @date 20150818
 	 */
 	@Override
-	public 	int updateLastLoginTime(int businessID,Date loginTime) {
+	public int updateLastLoginTime(int businessID, Date loginTime) {
 		return iBusinessDao.updateLastLoginTime(businessID, loginTime);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int updateForWithdrawC(BusinessBalanceRecord record) {
-		if (record.getAmount()!=0) {
-	       iBusinessDao.updateForWithdraw(record.getAmount(), record.getBusinessid());
-	       return businessBalanceRecordDao.insert(record);
+	public int updateForWithdrawC(Integer moneyType,BusinessBalanceRecord record) {
+		int numfix = -1;
+		if (moneyType > 0) {
+			numfix = 1;
 		}
-        return 0;
-	}
 	
+		if (record.getGroupid() > 0) {
+			record.setGroupamount(Math.abs(record.getGroupamount()) * numfix);
+			groupBusinessDao.recharge(record.getGroupid(),record.getGroupamount());
+			GroupBusiness groupBusiness = groupBusinessDao.select(record.getGroupid());
+			record.setGroupafterbalance(groupBusiness.getAmount());
+			businessBalanceRecordDao.groupInsert(record); // 记录
+		} else {
+			record.setAmount(Math.abs(record.getAmount()) * numfix);
+			iBusinessDao.updateForWithdraw(record.getAmount(),record.getBusinessid());
+			record.setGroupafterbalance(0d);
+			return businessBalanceRecordDao.insert(record);
+		}
+		return 0;
+	}
+
 	/**
-	 * 获取商户、集团、策略 
-	 * @param   商户id
-	 * @return 
+	 * 获取商户、集团、策略
+	 * 
+	 * @param 商户id
+	 * @return
 	 * @author 胡灵波
 	 * @Date 2015年8月11日 17:48:47
 	 */
@@ -303,14 +321,14 @@ public class BusinessService implements IBusinessService {
 		return iBusinessDao.getBusiness(id);
 	}
 
-
 	@Override
 	public BusinessRechargeDetailModel getRechargeDetail(String orderNo) {
 		return iBusinessDao.getRechargeDetail(orderNo);
 	}
 
 	/**
-	 *  更新商家余额、可提现余额     
+	 * 更新商家余额、可提现余额
+	 * 
 	 * @param businessMoney
 	 * @author CaoHeYang
 	 * @date 20150831
@@ -319,17 +337,19 @@ public class BusinessService implements IBusinessService {
 	public void updateBBalanceAndWithdraw(BusinessMoney businessMoney) {
 		iBusinessDao.updateForWithdraw(businessMoney.getAmount(),
 				businessMoney.getBusinessId());// 更新商户余额
-		//插入商家余额流水
+		// 插入商家余额流水
 		BusinessBalanceRecord businessBalanceRecord = new BusinessBalanceRecord();
 		businessBalanceRecord.setBusinessid(businessMoney.getBusinessId());// 商户Id
 		businessBalanceRecord.setAmount(businessMoney.getAmount());
-		businessBalanceRecord.setStatus((short)businessMoney.getStatus()); // 流水状态
-		businessBalanceRecord.setRecordtype((short) businessMoney.getRecordType());
+		businessBalanceRecord.setStatus((short) businessMoney.getStatus()); // 流水状态
+		businessBalanceRecord.setRecordtype((short) businessMoney
+				.getRecordType());
 		businessBalanceRecord.setOperator(businessMoney.getOperator()); // 商家id
-		businessBalanceRecord.setWithwardid((long) businessMoney.getWithwardId()); // 关联单id
+		businessBalanceRecord.setWithwardid((long) businessMoney
+				.getWithwardId()); // 关联单id
 		businessBalanceRecord.setRelationno(businessMoney.getRelationNo()); // 关联单号
 		businessBalanceRecord.setRemark(businessMoney.getRemark()); // 注释
-		businessBalanceRecordDao.insert(businessBalanceRecord); 
+		businessBalanceRecordDao.insert(businessBalanceRecord);
 	}
 
 }
