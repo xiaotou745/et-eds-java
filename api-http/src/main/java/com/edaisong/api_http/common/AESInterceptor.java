@@ -20,14 +20,14 @@ public class AESInterceptor  extends AbstractPhaseInterceptor<Message> {
 	//解密数据
 	@Override
 	public void handleMessage(Message message) throws Fault {
-		if(false)
+		if(false)//TODO 建议设置开关暂时不开启 
 		{
 			try {
 				InputStream mContentString=message.getContent(InputStream.class);
 				String string=StreamUtils.copyToStringNoclose(mContentString);
 				AesParameterReq req=JsonUtil.str2obj(string, AesParameterReq.class);
 				System.out.println(string);
-				string="{    \"feedbackid\": 3179,    \"content\": \"孝河测试来看看\",    \"version\": \"0.1\",    \"feedbacktype\": \"功能意见\"}";//AES.aesDecrypt(req.getData());//AES解密
+				string=AES.aesDecrypt(req.getData());//AES解密
 				InputStream stream=StreamUtils.StringToInputStream(string);
 				message.setContent(InputStream.class, stream);//回填流
 			} catch (Exception e) {
