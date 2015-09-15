@@ -2,6 +2,7 @@ package com.edaisong.api.service.impl;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +16,16 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.AccountBillResultModel;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.AccountBillDayModel;
+import com.edaisong.entity.domain.AccountBillDayResultModel;
+import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.AccountBillCReq;
+import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
+import com.edaisong.entity.req.PagedAccountBillDayReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
 @Service
@@ -56,6 +63,12 @@ public class BusinessBalanceRecordService implements IBusinessBalanceRecordServi
 		String year = par.getMonthInfo().split("-")[0];// 年
 		String month = par.getMonthInfo().split("-")[1];// 月
 		Integer dayscount = ParseHelper.GetMixDay(year, month);// 共多少天
+		int nowmonth=ParseHelper.GetInDate(new Date(), 2);//当前月份
+		if(nowmonth==Integer.parseInt(month))//查询月份等于当前月份
+		{
+			//重置当月天数
+			dayscount=ParseHelper.GetInDate(new Date(), 3);
+		}
 		Double monthOutMoney=0.0;//月总支出
 		Double monthInMoney=0.0;//月总收入
 		
@@ -92,5 +105,45 @@ public class BusinessBalanceRecordService implements IBusinessBalanceRecordServi
 		resultModel.setListDays(list);
 		return resultModel;
 	}
+	/***
+	 * API商家获取日账单列表分页
+	 * 茹化肖
+	 * 2015年9月11日11:00:12
+	 */
+	@Override
+	public AccountBillDayResultModel getAccountBillListDayB(
+			PagedAccountBillDayReq par) {
+		String daystr=par.getDayInfo();
+		par.setStratDate(daystr+" 00:00:00");//设置开始时间
+		par.setEndDate(daystr+" 23:59:59");//设置结束时间
+		List<AccountBillDayModel> list=businessBalanceRecordDao.getAccountBillListDayB(par);
+		double outmoney=0;
+		double inmoney=0;
+		for (AccountBillDayModel accountBillDayModel : list) {
+			if(accountBillDayModel.getAmount()>0)
+			{
+				inmoney+=accountBillDayModel.getAmount();
+			}
+			else {
+				outmoney+=accountBillDayModel.getAmount();
+			}
+		}
+		AccountBillDayResultModel resultModel=new AccountBillDayResultModel();
+		resultModel.setInMoney(inmoney);
+		resultModel.setOutMoney(outmoney);
+		resultModel.setListRecordS((ArrayList<AccountBillDayModel>)list);
+		return resultModel;
+	}
+	/**
+	 * B端获取账单详情
+	 * 茹化肖
+	 * 2015年9月11日15:43:07
+	 */
+	@Override
+	public AccountBillDetailModel getAccountBillDetailB(AccountBillDetailReq par) {
+		return businessBalanceRecordDao.getAccountBillDetailB(par);
+		
+	}
+
 
 }

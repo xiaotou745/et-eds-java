@@ -37,7 +37,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				request.setAttribute("userName", UserContext.getCurrentContext(request).getName());
 
 				if (needCheckPageAuth(request)) {
-					List<MenuEntity> menuList=authorityMenuClassService.getMenuListByUserID(UserContext.getCurrentContext(request).getAccount().getId());
+					List<MenuEntity> menuList=authorityMenuClassService.getMenuListByUserID(UserContext.getCurrentContext(request).getId());
 					for (MenuEntity menuEntity : menuList) {
 						if (request.getServletPath().equals(menuEntity.getJavaUrl())) {
 							return true;
@@ -59,7 +59,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 			!request.getServletPath().equals("/order/list")&&
 			!request.getServletPath().equals("/order/exportorder")&&
 			!request.getServletPath().equals("/account/logoff")) {
-			return true;
+			return false;
+			
 		}
 		return false;
 	}

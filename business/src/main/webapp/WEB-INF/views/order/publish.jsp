@@ -7,7 +7,8 @@
 	String basePath = PropertyUtils.getProperty("static.business.url");
     BusinessModel businessModel=(BusinessModel) request.getAttribute("businessModel");//商家基本信息
 %>
-
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
 <div class="top cb">
 	<h3 class="cb">发布任务</h3>
 </div>

@@ -108,4 +108,5 @@ public interface IBusinessService {
 	 * @date 20150831
 	 */
     void updateBBalanceAndWithdraw(BusinessMoney businessMoney);
+    
 }

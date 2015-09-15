@@ -6,8 +6,10 @@
 <%@page import="com.edaisong.core.util.EnumHelper"%>
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%@page import="com.edaisong.core.enums.BusinessBalanceRecordRecordType"%>
+<%@page import="com.edaisong.entity.domain.GroupBusinessModel"%>
 <%
 	String basePath = PropertyUtils.getProperty("static.admin.url");
+	GroupBusinessModel detail = (GroupBusinessModel)request.getAttribute("detail");
 %>
 
 <link rel="stylesheet"
@@ -17,10 +19,10 @@
 <table class="tbstyle222" border="0"
 	style="font-size: 14px; font-weight: bold; line-height: 300%; width: 900px">
 	<tr class="trclass">
-		<td>集团名称：</td>
-		<td>联系电话：</td>
-		<td><a href="#">集团余额</a></td>
-		<td><a href="#">绑定记录查询</a></td>
+		<td>集团名称：<%=ParseHelper.ToString(detail.getGroupbusiname(), "")%></td>
+		<td>联系电话：<%=ParseHelper.ToString(detail.getLoginname(), "")%></td>
+		<td><a href="#">集团余额：<%=detail.getAmount() %></a></td>
+		<td><a href="<%=basePath%>/groupbusiness/businessbindloglist?groupBusinessId=<%=detail.getId() %>">绑定记录查询</a></td>
 	</tr>
 </table>
 
@@ -29,7 +31,8 @@
 		<div class="col-lg-12">
 			<form method="POST" action="#" class="form-horizontal"
 				id="searchForm">
-				<input type="hidden" name="groupBusinessId" id="groupBusinessId" value="" />
+				<input type="hidden" name="groupBusinessId" id="groupBusinessId" value="<%=detail.getId() %>" />
+				<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
@@ -63,6 +66,17 @@
 							</div>
 						</div>
 					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<div class="col-sm-8">
+								<button type="button" class="btn btn-primary btn-lg" id="btnSearch">查询</button>
+								<button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='<%=basePath%>/groupbusiness/businesslist?groupBusinessId=<%=detail.getId()%>'">绑定门店</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</form>
 		</div>
@@ -75,11 +89,21 @@
 </div>
 
 <script>
+$(function(){
+	  $(' .input-group.date').datepicker({
+        todayBtn: "linked",
+        keyboardNavigation: false,
+        forceParse: false,
+        calendarWeeks: true,
+        autoclose: true
+    });
+});
+
 	var jss = {
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
 		 var data=$("#searchForm").serialize();
-		 $.post("<%=basePath%>/business/addclienterbindlistdo", data,
+		 $.post("<%=basePath%>/groupbusiness/businessbindlistdo", data,
 					function(d) {
 						$("#content").html(d);
 					});
@@ -95,7 +119,7 @@
         if (!window.confirm("是否解除绑定？")) {
             return;
         }
-        var paramaters = {"businessId":businessId,"groupBusinessId":groupBusinessId};
+        var paramaters = {"businessId":businessId,"groupId":groupBusinessId};
         var url = "<%=basePath%>/groupbusiness/removebusinessbind";
         $.ajax({
             type: 'POST',

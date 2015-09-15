@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IGroupBusinessBalanceDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.domain.GroupBusinessBalanceRecord" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
+    <result column="Amount" property="amount" jdbcType="DECIMAL" />
+    <result column="Status" property="status" jdbcType="SMALLINT" />
+    <result column="Balance" property="balance" jdbcType="DECIMAL" />
+    <result column="RecordType" property="recordtype" jdbcType="SMALLINT" />
+    <result column="Operator" property="operator" jdbcType="NVARCHAR" />
+    <result column="OperateTime" property="operatetime" jdbcType="TIMESTAMP" />
+    <result column="WithwardId" property="withwardid" jdbcType="BIGINT" />
+    <result column="RelationNo" property="relationno" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+    <result column="IsEnable" jdbcType="SMALLINT" property="isenable" />
+    <result column="groupid" jdbcType="INTEGER" property="groupid" />
+    <result column="groupbeforebalance" jdbcType="DECIMAL" property="groupbeforebalance" />
+    <result column="groupafterbalance" jdbcType="DECIMAL" property="groupafterbalance" /> 
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, BusinessId, Amount, Status, Balance, RecordType, Operator, OperateTime, WithwardId, 
+    RelationNo, Remark, IsEnable, groupid, groupbeforebalance, groupafterbalance
+  </sql> 
+  <!-- 获取交易明细的Where条件 -->
+  <sql id="getTransDetailListWhere">
+    	1=1 AND bbr.GroupId > 0  
+	 <if test="startDate != null and startDate != ''">
+	      AND bbr.OperateTime >=''${startDate}''
+     </if>
+     <if test="endDate != null and endDate != ''">
+	      AND ''${endDate}'' > bbr.OperateTime 
+     </if>
+     <if test="recordType != null and recordType != '' and recordType != -1">
+	      AND bbr.RecordType =${recordType}
+     </if>
+     <if test="groupbusinessId !=null and groupbusinessId!=0">
+	       AND bbr.GroupId=${groupbusinessId}
+     </if>
+     <if test="relationNo !=null and relationNo!=''">
+	       AND bbr.relationNo=''${relationNo}''
+     </if>
+     <if test="businessName !=null and businessName!=''">
+	       AND b.name=''${businessName}'' 
+     </if>
+     
+  </sql>
+   <!-- 获取集团收支明细的分页存储过程 -->
+  <select id="getGroupBusinessRecord" resultType="com.edaisong.entity.domain.GroupBusinessBalanceRecord" 
+  parameterType="com.edaisong.entity.req.PagedGroupBussinessBalanceReq" statementType="CALLABLE">  
+	{call Sp_CustomPage2015_V1(
+	' bbr.OperateTime DESC ',
+	' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,isnull(bbr.WithwardId,0) as WithwardId,bbr.Amount,bbr.Balance,bbr.Status,OperateTime,Remark,Operator,bbr.groupid,bbr.GroupAfterBalance,b.Name businessname ',
+	' BusinessBalanceRecord AS bbr (nolock) join dbo.business b (nolock) on bbr.BusinessId = b.Id ',
+	' <include refid="getTransDetailListWhere"/> ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER},
+	1,
+	#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+	#{totalPage,mode=OUT,jdbcType=VARCHAR}
+	)} 
+  </select> 
+  
+  <select id="getGroupBusinessRecordForExport" resultType="com.edaisong.entity.domain.GroupBusinessBalanceRecord"
+  		 parameterType="com.edaisong.entity.req.PagedGroupBussinessBalanceReq">
+  	select  case bbr.RecordType
+          when 1 then '发布订单'
+          when 2 then '取消订单'
+          when 3 then '提款申请'
+          when 4 then '提款拒绝'
+          when 5 then '打款失败'
+          when 6 then '系统奖励'
+          when 7 then '系统赔偿'
+          when 8 then '订单菜品费'
+          when 9 then '充值'
+          when 10 then '余额清零'
+          when 11 then '手续费'
+          when 12 then '充值赠送'
+        end recordtypeString ,
+        isnull(bbr.RelationNo, '''') as RelationNo ,
+        isnull(bbr.WithwardId, 0) as WithwardId ,
+        bbr.Amount ,
+        bbr.Balance ,
+        case bbr.[Status]
+          when 1 then '交易成功'
+          when 2 then '交易中'
+        end statusString ,
+        bbr.OperateTime ,
+        bbr.Remark ,
+        bbr.Operator ,
+        bbr.GroupId ,
+        bbr.GroupAfterBalance ,
+        b.Name businessname
+from    BusinessBalanceRecord as bbr ( nolock )
+        join dbo.business b ( nolock ) on bbr.BusinessId = b.Id
+where 1=1 AND bbr.GroupId > 0 
+<if test="recordType>0">
+	      AND bbr.[RecordType]=#{recordType,jdbcType=INTEGER}
+    </if> 
+	<if test="relationNo != null and relationNo != ''">
+	      AND bbr.[RelationNo]=#{relationNo,jdbcType=VARCHAR}
+    </if>
+    <if test="startDate != null and startDate != ''">
+	    AND CONVERT(CHAR(10),bbr.OperateTime,120)>=CONVERT(CHAR(10),#{startDate,jdbcType=VARCHAR},120)
+    </if>
+    <if test="endDate != null and endDate != ''">
+	    AND CONVERT(CHAR(10),#{endDate,jdbcType=VARCHAR},120) > CONVERT(CHAR(10),bbr.OperateTime,120)
+    </if>
+    <if test="businessName !=null and businessName!=''">
+	       AND b.name=''${businessName}'' 
+     </if>
+ORDER BY bbr.Id DESC
+  </select>
+</mapper>

@@ -5,13 +5,15 @@ import com.edaisong.entity.ClienterFinanceAccount;
 public interface IClienterFinanceAccountDao {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(ClienterFinanceAccount record);
+    boolean insert(ClienterFinanceAccount record);
 
-    int insertSelective(ClienterFinanceAccount record);
+    boolean insertSelective(ClienterFinanceAccount record);
 
     ClienterFinanceAccount selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(ClienterFinanceAccount record);
+    boolean updateByPrimaryKeySelective(ClienterFinanceAccount record);
 
     int updateByPrimaryKey(ClienterFinanceAccount record);
+    
+    int getCountByClientId(int clienterId,int accountType);
 }

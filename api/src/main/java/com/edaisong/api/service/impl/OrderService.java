@@ -1,6 +1,7 @@
 package com.edaisong.api.service.impl;
 
 import java.lang.Double;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import com.edaisong.api.common.OrderSettleMoneyHelper;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
+import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.dao.inter.IClienterLocationDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
@@ -35,12 +37,13 @@ import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
-import com.edaisong.core.enums.BusinessStatus;
+import com.edaisong.core.enums.BusinessStatusEnum;
 import com.edaisong.core.enums.CancelOrderBusinessReturnEnum;
 import com.edaisong.core.enums.ClienterAllowWithdrawRecordStatus;
 import com.edaisong.core.enums.ClienterAllowWithdrawRecordType;
 import com.edaisong.core.enums.ClienterBalanceRecordRecordType;
 import com.edaisong.core.enums.ClienterBalanceRecordStatus;
+import com.edaisong.core.enums.ClienterStatusEnum;
 import com.edaisong.core.enums.DeductCommissionType;
 import com.edaisong.core.enums.MealsSettleMode;
 import com.edaisong.core.enums.OrderAuditStatus;
@@ -50,6 +53,7 @@ import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
+import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
@@ -60,6 +64,7 @@ import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderSubsidiesLog;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.Location;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
@@ -67,11 +72,14 @@ import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
+import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.DaySatisticsB;
+import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
@@ -80,13 +88,19 @@ import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderReq;
+import com.edaisong.entity.req.OrderStatisticsBReq;
+import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
+import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
-import com.edaisong.entity.resp.OrderStatisticsResp;
+import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
+import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.resp.QueryOrderCResp;
 
 @Service
 public class OrderService implements IOrderService {
@@ -113,8 +127,10 @@ public class OrderService implements IOrderService {
 	private IOrderDetailDao orderDetailDao;
 	@Autowired
 	private IClienterBalanceRecordDao clienterBalanceRecordDao;
-	@Autowired 
+	@Autowired
 	IClienterLocationDao clienterLocationDao;
+	@Autowired
+	private IClienterDao clienterDao;
 
 	/**
 	 * 后台订单列表页面
@@ -141,56 +157,52 @@ public class OrderService implements IOrderService {
 	 */
 	@Override
 	public OrderMapDetail getOrderMapDetail(int orderid) {
-		OrderMapDetail orderMapDetail=orderDao.getOrderMapDetail(orderid);
-		if (orderMapDetail!=null) {
-			Date startTime=new Date();
-			Date endTime=new Date();
-            if(orderMapDetail.getPubDate()==null||orderMapDetail.getPubDate().indexOf("1900-01-01")>=0){
-            	  orderMapDetail.setPubDate("暂无");
-            }else {
-					startTime= ParseHelper.ToDate(orderMapDetail.getPubDate()) ;
+		OrderMapDetail orderMapDetail = orderDao.getOrderMapDetail(orderid);
+		if (orderMapDetail != null) {
+			Date startTime = new Date();
+			Date endTime = new Date();
+			if (orderMapDetail.getPubDate() == null || orderMapDetail.getPubDate().indexOf("1900-01-01") >= 0) {
+				orderMapDetail.setPubDate("暂无");
+			} else {
+				startTime = ParseHelper.ToDate(orderMapDetail.getPubDate());
 			}
-            if(orderMapDetail.getGrabTime()==null||orderMapDetail.getGrabTime().indexOf("1900-01-01")>=0){
-          	  orderMapDetail.setGrabTime("暂无");
-             }else{
-            	 endTime= ParseHelper.ToDate(orderMapDetail.getGrabTime()) ;
-             }
-            if(orderMapDetail.getTakeTime()==null||orderMapDetail.getTakeTime().indexOf("1900-01-01")>=0){
-            	  orderMapDetail.setTakeTime("暂无");
-            }else{
-           	 endTime= ParseHelper.ToDate(orderMapDetail.getTakeTime()) ;
-            }
-            if(orderMapDetail.getActualDoneDate()==null||orderMapDetail.getActualDoneDate().indexOf("1900-01-01")>=0){
-            	  orderMapDetail.setActualDoneDate("暂无");
-            }else{
-              	 endTime= ParseHelper.ToDate(orderMapDetail.getActualDoneDate()) ;
-             }
-            if (orderMapDetail.getGrabLatitude() == 0 || orderMapDetail.getGrabLongitude() == 0)
-            {
-            	orderMapDetail.setGrabLongitude( orderMapDetail.getPubLongitude()) ;
-            	orderMapDetail.setGrabLatitude(orderMapDetail.getPubLatitude()) ;
-            }
-            if (orderMapDetail.getTakeLatitude() == 0 || orderMapDetail.getTakeLongitude() == 0)
-            {
-            	orderMapDetail.setTakeLongitude( orderMapDetail.getPubLongitude()) ;
-            	orderMapDetail.setTakeLatitude(orderMapDetail.getPubLatitude()) ;
-            }
-            if (orderMapDetail.getCompleteLatitude() == 0 || orderMapDetail.getCompleteLongitude() == 0)
-            {
-            	orderMapDetail.setCompleteLongitude( orderMapDetail.getPubLongitude()) ;
-            	orderMapDetail.setCompleteLatitude (orderMapDetail.getPubLatitude()) ;
-            }
-            //开始时间小于结束时间才获取实时坐标 
-	         if (startTime.compareTo(endTime)<0&&orderMapDetail.getClienterId()>0) {
-	        		orderMapDetail.setLocations(
-	        				clienterLocationDao.getLocationsByTime(startTime, endTime, orderMapDetail.getClienterId()));
-			 }
-		    if (orderMapDetail.getLocations()==null) {
-			  orderMapDetail.setLocations(new ArrayList<Location>());
-		    }
+			if (orderMapDetail.getGrabTime() == null || orderMapDetail.getGrabTime().indexOf("1900-01-01") >= 0) {
+				orderMapDetail.setGrabTime("暂无");
+			} else {
+				endTime = ParseHelper.ToDate(orderMapDetail.getGrabTime());
+			}
+			if (orderMapDetail.getTakeTime() == null || orderMapDetail.getTakeTime().indexOf("1900-01-01") >= 0) {
+				orderMapDetail.setTakeTime("暂无");
+			} else {
+				endTime = ParseHelper.ToDate(orderMapDetail.getTakeTime());
+			}
+			if (orderMapDetail.getActualDoneDate() == null || orderMapDetail.getActualDoneDate().indexOf("1900-01-01") >= 0) {
+				orderMapDetail.setActualDoneDate("暂无");
+			} else {
+				endTime = ParseHelper.ToDate(orderMapDetail.getActualDoneDate());
+			}
+			if (orderMapDetail.getGrabLatitude() == 0 || orderMapDetail.getGrabLongitude() == 0) {
+				orderMapDetail.setGrabLongitude(orderMapDetail.getPubLongitude());
+				orderMapDetail.setGrabLatitude(orderMapDetail.getPubLatitude());
+			}
+			if (orderMapDetail.getTakeLatitude() == 0 || orderMapDetail.getTakeLongitude() == 0) {
+				orderMapDetail.setTakeLongitude(orderMapDetail.getPubLongitude());
+				orderMapDetail.setTakeLatitude(orderMapDetail.getPubLatitude());
+			}
+			if (orderMapDetail.getCompleteLatitude() == 0 || orderMapDetail.getCompleteLongitude() == 0) {
+				orderMapDetail.setCompleteLongitude(orderMapDetail.getPubLongitude());
+				orderMapDetail.setCompleteLatitude(orderMapDetail.getPubLatitude());
+			}
+			// 开始时间小于结束时间才获取实时坐标
+			if (startTime.compareTo(endTime) < 0 && orderMapDetail.getClienterId() > 0) {
+				orderMapDetail.setLocations(clienterLocationDao.getLocationsByTime(startTime, endTime, orderMapDetail.getClienterId()));
+			}
+			if (orderMapDetail.getLocations() == null) {
+				orderMapDetail.setLocations(new ArrayList<Location>());
+			}
 		}
 		return orderMapDetail;
-		
+
 	}
 
 	/**
@@ -518,8 +530,8 @@ public class OrderService implements IOrderService {
 		if (businessModel != null && businessModel.getOnekeypuborder() == 1) {
 			isOneKeyPubOrder = true;
 		}
-		if (businessModel.getStatus() != BusinessStatus.AuditPass.value())// 验证该商户有无发布订单资格
-																			// 审核通过下不允许发单
+		if (businessModel.getStatus() != BusinessStatusEnum.AuditPass.value())// 验证该商户有无发布订单资格
+																				// 审核通过下不允许发单
 		{
 			return PublishOrderReturnEnum.HadCancelQualification;
 		}
@@ -791,7 +803,7 @@ public class OrderService implements IOrderService {
 				double diffOrderCommission = orderModel.getSettleMoney() - orderModel.getOrderCommission();
 				double disOrderCommission = -diffOrderCommission;
 				// 更新骑士余额
-				ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel,auditRefuseOrder);
+				ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel, auditRefuseOrder);
 				clienterMoney.setRemark(auditRefuseOrder.getOptLog());
 				clienterMoney.setAmount(diffOrderCommission);
 				clienterMoney.setStatus(ClienterBalanceRecordStatus.Success.value());
@@ -812,7 +824,7 @@ public class OrderService implements IOrderService {
 		double realOrderCommission = orderModel.getOrderCommission() == null ? 0 : orderModel.getOrderCommission();
 		realOrderCommission = realOrderCommission > orderModel.getSettleMoney() ? orderModel.getSettleMoney() : realOrderCommission;
 		// 更新骑士可提现余额
-		ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel,auditRefuseOrder);
+		ClienterMoney clienterMoney = auditRefuseGetClienterMoney(orderModel, auditRefuseOrder);
 		clienterMoney.setRemark(auditRefuseOrder.getOptLog());
 		clienterMoney.setAmount(realOrderCommission);
 		clienterMoney.setStatus(ClienterAllowWithdrawRecordStatus.Success.value());
@@ -938,6 +950,7 @@ public class OrderService implements IOrderService {
 
 	/**
 	 * 订单导出数据
+	 * 
 	 * @author CaoHeYang
 	 * @date 20150906
 	 */
@@ -945,25 +958,122 @@ public class OrderService implements IOrderService {
 		return orderDao.exportOrder(search);
 	}
 
-
 	/**
 	 * B端任务统计接口
+	 * 
 	 * @author CaoHeYang
 	 * @date 20150910
-	 * @param data 
+	 * @param data
 	 * @return
 	 */
 	@Override
-	public OrderStatisticsResp getOrderStatisticsB() {
-		OrderStatisticsResp orderStatisticsResp=orderDao.getOrderStatistics();
-		List<ServiceClienter> serviceClienters=orderDao.getOrderStatisticsServiceClienterB();  //B端任务统计接口 
-		List<DaySatisticsB>   daySatisticsBs=  orderDao.getOrderStatisticsDaySatistics(); //B端任务统计接口 天数据列表 
+	public HttpResultModel<OrderStatisticsBResp> getOrderStatisticsB(OrderStatisticsBReq orderStatisticsBReq) {
+		HttpResultModel<OrderStatisticsBResp> resultModel = new HttpResultModel<OrderStatisticsBResp>();
+		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass.value()) {
+			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+			return resultModel;
+		}
+		OrderStatisticsBResp orderStatisticsResp = orderDao.getOrderStatistics(orderStatisticsBReq);
+		List<ServiceClienter> serviceClienters = orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq); // B端任务统计接口
+		List<DaySatisticsB> daySatisticsBs = orderDao.getOrderStatisticsDaySatistics(orderStatisticsBReq); // B端任务统计接口
+																											// 天数据列表
 		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
-			List<ServiceClienter>  temp=serviceClienters.stream().filter(t ->t.getPubDate().equals(daySatisticsB.getMonthDate())).collect(Collectors.toList());;
+			List<ServiceClienter> temp = serviceClienters.stream().filter(t -> t.getPubDate().equals(daySatisticsB.getMonthDate()))
+					.collect(Collectors.toList());
+			;
 			daySatisticsB.setServiceClienters(temp);
 		}
 		orderStatisticsResp.setDatas(daySatisticsBs);
+		resultModel.setResult(orderStatisticsResp);
+		return resultModel;
+	}
+
+	/**
+	 * C端任务统计接口
+	 * 
+	 * @author WangXuDan
+	 * @date 20150910
+	 * @param orderStatisticsCReq
+	 */
+	@Override
+	public OrderStatisticsCResp getOrderStatisticsC(OrderStatisticsCReq orderStatisticsCReq) {
+		OrderStatisticsCResp orderStatisticsResp = orderDao.getOrderStatisticsC(orderStatisticsCReq);
+		List<DaySatisticsC> daySatisticsCs = orderDao.getOrderStatisticsDaySatisticsC(orderStatisticsCReq);
+		orderStatisticsResp.setDatas(daySatisticsCs);
 		return orderStatisticsResp;
+	}
+
+	/**
+	 * B 端首页 订单列表
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq query) {
+		HttpResultModel<QueryOrderBResp> resultModel = new HttpResultModel<QueryOrderBResp>();
+		//验证商家状态
+		if (businessDao.getUserStatus(query.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass.value()) {
+			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+			return resultModel;
+		}
+		QueryOrderBResp queryOrderBResp=orderDao.queryOrderB(query);
+		queryOrderBResp.setOrders(orderDao.queryOrder(query));
+		resultModel.setResult(queryOrderBResp);
+		return resultModel;
+	}
+
+	/**
+	 * C 端我的任务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150911
+	 * @param para
+	 */
+	@Override
+	public HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq query) {
+		HttpResultModel<QueryOrderCResp> resultModel = new HttpResultModel<QueryOrderCResp>();
+		if (clienterService.getUserStatus(query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass.value()) {
+			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+			return resultModel;
+		}
+		QueryOrderCResp m = orderDao.queryOrderC(query);
+		if (query.getLongitude()!=null&&query.getLongitude()!=0		//需要计算骑士距离门店距离
+				&&query.getLatitude()!=null&&query.getLatitude()!=0
+				&&query.getStatus()==OrderStatus.Delivery.value()) {
+			List<QueryOrder> orders= orderDao.queryDeliveryOrderC(query);
+			orders.forEach(action->action.setDistance(action.getDistance_OrderBy()<1000?action.getDistance_OrderBy()+"m": 
+				new   BigDecimal(action.getDistance_OrderBy()*0.001).setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue()+"km"));
+			m.setOrders(orders);
+		}else {  //不需要计算骑士距离门店距离
+			m.setOrders(orderDao.queryOrder(query));
+		}
+		resultModel.setResult(m);
+		return resultModel;
+	}
+
+	/**
+	 * B端已完成任务列表或者配送员配送列表 或者C 端已完成任务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param query
+	 * @param type
+	 *            =0 B端 1 C端
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<List<QueryOrder>> getCompliteOrder(QueryOrderReq query, int type) {
+		query.setStatus(OrderStatus.Complite.value());
+		HttpResultModel<List<QueryOrder>> res = new HttpResultModel<List<QueryOrder>>();
+		if ((type == 0 && businessDao.getUserStatus(query.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass.value())  //B端判断B端逻辑
+				|| (type == 1 && clienterService.getUserStatus(query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass.value())) {//C端判断C端逻辑
+			res.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+			return res;
+		}
+		return res.setResult(orderDao.queryOrder(query));
 	}
 
 }

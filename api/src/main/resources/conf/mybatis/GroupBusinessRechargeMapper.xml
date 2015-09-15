@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IGroupBusinessRechargeDao" >
+  <insert id="insert" parameterType="com.edaisong.entity.GroupBusinessRecharge" >
+    insert into GroupBusinessRecharge (GroupBusinessId, PayType, 
+      OrderNo, PayAmount, PayStatus, 
+      PayBy, RequestTime, PayTime, 
+      OriginalOrderNo)
+    values (#{groupbusinessid,jdbcType=INTEGER}, #{paytype,jdbcType=INTEGER}, 
+      #{orderno,jdbcType=VARCHAR}, #{payamount,jdbcType=DECIMAL}, #{paystatus,jdbcType=INTEGER}, 
+      #{payby,jdbcType=NVARCHAR}, #{requesttime,jdbcType=TIMESTAMP}, #{paytime,jdbcType=TIMESTAMP}, 
+      #{originalorderno,jdbcType=VARCHAR})
+  </insert>
+  <update id="update" parameterType="com.edaisong.entity.GroupBusinessRecharge">
+		update GroupBusinessRecharge
+		set PayStatus = #{paystatus,jdbcType=INTEGER},
+		PayBy =#{payby,jdbcType=NVARCHAR},
+		PayTime =#{paytime,jdbcType=TIMESTAMP},
+		OriginalOrderNo =#{originalorderno,jdbcType=VARCHAR}
+		where OrderNo = #{orderno,jdbcType=VARCHAR} and PayStatus!=#{paystatus,jdbcType=INTEGER}
+	</update>
+	  <select id="getByOrderNo" resultType="com.edaisong.entity.GroupBusinessRecharge" parameterType="java.lang.String">
+		select top 1 * from  GroupBusinessRecharge
+		where OrderNo = #{orderNO,jdbcType=VARCHAR} 
+	</select>
+</mapper>

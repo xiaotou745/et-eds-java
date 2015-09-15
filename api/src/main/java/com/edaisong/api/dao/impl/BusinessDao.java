@@ -19,6 +19,7 @@ import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
+import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.req.PagedBusinessReq;
 
 @Repository
@@ -152,5 +153,17 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		parasMap.put("isBind", isBind);
 		return getMasterSqlSessionUtil().update(
 				"com.edaisong.api.dao.inter.IBusinessDao.updateBusinessIsBind",parasMap) > 0;
+	}
+
+	/**
+	 * 获取用户状态信息
+	 * @author CaoHeYang
+	 * @param userid
+	 * @date 20150911
+	 * @return
+	 */
+	@Override
+	public BusinessStatus getUserStatus(int userid) {
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getUserStatus", userid);
 	}
 }

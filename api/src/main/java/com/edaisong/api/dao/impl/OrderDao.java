@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +18,24 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
+import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
+import com.edaisong.entity.req.OrderStatisticsBReq;
+import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
-import com.edaisong.entity.resp.OrderStatisticsResp;
+import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
+import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.resp.QueryOrderCResp;
 
 @Repository
 public class OrderDao extends DaoBase implements IOrderDao {	
@@ -223,12 +232,10 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	 * @return
 	 */
 	@Override
-	public List<ServiceClienter> getOrderStatisticsServiceClienterB() {
-		// TODO Auto-generated method stub
-	  Map< String, Object> maspHashMap=new HashedMap(); 
+	public List<ServiceClienter> getOrderStatisticsServiceClienterB(OrderStatisticsBReq orderStatisticsBReq) {
 		return getReadOnlySqlSessionUtil().selectList(
 				"com.edaisong.api.dao.inter.IOrderDao.getOrderStatisticsServiceClienterB", 
-				maspHashMap);
+				orderStatisticsBReq);
 	}
 
 
@@ -238,11 +245,10 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	 * @return
 	 */
 	@Override
-	public List<DaySatisticsB> getOrderStatisticsDaySatistics() {
-		 Map< String, Object> maspHashMap=new HashedMap(); 
+	public List<DaySatisticsB> getOrderStatisticsDaySatistics(OrderStatisticsBReq orderStatisticsBReq) {
 			return getReadOnlySqlSessionUtil().selectList(
 					"com.edaisong.api.dao.inter.IOrderDao.getOrderStatisticsDaySatistics", 
-					maspHashMap);
+					orderStatisticsBReq);
 	}
 
 	/**
@@ -251,11 +257,91 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	 * @return
 	 */
 	@Override
-	public OrderStatisticsResp getOrderStatistics() {
-		 Map< String, Object> maspHashMap=new HashedMap(); 
+	public OrderStatisticsBResp getOrderStatistics(OrderStatisticsBReq orderStatisticsBReq) {
 			return getReadOnlySqlSessionUtil().selectOne(
 					"com.edaisong.api.dao.inter.IOrderDao.getOrderStatistics", 
-					maspHashMap);
+					orderStatisticsBReq);
 	}
+
+	/**
+	 * B 端首页 订单列表
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	public List<QueryOrder> queryOrder(QueryOrderReq query) {
+		PagedResponse<QueryOrder> result=  getReadOnlySqlSessionUtil().selectPageList(
+				"com.edaisong.api.dao.inter.IOrderDao.queryOrder", 
+				query);
+		return result.getResultList();
+	}
+	/**
+	 * C端任务统计接口
+	 * @author WangXuDan
+	 * @date 20150910
+	 * @param orderStatisticsCReq
+	 */
+	@Override
+	public OrderStatisticsCResp getOrderStatisticsC(
+			OrderStatisticsCReq orderStatisticsCReq) {
+		return getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderDao.getOrderStatisticsC", 
+				orderStatisticsCReq);
+	}
+	/**
+	 * C端任务统计接口  天数据列表
+	 * @author WangXuDan
+	 * @date 20150910
+	 * @param orderStatisticsCReq
+	 */
+	@Override
+	public List<DaySatisticsC> getOrderStatisticsDaySatisticsC(
+			OrderStatisticsCReq orderStatisticsCReq) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderDao.getOrderStatisticsDaySatisticsC", 
+				orderStatisticsCReq);
+	}
+	/**
+	 * 骑士端我的任务
+	 * @author CaoHeYang
+	 * @date 20150914
+	 * @param data 
+	 * @return
+	 */
+	@Override
+   public	QueryOrderCResp queryOrderC(QueryOrderReq query) {
+	   return getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderDao.queryOrderC", 
+				query);
+   }
+	/**
+	 * 商家端我的任务
+	 * @author CaoHeYang
+	 * @date 20150914
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	public QueryOrderBResp queryOrderB(QueryOrderReq query) {
+		   return getReadOnlySqlSessionUtil().selectOne(
+					"com.edaisong.api.dao.inter.IOrderDao.queryOrderB", 
+					query);
+	}
+	/**
+	 * c端查询待取货订单（会计算距离）
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	@Override
+	 public List<QueryOrder> queryDeliveryOrderC(QueryOrderReq query) {
+		PagedResponse<QueryOrder> result=  getReadOnlySqlSessionUtil().selectPageList(
+				"com.edaisong.api.dao.inter.IOrderDao.queryDeliveryOrderC", 
+				query);
+		return result.getResultList();
+	 }
 	
 }

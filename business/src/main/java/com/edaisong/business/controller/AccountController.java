@@ -18,14 +18,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.common.LoginHelper;
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.business.common.LoginResp;
 import com.edaisong.business.common.LoginUtil;
+import com.edaisong.business.common.UserContext;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
+import com.edaisong.entity.GroupBusiness;
+import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
 @Controller
@@ -33,6 +37,8 @@ import com.edaisong.entity.resp.BusinessLoginResp;
 public class AccountController {
 	@Autowired
 	private IBusinessService businessService;
+	@Autowired
+	private IGroupBusinessService groupBusinessService;
 	@Autowired
 	private RedisService redisService;
 
@@ -43,9 +49,10 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "login", method = { RequestMethod.POST })
-	public @ResponseBody LoginResp login(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam String phoneNo, @RequestParam String password, @RequestParam String code,
-			@RequestParam int rememberMe) {
+	@ResponseBody
+	public LoginResp login(HttpServletRequest request, HttpServletResponse response,
+			String phoneNo, String password,String code,
+			int rememberMe,int userType) {
 		//Object sessionCode = request.getSession().getAttribute("code");
 		String sessionCode = LoginHelper.getAuthCode(request,LoginUtil.BUSINESS_JSESSIONID);
 		//一次性验证码,防止暴力破解
@@ -67,32 +74,50 @@ public class AccountController {
 			resp.setSuccess(false);
 			return resp;
 		}
-		BusinessLoginResp businessResp = businessService.login(phoneNo, password);
-		if (!businessResp.isLoginSuccess()) {
-			resp.setMessage(businessResp.getMessage());
-			resp.setSuccess(false);
-			return resp;
-		}
 		// 登录成功,写cookie
 		int cookieMaxAge = 2 * 60 * 24;
 		// 选择记住我,默认cookie24小时,否则随浏览器的关闭而失效
 		if (rememberMe==1) {
 			cookieMaxAge = 60 * 60 * 24;
 		}
-		Business business = businessResp.getBusiness();
-		Date lastLoginTime = new Date();//更新最后登录时间
-		businessService.updateLastLoginTime(business.getId(), lastLoginTime);
-		business.setLastLoginTime(lastLoginTime);
-		String key = String.format("%s_business_%s_%s", RedissCacheKey.LOGIN_COOKIE_KEY,business.getPhoneno(),UUID.randomUUID().toString());
-		redisService.set(key, business, cookieMaxAge);
-		if(!(rememberMe==1)){
-			cookieMaxAge = -1;//如果不是记住我,则让cookie的失效时间跟着浏览器走
+
+		BusinessLoginResp businessResp=null;
+		String key="";
+		if (userType==0) {
+			businessResp = businessService.login(phoneNo, password);
+			if (businessResp.getResponseCode()!=ResponseCode.SUCESS) {
+				resp.setMessage(businessResp.getMessage());
+				resp.setSuccess(false);
+				return resp;
+			}
+			Business business = businessResp.getBusiness();
+			Date lastLoginTime = new Date();//更新最后登录时间
+			business.setLastLoginTime(lastLoginTime);
+			businessService.updateLastLoginTime(business.getId(), lastLoginTime);
+			key = RedissCacheKey.Business_LOGIN_COOKIE+business.getPhoneno()+UUID.randomUUID().toString();
+			redisService.set(key, business, cookieMaxAge);
+		}else {
+			GroupBusiness groupBusiness = groupBusinessService.login(phoneNo, password);
+			if (groupBusiness==null) {
+				resp.setMessage("用户名或密码错误");
+				resp.setSuccess(false);
+				return resp;
+			}
+			if (groupBusiness.getIsvalid()==0) {
+				resp.setMessage("您的商铺尚未验证通过");
+				resp.setSuccess(false);
+				return resp;
+			}
+			key = RedissCacheKey.GroupBusiness_LOGIN_COOKIE+groupBusiness.getLoginname()+UUID.randomUUID().toString();
+			redisService.set(key, groupBusiness, cookieMaxAge);
 		}
+
 		CookieUtils.setCookie(request,response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, key, cookieMaxAge,
 				true);
 		//设置账户cookie
 		CookieUtils.setCookie(request,response, "username", phoneNo, 365 * 60 * 60 * 24,
 				false);
+		UserContext.resetContext();
 		resp.setSuccess(true);
 		return resp;
 	}
@@ -114,6 +139,7 @@ public class AccountController {
 		    redisService.remove(cookie.getValue());
 			CookieUtils.deleteCookie(request, response, cookie.getName());
 		}
+		UserContext.resetContext();
 		response.sendRedirect(PropertyUtils.getProperty("static.business.url") + "/");
 	}
 }

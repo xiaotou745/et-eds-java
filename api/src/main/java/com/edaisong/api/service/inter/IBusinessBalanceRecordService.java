@@ -6,10 +6,15 @@ import java.util.List;
 import com.edaisong.entity.AccountBillResultModel;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.AccountBillDayResultModel;
+import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.AccountBillCReq;
+import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
+import com.edaisong.entity.req.PagedAccountBillDayReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
 
@@ -55,4 +60,21 @@ public interface IBusinessBalanceRecordService {
 	 * 
 	 * */
 	AccountBillResultModel getAccountBillListB(AccountBillBReq par);
+	/**
+	 * API 获取商户日账单信息
+	 * 茹化肖
+	 * 2015年9月10日10:25:04
+	 * 
+	 * */
+	AccountBillDayResultModel getAccountBillListDayB(PagedAccountBillDayReq par);
+	
+	/**
+	 * API 获取商户账单详情
+	 * 茹化肖
+	 * 2015年9月10日10:25:04
+	 * 
+	 * */
+	AccountBillDetailModel getAccountBillDetailB(AccountBillDetailReq par);
+	
+	
 }

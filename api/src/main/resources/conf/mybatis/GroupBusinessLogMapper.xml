@@ -1,117 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dao.inter.IGroupBusinessLogMapper" >
+<mapper namespace="com.edaisong.api.dao.inter.IGroupBusinessLogDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.GroupBusinessLog" >
     <id column="Id" property="id" jdbcType="INTEGER" />
-    <result column="GroupBusiName" property="groupbusiname" jdbcType="NVARCHAR" />
-    <result column="PhoneNo" property="phoneno" jdbcType="VARCHAR" />
-    <result column="Password" property="password" jdbcType="NVARCHAR" />
-    <result column="CreateName" property="createname" jdbcType="NCHAR" />
-    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="GroupBusinessId" property="groupbusinessid" jdbcType="INTEGER" /> 
+    <result column="OptName" property="optname" jdbcType="NVARCHAR" />
+    <result column="OptTime" property="opttime" jdbcType="TIMESTAMP" />
     <result column="Remark" property="remark" jdbcType="NVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, GroupBusiName, PhoneNo, Password, CreateName, CreateTime, Remark
+    Id, GroupBusinessId, OptName, OptTime, Remark 
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select top 10
     <include refid="Base_Column_List" />
-    from GroupBusinessLog
-    where Id = #{id,jdbcType=INTEGER}
+    from GroupBusinessLog(nolock)
+    where GroupBusinessId = #{id,jdbcType=INTEGER}
+    order by Id desc
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from GroupBusinessLog
-    where Id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.edaisong.entity.GroupBusinessLog" >
-    insert into GroupBusinessLog (Id, GroupBusiName, PhoneNo, 
-      Password, CreateName, CreateTime, 
-      Remark)
-    values (#{id,jdbcType=INTEGER}, #{groupbusiname,jdbcType=NVARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
-      #{password,jdbcType=NVARCHAR}, #{createname,jdbcType=NCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{remark,jdbcType=NVARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.GroupBusinessLog" >
-    insert into GroupBusinessLog
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="groupbusiname != null" >
-        GroupBusiName,
-      </if>
-      <if test="phoneno != null" >
-        PhoneNo,
-      </if>
-      <if test="password != null" >
-        Password,
-      </if>
-      <if test="createname != null" >
-        CreateName,
-      </if>
-      <if test="createtime != null" >
-        CreateTime,
-      </if>
-      <if test="remark != null" >
-        Remark,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="groupbusiname != null" >
-        #{groupbusiname,jdbcType=NVARCHAR},
-      </if>
-      <if test="phoneno != null" >
-        #{phoneno,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=NVARCHAR},
-      </if>
-      <if test="createname != null" >
-        #{createname,jdbcType=NCHAR},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=NVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.GroupBusinessLog" >
-    update GroupBusinessLog
-    <set >
-      <if test="groupbusiname != null" >
-        GroupBusiName = #{groupbusiname,jdbcType=NVARCHAR},
-      </if>
-      <if test="phoneno != null" >
-        PhoneNo = #{phoneno,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        Password = #{password,jdbcType=NVARCHAR},
-      </if>
-      <if test="createname != null" >
-        CreateName = #{createname,jdbcType=NCHAR},
-      </if>
-      <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remark != null" >
-        Remark = #{remark,jdbcType=NVARCHAR},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.GroupBusinessLog" >
-    update GroupBusinessLog
-    set GroupBusiName = #{groupbusiname,jdbcType=NVARCHAR},
-      PhoneNo = #{phoneno,jdbcType=VARCHAR},
-      Password = #{password,jdbcType=NVARCHAR},
-      CreateName = #{createname,jdbcType=NCHAR},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      Remark = #{remark,jdbcType=NVARCHAR}
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
+   
 </mapper>

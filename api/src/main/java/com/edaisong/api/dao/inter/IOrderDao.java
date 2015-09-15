@@ -8,16 +8,24 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
+import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
+import com.edaisong.entity.req.OrderStatisticsBReq;
+import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
-import com.edaisong.entity.resp.OrderStatisticsResp;
+import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.QueryOrderBResp;
+import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.resp.QueryOrderCResp;
 
 public interface IOrderDao {
 
@@ -156,20 +164,68 @@ public interface IOrderDao {
 	 * @author CaoHeYang
 	 * @return
 	 */
-	List<ServiceClienter> getOrderStatisticsServiceClienterB();
+	List<ServiceClienter> getOrderStatisticsServiceClienterB(OrderStatisticsBReq orderStatisticsBReq);
 	
 	/**
 	 * B端任务统计接口  天数据列表  add by caoheyang 20150910
 	 * @author CaoHeYang
 	 * @return
 	 */
-	List<DaySatisticsB> getOrderStatisticsDaySatistics();
+	List<DaySatisticsB> getOrderStatisticsDaySatistics(OrderStatisticsBReq orderStatisticsBReq);
 	/**
 	 * B端任务统计接口   add by caoheyang 20150910
 	 * @author CaoHeYang
 	 * @return
 	 */
-	OrderStatisticsResp  getOrderStatistics();
+	OrderStatisticsBResp  getOrderStatistics(OrderStatisticsBReq orderStatisticsBReq);
+	/**
+	 * C端任务统计接口
+	 * @author WangXuDan
+	 * @date 20150910
+	 * @param data
+	 */
+	OrderStatisticsCResp  getOrderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
+	/**
+	 * C端任务统计接口  天数据列表
+	 * @author WangXuDan
+	 * @date 20150910
+	 * @param data
+	 */
+	List<DaySatisticsC> getOrderStatisticsDaySatisticsC(OrderStatisticsCReq orderStatisticsCReq);
+	
+	/**
+	 * B 端首页 订单列表
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	List<QueryOrder> queryOrder(QueryOrderReq query) ;
+	
+	/**
+	 * c端查询待取货订单（会计算距离）
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data 
+	 * @return
+	 */
+	List<QueryOrder> queryDeliveryOrderC(QueryOrderReq query) ;
 	
 	
+	/**
+	 * 骑士端我的任务
+	 * @author CaoHeYang
+	 * @date 20150914
+	 * @param data 
+	 * @return
+	 */
+	QueryOrderCResp queryOrderC(QueryOrderReq query) ;
+	/**
+	 * 商家端我的任务
+	 * @author CaoHeYang
+	 * @date 20150914
+	 * @param data 
+	 * @return
+	 */
+	QueryOrderBResp queryOrderB(QueryOrderReq query) ;
 }
