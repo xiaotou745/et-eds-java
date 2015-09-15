@@ -45,19 +45,31 @@
 			if (data == null) {
 				data = new ArrayList<OrderListModel>();
 			}
+			String customerStyle="style=\"text-align: left;\"";
+			String clienterStyle="style=\"text-align: left;\"";
 			for (int i = 0; i < data.size(); i++) {
-										
+				 customerStyle="style=\"text-align: left;\"";
+				 clienterStyle="style=\"text-align: left;\"";
+						if((data.get(i).getReceviceName()==null||data.get(i).getReceviceName().isEmpty())&&
+								(data.get(i).getRecevicePhoneNo()==null||data.get(i).getRecevicePhoneNo().isEmpty())&&
+								(data.get(i).getReceviceAddress()==null||data.get(i).getReceviceAddress().isEmpty())){
+							customerStyle="";
+						}	
+						if((data.get(i).getClienterName()==null||data.get(i).getClienterName().isEmpty())&&
+						   (data.get(i).getClienterPhoneNo()==null||data.get(i).getClienterPhoneNo().isEmpty())){
+							clienterStyle="";
+						}
 		%>
 		<tr>
 			<td><%=i + 1%></td>
 			<td><a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getOrderNo()%>"><%=data.get(i).getOrderNo()%></a></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getPubDate())%></td>
 			<td><%=data.get(i).getAmount()%></td>
-			<td align="left">
+			<td <%=customerStyle %>>
 			姓名:<%=ParseHelper.ShowString(data.get(i).getReceviceName())%> <br /> 
 			电话:<%=ParseHelper.ShowString(data.get(i).getRecevicePhoneNo())%> <br /> 
 			地址:<%=ParseHelper.ShowString(data.get(i).getReceviceAddress())%></td>
-			<td align="left">
+			<td <%=clienterStyle %>>
 			姓名:<%=ParseHelper.ShowString(data.get(i).getClienterName())%> <br /> 
 			电话:<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%>
 			</td>
