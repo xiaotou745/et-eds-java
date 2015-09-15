@@ -265,6 +265,7 @@ public class BusinessController {
 		}
 		List<BusinessExpressRelation> listData = new ArrayList<>();
 		String[] expressList = deliveryCompanyList.split(";");
+		expressList=null;
 		for (String express : expressList) {
 			if (!express.isEmpty()) {
 				String[] itemsStrings = express.split(",");

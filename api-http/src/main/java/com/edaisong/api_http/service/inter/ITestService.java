@@ -1,5 +1,6 @@
 package com.edaisong.api_http.service.inter;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -9,7 +10,7 @@ import com.edaisong.api_http.entity.TestServiceReq;
 import com.edaisong.api_http.entity.TestServiceResp;
 
 @Path("/testservice")
-@Consumes("application/json")//当前方法接收的参数类型
+//@Consumes("application/json")//当前方法接收的参数类型
 @Produces("application/json")//当前类的所有方法都返回json格式的数据
 public interface ITestService {
 	
@@ -22,7 +23,7 @@ public interface ITestService {
 	//加上@FormParam("")，只能接收application/x-www-form-urlencoded的数据
 	//去掉@FormParam("")，支持json和xml
 	//TestServiceReq和TestServiceResp中添加@XmlRootElement(name = "testServiceReq")，只是为了支持xml（json不需要加）
-	 public TestServiceResp selectByID(TestServiceReq req);
+	 public TestServiceResp selectByID(@FormParam("") TestServiceReq req);
 	
 	@GET
 	@Path("/getlist")

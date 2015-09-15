@@ -44,13 +44,13 @@
 		String payment_type = "1";
 		//必填，不能修改
 		//服务器异步通知页面路径
-		String notify_url = basePath+"/group/notify_url";
+		String notify_url = basePath+"/group/return_url";
 		//需http://格式的完整路径，不能加?id=123这类自定义参数
 		//页面跳转同步通知页面路径
 		String return_url = basePath+"/group/return_url";
 		//需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
 		//商户订单号
-		String out_trade_no =OrderNoHelper.generateOrderCode(context.getBusinessID());// new String(request.getParameter("WIDout_trade_no").getBytes("ISO-8859-1"),"UTF-8");
+		String out_trade_no =new String(request.getParameter("WIDout_trade_no").getBytes("ISO-8859-1"),"UTF-8");
 		//商户网站订单系统中唯一订单号，必填
 		//订单名称
 		String subject =groupInfo;// new String(request.getParameter("WIDsubject").getBytes("ISO-8859-1"),"UTF-8");

@@ -5,10 +5,10 @@ import java.util.Date;
 import com.edaisong.core.enums.*;
 import com.edaisong.core.util.ParseHelper;
 /**
- * 日账单返回参数商户
+ * 日账单返回参数骑士
  * 
  * */
-public class AccountBillDayModel {
+public class AccountBillDayCModel {
 private String relationNo;
 private int recordId;
 public int getRecordId() {
@@ -33,7 +33,7 @@ public void setAmount(Double amount) {
 	this.amount = amount;
 }
 public String getRecordType() {
-	return BusinessBalanceRecordRecordType.getEnum(this.recordType).desc();//.recordType;
+	return ClienterBalanceRecordRecordType.getEnum(this.recordType).desc();//.recordType;
 }
 public void setRecordType(int recordType) {
 	this.recordType = recordType;

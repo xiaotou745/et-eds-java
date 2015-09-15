@@ -1,6 +1,7 @@
 package com.edaisong.api.service.impl;
 
 import java.lang.Double;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1013,11 +1014,12 @@ public class OrderService implements IOrderService {
 	@Override
 	public HttpResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq query) {
 		HttpResultModel<QueryOrderBResp> resultModel = new HttpResultModel<QueryOrderBResp>();
-		QueryOrderBResp queryOrderBResp = new QueryOrderBResp();
+		//验证商家状态
 		if (businessDao.getUserStatus(query.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass.value()) {
 			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
 		}
+		QueryOrderBResp queryOrderBResp=orderDao.queryOrderB(query);
 		queryOrderBResp.setOrders(orderDao.queryOrder(query));
 		resultModel.setResult(queryOrderBResp);
 		return resultModel;
@@ -1037,8 +1039,17 @@ public class OrderService implements IOrderService {
 			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
 		}
-		QueryOrderCResp m = new QueryOrderCResp();
-		m.setOrders(orderDao.queryOrder(query));
+		QueryOrderCResp m = orderDao.queryOrderC(query);
+		if (query.getLongitude()!=null&&query.getLongitude()!=0		//需要计算骑士距离门店距离
+				&&query.getLatitude()!=null&&query.getLatitude()!=0
+				&&query.getStatus()==OrderStatus.Delivery.value()) {
+			List<QueryOrder> orders= orderDao.queryDeliveryOrderC(query);
+			orders.forEach(action->action.setDistance(action.getDistance_OrderBy()<1000?action.getDistance_OrderBy()+"m": 
+				new   BigDecimal(action.getDistance_OrderBy()*0.001).setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue()+"km"));
+			m.setOrders(orders);
+		}else {  //不需要计算骑士距离门店距离
+			m.setOrders(orderDao.queryOrder(query));
+		}
 		resultModel.setResult(m);
 		return resultModel;
 	}
