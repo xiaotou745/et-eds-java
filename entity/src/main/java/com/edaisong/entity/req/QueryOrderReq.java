@@ -12,8 +12,9 @@ public class QueryOrderReq extends PagedRequestBase {
 	private Integer clienterId;
 	private Integer businessId;
 	private Integer status;
- private Double longitude;
- private Double latitude;
+	private Double longitude;
+	private Double latitude;
+
 	/**
 	 * 日期 可空
 	 * 
@@ -49,7 +50,6 @@ public class QueryOrderReq extends PagedRequestBase {
 	public void setClienterId(Integer clienterId) {
 		this.clienterId = clienterId;
 	}
-	
 
 	/**
 	 * 
@@ -84,29 +84,37 @@ public class QueryOrderReq extends PagedRequestBase {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-/**
- * 骑士经度
- * @return
- */
+
+	/**
+	 * 骑士经度
+	 * 
+	 * @return
+	 */
 	public Double getLongitude() {
 		return longitude;
 	}
-/**
- * 骑士经度
- * @param longitude
- */
+
+	/**
+	 * 骑士经度
+	 * 
+	 * @param longitude
+	 */
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-/**
- * 骑士纬度
- * @return
- */
+
+	/**
+	 * 骑士纬度
+	 * 
+	 * @return
+	 */
 	public Double getLatitude() {
 		return latitude;
 	}
+
 	/**
 	 * 骑士纬度
+	 * 
 	 * @return
 	 */
 	public void setLatitude(Double latitude) {
