@@ -11,6 +11,7 @@ import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IGroupBusinessRechargeDao;
 import com.edaisong.api.service.inter.IGroupBusinessRechargeService;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
+import com.edaisong.core.enums.BusinessBalanceRecordStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.GroupBusinessRecharge;
@@ -50,18 +51,16 @@ public class GroupBusinessRechargeService implements
 				BusinessBalanceRecord rechargeRecord=new BusinessBalanceRecord();
 				rechargeRecord.setBusinessid(0);
 				rechargeRecord.setAmount(record.getPayamount());
-				rechargeRecord.setStatus((short)1);
+				rechargeRecord.setStatus((short)BusinessBalanceRecordStatus.Success.value());
 				rechargeRecord.setBalance(0d);
 				rechargeRecord.setRecordtype((short)BusinessBalanceRecordRecordType.Recharge.value());
 				rechargeRecord.setOperator(operatorName);
-				rechargeRecord.setOperatetime(new Date());
 				rechargeRecord.setWithwardid((long)recharge.getId());
 				rechargeRecord.setRelationno(record.getOrderno());
 				rechargeRecord.setRemark(remark);
-				rechargeRecord.setIsenable((short)1);
 				rechargeRecord.setGroupid(record.getGroupbusinessid());
 				rechargeRecord.setGroupbeforebalance(oldGroupBusiness.getAmount());
-				businessBalanceRecordDao.insert(rechargeRecord);
+				businessBalanceRecordDao.groupInsert(rechargeRecord);
 			}
 		}
 		return result;

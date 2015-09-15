@@ -20,7 +20,22 @@ import com.edaisong.entity.req.*;
 //import com.edaisong.entity.req.PagedTransDetailReq;
 
 public interface IBusinessBalanceRecordDao {
+	/**
+	 * 新增商家流水
+	 * @author hailongzhao
+	 * @date 20150915
+	 * @param record
+	 * @return
+	 */
     int insert(BusinessBalanceRecord record);
+    /**
+     * 新增集团流水
+     * @author hailongzhao
+     * @date 20150915
+     * @param record
+     * @return
+     */
+    int groupInsert(BusinessBalanceRecord record);
 	/**
 	 *  商家中心，商户交易明细列表分页，右上角自定义查询
 	 * @param par
