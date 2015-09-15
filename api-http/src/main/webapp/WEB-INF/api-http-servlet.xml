@@ -67,7 +67,7 @@
 	<bean id="jacksonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
 		<property name="mapper" ref="jacksonMapper" />
 	</bean>
-	<bean id="jacksonMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+	<bean id="jacksonMapper" class="com.edaisong.core.util.ExtandObjectMapper">
 		<property name="dateFormat">
 			<bean class="java.text.SimpleDateFormat">
 				<constructor-arg type="java.lang.String" value="yyyy-MM-dd hh:MM:ss">
