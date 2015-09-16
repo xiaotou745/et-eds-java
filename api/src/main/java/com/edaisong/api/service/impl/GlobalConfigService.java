@@ -49,7 +49,11 @@ public class GlobalConfigService implements IGlobalConfigService {
 	}
 	@Override
 	public String getConfigValueByKey(int groupID,String key) {
-		Map<String, String> resultMap=getGlobalConfigMapByGroupId(groupID);
+		List<GlobalConfigModel> listDataConfigModels=iGlobalConfigDao.getGlobalConfigByGroupId(groupID);
+		Map<String, String> resultMap=new HashMap<>();
+		for (GlobalConfigModel globalConfigModel : listDataConfigModels) {
+			resultMap.put(globalConfigModel.getKeyName().toUpperCase(), globalConfigModel.getValue());
+		}
 		if (resultMap.containsKey(key.toUpperCase())) {
 			return resultMap.get(key.toUpperCase());
 		}
@@ -62,15 +66,6 @@ public class GlobalConfigService implements IGlobalConfigService {
 	public int insert(GlobalConfig par) {
 		redisService.remove(RedissCacheKey.GlobalConfig_Key+par.getGroupid());
 		return iGlobalConfigDao.insert(par);
-	}
-
-	private Map<String, String> getGlobalConfigMapByGroupId(Integer id) {
-		List<GlobalConfigModel> listDataConfigModels=iGlobalConfigDao.getGlobalConfigByGroupId(id);
-		Map<String, String> resultMap=new HashMap<>();
-		for (GlobalConfigModel globalConfigModel : listDataConfigModels) {
-			resultMap.put(globalConfigModel.getKeyName().toUpperCase(), globalConfigModel.getValue());
-		}
-		return resultMap;
 	}
 	
 	@Override
