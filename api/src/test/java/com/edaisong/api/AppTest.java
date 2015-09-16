@@ -162,12 +162,20 @@ public class AppTest extends TestCase {
 	//AES
 	public void testAes()
 	{
-		String str="2TQvCEaWerqGpAP+SYWk7OZhAQO4ukfH+rz1ZoRdBQ9NoDwdelectGMnpL+aizupszy3LtT7HY/3LzAAaN+FrU9BPxOyGks95M73mm8NfocMhC/65pqNj7XW4MIvEnbP1M+xuwttDFCI4qWkynE4YU8CZlmVyTYI4HKffDpd7fs=";
-		String deString= com.edaisong.core.security.AES.aesDecrypt(str);
-		String  str2="{    \"feedbackid\": 3179,    \"content\": \"孝河测试来看看\",    \"version\": \"0.1\",    \"feedbacktype\": \"功能意见\"}";
-		String  str3="";
-		
+		String str="ruhuaxiao";
+		String deString= com.edaisong.core.security.AES.aesEncrypt(str);//加密
 		System.out.println(deString);
-	}
+		String  str2=com.edaisong.core.security.AES.aesDecrypt(deString);//解密
+		System.out.println(str2);
+	}	
 	
+
+	public void testAes1()
+	{
+		String str="ruhuaxiao";
+		String deString= com.edaisong.core.security.AES.aesEncrypt(str);//加密
+		System.out.println(deString);
+		String  str2=com.edaisong.core.security.AES.aesDecrypt(deString);//解密
+		System.out.println(str2);
+	}
 }

@@ -45,33 +45,40 @@
 			if (data == null) {
 				data = new ArrayList<OrderListModel>();
 			}
-			String customerStyle="style=\"text-align: left;\"";
-			String clienterStyle="style=\"text-align: left;\"";
+			String customerName="";
+			String customerPhone="";
+			String customerAddress="";
+			String clienterName="";
+			String clienterPhone="";
 			for (int i = 0; i < data.size(); i++) {
-				 customerStyle="style=\"text-align: left;\"";
-				 clienterStyle="style=\"text-align: left;\"";
-						if((data.get(i).getReceviceName()==null||data.get(i).getReceviceName().isEmpty())&&
-								(data.get(i).getRecevicePhoneNo()==null||data.get(i).getRecevicePhoneNo().isEmpty())&&
-								(data.get(i).getReceviceAddress()==null||data.get(i).getReceviceAddress().isEmpty())){
-							customerStyle="";
-						}	
-						if((data.get(i).getClienterName()==null||data.get(i).getClienterName().isEmpty())&&
-						   (data.get(i).getClienterPhoneNo()==null||data.get(i).getClienterPhoneNo().isEmpty())){
-							clienterStyle="";
-						}
+				if(data.get(i).getReceviceName()!=null&&!data.get(i).getReceviceName().isEmpty()){
+					customerName="姓名:"+data.get(i).getReceviceName();
+				}
+				if(data.get(i).getRecevicePhoneNo()!=null&&!data.get(i).getRecevicePhoneNo().isEmpty()){
+					customerPhone="电话:"+data.get(i).getRecevicePhoneNo();
+				}
+				if(data.get(i).getReceviceAddress()!=null&&!data.get(i).getReceviceAddress().isEmpty()){
+					customerAddress="地址:"+data.get(i).getReceviceAddress();
+				}
+				if(data.get(i).getClienterName()!=null&&!data.get(i).getClienterName().isEmpty()){
+					clienterName="姓名:"+data.get(i).getClienterName();
+				}
+				if(data.get(i).getClienterPhoneNo()!=null&&!data.get(i).getClienterPhoneNo().isEmpty()){
+					clienterPhone="电话:"+data.get(i).getClienterPhoneNo();
+				}
 		%>
 		<tr>
 			<td><%=i + 1%></td>
 			<td><a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getOrderNo()%>"><%=data.get(i).getOrderNo()%></a></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getPubDate())%></td>
 			<td><%=data.get(i).getAmount()%></td>
-			<td <%=customerStyle %>>
-			姓名:<%=ParseHelper.ShowString(data.get(i).getReceviceName())%> <br /> 
-			电话:<%=ParseHelper.ShowString(data.get(i).getRecevicePhoneNo())%> <br /> 
-			地址:<%=ParseHelper.ShowString(data.get(i).getReceviceAddress())%></td>
-			<td <%=clienterStyle %>>
-			姓名:<%=ParseHelper.ShowString(data.get(i).getClienterName())%> <br /> 
-			电话:<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%>
+			<td style="text-align: left;">
+			<%=customerName%> <br /> 
+			<%=customerPhone%> <br /> 
+			<%=customerAddress%></td>
+			<td style="text-align: left;">
+			<%=clienterName%> <br /> 
+			<%=clienterPhone%>
 			</td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getActualDoneDate())%></td>
 			<td><%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>

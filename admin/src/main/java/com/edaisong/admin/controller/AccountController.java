@@ -151,7 +151,7 @@ public class AccountController {
 		loginUser.setUserName(account.getUsername());
 		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
 				true);
-		UserContext.resetContext();
+		UserContext.setLoginFrom(1);
 		response.sendRedirect(basePath+"/order/list");
 	}
 	
@@ -168,7 +168,12 @@ public class AccountController {
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
 		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME);
-		UserContext.resetContext();
-		response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
+		int loginFrom=UserContext.getLoginFrom();
+		UserContext.setLoginFrom(0);
+		if (loginFrom==0) {
+			response.sendRedirect(PropertyUtils.getProperty("dynamic.admin.url") + "/");
+		}else {
+			response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
+		}
 	}
 }

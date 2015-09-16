@@ -16,5 +16,5 @@ public interface IFeedbackService {
 	 
 	 PagedResponse<FeedbackModel> query(PagedFeedbackReq req);
 	 
-	 int  addByData(String data) ;
+	  int  addByData(Feedback record)  ;
 }

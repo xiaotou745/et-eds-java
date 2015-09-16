@@ -33,7 +33,7 @@ public interface IAccountBillService {
 	 * @return
 	 */
 	@POST
-	@Path("/getbilllistb")
+	@Path("/getbilllistb")	
 	 public HttpResultModel<AccountBillResultModel> getBillListB(AccountBillBReq par);
 	
 	

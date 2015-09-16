@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginUtil {
 	public final static String ADMIN_JSESSIONID = "ADMIN_JSESSIONID";
-	public final static String LOGIN_COOKIE_NAME = "userinfo_edaisong";
+	public final static String LOGIN_COOKIE_NAME = "userinfo_edaisongcom";
 	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response){
 		UserContext context = UserContext.getCurrentContext(request);
-		return !context.isEmpty()&& context.getId() > 0;
+		return context!=null;
 	}
 }

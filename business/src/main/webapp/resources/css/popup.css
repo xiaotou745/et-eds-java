@@ -19,9 +19,9 @@
 	padding:25px 35px;
 	background-color:#fff;
 	z-index: 2;
+	box-sizing:content-box;
 }
 .popup .popupBox1{
-	height: 255px;
 }
 .popup .popupBox1 h1{
 	text-align: center;

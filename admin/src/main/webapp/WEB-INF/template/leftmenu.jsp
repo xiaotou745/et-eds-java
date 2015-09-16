@@ -13,6 +13,7 @@
 <%@page import="com.edaisong.admin.common.UserContext"%>
 <%
 	String basePath =PropertyUtils.getProperty("static.admin.url");
+	String adminUrl =PropertyUtils.getProperty("dynamic.admin.url");
 	IAuthorityMenuClassService menuService = SpringBeanHelper.getCustomBeanByType(IAuthorityMenuClassService.class);
 	
 	UserContext context = UserContext.getCurrentContext(request);
@@ -72,10 +73,19 @@
 									<ul class="nav nav-second-level">
 										<%
 								for (MenuEntity submenu : data) {
+									
+									//此时表示这个页面需要跳转到老后台
+									if(submenu.getUrl()!=null&&
+									!submenu.getUrl().isEmpty()&&
+									UserContext.getLoginFrom()==0){
+										%>
+										<li><a href="<%=adminUrl+submenu.getUrl()%>"><%=submenu.getMenuname()%></a></li>
+										<%
+									}else{
 									%>
 									<li <%=viewPath.equals(submenu.getJavaUrl().substring(1))?"class='active'":""%>><a href="<%=basePath+submenu.getJavaUrl()%>"><%=submenu.getMenuname()%></a></li>
 
-									<%	
+									<%	}
 								}
 								%>
 								</ul></li>

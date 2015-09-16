@@ -26,15 +26,26 @@ public class AES {
 			SecretKeySpec skeySpec = new SecretKeySpec(password.getBytes(), "AES");
 			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-			//cipher.doFinal(str.getBytes()), Base64.DEFAULT
-			byte[] bs=cipher.doFinal(Base64.getEncoder().encode(str.getBytes()));
-			String strTmp = new String(bs);
+			byte[] bs=cipher.doFinal(str.getBytes());
+			byte[] bs64= Base64.getEncoder().encode(bs);
+			String strTmp = new String(bs64);
 			return strTmp;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return str;
+		/*try {
+			String password = AES_KEY;
+			SecretKeySpec skeySpec = new SecretKeySpec(password.getBytes(), "AES");
+			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+			cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+			String strTmp = Base64.encodeToString(cipher.doFinal(str.getBytes()), Base64.DEFAULT);
+			return strTmp;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return str;*/
 	}
 
 	/**
@@ -58,6 +69,18 @@ public class AES {
 			ex.printStackTrace();
 		}
 		return str;
+		/*
+		 	try {
+			String password = AES_KEY;
+			SecretKeySpec skeySpec = new SecretKeySpec(password.getBytes(), "AES");
+			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+			cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+			String strTmp = new String(cipher.doFinal(Base64.decode(str, Base64.DEFAULT)));
+			return strTmp;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return str;*/
 	}
 
 	public static void main(String[] args) {
