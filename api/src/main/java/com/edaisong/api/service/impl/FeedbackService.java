@@ -32,13 +32,14 @@ public class FeedbackService implements IFeedbackService {
 	private IFeedbackDao feedbackDao ;
 
 	@Override
-	public int  addByData(String data) 
+	public int  addByData(Feedback record) 
 	{
-		Feedback record=new Feedback();		
+/*		Feedback record=new Feedback();		
 		record.setFeedbackid(2121);
 		record.setUsertype((short)1);
 		record.setFeedbacktype((short)2);
 		record.setContent("测试");
+		return feedbackDao.insert(record);*/
 		return feedbackDao.insert(record);
 	}
 	

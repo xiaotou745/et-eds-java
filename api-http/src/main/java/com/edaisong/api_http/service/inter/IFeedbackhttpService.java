@@ -7,6 +7,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import com.edaisong.entity.Feedback;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.EnumRecord;
 import com.edaisong.entity.resp.FeedbackResp;
@@ -29,7 +30,7 @@ public interface IFeedbackhttpService {
 	 */
 	@POST
 	@Path("/feedbackb")
-	public HttpResultModel<FeedbackResp> feedbackB(String data);	 
+	public HttpResultModel<FeedbackResp> feedbackB(Feedback record);	 
 	
 	/**
 	 * B端骑士增加意见反馈
@@ -40,7 +41,7 @@ public interface IFeedbackhttpService {
 	 */
 	@POST
 	@Path("/feedbackc")
-	public HttpResultModel<FeedbackResp> feedbackC(String data);	 
+	public HttpResultModel<FeedbackResp> feedbackC(Feedback record);	 
 
 	/**
 	 * 意见反馈类型列表
