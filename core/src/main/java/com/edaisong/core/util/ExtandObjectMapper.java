@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.cfg.MapperConfig;
+import com.fasterxml.jackson.databind.introspect.AnnotatedField;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 /**
  * 序列化器
  * @author CaoHeYang
@@ -21,6 +24,7 @@ public class ExtandObjectMapper  extends ObjectMapper{
         this.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         this.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         //驼峰命名法转换为小写加下划线
-        this.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+        // this.setPropertyNamingStrategy(new ExtandNameStrategy());
     }
+
 }

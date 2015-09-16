@@ -11,6 +11,7 @@ import com.edaisong.api_http.service.inter.IFeedbackhttpService;
 import com.edaisong.core.enums.FeedbackType;
 import com.edaisong.core.enums.SystemState;
 import com.edaisong.core.util.EnumHelper;
+import com.edaisong.entity.Feedback;
 import com.edaisong.entity.common.EnumRecord;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.resp.FeedbackResp;
@@ -30,10 +31,11 @@ public class FeedbackHttpService implements IFeedbackhttpService {
 	 * @return
 	 */
 	@Override
-	public HttpResultModel<FeedbackResp> feedbackB(String data) {
+	public HttpResultModel<FeedbackResp> feedbackB(Feedback record) {
 		
 		HttpResultModel<FeedbackResp> returnmodel = new HttpResultModel<FeedbackResp>();
-		int row= feedbackService.addByData(data);
+		record.setUsertype((short)1);
+		int row= feedbackService.addByData(record);
 		if(row>0)
 		{
 			returnmodel.setStatus(SystemState.Success.value());
@@ -57,10 +59,11 @@ public class FeedbackHttpService implements IFeedbackhttpService {
 	 * @return
 	 */
 	@Override
-	public HttpResultModel<FeedbackResp> feedbackC(String data) {
+	public HttpResultModel<FeedbackResp> feedbackC(Feedback record) {
 		
 		HttpResultModel<FeedbackResp> returnmodel = new HttpResultModel<FeedbackResp>();
-		int row= feedbackService.addByData(data);
+		record.setUsertype((short)2);
+		int row= feedbackService.addByData(record);
 		if(row>0)
 		{
 			returnmodel.setStatus(SystemState.Success.value());
