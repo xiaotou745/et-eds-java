@@ -16,8 +16,6 @@
 <%	
 String basePath =PropertyUtils.getProperty("static.business.url");
 %>
-<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
-<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
 <div class="top cb">
 		<h3 class="cb">消息中心</h3>
 		<form method="POST" action="#" class="form-horizontal" id="searchForm">

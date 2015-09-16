@@ -167,6 +167,15 @@ public class AppTest extends TestCase {
 		System.out.println(deString);
 		String  str2=com.edaisong.core.security.AES.aesDecrypt(deString);//解密
 		System.out.println(str2);
-	}
+	}	
 	
+
+	public void testAes1()
+	{
+		String str="ruhuaxiao";
+		String deString= com.edaisong.core.security.AES.aesEncrypt(str);//加密
+		System.out.println(deString);
+		String  str2=com.edaisong.core.security.AES.aesDecrypt(deString);//解密
+		System.out.println(str2);
+	}
 }

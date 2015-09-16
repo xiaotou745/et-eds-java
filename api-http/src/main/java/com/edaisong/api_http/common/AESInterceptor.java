@@ -23,7 +23,7 @@ public class AESInterceptor  extends AbstractPhaseInterceptor<Message> {
 	public void handleMessage(Message message) throws Fault {
 		
 		String interceptSwith =PropertyUtils.getProperty("InterceptSwith");//"1" 开启加密
-		if(interceptSwith.equals("1"))
+		if(interceptSwith.equals("0"))
 		{
 			System.out.println("已开启AES解密拦截器");
 			try {
