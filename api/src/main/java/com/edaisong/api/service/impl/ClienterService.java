@@ -69,7 +69,7 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	@Override
 	public void updateCAccountBalance(ClienterMoney clienterMoney) {
 		clienterDao.updateCAccountBalance(clienterMoney.getAmount(),
-				clienterMoney.getClienterId());// 更新商户余额
+				clienterMoney.getClienterId());// 更新余额
 		//插入骑士余额流水
 		ClienterBalanceRecord clienterBalanceRecord = new ClienterBalanceRecord();
 		clienterBalanceRecord.setClienterid(clienterMoney.getClienterId());// 商户Id
@@ -119,15 +119,15 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	 */
 	@Override
 	public void updateCBalanceAndWithdraw(ClienterMoney clienterMoney) {
-		clienterDao.updateCAccountBalance(clienterMoney.getAmount(),
-				clienterMoney.getClienterId());// 更新商户余额
+		clienterDao.updateCBalanceAndWithdraw(clienterMoney.getAmount(),
+				clienterMoney.getClienterId());// 更新骑士余额
 		//插入骑士余额流水
 		ClienterBalanceRecord clienterBalanceRecord = new ClienterBalanceRecord();
-		clienterBalanceRecord.setClienterid(clienterMoney.getClienterId());// 商户Id
+		clienterBalanceRecord.setClienterid(clienterMoney.getClienterId());// 骑士Id
 		clienterBalanceRecord.setAmount(clienterMoney.getAmount());
 		clienterBalanceRecord.setStatus((short)clienterMoney.getStatus()); // 流水状态
 		clienterBalanceRecord.setRecordtype((short) clienterMoney.getRecordType()); // 
-		clienterBalanceRecord.setOperator(clienterMoney.getOperator()); // 商家id
+		clienterBalanceRecord.setOperator(clienterMoney.getOperator()); 
 		clienterBalanceRecord.setWithwardid((long) clienterMoney.getWithwardId()); // 关联单id
 		clienterBalanceRecord.setRelationno(clienterMoney.getRelationNo()); // 关联单号
 		clienterBalanceRecord.setRemark(clienterMoney.getRemark()); // 注释

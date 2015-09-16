@@ -6,6 +6,7 @@ public class GroupBusinessReq {
 	private String groupBusinessName;
 	private String loginName;
 	private String passWord;
+	private Integer isAllowOverdraft;
 	
 	public Integer getId() {
 		return id;
@@ -37,5 +38,13 @@ public class GroupBusinessReq {
  
 	public void setpassWord(String passWord) {
 		this.passWord = passWord;
+	}
+	
+	public Integer getIsAllowOverdraft() {
+		return isAllowOverdraft;
+	}
+ 
+	public void setIsAllowOverdraft(Integer isAllowOverdraft) {
+		this.isAllowOverdraft = isAllowOverdraft;
 	}
 }

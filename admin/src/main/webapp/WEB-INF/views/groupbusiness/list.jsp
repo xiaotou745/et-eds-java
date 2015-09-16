@@ -37,10 +37,15 @@
 				<div class="modal-body">
 					<fieldset>
             <br>
-              <div class="control-group">
+            <div class="control-group">
                 <label >集团名称：</label> 
                     <input  name="txtAddGroupBusinessName" id="txtAddGroupBusinessName" type="text">
-            </div>  
+            </div>
+            <div class="control-group">
+                <label>是否允许透支：</label> 
+                <input id="rAddIsAllowOverdraftY" name="rAddIsAllowOverdraft" type="radio" value="1"><label for="rAddIsAllowOverdraftY">是</label>
+				<input id="rAddIsAllowOverdraftN" name="rAddIsAllowOverdraft" type="radio" checked="checked" value="0"><label for="rAddIsAllowOverdraftN">否</label>
+            </div>
             <div class="control-group">
                 <label >登陆账号：</label> 
                     <input  name="txtAddLoginName" id="txtAddLoginName" type="text">
@@ -85,6 +90,11 @@
                     <input  name="txtModifyGroupBusinessId" id="txtModifyGroupBusinessId" type="hidden">
                     
             </div>  
+            <div class="control-group">
+                <label>是否允许透支：</label> 
+                <input id="rModifyIsAllowOverdraftY" name="rModifyIsAllowOverdraft" type="radio" value="1"><label for="rModifyIsAllowOverdraftY">是</label>
+				<input id="rModifyIsAllowOverdraftN" name="rModifyIsAllowOverdraft" type="radio" value="0"><label for="rModifyIsAllowOverdraftN">否</label>
+            </div>
             <div class="control-group">
                 <label >登陆账号：</label> 
                     <input  name="txtModifyLoginName" id="txtModifyLoginName" type="text">
@@ -132,6 +142,7 @@
 	        $('#txtAddLoginName').val('');
 	        $('#txtAddPassword').val('');
 	        $('#txtAddConfirmPassword').val(''); 
+	        $("input:radio[name='rModifyIsAllowOverdraft'][value='0']").attr("checked",true);
 	        $('#addGroupBusiness').modal('show');
 	}
 	//保存集团商户
@@ -166,9 +177,10 @@
 	    	return;
 	    }
 	    var paramaters = {
-                "groupBusinessName": groupBusiName,
-                "loginName": loginName,
-                "passWord": pw               
+                "groupBusinessName": groupBusiName.trim(),
+                "loginName": loginName.trim(),
+                "passWord": pw.trim(),
+                "isAllowOverdraft":$('input[name="rAddIsAllowOverdraft"]:checked').val()
             };
        var url = "<%=basePath%>/groupbusiness/addgroupbusiness";
        $.ajax({
@@ -184,7 +196,7 @@
            }
        });	    
 	}
-	
+	//显示修改集团信息弹框
 	function saveModifyGroupBusiness(){
 		var groupBusiName= $('#txtModifyGroupBusinessName').val();
 	    var loginName = $('#txtModifyLoginName').val();
@@ -221,9 +233,10 @@
 	    }
 	    var paramaters = {
 	    		"id":$("#txtModifyGroupBusinessId").val(),
-                "groupBusinessName": groupBusiName,
-                "loginName": loginName,
-                "passWord": pw               
+                "groupBusinessName": groupBusiName.trim(),
+                "loginName": loginName.trim(),
+                "passWord": pw.trim(),
+                "isAllowOverdraft":$('input[name="rModifyIsAllowOverdraft"]:checked').val()
             };
        var url = "<%=basePath%>/groupbusiness/modifygroupbusiness";
        $.ajax({

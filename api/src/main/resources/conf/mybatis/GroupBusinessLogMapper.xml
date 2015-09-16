@@ -18,5 +18,9 @@
     where GroupBusinessId = #{id,jdbcType=INTEGER}
     order by Id desc
   </select>
+ <insert id="insert" parameterType="com.edaisong.entity.GroupBusinessLog">
+    insert into GroupBusinessLog (GroupBusinessId, OptName, Remark)
+    values (#{groupbusinessid,jdbcType=INTEGER}, #{optname,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR})
+  </insert>
    
 </mapper>

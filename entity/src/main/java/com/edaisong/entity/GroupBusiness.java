@@ -25,7 +25,7 @@ public class GroupBusiness  implements Serializable{
 
     private Integer isvalid;
     private Integer isallowoverdraft;
-
+ 
     public Integer getId() {
         return id;
     }
@@ -41,9 +41,7 @@ public class GroupBusiness  implements Serializable{
     public void setGroupbusiname(String groupbusiname) {
         this.groupbusiname = groupbusiname == null ? null : groupbusiname.trim();
     }
-
-    
-
+ 
     public String getPassword() {
         return password;
     }
@@ -107,12 +105,11 @@ public class GroupBusiness  implements Serializable{
 	public void setLoginname(String loginname) {
 		this.loginname = loginname;
 	}
+	public Integer getIsAllowOverdraft() {
+        return isallowoverdraft;
+    }
 
-	public Integer getIsallowoverdraft() {
-		return isallowoverdraft;
-	}
-
-	public void setIsallowoverdraft(Integer isallowoverdraft) {
-		this.isallowoverdraft = isallowoverdraft;
-	}
+    public void setIsAllowOverdraft(Integer isallowoverdraft) {
+        this.isallowoverdraft = isallowoverdraft;
+    }
 }

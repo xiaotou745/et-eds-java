@@ -32,14 +32,11 @@
 						<th width="%5">操作</th>	
 				</tr>
 			</thead>
-			
 			<tbody>                           
-
 		<%List<ClienterForzen> list = data.getResultList();
            for (int i = 0; i < list.size(); i++) {%>  
-			 <tr>
-				<td><%=list.get(i).getId() %></td>
-
+			 <tr> 
+				<td><a href="javascript:void(0)" onclick="showForzenDetail(<%=list.get(i).getId()%>,'<%=list.get(i).getClienterName() %>','<%=list.get(i).getClienterPhone()%>',<%=list.get(i).getForzenamount() %>,'<%=list.get(i).getForzenreason() %>','<%=list.get(i).getThawreason() %>')"><%=list.get(i).getId()%></a></td>
 				<td><%=list.get(i).getClienterName() %></td>
 
 				<td><%=list.get(i).getClienterPhone() %></td>
@@ -67,10 +64,31 @@
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
 <script>
-function showUnfreeze(id,clienterId,forzenAmount){
-	$("#hdForzenId").val(id);
-	$("#hdForzenClienterId").val(clienterId);
-	$("#hdForzenAmount").val(forzenAmount);
-	$('#showUnfreezeClienter').modal('show');	
+	function showUnfreeze(id,clienterId,forzenAmount){
+		$("#hdForzenId").val(id); 
+		$("#hdClienterId").val(clienterId);
+		$("#hdForzenAmount").val(forzenAmount);
+		$('#showUnfreezeClienter').modal('show');	
+	}
+
+//显示冻结单详情
+function showForzenDetail(forzenId,clienterName,clienterPhone,forzenAmount,forzenReason,unfreezeReason){
+	$("#hdForzenId").val(forzenId); 
+	$("#lblclienterTrueName").html(clienterName);
+	$("#lblclienterPhone").html(clienterPhone);
+	$("#lblforzenAmount").html(forzenAmount);
+	$("#lblforzenReason").html(forzenReason);
+	$("#lblunfreezeReason").html(unfreezeReason);
+	var url = "<%=basePath%>/clienter/getforzenlog";
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {"forzenId":$("#hdForzenId").val()},
+        success: function (result) {
+     	   $("#forzenRecord").html(result.message);        	  
+        }
+    }); 
+    
+	$('#showForzenOrderDetail').modal('show');	
 }
 </script>

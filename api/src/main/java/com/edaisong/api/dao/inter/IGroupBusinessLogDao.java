@@ -6,4 +6,6 @@ import com.edaisong.entity.GroupBusinessLog;
 
 public interface IGroupBusinessLogDao {
 	List<GroupBusinessLog> getList(int id);
+
+	int insert(GroupBusinessLog gbl);
 }
