@@ -28,7 +28,7 @@
 		         	for (int i = 0; i < list.size(); i++) {%>  
 					 <tr>
 						<td><%=list.get(i).getBusinessId() %></td>
-						<td><%=list.get(i).getName() %></td>
+						<td><a href='/'><%=list.get(i).getName()%></a></td>
 						<td><%=list.get(i).getPhoneNo() %></td>
 						<td><%=list.get(i).getTaskCount() %></td>
 						<td><%=list.get(i).getOrderCount() %></td>

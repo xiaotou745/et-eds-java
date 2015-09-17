@@ -1521,7 +1521,7 @@ where   Status = 1
 			and b.Name LIKE ''%${selectValue}%''
 		</if> 
 		<if test="selectType == 2 and  selectValue !='' ">
-			and b.PhoneNo = ''%${selectValue}%''
+			and b.PhoneNo = ''${selectValue}''
 		</if> 
 	</sql>
 	
