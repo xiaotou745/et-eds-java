@@ -178,4 +178,11 @@ public class AppTest extends TestCase {
 		String  str2=com.edaisong.core.security.AES.aesDecrypt(deString);//解密
 		System.out.println(str2);
 	}
+	
+	public void test333()
+	{
+		String str="ruh369uaxiaohh369\n";
+		String deString= com.edaisong.core.util.StringUtils.trimRight(str,"\n");
+		System.out.println(deString);
+	}
 }

@@ -11,6 +11,7 @@ import com.edaisong.core.security.AES;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StreamUtils;
+import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.req.AesParameterReq;
 public class AESInterceptor  extends AbstractPhaseInterceptor<Message> {
 
@@ -31,7 +32,7 @@ public class AESInterceptor  extends AbstractPhaseInterceptor<Message> {
 				String string=StreamUtils.copyToStringNoclose(mContentString);
 				AesParameterReq req=JsonUtil.str2obj(string, AesParameterReq.class);
 				System.out.println(string);
-				string=AES.aesDecrypt(req.getData());//AES解密
+				string=AES.aesDecrypt(StringUtils.trimRight(req.getData(), "\n"));//AES解密
 				InputStream stream=StreamUtils.StringToInputStream(string);
 				message.setContent(InputStream.class, stream);//回填流
 			} catch (Exception e) {
