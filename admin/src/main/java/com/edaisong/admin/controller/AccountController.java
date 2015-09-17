@@ -149,7 +149,7 @@ public class AccountController {
 		loginUser.setPassword("");
 		loginUser.setRoleId(account.getRoleid());
 		loginUser.setUserName(account.getUsername());
-		CookieUtils.setCookie(request,response, LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
+		CookieUtils.setCookie(request,response,"admin", LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
 				true);
 		UserContext.setLoginFromJavaAdmin(account.getId());
 		response.sendRedirect(basePath+"/order/list");

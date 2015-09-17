@@ -115,6 +115,8 @@ public class Order {
     private Double realordercommission;
     
     private int groupbusinessid;
+    
+    private Double basecommission;
 
     public int getId() {
         return id;
@@ -562,5 +564,13 @@ public class Order {
 
 	public void setGroupbusinessid(int groupbusinessid) {
 		this.groupbusinessid = groupbusinessid;
+	}
+
+	public Double getBasecommission() {
+		return basecommission;
+	}
+
+	public void setBasecommission(Double basecommission) {
+		this.basecommission = basecommission;
 	}
 }

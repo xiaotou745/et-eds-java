@@ -85,6 +85,8 @@
 			jdbcType="NUMERIC" />
 		<result column="GroupBusinessID" property="groupbusinessid"
 			jdbcType="INTEGER" />
+		<result column="basecommission" property="basecommission"
+			jdbcType="NUMERIC" />
 	</resultMap>
 	<!-- 商家订单概览信息 可扩展 add by pengyi 20180818 -->
 	<resultMap id="businessOrderSummaryResultMap"
@@ -123,7 +125,7 @@
 		CommissionType,
 		CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable,
 		MealsSettleMode,
-		FinishDateLength, FinishAll, RealOrderCommission,GroupBusinessID
+		FinishDateLength, FinishAll, RealOrderCommission,GroupBusinessID,BaseCommission
 	</sql>
 	<!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展 CaoHeYang 20150804 -->
 	<select id="getOneByCriteria" resultMap="BaseResultMap"
@@ -169,7 +171,7 @@
 		OtherCancelReason, CommissionType, CommissionFixValue,
 		BusinessGroupId, TimeSpan, Invoice,
 		BusinessReceivable, MealsSettleMode, FinishDateLength,
-		FinishAll, RealOrderCommission,GroupBusinessID)
+		FinishAll, RealOrderCommission,GroupBusinessID,BaseCommission)
 		values (#{id,jdbcType=INTEGER}, #{orderno,jdbcType=NVARCHAR},
 		#{pickupaddress,jdbcType=NVARCHAR},
 		#{pubdate,jdbcType=TIMESTAMP}, #{recevicename,jdbcType=NVARCHAR},
@@ -208,7 +210,8 @@
 		#{finishdatelength,jdbcType=INTEGER},
 		#{finishall,jdbcType=INTEGER}, 
 		#{realordercommission,jdbcType=NUMERIC},
-		#{groupbusinessid,jdbcType=NUMERIC})
+		#{groupbusinessid,jdbcType=NUMERIC},
+		#{basecommission,jdbcType=NUMERIC})
 	</insert>
 	<insert id="insertSelective" parameterType="com.edaisong.entity.Order">
 		<selectKey resultType="java.lang.Integer" keyProperty="id"
@@ -383,6 +386,9 @@
 			<if test="groupbusinessid != null">
 				groupbusinessid,
 			</if>
+			<if test="basecommission != null">
+				basecommission,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderno != null">
@@ -549,6 +555,9 @@
 			</if>
 			<if test="groupbusinessid != null">
 				#{groupbusinessid,jdbcType=NUMERIC},
+			</if>
+			<if test="basecommission != null">
+				#{basecommission,jdbcType=NUMERIC},
 			</if>
 		</trim>
 	</insert>
@@ -720,6 +729,9 @@
 			<if test="groupbusinessid != null">
 				groupbusinessid = #{groupbusinessid,jdbcType=NUMERIC},
 			</if>
+			<if test="basecommission != null">
+				basecommission = #{basecommission,jdbcType=NUMERIC},
+			</if>
 		</set>
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
@@ -779,7 +791,8 @@
 		FinishDateLength = #{finishdatelength,jdbcType=INTEGER},
 		FinishAll = #{finishall,jdbcType=INTEGER},
 		RealOrderCommission = #{realordercommission,jdbcType=NUMERIC},
-		groupbusinessid = #{groupbusinessid,jdbcType=NUMERIC}
+		groupbusinessid = #{groupbusinessid,jdbcType=NUMERIC},
+		basecommission=#{basecommission,jdbcType=NUMERIC} 
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
 

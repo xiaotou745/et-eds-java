@@ -110,10 +110,10 @@ public class AccountController {
 			userInfo="1;"+groupBusiness.getId()+";"+groupBusiness.getGroupbusiname();
 		}
 
-		CookieUtils.setCookie(request,response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, userInfo, cookieMaxAge,
+		CookieUtils.setCookie(request,response,"business", LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, userInfo, cookieMaxAge,
 				true);
 		//设置账户cookie
-		CookieUtils.setCookie(request,response, "username", phoneNo, 365 * 60 * 60 * 24,
+		CookieUtils.setCookie(request,response,"business", "username", phoneNo, 365 * 60 * 60 * 24,
 				false);
 		resp.setSuccess(true);
 		return resp;

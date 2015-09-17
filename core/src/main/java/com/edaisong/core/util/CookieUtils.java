@@ -116,8 +116,8 @@ public class CookieUtils {
 	 * @param name 名称
 	 * @param value 值
 	 */
-	public static void setCookie(HttpServletRequest request,HttpServletResponse response, String name, String value) {
-		setCookie(request,response, name, value, 60*60*24);
+	public static void setCookie(HttpServletRequest request,HttpServletResponse response,String from, String name, String value) {
+		setCookie(request,response,from, name, value, 60*60*24);
 	}
 	
 	/**
@@ -127,8 +127,8 @@ public class CookieUtils {
 	 * @param maxAge 生存时间（单位秒）
 	 * @param uri 路径
 	 */
-	public static void setCookie(HttpServletRequest request,HttpServletResponse response, String name, String value, int maxAge) {
-		setCookie(request,response,name,value,maxAge,false);
+	public static void setCookie(HttpServletRequest request,HttpServletResponse response,String from, String name, String value, int maxAge) {
+		setCookie(request,response,from,name,value,maxAge,false);
 	}
 	/**
 	 * 设置 Cookie
@@ -138,13 +138,23 @@ public class CookieUtils {
 	 * @param uri 路径
 	 * @param httpOnly 是否是httpOnly
 	 */
-	public static void setCookie(HttpServletRequest request,HttpServletResponse response, String name, String value, int maxAge,boolean httpOnly) {
-		String domain=null;
-		String netDomain=".edaisong.com.cn";
-		String host=request.getHeader("host");
-		if (host!=null&&host.indexOf(netDomain)>0) {
-			domain=netDomain;
+	public static void setCookie(HttpServletRequest request,HttpServletResponse response,
+			String from, String name, String value, int maxAge,boolean httpOnly) {
+
+		String staticUrl=PropertyUtils.getProperty("static.admin.url");
+		if (from.equals("business")) {
+			staticUrl=PropertyUtils.getProperty("static.business.url");
 		}
+		String domain=null;
+		int index=staticUrl.indexOf(".");
+		if (index>0) {
+			String webDomain=staticUrl.substring(staticUrl.indexOf("."));
+			String host=request.getHeader("host");
+			if (host!=null&&host.indexOf(webDomain)>0) {
+				domain=webDomain;
+			}
+		}
+
 		setCookie(request,response,name,value,maxAge,httpOnly,domain,null);
 	}
 	
@@ -159,8 +169,8 @@ public class CookieUtils {
 	 * @param domain
 	 * @param path
 	 */
-	public static void setCookie(HttpServletRequest request,HttpServletResponse response, String name, String value, int maxAge,boolean httpOnly
-			,String domain,String path) {
+	public static void setCookie(HttpServletRequest request,HttpServletResponse response,
+			 String name, String value, int maxAge,boolean httpOnly,String domain,String path) {
 		Cookie cookie = new Cookie(name, null);
 		if(path == null) 
 			path = getPath(request);
