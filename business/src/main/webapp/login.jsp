@@ -7,7 +7,7 @@
 %>
 
 <%
-	boolean isLogin = LoginUtil.checkIsLogin(request,response,LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
+	boolean isLogin = LoginUtil.checkIsLogin(request,response);
 	if(isLogin){
 		//如果登录,跳转到首页
 		response.sendRedirect(basePath+"/index");

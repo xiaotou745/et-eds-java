@@ -34,7 +34,7 @@
 	
 	if(request.getParameter("WIDtotal_fee")==null||
 		request.getParameter("WIDdefaultbank")==null||
-		context.isEmpty()){
+		context==null){
 		%>充值金额或支付方式没有传递或没有登录<%
 	}else{
 		////////////////////////////////////请求参数//////////////////////////////////////

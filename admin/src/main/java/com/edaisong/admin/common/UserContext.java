@@ -1,5 +1,8 @@
 package com.edaisong.admin.common;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.edaisong.api.service.inter.IAuthorityMenuClassService;
@@ -10,8 +13,7 @@ import com.edaisong.entity.domain.SimpleUserInfoModel;
 
 public class UserContext {
 	private SimpleUserInfoModel account;
-	private static int loginFrom;
-	private static UserContext instance = null;
+	private static Map<Integer, Integer>  loginFromMap=new HashMap<>();; 
 	private final static IAuthorityMenuClassService authorityMenuClassService;
 	static {
 		authorityMenuClassService = SpringBeanHelper
@@ -46,19 +48,16 @@ public class UserContext {
 		return account.getLoginName();
 	}
 
-	public static synchronized UserContext getCurrentContext(
-			HttpServletRequest request) {
+	public static  UserContext getCurrentContext(HttpServletRequest request) {
 		final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
-		if (cookieValue == null) {
-			instance = null;
-		} else if (instance == null) {
+		if (cookieValue != null&&!cookieValue.isEmpty()) {
 			SimpleUserInfoModel account = JsonUtil.str2obj(cookieValue,SimpleUserInfoModel.class);
 			if (account != null) {
-				instance = new UserContext(account);
+				return new UserContext(account);
 			}
 		}
-		return instance;
+		return null;
 	}
 	/**
 	 * 登录来源，0表示从net版后台登录，1表示从java版后台登录
@@ -66,8 +65,11 @@ public class UserContext {
 	 * @date 20150916
 	 * @param loginfrom
 	 */
-	public static int getLoginFrom() {
-		return loginFrom;
+	public static int getLoginFrom(int userID) {
+		if (!loginFromMap.containsKey(userID)) {
+			return 0;
+		}
+		return loginFromMap.get(userID);
 	}
 /**
  * 登录来源，0表示从net版后台登录，1表示从java版后台登录
@@ -75,7 +77,15 @@ public class UserContext {
  * @date 20150916
  * @param loginfrom
  */
-	public static void setLoginFrom(int loginfrom) {
-		loginFrom = loginfrom;
+	public static void setLoginFromJavaAdmin(int userID) {
+		if (loginFromMap.containsKey(userID)) {
+			loginFromMap.remove(userID);
+		}
+		loginFromMap.put(userID, 1);
+	}
+	public static void clearLoginFrom(int userID) {
+		if (loginFromMap.containsKey(userID)) {
+			loginFromMap.remove(userID);
+		}
 	}
 }

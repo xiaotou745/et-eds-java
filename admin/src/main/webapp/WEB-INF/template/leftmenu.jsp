@@ -21,7 +21,7 @@
 		response.sendRedirect(basePath);
 		return;
 	}
-	List<MenuEntity> menuList = menuService.getMenuListByUserID(UserContext.getCurrentContext(request).getId());
+	List<MenuEntity> menuList = menuService.getMenuListByUserID(context.getId());
     String viewPath =request.getAttribute("viewPath").toString();
     		
 %>
@@ -77,7 +77,7 @@
 									//此时表示这个页面需要跳转到老后台
 									if(submenu.getUrl()!=null&&
 									!submenu.getUrl().isEmpty()&&
-									UserContext.getLoginFrom()==0){
+									UserContext.getLoginFrom(context.getId())==0){
 										%>
 										<li><a href="<%=adminUrl+submenu.getUrl()%>"><%=submenu.getMenuname()%></a></li>
 										<%

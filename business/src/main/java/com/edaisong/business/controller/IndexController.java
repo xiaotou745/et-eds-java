@@ -32,7 +32,7 @@ public class IndexController {
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UserContext context = UserContext.getCurrentContext(request);
 		ModelAndView model = new ModelAndView("businessView");
-		if (context.isEmpty()) {
+		if (context==null) {
 			response.sendRedirect(request.getContextPath() + "/");
 			return model;
 		}

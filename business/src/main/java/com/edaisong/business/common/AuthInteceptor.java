@@ -12,7 +12,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		if (handler instanceof HandlerMethod) {
 			// 判断是否登录
-			boolean isLogin = LoginUtil.checkIsLogin(request,response,LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
+			boolean isLogin = LoginUtil.checkIsLogin(request,response);
 			String basePath =PropertyUtils.getProperty("static.business.url");
 			if (!isLogin&& 
 				!request.getServletPath().equals("/account/login") && 
@@ -26,8 +26,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				//用户登录后，将当前用户id和名称保存起来，用于记录操作日志
 				request.setAttribute("userID", userContext.getBusinessID());
 				request.setAttribute("userName", userContext.getBusinessName());
-				if (!userContext.isEmpty()&&
-						userContext.getBusinessType()==1&&
+				if (userContext.getBusinessType()==1&&
 						!request.getServletPath().equals("/group/recharge")&&
 						!request.getServletPath().equals("/account/logoff")&&
 						!isPay(request)) {
