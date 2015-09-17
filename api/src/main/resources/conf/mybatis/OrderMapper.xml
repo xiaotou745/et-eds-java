@@ -1493,4 +1493,52 @@ where   Status = 1
 			and  CONVERT(VARCHAR(100), PubDate, 23)=''${dateInfo}''
 		</if> 
 	</sql>
+		<sql id="busTaskList_Where">
+		1=1 and o.Status=1  
+	    <if test="startDate != null and  startDate !='' ">
+			and o.PudDate>${startDate}
+		</if> 
+		 <if test="endDate != null and  endDate !='' ">
+			and ''${endDate}''>=o.PudDate
+		</if> 
+		 <if test="cityName != null and  cityName  !='' ">
+			and b.city=''${cityName}''
+		</if> 
+		 <if test="selectType == 1 and  selectValue !='' ">
+			and b.Name LIKE ''%${selectValue}%''
+		</if> 
+		<if test="selectType == 2 and  selectValue !='' ">
+			and b.PhoneNo = ''%${selectValue}%''
+		</if> 
+	</sql>
+	
+	<select id="busTaskList" resultType="com.edaisong.entity.domain.BusTaskList"
+		parameterType="com.edaisong.entity.req.PagedBusTaskListReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V2(
+		'  COUNT(o.id) ',
+		'
+		MIN(b.Name) AS Name ,
+        MIN(b.PhoneNo) AS PhoneNo ,
+        businessId ,
+        COUNT(o.id) AS OrderCount ,
+        SUM(o.OrderCount) AS TaskCount 
+		',
+		'
+		 dbo.[order] AS o ( NOLOCK )
+        INNER JOIN dbo.business AS b ( NOLOCK ) ON b.Id = o.businessId 
+		',
+		'
+		<include refid="busTaskList_Where" />
+		',
+		' 
+		 o.businessId 
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 </mapper>

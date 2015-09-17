@@ -73,6 +73,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.common.ResponseCode;
+import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.ClienterStatus;
@@ -93,6 +94,7 @@ import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
+import com.edaisong.entity.req.PagedBusTaskListReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
@@ -1112,6 +1114,27 @@ public class OrderService implements IOrderService {
 			return res;
 		}
 		return res.setResult(orderDao.queryOrder(query));
+	}
+	/**
+	 * 门店任务审核列表 
+	 * 茹化肖
+	 * 2015年9月17日15:07:56
+	 */
+	@Override
+	public PagedResponse<BusTaskList> busTaskList(PagedBusTaskListReq req) {
+		if(req.getStartDate()!=null&&!req.getStartDate().equals(""))
+		{
+			req.setStartDate(req.getEndDate()+"00:00:00");
+		}
+		if(req.getEndDate()!=null&&!req.getEndDate().equals(""))
+		{
+			req.setEndDate(req.getEndDate()+"23:00:00");
+		}
+		if(req.getCityName()=="-1")
+		{
+			req.setCityName("");
+		}
+		return this.orderDao.busTaskList(req);
 	}
 
 }
