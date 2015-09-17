@@ -169,11 +169,10 @@
 		FROM
 		dbo.clienter c (nolock)
 		JOIN dbo.BusinessClienterRelation bcr ON
-		bcr.ClienterId = c.Id AND
-		bcr.BusinessId=${businessId}
+		bcr.ClienterId = c.Id 
 		left join
 		dbo.[order] o (nolock) on o.clienterId=c.Id
-		where 1=1
+		where bcr.BusinessId=${businessId} and bcr.IsEnable=1 and bcr.isbind=1 
 		<if test="!(workStatus>=2)">
 			and c.WorkStatus=${workStatus}
 		</if>
