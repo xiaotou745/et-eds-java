@@ -103,7 +103,8 @@
 		b.isAllowCashPay,
 		ISNULL(b.RecommendPhone, '') AS
 		recommendphone,
-		bg.StrategyId as StrategyId
+		bg.StrategyId as StrategyId,
+		b.IsOrderChecked 
 		FROM business b WITH (
 		NOLOCK )
 		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON

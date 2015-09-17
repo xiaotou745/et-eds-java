@@ -481,7 +481,15 @@ public class OrderService implements IOrderService {
 		order.setOrderno(OrderNoHelper.generateOrderCode(req.getBusinessid()));// 临时
 		order.setRecevicename(req.getRecevicename());
 		order.setRecevicephoneno(req.getRecevicephoneno());
-		order.setReceviceaddress(req.getReceviceaddress());
+		if (businessModel.getOnekeypuborder()!=null&&
+			businessModel.getOnekeypuborder()>0&&
+			(req.getReceviceaddress()==null||
+			 req.getReceviceaddress().isEmpty())) {
+			order.setReceviceaddress(null);
+		}else {
+			order.setReceviceaddress(req.getReceviceaddress());
+		}
+
 		order.setIspay(req.getIspay());
 		order.setAmount(req.getAmount());
 		order.setRemark(req.getRemark());
@@ -520,7 +528,8 @@ public class OrderService implements IOrderService {
 		order.setWebsitesubsidy(orderPriceService.getOrderWebSubsidy(orderCommission));
 		order.setCommissionrate(orderPriceService.getCommissionRate(orderCommission));
 		order.setAdjustment(orderPriceService.getAdjustment(orderCommission));
-
+		order.setBasecommission(orderPriceService.getBaseCommission(orderCommission));
+		
 		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(req.getAmount(), businessModel.getBusinesscommission(),
 				businessModel.getCommissionfixvalue(), req.getOrdercount(), businessModel.getDistribsubsidy(), req.getOrderfrom());
 		order.setSettlemoney(settleMoney);
