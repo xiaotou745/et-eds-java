@@ -5,7 +5,7 @@
 <%
 	String basePath = PropertyUtils.getProperty("static.business.url");
     UserContext userContext = UserContext.getCurrentContext(request);
-	String name = userContext.isEmpty() ? "游客" : userContext.getBusinessName();
+	String name = userContext==null ? "游客" : userContext.getBusinessName();
 %>
 <div class="header">
 	<a class="logo fl" href="<%=basePath%>/index"><img src="<%=basePath %>/images/logo.png" width="74" height="25" alt=""></a>

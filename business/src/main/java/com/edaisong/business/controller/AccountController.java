@@ -60,7 +60,7 @@ public class AccountController {
 		LoginHelper.removeAuthCodeCookie(request, response,LoginUtil.BUSINESS_JSESSIONID);
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
-		boolean isLogin = LoginUtil.checkIsLogin(request,response,LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
+		boolean isLogin = LoginUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
 			resp.setSuccess(true);
@@ -82,7 +82,7 @@ public class AccountController {
 		}
 
 		BusinessLoginResp businessResp=null;
-		String key="";
+		String userInfo="";
 		if (userType==0) {
 			businessResp = businessService.login(phoneNo, password);
 			if (businessResp.getResponseCode()!=ResponseCode.SUCESS) {
@@ -94,8 +94,7 @@ public class AccountController {
 			Date lastLoginTime = new Date();//更新最后登录时间
 			business.setLastLoginTime(lastLoginTime);
 			businessService.updateLastLoginTime(business.getId(), lastLoginTime);
-			key = RedissCacheKey.Business_LOGIN_COOKIE+business.getPhoneno()+UUID.randomUUID().toString();
-			redisService.set(key, business, cookieMaxAge);
+			userInfo="0;"+business.getId()+";"+business.getName();
 		}else {
 			GroupBusiness groupBusiness = groupBusinessService.login(phoneNo, password);
 			if (groupBusiness==null) {
@@ -108,16 +107,14 @@ public class AccountController {
 				resp.setSuccess(false);
 				return resp;
 			}
-			key = RedissCacheKey.GroupBusiness_LOGIN_COOKIE+groupBusiness.getLoginname()+UUID.randomUUID().toString();
-			redisService.set(key, groupBusiness, cookieMaxAge);
+			userInfo="1;"+groupBusiness.getId()+";"+groupBusiness.getGroupbusiname();
 		}
 
-		CookieUtils.setCookie(request,response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, key, cookieMaxAge,
+		CookieUtils.setCookie(request,response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, userInfo, cookieMaxAge,
 				true);
 		//设置账户cookie
 		CookieUtils.setCookie(request,response, "username", phoneNo, 365 * 60 * 60 * 24,
 				false);
-		UserContext.resetContext();
 		resp.setSuccess(true);
 		return resp;
 	}
@@ -133,13 +130,7 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "logoff")
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		// 删除登录cookie
-		Cookie cookie = CookieUtils.getCookieByName(LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, request);
-		if (cookie != null) {
-		    redisService.remove(cookie.getValue());
-			CookieUtils.deleteCookie(request, response, cookie.getName());
-		}
-		UserContext.resetContext();
+		CookieUtils.deleteCookie(request, response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
 		response.sendRedirect(PropertyUtils.getProperty("static.business.url") + "/");
 	}
 }

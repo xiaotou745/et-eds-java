@@ -9,7 +9,7 @@
 %>
 	<div class="nav">
 		<img src="<%=basePath%>/images/dun.png" width="55" height="74" alt="">
-		<%if(!context.isEmpty()){
+		<%if(context!=null){
 			if(context.getBusinessType()==0){%>
 				<a href="<%=basePath%>/order/publish">发布任务</a>
 				<span <%=viewPath=="index"?"class='on'":""%>><a class="one" href="<%=basePath%>/index">商户主页</a></span>
