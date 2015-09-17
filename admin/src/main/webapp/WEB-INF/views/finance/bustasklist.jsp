@@ -44,6 +44,7 @@ var jss={
 					 	endDate:$('#endDate').val(),
 					 	selectType:$('#selecttype').val(),
 					 	selectValue:$('#selectvalue').val(),
+					 	cityName:$('#businessCityId').val()
 					 };
 			 console.log(data);
 			$.post("<%=basePath%>/finance/bustasklistdo",

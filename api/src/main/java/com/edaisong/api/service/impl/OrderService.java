@@ -1133,13 +1133,13 @@ public class OrderService implements IOrderService {
 	public PagedResponse<BusTaskList> busTaskList(PagedBusTaskListReq req) {
 		if(req.getStartDate()!=null&&!req.getStartDate().equals(""))
 		{
-			req.setStartDate(req.getEndDate()+"00:00:00");
+			req.setStartDate(req.getStartDate()+" 00:00:00");
 		}
 		if(req.getEndDate()!=null&&!req.getEndDate().equals(""))
 		{
-			req.setEndDate(req.getEndDate()+"23:00:00");
+			req.setEndDate(req.getEndDate()+" 23:59:59");
 		}
-		if(req.getCityName()=="-1")
+		if(req.getCityName().equals("-1"))
 		{
 			req.setCityName("");
 		}

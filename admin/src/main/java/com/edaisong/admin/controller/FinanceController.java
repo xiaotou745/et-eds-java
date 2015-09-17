@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.req.PagedBusTaskListReq;
 
 @Controller
@@ -32,8 +35,13 @@ public class FinanceController {
 	
 	@RequestMapping("bustasklistdo")
 	public ModelAndView listdo(PagedBusTaskListReq req) {
-		ModelAndView model = new ModelAndView("bustasklistdo");
-		model.addObject("listData",orderService.busTaskList(req));
+		String startString=req.getStartDate();
+		String endString=req.getEndDate();
+		ModelAndView model = new ModelAndView("finance/bustasklistdo");
+		PagedResponse<BusTaskList>  listPagedResponse=orderService.busTaskList(req);
+		model.addObject("listData",listPagedResponse);
+		model.addObject("sDate",startString);
+		model.addObject("eDate",endString);
 		return model;
 	}
 }
