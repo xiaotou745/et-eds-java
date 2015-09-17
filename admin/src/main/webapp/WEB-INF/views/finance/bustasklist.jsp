@@ -2,40 +2,59 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="com.edaisong.core.util.HtmlHelper"%>
+<%@page import="java.util.List"%>         
+<%@page import="com.edaisong.entity.domain.AreaModel"%>
 <%	
 String basePath =PropertyUtils.getProperty("static.admin.url");
+List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 %>
-<div class="top cb">
-			<h3 class="cb">
-				门店任务审核
-				<p class="fr">
-					<input type="text" class="fl" id="customerInfo" placeholder="骑士姓名，手机号">
-					<input type="button" class="fl" value="搜索按钮" id="customerSearch">
-				</p>
-			</h3>
-			
+   <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+            <td>               
+				<label >发单日期:</label>
+<input type="text" value="" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
+<span>到</span>
+<input type="text" value="" name="endDate" id="endDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
+<select id=selecttype>
+<option value=1>门店名称</option>
+<option value=2>注册电话</option>
+</select>
+<input type="text" name="selectvalue" id="selectvalue">
+ <span class="">筛选城市: </span>
+               		  <%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "name") %>
+               		   <input type="submit" value="查询" class="searchBtn" id="btnSearch" />
+                </td>
+            </tr>
 
-		<form method="POST" action="#" class="form-horizontal" id="searchForm">
-			<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
-			<div class="function">
-				<span class="fl">状态</span>
-				<label class="fl">
-					<input type="radio" name="workStatus" value="2" checked="checked" onchange="change(this.value)">
-					全部
-				</label>
-				<label class="fl">
-					<input type="radio" name="workStatus" value="0" onchange="change(this.value)">
-					上班
-				</label>
-				<label class="fl">
-					<input type="radio" name="workStatus" value="1" onchange="change(this.value)">
-					下班
-				</label>
-			</div>
-		</form>
+              
+        </table>  
+        
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox-content" id="content"></div>
 		</div>
-		<div class="bottom bottom2 bottom3" id="content">
-		</div>
+	</div>   
 <script type="text/javascript">
-
+var jss={
+		search:function(currentPage){
+			 var data={
+					 	currentPage:currentPage,
+					 	startDate:$('#startDate').val(),
+					 	endDate:$('#endDate').val(),
+					 	selectType:$('#selecttype').val(),
+					 	selectValue:$('#selectvalue').val(),
+					 };
+			 console.log(data);
+			$.post("<%=basePath%>/finance/bustasklistdo",
+					data,
+					function(d){
+				$("#content").html(d);
+			});
+		}
+	}
+jss.search(1);
+$("#btnSearch").click(function(){
+	jss.search(1);
+});
 </script>

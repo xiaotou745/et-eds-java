@@ -6,6 +6,7 @@ import java.util.List;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
+import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.ExportOrder;
@@ -14,11 +15,11 @@ import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
-import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
+import com.edaisong.entity.req.PagedBusTaskListReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
@@ -225,5 +226,16 @@ public interface IOrderService {
      * @return
      */
     HttpResultModel<List<QueryOrder>> getCompliteOrder(QueryOrderReq query,int type);
+    
+    /**
+	 * 门店审核列表
+	 * 
+	 * @author 茹化肖
+	 * @Date 2015年9月17日14:58:18
+	 * @param search
+	 *            查询参数：可能为订单号，骑士手机号，骑士姓名
+	 * @return
+	 */
+	PagedResponse<BusTaskList> busTaskList(PagedBusTaskListReq req);
 
 }
