@@ -23,6 +23,7 @@ import com.edaisong.api.service.inter.IGroupBusinessLogService;
 import com.edaisong.api.service.inter.IGroupBusinessRelationService;
 import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.core.enums.BindOptType;
+import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.ExcelUtils;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
@@ -115,7 +116,7 @@ public class GroupBusinessController {
 		GroupBusiness groupBusiness = new GroupBusiness();
 		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName().trim());
 		groupBusiness.setLoginname(bgm.getloginName().trim());
-		groupBusiness.setPassword(bgm.getpassWord().trim());
+		groupBusiness.setPassword(MD5Util.MD5(bgm.getpassWord().trim()));
 		groupBusiness.setIsAllowOverdraft(bgm.getIsAllowOverdraft());
 		groupBusiness.setCreatename(UserContext.getCurrentContext(request).getName());
 		int result=groupBusinessService.addGroupBusiness(groupBusiness);
@@ -157,11 +158,11 @@ public class GroupBusinessController {
 				response.setResponseCode(0);
 				return response;
 			}
-		}
+		} 
 		GroupBusiness groupBusiness = new GroupBusiness();
 		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName().trim());
 		groupBusiness.setLoginname(bgm.getloginName().trim());
-		groupBusiness.setPassword(bgm.getpassWord().trim());
+		groupBusiness.setPassword(MD5Util.MD5(bgm.getpassWord().trim()));
 		groupBusiness.setId(bgm.getId());
 		groupBusiness.setIsAllowOverdraft(bgm.getIsAllowOverdraft());
 		groupBusiness.setModifyname(UserContext.getCurrentContext(request).getName());

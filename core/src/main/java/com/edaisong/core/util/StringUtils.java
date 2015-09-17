@@ -1180,4 +1180,13 @@ public abstract class StringUtils {
 			}
 		}
 	}
+	
+	public static String trimRight(String source,String opr){
+		String leftOpr=source.substring((source.length()-opr.length()),source.length());
+		if(opr.equals(leftOpr))
+		{
+			return source.substring(0,(source.length()-opr.length()));
+		}
+		return source;
+	}
 }

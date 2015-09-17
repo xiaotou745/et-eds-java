@@ -1178,7 +1178,8 @@ select  b.Id as ClienterId ,
         b.PhoneNo as ClienterPhone ,
         b.TrueName as ClienterName ,
         SUM(a.OrderCount) as OrderCount ,
-        CONVERT(VARCHAR(100), a.PubDate, 23) as PubDate
+        CONVERT(VARCHAR(100), a.PubDate, 23) as PubDate,
+         MIN (b.HeadPhoto) as ClienterPhoto
 from    dbo.[order] (nolock)a
         join dbo.clienter (nolock) b on a.clienterId = b.Id
 where   a.Status = 1   and businessId=#{businessId}  

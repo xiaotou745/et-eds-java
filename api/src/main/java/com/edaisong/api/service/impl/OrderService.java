@@ -58,6 +58,7 @@ import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.GroupBusiness;
@@ -1010,9 +1011,10 @@ public class OrderService implements IOrderService {
 			return resultModel;
 		}
 		OrderStatisticsBResp orderStatisticsResp = orderDao.getOrderStatistics(orderStatisticsBReq);
-		List<ServiceClienter> serviceClienters = orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq); // B端任务统计接口
+		List<ServiceClienter> serviceClienters = orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq); 
 		List<DaySatisticsB> daySatisticsBs = orderDao.getOrderStatisticsDaySatistics(orderStatisticsBReq); // B端任务统计接口
 																											// 天数据列表
+		serviceClienters.forEach(action->action.setClienterPhoto(PropertyUtils.getProperty("ImageServicePath")+action.getClienterPhoto()));
 		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
 			List<ServiceClienter> temp = serviceClienters.stream().filter(t -> t.getPubDate().equals(daySatisticsB.getMonthDate()))
 					.collect(Collectors.toList());
