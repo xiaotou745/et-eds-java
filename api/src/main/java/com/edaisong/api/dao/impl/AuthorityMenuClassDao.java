@@ -36,7 +36,7 @@ public class AuthorityMenuClassDao extends DaoBase implements
 	@Override
 	public List<MenuEntity> getMenuListByUserID(int accountId) {
 		String key=RedissCacheKey.Menu_Auth+accountId;
-		List<MenuEntity> result=redisService.get(key, List.class);
+		List<MenuEntity> result=null;//redisService.get(key, List.class); to do 
 		if (result==null||result.size()==0) {
 			List<MenuEntity> list = getReadOnlySqlSessionUtil()
 					.selectList(
