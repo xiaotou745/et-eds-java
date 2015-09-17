@@ -1509,10 +1509,10 @@ where   Status = 1
 		<sql id="busTaskList_Where">
 		1=1 and o.Status=1  
 	    <if test="startDate != null and  startDate !='' ">
-			and o.PudDate>${startDate}
+			and o.PubDate>''${startDate}''
 		</if> 
 		 <if test="endDate != null and  endDate !='' ">
-			and ''${endDate}''>=o.PudDate
+			and ''${endDate}''>=o.PubDate
 		</if> 
 		 <if test="cityName != null and  cityName  !='' ">
 			and b.city=''${cityName}''

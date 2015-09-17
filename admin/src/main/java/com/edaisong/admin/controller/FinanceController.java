@@ -35,9 +35,13 @@ public class FinanceController {
 	
 	@RequestMapping("bustasklistdo")
 	public ModelAndView listdo(PagedBusTaskListReq req) {
+		String startString=req.getStartDate();
+		String endString=req.getEndDate();
 		ModelAndView model = new ModelAndView("finance/bustasklistdo");
 		PagedResponse<BusTaskList>  listPagedResponse=orderService.busTaskList(req);
 		model.addObject("listData",listPagedResponse);
+		model.addObject("sDate",startString);
+		model.addObject("eDate",endString);
 		return model;
 	}
 }

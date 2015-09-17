@@ -9,6 +9,9 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.entity.domain.BusTaskList"%>
 <%String basePath =PropertyUtils.getProperty("static.admin.url");%>
+<%String StarStr=request.getAttribute("sDate").toString(); %>
+<%String EndStr=request.getAttribute("eDate").toString();%>
+<%String netUrl=PropertyUtils.getProperty("dynamic.admin.url");%>
 		<table class="table table-striped table-bordered table-hover dataTables-example">
 			<thead>
 				<tr class="tdbg">
@@ -24,11 +27,13 @@
 		
 				<%PagedResponse<BusTaskList> data = (PagedResponse<BusTaskList>) request.getAttribute("listData");
 		       	  List<BusTaskList> list = data.getResultList();
-		       		if (list == null) {list = new ArrayList<BusTaskList>();}		
+		       		if (list == null) {list = new ArrayList<BusTaskList>();}
+		       		
+
 		         	for (int i = 0; i < list.size(); i++) {%>  
 					 <tr>
 						<td><%=list.get(i).getBusinessId() %></td>
-						<td><a href='/'><%=list.get(i).getName()%></a></td>
+						<td><a href='<%=netUrl%>/Order/OrderAudit?businessName=<%=list.get(i).getName()%>&businessPhone=<%=list.get(i).getPhoneNo()%>&startDate=<%=StarStr%>&endDate=<%=EndStr%>'><%=list.get(i).getName()%></a></td>
 						<td><%=list.get(i).getPhoneNo() %></td>
 						<td><%=list.get(i).getTaskCount() %></td>
 						<td><%=list.get(i).getOrderCount() %></td>
