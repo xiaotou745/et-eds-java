@@ -15,7 +15,7 @@ List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListDat
 				<label >发单日期:</label>
 <input type="text" value="" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
 <span>到</span>
-<input type="text" value="" name="endDate" id="endDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
+<input type="text" value="" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
 <select id=selecttype>
 <option value=1>门店名称</option>
 <option value=2>注册电话</option>

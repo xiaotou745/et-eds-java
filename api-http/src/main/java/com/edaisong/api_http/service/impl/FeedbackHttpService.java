@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IFeedbackService;
 import com.edaisong.api_http.service.inter.IFeedbackhttpService;
+import com.edaisong.core.enums.FeedbackState;
 import com.edaisong.core.enums.FeedbackType;
 import com.edaisong.core.enums.SystemState;
 import com.edaisong.core.util.EnumHelper;
@@ -38,13 +39,13 @@ public class FeedbackHttpService implements IFeedbackhttpService {
 		int row= feedbackService.addByData(record);
 		if(row>0)
 		{
-			returnmodel.setStatus(SystemState.Success.value());
-			returnmodel.setMessage(SystemState.getEnum(SystemState.Success.value()).desc() );			
+			returnmodel.setStatus(FeedbackState.Success.value());
+			returnmodel.setMessage(FeedbackState.getEnum(FeedbackState.Success.value()).desc() );			
      	}
 		else
 		{
-			returnmodel.setStatus(SystemState.SystemError.value());
-			returnmodel.setMessage(SystemState.getEnum(SystemState.SystemError.value()).desc() );
+			returnmodel.setStatus(FeedbackState.SystemError.value());
+			returnmodel.setMessage(FeedbackState.getEnum(FeedbackState.SystemError.value()).desc() );
 		}
 		  
 		return returnmodel;
@@ -66,13 +67,13 @@ public class FeedbackHttpService implements IFeedbackhttpService {
 		int row= feedbackService.addByData(record);
 		if(row>0)
 		{
-			returnmodel.setStatus(SystemState.Success.value());
-			returnmodel.setMessage(SystemState.getEnum(SystemState.Success.value()).desc() );			
+			returnmodel.setStatus(FeedbackState.Success.value());
+			returnmodel.setMessage(FeedbackState.getEnum(FeedbackState.Success.value()).desc() );			
      	}
 		else
 		{
-			returnmodel.setStatus(SystemState.SystemError.value());
-			returnmodel.setMessage(SystemState.getEnum(SystemState.SystemError.value()).desc() );
+			returnmodel.setStatus(FeedbackState.SystemError.value());
+			returnmodel.setMessage(FeedbackState.getEnum(FeedbackState.SystemError.value()).desc() );
 		}
 		  
 		return returnmodel;
