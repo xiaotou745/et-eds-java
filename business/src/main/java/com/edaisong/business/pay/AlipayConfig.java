@@ -28,7 +28,7 @@ public class AlipayConfig {
 	public static String partner = "2088911703660069";
 	
 	// 收款支付宝账号
-	public static String seller_email = "";
+	public static String seller_email = "info@edaisong.com";
 	// 商户的私钥
 	public static String key = "c7r4nf8yx9wimj7usojo6v3b57ieaqus";
 

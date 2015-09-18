@@ -15,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.dao.inter.IBusinessMessageDao;
 import com.edaisong.api.service.inter.IOrderService;
+import com.edaisong.business.common.LoginUtil;
 import com.edaisong.business.common.UserContext;
+import com.edaisong.core.util.CookieUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessMessage;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
@@ -32,12 +34,17 @@ public class IndexController {
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UserContext context = UserContext.getCurrentContext(request);
 		ModelAndView model = new ModelAndView("businessView");
-		if (context==null) {
+		if (context==null||context.getBusinessType()>0) {
+			CookieUtils.deleteCookie(request, response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
 			response.sendRedirect(request.getContextPath() + "/");
-			return model;
+			return null;
 		}
 
 		BusinessOrderSummaryModel bos = orderService.getBusinessOrderSummary(context.getBusinessID());
+		if (bos==null) {
+			response.sendRedirect(request.getContextPath() + "/");
+			return null;
+		}
 		BusinessMessage message = businessMessageDao.getLatestMessage(context.getBusinessID());
 		//获得查询订单统计的开始时间和结束时间
 		Calendar c = Calendar.getInstance();

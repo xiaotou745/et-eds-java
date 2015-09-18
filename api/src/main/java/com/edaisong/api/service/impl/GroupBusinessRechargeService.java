@@ -37,27 +37,23 @@ public class GroupBusinessRechargeService implements
 	}
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int recharge(GroupBusinessRecharge record,String remark,String operatorName) {
-		if (record.getPayamount()<1||record.getPayamount()>100000) {
-			return -1;
-		}
-		
+	public int recharge(GroupBusinessRecharge record) {
 		int result= groupBusinessRechargeDao.update(record);
 		if (result>0) {
-			int rs=groupBusinessDao.recharge(record.getGroupbusinessid(), record.getPayamount());
+			GroupBusinessRecharge recharge=	groupBusinessRechargeDao.getByOrderNo(record.getOrderno());
+			int rs=groupBusinessDao.recharge(recharge.getGroupbusinessid(), recharge.getPayamount());
 			if (rs>0) {
-				GroupBusiness groupBusiness=groupBusinessDao.select(record.getGroupbusinessid());
-				GroupBusinessRecharge recharge=	groupBusinessRechargeDao.getByOrderNo(record.getOrderno());
+				GroupBusiness groupBusiness=groupBusinessDao.select(recharge.getGroupbusinessid());
 				BusinessBalanceRecord rechargeRecord=new BusinessBalanceRecord();
 				rechargeRecord.setBusinessid(0);
-				rechargeRecord.setGroupamount(record.getPayamount());
+				rechargeRecord.setGroupamount(recharge.getPayamount());
 				rechargeRecord.setStatus((short)BusinessBalanceRecordStatus.Success.value());
 				rechargeRecord.setRecordtype((short)BusinessBalanceRecordRecordType.Recharge.value());
-				rechargeRecord.setOperator(operatorName);
+				rechargeRecord.setOperator(groupBusiness.getGroupbusiname());
 				rechargeRecord.setWithwardid((long)recharge.getId());
-				rechargeRecord.setRelationno(record.getOrderno());
-				rechargeRecord.setRemark(remark);
-				rechargeRecord.setGroupid(record.getGroupbusinessid());
+				rechargeRecord.setRelationno(recharge.getOrderno());
+				rechargeRecord.setRemark("易代送商家中心集团充值："+groupBusiness.getGroupbusiname());
+				rechargeRecord.setGroupid(recharge.getGroupbusinessid());
 				rechargeRecord.setGroupafterbalance(groupBusiness.getAmount());
 				businessBalanceRecordDao.groupInsert(rechargeRecord);
 			}

@@ -43,7 +43,6 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 				<input type="hidden" name="WIDdefaultbank" id="WIDdefaultbank" value="alipay">
 				<input type="hidden" name="WIDout_trade_no" id="WIDout_trade_no" value="">
 					<a href="javascript:;" class="fl zhifu on" id="alipay">支付宝</a> 
-					<a href="javascript:;" class="fl zhifu" id="ICBC">财付通</a>
 				</p>
 			</div>
 		</form></div>

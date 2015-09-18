@@ -39,7 +39,7 @@
 	}else{
 		////////////////////////////////////请求参数//////////////////////////////////////
 		String basePath =PropertyUtils.getProperty("static.business.url");
-		String groupInfo="集团商家["+context.getBusinessName()+"("+context.getBusinessID()+")]充值";
+		String groupInfo="易代送商家中心集团充值："+context.getBusinessName();
 		//支付类型
 		String payment_type = "1";
 		//必填，不能修改
@@ -54,9 +54,11 @@
 		//商户网站订单系统中唯一订单号，必填
 		//订单名称
 		String subject =groupInfo;// new String(request.getParameter("WIDsubject").getBytes("ISO-8859-1"),"UTF-8");
-		//必填
+		//必填		//付款金额
+		String total_fee = new String(request.getParameter("WIDtotal_fee").getBytes("ISO-8859-1"),"UTF-8");
+		//必填
 		//订单描述
-		String body ="集团商家充值";// new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");
+		String body =groupInfo;// new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");
 		//默认支付方式
 		String paymethod = "bankPay";
 		//必填
@@ -64,14 +66,12 @@
 		String defaultbank = new String(request.getParameter("WIDdefaultbank").getBytes("ISO-8859-1"),"UTF-8");
 		//必填，银行简码请参考接口技术文档
 		
-		//付款金额
-		String total_fee = new String(request.getParameter("WIDtotal_fee").getBytes("ISO-8859-1"),"UTF-8");
-		//必填
+
 		//商品展示地址
 		String show_url =basePath;// new String(request.getParameter("WIDshow_url").getBytes("ISO-8859-1"),"UTF-8");
 		//需以http://开头的完整路径，例如：http://www.商户网址.com/myorder.html
 		//防钓鱼时间戳
-		String anti_phishing_key = AlipaySubmit.query_timestamp();
+		String anti_phishing_key =AlipaySubmit.query_timestamp();
 		//若要使用请调用类文件submit中的query_timestamp函数
 		//客户端的IP地址
 		String exter_invoke_ip = request.getRemoteAddr();
@@ -87,23 +87,24 @@
         sParaTemp.put("seller_email", AlipayConfig.seller_email);
         sParaTemp.put("_input_charset", AlipayConfig.input_charset);
 		sParaTemp.put("payment_type", payment_type);
-		sParaTemp.put("notify_url", notify_url);
+		//sParaTemp.put("notify_url", notify_url);
 		sParaTemp.put("return_url", return_url);
 		sParaTemp.put("out_trade_no", out_trade_no);
 		sParaTemp.put("subject", subject);
 		sParaTemp.put("total_fee", total_fee);
 		sParaTemp.put("body", body);
+		//defaultbank="CMB";
 		if(defaultbank.equals("alipay")){
-			sParaTemp.put("paymethod", "directPay");
+			//sParaTemp.put("paymethod", "directPay");
 			//sParaTemp.put("defaultbank", defaultbank);
 		}else{
 			sParaTemp.put("paymethod", paymethod);
 			sParaTemp.put("defaultbank", defaultbank);
 		}
 
-		sParaTemp.put("show_url", show_url);
-		sParaTemp.put("anti_phishing_key", anti_phishing_key);
-		sParaTemp.put("exter_invoke_ip", exter_invoke_ip);
+		//sParaTemp.put("show_url", show_url);
+		//sParaTemp.put("anti_phishing_key", anti_phishing_key);
+		//sParaTemp.put("exter_invoke_ip", exter_invoke_ip);
 		
 		//建立请求
 		String sHtmlText = AlipaySubmit.buildRequest(sParaTemp,"get","确认");
