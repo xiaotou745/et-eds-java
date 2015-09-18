@@ -40,6 +40,7 @@
 		////////////////////////////////////请求参数//////////////////////////////////////
 		String basePath =PropertyUtils.getProperty("static.business.url");
 		String groupInfo="易代送商家中心集团充值："+context.getBusinessName();
+		//groupInfo="zhaohlrecharge";
 		//支付类型
 		String payment_type = "1";
 		//必填，不能修改
@@ -56,6 +57,7 @@
 		String subject =groupInfo;// new String(request.getParameter("WIDsubject").getBytes("ISO-8859-1"),"UTF-8");
 		//必填		//付款金额
 		String total_fee = new String(request.getParameter("WIDtotal_fee").getBytes("ISO-8859-1"),"UTF-8");
+		//total_fee="0.1";
 		//必填
 		//订单描述
 		String body =groupInfo;// new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");
@@ -87,8 +89,8 @@
         sParaTemp.put("seller_email", AlipayConfig.seller_email);
         sParaTemp.put("_input_charset", AlipayConfig.input_charset);
 		sParaTemp.put("payment_type", payment_type);
-		//sParaTemp.put("notify_url", notify_url);
-		sParaTemp.put("return_url", return_url);
+		sParaTemp.put("notify_url", notify_url);
+		//sParaTemp.put("return_url", return_url);
 		sParaTemp.put("out_trade_no", out_trade_no);
 		sParaTemp.put("subject", subject);
 		sParaTemp.put("total_fee", total_fee);

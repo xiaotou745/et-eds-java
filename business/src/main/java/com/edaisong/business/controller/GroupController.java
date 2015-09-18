@@ -74,7 +74,7 @@ public class GroupController {
 
 
 	@RequestMapping("return_url")
-	public ModelAndView return_url(HttpServletRequest request) throws Exception {
+	public void return_url(HttpServletRequest request) throws Exception {
 		Map<String, String> paramMap=parseParamMap(request);
 		boolean verify_result =false;
 		if (paramMap!=null&&!paramMap.isEmpty()) {
@@ -96,10 +96,6 @@ public class GroupController {
 			}
 			groupBusinessRechargeService.recharge(record);
 		}
-
-		ModelAndView view = new ModelAndView("group/return_url");
-		view.addObject("verify_result", verify_result);
-		return view;
 	}
 
 	private Map<String, String> parseParamMap(HttpServletRequest request)
@@ -116,7 +112,7 @@ public class GroupController {
 							: valueStr + values[i] + ",";
 				}
 				// 乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+				//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
 				params.put(name, valueStr);
 			}
 		}

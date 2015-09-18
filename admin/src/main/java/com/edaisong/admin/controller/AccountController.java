@@ -172,7 +172,7 @@ public class AccountController {
 		int loginFrom=UserContext.getLoginFrom(context.getId());
 		UserContext.clearLoginFrom(context.getId());
 		if (loginFrom==0) {
-			response.sendRedirect(PropertyUtils.getProperty("dynamic.admin.url") + "/");
+			response.sendRedirect(PropertyUtils.getProperty("dynamic.admin.url") + "/account/login");
 		}else {
 			response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
 		}
