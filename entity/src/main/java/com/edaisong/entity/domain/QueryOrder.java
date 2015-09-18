@@ -40,8 +40,6 @@ public class QueryOrder {
 	private int needPickupCode; //无实际意义 与app同步 不能删
 	private int hadUploadCount;
 	private int orderCommission;
-	private Double longitude;
-	private Double latitude;
 	private String distance="--"; 
 	private Double distance_OrderBy=9999999.0;
 
@@ -285,7 +283,7 @@ public class QueryOrder {
 	 * 
 	 * @return
 	 */
-	public boolean isPay() {
+	public boolean getIsPay() {
 		return isPay;
 	}
 
@@ -294,7 +292,7 @@ public class QueryOrder {
 	 * 
 	 * @param isPay
 	 */
-	public void setPay(boolean isPay) {
+	public void setIsPay(boolean isPay) {
 		this.isPay = isPay;
 	}
 
@@ -520,41 +518,6 @@ public class QueryOrder {
 	 */
 	public void setHadUploadCount(int hadUploadCount) {
 		this.hadUploadCount = hadUploadCount;
-	}
-	/**
-	 * 商家经度
-	 * 
-	 * @return
-	 */
-	public Double getLongitude() {
-		return longitude;
-	}
-
-	/**
-	 * 商家经度
-	 * 
-	 * @param longitude
-	 */
-	public void setLongitude(Double longitude) {
-		this.longitude = longitude;
-	}
-
-	/**
-	 * 商家纬度
-	 * 
-	 * @return
-	 */
-	public Double getLatitude() {
-		return latitude;
-	}
-
-	/**
-	 * 商家纬度
-	 * 
-	 * @param latitude
-	 */
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
 	}
 
 	/**

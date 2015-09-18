@@ -175,7 +175,7 @@ public class OrderController {
 		req.setListOrderChild(JsonUtil.str2list(req.getChildstr(),OrderChild.class));  //序列化得到子订单信息汇总
 		OrderResp resp = new OrderResp();
 		UserContext context = UserContext.getCurrentContext(request);
-		if (context==null||context.isEmpty()||context.getBusinessID()<=0) {
+		if (context==null) {
 			resp.setResponseCode(ResponseCode.BUSINESS_FAILURE_ERROR);
 			resp.setMessage("没有获取到登录信息，请重新登录");
 			return resp;

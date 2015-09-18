@@ -68,11 +68,11 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.Feedback" >
-    insert into Feedback (Id, FeedbackId, UserType, 
-      FeedbackType, Content, CreateTime
+    insert into Feedback (FeedbackId, UserType, 
+      FeedbackType, Content
       )
-    values (#{id,jdbcType=BIGINT}, #{feedbackid,jdbcType=INTEGER}, #{usertype,jdbcType=SMALLINT}, 
-      #{feedbacktype,jdbcType=SMALLINT}, #{content,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}
+    values (#{feedbackid,jdbcType=INTEGER}, #{usertype,jdbcType=SMALLINT}, 
+      #{feedbacktype,jdbcType=SMALLINT}, #{content,jdbcType=NVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.Feedback" >

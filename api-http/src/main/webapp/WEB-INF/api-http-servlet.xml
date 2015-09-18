@@ -19,7 +19,12 @@
 
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<!-- 配置引用的环境相关引用文件 Start -->
 	<import resource="classpath:conf/core/dev-context.xml" />
+	<!-- <import resource="classpath:conf/core/test-context.xml" /> -->
+	<!-- <import resource="classpath:conf/core/pro-context.xml" /> -->
+	<!-- <import resource="classpath:conf/core/devtest-context.xml" /> -->
+	<!-- 配置引用的环境相关引用文件 END -->
 
 	<context:component-scan base-package="com.edaisong.api_http.service.impl" />
 
@@ -30,11 +35,11 @@
 			<ref bean="messageHttpService" />
 			<ref bean="orderHttpService" />
 			<ref bean="accountBillService" />
-			<ref bean="financeService" />
+			<ref bean="feedbackHttpService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:inInterceptors>
 			<!-- <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean> -->
-
+			<bean class="com.edaisong.api_http.common.AESInterceptor"></bean>
 		</jaxrs:inInterceptors>
 		<jaxrs:outInterceptors>
 			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
@@ -67,7 +72,7 @@
 	<bean id="jacksonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
 		<property name="mapper" ref="jacksonMapper" />
 	</bean>
-	<bean id="jacksonMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+	<bean id="jacksonMapper" class="com.edaisong.core.util.ExtandObjectMapper">
 		<property name="dateFormat">
 			<bean class="java.text.SimpleDateFormat">
 				<constructor-arg type="java.lang.String" value="yyyy-MM-dd hh:MM:ss">

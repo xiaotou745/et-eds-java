@@ -18,31 +18,18 @@ import com.edaisong.core.util.SpringBeanHelper;
 public class LoginUtil {
 	public final static String BUSINESS_LOGIN_COOKIE_NAME = "ltoken_business";//登录Cookie name
 	public final static String BUSINESS_JSESSIONID = "BUSINESS_JSESSIONID";
-	private final static RedisService redisService;
-	static {
-		redisService = SpringBeanHelper.getCustomBeanByType(RedisService.class);
-	}
+
 	/**
 	 * 是否登录
 	 * 
 	 * @param request
 	 * @return
 	 */
-	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response,String cookieKey) {
-		// 如果已登录,直接返回
-		boolean isLogin = false;
-		String cookieValue = CookieUtils.getCookie(request, cookieKey);
-		if (cookieValue != null) {
-			Object loginStatusValue = redisService.get(cookieValue, Object.class);
-			if (loginStatusValue != null){
-				isLogin = true;
-			}
-		}
-		// 如果没有登录,清除旧的登录cookie
+	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response) {
+		boolean isLogin= UserContext.getCurrentContext(request)!=null;
 		if (!isLogin) {
-			CookieUtils.deleteCookie(request, response, cookieKey);
+			CookieUtils.deleteCookie(request, response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
 		}
-
 		return isLogin;
 	}
 }

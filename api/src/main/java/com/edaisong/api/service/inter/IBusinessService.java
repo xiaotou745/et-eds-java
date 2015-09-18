@@ -7,6 +7,7 @@ import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessOptionLog;
+import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
@@ -81,15 +82,13 @@ public interface IBusinessService {
 	 * @return
 	 */
 	int updateLastLoginTime(int businessID,Date loginTime);
-	/**
-	 * 更新商户余额、可提现余额  
-	 * @author hailongzhao
-	 * @date 20150818
-	 * @param businessID
-	 * @param money
-	 * @return
-	 */
-	int updateForWithdrawC(BusinessBalanceRecord record);
+/**
+ * 	 * 更新商户(或集团)余额、可提现余额  ，记录流水
+ * @param moneyType 0是发单(扣钱)，1是取消订单(退钱)
+ * @param record 
+ * @return
+ */
+	int updateForWithdrawC(Integer moneyType,BusinessBalanceRecord record);
 	
 	/**
 	 * 获取商户、集团、策略 

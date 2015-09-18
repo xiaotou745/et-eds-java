@@ -25,6 +25,7 @@ import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.dao.inter.IClienterLocationDao;
+import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
@@ -57,8 +58,10 @@ import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.ClienterBalanceRecord;
+import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
@@ -70,6 +73,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.common.ResponseCode;
+import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.ClienterStatus;
@@ -90,6 +94,7 @@ import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
+import com.edaisong.entity.req.PagedBusTaskListReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
@@ -131,6 +136,8 @@ public class OrderService implements IOrderService {
 	IClienterLocationDao clienterLocationDao;
 	@Autowired
 	private IClienterDao clienterDao;
+	@Autowired
+	private IGroupBusinessDao groupBusinessDao;
 
 	/**
 	 * 后台订单列表页面
@@ -275,26 +282,33 @@ public class OrderService implements IOrderService {
 		updateModel.setOthercancelreason("商家取消订单");
 		updateModel.setAmount(orderRe.getSettlemoney()); // 取消订单涉及到的金额数目此处取到的当前订单的
 															// 结算费 即商家应付
-
-		if (orderDao.cancelOrderBusiness(updateModel) > 0 /* 取消订单 针对订单表的逻辑 */
-				&& businessDao.updateForWithdraw(orderRe.getSettlemoney(), req.getBusinessId()) > 0 /* 更新商户余额 */) { // 取消成功
+		if (orderDao.cancelOrderBusiness(updateModel) > 0){ /* 取消订单 针对订单表的逻辑 */
 			BusinessBalanceRecord businessBalanceRecord = new BusinessBalanceRecord();
-			businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
-			businessBalanceRecord.setAmount(orderRe.getSettlemoney());
-			businessBalanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success.value()); // 流水状态(1、交易成功
-																									// 2、交易中）
+			businessBalanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success.value()); // 流水状态(1、交易成功																					// 2、交易中）
 			businessBalanceRecord.setRecordtype((short) BusinessBalanceRecordRecordType.CancelOrder.value()); // 取消订单
 			businessBalanceRecord.setOperator("商家:" + req.getBusinessId()); // 商家id
 			businessBalanceRecord.setWithwardid((long) req.getOrderId()); // 订单id
 			businessBalanceRecord.setRelationno(req.getOrderNo()); // 关联单号
 			businessBalanceRecord.setRemark("商户取消订单返回配送费"); // 注释
-			businessBalanceRecordDao.insert(businessBalanceRecord); // 记录
+			if (orderRe.getGroupbusinessid()>0) {
+				businessBalanceRecord.setBusinessid(0);
+				businessBalanceRecord.setAmount(0d);
+				businessBalanceRecord.setGroupamount(orderRe.getSettlemoney());
+				businessBalanceRecord.setGroupid(orderRe.getGroupbusinessid());
+			}
+			else {
+				businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
+				businessBalanceRecord.setAmount(orderRe.getSettlemoney());
+				businessBalanceRecord.setGroupamount(0d);
+				businessBalanceRecord.setGroupid(0);
+			}
+			businessService.updateForWithdrawC(1,businessBalanceRecord);
 			OrderOther orderOther = new OrderOther();
 			orderOther.setOrderid(req.getOrderId());
 			orderOther.setCancelTime(new Date());
 			orderOtherDao.updateByPrimaryKeySelective(orderOther);
-		} else {
-			throw new RuntimeException("更新订单状态为取消失败");
+		}else {
+			throw new RuntimeException("更新订单状态为取消状态时失败");
 		}
 	}
 
@@ -338,15 +352,25 @@ public class OrderService implements IOrderService {
 
 		// 扣除商家结算费
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
-		balanceRecord.setBusinessid(req.getBusinessid());
-		balanceRecord.setAmount(-order.getSettlemoney());
+		if (order.getGroupbusinessid()>0) {
+			balanceRecord.setBusinessid(0);
+			balanceRecord.setAmount(0d);
+			balanceRecord.setGroupamount(order.getSettlemoney());
+			balanceRecord.setGroupid(order.getGroupbusinessid());
+		}else {
+			balanceRecord.setBusinessid(req.getBusinessid());
+			balanceRecord.setAmount(order.getSettlemoney());
+			balanceRecord.setGroupamount(0);
+			balanceRecord.setGroupid(0);
+		}
+
 		balanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success.value());
 		balanceRecord.setRecordtype((short) BusinessBalanceRecordRecordType.PublishOrder.value());
 		balanceRecord.setOperator(businessModel.getName());
 		balanceRecord.setWithwardid((long) order.getId());
 		balanceRecord.setRelationno(order.getOrderno());
 		balanceRecord.setRemark("扣除商家结算费");
-		businessService.updateForWithdrawC(balanceRecord);
+		businessService.updateForWithdrawC(0,balanceRecord);
 
 		// 记录补贴日志
 		if (order.getAdjustment() > 0) {
@@ -459,7 +483,15 @@ public class OrderService implements IOrderService {
 		order.setOrderno(OrderNoHelper.generateOrderCode(req.getBusinessid()));// 临时
 		order.setRecevicename(req.getRecevicename());
 		order.setRecevicephoneno(req.getRecevicephoneno());
-		order.setReceviceaddress(req.getReceviceaddress());
+		if (businessModel.getOnekeypuborder()!=null&&
+			businessModel.getOnekeypuborder()>0&&
+			(req.getReceviceaddress()==null||
+			 req.getReceviceaddress().isEmpty())) {
+			order.setReceviceaddress(null);
+		}else {
+			order.setReceviceaddress(req.getReceviceaddress());
+		}
+
 		order.setIspay(req.getIspay());
 		order.setAmount(req.getAmount());
 		order.setRemark(req.getRemark());
@@ -498,10 +530,17 @@ public class OrderService implements IOrderService {
 		order.setWebsitesubsidy(orderPriceService.getOrderWebSubsidy(orderCommission));
 		order.setCommissionrate(orderPriceService.getCommissionRate(orderCommission));
 		order.setAdjustment(orderPriceService.getAdjustment(orderCommission));
-
+		order.setBasecommission(orderPriceService.getBaseCommission(orderCommission));
+		
 		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(req.getAmount(), businessModel.getBusinesscommission(),
 				businessModel.getCommissionfixvalue(), req.getOrdercount(), businessModel.getDistribsubsidy(), req.getOrderfrom());
 		order.setSettlemoney(settleMoney);
+		
+		//如果当前商家的余额不够支付订单了，则消费集团的金额
+		if (businessModel.getGroupid()>0&&
+			businessModel.getBalanceprice()<settleMoney) {
+			order.setGroupbusinessid(businessModel.getGroupid());
+		}
 
 		order.setBusinessreceivable(Double.valueOf(0));// 退还商家金额
 		if (!req.getIspay() && order.getMealssettlemode() == MealsSettleMode.LineOn.value()) {
@@ -564,14 +603,23 @@ public class OrderService implements IOrderService {
 		if (req.getAmount().compareTo(amount) != 0) {
 			return PublishOrderReturnEnum.AmountIsNotEqual; // 金额有误
 		}
-		if (businessModel.getIsallowoverdraft() == 0) // 0不允许透支
-		{
-			Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(req.getAmount(), businessModel.getBusinesscommission(),
-					businessModel.getCommissionfixvalue(), req.getOrdercount(), businessModel.getDistribsubsidy(), req.getOrderfrom());
-			if (businessModel.getBalanceprice() < settleMoney) {
+		
+		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(req.getAmount(), businessModel.getBusinesscommission(),
+				businessModel.getCommissionfixvalue(), req.getOrdercount(), businessModel.getDistribsubsidy(), req.getOrderfrom());
+		
+		if (businessModel.getBalanceprice() < settleMoney) {
+			if (businessModel.getGroupid()>0){
+				GroupBusiness groupBusiness=groupBusinessDao.select(businessModel.getGroupid());
+				if (groupBusiness.getAmount()<settleMoney&&
+					groupBusiness.getIsAllowOverdraft()==0) {
+					return PublishOrderReturnEnum.GroupBalancePriceLack;
+				}
+			}else if (businessModel.getIsallowoverdraft() == 0) {
+				//商家不允许透支
 				return PublishOrderReturnEnum.BusiBalancePriceLack;
 			}
 		}
+		
 		return PublishOrderReturnEnum.Success;
 	}
 
@@ -974,9 +1022,10 @@ public class OrderService implements IOrderService {
 			return resultModel;
 		}
 		OrderStatisticsBResp orderStatisticsResp = orderDao.getOrderStatistics(orderStatisticsBReq);
-		List<ServiceClienter> serviceClienters = orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq); // B端任务统计接口
+		List<ServiceClienter> serviceClienters = orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq); 
 		List<DaySatisticsB> daySatisticsBs = orderDao.getOrderStatisticsDaySatistics(orderStatisticsBReq); // B端任务统计接口
 																											// 天数据列表
+		serviceClienters.forEach(action->action.setClienterPhoto(PropertyUtils.getProperty("ImageServicePath")+action.getClienterPhoto()));
 		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
 			List<ServiceClienter> temp = serviceClienters.stream().filter(t -> t.getPubDate().equals(daySatisticsB.getMonthDate()))
 					.collect(Collectors.toList());
@@ -1074,6 +1123,27 @@ public class OrderService implements IOrderService {
 			return res;
 		}
 		return res.setResult(orderDao.queryOrder(query));
+	}
+	/**
+	 * 门店任务审核列表 
+	 * 茹化肖
+	 * 2015年9月17日15:07:56
+	 */
+	@Override
+	public PagedResponse<BusTaskList> busTaskList(PagedBusTaskListReq req) {
+		if(req.getStartDate()!=null&&!req.getStartDate().equals(""))
+		{
+			req.setStartDate(req.getStartDate()+" 00:00:00");
+		}
+		if(req.getEndDate()!=null&&!req.getEndDate().equals(""))
+		{
+			req.setEndDate(req.getEndDate()+" 23:59:59");
+		}
+		if(req.getCityName().equals("-1"))
+		{
+			req.setCityName("");
+		}
+		return this.orderDao.busTaskList(req);
 	}
 
 }

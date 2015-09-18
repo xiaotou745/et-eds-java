@@ -2,6 +2,7 @@ package com.edaisong.admin.common;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.edaisong.core.util.CookieUtils;
 
 /**
  * 登录工具
@@ -11,9 +12,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginUtil {
 	public final static String ADMIN_JSESSIONID = "ADMIN_JSESSIONID";
-	public final static String LOGIN_COOKIE_NAME = "userinfo_edaisong";
+	public final static String LOGIN_COOKIE_NAME = "userinfo_edaisongcom";
 	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response){
-		UserContext context = UserContext.getCurrentContext(request);
-		return !context.isEmpty()&& context.getId() > 0;
+		boolean isLogin= UserContext.getCurrentContext(request)!=null;
+		if (!isLogin) {
+			CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME);
+		}
+		return isLogin;
 	}
 }

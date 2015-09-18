@@ -26,6 +26,8 @@
 <link href="<%=basePath%>/css/font-awesome.css" rel="stylesheet" />
 <link href="<%=basePath%>/css/animate.css" rel="stylesheet" />
 <link href="<%=basePath%>/css/style.css" rel="stylesheet" />
+<script src="<%=basePath%>/js/jquery-2.1.1.js"></script>
+<script src="<%=basePath%>/js/bootstrap.min.js"></script>
 </head>
 <body class="gray-bg">
 	<div class="middle-box text-center loginscreen  animated fadeInDown">
@@ -70,7 +72,5 @@
 	}
 	</script>
 	<!-- Mainly scripts -->
-	<script src="<%=basePath%>/js/jquery-2.1.1.min.js"></script>
-	<script src="<%=basePath%>/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -26,10 +26,10 @@ public class LoginHelper {
 	 * @author pengyi
 	 * @param code
 	 */
-	public static void storeAuthCode2Redis(String code , String cookieKey, HttpServletRequest request, HttpServletResponse response) {
+	public static void storeAuthCode2Redis(String from,String code , String cookieKey, HttpServletRequest request, HttpServletResponse response) {
 		String redisKey = UUID.randomUUID().toString();
 		redisService.set(redisKey, code);
-		CookieUtils.setCookie(request, response, cookieKey, redisKey, 5 * 24);
+	    CookieUtils.setCookie(request, response,from, cookieKey, redisKey, 5 * 24);
 	}
 
 	/**

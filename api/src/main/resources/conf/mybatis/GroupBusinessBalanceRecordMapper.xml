@@ -15,12 +15,11 @@
     <result column="Remark" property="remark" jdbcType="NVARCHAR" />
     <result column="IsEnable" jdbcType="SMALLINT" property="isenable" />
     <result column="groupid" jdbcType="INTEGER" property="groupid" />
-    <result column="groupbeforebalance" jdbcType="DECIMAL" property="groupbeforebalance" />
     <result column="groupafterbalance" jdbcType="DECIMAL" property="groupafterbalance" /> 
   </resultMap>
   <sql id="Base_Column_List" >
     Id, BusinessId, Amount, Status, Balance, RecordType, Operator, OperateTime, WithwardId, 
-    RelationNo, Remark, IsEnable, groupid, groupbeforebalance, groupafterbalance
+    RelationNo, Remark, IsEnable, groupid,groupafterbalance
   </sql> 
   <!-- 获取交易明细的Where条件 -->
   <sql id="getTransDetailListWhere">

@@ -41,7 +41,7 @@ public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
 
 	@Override
 	public int modifyGroupBusiness(GroupBusiness groupBusiness) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IGroupBusinessDao.updateByPrimaryKey", groupBusiness);
+		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IGroupBusinessDao.updateByPrimaryKey", groupBusiness);
 	}
 	@Override
 	public GroupBusiness getByPhoneNoAndPwd(String phoneNo, String password) {

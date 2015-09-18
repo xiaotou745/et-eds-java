@@ -20,6 +20,7 @@
 			<th width="%5">余额</th>
 			<th width="%5">手机号</th>
 			<th width="%5">创建时间</th>
+			<th width="%5">是否允许透支</th>			
 			<th width="%5">操作人</th>
 			<th width="%5">操作</th>
 		</tr>
@@ -40,8 +41,9 @@
 			<td><%=list.get(i).getAmount()%></td>
 			<td><%=list.get(i).getLoginname()%></td>
 			<td><%=ParseHelper.ToDateString(list.get(i).getCreatetime())%></td>
+			<td><%=list.get(i).getIsAllowOverdraft() == 1 ?"是":"否" %></td>
 			<td><%=list.get(i).getCreatename()%></td>
-			<td><a href="javascript:void(0)" class="businessOk" onclick="showMidfyGroupBusiness(<%=list.get(i).getId()%>,'<%=list.get(i).getGroupbusiname()%>','<%=list.get(i).getLoginname()%>')">修改</a></td>
+			<td><a href="javascript:void(0)" class="businessOk" onclick="showMidfyGroupBusiness(<%=list.get(i).getId()%>,'<%=list.get(i).getGroupbusiname()%>','<%=list.get(i).getLoginname()%>',<%=list.get(i).getIsAllowOverdraft()%>)">修改</a></td>
 		</tr>
 		<%
 			}
@@ -52,11 +54,17 @@
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
 <script>
-function showMidfyGroupBusiness(id,groupbusiName,loginName){
-	$("#modifyGroupBusinessLog").html(""); 
+function showMidfyGroupBusiness(id,groupbusiName,loginName,isAllowOverdraft){
+	 $("#modifyGroupBusinessLog").html(""); 
 	 $('#txtModifyGroupBusinessName').val(groupbusiName);
      $('#txtModifyLoginName').val(loginName);
      $("#txtModifyGroupBusinessId").val(id);
+     $("input:radio[name='rModifyIsAllowOverdraft'][value='0']").attr("checked",true);
+     if(isAllowOverdraft == 1){
+    	 $("input:radio[name='rModifyIsAllowOverdraft'][value='1']").attr("checked",true);
+     }else{
+    	 $("input:radio[name='rModifyIsAllowOverdraft'][value='0']").attr("checked",true);
+     }
      var url = "<%=basePath%>/groupbusiness/getgroupbusinesslog";
      $.ajax({
          type: 'POST',

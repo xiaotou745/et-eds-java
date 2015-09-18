@@ -83,6 +83,10 @@
 		<result column="FinishAll" property="finishall" jdbcType="INTEGER" />
 		<result column="RealOrderCommission" property="realordercommission"
 			jdbcType="NUMERIC" />
+		<result column="GroupBusinessID" property="groupbusinessid"
+			jdbcType="INTEGER" />
+		<result column="basecommission" property="basecommission"
+			jdbcType="NUMERIC" />
 	</resultMap>
 	<!-- 商家订单概览信息 可扩展 add by pengyi 20180818 -->
 	<resultMap id="businessOrderSummaryResultMap"
@@ -121,7 +125,7 @@
 		CommissionType,
 		CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable,
 		MealsSettleMode,
-		FinishDateLength, FinishAll, RealOrderCommission
+		FinishDateLength, FinishAll, RealOrderCommission,GroupBusinessID,BaseCommission
 	</sql>
 	<!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展 CaoHeYang 20150804 -->
 	<select id="getOneByCriteria" resultMap="BaseResultMap"
@@ -167,7 +171,7 @@
 		OtherCancelReason, CommissionType, CommissionFixValue,
 		BusinessGroupId, TimeSpan, Invoice,
 		BusinessReceivable, MealsSettleMode, FinishDateLength,
-		FinishAll, RealOrderCommission)
+		FinishAll, RealOrderCommission,GroupBusinessID,BaseCommission)
 		values (#{id,jdbcType=INTEGER}, #{orderno,jdbcType=NVARCHAR},
 		#{pickupaddress,jdbcType=NVARCHAR},
 		#{pubdate,jdbcType=TIMESTAMP}, #{recevicename,jdbcType=NVARCHAR},
@@ -204,7 +208,10 @@
 		#{invoice,jdbcType=NVARCHAR},
 		#{businessreceivable,jdbcType=DECIMAL}, #{mealssettlemode,jdbcType=INTEGER},
 		#{finishdatelength,jdbcType=INTEGER},
-		#{finishall,jdbcType=INTEGER}, #{realordercommission,jdbcType=NUMERIC})
+		#{finishall,jdbcType=INTEGER}, 
+		#{realordercommission,jdbcType=NUMERIC},
+		#{groupbusinessid,jdbcType=NUMERIC},
+		#{basecommission,jdbcType=NUMERIC})
 	</insert>
 	<insert id="insertSelective" parameterType="com.edaisong.entity.Order">
 		<selectKey resultType="java.lang.Integer" keyProperty="id"
@@ -376,6 +383,12 @@
 			<if test="realordercommission != null">
 				RealOrderCommission,
 			</if>
+			<if test="groupbusinessid != null">
+				groupbusinessid,
+			</if>
+			<if test="basecommission != null">
+				basecommission,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderno != null">
@@ -539,6 +552,12 @@
 			</if>
 			<if test="realordercommission != null">
 				#{realordercommission,jdbcType=NUMERIC},
+			</if>
+			<if test="groupbusinessid != null">
+				#{groupbusinessid,jdbcType=NUMERIC},
+			</if>
+			<if test="basecommission != null">
+				#{basecommission,jdbcType=NUMERIC},
 			</if>
 		</trim>
 	</insert>
@@ -707,6 +726,12 @@
 			<if test="realordercommission != null">
 				RealOrderCommission = #{realordercommission,jdbcType=NUMERIC},
 			</if>
+			<if test="groupbusinessid != null">
+				groupbusinessid = #{groupbusinessid,jdbcType=NUMERIC},
+			</if>
+			<if test="basecommission != null">
+				basecommission = #{basecommission,jdbcType=NUMERIC},
+			</if>
 		</set>
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
@@ -765,7 +790,9 @@
 		MealsSettleMode = #{mealssettlemode,jdbcType=INTEGER},
 		FinishDateLength = #{finishdatelength,jdbcType=INTEGER},
 		FinishAll = #{finishall,jdbcType=INTEGER},
-		RealOrderCommission = #{realordercommission,jdbcType=NUMERIC}
+		RealOrderCommission = #{realordercommission,jdbcType=NUMERIC},
+		groupbusinessid = #{groupbusinessid,jdbcType=NUMERIC},
+		basecommission=#{basecommission,jdbcType=NUMERIC} 
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
 
@@ -1164,7 +1191,8 @@ select  b.Id as ClienterId ,
         b.PhoneNo as ClienterPhone ,
         b.TrueName as ClienterName ,
         SUM(a.OrderCount) as OrderCount ,
-        CONVERT(VARCHAR(100), a.PubDate, 23) as PubDate
+        CONVERT(VARCHAR(100), a.PubDate, 23) as PubDate,
+         MIN (b.HeadPhoto) as ClienterPhoto
 from    dbo.[order] (nolock)a
         join dbo.clienter (nolock) b on a.clienterId = b.Id
 where   a.Status = 1   and businessId=#{businessId}  
@@ -1478,4 +1506,53 @@ where   Status = 1
 			and  CONVERT(VARCHAR(100), PubDate, 23)=''${dateInfo}''
 		</if> 
 	</sql>
+		<sql id="busTaskList_Where">
+		 o.Status!=3 and oo.AuditStatus=0 
+	    <if test="startDate != null and  startDate !='' ">
+			and o.PubDate>''${startDate}''
+		</if> 
+		 <if test="endDate != null and  endDate !='' ">
+			and ''${endDate}''>=o.PubDate
+		</if> 
+		 <if test="cityName != null and  cityName  !='' ">
+			and b.city=''${cityName}''
+		</if> 
+		 <if test="selectType == 1 and  selectValue !='' ">
+			and b.Name LIKE ''%${selectValue}%''
+		</if> 
+		<if test="selectType == 2 and  selectValue !='' ">
+			and b.PhoneNo = ''${selectValue}''
+		</if> 
+	</sql>
+	
+	<select id="busTaskList" resultType="com.edaisong.entity.domain.BusTaskList"
+		parameterType="com.edaisong.entity.req.PagedBusTaskListReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V2(
+		'  COUNT(o.id) ',
+		'
+		MIN(b.Name) AS Name ,
+        MIN(b.PhoneNo) AS PhoneNo ,
+        businessId ,
+        COUNT(o.id) AS OrderCount ,
+        SUM(o.OrderCount) AS TaskCount 
+		',
+		'
+		 dbo.[order] AS o ( NOLOCK )
+        INNER JOIN dbo.business AS b ( NOLOCK ) ON b.Id = o.businessId 
+        JOIN dbo.OrderOther AS oo(nolock) ON o.id=oo.OrderId
+		',
+		'
+		<include refid="busTaskList_Where" />
+		',
+		' 
+		 o.businessId 
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 </mapper>

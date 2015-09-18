@@ -15,6 +15,7 @@ import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
@@ -29,6 +30,7 @@ import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
+import com.edaisong.entity.req.PagedBusTaskListReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
@@ -343,5 +345,19 @@ public class OrderDao extends DaoBase implements IOrderDao {
 				query);
 		return result.getResultList();
 	 }
+	
+	 /**
+		 * 门店审核列表
+		 * 
+		 * @author 茹化肖
+		 * @Date 2015年9月17日14:58:18
+		 * @param search
+		 * @return
+		 */
+	@Override
+	public PagedResponse<BusTaskList> busTaskList(PagedBusTaskListReq req){
+		return  getReadOnlySqlSessionUtil().selectPageList(
+				"com.edaisong.api.dao.inter.IOrderDao.busTaskList", req);
+	}
 	
 }

@@ -24,7 +24,7 @@ import com.edaisong.entity.req.PagedAccountBillDayReq;
  * */
 @Path("/accountbill")
 @Consumes("application/json")//当前方法接收的参数类型
-@Produces("application/json")//当前类的所有方法都返回json格式的数据
+@Produces("application/json; charset=utf-8")//当前类的所有方法都返回json格式的数据
 public interface IAccountBillService {
 	/**
 	 * B端获取月账单
@@ -33,7 +33,7 @@ public interface IAccountBillService {
 	 * @return
 	 */
 	@POST
-	@Path("/getbilllistb")
+	@Path("/getbilllistb")	
 	 public HttpResultModel<AccountBillResultModel> getBillListB(AccountBillBReq par);
 	
 	

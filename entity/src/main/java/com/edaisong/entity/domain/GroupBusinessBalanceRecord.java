@@ -35,8 +35,6 @@ public class GroupBusinessBalanceRecord {
     
     private Integer groupid;
 
-    private double groupbeforebalance;
-
     private double groupafterbalance;
 
     public Integer getGroupid() {
@@ -54,14 +52,6 @@ public class GroupBusinessBalanceRecord {
 	public void setGroupid(Integer groupid) {
 		this.groupid = groupid;
 	} 
-
-	public double getGroupbeforebalance() {
-		return groupbeforebalance;
-	}
-
-	public void setGroupbeforebalance(double groupbeforebalance) {
-		this.groupbeforebalance = groupbeforebalance;
-	}
 
 	public double getGroupafterbalance() {
 		return groupafterbalance;

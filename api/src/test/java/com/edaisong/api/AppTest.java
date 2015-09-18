@@ -158,4 +158,31 @@ public class AppTest extends TestCase {
 		PagedResponse<BusinessClientersModel> ret = clienterService.getBusinessClienters(req);
 		Assert.assertTrue(ret.getResultList().size() > 0);
 	}
+	
+	//AES
+	public void testAes()
+	{
+		String str="ruhuaxiao";
+		String deString= com.edaisong.core.security.AES.aesEncrypt(str);//加密
+		System.out.println(deString);
+		String  str2=com.edaisong.core.security.AES.aesDecrypt(deString);//解密
+		System.out.println(str2);
+	}	
+	
+
+	public void testAes1()
+	{
+		String str="ruhuaxiao";
+		String deString= com.edaisong.core.security.AES.aesEncrypt(str);//加密
+		System.out.println(deString);
+		String  str2=com.edaisong.core.security.AES.aesDecrypt(deString);//解密
+		System.out.println(str2);
+	}
+	
+	public void test333()
+	{
+		String str="ruh369uaxiaohh369\n";
+		String deString= com.edaisong.core.util.StringUtils.trimRight(str,"\n");
+		System.out.println(deString);
+	}
 }

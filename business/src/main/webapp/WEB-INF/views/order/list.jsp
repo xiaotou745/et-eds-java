@@ -16,8 +16,6 @@
 <%	
 String basePath =PropertyUtils.getProperty("static.business.url");
 %>
-<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
-<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
 <div class="top cb">
 
 			<h3 class="cb">
@@ -36,7 +34,7 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 					<option value="-1">全部</option>
 					<option value="0">待接单</option>
 					<option value="2">已接单</option>
-					<option value="4">取货中</option>
+					<option value="4">已取货</option>
 					<option value="1">已完成</option>
 					<option value="3">已取消</option>
 				</select>

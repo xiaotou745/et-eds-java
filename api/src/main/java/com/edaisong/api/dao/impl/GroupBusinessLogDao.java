@@ -16,5 +16,11 @@ public class GroupBusinessLogDao extends DaoBase implements IGroupBusinessLogDao
 				"com.edaisong.api.dao.inter.IGroupBusinessLogDao.getList", id);
 		return result;
 	 
+	}
+
+	@Override
+	public int insert(GroupBusinessLog gbl) {
+		 
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IGroupBusinessLogDao.insert",gbl);
 	} 
 }

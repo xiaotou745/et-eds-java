@@ -7,7 +7,7 @@ public class ClienterForzen {
 
     private Integer clienterid;
 
-    private Long forzenamount;
+    private Double forzenamount;
 
     private String forzenreason;
 
@@ -61,11 +61,11 @@ public class ClienterForzen {
         this.clienterid = clienterid;
     }
 
-    public Long getForzenamount() {
+    public Double getForzenamount() {
         return forzenamount;
     }
 
-    public void setForzenamount(Long forzenamount) {
+    public void setForzenamount(Double forzenamount) {
         this.forzenamount = forzenamount;
     }
 

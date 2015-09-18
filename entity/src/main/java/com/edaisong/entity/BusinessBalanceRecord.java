@@ -30,7 +30,7 @@ public class BusinessBalanceRecord {
     
     private Integer groupid;
 
-    private double groupbeforebalance;
+    private double groupafterbalance;
 
     private double groupamount;
 
@@ -48,14 +48,6 @@ public class BusinessBalanceRecord {
 
 	public void setGroupid(Integer groupid) {
 		this.groupid = groupid;
-	}
-
-	public double getGroupbeforebalance() {
-		return groupbeforebalance;
-	}
-
-	public void setGroupbeforebalance(double groupbeforebalance) {
-		this.groupbeforebalance = groupbeforebalance;
 	}
 
 	public Long getId() {
@@ -152,4 +144,12 @@ public class BusinessBalanceRecord {
     public void setIsenable(Short isenable) {
         this.isenable = isenable;
     }
+
+	public double getGroupafterbalance() {
+		return groupafterbalance;
+	}
+
+	public void setGroupafterbalance(double groupafterbalance) {
+		this.groupafterbalance = groupafterbalance;
+	}
 }

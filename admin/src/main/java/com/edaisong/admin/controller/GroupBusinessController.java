@@ -23,6 +23,7 @@ import com.edaisong.api.service.inter.IGroupBusinessLogService;
 import com.edaisong.api.service.inter.IGroupBusinessRelationService;
 import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.core.enums.BindOptType;
+import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.ExcelUtils;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
@@ -113,9 +114,10 @@ public class GroupBusinessController {
 			return response;
 		}
 		GroupBusiness groupBusiness = new GroupBusiness();
-		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName());
-		groupBusiness.setLoginname(bgm.getloginName());
-		groupBusiness.setPassword(bgm.getpassWord());
+		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName().trim());
+		groupBusiness.setLoginname(bgm.getloginName().trim());
+		groupBusiness.setPassword(MD5Util.MD5(bgm.getpassWord().trim()));
+		groupBusiness.setIsAllowOverdraft(bgm.getIsAllowOverdraft());
 		groupBusiness.setCreatename(UserContext.getCurrentContext(request).getName());
 		int result=groupBusinessService.addGroupBusiness(groupBusiness);
 		if(result<=0){
@@ -156,12 +158,13 @@ public class GroupBusinessController {
 				response.setResponseCode(0);
 				return response;
 			}
-		}
+		} 
 		GroupBusiness groupBusiness = new GroupBusiness();
-		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName());
-		groupBusiness.setLoginname(bgm.getloginName());
-		groupBusiness.setPassword(bgm.getpassWord());
+		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName().trim());
+		groupBusiness.setLoginname(bgm.getloginName().trim());
+		groupBusiness.setPassword(MD5Util.MD5(bgm.getpassWord().trim()));
 		groupBusiness.setId(bgm.getId());
+		groupBusiness.setIsAllowOverdraft(bgm.getIsAllowOverdraft());
 		groupBusiness.setModifyname(UserContext.getCurrentContext(request).getName());
 		int result=groupBusinessService.modifyGroupBusiness(groupBusiness);
 		if(result<=0){
@@ -173,22 +176,24 @@ public class GroupBusinessController {
 		response.setResponseCode(1);
 		return response;
 	}
+	/*
+	 * 获取商户操作日志
+	 * WangChao
+	 */
 	@RequestMapping("getgroupbusinesslog")
 	@ResponseBody
 	public ResponseBase getGroupBusinessLog(int id){
 		ResponseBase response = new ResponseBase(); 
-		
 		StringBuilder sb = new StringBuilder();
 		List<GroupBusinessLog> groupBusinessLogList =groupBusinessLogService.getList(id);
-		if(groupBusinessLogList!=null && groupBusinessLogList.size()>0){
-			
+		if(groupBusinessLogList!=null && groupBusinessLogList.size()>0){ 
 			sb.append("<table style='border-collapse: collapse;border:none;margin:0'><th style='border: #D6D6D6 1px solid'>时间</th><th style='border: #D6D6D6 1px solid'>操作</th>");
 			for (int i = 0; i < groupBusinessLogList.size(); i++) {
 		 
 			sb.append("<tr style='border: #D6D6D6 1px solid'><td style='border: #D6D6D6 1px solid'>").append(ParseHelper.ToDateString( groupBusinessLogList.get(i).getOpttime())).append("</td><td>").append(groupBusinessLogList.get(i).getOptname()+groupBusinessLogList.get(i).getRemark()).append("</td></tr>");
-		}
+			}
 		sb.append("</table>");
-	}
+		}
 		response.setMessage(sb.toString());
 		return response; 
 	} 

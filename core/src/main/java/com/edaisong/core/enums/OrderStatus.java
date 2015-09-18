@@ -23,7 +23,7 @@ public enum OrderStatus {
 	 */
 	Cancel(3, "已取消"),
 	/**
-	 * 取货中
+	 * 已取货
 	 */
 	Taking(4, "已取货"),
 	/*

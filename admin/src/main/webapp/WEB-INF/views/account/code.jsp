@@ -11,7 +11,7 @@
       
     String sRand = RandomCodeStrGenerator.generateCode(4);
     BufferedImage image = RandomCodeImgHelper.getCodeImg(sRand);
-    LoginHelper.storeAuthCode2Redis(sRand,LoginUtil.ADMIN_JSESSIONID, request, response);
+    LoginHelper.storeAuthCode2Redis("admin",sRand,LoginUtil.ADMIN_JSESSIONID, request, response);
 
     //输出图像到页面  
     ImageIO.write(image,"JPEG",response.getOutputStream());  

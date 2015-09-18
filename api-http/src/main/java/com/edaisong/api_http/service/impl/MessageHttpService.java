@@ -34,7 +34,7 @@ public class MessageHttpService implements IMessageHttpService {
 	public HttpResultModel<MessageResp> newMessageB(NewMessageBReq para) {
 		HttpResultModel<MessageResp> returnmodel = new HttpResultModel<MessageResp>();
 		BusinessMessage message = businessMessageService.getLatestMessage(para.getBusinessId());
-		if (message.getIsread() == 0) { // 有未读消息
+		if (message!=null&&message.getIsread() == 0) { // 有未读消息
 			MessageResp messageResp = new MessageResp();
 			messageResp.setId(message.getId());
 			messageResp.setContent(message.getContent());
@@ -58,7 +58,7 @@ public class MessageHttpService implements IMessageHttpService {
 	public HttpResultModel<MessageResp> newMessageC(NewMessageCReq para) {
 		HttpResultModel<MessageResp> returnmodel = new HttpResultModel<MessageResp>();
 		ClienterMessage message = clienterMessageService.getLatestMessage(para.getClienterId());
-		if (message.getIsread() == 0) { // 有未读消息
+		if (message!=null&&message.getIsread() == 0) { // 有未读消息
 			MessageResp messageResp = new MessageResp();
 			messageResp.setId(message.getId());
 			messageResp.setContent(message.getContent());

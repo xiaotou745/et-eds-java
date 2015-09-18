@@ -12,10 +12,11 @@
     <result column="ModifyTime" property="modifytime" jdbcType="TIMESTAMP" />
     <result column="Amount" property="amount" jdbcType="DECIMAL" />
     <result column="IsValid" property="isvalid" jdbcType="INTEGER" />
+    <result column="IsAllowOverdraft" property="isallowoverdraft" jdbcType="INTEGER" /> 
   </resultMap>
   <sql id="Base_Column_List" >
     Id, GroupBusiName, LoginName, Password, CreateName, CreateTime, ModifyName, ModifyTime, 
-    Amount, IsValid
+    Amount, IsValid,IsAllowOverdraft 
   </sql>
   <sql id="GetGroupBusinessTable" >
      dbo.groupbusiness(nolock) 
@@ -34,9 +35,12 @@
   </select>
    
   <insert id="insert" parameterType="com.edaisong.entity.GroupBusiness" >
+  <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			select @@IDENTITY as id
+  </selectKey>
     insert into GroupBusiness ( GroupBusiName, LoginName, 
-      Password, CreateName) output Inserted.Id,Inserted.CreateName,Inserted.CreateTime,'添加集团商户' into dbo.GroupBusinessLog(GroupBusinessId,OptName,OptTime,Remark) 
-    values (#{groupbusiname,jdbcType=NVARCHAR}, #{loginname,jdbcType=VARCHAR}, #{password,jdbcType=NVARCHAR}, #{createname,jdbcType=NVARCHAR})
+      Password, CreateName,IsAllowOverdraft) 
+    values (#{groupbusiname,jdbcType=NVARCHAR}, #{loginname,jdbcType=VARCHAR}, #{password,jdbcType=NVARCHAR}, #{createname,jdbcType=NVARCHAR}, #{isallowoverdraft,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.GroupBusiness" >
     insert into GroupBusiness
@@ -138,7 +142,7 @@
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  
+   
   <select id="getByPhoneNoAndPwd" resultType="com.edaisong.entity.GroupBusiness"
 		parameterType="java.util.Map">
 		select 
@@ -153,14 +157,9 @@
       LoginName = #{loginname,jdbcType=VARCHAR},
       <if test="password != ''">
         Password = #{password,jdbcType=NVARCHAR},
-      </if>  
+      </if> 
       ModifyName = #{modifyname,jdbcType=NVARCHAR},
-      ModifyTime = getdate() 
-      output  Inserted.Id ,
-        Inserted.CreateName ,
-        Inserted.CreateTime ,
-        '修改集团名称' + Deleted.GroupBusiName + '为' + Inserted.GroupBusiName + ',登陆名' + Deleted.LoginName + '修改为' + Inserted.LoginName + ',修改密码'
-        into dbo.GroupBusinessLog ( GroupBusinessId, OptName, OptTime, Remark )
+      ModifyTime = getdate(),IsAllowOverdraft=#{isallowoverdraft,jdbcType=INTEGER} 
     where Id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -207,8 +206,8 @@
 		update GroupBusiness set Amount=Amount+#{amount,jdbcType=DECIMAL}
         where id=#{groupID,jdbcType=INTEGER}
 	</update>
-	<select id="select" parameterType="java.lang.Integer">
-		select top 1 * from   GroupBusiness
+	<select id="select" parameterType="java.lang.Integer"  resultType="com.edaisong.entity.GroupBusiness">
+		select top 1 * from   GroupBusiness with(nolock)
 		where id = #{groupID,jdbcType=INTEGER} 
 	</select>
 </mapper>
