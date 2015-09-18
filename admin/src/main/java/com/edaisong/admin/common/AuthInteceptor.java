@@ -24,10 +24,9 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 		if (handler instanceof HandlerMethod) {
 			// 判断是否登录
 			boolean isLogin = LoginUtil.checkIsLogin(request,response);
-			if (!isLogin
-					&& (!request.getServletPath().equals("/account/login") && !request.getServletPath().equals(
-							"/account/code"))) {
-
+			if (!isLogin&& 
+				!request.getServletPath().equals("/account/login") && 
+				!request.getServletPath().equals("/account/code")) {
 				response.sendRedirect(basePath + "/");
 				return false;
 			}
