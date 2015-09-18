@@ -1279,7 +1279,7 @@ LEFT JOIN (  SELECT  SUM(OrderCommission) TotalCommission,
 		GROUP BY  Convert (VARCHAR(10),PubDate,120)
 		) tbl ON tbl.PubDate=tbldate.MonthDate
 WHERE tbldate.MonthDate <![CDATA[ <=]]>GETDATE()
-ORDER BY tbldate.MonthDate   
+ORDER BY tbldate.MonthDate desc
 	</select>
     <!-- C端任务统计接口  wangxudan 20150910 -->
 	<select id="getOrderStatisticsC" parameterType="com.edaisong.entity.req.OrderStatisticsCReq"   resultType="com.edaisong.entity.resp.OrderStatisticsCResp">
@@ -1292,7 +1292,7 @@ set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
   
 select  SUM(ISNULL(OrderCount,0)) as TotalOrderCount ,
         ISNULL(SUM(OrderCommission),0)  as TotalOrderCommission
-from    dbo.[order]
+from    dbo.[order] (nolock)
 where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
         and clienterId=#{clienterId}  
