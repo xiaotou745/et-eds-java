@@ -1529,7 +1529,7 @@ where   Status = 1
 		parameterType="com.edaisong.entity.req.PagedBusTaskListReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V2(
-		'  COUNT(o.id) ',
+		'  COUNT(o.id) desc',
 		'
 		MIN(b.Name) AS Name ,
         MIN(b.PhoneNo) AS PhoneNo ,

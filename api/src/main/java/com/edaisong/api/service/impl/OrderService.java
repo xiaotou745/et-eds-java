@@ -1131,15 +1131,28 @@ public class OrderService implements IOrderService {
 	 */
 	@Override
 	public PagedResponse<BusTaskList> busTaskList(PagedBusTaskListReq req) {
+		
+		if(req.getStartDate().equals("开始日期"))
+		{
+			req.setStartDate("");
+		}
 		if(req.getStartDate()!=null&&!req.getStartDate().equals(""))
 		{
 			req.setStartDate(req.getStartDate()+" 00:00:00");
+		}
+		if(req.getEndDate().equals("结束日期"))
+		{
+			req.setEndDate("");
 		}
 		if(req.getEndDate()!=null&&!req.getEndDate().equals(""))
 		{
 			req.setEndDate(req.getEndDate()+" 23:59:59");
 		}
-		if(req.getCityName().equals("-1"))
+		if(req.getSelectValue().equals("门店名称/注册电话"))
+		{
+			req.setSelectValue("");
+		}
+		if(req.getCityName().equals("-1")||req.getCityName().equals("全部城市"))
 		{
 			req.setCityName("");
 		}

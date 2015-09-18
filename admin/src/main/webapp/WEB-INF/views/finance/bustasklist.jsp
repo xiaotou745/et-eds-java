@@ -9,32 +9,51 @@
 String basePath =PropertyUtils.getProperty("static.admin.url");
 List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 %>
-   <table border="0" cellspacing="0" cellpadding="0">
-            <tr>
-            <td>               
-				<label >发单日期:</label>
-<input type="text" value="" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
-<span>到</span>
-<input type="text" value="" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
-<select id=selecttype>
-<option value=1>门店名称</option>
-<option value=2>注册电话</option>
-</select>
-<input type="text" name="selectvalue" id="selectvalue">
- <span class="">筛选城市: </span>
-               		  <%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "name") %>
-               		   <input type="submit" value="查询" class="searchBtn" id="btnSearch" />
-                </td>
-            </tr>
+<div class="wrapper wrapper-content animated fadeInRight">
 
-              
-        </table>  
-        
+	<div class="row">
+		<div class="col-lg-12">
+			<form method="POST" action="#" class="form-horizontal" id="searchForm">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="form-group">
+							<div class="col-sm-1">
+								<input class="form-control" type="text" value="开始日期" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
+							</div>
+							<div class="col-sm-1">
+								<input class="form-control" type="text" value="结束日期" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
+							</div>
+							<div class="col-sm-1">
+								<select id=selecttype class="form-control m-b">
+									<option value='1'>门店名称</option>
+									<option value='2'>注册电话</option>
+								</select>
+							</div>
+							<div class="col-sm-1">
+								<input value='门店名称/注册电话' class="form-control" type="text" name="selectvalue" id="selectvalue">
+							</div>
+							<div class="col-sm-1">
+								<%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "name","-1","-1","全部城市","","form-control m-b") %>
+							</div>
+						</div>
+					</div>
+				</div>
+					
+				<div class="row">
+						<div class="col-lg-3">
+						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+							style="margin-left: 3px;height:30px;">查询</button>
+						</div>
+				</div>
+			</form>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox-content" id="content"></div>
 		</div>
-	</div>   
+	</div>
+</div>
 <script type="text/javascript">
 var jss={
 		search:function(currentPage){
