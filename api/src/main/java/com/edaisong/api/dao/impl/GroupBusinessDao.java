@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IGroupBusinessDao;
+import com.edaisong.core.security.MD5Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +48,8 @@ public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
 	public GroupBusiness getByPhoneNoAndPwd(String phoneNo, String password) {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("phoneNo", phoneNo);
-		paramMap.put("password", password);
+		String pwd = MD5Util.MD5(password);
+		paramMap.put("password", pwd);
 		return getReadOnlySqlSessionUtil()
 				.selectOne("com.edaisong.api.dao.inter.IGroupBusinessDao.getByPhoneNoAndPwd", paramMap);
 	}

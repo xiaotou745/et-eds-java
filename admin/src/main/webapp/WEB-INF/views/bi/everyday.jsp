@@ -17,7 +17,6 @@ StringBuilder misstionCount=new StringBuilder();
 StringBuilder orderCount=new StringBuilder();
 StringBuilder kdj=new StringBuilder();
 StringBuilder rwdj=new StringBuilder();
-//StringBuilder businessAvgOrder=new StringBuilder();
 StringBuilder businessavgMission=new StringBuilder();
 StringBuilder businessPubAvgMissionCount=new StringBuilder();
 StringBuilder clienterAvgOrderCommission=new StringBuilder();
@@ -210,7 +209,36 @@ $(function () {
     });
 });		
 
-</script> 
-
+</script>
+<div class="wrapper wrapper-content animated fadeInRight">
+<div class="row">
+<div class="col-lg-12">
+<div class="inquire">
+   <div class="period">
+       <!--表单查询-->
+        <div class="item_row">
+            <span class="dtext">查询周期</span>
+            <div class="dbox">
+                <span class="intime">
+                    <input type="text" name="d" class="dinput" id="time1" style="width: 80px" value="2015-08-18"><s onclick="WdatePicker({el:'time1',dateFmt:'yyyy-MM-dd'});"></s></span>
+                <span class="inblock">至</span>
+                <span class="intime">
+                    <input type="text" name="d2" class="dinput" id="time2" style="width: 80px" value="2015-09-17"><s onclick="WdatePicker({el:'time2',dateFmt:'yyyy-MM-dd'});"></s></span>
+                <div class="dbox"><a href="javascript:;" class="sbutton" id="findDelivery">查询</a></div>
+            </div>
+        </div>
+        <div class="refresh">
+            <dl>
+                <dt>数据更新时间</dt>
+                <dd id="updateDate">2015/9/18 0:00:00</dd>
+            </dl>
+        </div>
+    </div>
+    
+    <div class="array" id="summaryData"><dl class="red"><dt>54,098</dt><dd>餐厅数量（个）</dd> </dl><dl class="green"><dt>1,184,132</dt><dd>注册会员（人）</dd> </dl> <dl class="blue_dd"><dt>1,137,396</dt><dd>外卖订单（单）</dd></dl><dl class="blue_je"><dt>7,406.36万</dt><dd>外卖金额（元）</dd></dl><dl class="orange_dd"><dt>581</dt><dd>订台订单（个）</dd></dl><dl class="orange_je"><dt>88,997.55</dt><dd>订台金额（元）</dd></dl></div>
+</div>
+</div>
+</div>
+</div>
 <div id="container" style="min-width:700px;height:400px"></div>
 </body>
