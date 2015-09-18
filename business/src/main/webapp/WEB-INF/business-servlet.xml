@@ -26,7 +26,7 @@
  		<bean class="com.edaisong.api.common.GlobalLogInteceptor">
  			<property name="sourceSys" value="business"></property> 
  		</bean>
-			<bean class="com.edaisong.business.common.AuthInteceptor" />
+ 			<bean class="com.edaisong.business.common.AuthInteceptor" />
 	</mvc:interceptors>
 
 	<!-- 全局异常 -->

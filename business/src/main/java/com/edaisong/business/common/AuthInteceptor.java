@@ -27,7 +27,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				// 用户登录后，将当前用户id和名称保存起来，用于记录操作日志
 				request.setAttribute("userID", userContext.getBusinessID());
 				request.setAttribute("userName", userContext.getBusinessName());
-				if (!isHasAuth(request,userContext)) {
+				if (!request.getServletPath().equals("/account/logoff")&&
+					!isHasAuth(request,userContext)) {
 					if (userContext.getBusinessType() == 1) {					
 						response.sendRedirect(basePath + "/group/recharge");
 						return false;

@@ -46,6 +46,7 @@ public class GroupBusinessRechargeService implements
 				GroupBusiness groupBusiness=groupBusinessDao.select(recharge.getGroupbusinessid());
 				BusinessBalanceRecord rechargeRecord=new BusinessBalanceRecord();
 				rechargeRecord.setBusinessid(0);
+				rechargeRecord.setAmount(groupBusiness.getAmount());
 				rechargeRecord.setGroupamount(recharge.getPayamount());
 				rechargeRecord.setStatus((short)BusinessBalanceRecordStatus.Success.value());
 				rechargeRecord.setRecordtype((short)BusinessBalanceRecordRecordType.Recharge.value());
