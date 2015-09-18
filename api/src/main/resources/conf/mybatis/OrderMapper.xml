@@ -1507,7 +1507,7 @@ where   Status = 1
 		</if> 
 	</sql>
 		<sql id="busTaskList_Where">
-		1=1 and o.Status=1  
+		 o.Status!=3 and oo.AuditStatus=0 
 	    <if test="startDate != null and  startDate !='' ">
 			and o.PubDate>''${startDate}''
 		</if> 
@@ -1540,6 +1540,7 @@ where   Status = 1
 		'
 		 dbo.[order] AS o ( NOLOCK )
         INNER JOIN dbo.business AS b ( NOLOCK ) ON b.Id = o.businessId 
+        JOIN dbo.OrderOther AS oo(nolock) ON o.id=oo.OrderId
 		',
 		'
 		<include refid="busTaskList_Where" />
