@@ -87,15 +87,9 @@ function disableEnter(event){
            }            
          if(e && e.keyCode==13){ // enter 键
              //要做的事情
-          console.log('回车事件')
-          console.log('回车查询钱')
       	  $('#btnSearch').click();
           // jss.search(1);
-          console.log('回车查询后')
         }
-        // return fasle;
-         //主旨冒泡
-         //e.stopPropagation();
 };
 
 

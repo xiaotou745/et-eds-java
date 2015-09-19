@@ -104,6 +104,7 @@ $(function(){
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
 		 var data=$("#searchForm").serialize();
+		 console.log(data);
 		 $.post("<%=basePath%>/groupbusiness/businessbindlistdo", data,
 					function(d) {
 						$("#content").html(d);
