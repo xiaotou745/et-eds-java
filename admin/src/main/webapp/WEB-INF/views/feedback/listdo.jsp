@@ -35,11 +35,11 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
        if (list == null) {
        	list = new ArrayList<FeedbackModel>();
        }		
-      
+      int i=1;
      for(FeedbackModel model : list){
        %>  
 			 <tr>
-				<td><%=model.getId() %></td>
+				<td><%=i %></td>
 				<td><%=model.getName() %></td>
 				<td><%=model.getPhoneNo()%></td>
 				<td><%=model.getCity()%></td>					 
@@ -47,7 +47,8 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 				<td><%=FeedbackType.getEnum(model.getFeedbacktype()).desc()%>	</td>						
 				<td><%=model.getContent()%></td>	
 			</tr>
-		 <%}
+		
+		 <%	i++;}
 		%> 	 	
 			</tbody>
 		</table>
