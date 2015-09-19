@@ -143,16 +143,16 @@
   	gbr.IsEnable=1 AND gbr.IsBind=1
   	<if test="groupBusinessId != 0" >
   		AND gbr.[groupid]=${groupBusinessId}
-  	</if>
-  	<if test="bizName != null and bizName!=''">
-	    and b.Name like ''%${bizName}%''
-	</if>
+  	</if> 
 	<if test="startDate != null and startDate != ''">
 	      AND gbr.UpdateTime >=''${startDate}''
      </if>
      <if test="endDate != null and endDate != ''">
 	      AND ''${endDate}'' > gbr.UpdateTime 
      </if>
+     <if test="bizName != null and bizName!=''">
+	    and b.Name like ''%${bizName}%''
+	</if>
   </sql>
   
   <sql id="getBusinessBindListColumns">

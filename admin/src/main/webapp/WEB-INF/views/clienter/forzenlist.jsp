@@ -63,8 +63,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
             <br>
              <div class="control-group">
                 <label >解冻原因：</label> 
-                <textarea name="txtUnfreezeReason" id="txtUnfreezeReason" style="width:300px;height:60px;max-width:300px;max-height:60px;">
-                </textarea>
+                <textarea name="txtUnfreezeReason" id="txtUnfreezeReason" style="width:300px;height:60px;max-width:300px;max-height:60px;"></textarea>
                 <input type="hidden" id="hdForzenId" />
                 <input type="hidden" id="hdClienterId" />
                 <input type="hidden" id="hdForzenAmount"/>

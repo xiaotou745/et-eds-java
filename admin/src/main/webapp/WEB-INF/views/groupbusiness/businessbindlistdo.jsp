@@ -35,7 +35,7 @@ if(data == null){
 							<%for (int i = 0; i < data.size(); i++) { %>
 							<tr class="info">
 								<td><%=data.get(i).getId() %></td>
-								<td><%=ParseHelper.ShowString(data.get(i).getName())%></td>
+								<td><a href="<%=basePath%>/business/list?businessName=<%=data.get(i).getName()%>"><%=ParseHelper.ShowString(data.get(i).getName())%></a></td>
 								<td><%=data.get(i).getPhoneNo()%></td>
 								<td><%=data.get(i).getBalancePrice()%></td>
 								<td><%=data.get(i).getUseGroupMoney()%></td>

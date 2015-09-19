@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
@@ -12,6 +13,7 @@ List<AreaModel> openCityList=	(List<AreaModel>)request.getAttribute("openCityLis
 List<BusinessGroup> businessGroupListData=	(List<BusinessGroup>)request.getAttribute("businessGroupListData");
 List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
 int groupId=(int)request.getAttribute("groupId");
+String busname=ParseHelper.ToString(request.getAttribute("businessName"),"");
 %>
 
 <div class="SearchMd">
@@ -19,7 +21,7 @@ int groupId=(int)request.getAttribute("groupId");
 	<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 	<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td><span class="">商户名称: </span> <input id="businessName"
+			<td><span class="">商户名称: </span> <input id="businessName" value="<%=busname %>"
 				name="businessName" type="tel" /> <span class="">审核状态: </span> <select
 				name="status" class="selectw" id="status"
 				style="width: 143px">
