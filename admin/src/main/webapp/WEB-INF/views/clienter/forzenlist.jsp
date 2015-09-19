@@ -30,9 +30,9 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
                       <option value="1">冻结时间</option>
                       <option value="2">解冻时间</option>
                   </select>
-                  <input id="txtstartdate" type="text" name="startdate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'txtenddate\')||\'2020-10-01\'}'})"/>
+                  <input id="txtstartdate" type="text" name="startdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'txtenddate\')||\'2020-10-01\'}'})"/>
                        <span class="">到 </span>
-                  <input id="txtenddate" type="text" name="enddate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2020-10-01'})"/>
+                  <input id="txtenddate" type="text" name="enddate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2020-10-01'})"/>
                           
       			<input type="submit" value="查询" class="searchBtn" id="btnSearch" />  
       			<input type="button" value="骑士余额冻结" class="searchBtn" id="btnForzenClienter" onclick="showForzenClienterAmount()" />  

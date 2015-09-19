@@ -37,7 +37,7 @@ if(data == null){
 								<td><%=data.get(i).getId() %></td>
 								<td><a href="<%=basePath%>/business/list?businessName=<%=data.get(i).getName()%>"><%=ParseHelper.ShowString(data.get(i).getName())%></a></td>
 								<td><%=data.get(i).getPhoneNo()%></td>
-								<td><%=data.get(i).getBalancePrice()%></td>
+								<td><a href="<%=basePath%>/business/balancedetail?businessId=<%=data.get(i).getBusinessid()%>"><%=data.get(i).getBalancePrice()%></a></td>
 								<td><%=data.get(i).getUseGroupMoney()%></td>
 								<td><%=ParseHelper.ToDateString(data.get(i).getUpdatetime())%></td>
 		                        <td>
