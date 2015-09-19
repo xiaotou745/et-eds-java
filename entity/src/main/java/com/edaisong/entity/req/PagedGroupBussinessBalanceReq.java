@@ -7,7 +7,7 @@ public class PagedGroupBussinessBalanceReq extends PagedRequestBase{
 	private String startDate;
 	private String endDate;
 	private String recordType;
-	private int groupbusinessId;
+	private Integer groupbusinessId;
 	
 	private String businessName;
 	private String relationNo;
@@ -44,7 +44,7 @@ public class PagedGroupBussinessBalanceReq extends PagedRequestBase{
 	}
 	
 	public String getBusinessname() {
-		return relationNo;
+		return businessName;
 	}
 	public void setBusinessname(String businessName) {
 		this.businessName = businessName;

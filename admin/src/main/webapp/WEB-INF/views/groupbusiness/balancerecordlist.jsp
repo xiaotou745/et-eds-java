@@ -9,7 +9,7 @@
 <%@page import="com.edaisong.entity.domain.GroupBusinessModel"%>
 <%
 	String basePath = PropertyUtils.getProperty("static.admin.url");
-	GroupBusinessModel detail = (GroupBusinessModel) request.getAttribute("groupBusinessModel");
+    GroupBusinessModel detail = (GroupBusinessModel) request.getAttribute("groupBusinessModel");
 %>
 <link rel="stylesheet"
 	href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
@@ -29,6 +29,7 @@
 		<div class="col-lg-12">
 			<form method="POST" action="#" class="form-horizontal"
 				id="searchForm">
+				<input type="hidden" name="groupbusinessId" id="groupbusinessId" value="<%=detail.getId()%>" />
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
@@ -38,6 +39,7 @@
 					.GetEnumItems(BusinessBalanceRecordRecordType.class),
 					"desc", "value", null, "-1", "全部", "", "form-control m-b")%>
 							</div>
+							
 						</div>
 					</div>
 					<div class="col-lg-3">
@@ -85,8 +87,7 @@
 				</div>
 				<div class="row">
 					<input type="hidden" name="currentPage" id="_hiddenCurrentPage"
-						value="1" /> <input type="hidden" name="groupbusinessId"
-						id="groupbusinessId" value="<%=detail.getId()%>" />
+						value="1" />  
 					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id="btnSearch"
 							style="margin-left: 3px; height: 30px;">查询</button>
@@ -156,7 +157,7 @@
 	var jss = {
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
-		 var data=$("#searchForm").serialize();
+		 var data=$("#searchForm").serialize(); 
 			$.post("<%=basePath%>/groupbusiness/balancerecordlistdo", data,
 					function(d) {
 						$("#content").html(d);
@@ -171,6 +172,7 @@
 	//导出
 	$("#btnExport").click(function(){
         var groupbusinessId = $("#groupbusinessId").val();
+        alert(groupbusinessId );
         var recordType = $("#recordType").val();
         var relationNo = $("#relationNo").val();
         var startDate = $("#startDate").val();

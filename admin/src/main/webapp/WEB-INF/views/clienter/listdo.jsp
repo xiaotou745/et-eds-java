@@ -121,7 +121,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 				<%
 				}
 				%>
-				<a href="javascript:void(0)" data-toggle="modal" data-target="#ClienterRechargeShow" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
+				<a href="javascript:void(0)" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
 				<a href="/SuperManManager/GetRelationByClienterId?ClienterId=@item.Id&Name=@item.TrueName&Phone=@item.PhoneNo">查看绑定商家</a>
 				<a href="/SuperManManager/QueryClienterDetail?clienterId=@item.Id">修改信息</a>
 					
@@ -184,8 +184,8 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
        $('#rechargeLog').val('');
        $('#clienterId').val(id);
        $('#clienterName').val(name);
-       $('#clienterPhone').val(phone);
-       adminjs.openwinbox('#ClienterRechargeShow');
+       $('#clienterPhone').val(phone); 
+       $('#ClienterRechargeShow').modal('show'); 
    }
   </script>
 	

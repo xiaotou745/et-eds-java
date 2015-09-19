@@ -337,16 +337,16 @@ public class GroupBusinessController {
 	 * WangChao
 	 */
 	@RequestMapping("balancerecordlist")
-	public ModelAndView balancerecordlist(Integer groupBusinessId) throws Exception { 
+	public ModelAndView balancerecordlist(Integer groupbusinessId) throws Exception { 
 		
 		GroupBusinessReq groupBusinessReq = new GroupBusinessReq();
-		groupBusinessReq.setId(groupBusinessId);
+		groupBusinessReq.setId(groupbusinessId);
 		//获取该集团信息
 		GroupBusinessModel groupBusinessModel= groupBusinessService.getSingle(groupBusinessReq); 
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "集团管理");
 		model.addObject("currenttitle", "收支记录");
-		model.addObject("groupBusinessModel", groupBusinessModel); 
+		model.addObject("groupBusinessModel", groupBusinessModel);  
 		model.addObject("viewPath", "groupbusiness/balancerecordlist");
 		return model;
 	}
@@ -355,7 +355,7 @@ public class GroupBusinessController {
 	 * WangChao
 	 */
 	@RequestMapping("balancerecordlistdo")
-	public ModelAndView balancerecordlist(PagedGroupBussinessBalanceReq req) {	 
+	public ModelAndView balancerecordlistdo(PagedGroupBussinessBalanceReq req) {	 
 		
 		PagedResponse<GroupBusinessBalanceRecord> resp = groupBusinessService.getGroupBusinessRecord(req); 
 		ModelAndView model = new ModelAndView("groupbusiness/balancerecordlistdo");

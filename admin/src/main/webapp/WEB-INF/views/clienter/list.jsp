@@ -168,7 +168,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
     
         if (confirm("确定要为骑士：" + clienterName + "   调整：" + clienterRechargeAmount + "元？")) {
             var paramaters = {
-                "ClienterId": clienterId, "RechargeAmount": clienterRechargeAmount, "Remark": rechargeLog
+                "clienterId": clienterId, "rechargeAmount": clienterRechargeAmount, "remark": rechargeLog
             };
             var url = "<%=basePath%>/clienter/modifymoney";
             $.ajax({
