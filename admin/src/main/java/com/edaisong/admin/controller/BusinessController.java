@@ -114,7 +114,7 @@ public class BusinessController {
 
 	@RequestMapping("list")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse res) {
-
+		String bNameString= request.getParameter("businessName");
 		GroupReq groupReq = new GroupReq();
 		groupReq.setIsValid(1);
 		List<GroupModel> resultList = iGroupService.getGroupList(groupReq);
@@ -131,6 +131,7 @@ public class BusinessController {
 		model.addObject("groupListData", resultList);
 		model.addObject("openCityList", openCityList);
 		model.addObject("businessGroupListData", businessGroupListData);
+		model.addObject("businessName", bNameString);
 		model.addObject("viewPath", "business/list");
 		return model;
 	}

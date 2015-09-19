@@ -44,14 +44,6 @@
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">门店名称:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" name="bizName" id="bizName" />
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
 							<label class="col-sm-4 control-label">绑定日期:</label>
 							<div class="col-sm-8">
 								<div class="input-group date">
@@ -103,7 +95,7 @@ $(function(){
 	var jss = {
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
-		 var data=$("#searchForm").serialize();
+		 var data=$("#searchForm").serialize(); 
 		 $.post("<%=basePath%>/groupbusiness/businessbindlistdo", data,
 					function(d) {
 						$("#content").html(d);

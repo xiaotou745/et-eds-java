@@ -67,8 +67,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
             </div> 
             <div class="control-group">
                 <label >冻结原因：</label> 
-                <textarea name="txtForzenReason" id="txtForzenReason" style="width:300px;height:60px;max-width:300px;max-height:60px;">
-                </textarea> 
+                <textarea name="txtForzenReason" id="txtForzenReason" style="width:300px;height:60px;max-width:300px;max-height:60px;"></textarea>
             </div>  
         </fieldset>
 				</div>
