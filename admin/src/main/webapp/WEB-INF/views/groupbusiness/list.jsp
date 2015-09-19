@@ -8,13 +8,16 @@
 <%
 	String basePath = PropertyUtils.getProperty("static.admin.url");
 %>
-<table border="0" cellspacing="0" cellpModifying="0">
+<form id="searchForm">
+<table border="0" cellspacing="0" cellpModifying="0" >
 	<tr>
-		<td><span class="">集团名称: </span> <input id="groupBusinessName"
-			type="tel" name="groupBusinessName" />&nbsp;&nbsp; <input
-			type="submit" value="查询" class="searchBtn" id="btnSearch" />&nbsp;&nbsp;
-			<input type="button" value="添加集团" class="searchBtn"
-			id="btnModifyGroupBusiness" onclick="showAddGroupBusiness()" /></td>
+		<td><span class="">集团名称: </span> 
+			<input id="groupBusinessName" type="tel" name="groupBusinessName" onkeydown="return disableEnter(event)"/>&nbsp;&nbsp; 
+			<input type="button" value="查询" class="searchBtn" id="btnSearch" />&nbsp;&nbsp;
+			<input type="button" value="添加集团" class="searchBtn" id="btnModifyGroupBusiness" onclick="showAddGroupBusiness()" />
+			<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1" />
+			<input id="hiddenText" type="text" style="display:none" />
+		</td>
 	</tr>
 </table>
 	<div class="row">
@@ -22,6 +25,8 @@
 			<div class="ibox-content" id="content"></div>
 		</div>
 	</div>
+
+</form>
 
 <div tabindex="-1" class="modal inmodal" id="addGroupBusiness"
 	role="dialog" aria-hidden="true" style="display: none;">
@@ -126,7 +131,7 @@
 	var jss = {
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
-		 var data={"groupBusinessName":$("#groupBusinessName").val()};
+		 var data=$("#searchForm").serialize();
 		 $.post("<%=basePath%>/groupbusiness/listdo", data,
 					function(d) {
 						$("#content").html(d);
@@ -137,6 +142,21 @@
 	$("#btnSearch").click(function() {
 		jss.search(1);
 	});
+	//回车
+	function disableEnter(event){
+		 var e = event || window.event || arguments.callee.caller.arguments[0];
+	        if(e && e.keyCode==27){ // 按 Esc 
+	            //要做的事情
+	          }
+	        if(e && e.keyCode==113){ // 按 F2 
+	             //要做的事情
+	           }            
+	         if(e && e.keyCode==13){ // enter 键
+	             //要做的事情
+	      	  $('#btnSearch').click();
+	          // jss.search(1);
+	        }
+	};
 	function showAddGroupBusiness(){ 
 	        $('#txtAddGroupBusinessName').val('');
 	        $('#txtAddLoginName').val('');

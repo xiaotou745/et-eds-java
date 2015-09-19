@@ -34,7 +34,8 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">门店名称:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="bizName" id="bizName" />
+								<input type="text" class="form-control" name="bizName" id="bizName" onkeydown="return disableEnter(event)"/>
+								<input id="hiddenText" type="text" style="display:none" />
 							</div>
 						</div>
 					</div>
@@ -55,21 +56,43 @@
 </div>
 
 <script>
-	var jss = {
+var jss = {
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
 		 var data=$("#searchForm").serialize();
 		 $.post("<%=basePath%>/groupbusiness/businesslistdo", data,
 					function(d) {
+			 			console.log('填充数据钱');
 						$("#content").html(d);
+						console.log('填充数据后');
 					});
 		}
 	}
+$(function(){
 	jss.search(1);
+	
 	$("#btnSearch").click(function() {
 		jss.search(1);
 	});
 	
+});
+//回车
+function disableEnter(event){
+	 var e = event || window.event || arguments.callee.caller.arguments[0];
+        if(e && e.keyCode==27){ // 按 Esc 
+            //要做的事情
+          }
+        if(e && e.keyCode==113){ // 按 F2 
+             //要做的事情
+           }            
+         if(e && e.keyCode==13){ // enter 键
+             //要做的事情
+      	  $('#btnSearch').click();
+          // jss.search(1);
+        }
+};
+
+
 	function funAddBusinessBind(businessId){
 		var groupBusinessId = $("#groupBusinessId").val();
         if (!window.confirm("是否绑定？")) {
@@ -84,6 +107,7 @@
             success: function (result) {
             	alert(result.message);
                 if (result.responseCode > 0) {
+                	console.log('导航')
                     window.location.href = "<%=basePath%>/groupbusiness/businesslist?groupBusinessId=" + groupBusinessId;
                 }
             }
