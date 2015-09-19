@@ -117,7 +117,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 		var clienterAmountBalance = $("#clienterAmountBalance").text();
 		var clienterWithdrawPrice = $("#clienterWithdrawPrice").text();
 		var forzenReason = $("#txtForzenReason").val();
-		if(isNaN(parseFloat(forzenAmount)) || parseFloat(forzenAmount)<=0){
+		if(isNaN(parseFloat(forzenAmount)) || parseFloat(forzenAmount)<1 || parseFloat(forzenAmount)>3000){
 			alert("冻结金额必须大于1元小于3000元");
 			return ;
 		}
