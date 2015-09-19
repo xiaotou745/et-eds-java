@@ -82,10 +82,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content animated bounceInRight">
-			<div class="modal-header">
-				<button class="close" type="button" data-dismiss="modal">
-					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
-				</button>
+			<div class="modal-header"> 
 				<h4 class="modal-title">余额冻结详情</h4> 
 			</div>
 			<small class="font-bold">
