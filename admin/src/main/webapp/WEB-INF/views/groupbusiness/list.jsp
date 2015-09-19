@@ -152,7 +152,7 @@
 	    var pw = $('#txtAddPassword').val();
 	    var confirmPw = $('#txtAddConfirmPassword').val();
 	    var reg=/^[\u4E00-\u9FA5]$/;
-	    if(groupBusiName.trim().length <=0 || groupBusiName.trim().length>30){
+	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>30){
 	    	alert("集团名称必须在5-30个字符");
 	    	return;
 	    }
@@ -203,7 +203,7 @@
 	    var pw = $('#txtModifyPassword').val();
 	    var confirmPw = $('#txtModifyConfirmPassword').val();
 	    var reg=/^[\u4E00-\u9FA5]$/;
-	    if(groupBusiName.trim().length <=0 || groupBusiName.trim().length>30){
+	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>30){
 	    	alert("集团名称必须在5-30个字符");
 	    	return;
 	    }

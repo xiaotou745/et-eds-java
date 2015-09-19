@@ -11,12 +11,12 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
    <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>
-                    <span class="">集团名称: </span>
+                    <span class="">第三方平台名称: </span>
                     <input id="txtGroupName" type="text" name="GroupName" />
-                    <span class="">集团AppKey: </span> 
+                    <span class="">第三方平台AppKey: </span> 
                     <input id="txtAppkey" type="text" name="Appkey" />
                     <input type="button" value="查询" class="searchBtn" id="btnSearch"  />
-                    <input type="button" value="新增集团" class="searchBtn" id="btnAdd" /> 
+                    <input type="button" value="新增第三方平台" class="searchBtn" id="btnAdd" /> 
                 </td>
             </tr>
         </table>  
@@ -28,11 +28,11 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 <div class="GroupAddDish">
     <div class="add-openbox add-form" id="GroupAddDivShow" style="width:500px">
         <h2>
-            <p id="statusFin">新增集团</p>
+            <p id="statusFin">新增第三方平台</p>
         </h2>
      <fieldset>
             <div class="control-group">
-                <label >集团名称</label> 
+                <label >第三方平台名称</label> 
                     <input  name="txtaddGroupName" id="txtaddGroupName" type="text">
             </div>  
      </fieldset>
@@ -45,12 +45,12 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 <div class="GroupUpdateDish">
     <div class="add-openbox add-form" id="GroupUpdateDivShow" style="width:500px">
         <h2>
-            <p id="statusFin">修改集团</p>
+            <p id="statusFin">修改第三方平台</p>
         </h2>
         <fieldset>
             <input type="hidden" id="hiduGroupID" value="0"/>
             <div class="control-group">
-                <label >集团名称</label> 
+                <label >第三方平台名称</label> 
                 <input  name="txtuGroupName" id="txtuGroupName" type="text">
             </div>  
         </fieldset>
@@ -63,13 +63,13 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 <div class="GroupAppConfig">
     <div class="add-openbox add-form" id="GroupAppConfig" style="width:500px">
         <h2>
-            <p id="statusFinApp">设置集团AppConfig</p>
+            <p id="statusFinApp">设置第三方平台AppConfig</p>
         </h2>
         <fieldset>
             <input type="hidden" id="HidGroupID" value="0"/>
             <div class="control-group">
                 <label >AppKey</label> 
-                <input  name="txtAppKeys" id="txtAppKeys" type="text"><label style="color: red">建议为"appkey_"+集团名称小写全拼</label>
+                <input  name="txtAppKeys" id="txtAppKeys" type="text"><label style="color: red">建议为"appkey_"+第三方平台名称小写全拼</label>
             </div>  
             <div class="control-group">
                 <label >App版本</label> 
@@ -98,9 +98,9 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 	        //window.location.hash = '';
 	    });
 	    
-	//查询集团
+	//查询第三方平台
 	 $("#btnSearch").on('click', function () {
-	        var txtGroupName = $("#txtGroupName").val(); //集团名称
+	        var txtGroupName = $("#txtGroupName").val(); //第三方平台名称
 	        var txtAppkey = $("#txtAppkey").val(); 	        
 	        var pars = { "groupname": txtGroupName, "appkey":txtAppkey};	        
 	        var url = "<%=basePath%>/group/selectlist";
@@ -119,11 +119,11 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 	            }
 	            });
 	        });    
-    //添加集团
+    //添加第三方平台
     $("#btnAddGroup").on('click', function () {
-        var txtGroupName = $("#txtaddGroupName").val(); //集团名称
+        var txtGroupName = $("#txtaddGroupName").val(); //第三方平台名称
         if (txtGroupName == "") {
-            alert("集团名称不能为空!");
+            alert("第三方平台名称不能为空!");
             return;
         }
         var pars = { "groupname": txtGroupName };
@@ -143,12 +143,12 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
         });
     });     
 
-    //修改集团
+    //修改第三方平台
     $("#btnuGroup").on('click', function () {
-        var txtGroupName = $("#txtuGroupName").val(); //集团名称
-        var hiduGroupId = $("#hiduGroupID").val(); //集团id 
+        var txtGroupName = $("#txtuGroupName").val(); //第三方平台名称
+        var hiduGroupId = $("#hiduGroupID").val(); //第三方平台id 
         if (txtGroupName == "") {
-            alert("集团名称不能为空!");
+            alert("第三方平台名称不能为空!");
             return;
         }    
         var pars = { "id":hiduGroupId,"groupname": txtGroupName };
@@ -169,17 +169,17 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
     });
     
     
-    //添加集团api配置
+    //添加第三方平台api配置
     $("#btnAddGroupConfig").on('click',function() {
         var groupid = $("#HidGroupID").val(); 
         var appkey=$('#txtAppKeys').val();
         var appversion=$('#txtAppVersion').val(); 
         if (appkey == "") {
-            alert("集团AppKey不能为空!");
+            alert("第三方平台AppKey不能为空!");
             return;
         }
         if (appversion == "") {
-            alert("集团AppVersion不能为空!");
+            alert("第三方平台AppVersion不能为空!");
             return;
         }
         var pars = { "appkey":appkey,"appversion":appversion,"groupid":groupid};
