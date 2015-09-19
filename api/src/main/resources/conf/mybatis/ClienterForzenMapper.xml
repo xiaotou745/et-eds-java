@@ -172,13 +172,13 @@
 			AND cf.ForzenDate>''${startDate}''
 		</if>
 		<if test="dateType =1 and endDate != null and endDate != ''">
-			AND ''${endDate}''>cf.ForzenDate
+			AND ''${endDate}''>=cf.ForzenDate
 		</if>
 		<if test="dateType =2 and startDate != null and startDate != ''">
 			AND cf.ThawDate>''${startDate}''
 		</if>
 		<if test="dateType =2 and endDate != null and endDate != ''">
-			AND ''${endDate}''>cf.ThawDate
+			AND ''${endDate}''>=cf.ThawDate
 		</if>
 		<if test="clienterPhone != null and clienterPhone != ''">
 			AND c.PhoneNo=''${clienterPhone}''
