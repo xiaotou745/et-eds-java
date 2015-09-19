@@ -4,7 +4,7 @@ public enum UserType  {
 	/**
 	 * 商家
 	 */
-	Business(1, "商家"),
+	Business(1, "门店"),
 	/**
 	 * 骑士
 	 */

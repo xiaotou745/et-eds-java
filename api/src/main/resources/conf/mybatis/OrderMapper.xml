@@ -1291,7 +1291,7 @@ set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate) ;
 set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
   
 select  SUM(ISNULL(OrderCount,0)) as TotalOrderCount ,
-        ISNULL(SUM(CASE WHEN FinishAll = 1 THEN OrderCommission ELSE 0 END),0) TotalOrderCommission,
+        ISNULL(SUM(CASE WHEN FinishAll = 1 THEN OrderCommission ELSE 0 END),0) TotalOrderCommission
 from    dbo.[order]
 where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate

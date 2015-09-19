@@ -17,13 +17,13 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 		<table class="table table-striped table-bordered table-hover dataTables-example">
 			<thead>
 				<tr class="tdbg">
-						<th width="%5">序号</th>
-						<th width="%5">用户名称</th>
-						<th width="%5">电话</th>			
-						<th width="%5">城市</th>
-						<th width="%5">时间</th>
-						<th width="%5">反馈类型</th>
-						<th width="%5">反馈内容</th>
+						<th width="%15">序号</th>
+						<th width="%15">用户名称</th>
+						<th width="%15">电话</th>			
+						<th width="%15">城市</th>
+						<th width="%15">时间</th>
+						<th width="%15">反馈类型</th>
+						<th style="width:300px;">反馈内容</th>
 				</tr>
 			</thead>
 			
