@@ -12,10 +12,10 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 			<thead>
 				<tr class="tdbg">
 					<th width="%5">序号</th>
-						<th width="%5">集团名称</th>
+						<th width="%5">第三方平台名称</th>
 						<th width="%5">创建时间</th>
-						<th width="%5">集团AppKey</th>
-						<th width="%5">集团AppSecre</th>
+						<th width="%5">第三方平台AppKey</th>
+						<th width="%5">第三方平台AppSecre</th>
 						<th width="%5">APP版本</th>
 						<th width="%5">状态</th>
 						<th width="%5">操作人</th>
