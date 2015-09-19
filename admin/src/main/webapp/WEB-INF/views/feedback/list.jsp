@@ -15,34 +15,121 @@
 	String basePath =PropertyUtils.getProperty("static.admin.url");	
  	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 %>
+<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
+<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=dAeaG6HwIFGlkbqtyKkyFGEC"></script>
+<style type="text/css">
+#map_contain {
+    height: 90%;
+    width: 100%;
+    max-width: none;
+}
+label {
+    max-width: none;
+}
 
-   <table border="0" cellspacing="0" cellpadding="0">
-            <tr>
-            <td>
-                 <span class="">反馈类型: </span>                
-                   <%=HtmlHelper.getSelect("sltFeedbackType", EnumHelper.GetEnumItems(FeedbackType.class), "desc", "value",null,"-1","全部","","selectw") %>
-                   <span class="">筛选城市: </span>
-               		  <%=HtmlHelper.getSelect("sltCityId", areaListData, "name", "name") %>
-                <span class="">用户类型: </span>
-                <%=HtmlHelper.getSelect("sltUserType", EnumHelper.GetEnumItems(UserType.class), "desc", "value",null,"-1","全部","","selectw") %>
-                
-                </td>
-            </tr>
-              <tr>
-            <td>
-               <span class="">日期: </span>                   
-               <input name="txtStatrTime" id="txtStatrTime" type="text">到
-               <input name="txtEndTime" id="txtEndTime" type="text">
-               <input type="submit" value="查询" class="searchBtn" id="btnSearch" />
-            </td>
-            </tr>
-        </table>  
-        
+#control {
+width: 100%;
+}
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+
+	<div class="row">
+		<div class="col-lg-12">
+			<form method="POST" action="#" class="form-horizontal" id="searchForm">
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">反馈类型:</label>
+							<div class="col-sm-8">							
+								
+								<%=HtmlHelper.getSelect("sltFeedbackType", EnumHelper.GetEnumItems(FeedbackType.class), "desc", "value",null,"-1","全部","","form-control m-b") %>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">筛选城市:</label>
+							<div class="col-sm-8">								
+								<%=HtmlHelper.getSelect("sltCityId", areaListData, "name", "name",null,"-1","全部","","form-control m-b") %>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">用户类型:</label>
+							<div class="col-sm-8">
+								<%=HtmlHelper.getSelect("sltUserType", EnumHelper.GetEnumItems(UserType.class), "desc", "value",null,"-1","全部","","form-control m-b") %>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label"></label>
+							<div class="col-sm-8">
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">				
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">日期:</label>
+							<div class="col-sm-8">		
+								<div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input type="text" class="form-control" name="txtStatrTime"  id="txtStatrTime"/>
+                                    </div>                                   					
+
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">到:</label>
+							<div class="col-sm-8">
+							<div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input type="text" class="form-control" name="txtEndTime"  id="txtEndTime"/>
+                                    </div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label"></label>
+							<div class="col-sm-8">							
+   						</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label"></label>
+							<div class="col-sm-8">
+							  
+							</div>
+						</div>
+					</div>
+				</div>
+
+			    <div class="row">
+						<div class="col-lg-3">
+						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+							style="margin-left: 3px;height:30px;">查询</button>
+					 
+					</div>
+			</div>
+			</form>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox-content" id="content"></div>
 		</div>
-	</div>   
+	</div>
+</div>
    
 
 	<script>		
