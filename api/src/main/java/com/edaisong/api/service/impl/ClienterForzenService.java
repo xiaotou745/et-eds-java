@@ -117,7 +117,7 @@ public class ClienterForzenService implements IClienterForzenService {
 				clienterMoney.setAmount(req.getForzenAmount()); // 加钱
 				clienterMoney.setClienterId(req.getClienterId());
 				clienterMoney
-						.setRecordType(ClienterBalanceRecordRecordType.ForzenBalance
+						.setRecordType(ClienterBalanceRecordRecordType.UnfreezeBalance
 								.value());
 				clienterMoney.setRelationNo(req.getId() + "");
 				clienterMoney.setWithwardId(req.getId());
