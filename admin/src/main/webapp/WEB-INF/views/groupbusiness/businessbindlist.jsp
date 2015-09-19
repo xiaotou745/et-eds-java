@@ -44,12 +44,20 @@
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
+							<label class="col-sm-4 control-label">门店名称:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" name="bizName" id="bizName" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
 							<label class="col-sm-4 control-label">绑定日期:</label>
 							<div class="col-sm-8">
 								<div class="input-group date">
 									<span class="input-group-addon"><i
-										class="fa fa-calendar"></i></span> <input type="text"
-										class="form-control" value="" name="startDate" id="startDate"/>
+										class="fa fa-calendar"></i></span> 
+										<input class="form-control" type="text" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
 								</div>
 							</div>
 						</div>
@@ -60,8 +68,8 @@
 							<div class="col-sm-8">
 								<div class="input-group date">
 									<span class="input-group-addon"><i
-										class="fa fa-calendar"></i></span> <input type="text"
-										class="form-control" value="" name="endDate" id="endDate"/>
+										class="fa fa-calendar"></i></span> 
+										<input class="form-control" type="text"  name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
 								</div>
 							</div>
 						</div>
@@ -90,13 +98,6 @@
 
 <script>
 $(function(){
-	  $(' .input-group.date').datepicker({
-        todayBtn: "linked",
-        keyboardNavigation: false,
-        forceParse: false,
-        calendarWeeks: true,
-        autoclose: true
-    });
 });
 
 	var jss = {

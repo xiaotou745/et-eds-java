@@ -183,18 +183,24 @@
                 "isAllowOverdraft":$('input[name="rAddIsAllowOverdraft"]:checked').val()
             };
        var url = "<%=basePath%>/groupbusiness/addgroupbusiness";
-       $.ajax({
-           type: 'POST',
-           url: url,
-           data: paramaters,
-           success: function (result) {
-        	   alert(result.message);
-               if (result.responseCode > 0) {
-                   window.location.href = "<%=basePath%>/groupbusiness/list";
-               }
-        	  
-           }
-       });	    
+	   	layer.confirm('是否确认创建集团？', {
+		    btn: ['确认','取消'], //按钮
+		    shade: false //显示遮罩
+		},function(){
+			$.ajax({
+		           type: 'POST',
+		           url: url,
+		           data: paramaters,
+		           success: function (result) {
+		        	   alert(result.message);
+		               if (result.responseCode > 0) {
+		                   window.location.href = "<%=basePath%>/groupbusiness/list";
+		               }
+		        	  
+		           }
+		       });
+		});
+       	    
 	}
 	//显示修改集团信息弹框
 	function saveModifyGroupBusiness(){
