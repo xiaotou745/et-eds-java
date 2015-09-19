@@ -84,6 +84,8 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 <script type="text/javascript">
 
   function showForzenClienterBalance(clienterId,clienterPhone,clienterTrueName,clienterAmountBalance,clienterWithdrawPrice){
+	  $('#forzenAmount').val('');
+	  $('#txtForzenReason').val('');
 	  $("#clienterId").val(clienterId);
 	  $("#clienterPhone").html(clienterPhone);
 	  $("#clienterTrueName").html(clienterTrueName);
