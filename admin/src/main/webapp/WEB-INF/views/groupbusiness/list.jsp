@@ -57,11 +57,11 @@
             </div> 
             <div class="control-group">
                 <label >密码：</label> 
-                    <input  name="txtAddPassword" id="txtAddPassword" type="text">
+                    <input  name="txtAddPassword" id="txtAddPassword" type="password">
             </div> 
             <div class="control-group">
                 <label >确认密码：</label> 
-                    <input  name="txtAddConfirmPassword" id="txtAddConfirmPassword" type="text">
+                    <input  name="txtAddConfirmPassword" id="txtAddConfirmPassword" type="password">
             </div> 
         </fieldset>
 				</div>
@@ -106,11 +106,11 @@
             </div> 
             <div class="control-group">
                 <label >密码：</label> 
-                    <input  name="txtModifyPassword" id="txtModifyPassword" type="text">
+                    <input  name="txtModifyPassword" id="txtModifyPassword" type="password">
             </div> 
             <div class="control-group">
                 <label >确认密码：</label> 
-                    <input  name="txtModifyConfirmPassword" id="txtModifyConfirmPassword" type="text">
+                    <input  name="txtModifyConfirmPassword" id="txtModifyConfirmPassword" type="password">
             </div> 
             <hr/>
             <div>
