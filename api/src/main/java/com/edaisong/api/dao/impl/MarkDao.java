@@ -43,7 +43,7 @@ public class MarkDao extends DaoBase implements IMarkDao {
 	*/
 	@Override
 	public boolean editTag(MarkEditReq markEditReq) {
-		int result = getReadOnlySqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.editMark", markEditReq.getMarkName());
+		int result = getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.editMark", markEditReq.getTagName());
 		return result>0 ?true:false;
 	}
 

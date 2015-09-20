@@ -192,7 +192,7 @@
 			  SELECT tg.Id,COUNT(1) BindQuantity
 			  FROM Tag tg WITH(NOLOCK)
 			  JOIN TagRelation tr ON tg.TagType=tr.UserType AND tg.Id=tr.TagId
-			  WHERE tg.IsEnable=1 AND tg.IsDelete=0 AND tr.IsEnable=1
+			  WHERE tg.IsEnable=1 AND tg.IsDelete=0 
 			  GROUP BY tg.Id) tbl ON  t.Id=tbl.Id ',
 ' <include refid="getMarkList_Where"/> ',
 #{pageSize,mode=IN,jdbcType=INTEGER},
@@ -211,7 +211,7 @@
   
   <update id="editMark"  parameterType="com.edaisong.entity.req.MarkEditReq" >
     MERGE INTO Tag t
-	USING(values(@TagName)) AS tNew(TagName)
+	USING(values(#{tagname,jdbcType=NVARCHAR})) AS tNew(TagName)
 		ON t.TagName=tNew.TagName 
 	WHEN MATCHED 
 	THEN UPDATE 
@@ -219,7 +219,7 @@
 		     t.TagType = #{tagtype,jdbcType=INTEGER},
 		     t.Remark= #{remark,jdbcType=NVARCHAR},
 		     t.IsEnable = #{isenable,jdbcType=INTEGER},
-             t.ModifyName = #{modifyname,jdbcType=NVARCHAR},
+             t.ModifyName = '#{modifyname,jdbcType=NVARCHAR}',
              t.ModifyTime=getdate()
 	WHEN NOT MATCHED 
 		  THEN INSERT

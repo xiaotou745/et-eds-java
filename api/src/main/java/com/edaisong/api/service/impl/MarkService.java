@@ -34,10 +34,13 @@ public class MarkService implements IMarkService {
 	public ResponseBase editMark(MarkEditReq markEditReq) {
 		ResponseBase responseBase = new ResponseBase();
 		responseBase.setResponseCode(-1);
-		if(markDao.CheckExist(markEditReq.getMarkName()))
+		if(markEditReq.getOperateType()!=2)
 		{
-			responseBase.setMessage("此标签已存在！");
-			return responseBase;
+			if(markDao.CheckExist(markEditReq.getTagName()))
+			{
+				responseBase.setMessage("此标签已存在！");
+				return responseBase;
+			}
 		}
 		if(!markDao.editTag(markEditReq)){ 
 			responseBase.setMessage("编辑失败！");

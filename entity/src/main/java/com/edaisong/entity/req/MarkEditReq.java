@@ -1,9 +1,12 @@
 package com.edaisong.entity.req;
 
-public class MarkEditReq {
-	private String operator;
+import com.edaisong.entity.Mark;
+
+
+
+public class MarkEditReq extends Mark{
+	private String operator;//0:新增  1:修改(标签名称有改动) 2:修改(标签名称无改动)
 	private int operateType;
-	private String markName;
 	public String getOperator() {
 		return operator;
 	}
@@ -15,11 +18,5 @@ public class MarkEditReq {
 	}
 	public void setOperateType(int operateType) {
 		this.operateType = operateType;
-	}
-	public String getMarkName() {
-		return markName;
-	}
-	public void setMarkName(String markName) {
-		this.markName = markName;
 	}
 }

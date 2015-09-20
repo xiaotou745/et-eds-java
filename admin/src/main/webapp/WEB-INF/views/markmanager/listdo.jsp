@@ -42,7 +42,7 @@
                 <td><%=list.get(i).getModifyname() %></td>
 				<td><%=ParseHelper.ToDateString(list.get(i).getModifytime()) %></td>
                 <td><%=list.get(i).getRemark() %></td>
-				<td><a href="javascript:showEditTag(<%=list.get(i).getId()%>,<%=list.get(i).getIsenable()%>)">修改</a></td>				
+				<td><a href="javascript:showEditTag(<%=list.get(i).getId()%>,<%=list.get(i).getIsenable()%>,'<%=list.get(i).getTagName()%>',<%=list.get(i).getTagType() %>,'<%=list.get(i).getRemark()%>')">修改</a></td>				
 			</tr>
 		 <%}%> 	 	
 			</tbody>
@@ -53,10 +53,24 @@
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
 <script>
-	function showEditTag(id,isEnable){
-		$("#hdTagId").val(id); 
-		$("#hdIsEnable").val(isEnable);
+	function showEditTag(id,isEnable,tagName,tagType,remark){
+		$("#hdTagId").val(id);
+		$("#editTagName").val(tagName); 
+		$("#editTagType").val(tagType);
+		$("#editRemark").val(remark);
+		if (isEnable == 1) {
+            $("#rIsEnableY").attr("checked", "checked");
+        }
+        else {
+            $("#rIsEnableN").attr("checked", "checked");
+        }
+		$("#hdOperateType").val(1);
+		$("#oldTagName").val(tagName); 
+		$("#oldTagType").val(tagType);
+		$("#oldIsEnable").val(isEnable);
+		$("#oldRemark").val(remark);
 		$('#showEditTag').modal('show');
+		
 	}
 
 

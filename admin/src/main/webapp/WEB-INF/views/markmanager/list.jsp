@@ -7,6 +7,11 @@
 <%@page import="com.edaisong.core.enums.TagType"%>
 <%String basePath =PropertyUtils.getProperty("static.admin.url");%>
 <table >
+     <tr>
+	 	<td>
+	      <input type="button" value="添加" class="searchBtn" id="addMark"  onclick="addMark()"/>      
+	    </td>
+	 </tr>
 	 <tr>
 	 	<td>
 	      <span>标签名称: </span>
@@ -55,14 +60,17 @@
 				      		 <div style="float:left;margin-top:10px;margin-left: 5px">
 				      		 	<textarea name="editRemark" id="editRemark" style="width:165px;height:60px;max-width:165px;max-height:60px;"> </textarea>
 				      		 </div>
-			                 <input type="hidden" id="hdTagId" />
-			                 <input type="hidden" id="hdIsEnable" />
-			                 <input type="hidden" id="hdOperateType" />
+			                 <input type="hidden" id="hdTagId" value="0"/>
+			                 <input type="hidden" id="hdOperateType" value="0"/>
+			                 <input type="hidden" id="oldTagName" />
+			                 <input type="hidden" id="oldTagType" />
+			                 <input type="hidden" id="oldIsEnable" />
+			                 <input type="hidden" id="oldRemark" />
 			            </div>  
 			        </fieldset>
 				</div>
 				<div class="modal-footer">
-				    <button class="btn btn-primary" type="button" id="btnEditTag" onclick="confirmUnfreezeClienter()">保存</button>
+				    <button class="btn btn-primary" type="button" id="btnEditTag" onclick="confirmEidt()">保存</button>
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 				</div>
 			</small>
@@ -101,29 +109,49 @@
 	});	
 	//提交
    function confirmEidt(){
+	   var id=$("#hdTagId").val();
+	   var operateType=$("#hdOperateType").val();
 	   var tagName = $("#editTagName").val();
+	   var tagType = $("#editTagType").val();
+	   var isEnable = $('input[name="rIsEnable"]:checked').val();
 	   var remark = $("#editRemark").val();
+	   var oldTagName = $("#oldTagName").val();
+	   var oldTagType = $("#oldTagType").val();
+	   var oldIsEnable = $("#oldIsEnable").val();
+	   var oldRemark = $("#oldRemark").val();
 	   if(tagName.trim().length == 0){
-		   alert("请输入标签名称");
+		   alert("请输入标签名称!");
 		   return; 
 	   }
 	   if(tagName.trim().length <2 || tagName.trim().length>20){
-			alert("标签名称必须输入2-20个字符");
+			alert("标签名称必须输入2-20个字符!");
 			return;
 		}
 	   if(remark.trim().length>50){
-			alert("备注不能超过50个字符");
+			alert("备注不能超过50个字符!");
 			return;
 		}
+	   if(operateType==1)
+	   {
+		 if(tagName.trim()==oldTagName&&tagType==oldTagType&&isEnable==oldIsEnable&&remark.trim()==oldRemark)
+			 {
+			 	alert("无修改内容!");
+				return;
+			 }
+		 if(tagName.trim()==oldTagName)
+			 {
+			    operateType=2;
+			 }
+	   }
 	   var paramaters = {
-	    	   "id":$("#hdTagId").val(),
+	    	   "id":id,
                "tagName":tagName.trim(),
-               "tagType": $("#editTagType").val(),
-	    	   "isEnable": $('input[name="rIsEnable"]:checked').val(),
+               "tagType":tagType,
+	    	   "isEnable":isEnable,
                "remark":remark.trim(),
-               "operateType":$("#hdOperateType").val(),
+               "operateType":operateType
            };
-      var url = "<%=basePath%>/tag/editTag";
+      var url = "<%=basePath%>/mark/editmark";
 	   $.ajax({
            type: 'POST',
            url: url,
@@ -131,9 +159,18 @@
            success: function (result) {   			            
         	   alert(result.message);
                if (result.responseCode > 0) {
-                   window.location.href = "<%=basePath%>/clienter/forzenlist";
+                   //window.location.href = "<%=basePath%>/clienter/forzenlist";
                }               
            }
        });
    }
+   function addMark(){
+	    $("#hdTagId").val(0);
+		$("#editTagName").val(''); 
+		$("#editTagType").val(0);
+		$("#editRemark").val('');
+        $("#rIsEnableY").attr("checked", "checked");
+		$("#hdOperateType").val(0);
+		$('#showEditTag').modal('show');
+	}
 </script>

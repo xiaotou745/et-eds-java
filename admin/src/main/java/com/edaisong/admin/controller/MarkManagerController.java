@@ -6,11 +6,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IMarkService;
 import com.edaisong.entity.Mark;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseBase;
+import com.edaisong.entity.req.MarkEditReq;
 import com.edaisong.entity.req.MarkReq;
 
 @Controller
@@ -46,18 +51,18 @@ public class MarkManagerController {
 		model.addObject("listData", resp);
 		return model;
 	}
-//	/**
-//	* @Des 编辑标签（新增/修改） 
-//	* @Author WangXuDan
-//	* @Date 2015年9月19日14:48:55
-//	* @Return
-//	*/
-//	@RequestMapping("edittag")
-//	@ResponseBody
-//	public ResponseBase editMark(TagEditReq tagEditReq,HttpServletRequest request){
-//		ResponseBase response = new ResponseBase();
-//		tagEditReq.setOperator(UserContext.getCurrentContext(request).getName());
-//		response = tagService.editTag(tagEditReq);
-//		return response;		
-//	}
+	/**
+	* @Des 编辑标签（新增/修改） 
+	* @Author WangXuDan
+	* @Date 2015年9月19日14:48:55
+	* @Return
+	*/
+	@RequestMapping(value="editmark",method= {RequestMethod.POST})
+	@ResponseBody
+	public ResponseBase editMark(MarkEditReq markEditReq,HttpServletRequest request){
+		ResponseBase response = new ResponseBase();
+		markEditReq.setOperator(UserContext.getCurrentContext(request).getName());
+		response = markService.editMark(markEditReq);
+		return response;		
+	}
 }
