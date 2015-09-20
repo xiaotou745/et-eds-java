@@ -99,7 +99,7 @@ public class GroupBusinessService implements IGroupBusinessService {
 			 }
 			 if(!gb.getPassword().trim().equals("")){
 				 if(!gbm.getPassword().trim().equals(gb.getPassword().trim())){
-					 sbRemark.append("密码"+gbm.getPassword()+"修改为"+gb.getPassword()+";");
+					 sbRemark.append("密码;");
 				 }
 			 }
 			 if(gbm.getIsAllowOverdraft() != gb.getIsAllowOverdraft()){
