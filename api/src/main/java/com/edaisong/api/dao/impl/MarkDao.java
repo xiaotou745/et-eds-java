@@ -46,5 +46,16 @@ public class MarkDao extends DaoBase implements IMarkDao {
 		int result = getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.editMark", markEditReq.getTagName());
 		return result>0 ?true:false;
 	}
+	/**
+	* @Des 修改标签状态 
+	* @Author WangXuDan
+	* @Date 2015年9月20日19:57:19
+	* @Return
+	*/
+	@Override
+	public boolean modifyMarkStatus(MarkEditReq markEditReq) {
+		int result = getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.modifyMarkStatus", markEditReq.getId());
+		return result>0 ?true:false;
+	}
 
 }

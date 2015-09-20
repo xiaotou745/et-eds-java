@@ -235,5 +235,11 @@
                      #{modifyname,jdbcType=NVARCHAR},
                      #{modifyname,jdbcType=NVARCHAR});
   </update>
-  
+  <update id="modifyMarkStatus" parameterType="com.edaisong.entity.req.MarkEditReq" >
+    update Tag
+    set IsEnable = #{isenable,jdbcType=INTEGER},
+        t.ModifyName = '#{operator,jdbcType=NVARCHAR}',
+        t.ModifyTime=getdate()
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

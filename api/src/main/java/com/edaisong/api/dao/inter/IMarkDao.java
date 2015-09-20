@@ -27,5 +27,12 @@ public interface IMarkDao {
 		* @Return
 		*/
 		 boolean editTag(MarkEditReq markEditReq);
+		/**
+		* @Des 修改标签状态 
+		* @Author WangXuDan
+		* @Date 2015年9月20日19:57:19
+		* @Return
+		*/
+		 boolean modifyMarkStatus(MarkEditReq markEditReq);
 
 }

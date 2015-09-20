@@ -65,4 +65,18 @@ public class MarkManagerController {
 		response = markService.editMark(markEditReq);
 		return response;		
 	}
+	/**
+	* @Des 修改标签状态 
+	* @Author WangXuDan
+	* @Date 2015年9月20日19:57:19
+	* @Return
+	*/
+	@RequestMapping(value="modifyMarkStatus",method= {RequestMethod.POST})
+	@ResponseBody
+	public ResponseBase modifyMarkStatus(MarkEditReq markEditReq,HttpServletRequest request){
+		ResponseBase response = new ResponseBase();
+		markEditReq.setOperator(UserContext.getCurrentContext(request).getName());
+		response = markService.modifyMarkStatus(markEditReq);
+		return response;	
+	}
 }

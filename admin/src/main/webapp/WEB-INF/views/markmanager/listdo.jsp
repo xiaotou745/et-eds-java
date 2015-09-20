@@ -42,7 +42,14 @@
                 <td><%=list.get(i).getModifyname() %></td>
 				<td><%=ParseHelper.ToDateString(list.get(i).getModifytime()) %></td>
                 <td><%=list.get(i).getRemark() %></td>
-				<td><a href="javascript:showEditTag(<%=list.get(i).getId()%>,<%=list.get(i).getIsenable()%>,'<%=list.get(i).getTagName()%>',<%=list.get(i).getTagType() %>,'<%=list.get(i).getRemark()%>')">修改</a></td>				
+				<td>
+					<a href="javascript:showEditTag(<%=list.get(i).getId()%>,<%=list.get(i).getIsenable()%>,'<%=list.get(i).getTagName()%>',<%=list.get(i).getTagType() %>,'<%=list.get(i).getRemark()%>')">修改</a>
+					<%if(list.get(i).getIsenable()==1){%>
+					<a href="javascript:modifyMarkStatus(<%=list.get(i).getId()%>,<%=list.get(i).getIsenable()%>)">禁止</a>
+					<%}else{%> 
+					<a href="javascript:modifyMarkStatus(<%=list.get(i).getId()%>,<%=list.get(i).getIsenable()%>)">启动</a>
+					<%}%>
+				</td>				
 			</tr>
 		 <%}%> 	 	
 			</tbody>
@@ -53,6 +60,7 @@
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
 <script>
+//标签编辑弹窗
 	function showEditTag(id,isEnable,tagName,tagType,remark){
 		$("#hdTagId").val(id);
 		$("#editTagName").val(tagName); 
@@ -72,6 +80,37 @@
 		$('#showEditTag').modal('show');
 		
 	}
+	//修改标签状态
+	   function modifyMarkStatus(id,isEnable){
+		   var confirmMsg="";
+		   if(isEnable==0)
+			   {
+			   	confirmMsg="确认禁止此标签?";
+			   }
+		   else
+			   {
+			   	confirmMsg="确认启动此标签?";
+			   }
+		   if (!confirm(confirmMsg)) {
+	            return;
+	        }
+		   var paramaters = {
+		    	   "id":id,
+		    	   "isEnable":isEnable,
+	           };
+	      var url = "<%=basePath%>/mark/modifyMarkStatus";
+		   $.ajax({
+	           type: 'POST',
+	           url: url,
+	           data: paramaters,
+	           success: function (result) {   			            
+	        	   alert(result.message);
+	               if (result.responseCode > 0) {
+	                   //window.location.href = "<%=basePath%>/clienter/forzenlist";
+	               }               
+	           }
+	       });
+	   }
 
 
 </script>

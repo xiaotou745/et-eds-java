@@ -50,5 +50,23 @@ public class MarkService implements IMarkService {
 		responseBase.setMessage("编辑成功！");
 		return responseBase;
 	}
+	/**
+	* @Des 修改标签状态 
+	* @Author WangXuDan
+	* @Date 2015年9月20日19:57:19
+	* @Return
+	*/
+	@Override
+	public ResponseBase modifyMarkStatus(MarkEditReq markEditReq) {
+		ResponseBase responseBase = new ResponseBase();
+		responseBase.setResponseCode(-1);
+		if(!markDao.modifyMarkStatus(markEditReq)){ 
+			responseBase.setMessage("标签状态更新失败！");
+			return responseBase;
+		}
+		responseBase.setResponseCode(1);
+		responseBase.setMessage("标签状态更新成功！");
+		return responseBase;
+	}
 
 }
