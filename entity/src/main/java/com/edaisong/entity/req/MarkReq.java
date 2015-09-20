@@ -3,21 +3,21 @@ package com.edaisong.entity.req;
 import com.edaisong.entity.common.PagedRequestBase;
 
 public class MarkReq extends PagedRequestBase{
-	private String markName;
-	private int markType;
+	private String tagName;
+	private int tagType;
 	private String startDate;
 	private String endDate;
-	public String getMarkName() {
-		return markName;
+	public String getTagName() {
+		return tagName;
 	}
-	public void setMarkName(String markName) {
-		this.markName = markName;
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
 	}
-	public int getMarkType() {
-		return markType;
+	public int getTagType() {
+		return tagType;
 	}
-	public void setMarkType(int markType) {
-		this.markType = markType;
+	public void setTagType(int tagType) {
+		this.tagType = tagType;
 	}
 	public String getStartDate() {
 		return startDate;

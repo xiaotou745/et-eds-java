@@ -12,7 +12,7 @@ public interface IMarkService {
 	* @Date 2015年9月19日15:16:50
 	* @Return
 	*/
-    PagedResponse<Mark> getTagList(MarkReq par);
+    PagedResponse<Mark> getMarkList(MarkReq par);
     /**
 	* @Des 编辑标签（新增/修改） 
 	* @Author WangXuDan

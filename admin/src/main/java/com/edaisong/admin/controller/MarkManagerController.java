@@ -30,7 +30,7 @@ public class MarkManagerController {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "标签管理");
 		model.addObject("currenttitle", "标签管理");
-		model.addObject("viewPath", "mark/list");
+		model.addObject("viewPath", "markmanager/list");
 		return model;
 	}
 	/**
@@ -40,9 +40,9 @@ public class MarkManagerController {
 	 * @Return
 	 */
 	@RequestMapping("listdo")
-	public ModelAndView marklistdo(MarkReq req) {	
-		PagedResponse<Mark> resp =null;// markService.getTagList(req);
-		ModelAndView model = new ModelAndView("tag/listdo");
+	public ModelAndView listdo(MarkReq req) {	
+		PagedResponse<Mark> resp =markService.getMarkList(req);
+		ModelAndView model = new ModelAndView("markmanager/listdo");
 		model.addObject("listData", resp);
 		return model;
 	}

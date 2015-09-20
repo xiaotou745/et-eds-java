@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IMarkDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.Mark" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="TagName" property="tagname" jdbcType="NVARCHAR" />
+    <result column="TagType" property="tagtype" jdbcType="INTEGER" />
+    <result column="BindQuantity" property="bindquantity" jdbcType="INTEGER" />
+    <result column="IsEnable" property="isenable" jdbcType="INTEGER" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
+    <result column="ModifyTime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="ModifyName" property="modifyname" jdbcType="NVARCHAR" />
+    <result column="IsDelete" property="isdelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, TagName, TagType, BindQuantity, IsEnable, CreateTime, CreateName, ModifyTime, 
+    ModifyName, IsDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from Tag
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Tag
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.Mark" >
+    insert into Tag (Id, TagName, TagType, 
+      BindQuantity, IsEnable, CreateTime, 
+      CreateName, ModifyTime, ModifyName, 
+      IsDelete)
+    values (#{id,jdbcType=INTEGER}, #{tagname,jdbcType=NVARCHAR}, #{tagtype,jdbcType=INTEGER}, 
+      #{bindquantity,jdbcType=INTEGER}, #{isenable,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createname,jdbcType=NVARCHAR}, #{modifytime,jdbcType=TIMESTAMP}, #{modifyname,jdbcType=NVARCHAR}, 
+      #{isdelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.Mark" >
+    insert into Tag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="tagname != null" >
+        TagName,
+      </if>
+      <if test="tagtype != null" >
+        TagType,
+      </if>
+      <if test="bindquantity != null" >
+        BindQuantity,
+      </if>
+      <if test="isenable != null" >
+        IsEnable,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="createname != null" >
+        CreateName,
+      </if>
+      <if test="modifytime != null" >
+        ModifyTime,
+      </if>
+      <if test="modifyname != null" >
+        ModifyName,
+      </if>
+      <if test="isdelete != null" >
+        IsDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tagname != null" >
+        #{tagname,jdbcType=NVARCHAR},
+      </if>
+      <if test="tagtype != null" >
+        #{tagtype,jdbcType=INTEGER},
+      </if>
+      <if test="bindquantity != null" >
+        #{bindquantity,jdbcType=INTEGER},
+      </if>
+      <if test="isenable != null" >
+        #{isenable,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null" >
+        #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyname != null" >
+        #{modifyname,jdbcType=NVARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Mark" >
+    update Tag
+    <set >
+      <if test="tagname != null"  >
+        TagName = #{tagname,jdbcType=NVARCHAR},
+      </if>
+      <if test="tagtype != null" >
+        TagType = #{tagtype,jdbcType=INTEGER},
+      </if>
+      <if test="bindquantity != null" >
+        BindQuantity = #{bindquantity,jdbcType=INTEGER},
+      </if>
+      <if test="isenable != null" >
+        IsEnable = #{isenable,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null" >
+        CreateName = #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="modifytime != null" >
+        ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyname != null" >
+        ModifyName = #{modifyname,jdbcType=NVARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        IsDelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Mark" >
+    update Tag
+    set TagName = #{tagname,jdbcType=NVARCHAR},
+      TagType = #{tagtype,jdbcType=INTEGER},
+      BindQuantity = #{bindquantity,jdbcType=INTEGER},
+      IsEnable = #{isenable,jdbcType=INTEGER},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      CreateName = #{createname,jdbcType=NVARCHAR},
+      ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+      ModifyName = #{modifyname,jdbcType=NVARCHAR},
+      IsDelete = #{isdelete,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+   <!-- 获取标签列表的分页存储过程_列名 WangXuDan 2015年9月18日14:49:35 -->
+  <sql id="getMarkList_Column">
+	   t.Id
+	  ,t.TagName 
+	  ,t.TagType 
+	  ,ISNULL(tbl.BindQuantity,0) BindQuantity
+	  ,t.IsEnable
+	  ,t.CreateTime
+	  ,t.CreateName
+	  ,t.ModifyTime
+	  ,t.ModifyName
+	  ,t.IsDelete
+	  ,t.Remark
+	</sql>
+	
+	<!-- 获取标签列表的分页存储过程_条件 WangXuDan 2015年9月18日16:34:47 -->
+  	<sql id="getMarkList_Where">
+		1=1
+		<if test="tagType >=0">
+			AND t.TagType=${tagType}
+		</if>
+		<if test="startDate != null and startDate != ''">
+			AND t.CreateTime>=''${startDate}''
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND ''${endDate}''>=t.CreateTime
+		</if>
+		<if test="tagName != null and tagName != ''">
+			AND t.TagName LIKE ''%${tagName}%''
+		</if>
+	</sql>
+   <!-- 获取标签列表的分页存储过程 WangXuDan 2015年9月20日16:39:58 -->
+  <select id="getMarkList" resultType="com.edaisong.entity.Mark" 
+  parameterType="com.edaisong.entity.req.MarkReq" statementType="CALLABLE">  
+{call Sp_CustomPage2015_V1(
+' t.Id DESC ',
+'<include refid="getMarkList_Column"/> ',
+' Tag t WITH(NOLOCK)
+  LEFT JOIN(
+			  SELECT tg.Id,COUNT(1) BindQuantity
+			  FROM Tag tg WITH(NOLOCK)
+			  JOIN TagRelation tr ON tg.TagType=tr.UserType AND tg.Id=tr.TagId
+			  WHERE tg.IsEnable=1 AND tg.IsDelete=0 AND tr.IsEnable=1
+			  GROUP BY tg.Id) tbl ON  t.Id=tbl.Id ',
+' <include refid="getMarkList_Where"/> ',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+#{totalPage,mode=OUT,jdbcType=VARCHAR}
+)} 
+  </select>
+  
+</mapper>

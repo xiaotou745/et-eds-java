@@ -5,9 +5,9 @@ import java.util.Date;
 public class Mark {
     private Integer id;
 
-    private String markName;
+    private String tagName;
 
-    private Integer markType;
+    private Integer tagType;
 
     private Integer bindquantity;
 
@@ -33,20 +33,20 @@ public class Mark {
 		this.id = id;
 	}
 
-	public String getMarkName() {
-		return markName;
+	public String getTagName() {
+		return tagName;
 	}
 
-	public void setMarkName(String markName) {
-		this.markName = markName;
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
 	}
 
-	public Integer getMarkType() {
-		return markType;
+	public Integer getTagType() {
+		return tagType;
 	}
 
-	public void setMarkType(Integer markType) {
-		this.markType = markType;
+	public void setTagType(Integer tagType) {
+		this.tagType = tagType;
 	}
 
 	public Integer getBindquantity() {
