@@ -2,6 +2,7 @@ package com.edaisong.api.dao.inter;
 
 import com.edaisong.entity.Mark;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.MarkEditReq;
 import com.edaisong.entity.req.MarkReq;
 
 public interface IMarkDao {
@@ -18,13 +19,13 @@ public interface IMarkDao {
 		* @Date 2015年9月18日10:19:28
 		* @Return
 		*/
-	   // boolean CheckExist(String tagname);
+	    boolean CheckExist(String tagname);
 	    /**
 		* @Des 编辑标签（新增/修改） 
 		* @Author WangXuDan
 		* @Date 2015年9月19日15:15:05
 		* @Return
 		*/
-		//boolean editTag(TagEditReq tagEditReq);
+		 boolean editTag(MarkEditReq markEditReq);
 
 }

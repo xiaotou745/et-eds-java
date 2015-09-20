@@ -202,5 +202,38 @@
 #{totalPage,mode=OUT,jdbcType=VARCHAR}
 )} 
   </select>
+  <select id="checkExist" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select 
+    count(1)
+    from Tag(nolock)
+    where TagName = #{tagname,jdbcType=NVARCHAR}
+  </select>
+  
+  <update id="editMark"  parameterType="com.edaisong.entity.req.MarkEditReq" >
+    MERGE INTO Tag t
+	USING(values(@TagName)) AS tNew(TagName)
+		ON t.TagName=tNew.TagName 
+	WHEN MATCHED 
+	THEN UPDATE 
+		 SET t.TagName= #{tagname,jdbcType=NVARCHAR},
+		     t.TagType = #{tagtype,jdbcType=INTEGER},
+		     t.Remark= #{remark,jdbcType=NVARCHAR},
+		     t.IsEnable = #{isenable,jdbcType=INTEGER},
+             t.ModifyName = #{modifyname,jdbcType=NVARCHAR},
+             t.ModifyTime=getdate()
+	WHEN NOT MATCHED 
+		  THEN INSERT
+					(TagName,
+					 TagType,
+                     IsEnable,
+                     CreateName,
+                     ModifyName) 
+					VALUES 
+					(#{tagname,jdbcType=NVARCHAR},
+					 #{tagtype,jdbcType=INTEGER},
+                     #{isenable,jdbcType=INTEGER},
+                     #{modifyname,jdbcType=NVARCHAR},
+                     #{modifyname,jdbcType=NVARCHAR});
+  </update>
   
 </mapper>
