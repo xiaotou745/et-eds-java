@@ -80,7 +80,7 @@ width: 100%;
 							<div class="col-sm-8">		
 								<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" name="txtStatrTime"  id="txtStatrTime"/>
+                                        <input type="text" class="form-control" value="" name="txtStatrTime" id="txtStatrTime" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'txtEndTime\')||\'2020-10-01\'}'})"/>
                                     </div>                                   					
 
 							</div>
@@ -92,7 +92,7 @@ width: 100%;
 							<div class="col-sm-8">
 							<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" name="txtEndTime"  id="txtEndTime"/>
+                                        <input type="text" class="form-control" value="" name="txtEndTime" id="txtEndTime" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'txtStatrTime\')}',maxDate:'2020-10-01'})"/>
                                     </div>
 							</div>
 						</div>

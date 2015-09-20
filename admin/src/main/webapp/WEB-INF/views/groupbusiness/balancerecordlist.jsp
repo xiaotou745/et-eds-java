@@ -66,8 +66,8 @@
 							<div class="col-sm-8">
 								<div class="input-group date">
 									<span class="input-group-addon"><i
-										class="fa fa-calendar"></i></span> <input type="text"
-										class="form-control" value="" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
+										class="fa fa-calendar"></i></span> 
+										<input type="text" class="form-control" value="" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
 								</div>
 							</div>
 						</div>
@@ -78,8 +78,8 @@
 							<div class="col-sm-8">
 								<div class="input-group date">
 									<span class="input-group-addon"><i
-										class="fa fa-calendar"></i></span> <input type="text"
-										class="form-control" value="" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
+										class="fa fa-calendar"></i></span> 
+										<input type="text" class="form-control" value="" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
 								</div>
 							</div>
 						</div>
