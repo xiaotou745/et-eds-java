@@ -67,10 +67,12 @@
 		$("#editTagType").val(tagType);
 		$("#editRemark").val(remark);
 		if (isEnable == 1) {
-            $("#rIsEnableY").attr("checked", "checked");
+            
+            $("#rIsEnableY").prop("checked",true);
         }
         else {
-            $("#rIsEnableN").attr("checked", "checked");
+            
+            $("#rIsEnableN").prop("checked",true);
         }
 		$("#hdOperateType").val(1);
 		$("#oldTagName").val(tagName); 
@@ -106,7 +108,7 @@
 	           success: function (result) {   			            
 	        	   alert(result.message);
 	               if (result.responseCode > 0) {
-	                   //window.location.href = "<%=basePath%>/clienter/forzenlist";
+	                   window.location.href = "<%=basePath%>/mark/list";
 	               }               
 	           }
 	       });

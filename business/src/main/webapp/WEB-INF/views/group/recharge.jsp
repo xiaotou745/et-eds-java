@@ -48,13 +48,97 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 		</form></div>
 <input type="button" value="确认支付" id="pay">
 <div class="wxtsBox" id="rechargeResult" style="display:none">
-结果为空
+<div id="orderResult"></div>
+<span id="timespan">10</span>秒后自动刷新页面
 </div>
 <div class="wxtsBox">
 	<h2>温馨提示</h2>
 	<p>1、充值金额会在当天到账。如遇问题，可联系客服：<span>4006-380-177</span></p>
 </div>
+<div class="popup" style="display: none;">
+	<div class="bg"></div>
+	<div class="top" id="failDiv">
+		<span>!</span>
+		充值还未成功，请确认是否完成支付！
+	</div>
+	<div class="popupBox popupBox2 popupBox6" id="confirmDiv">
+		<s class="close" onclick="reload()">关闭</s>
+		<h3>充值完成前请不要关闭此窗口</h3>
+		<img alt="支付" src="<%=basePath%>/images/zhifu.png">
+		<h2>请在新开的页面完成充值</h2>
+		<a href="javascript:void(0)" onclick="showRechargeStatus()">已完成充值</a>
+		<a class="wt" href="javascript:void(0)" onclick="failRecharge()">充值未成功</a>
+	</div>
+</div>
+
+
 <script>
+function reload(){
+	window.location.href = window.location.href;
+}
+function showRechargeStatus(){
+	var url = "<%=basePath%>/group/getrechargestatus";
+	$.ajax({
+		type : 'POST',
+		url : url,
+		data : {"orderNO":$("#WIDout_trade_no").val()},
+		success : function(data) {
+			if(data==null||data==""||data==undefined||data.paystatus==undefined){
+				alert("没有找到订单号为："+$("#WIDout_trade_no").val()+"的充值订单信息");
+				return;
+			}
+			var status="未知";
+			switch(data.paystatus){
+				case -1:status="支付失败";break;
+				case 0:status="支付中";break;
+				case 1:status="支付成功";break;
+			}
+			if(data.paystatus!=1){
+				failRecharge();
+			}else{
+				$("#orderResult").html("<font style=\"color:red\">充值单号："+data.orderno+";充值金额："+data.payamount+";充值状态："+status+"</font>");
+				$('.popup').hide();
+				$("#rechargeResult").show();
+				
+				setTimeout(function (){
+					$("#rechargeResult").hide();
+					window.location.href = window.location.href;
+					}, 10000);
+				var intervalId=setInterval(function(){
+					var timeSection=document.getElementById('timespan');
+					var second=parseInt(timeSection.innerHTML);
+					if(second<=0){
+						clearInterval(intervalId);
+					}else{
+						timeSection.innerHTML=second-1;
+					}
+				},1000);
+			}
+		}
+	});
+}
+function failRecharge(){
+	$("#confirmDiv").hide();
+	$("#failDiv").show();
+}
+function check(pay){
+	var radio = $('.box3 input:radio:checked');
+	var money = radio.val();
+	var tip = "请选择充值金额";
+
+	if(radio.parents('.sBox').find("#orderBox").length>0){
+		money = radio.parents('.sBox').find("#orderBox").val();
+		tip = "请输入1-100000范围内整数"
+	}
+	$('#orderBox').parents('.sBox').find('.tishiyu').html(tip);
+	if(money>=1 && money<=100000){
+		$('#orderBox').parents('.sBox').find('.tishiyu').hide();
+		return true;
+	}else{
+		$('#orderBox').parents('.sBox').find('.tishiyu').show();
+		return false;
+	}
+}
 $(document).ready(function() {
 	//支付方式单选
 	$('.zhifu').on('click',function(){
@@ -95,6 +179,7 @@ $(document).ready(function() {
 			return;
 		}
 		if(check(true)){
+			
 			var selectedfee=$("input[name='WIDtotal_fee']:checked");
 	    	if(selectedfee.attr('id')=="customerfee"){
 	    		$("#selectedfee").val($("#orderBox").val());
@@ -110,60 +195,20 @@ $(document).ready(function() {
 						alert("生成单号时出错了");
 						return;
 					}
+					$('.popup').show();
+					$("#failDiv").hide();
 					$("#WIDout_trade_no").val(data);
 					$("#alipayment").submit();
-					setTimeout(function (){
-						showRechargeStatus(data);
-						}, 3000);
 				}
 			});
 		}
 	});
-	function showRechargeStatus(orderno){
-		var url = "<%=basePath%>/group/getrechargestatus";
-		$.ajax({
-			type : 'POST',
-			url : url,
-			data : {"orderNO":orderno},
-			success : function(data) {
-				var status="未知";
-				switch(data.paystatus){
-					case -1:status="支付失败";break;
-					case 0:status="支付中";break;
-					case 1:status="支付成功";break;
-				}
-				$("#rechargeResult").html("<font style=\"color:red\">充值单号："+data.orderno+";充值金额："+data.payamount+";充值状态："+status+"</font>");
-				$("#rechargeResult").show();
-				setTimeout(function (){
-					$("#rechargeResult").hide();
-					}, 10000);
-			}
-		});
-	}
+	
     $("input[type='radio'][name='WIDtotal_fee']").change(function() { 
     	var fee=$("input[name='WIDtotal_fee']:checked");
     	if($(fee).attr('id')!="customerfee"){
     		$("#orderBox").val("");
     	}
     }); 
-	function check(pay){
-		var radio = $('.box3 input:radio:checked');
-		var money = radio.val();
-		var tip = "请选择充值金额";
-
-		if(radio.parents('.sBox').find("#orderBox").length>0){
-			money = radio.parents('.sBox').find("#orderBox").val();
-			tip = "请输入1-100000范围内整数"
-		}
-		$('#orderBox').parents('.sBox').find('.tishiyu').html(tip);
-		if(money>=1 && money<=100000){
-			$('#orderBox').parents('.sBox').find('.tishiyu').hide();
-			return true;
-		}else{
-			$('#orderBox').parents('.sBox').find('.tishiyu').show();
-			return false;
-		}
-	}
-
 });
 </script>

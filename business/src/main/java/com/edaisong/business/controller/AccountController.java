@@ -57,7 +57,7 @@ public class AccountController {
 		String sessionCode = LoginHelper.getAuthCode(request,LoginUtil.BUSINESS_JSESSIONID);
 		//一次性验证码,防止暴力破解
 		//request.getSession().removeAttribute("code");
-		LoginHelper.removeAuthCodeCookie(request, response,LoginUtil.BUSINESS_JSESSIONID);
+		LoginHelper.removeAuthCodeCookie(request, response,"business",LoginUtil.BUSINESS_JSESSIONID);
 		LoginResp resp = new LoginResp();
 		// 如果已登录,直接返回
 		boolean isLogin = LoginUtil.checkIsLogin(request,response);
@@ -130,7 +130,7 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "logoff")
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		CookieUtils.deleteCookie(request, response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
+		CookieUtils.deleteCookie(request, response,"business", LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
 		response.sendRedirect(PropertyUtils.getProperty("static.business.url") + "/");
 	}
 }

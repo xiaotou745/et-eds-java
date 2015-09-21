@@ -64,6 +64,12 @@
 			<script type="text/javascript">
 			function setTab(name,cursel,n){
 				$("#userType").val(cursel);
+				if(cursel==0){
+				     $("#phoneNo").attr('placeholder','输入手机号码')
+				}else{
+					$("#phoneNo").attr('placeholder','输入账号')
+				}
+				iphone();
 				for(i=0;i<n;i++){
 					var menu=document.getElementById(name+i);
 					var con=document.getElementById("con_"+name+"_"+i);
