@@ -1423,14 +1423,14 @@ where   Status = 1
 	<!-- 骑士端我的任务 addby caoheyang 20150914 -->
 		<select id="queryOrderC" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderCResp">
 	   select  
-        SUM(CASE Status
+        ISNULL(SUM(CASE Status
               when 2 then 1
               else 0
-            end) deliveryCount ,
-        SUM(CASE Status
+            end) ,0)deliveryCount ,
+            ISNULL(SUM(CASE Status
               when 4 then 1
               else 0
-            end) takingCount
+            end),0)
        from    dbo.[order] (nolock)
        where  clienterId=${clienterId}
 	</select>
@@ -1439,7 +1439,7 @@ where   Status = 1
 		parameterType="com.edaisong.entity.req.QueryOrderReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' o.PubDate desc ',
+		' oo.TakeTime asc ',
 		'
 		<include refid="queryDeliveryOrderCColums" />
 		',

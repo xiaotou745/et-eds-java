@@ -61,7 +61,7 @@ public class MarkManagerController {
 	@ResponseBody
 	public ResponseBase editMark(MarkEditReq markEditReq,HttpServletRequest request){
 		ResponseBase response = new ResponseBase();
-		markEditReq.setOperator(UserContext.getCurrentContext(request).getName());
+		markEditReq.setOperator(UserContext.getCurrentContext(request).getLoginName());
 		response = markService.editMark(markEditReq);
 		return response;		
 	}
@@ -75,7 +75,7 @@ public class MarkManagerController {
 	@ResponseBody
 	public ResponseBase modifyMarkStatus(MarkEditReq markEditReq,HttpServletRequest request){
 		ResponseBase response = new ResponseBase();
-		markEditReq.setOperator(UserContext.getCurrentContext(request).getName());
+		markEditReq.setOperator(UserContext.getCurrentContext(request).getLoginName());
 		response = markService.modifyMarkStatus(markEditReq);
 		return response;	
 	}

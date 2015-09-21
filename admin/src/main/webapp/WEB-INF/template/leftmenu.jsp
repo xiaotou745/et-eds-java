@@ -34,15 +34,15 @@
 						src="<%=basePath%>/img/profile_small.jpg" />
 					</span> <a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span
 						class="clear"> <span class="block m-t-xs"> <strong
-								class="font-bold">admin</strong>
-						</span> <span class="text-muted text-xs block">管理员 <b
+								class="font-bold"><%=context.getLoginName() %></strong>
+						</span> <span class="text-muted text-xs block"><%=context.getUserName() %> <b
 								class="caret"></b></span>
 					</span>
 					</a>
 					<ul class="dropdown-menu animated fadeInRight m-t-xs">
-						<li><a href="profile.html">个人信息</a></li>
-						<li><a href="contacts.html">联系方式</a></li>
-						<li><a href="mailbox.html">消息</a></li>
+						<li><a href="<%=basePath %>/Account/ChangePassword">设置</a></li>
+<!-- 						<li><a href="contacts.html">联系方式</a></li> -->
+<!-- 						<li><a href="mailbox.html">消息</a></li> -->
 						<li class="divider"></li>
 						<li><a href="<%=basePath %>/account/logoff">注销</a></li>
 					</ul>
