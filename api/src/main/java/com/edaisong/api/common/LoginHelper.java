@@ -52,7 +52,7 @@ public class LoginHelper {
 	 * @param request
 	 * @param response
 	 */
-	public static void removeAuthCodeCookie(HttpServletRequest request, HttpServletResponse response,String cookieKey) {
-		CookieUtils.deleteCookie(request, response, cookieKey);
+	public static void removeAuthCodeCookie(HttpServletRequest request, HttpServletResponse response,String from,String cookieKey) {
+		CookieUtils.deleteCookie(request, response,from, cookieKey);
 	}
 }

@@ -10,6 +10,7 @@ import com.edaisong.api.dao.inter.IGroupBusinessBalanceDao;
 import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.service.inter.IGroupBusinessLogService;
 import com.edaisong.api.service.inter.IGroupBusinessService;
+import com.edaisong.core.security.MD5Util;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.GroupBusinessLog;
@@ -42,7 +43,8 @@ public class GroupBusinessService implements IGroupBusinessService {
 
 	@Override
 	public GroupBusiness login(String phoneNo, String password) {
-		return groupBusinessDao.getByPhoneNoAndPwd(phoneNo, password);
+		String pwd = MD5Util.MD5(password);
+		return groupBusinessDao.getByPhoneNoAndPwd(phoneNo, pwd);
 	}
 
 	@Override

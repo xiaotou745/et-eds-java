@@ -46,6 +46,7 @@
 		//必填，不能修改
 		//服务器异步通知页面路径
 		String notify_url = basePath+"/group/return_url";
+		//String notify_url = "http://pay186.etaoyun.net:8080"+"/business/group/return_url";
 		//需http://格式的完整路径，不能加?id=123这类自定义参数
 		//页面跳转同步通知页面路径
 		String return_url = basePath+"/group/return_url";
@@ -57,7 +58,7 @@
 		String subject =groupInfo;// new String(request.getParameter("WIDsubject").getBytes("ISO-8859-1"),"UTF-8");
 		//必填		//付款金额
 		String total_fee = new String(request.getParameter("WIDtotal_fee").getBytes("ISO-8859-1"),"UTF-8");
-		//total_fee="0.1";
+		//total_fee="0.01";
 		//必填
 		//订单描述
 		String body =groupInfo;// new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");

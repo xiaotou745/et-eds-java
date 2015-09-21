@@ -17,7 +17,21 @@ List<GroupBusinessRelationModel> data = responsePageList.getResultList();
 String basePath =PropertyUtils.getProperty("static.admin.url");
 if(data == null){
 	data = new ArrayList<GroupBusinessRelationModel>();
-}%>
+	
+}
+UserContext context=UserContext.getCurrentContext(request);
+int loginFrom=UserContext.getLoginFrom(context.getId());
+String alink="";
+String alink2="";
+if (loginFrom==0) {
+	alink=PropertyUtils.getProperty("dynamic.admin.url") + "/BusinessManager/BusinessManager";
+	alink2=PropertyUtils.getProperty("dynamic.admin.url") + "/BusinessManager/BusinessDetail";
+}else {
+	alink=PropertyUtils.getProperty("static.admin.url")+"/business/list";
+	alink2=PropertyUtils.getProperty("static.admin.url")+"/business/balancedetail";
+}
+
+%>
 <table
 						class="table table-striped table-bordered table-hover dataTables-example">
 						<thead>
@@ -35,9 +49,9 @@ if(data == null){
 							<%for (int i = 0; i < data.size(); i++) { %>
 							<tr class="info">
 								<td><%=data.get(i).getId() %></td>
-								<td><a href="<%=basePath%>/business/list?businessName=<%=data.get(i).getName()%>"><%=ParseHelper.ShowString(data.get(i).getName())%></a></td>
+								<td><a href="<%=alink%>?businessName=<%=data.get(i).getName()%>&businessPhone=<%=data.get(i).getPhoneNo()%>"><%=ParseHelper.ShowString(data.get(i).getName())%></a></td>
 								<td><%=data.get(i).getPhoneNo()%></td>
-								<td><a href="<%=basePath%>/business/balancedetail?businessId=<%=data.get(i).getBusinessid()%>"><%=data.get(i).getBalancePrice()%></a></td>
+								<td><a href="<%=alink2%>?businessId=<%=data.get(i).getBusinessid()%>"><%=data.get(i).getBalancePrice()%></a></td>
 								<td><%=data.get(i).getUseGroupMoney()%></td>
 								<td><%=ParseHelper.ToDateString(data.get(i).getUpdatetime())%></td>
 		                        <td>

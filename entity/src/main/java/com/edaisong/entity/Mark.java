@@ -3,15 +3,15 @@ package com.edaisong.entity;
 import java.util.Date;
 
 public class Mark {
-    private Integer id;
+    private int id;
 
     private String tagName;
 
-    private Integer tagType;
+    private int tagType;
 
-    private Integer bindquantity;
+    private int bindquantity;
 
-    private Integer isenable;
+    private int isenable;
 
     private Date createtime;
 
@@ -23,13 +23,13 @@ public class Mark {
     
     private String remark;
 
-    private Integer isdelete;
+    private int isdelete;
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -41,27 +41,27 @@ public class Mark {
 		this.tagName = tagName;
 	}
 
-	public Integer getTagType() {
+	public int getTagType() {
 		return tagType;
 	}
 
-	public void setTagType(Integer tagType) {
+	public void setTagType(int tagType) {
 		this.tagType = tagType;
 	}
 
-	public Integer getBindquantity() {
+	public int getBindquantity() {
 		return bindquantity;
 	}
 
-	public void setBindquantity(Integer bindquantity) {
+	public void setBindquantity(int bindquantity) {
 		this.bindquantity = bindquantity;
 	}
 
-	public Integer getIsenable() {
+	public int getIsenable() {
 		return isenable;
 	}
 
-	public void setIsenable(Integer isenable) {
+	public void setIsenable(int isenable) {
 		this.isenable = isenable;
 	}
 
@@ -105,11 +105,11 @@ public class Mark {
 		this.remark = remark;
 	}
 
-	public Integer getIsdelete() {
+	public int getIsdelete() {
 		return isdelete;
 	}
 
-	public void setIsdelete(Integer isdelete) {
+	public void setIsdelete(int isdelete) {
 		this.isdelete = isdelete;
 	}
     

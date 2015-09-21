@@ -96,7 +96,7 @@ public class AccountController {
 		Date loginTime = new Date();
 		String sessionCode = LoginHelper.getAuthCode(request,LoginUtil.ADMIN_JSESSIONID);
 		//一次性验证码,防止暴力破解
-		LoginHelper.removeAuthCodeCookie(request, response,LoginUtil.ADMIN_JSESSIONID);
+		LoginHelper.removeAuthCodeCookie(request, response,"admin",LoginUtil.ADMIN_JSESSIONID);
 		// 如果已登录,直接返回
 		boolean isLogin = LoginUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
@@ -167,7 +167,7 @@ public class AccountController {
 	@RequestMapping(value = "logoff")
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
-		CookieUtils.deleteCookie(request, response, LoginUtil.LOGIN_COOKIE_NAME);
+		CookieUtils.deleteCookie(request, response,"admin", LoginUtil.LOGIN_COOKIE_NAME);
 		UserContext context=UserContext.getCurrentContext(request);
 		int loginFrom=UserContext.getLoginFrom(context.getId());
 		UserContext.clearLoginFrom(context.getId());

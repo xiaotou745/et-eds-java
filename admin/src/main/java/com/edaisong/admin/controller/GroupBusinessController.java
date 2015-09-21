@@ -71,7 +71,7 @@ public class GroupBusinessController {
 	@RequestMapping("list")
 	public ModelAndView list(){ 
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "集团门店管理");
+		model.addObject("subtitle", "集团");
 		model.addObject("currenttitle", "集团管理"); 
 		model.addObject("viewPath", "groupbusiness/list");
 		return model;
@@ -215,7 +215,7 @@ public class GroupBusinessController {
 			throw new Exception("没找到groupBusinessId为" + groupBusinessId + "的详细信息");
 		}
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "集团管理");
+		model.addObject("subtitle", "集团");
 		model.addObject("currenttitle", "集团门店管理");
 		model.addObject("viewPath", "groupbusiness/businessbindlist");
 		model.addObject("detail", detail);
@@ -248,7 +248,7 @@ public class GroupBusinessController {
 			throw new Exception("没找到groupBusinessId为" + groupBusinessId + "的详细信息");
 		}
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "集团管理");
+		model.addObject("subtitle", "集团");
 		model.addObject("currenttitle", "绑定记录");
 		model.addObject("viewPath", "groupbusiness/businessbindloglist");
 		model.addObject("detail", detail);
@@ -281,7 +281,7 @@ public class GroupBusinessController {
 			throw new Exception("没找到groupBusinessId为" + groupBusinessId + "的详细信息");
 		}
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "集团管理");
+		model.addObject("subtitle", "集团");
 		model.addObject("currenttitle", "绑定记录");
 		model.addObject("viewPath", "groupbusiness/businesslist");
 		model.addObject("detail", detail);
@@ -344,7 +344,7 @@ public class GroupBusinessController {
 		//获取该集团信息
 		GroupBusinessModel groupBusinessModel= groupBusinessService.getSingle(groupBusinessReq); 
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "集团管理");
+		model.addObject("subtitle", "集团");
 		model.addObject("currenttitle", "收支记录");
 		model.addObject("groupBusinessModel", groupBusinessModel);  
 		model.addObject("viewPath", "groupbusiness/balancerecordlist");

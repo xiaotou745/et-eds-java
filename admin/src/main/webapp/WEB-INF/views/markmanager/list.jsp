@@ -53,8 +53,8 @@
 				             	<%=HtmlHelper.getSelect("editTagType", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, null, null, "width:165px", "")%>
 				             </div> 
 			                 <div style="font-size: 14px;float: left;margin-left: 28px;clear:both;margin-top:10px"> 状 态：
-				                 <input id="rIsEnableY" name="rIsEnable" type="radio" value="1" )>启用
-				                 <input id="rIsEnableN" name="rIsEnable" type="radio" value="0" style="margin-left: 30px" )>禁止
+				                 <input id="rIsEnableY" name="rIsEnable" type="radio" value="1" >启用
+				                 <input id="rIsEnableN" name="rIsEnable" type="radio" value="0" style="margin-left: 30px" >禁止
                 			 </div>
 			                 <div style="font-size: 14px;float: left;margin-left: 28px;clear:both;margin-top:10px">备    注:</div>
 				      		 <div style="float:left;margin-top:10px;margin-left: 5px">
@@ -147,7 +147,7 @@
 	    	   "id":id,
                "tagName":tagName.trim(),
                "tagType":tagType,
-	    	   "isEnable":isEnable,
+	    	   "isenable":isEnable,
                "remark":remark.trim(),
                "operateType":operateType
            };
@@ -159,7 +159,7 @@
            success: function (result) {   			            
         	   alert(result.message);
                if (result.responseCode > 0) {
-                   //window.location.href = "<%=basePath%>/clienter/forzenlist";
+                   window.location.href = "<%=basePath%>/mark/list";
                }               
            }
        });
