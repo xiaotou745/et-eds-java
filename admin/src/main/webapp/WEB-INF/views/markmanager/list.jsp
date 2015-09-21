@@ -7,12 +7,12 @@
 <%@page import="com.edaisong.core.enums.TagType"%>
 <%String basePath =PropertyUtils.getProperty("static.admin.url");%>
 
-<div class="row">
+<div class="row" style="margin-top: 5px;">
 	<div class="col-lg-3">
 		<input type="button" value="添加" class="btn btn-w-m btn-primary" id="addMark"  onclick="addMark() "/>    
 	</div>
 </div> 
-<div style="margin-top: 15px">
+<div class="row"  style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;">
 <table >
 	 <tr>
 	 	<td >
@@ -54,9 +54,9 @@
 				      		 </div>
 			                 <div style="font-size: 14px;float: left;margin-left: 5px;margin-top:10px">标签类型: </div>
 				             <div style="float:left;margin-top:10px;margin-left: 5px">
-				             	<%=HtmlHelper.getSelect("editTagType", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, null, null, "width:165px", "")%>
+				             	<%=HtmlHelper.getSelect("editTagType", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, null, null, "width:161px", "")%>
 				             </div> 
-			                 <div style="font-size: 14px;float: left;margin-left: 28px;clear:both;margin-top:10px"> 状 态：
+			                 <div style="font-size: 14px;float: left;margin-left: 28px;clear:both;margin-top:10px"> 状 态:
 				                 <input id="rIsEnableY" name="rIsEnable" type="radio" value="1" >启用
 				                 <input id="rIsEnableN" name="rIsEnable" type="radio" value="0" style="margin-left: 30px" >禁止
                 			 </div>
