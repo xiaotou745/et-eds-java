@@ -337,10 +337,10 @@ public class GroupBusinessController {
 	 * WangChao
 	 */
 	@RequestMapping("balancerecordlist")
-	public ModelAndView balancerecordlist(Integer groupbusinessId) throws Exception { 
+	public ModelAndView balancerecordlist(Integer groupBusinessId) throws Exception { 
 		
 		GroupBusinessReq groupBusinessReq = new GroupBusinessReq();
-		groupBusinessReq.setId(groupbusinessId);
+		groupBusinessReq.setId(groupBusinessId);
 		//获取该集团信息
 		GroupBusinessModel groupBusinessModel= groupBusinessService.getSingle(groupBusinessReq); 
 		ModelAndView model = new ModelAndView("adminView");
