@@ -1,10 +1,13 @@
 package com.edaisong.api.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IGroupBusinessRechargeDao;
 import com.edaisong.entity.GroupBusinessRecharge;
+import com.edaisong.entity.domain.GroupBusinessBalance;
 
 @Repository
 public class GroupBusinessRechargeDao extends DaoBase implements
@@ -29,6 +32,11 @@ public class GroupBusinessRechargeDao extends DaoBase implements
 		return getMasterSqlSessionUtil().selectOne(
 				"com.edaisong.api.dao.inter.IGroupBusinessRechargeDao.getByOrderNo",
 				orderNO);
+	}
+
+	@Override
+	public List<GroupBusinessBalance> getGroupBalance(int groupBusinessID) {
+		return getMasterSqlSessionUtil().selectList("com.edaisong.api.dao.inter.IGroupBusinessRechargeDao.getGroupBalance", groupBusinessID);
 	}
 
 }

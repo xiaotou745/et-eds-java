@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import com.edaisong.business.pay.AlipayNotify;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.GroupBusinessRecharge;
+import com.edaisong.entity.domain.GroupBusinessBalance;
 
 @Controller
 @RequestMapping("group")
@@ -45,6 +47,26 @@ public class GroupController {
 	@ResponseBody
 	public GroupBusinessRecharge getRechargeStatus(String orderNO) {
 	   return	groupBusinessRechargeService.getByOrderNo(orderNO);
+	}
+	@RequestMapping("getgroupbalance")
+	@ResponseBody
+	public String getGroupBalance(HttpServletRequest request) {
+		String reuslt="0;0";
+		int groupBusinessID=UserContext.getCurrentContext(request).getBusinessID();
+		List<GroupBusinessBalance> getGroupBalance=	groupBusinessRechargeService.getGroupBalance(groupBusinessID);
+		if (getGroupBalance!=null&&getGroupBalance.size()==2) {
+			Double balance=0d;
+			Double total=0d;
+			if (getGroupBalance.get(0).getMoneytype()==0) {
+				balance=getGroupBalance.get(0).getAmount();
+				total=getGroupBalance.get(1).getAmount();
+			}else {
+				balance=getGroupBalance.get(1).getAmount();
+				total=getGroupBalance.get(0).getAmount();
+			}
+			reuslt=balance+";"+total;
+		}
+		return reuslt;
 	}
 	@RequestMapping("createorderno")
 	@ResponseBody
