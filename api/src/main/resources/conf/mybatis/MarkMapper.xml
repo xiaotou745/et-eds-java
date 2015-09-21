@@ -211,15 +211,15 @@
   
   <update id="editMark"  parameterType="com.edaisong.entity.req.MarkEditReq" >
     MERGE INTO Tag t
-	USING(values(#{tagname,jdbcType=NVARCHAR})) AS tNew(TagName)
+	USING(values('${tagname}')) AS tNew(TagName)
 		ON t.TagName=tNew.TagName 
 	WHEN MATCHED 
 	THEN UPDATE 
-		 SET t.TagName= #{tagname,jdbcType=NVARCHAR},
-		     t.TagType = #{tagtype,jdbcType=INTEGER},
-		     t.Remark= #{remark,jdbcType=NVARCHAR},
-		     t.IsEnable = #{isenable,jdbcType=INTEGER},
-             t.ModifyName = '#{modifyname,jdbcType=NVARCHAR}',
+		 SET t.TagName= '${tagName}',
+		     t.TagType = ${tagType},
+		     t.Remark= '${remark}',
+		     t.IsEnable = ${isenable},
+             t.ModifyName = '${operator}',
              t.ModifyTime=getdate()
 	WHEN NOT MATCHED 
 		  THEN INSERT
@@ -229,17 +229,17 @@
                      CreateName,
                      ModifyName) 
 					VALUES 
-					(#{tagname,jdbcType=NVARCHAR},
-					 #{tagtype,jdbcType=INTEGER},
-                     #{isenable,jdbcType=INTEGER},
-                     #{modifyname,jdbcType=NVARCHAR},
-                     #{modifyname,jdbcType=NVARCHAR});
+					('${tagName}',
+					 ${tagType},
+                     ${isenable},
+                     '${operator}',
+                     '${operator}');
   </update>
   <update id="modifyMarkStatus" parameterType="com.edaisong.entity.req.MarkEditReq" >
     update Tag
-    set IsEnable = #{isenable,jdbcType=INTEGER},
-        t.ModifyName = '#{operator,jdbcType=NVARCHAR}',
-        t.ModifyTime=getdate()
-    where Id = #{id,jdbcType=INTEGER}
+    set IsEnable =${isenable},
+        ModifyName = '${operator}',
+        ModifyTime=getdate()
+    where Id = ${id}
   </update>
 </mapper>
