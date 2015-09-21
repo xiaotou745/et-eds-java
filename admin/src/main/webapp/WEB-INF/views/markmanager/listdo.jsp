@@ -45,9 +45,9 @@
 				<td>
 					<a href="javascript:showEditTag(<%=list.get(i).getId()%>,<%=list.get(i).getIsenable()%>,'<%=list.get(i).getTagName()%>',<%=list.get(i).getTagType() %>,'<%=list.get(i).getRemark()%>')">修改</a>
 					<%if(list.get(i).getIsenable()==1){%>
-					<a href="javascript:modifyMarkStatus(<%=list.get(i).getId()%>,<%=list.get(i).getIsenable()%>)">禁止</a>
+					<a href="javascript:modifyMarkStatus(<%=list.get(i).getId()%>,0)">禁止</a>
 					<%}else{%> 
-					<a href="javascript:modifyMarkStatus(<%=list.get(i).getId()%>,<%=list.get(i).getIsenable()%>)">启动</a>
+					<a href="javascript:modifyMarkStatus(<%=list.get(i).getId()%>,1)">启动</a>
 					<%}%>
 				</td>				
 			</tr>
@@ -96,7 +96,7 @@
 	        }
 		   var paramaters = {
 		    	   "id":id,
-		    	   "isEnable":isEnable,
+		    	   "isenable":isEnable,
 	           };
 	      var url = "<%=basePath%>/mark/modifyMarkStatus";
 		   $.ajax({

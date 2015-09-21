@@ -1,5 +1,7 @@
 package com.edaisong.api.dao.impl;
 
+import java.util.HashMap;
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -43,7 +45,7 @@ public class MarkDao extends DaoBase implements IMarkDao {
 	*/
 	@Override
 	public boolean editTag(MarkEditReq markEditReq) {
-		int result = getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.editMark", markEditReq.getTagName());
+		int result = getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.editMark", markEditReq);
 		return result>0 ?true:false;
 	}
 	/**
@@ -54,7 +56,11 @@ public class MarkDao extends DaoBase implements IMarkDao {
 	*/
 	@Override
 	public boolean modifyMarkStatus(MarkEditReq markEditReq) {
-		int result = getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.modifyMarkStatus", markEditReq.getId());
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		map.put("isenable", markEditReq.getIsenable());
+		map.put("id", markEditReq.getId());
+		map.put("operator", markEditReq.getOperator());
+		int result = getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.modifyMarkStatus", markEditReq);
 		return result>0 ?true:false;
 	}
 
