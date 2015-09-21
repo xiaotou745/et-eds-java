@@ -55,18 +55,22 @@ public class GroupController {
 	// *******以下方法为集团商户充值支付宝相关页面********//
 	@RequestMapping("alipayapi")
 	public ModelAndView alipayapi(HttpServletRequest request) throws Exception {
-		GroupBusinessRecharge record = new GroupBusinessRecharge();
-		record.setGroupbusinessid(UserContext.getCurrentContext(request)
-				.getBusinessID());
-		record.setPaytype(request.getParameter("WIDdefaultbank"));
-		record.setOrderno(request.getParameter("WIDout_trade_no"));
-		record.setPayamount(ParseHelper.ToDouble(request.getParameter("WIDtotal_fee"), 0));
-		record.setPaystatus(0);
-		record.setPayby("");
-		record.setRequesttime(new Date());
-		record.setPaytime(null);
-		record.setOriginalorderno("");
-		groupBusinessRechargeService.insert(record);
+		if (request.getParameter("WIDdefaultbank")!=null&&
+			request.getParameter("WIDout_trade_no")!=null&&
+			request.getParameter("WIDtotal_fee")!=null) {
+			GroupBusinessRecharge record = new GroupBusinessRecharge();
+			record.setGroupbusinessid(UserContext.getCurrentContext(request)
+					.getBusinessID());
+			record.setPaytype(request.getParameter("WIDdefaultbank"));
+			record.setOrderno(request.getParameter("WIDout_trade_no"));
+			record.setPayamount(ParseHelper.ToDouble(request.getParameter("WIDtotal_fee"), 0));
+			record.setPaystatus(0);
+			record.setPayby("");
+			record.setRequesttime(new Date());
+			record.setPaytime(null);
+			record.setOriginalorderno("");
+			groupBusinessRechargeService.insert(record);
+		}
 
 		ModelAndView view = new ModelAndView("group/alipayapi");
 		return view;
@@ -74,7 +78,7 @@ public class GroupController {
 
 
 	@RequestMapping("return_url")
-	public void return_url(HttpServletRequest request) throws Exception {
+	public ModelAndView return_url(HttpServletRequest request) throws Exception {
 		Map<String, String> paramMap=parseParamMap(request);
 		boolean verify_result =false;
 		if (paramMap!=null&&!paramMap.isEmpty()) {
@@ -96,6 +100,7 @@ public class GroupController {
 			}
 			groupBusinessRechargeService.recharge(record);
 		}
+		return null;
 	}
 
 	private Map<String, String> parseParamMap(HttpServletRequest request)
