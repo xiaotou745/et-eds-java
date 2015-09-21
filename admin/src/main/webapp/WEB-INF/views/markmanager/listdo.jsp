@@ -41,7 +41,7 @@
                 <td><%=list.get(i).getIsenable()==0?"禁止":"启动" %></td>
                 <td><%=list.get(i).getModifyname() %></td>
 				<td><%=ParseHelper.ToDateString(list.get(i).getModifytime()) %></td>
-                <td><%=list.get(i).getRemark() %></td>
+                <td title="<%=list.get(i).getRemark() %>" ><%=list.get(i).getRemark().length()>20?list.get(i).getRemark().substring(0, 15)+"…":list.get(i).getRemark() %></td>
 				<td>
 					<a href="javascript:showEditTag(<%=list.get(i).getId()%>,<%=list.get(i).getIsenable()%>,'<%=list.get(i).getTagName()%>',<%=list.get(i).getTagType() %>,'<%=list.get(i).getRemark()%>')">修改</a>
 					<%if(list.get(i).getIsenable()==1){%>
