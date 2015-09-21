@@ -43,8 +43,7 @@
 					<fieldset>
             <br>
             <div class="control-group">
-                <label >集团名称：</label> 
-                    <input  name="txtAddGroupBusinessName" id="txtAddGroupBusinessName" type="text">
+                <label >集团名称：</label><input  name="txtAddGroupBusinessName" id="txtAddGroupBusinessName" type="text">
             </div>
             <div class="control-group">
                 <label>是否允许透支：</label> 
@@ -70,10 +69,8 @@
 					<button class="btn btn-primary" type="button" id="btnAddGroupBusiness" onclick="saveAddGroupBusiness()">保存</button>
 				</div>
 			</small>
-		</div>
-		<small class="font-bold"> </small>
-	</div>
-	<small class="font-bold"> </small>
+		</div> 
+	</div> 
 </div>
 <div tabindex="-1" class="modal inmodal" id="modifyGroupBusiness"
 	role="dialog" aria-hidden="true" style="display: none;">
@@ -87,44 +84,44 @@
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
-		<fieldset>
-            <br>
-             <div class="control-group">
-                <label >集团名称：</label> 
-                    <input  name="txtModifyGroupBusinessName" id="txtModifyGroupBusinessName" type="text">
-                    <input  name="txtModifyGroupBusinessId" id="txtModifyGroupBusinessId" type="hidden">
-                    
-            </div>  
-            <div class="control-group">
-                <label>是否允许透支：</label> 
-                <input id="rModifyIsAllowOverdraftY" name="rModifyIsAllowOverdraft" type="radio" value="1"><label for="rModifyIsAllowOverdraftY">是</label>
-				<input id="rModifyIsAllowOverdraftN" name="rModifyIsAllowOverdraft" type="radio" value="0"><label for="rModifyIsAllowOverdraftN">否</label>
-            </div>
-            <div class="control-group">
-                <label >登陆账号：</label> 
-                    <input  name="txtModifyLoginName" id="txtModifyLoginName" type="text">
-            </div> 
-            <div class="control-group">
-                <label >密码：</label> 
-                    <input  name="txtModifyPassword" id="txtModifyPassword" type="password">
-            </div> 
-            <div class="control-group">
-                <label >确认密码：</label> 
-                    <input  name="txtModifyConfirmPassword" id="txtModifyConfirmPassword" type="password">
-            </div> 
-            <hr/>
-            <div>
-            	<h4>操作记录</h4> 
-            	<div id="modifyGroupBusinessLog"></div>
-            </div>
-        </fieldset>
+					<fieldset>
+			            <br>
+			             <div class="control-group">
+			                <label >集团名称：</label> 
+			                    <input  name="txtModifyGroupBusinessName" id="txtModifyGroupBusinessName" type="text">
+			                    <input  name="txtModifyGroupBusinessId" id="txtModifyGroupBusinessId" type="hidden">
+			                    
+			            </div>  
+			            <div class="control-group">
+			                <label>是否允许透支：</label> 
+			                <input id="rModifyIsAllowOverdraftY" name="rModifyIsAllowOverdraft" type="radio" value="1"><label for="rModifyIsAllowOverdraftY">是</label>
+							<input id="rModifyIsAllowOverdraftN" name="rModifyIsAllowOverdraft" type="radio" value="0"><label for="rModifyIsAllowOverdraftN">否</label>
+			            </div>
+			            <div class="control-group">
+			                <label >登陆账号：</label> 
+			                    <input  name="txtModifyLoginName" id="txtModifyLoginName" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >密码：</label> 
+			                    <input  name="txtModifyPassword" id="txtModifyPassword" type="password">
+			            </div> 
+			            <div class="control-group">
+			                <label >确认密码：</label> 
+			                    <input  name="txtModifyConfirmPassword" id="txtModifyConfirmPassword" type="password">
+			            </div> 
+			            <hr/>
+			            <div>
+			            	<h4>操作记录</h4> 
+			            	<div id="modifyGroupBusinessLog"></div>
+			            </div>
+			        </fieldset>
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="saveModifyGroupBusiness()">保存</button>
-				</div>
+				</div> 
 			</small>
-		</div> 
+		</div>  
 	</div>
 </div>
 <script>
