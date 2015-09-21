@@ -1439,7 +1439,7 @@ where   Status = 1
 		parameterType="com.edaisong.entity.req.QueryOrderReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' o.PubDate desc ',
+		' oo.TakeTime asc ',
 		'
 		<include refid="queryDeliveryOrderCColums" />
 		',
