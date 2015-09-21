@@ -23,4 +23,16 @@
 		select top 1 * from  GroupBusinessRecharge
 		where OrderNo = #{orderNO,jdbcType=VARCHAR} 
 	</select>
+    <select id="getGroupBalance" resultType="com.edaisong.entity.domain.GroupBusinessBalance" parameterType="java.lang.Long">
+SELECT  0 AS moneytype ,
+        amount
+FROM    dbo.groupbusiness WITH ( NOLOCK )
+WHERE   id = #{groupBusinessID,jdbcType=INTEGER}
+UNION ALL
+SELECT  1 AS moneytype ,
+        SUM(PayAmount) AS amount
+FROM    groupbusinessrecharge WITH ( NOLOCK )
+WHERE   GroupBusinessId = #{groupBusinessID,jdbcType=INTEGER}
+        AND PayStatus = 1
+	</select>
 </mapper>
