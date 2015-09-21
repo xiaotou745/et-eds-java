@@ -1,5 +1,6 @@
 package com.edaisong.api.dao.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,11 @@ import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IDeliveryCompanyDao;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.DeliveryCompany;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.DeliveryStatistics;
+import com.edaisong.entity.req.PagedDeliveryStatisticsReq;
 
 @Repository
 public class DeliveryCompanyDao extends DaoBase implements IDeliveryCompanyDao {
@@ -56,9 +61,24 @@ public class DeliveryCompanyDao extends DaoBase implements IDeliveryCompanyDao {
 	public List<DeliveryCompany> getDeliveryCompanyList() {
 		List<DeliveryCompany> list = getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dao.inter.IDeliveryCompanyDao.getDeliveryCompanyList"	);
+						"com.edaisong.api.dao.inter.IDeliveryCompanyDao.getDeliveryCompanyList");
 		return list;
 
+	}
+
+	@Override
+	public PagedResponse<DeliveryStatistics> getStatisticsList(
+			PagedDeliveryStatisticsReq search) {
+		if (search.getSettlementMonth()!=null&&
+			!search.getSettlementMonth().isEmpty()) {
+			Date start=ParseHelper.ToDate(search.getSettlementMonth());
+			Date end=ParseHelper.plusDate(start,1,1);
+			search.setSettlementEndMonth(ParseHelper.ToDateString(end));
+		}
+		return getReadOnlySqlSessionUtil()
+				.selectPageList(
+						"com.edaisong.api.dao.inter.IDeliveryCompanyDao.getStatisticsList",
+						search);
 	}
 
 }

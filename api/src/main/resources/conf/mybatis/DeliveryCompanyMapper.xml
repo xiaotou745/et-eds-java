@@ -228,4 +228,46 @@
 	  <include refid="Base_Column_List" />
  from   dbo.DeliveryCompany dc ( nolock ) 
   </select>
+<sql id="getStatisticsListFrom">
+(SELECT  a.deliveryCompanyName ,
+        a.deliveryCompanyCode ,
+        SUM(b.RealOrderCommission) AS clienterTotalSettleMoney ,
+        SUM(b.DeliveryCompanySettleMoney) AS companyTotalSettleMoney ,
+        COUNT(0) AS taskTotalNum ,
+        SUM(b.OrderCount) AS orderTotalNum ,
+        SUM(b.Amount) AS amountTotalNum
+FROM    DeliveryCompany a
+        JOIN [order] b ON a.Id = b.DeliveryCompanyID
+        JOIN dbo.OrderOther c ON b.id = c.OrderId
+WHERE   b.DeliveryCompanyID > 0
+        AND c.IsJoinWithdraw = 1
+        <if test="deliveryName != null and deliveryName!=''">
+			and a.deliveryCompanyName=''${deliveryName}''
+		</if>
+		<if test="settlementMonth != null and settlementMonth!=''">
+			  AND c.AuditDate >= ''${settlementMonth}''
+		</if>
+		<if test="settlementEndMonth != null and settlementEndMonth!=''">
+			  AND ''${settlementEndMonth}'' > c.AuditDate
+		</if>
+GROUP BY a.DeliveryCompanyName ,
+        a.DeliveryCompanyCode) mt 
+	</sql>
+	<select id="getStatisticsList" resultType="com.edaisong.entity.domain.DeliveryStatistics"
+		parameterType="com.edaisong.entity.req.PagedDeliveryStatisticsReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' b.Id DESC ',
+		' * ',
+		'
+		<include refid="getStatisticsListFrom" />
+		',
+		' 1=1 ',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 </mapper>
