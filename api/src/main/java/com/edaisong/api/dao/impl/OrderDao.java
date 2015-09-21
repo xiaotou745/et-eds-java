@@ -229,7 +229,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	}
 
 	/**
-	 * B端任务统计接口 add by caoheyang 20150910
+	 * B端任务统计接口 统计服务骑士信息 add by caoheyang 20150910
 	 * @author CaoHeYang
 	 * @return
 	 */
