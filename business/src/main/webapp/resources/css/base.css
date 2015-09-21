@@ -114,3 +114,9 @@ a:hover {
 ins, a {
 	text-decoration: none;
 }
+
+* {
+	-webkit-box-sizing: initial;
+	-moz-box-sizing: initial;
+	box-sizing: initial;
+}
