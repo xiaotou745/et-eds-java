@@ -1,4 +1,5 @@
 
+<%@page import="com.edaisong.admin.common.UserContext"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>    
@@ -68,11 +69,11 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 				%>			
 				  			
 				<td>
-				<%if (list.get(i).getStatus()== 1 && list.get(i).getAccountBalance()>=1 && list.get(i).getAllowWithdrawPrice()>=1){%>				
-				<a href="javascript:void(0)"  onclick="showForzenClienterBalance(<%=list.get(i).getId() %>,'<%=list.get(i).getPhoneNo() %>','<%=list.get(i).getTrueName()%>',<%=list.get(i).getAccountBalance() %>,<%=list.get(i).getAllowWithdrawPrice() %>)" >余额冻结</a>
-				<%}else{%>
-				<%}%>
-			</td> 
+					<%if (list.get(i).getStatus()== 1 && list.get(i).getAccountBalance()>=1 && list.get(i).getAllowWithdrawPrice()>=1){%>
+						<%if(UserContext.getCurrentContext(request).isHasAuth(94)) {%>
+							<a href="javascript:void(0)"  onclick="showForzenClienterBalance(<%=list.get(i).getId() %>,'<%=list.get(i).getPhoneNo() %>','<%=list.get(i).getTrueName()%>',<%=list.get(i).getAccountBalance() %>,<%=list.get(i).getAllowWithdrawPrice() %>)" >余额冻结</a>
+						<%}else{%> <%}}%>
+				</td> 
 			</tr>
 		 <%}
 		%> 	 	

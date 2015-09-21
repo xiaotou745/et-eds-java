@@ -112,7 +112,7 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
             </div>
         </fieldset>
 				</div>
-				<div class="modal-footer">
+				<div class="modal-footer" style="text-align:center">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 				</div>
 			</small>

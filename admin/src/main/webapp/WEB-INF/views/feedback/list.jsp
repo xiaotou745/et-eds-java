@@ -42,8 +42,7 @@ width: 100%;
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">反馈类型:</label>
-							<div class="col-sm-8">							
-								
+							<div class="col-sm-8">						
 								<%=HtmlHelper.getSelect("sltFeedbackType", EnumHelper.GetEnumItems(FeedbackType.class), "desc", "value",null,"-1","全部","","form-control m-b") %>
 							</div>
 						</div>

@@ -172,7 +172,6 @@
 	//导出
 	$("#btnExport").click(function(){
         var groupbusinessId = $("#groupbusinessId").val();
-        alert(groupbusinessId );
         var recordType = $("#recordType").val();
         var relationNo = $("#relationNo").val();
         var startDate = $("#startDate").val();
