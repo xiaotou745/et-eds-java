@@ -8,25 +8,65 @@
 <%
 	String basePath = PropertyUtils.getProperty("static.admin.url");
 %>
-<form id="searchForm">
-<table border="0" cellspacing="0" cellpModifying="0" >
-	<tr>
-		<td><span class="">集团名称: </span> 
-			<input id="groupBusinessName" type="tel" name="groupBusinessName" onkeydown="return disableEnter(event)"/>&nbsp;&nbsp; 
-			<input type="button" value="查询" class="searchBtn" id="btnSearch" />&nbsp;&nbsp;
-			<input type="button" value="添加集团" class="searchBtn" id="btnModifyGroupBusiness" onclick="showAddGroupBusiness()" />
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+	<div class="row">
+		<div class="col-lg-12">
+			<form method="POST" action="#" class="form-horizontal" id="searchForm">
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">集团名称:</label>
+							<div class="col-sm-8">							
+								<input id="groupBusinessName" type="tel" class="form-control"  name="groupBusinessName" onkeydown="return disableEnter(event)"/>								
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label"></label>
+							<div class="col-sm-8">								
+								
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label"></label>
+							<div class="col-sm-8">
+								
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label"></label>
+							<div class="col-sm-8">
+								
+							</div>
+						</div>
+					</div>
+				</div>				
+			    <div class="row">
+						<div class="col-lg-3">
+						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+							style="margin-left: 3px;height:30px;">查询</button>
+					 <input type="button" value="添加集团" class="btn btn-w-m btn-primary" id="btnModifyGroupBusiness" onclick="showAddGroupBusiness()" style="margin-left: 3px;height:30px;" />
 			<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1" />
 			<input id="hiddenText" type="text" style="display:none" />
-		</td>
-	</tr>
-</table>
+					</div>							
+			</div>
+			</form>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox-content" id="content"></div>
 		</div>
 	</div>
+</div>
 
-</form>
 
 <div tabindex="-1" class="modal inmodal" id="addGroupBusiness"
 	role="dialog" aria-hidden="true" style="display: none;">
@@ -55,7 +95,7 @@
                     <input  name="txtAddLoginName" id="txtAddLoginName" type="text">
             </div> 
             <div class="control-group">
-                <label >密码：</label> 
+                <label >集团密码：</label> 
                     <input  name="txtAddPassword" id="txtAddPassword" type="password">
             </div> 
             <div class="control-group">

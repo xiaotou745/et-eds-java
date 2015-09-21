@@ -2,6 +2,7 @@ package com.edaisong.entity.domain;
 
 import java.util.Date;
 
+import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.entity.BusinessBalanceRecord;
 /*
  * 集团收支记录
@@ -164,7 +165,7 @@ public class GroupBusinessBalanceRecord {
         this.statusString = statusString;
     }
     public String getRecordtypeString() {
-        return recordtypeString;
+        return  BusinessBalanceRecordRecordType.getEnum(this.recordtype).desc();
     }
 
     public void setRecordtypeString(String recordtypeString) {

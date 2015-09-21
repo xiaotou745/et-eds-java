@@ -40,7 +40,7 @@ if(data == null){
 			for (int i = 0; i < data.size(); i++) {
 		%>
 		<tr class="info">
-			<td><%=BusinessBalanceRecordRecordType.getEnum(data.get(i).getRecordtype()).desc()%></td>
+			<td><%=data.get(i).getRecordtypeString()%></td>
 			<td>
 				<%
 					if(data.get(i).getRecordtype()==BusinessBalanceRecordRecordType.Recharge.value()){
