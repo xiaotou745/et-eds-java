@@ -1017,10 +1017,13 @@ public class OrderService implements IOrderService {
 	@Override
 	public HttpResultModel<OrderStatisticsBResp> getOrderStatisticsB(OrderStatisticsBReq orderStatisticsBReq) {
 		HttpResultModel<OrderStatisticsBResp> resultModel = new HttpResultModel<OrderStatisticsBResp>();
-		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass.value()) {
-			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
-			return resultModel;
-		}
+		
+		//注释掉对用户状态的判断
+//		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass.value()) {
+//			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+//			return resultModel;
+//		}
+		//获取每天发单骑士信息
 		OrderStatisticsBResp orderStatisticsResp = orderDao.getOrderStatistics(orderStatisticsBReq);
 		List<ServiceClienter> serviceClienters = orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq); 
 		List<DaySatisticsB> daySatisticsBs = orderDao.getOrderStatisticsDaySatistics(orderStatisticsBReq); // B端任务统计接口
