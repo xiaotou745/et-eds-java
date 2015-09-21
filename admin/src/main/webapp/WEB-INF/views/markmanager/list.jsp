@@ -6,14 +6,16 @@
 <%@page import="com.edaisong.core.util.EnumHelper"%>
 <%@page import="com.edaisong.core.enums.TagType"%>
 <%String basePath =PropertyUtils.getProperty("static.admin.url");%>
+
+<div class="row">
+	<div class="col-lg-3">
+		<input type="button" value="添加" class="btn btn-w-m btn-primary" id="addMark"  onclick="addMark() "/>    
+	</div>
+</div> 
+<div style="margin-top: 15px">
 <table >
-     <tr>
-	 	<td>
-	      <input type="button" value="添加" class="searchBtn" id="addMark"  onclick="addMark()"/>      
-	    </td>
-	 </tr>
 	 <tr>
-	 	<td>
+	 	<td >
 	      <span>标签名称: </span>
 	      <input id="txtTagName" type="tel" name="txtTagName" />
 	      <span class="">标签类型: </span>
@@ -22,10 +24,12 @@
 	        <input id="txtstartdate" type="text" name="startdate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'txtenddate\')||\'2120-10-01\'}'})"/>
                        <span class="">到 </span>
             <input id="txtenddate" type="text" name="enddate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2120-10-01'})"/>
-	<input type="submit" value="查询" class="searchBtn" id="btnSearch" />      
+	<input type="submit" value="查询" class="btn btn-w-m btn-primary" id="btnSearch" />      
 	       </td>
 	   </tr>
 </table>  
+</div>
+
 <div class="row">
 	<div class="col-lg-12">
 		<div class="ibox-content" id="content"></div>
