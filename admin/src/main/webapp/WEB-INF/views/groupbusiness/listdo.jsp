@@ -38,7 +38,7 @@
 		<tr>
 			<td><%=list.get(i).getId()%></td>
 			<td><a href="<%=basePath%>/groupbusiness/businessbindlist?groupBusinessId=<%=list.get(i).getId()%>"><%=list.get(i).getGroupbusiname()%></a></td>
-			<td><a href="<%=basePath%>/groupbusiness/balancerecordlist?groupbusinessId=<%=list.get(i).getId()%>"><%=list.get(i).getAmount() %></a></td>
+			<td><a href="<%=basePath%>/groupbusiness/balancerecordlist?groupBusinessId=<%=list.get(i).getId()%>"><%=list.get(i).getAmount() %></a></td>
 			<td><%=list.get(i).getLoginname()%></td>
 			<td><%=ParseHelper.ToDateString(list.get(i).getCreatetime())%></td>
 			<td><%=list.get(i).getIsAllowOverdraft() == 1 ?"是":"否" %></td>
