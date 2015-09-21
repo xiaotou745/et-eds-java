@@ -8,7 +8,17 @@
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.entity.Mark" %>
-<%String basePath = PropertyUtils.getProperty("static.admin.url");%>
+<%String basePath = PropertyUtils.getProperty("static.admin.url");
+//if (loginFrom==0) {
+	//alink=PropertyUtils.getProperty("dynamic.admin.url") + "/BusinessManager/BusinessManager";
+	//alink2=PropertyUtils.getProperty("dynamic.admin.url") + "/BusinessManager/BusinessDetail";
+//}else {
+	//alink=PropertyUtils.getProperty("static.admin.url")+"/business/list";
+	//alink2=PropertyUtils.getProperty("static.admin.url")+"/business/balancedetail";
+//}
+String busLink=PropertyUtils.getProperty("dynamic.admin.url") + "/BusinessManager/BusinessManager";
+String cliLink=PropertyUtils.getProperty("dynamic.admin.url") + "/SuperManManager/SuperManManager";
+%>
 <%PagedResponse<Mark> data = (PagedResponse<Mark>) request.getAttribute("listData");%>
 <% if(data.getResultList()==null||data.getResultList().size()==0) 
 {%>
@@ -36,7 +46,7 @@
 			    <td><%=i+1 %></td>
                 <td><%=list.get(i).getTagName() %></td>
 				<td><%=list.get(i).getTagType()==0?"门店":"骑士" %></td>
-				<td><%=list.get(i).getBindquantity() %></td>
+				<td><a href="<%=list.get(i).getTagType()==0?busLink:cliLink %>?tagId=<%=list.get(i).getId()%>"><%=list.get(i).getBindquantity() %></a></td>
 				<td><%=ParseHelper.ToDateString(list.get(i).getCreatetime()) %></td>
                 <td><%=list.get(i).getIsenable()==0?"禁止":"启动" %></td>
                 <td><%=list.get(i).getModifyname() %></td>
