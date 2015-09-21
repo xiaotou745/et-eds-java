@@ -18,24 +18,28 @@ public class PagedGroupBussinessBalanceReq extends PagedRequestBase{
 	public void setRelationNo(String relationNo) {
 		this.relationNo = relationNo;
 	}
+	
 	public String getStartDate() {
 		return startDate;
 	}
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
+	
 	public String getEndDate() {
 		return endDate;
 	}
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
+	
 	public String getRecordType() {
 		return recordType;
 	}
 	public void setRecordType(String recordType) {
 		this.recordType = recordType;
 	}
+	
 	public int getGrupBusinessId() {
 		return groupbusinessId;
 	}

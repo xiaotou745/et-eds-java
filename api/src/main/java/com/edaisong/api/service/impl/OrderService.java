@@ -1094,12 +1094,14 @@ public class OrderService implements IOrderService {
 		QueryOrderCResp m = orderDao.queryOrderC(query);
 		if (query.getLongitude()!=null&&query.getLongitude()!=0		//需要计算骑士距离门店距离
 				&&query.getLatitude()!=null&&query.getLatitude()!=0
-				&&query.getStatus()==OrderStatus.Delivery.value()) {
+				&&query.getStatus()==OrderStatus.Delivery.value()) 
+		{
 			List<QueryOrder> orders= orderDao.queryDeliveryOrderC(query);
 			orders.forEach(action->action.setDistance(action.getDistance_OrderBy()<1000?action.getDistance_OrderBy()+"m": 
 				new   BigDecimal(action.getDistance_OrderBy()*0.001).setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue()+"km"));
 			m.setOrders(orders);
-		}else {  //不需要计算骑士距离门店距离
+		}else 
+		{  //不需要计算骑士距离门店距离
 			m.setOrders(orderDao.queryOrder(query));
 		}
 		resultModel.setResult(m);

@@ -118,7 +118,7 @@ public class GroupBusinessController {
 		groupBusiness.setLoginname(bgm.getloginName().trim());
 		groupBusiness.setPassword(MD5Util.MD5(bgm.getpassWord().trim()));
 		groupBusiness.setIsAllowOverdraft(bgm.getIsAllowOverdraft());
-		groupBusiness.setCreatename(UserContext.getCurrentContext(request).getName());
+		groupBusiness.setCreatename(UserContext.getCurrentContext(request).getLoginName());
 		int result=groupBusinessService.addGroupBusiness(groupBusiness);
 		if(result<=0){
 			response.setMessage("添加失败");
@@ -165,7 +165,7 @@ public class GroupBusinessController {
 		groupBusiness.setPassword(MD5Util.MD5(bgm.getpassWord().trim()));
 		groupBusiness.setId(bgm.getId());
 		groupBusiness.setIsAllowOverdraft(bgm.getIsAllowOverdraft());
-		groupBusiness.setModifyname(UserContext.getCurrentContext(request).getName());
+		groupBusiness.setModifyname(UserContext.getCurrentContext(request).getLoginName());
 		int result=groupBusinessService.modifyGroupBusiness(groupBusiness);
 		if(result<=0){
 			response.setMessage("修改失败");
@@ -302,7 +302,7 @@ public class GroupBusinessController {
 		ResponseBase response = new ResponseBase();
 		req.setOptId(UserContext.getCurrentContext(request).getId());
 		req.setOptType((short)BindOptType.RemoveBind.value());
-		req.setOptName(UserContext.getCurrentContext(request).getName());
+		req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 		req.setRemark("解除绑定");
 		if (groupBusinessRelationService.removeBusinessBind(req)) {
 			response.setResponseCode(1);
@@ -319,7 +319,7 @@ public class GroupBusinessController {
 		ResponseBase response = new ResponseBase();
 		req.setOptId(UserContext.getCurrentContext(request).getId());
 		req.setOptType((short)BindOptType.Bind.value());
-		req.setOptName(UserContext.getCurrentContext(request).getName());
+		req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 		req.setRemark("添加绑定");
 		if (groupBusinessRelationService.checkHaveBind(req)) {
 			response.setMessage("此条绑定关系已存在！");
@@ -374,8 +374,7 @@ public class GroupBusinessController {
 		req.setGroupBusinessId(groupbusinessId);
 		req.setCurrentPage(1);
 		req.setPageSize(Integer.MAX_VALUE);
-		List<GroupBusinessBalanceRecord> records = groupBusinessService
-				.getGroupBusinessBalanceRecordForExport(req);
+		List<GroupBusinessBalanceRecord> records = groupBusinessService.getGroupBusinessBalanceRecordForExport(req);
 		// 导出数据
 		String filename = "集团收支记录%s";
 		if (!StringUtils.isEmpty(req.getStartDate()) && !StringUtils.isEmpty(req.getEndDate())) {

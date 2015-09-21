@@ -44,10 +44,12 @@ public class UserContext {
 		return account.getAccountType();
 	}
 
-	public String getName() {
+	public String getLoginName() {
 		return account.getLoginName();
 	}
-
+	public String getUserName() {
+		return account.getUserName();
+	}
 	public static  UserContext getCurrentContext(HttpServletRequest request) {
 		final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);

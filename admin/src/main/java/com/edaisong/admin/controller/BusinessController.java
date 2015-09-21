@@ -377,7 +377,7 @@ public class BusinessController {
 	@ResponseBody
 	public int modifyClienterBind(ClienterBindOptionReq req, HttpServletRequest request) {
 		req.setOptId(UserContext.getCurrentContext(request).getId());
-		req.setOptName(UserContext.getCurrentContext(request).getName());
+		req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 		if (businessClienterRelationService.modifyClienterBind(req)) {
 			return 1;
 		}
@@ -388,7 +388,7 @@ public class BusinessController {
 	@ResponseBody
 	public int removeclienterbind(ClienterBindOptionReq req, HttpServletRequest request) {
 		req.setOptId(UserContext.getCurrentContext(request).getId());
-		req.setOptName(UserContext.getCurrentContext(request).getName());
+		req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 		if (businessClienterRelationService.removeclienterbind(req)) {
 			return 1;
 		}
@@ -432,7 +432,7 @@ public class BusinessController {
 			response.setMessage("此条绑定关系已存在！");
 		} else {
 			req.setOptId(UserContext.getCurrentContext(request).getId());
-			req.setOptName(UserContext.getCurrentContext(request).getName());
+			req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 			req.setRemark("添加绑定");
 			if (!businessClienterRelationService.addClienterBind(req)) {
 				response.setMessage("绑定关系失败！");
@@ -574,7 +574,7 @@ public class BusinessController {
 					req.setBusinessId(businessId);
 					req.setClienterId(clienterId);
 					req.setOptId(UserContext.getCurrentContext(request).getId());
-					req.setOptName(UserContext.getCurrentContext(request).getName());
+					req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 					if (model == null) {// 插入
 						req.setRemark("添加绑定");
 						businessClienterRelationService.addClienterBind(req);

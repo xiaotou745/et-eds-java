@@ -232,7 +232,7 @@ public class ClienterController {
 	public ResponseBase unfreezeClienter(ClienterUnfreezeReq clienterUnfreezeReq,HttpServletRequest request){
 		ResponseBase response = new ResponseBase();
 		//解冻逻辑
-		clienterUnfreezeReq.setOperator(UserContext.getCurrentContext(request).getName());
+		clienterUnfreezeReq.setOperator(UserContext.getCurrentContext(request).getLoginName());
 		response = clienterForzenService.unfreezeClienterBalance(clienterUnfreezeReq);
 		return response;		
 	}
@@ -283,7 +283,7 @@ public class ClienterController {
 			response.setResponseCode(0);
 			response.setMessage("骑士信息错误");
 		}
-		clienterForzenBalanceReq.setOperator(UserContext.getCurrentContext(request).getName());
+		clienterForzenBalanceReq.setOperator(UserContext.getCurrentContext(request).getLoginName());
 		response= clienterForzenService.createForzenBalance(clienterForzenBalanceReq);
 		return response;		
 	}
