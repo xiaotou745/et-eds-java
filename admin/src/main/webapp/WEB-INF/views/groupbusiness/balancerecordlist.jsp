@@ -29,7 +29,7 @@
 		<div class="col-lg-12">
 			<form method="POST" action="#" class="form-horizontal"
 				id="searchForm">
-				<input type="hidden" name="groupbusinessId" id="groupbusinessId" value="<%=detail.getId()%>" />
+				<input type="hidden" name="groupBusinessId" id="groupbusinessId" value="<%=detail.getId()%>" />
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">

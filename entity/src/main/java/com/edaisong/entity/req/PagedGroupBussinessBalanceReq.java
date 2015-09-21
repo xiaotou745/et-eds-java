@@ -7,7 +7,7 @@ public class PagedGroupBussinessBalanceReq extends PagedRequestBase{
 	private String startDate;
 	private String endDate;
 	private String recordType;
-	private Integer groupbusinessId;
+	private int groupbusinessId;
 	
 	private String businessName;
 	private String relationNo;

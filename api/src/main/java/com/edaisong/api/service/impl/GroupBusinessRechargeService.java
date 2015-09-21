@@ -1,6 +1,7 @@
 package com.edaisong.api.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import com.edaisong.core.enums.BusinessBalanceRecordStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.GroupBusinessRecharge;
+import com.edaisong.entity.domain.GroupBusinessBalance;
 
 @Service
 public class GroupBusinessRechargeService implements
@@ -60,6 +62,11 @@ public class GroupBusinessRechargeService implements
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public List<GroupBusinessBalance> getGroupBalance(int groupBusinessID) {
+		return groupBusinessRechargeDao.getGroupBalance(groupBusinessID);
 	}
 
 
