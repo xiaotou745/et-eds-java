@@ -1405,18 +1405,18 @@ where   Status = 1
 	</sql>
 		<!--商家端我的任务 addby caoheyang 20150914 -->
 	<select id="queryOrderB" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderBResp">
-	   select  SUM(CASE Status
+	     select  ISNULL(SUM(CASE Status
               when 0 then 1
               else 0
-            end) newCount ,
-        SUM(CASE Status
+            end),0) newCount ,
+        ISNULL(SUM(CASE Status
               when 2 then 1
               else 0
-            end) deliveryCount ,
-        SUM(CASE Status
+            end),0) deliveryCount ,
+        ISNULL(SUM(CASE Status
               when 4 then 1
               else 0
-            end) takingCount
+            end),0) takingCount
        from    dbo.[order] (nolock)
        where businessId=${businessId}
 	</select>
