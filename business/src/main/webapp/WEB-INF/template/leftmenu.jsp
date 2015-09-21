@@ -6,6 +6,10 @@
 	String basePath = PropertyUtils.getProperty("static.business.url");
     String viewPath =request.getAttribute("viewPath").toString();
     UserContext context = UserContext.getCurrentContext(request);
+    String groupName=context.getBusinessName();
+    if(groupName.length()>10){
+    	groupName=groupName.substring(0,10);
+    }
 %>
 	<div class="nav">
 		<img src="<%=basePath%>/images/dun.png" width="55" height="74" alt="">
@@ -19,7 +23,7 @@
 				<span <%=viewPath=="clienter/list"?"class='on'":""%>><a class="five" href="<%=basePath%>/clienter/list">骑士管理</a></span>
 				<span <%=viewPath=="message/list"?"class='on'":""%>><a class="six" href="<%=basePath%>/message/list">消息中心</a></span>
 			<%}else{%>
-				<a href="javascript:void(0)"><%=context.getBusinessName()%></a>
+				<a href="javascript:void(0)"><%=groupName%></a>
 				<span <%=viewPath=="group/recharge"?"class='on'":""%>><a class="six" href="<%=basePath%>/group/recharge">充值</a></span>
 			<%}
 		}%>
