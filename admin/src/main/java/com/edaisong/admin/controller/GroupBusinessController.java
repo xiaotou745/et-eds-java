@@ -374,8 +374,7 @@ public class GroupBusinessController {
 		req.setGroupBusinessId(groupbusinessId);
 		req.setCurrentPage(1);
 		req.setPageSize(Integer.MAX_VALUE);
-		List<GroupBusinessBalanceRecord> records = groupBusinessService
-				.getGroupBusinessBalanceRecordForExport(req);
+		List<GroupBusinessBalanceRecord> records = groupBusinessService.getGroupBusinessBalanceRecordForExport(req);
 		// 导出数据
 		String filename = "集团收支记录%s";
 		if (!StringUtils.isEmpty(req.getStartDate()) && !StringUtils.isEmpty(req.getEndDate())) {

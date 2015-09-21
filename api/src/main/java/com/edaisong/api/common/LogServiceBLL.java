@@ -30,21 +30,25 @@ public class LogServiceBLL {
 //				|| logEngity.getStackTrace().isEmpty()) {
 //			return;
 //		}
-		initLog4DB(logEngity);
-		String jsonMsg = JsonUtil.obj2string(logEngity);
-		switch (logEngity.getSourceSys()) {
-		case "admin":
-			adminLogger.info(jsonMsg);
-			break;
-		case "business":
-			businessLogger.info(jsonMsg);
-			break;
-		case "apiHttp":
-			apiHttpLogger.info(jsonMsg);
-			break;
-		default:
-			break;
+		try {
+			initLog4DB(logEngity);
+			String jsonMsg = JsonUtil.obj2string(logEngity);
+			switch (logEngity.getSourceSys()) {
+			case "admin":
+				adminLogger.info(jsonMsg);
+				break;
+			case "business":
+				businessLogger.info(jsonMsg);
+				break;
+			case "apiHttp":
+				apiHttpLogger.info(jsonMsg);
+				break;
+			default:
+				break;
+			}
+		} catch (Exception e) {
 		}
+
 	}
 
 	public void LogInfo(ActionLog logEngity) {

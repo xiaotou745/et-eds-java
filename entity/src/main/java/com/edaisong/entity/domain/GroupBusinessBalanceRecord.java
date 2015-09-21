@@ -41,6 +41,9 @@ public class GroupBusinessBalanceRecord {
     public Integer getGroupid() {
 		return groupid;
 	}
+    public void setGroupId(Integer groupid){
+    	this.groupid=groupid;
+    }
 
 	public void setBusinessname(String businessname) {
 		this.businessname = businessname;
