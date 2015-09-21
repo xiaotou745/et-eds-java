@@ -71,7 +71,7 @@ public class GroupBusinessController {
 	@RequestMapping("list")
 	public ModelAndView list(){ 
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "集团门店管理");
+		model.addObject("subtitle", "集团");
 		model.addObject("currenttitle", "集团管理"); 
 		model.addObject("viewPath", "groupbusiness/list");
 		return model;
