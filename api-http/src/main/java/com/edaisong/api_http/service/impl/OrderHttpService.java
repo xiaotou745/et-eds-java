@@ -41,9 +41,6 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq para) {
-		
-		para.setBusinessId(2047);
-		para.setMonthInfo("2015-09");
 		if (para.getMonthInfo() == null || para.getMonthInfo().trim().isEmpty() || para.getBusinessId() == 0 ) {
 			return new HttpResultModel<OrderStatisticsBResp>()
 			.setStatus(HttpReturnRnums.ParaError.value())
