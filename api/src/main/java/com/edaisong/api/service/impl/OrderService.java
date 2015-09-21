@@ -1023,9 +1023,9 @@ public class OrderService implements IOrderService {
 			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
 		}
-		//获取每天发单骑士信息
-		OrderStatisticsBResp orderStatisticsResp = orderDao.getOrderStatistics(orderStatisticsBReq);
-		List<ServiceClienter> serviceClienters = orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq); 
+		
+		OrderStatisticsBResp orderStatisticsResp = orderDao.getOrderStatistics(orderStatisticsBReq);//当月数据总览统计
+		List<ServiceClienter> serviceClienters = orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq); //获取每天发单骑士信息
 		List<DaySatisticsB> daySatisticsBs = orderDao.getOrderStatisticsDaySatistics(orderStatisticsBReq); // B端任务统计接口
 																											// 天数据列表
 		serviceClienters.forEach(action->action.setClienterPhoto(PropertyUtils.getProperty("ImageServicePath")+action.getClienterPhoto()));
@@ -1087,10 +1087,10 @@ public class OrderService implements IOrderService {
 	@Override
 	public HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq query) {
 		HttpResultModel<QueryOrderCResp> resultModel = new HttpResultModel<QueryOrderCResp>();
-		if (clienterService.getUserStatus(query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass.value()) {
-			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
-			return resultModel;
-		}
+//		if (clienterService.getUserStatus(query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass.value()) {
+//			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+//			return resultModel;
+//		}//TODO 茹化肖注释  参见BUG7705 【我的任务】资格取消后，进入我的任务，订单提示账号状态出错
 		QueryOrderCResp m = orderDao.queryOrderC(query);
 		if (query.getLongitude()!=null&&query.getLongitude()!=0		//需要计算骑士距离门店距离
 				&&query.getLatitude()!=null&&query.getLatitude()!=0
