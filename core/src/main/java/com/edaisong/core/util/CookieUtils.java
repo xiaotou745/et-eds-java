@@ -241,11 +241,8 @@ public class CookieUtils {
      * @param cookieName
      */
     public static void deleteCookie(HttpServletRequest request,
-            HttpServletResponse response, String cookieName) {
-    	 Cookie cookie = new Cookie(cookieName,null);
-         cookie.setMaxAge(0);
-         cookie.setPath("/");
-         response.addCookie(cookie);
+            HttpServletResponse response,String from, String cookieName) {
+    	setCookie(request,response, from,  cookieName,  "",  0);
     }
     
     /**

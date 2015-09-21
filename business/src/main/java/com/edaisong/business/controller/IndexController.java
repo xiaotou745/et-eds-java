@@ -35,7 +35,7 @@ public class IndexController {
 		UserContext context = UserContext.getCurrentContext(request);
 		ModelAndView model = new ModelAndView("businessView");
 		if (context==null||context.getBusinessType()>0) {
-			CookieUtils.deleteCookie(request, response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
+			CookieUtils.deleteCookie(request, response,"business", LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
 			response.sendRedirect(request.getContextPath() + "/");
 			return null;
 		}
