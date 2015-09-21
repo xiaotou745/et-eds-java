@@ -17,10 +17,33 @@ $(function() {
 	 * $(".error2").css("display","none"); } });
 	 */
 });
-
+function testloginName(){
+	var reg=/^[\u4E00-\u9FA5]$/;
+	var loginName=$(".ex_iphone").val().trim();
+	if (loginName == "" || loginName == "输入账号") {
+		$(".error1").html("输入账号");
+		$(".error1").css("display", "block");
+		return false;
+	} else if (reg.test(loginName)) {
+		$(".error1").html("登陆账号不能为中文字符");
+		$(".error1").css("display", "block");
+		return false;
+	} else if (loginName.length <6 || loginName.length>20) {
+		$(".error1").html("登陆账号除中文外6-20位字符");
+		$(".error1").css("display", "block");
+		return false;
+	}
+	$(".error1").css("display", "none");
+	return true;
+}
 function iphone() {
+	var usertype=$("#userType").val();
+	if(usertype==1){
+		return testloginName();
+	}
+	
 	var reg = /^1[0-9]{10}$/i;// 验证手机正则(输入前7位至11位)
-
+	
 	if ($(".ex_iphone").val() == "" || $(".ex_iphone").val() == "输入您的手机号") {
 		$(".error1").html("请输入手机号");
 		$(".error1").css("display", "block");

@@ -1179,7 +1179,7 @@
 	<update id="updateOrderRealCommission" parameterType="com.edaisong.entity.req.OrderOtherSearch">
 		update [Order] set RealOrderCommission=#{realOrderCommission,jdbcType=NVARCHAR}  where id=#{orderId,jdbcType=INTEGER}
 	</update>
-	<!-- B端任务统计接口 add by caoheyang 20150910 -->
+	<!-- B端任务统计接口 统计当月服务骑士信息 add by caoheyang 20150910 -->
 	<select id="getOrderStatisticsServiceClienterB" parameterType="com.edaisong.entity.req.OrderStatisticsBReq"   resultType="com.edaisong.entity.domain.ServiceClienter">
 declare @sdate DATETIME
 set @sdate = '${monthInfo}-01'
@@ -1233,7 +1233,8 @@ from    ( select    CONVERT(VARCHAR(100), DATEADD(dd, number, @sdate), 23) as Mo
                     and PubDate>=@startDate and PubDate  <![CDATA[ <]]>  @endDate
                     group by CONVERT(VARCHAR(100), PubDate, 23)
                   ) as b on a.MonthDate = b.OrderDate
-where a.MonthDate <![CDATA[ <=]]>GETDATE()   
+where a.MonthDate <![CDATA[ <=]]>GETDATE()  
+ORDER BY MonthDate DESC 
 	</select>
 			<!-- B端任务统计接口  天数据列表  add by caoheyang 20150910 -->
 	<select id="getOrderStatistics" parameterType="com.edaisong.entity.req.OrderStatisticsBReq"   resultType="com.edaisong.entity.resp.OrderStatisticsBResp">
@@ -1271,15 +1272,23 @@ FROM(
       FROM master..spt_values
       WHERE type = 'P'
 		AND DATEADD(dd, number, @sdate)<![CDATA[ <]]> DATEADD(mm, 1, @sdate)) tbldate
-LEFT JOIN (  SELECT  ISNULL(SUM(CASE WHEN FinishAll = 1 THEN OrderCommission ELSE 0 END),0) TotalCommission,
+LEFT JOIN (  SELECT 
+                ISNULL(SUM(CASE 
+						WHEN o. FinishAll = 0 THEN 0 
+						ELSE
+						 CASE 
+						  WHEN oo.AuditStatus=2 AND o.OrderCommission>o.SettleMoney THEN o.SettleMoney 
+						  ELSE o.OrderCommission END  
+						 END),0) TotalCommission,
 				CONVERT (VARCHAR(10),PubDate,120) PubDate,
 				SUM(OrderCount) TotalCount
 		FROM dbo.[order] o WITH(NOLOCK)
-		WHERE clienterId=#{clienterId} AND Status = 1
-		GROUP BY  Convert (VARCHAR(10),PubDate,120)
+		join  OrderOther oo  WITH(NOLOCK) ON o.id=oo.OrderId
+		WHERE o.clienterId=#{clienterId} AND o.Status = 1
+		GROUP BY  Convert (VARCHAR(10),o.PubDate,120)
 		) tbl ON tbl.PubDate=tbldate.MonthDate
 WHERE tbldate.MonthDate <![CDATA[ <=]]>GETDATE()
-ORDER BY tbldate.MonthDate   
+ORDER BY tbldate.MonthDate   DESC
 	</select>
     <!-- C端任务统计接口  wangxudan 20150910 -->
 	<select id="getOrderStatisticsC" parameterType="com.edaisong.entity.req.OrderStatisticsCReq"   resultType="com.edaisong.entity.resp.OrderStatisticsCResp">
@@ -1290,12 +1299,19 @@ declare @endDate date ;
 set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate) ; 
 set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
   
-select  SUM(ISNULL(OrderCount,0)) as TotalOrderCount ,
-        ISNULL(SUM(CASE WHEN FinishAll = 1 THEN OrderCommission ELSE 0 END),0) TotalOrderCommission
-from    dbo.[order]
+select  SUM(ISNULL(o.OrderCount,0)) as TotalOrderCount ,
+	        ISNULL(SUM(CASE 
+						WHEN o. FinishAll = 0 THEN 0 
+						ELSE
+						 CASE 
+						  WHEN oo.AuditStatus=2 AND o.OrderCommission>o.SettleMoney THEN o.SettleMoney 
+						  ELSE o.OrderCommission END  
+						 END),0) TotalOrderCommission
+from    dbo.[order] o WITH(NOLOCK)
+join  OrderOther oo  WITH(NOLOCK) ON o.id=oo.OrderId
 where   Status = 1
-        and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
-        and clienterId=#{clienterId}  
+        and o.PubDate >= @startDate and o.PubDate <![CDATA[ <]]> @endDate
+        and o.clienterId=#{clienterId}  
 
 	</select>
 		<!--  移动端 订单列表  add by caoheyang 20150910-->
@@ -1303,7 +1319,7 @@ where   Status = 1
 		parameterType="com.edaisong.entity.req.QueryOrderReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' o.PubDate desc ',
+		' oo.TakeTime asc ',
 		'
 		<include refid="queryOrderColums" />
 		',

@@ -48,8 +48,7 @@ public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
 	public GroupBusiness getByPhoneNoAndPwd(String phoneNo, String password) {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("phoneNo", phoneNo);
-		String pwd = MD5Util.MD5(password);
-		paramMap.put("password", pwd);
+		paramMap.put("password", password);
 		return getReadOnlySqlSessionUtil()
 				.selectOne("com.edaisong.api.dao.inter.IGroupBusinessDao.getByPhoneNoAndPwd", paramMap);
 	}

@@ -28,7 +28,7 @@ public class LoginUtil {
 	public static boolean checkIsLogin(HttpServletRequest request, HttpServletResponse response) {
 		boolean isLogin= UserContext.getCurrentContext(request)!=null;
 		if (!isLogin) {
-			CookieUtils.deleteCookie(request, response, LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
+			CookieUtils.deleteCookie(request, response,"business", LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
 		}
 		return isLogin;
 	}

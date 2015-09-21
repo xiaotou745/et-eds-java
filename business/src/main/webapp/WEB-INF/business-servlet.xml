@@ -14,8 +14,8 @@
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 	<!-- 引入配置文件 -->
-  <!-- <import resource="classpath:conf/core/dev-context.xml" />  -->
- 		<import resource="classpath:conf/core/test-context.xml" />
+   <import resource="classpath:conf/core/dev-context.xml" />  
+ 		<!--<import resource="classpath:conf/core/test-context.xml" />-->
 <!-- 	<import resource="classpath:conf/core/pro-context.xml" /> -->
 <!-- 	<import resource="classpath:conf/core/devtest-context.xml" /> -->
 <!--  	<import resource="file:D:/conf/dev-context.xml" />  -->
