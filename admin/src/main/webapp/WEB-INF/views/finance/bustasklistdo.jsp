@@ -11,7 +11,9 @@
 <%String basePath =PropertyUtils.getProperty("static.admin.url");%>
 <%String StarStr=request.getAttribute("sDate").toString(); %>
 <%String EndStr=request.getAttribute("eDate").toString();%>
-<%String netUrl=PropertyUtils.getProperty("dynamic.admin.url");%>
+<%String netUrl=PropertyUtils.getProperty("dynamic.admin.url");
+//TODO 以后java开放订单审核管理 这里的门店名称跳转就要按照登录来源区分跳转 茹化肖
+%>
 		<table class="table table-striped table-bordered table-hover dataTables-example">
 			<thead>
 				<tr class="tdbg">
@@ -28,8 +30,6 @@
 				<%PagedResponse<BusTaskList> data = (PagedResponse<BusTaskList>) request.getAttribute("listData");
 		       	  List<BusTaskList> list = data.getResultList();
 		       		if (list == null) {list = new ArrayList<BusTaskList>();}
-		       		
-
 		         	for (int i = 0; i < list.size(); i++) {%>  
 					 <tr>
 						<td><%=list.get(i).getBusinessId() %></td>
