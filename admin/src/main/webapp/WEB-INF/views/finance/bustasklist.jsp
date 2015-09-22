@@ -38,30 +38,7 @@ width: 100%;
 		<div class="col-lg-12">
 			<form method="POST" action="#" class="form-horizontal" id="searchForm">
 				<div class="row">
-					<div class="col-lg-2">
-						<div class="form-group">
-							<div class="col-sm-8">		
-								<div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input style="width:120px" placeholder="开始日期" type="text" class="form-control" value="<%=ParseHelper.ToDateString(ParseHelper.plusDate(new Date(),2,-1),"yyyy-MM-dd") %>" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
-                                    </div>                                   					
-
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-2">
-						<div class="form-group">
-							<label class="col-sm-1 control-label">到</label>
-							<div class="col-sm-8">		
-								<div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input style="width:120px" class="form-control" type="text" placeholder="结束日期" value="<%=ParseHelper.ToDateString(new Date(),"yyyy-MM-dd") %>" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
-                                    </div>                                   					
-
-							</div>
-						</div>
-					</div> 
-					<div class="col-lg-2">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">用户类型:</label>
 							<div class="col-sm-8">
@@ -79,9 +56,32 @@ width: 100%;
 							</div>
 						</div>
 					</div>
+					<div class="col-lg-2">
+						<div class="form-group">
+							<div class="col-sm-8">		
+								<div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input style="width:120px" placeholder="开始日期" type="text" class="form-control" value="<%=ParseHelper.ToDateString(ParseHelper.plusDate(new Date(),2,-1),"yyyy-MM-dd") %>" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
+                                    </div>                                   					
+
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-2">
+						<div class="form-group">
+							
+							<div class="col-sm-8">		
+								<div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input style="width:120px" class="form-control" type="text" placeholder="结束日期" value="<%=ParseHelper.ToDateString(new Date(),"yyyy-MM-dd") %>" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
+                                    </div>                                   					
+
+							</div>
+						</div>
+					</div> 
 					
 					
-						<div class="col-lg-2">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">								
@@ -90,14 +90,14 @@ width: 100%;
 						</div>
 					</div>	
 				</div>	
-	
-	
-					
 				<div class="row">
-						<div class="col-lg-3">
-						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>
-						</div>
+					
+				</div>
+				<div class="row">
+					<div class="col-lg-3">
+					<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+						style="margin-left: 3px;height:30px;">查询</button>
+					</div>
 				</div>
 			</form>
 		</div>

@@ -14,7 +14,13 @@
 	BusinessMessage message = (BusinessMessage)request.getAttribute("message");
 	List<BusiPubOrderTimeStatisticsModel> pubOrderTimestatistics = (List<BusiPubOrderTimeStatisticsModel>)request.getAttribute("pubOrderTimestatistics");
 %>
-
+<style type="text/css">
+* {
+	-webkit-box-sizing: initial;
+	-moz-box-sizing: initial;
+	box-sizing: content-box;
+}
+</style>
 <script type="text/javascript"
 	src="<%=basePath%>/js/highcharts/js/highcharts.js"></script>
 <script type="text/javascript"
