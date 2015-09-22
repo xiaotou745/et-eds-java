@@ -1,5 +1,7 @@
 package com.edaisong.entity.domain;
 
+import java.text.DecimalFormat;
+
 import com.edaisong.entity.GroupBusinessRelation;
 
 /**
@@ -37,11 +39,17 @@ public class GroupBusinessRelationModel extends GroupBusinessRelation{
 	public double getBalancePrice() {
 		return balancePrice;
 	}
+	public String getBalancePriceString() {
+		return new DecimalFormat("0.00").format(balancePrice);
+	}
 	public void setBalancePrice(double balancePrice) {
 		this.balancePrice = balancePrice;
 	}
 	public double getUseGroupMoney() {
 		return useGroupMoney;
+	} 
+	public String getUseGroupMoneyString() {
+		return  new DecimalFormat("0.00").format(useGroupMoney);
 	}
 	public void setUseGroupMoney(double useGroupMoney) {
 		this.useGroupMoney = useGroupMoney;

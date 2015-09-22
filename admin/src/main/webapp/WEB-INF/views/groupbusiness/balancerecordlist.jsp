@@ -44,7 +44,7 @@
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">订单号/交易流水号:</label>
+							<label class="col-sm-4 control-label">任务单号/交易流水号:</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" name="relationNo" id="relationNo" />
 							</div>
