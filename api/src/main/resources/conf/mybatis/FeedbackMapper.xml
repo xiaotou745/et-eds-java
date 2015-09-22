@@ -43,7 +43,7 @@
   parameterType="com.edaisong.entity.req.PagedFeedbackReq" 
   statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
-' UserType,  id DESC',
+'  id DESC',
 'UserType, FeedbackType,Content,CreateTime,	 id, Name, PhoneNo, City',
 ' (
 	SELECT f.Id,f.UserType, f.FeedbackType,f.Content,f.CreateTime,
