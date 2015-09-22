@@ -83,7 +83,7 @@
 				<input id="rAddIsAllowOverdraftN" name="rAddIsAllowOverdraft" type="radio" checked="checked" value="0"><label for="rAddIsAllowOverdraftN">否</label>
             </div>
             <div class="control-group">
-                <label >登陆账号：</label> 
+                <label >登录账号：</label> 
                     <input  name="txtAddLoginName" id="txtAddLoginName" type="text">
             </div> 
             <div class="control-group">
