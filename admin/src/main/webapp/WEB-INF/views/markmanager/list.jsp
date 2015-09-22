@@ -12,22 +12,39 @@
 		<input type="button" value="添加标签" class="btn btn-w-m btn-primary" id="addMark"  onclick="addMark() "/>    
 	</div>
 </div> 
+
 <div class="row"  style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;">
-<table >
-	 <tr>
-	 	<td >
-	      <span>标签名称: </span>
-	      <input id="txtTagName" type="tel" name="txtTagName" />
-	      <span class="">标签类型: </span>
-	      <%=HtmlHelper.getSelect("tagtype", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, "-1", "全部", "", "")%> 
-	      <span>创建时间: </span>
-	        <input id="txtstartdate" type="text" name="startdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'txtenddate\')||\'2120-10-01\'}'})"/>
-                       <span class="">到 </span>
-            <input id="txtenddate" type="text" name="enddate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2120-10-01'})"/>
-	<input type="submit" value="查询" class="btn btn-w-m btn-primary" id="btnSearch" />      
-	       </td>
-	   </tr>
-</table>  
+	<div class="col-lg-2">
+		<div class="form-group">
+			<div class="col-sm-8">
+				<input id="txtTagName" type="tel" name="txtTagName" placeholder="标签名称"/>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-2">
+		<div class="form-group">
+			<div class="col-sm-8">
+				标签类型:<%=HtmlHelper.getSelect("tagtype", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, "-1", "全部", "", "")%>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-2">
+		<div class="form-group">
+			<div class="col-sm-8">
+				<input id="txtstartdate" type="text" name="startdate" placeholder="创建时间起"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'txtenddate\')||\'2120-10-01\'}'})"/>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-2">
+		<div class="form-group">
+			<div class="col-sm-8">
+				<input id="txtenddate" type="text" name="enddate" placeholder="创建时间止"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2120-10-01'})"/>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-2">
+		<input type="submit" value="查询" class="btn btn-w-m btn-primary" id="btnSearch" />
+	</div>		
 </div>
 
 <div class="row">
