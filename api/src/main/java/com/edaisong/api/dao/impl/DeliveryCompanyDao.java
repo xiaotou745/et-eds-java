@@ -69,12 +69,6 @@ public class DeliveryCompanyDao extends DaoBase implements IDeliveryCompanyDao {
 	@Override
 	public PagedResponse<DeliveryStatistics> getStatisticsList(
 			PagedDeliveryStatisticsReq search) {
-		if (search.getSettlementMonth()!=null&&
-			!search.getSettlementMonth().isEmpty()) {
-			Date start=ParseHelper.ToDate(search.getSettlementMonth());
-			Date end=ParseHelper.plusDate(start,1,1);
-			search.setSettlementEndMonth(ParseHelper.ToDateString(end));
-		}
 		return getReadOnlySqlSessionUtil()
 				.selectPageList(
 						"com.edaisong.api.dao.inter.IDeliveryCompanyDao.getStatisticsList",

@@ -16,8 +16,8 @@
 		<property name="locations">
 			<list>
 				<!-- 线上用的配置环境 -->
-				<value>file:D:/conf/profiles/pro-conf.properties</value>
-				<value>file:D:/conf/profiles/pro-env.properties</value>
+				<value>classpath:conf/custom/pro-conf.properties</value>
+				<value>classpath:conf/custom/pro-env.properties</value>
 			</list>
 		</property>
 	</bean>

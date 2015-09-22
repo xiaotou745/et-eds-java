@@ -211,8 +211,8 @@
   
   <update id="editMark"  parameterType="com.edaisong.entity.req.MarkEditReq" >
     MERGE INTO Tag t
-	USING(values('${tagName}')) AS tNew(TagName)
-		ON t.TagName=tNew.TagName 
+	USING(values(${id})) AS tNew(Id)
+		ON  t.Id=tNew.Id
 	WHEN MATCHED 
 	THEN UPDATE 
 		 SET t.TagName= '${tagName}',

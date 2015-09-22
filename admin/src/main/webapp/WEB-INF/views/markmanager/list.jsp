@@ -9,7 +9,7 @@
 
 <div class="row" style="margin-top: 5px;">
 	<div class="col-lg-3">
-		<input type="button" value="添加" class="btn btn-w-m btn-primary" id="addMark"  onclick="addMark() "/>    
+		<input type="button" value="添加标签" class="btn btn-w-m btn-primary" id="addMark"  onclick="addMark() "/>    
 	</div>
 </div> 
 <div class="row"  style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;">
@@ -21,9 +21,9 @@
 	      <span class="">标签类型: </span>
 	      <%=HtmlHelper.getSelect("tagtype", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, "-1", "全部", "", "")%> 
 	      <span>创建时间: </span>
-	        <input id="txtstartdate" type="text" name="startdate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'txtenddate\')||\'2120-10-01\'}'})"/>
+	        <input id="txtstartdate" type="text" name="startdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'txtenddate\')||\'2120-10-01\'}'})"/>
                        <span class="">到 </span>
-            <input id="txtenddate" type="text" name="enddate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2120-10-01'})"/>
+            <input id="txtenddate" type="text" name="enddate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2120-10-01'})"/>
 	<input type="submit" value="查询" class="btn btn-w-m btn-primary" id="btnSearch" />      
 	       </td>
 	   </tr>

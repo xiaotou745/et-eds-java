@@ -28,6 +28,12 @@ import com.edaisong.entity.resp.OrderStatisticsCResp;
 @Service
 public class OrderHttpService implements IOrderHttpService {
 
+	@Override
+	public String testVal() {
+		// TODO Auto-generated method stub
+		return "123";
+	}
+
 	@Autowired
 	private IOrderService orderService;
 
