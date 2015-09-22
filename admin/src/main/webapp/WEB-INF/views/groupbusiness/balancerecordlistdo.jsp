@@ -22,13 +22,12 @@ if(data == null){
 }
 UserContext context=UserContext.getCurrentContext(request);
 int loginFrom=context.getLoginFrom();
-String alink="";
-String alink2="";
+
 String basePath="";
 if (loginFrom==1) {
-	basePath=PropertyUtils.getProperty("dynamic.admin.url") + "/Order/OrderDetail"; 
-}else {
 	basePath =PropertyUtils.getProperty("static.admin.url")+ "/order/detail"; 
+}else {
+	basePath=PropertyUtils.getProperty("dynamic.admin.url") + "/Order/OrderDetail"; 
 }
 %>
 <table
