@@ -10,11 +10,11 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 <div class="box3">
 	<div class="cb sBox">
 		<span class="fl">您当前余额</span>
-		<em class="fl" id="balance">￥500</em>
+		<em class="fl" id="balance">￥0</em>
 	</div>
 	<div class="cb sBox">
 		<b class="fl">累计充值</b>
-		<s class="fl" id="total">￥500</s>
+		<s class="fl" id="total">￥0</s>
 	</div>
 </div>
 <div class="box3">
@@ -149,7 +149,9 @@ function getGroupBalance(){
 		success : function(data) {
 			var info=data.split(";");
 			$("#balance").html("￥"+info[0]);
-			$("#total").html("￥"+info[1]);
+			
+			var money=info[1]=="null"?"0.00":info[1];
+ 			$("#total").html("￥"+money);
 		}
 	});
 }
