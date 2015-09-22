@@ -78,7 +78,7 @@
         bbr.GroupAfterBalance ,
         b.Name businessname
 from    BusinessBalanceRecord as bbr ( nolock )
-        join dbo.business b ( nolock ) on bbr.BusinessId = b.Id
+        left join dbo.business b ( nolock ) on bbr.BusinessId = b.Id
 where 1=1 AND bbr.GroupId > 0 
 <if test="recordType>0">
 	      AND bbr.[RecordType]=#{recordType,jdbcType=INTEGER}
@@ -96,7 +96,7 @@ where 1=1 AND bbr.GroupId > 0
 	       AND b.name=''${businessName}'' 
      </if>
      <if test="groupbusinessId >0 ">
-	       AND bbr.GroupId=${groupbusinessId,jdbcType=INTEGER}
+	       AND bbr.GroupId=${groupbusinessId}
      </if>
 ORDER BY bbr.Id DESC
   </select>
