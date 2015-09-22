@@ -18,7 +18,7 @@
 			<th width="%5">编号</th>
 			<th width="%5">集团名称</th>
 			<th width="%5">余额</th>
-			<th width="%5">登陆账号</th>
+			<th width="%5">登录账号</th>
 			<th width="%5">创建时间</th>
 			<th width="%5">是否允许透支</th>			
 			<th width="%5">操作人</th>
