@@ -10,6 +10,10 @@ public enum HttpReturnRnums {
 	 */
 	Success(1,"成功"),
 	/**
+	 * 系统错误
+	 */
+	SystemError(-1,"系统错误"),
+	/**
 	 * 参数错误
 	 */
 	ParaError(-2,"参数错误");
