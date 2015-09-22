@@ -117,6 +117,7 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<List<QueryOrder>> getCompliteOrderC(QueryOrderReq para) {
+		para.setPageSize(1000);//TODO 因为WIKI接口没有写分页参数,暂时一次性将所有数据返回,
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getClienterId() == null || para.getClienterId() == 0) {
 			return new HttpResultModel<List<QueryOrder>>()
 			.setStatus(HttpReturnRnums.ParaError.value())
