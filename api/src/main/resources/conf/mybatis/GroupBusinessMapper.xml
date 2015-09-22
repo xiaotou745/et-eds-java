@@ -24,7 +24,7 @@
   <sql id="GetGroupBusinessWhere" >
      1=1
 		<if test="groupBusinessName != null and groupBusinessName !=''">
-			and GroupBusiName like ''%${groupBusinessName}%''
+			and ( GroupBusiName like ''%${groupBusinessName}%'' or LoginName like ''%${groupBusinessName}%'')
 		</if> 
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

@@ -17,9 +17,11 @@
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">集团名称:</label>
+							
 							<div class="col-sm-8">							
-								<input id="groupBusinessName" type="tel" class="form-control"  name="groupBusinessName" onkeydown="return disableEnter(event)"/>								
+								<input id="groupBusinessName"
+								placeholder="集团名称,登录名称"
+								 type="tel" class="form-control"  name="groupBusinessName" onkeydown="return disableEnter(event)"/>								
 							</div>
 						</div>
 					</div>
