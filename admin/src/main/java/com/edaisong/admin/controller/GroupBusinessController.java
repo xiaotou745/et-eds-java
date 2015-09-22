@@ -103,7 +103,7 @@ public class GroupBusinessController {
 		gbr1.setgroupBusinessName(bgm.getbusinessGroupName());
 	 	GroupBusinessModel gbm1 = groupBusinessService.getSingle(gbr1);
 		if(gbm1!=null && gbm1.getGroupbusiname()!=null){
-			response.setMessage("集团商铺名称已存在");
+			response.setMessage("集团名称已存在");
 			response.setResponseCode(0);
 			return response;
 		}

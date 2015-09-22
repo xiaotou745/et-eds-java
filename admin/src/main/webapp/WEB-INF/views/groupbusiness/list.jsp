@@ -200,7 +200,7 @@
 	    var loginName = $('#txtAddLoginName').val().trim();
 	    var pw = $('#txtAddPassword').val().trim();
 	    var confirmPw = $('#txtAddConfirmPassword').val().trim();
-	    var reg=/^[\u4e00-\u9fa5]+$/;
+	    var reg=/[\u4e00-\u9fa5]+/;
 	    
 	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>30){
 	    	alert("集团名称必须在5-30个字符");
