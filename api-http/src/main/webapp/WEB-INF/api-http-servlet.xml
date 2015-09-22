@@ -22,7 +22,7 @@
 	<!-- 配置引用的环境相关引用文件 Start -->
 	<import resource="classpath:conf/core/dev-context.xml" /> 
 	 <!--<import resource="classpath:conf/core/test-context.xml" />-->
-	<!--<import resource="classpath:conf/core/pro-context.xml" /> -->
+<!-- 	<import resource="classpath:conf/core/pro-context.xml" /> -->
 	<!-- <import resource="classpath:conf/core/devtest-context.xml" /> -->
 	<!-- 配置引用的环境相关引用文件 END -->
 
