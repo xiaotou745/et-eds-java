@@ -15,6 +15,14 @@ public class PagedBizBindsReq extends PagedRequestBase{
 	private String bizName;
 	private String startDate;
 	private String endDate;
+	
+	private String bizPhone;
+	public String getBizPhone() {
+		return bizPhone;
+	}
+	public void setBizPhone(String bizPhone) {
+		this.bizPhone = bizPhone;
+	}
 	public int getGroupBusinessId() {
 		return groupBusinessId;
 	}

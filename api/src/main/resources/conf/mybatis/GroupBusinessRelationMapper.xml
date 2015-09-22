@@ -153,6 +153,9 @@
      <if test="bizName != null and bizName!=''">
 	    and b.Name like ''%${bizName}%''
 	</if>
+	<if test="bizPhone != null and bizPhone!=''">
+	    and b.PhoneNo = ''${bizPhone}''
+	</if>
   </sql>
   
   <sql id="getBusinessBindListColumns">
