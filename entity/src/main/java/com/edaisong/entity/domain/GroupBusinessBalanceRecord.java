@@ -13,15 +13,14 @@ public class GroupBusinessBalanceRecord {
     private Integer businessid;
     private String businessname;
     private Double amount;
-    /**
-     * 
-     */
-    private Double groupAmount;
-    public Double getGroupAmount() {
-		return groupAmount;
+    private double groupamount;
+
+
+	public double getGroupamount() {
+		return groupamount;
 	}
-	public void setGroupAmount(Double groupAmount) {
-		this.groupAmount = groupAmount;
+	public void setGroupamount(double groupamount) {
+		this.groupamount = groupamount;
 	}
 
 	private Short status;
