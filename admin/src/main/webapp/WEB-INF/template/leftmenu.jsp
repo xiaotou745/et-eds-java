@@ -40,7 +40,7 @@
 					</span>
 					</a>
 					<ul class="dropdown-menu animated fadeInRight m-t-xs">
-						<li><a href="<%=basePath %>/Account/ChangePassword">设置</a></li>
+						<li><a href="<%=adminUrl %>/Account/ChangePassword">设置</a></li>
 <!-- 						<li><a href="contacts.html">联系方式</a></li> -->
 <!-- 						<li><a href="mailbox.html">消息</a></li> -->
 						<li class="divider"></li>
