@@ -25,8 +25,8 @@
 						<th width="%5">编号</th>
 						<th width="%5">门店名称</th>
 						<th width="%5">注册电话</th>
-						<th width="%5">等审核任务量</th>
-						<th width="%5">等审核订单量</th>
+						<th width="%5">待审核任务量</th>
+						<th width="%5">待审核订单量</th>
 				</tr>
 			</thead>
 			
