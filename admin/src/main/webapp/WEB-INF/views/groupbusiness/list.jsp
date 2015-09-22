@@ -138,7 +138,7 @@
 							<input id="rModifyIsAllowOverdraftN" name="rModifyIsAllowOverdraft" type="radio" value="0"><label for="rModifyIsAllowOverdraftN">否</label>
 			            </div>
 			            <div class="control-group">
-			                <label >登陆账号：</label> 
+			                <label >登录账号：</label> 
 			                    <input  name="txtModifyLoginName" id="txtModifyLoginName" type="text">
 			            </div> 
 			            <div class="control-group">
@@ -204,21 +204,22 @@
 	}
 	//保存集团商户
 	function saveAddGroupBusiness(){
-		var groupBusiName= $('#txtAddGroupBusinessName').val();
-	    var loginName = $('#txtAddLoginName').val();
-	    var pw = $('#txtAddPassword').val();
-	    var confirmPw = $('#txtAddConfirmPassword').val();
-	    var reg=/^[\u4E00-\u9FA5]$/;
-	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>10){
-	    	alert("集团名称必须在5-10个字符");
+		var groupBusiName= $('#txtAddGroupBusinessName').val().trim();
+	    var loginName = $('#txtAddLoginName').val().trim();
+	    var pw = $('#txtAddPassword').val().trim();
+	    var confirmPw = $('#txtAddConfirmPassword').val().trim();
+	    var reg=/^[\u4e00-\u9fa5]+$/;
+	    
+	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>30){
+	    	alert("集团名称必须在5-30个字符");
 	    	return;
 	    }
 	    if (reg.test(loginName)){
-	    	alert("登陆账号不能为中文字符");
+	    	alert("登录账号不能为中文字符");
 	    	return;
 	    }
 	    if(loginName.trim().length <6 || loginName.trim().length>20){
-	    	alert("登陆账号除中文外6-20位字符");
+	    	alert("登录账号除中文外6-20位字符");
 	    	return;
 	    }
 	    if(pw.trim().length <6 || pw.trim().length>20){
@@ -261,21 +262,21 @@
 	}
 	//显示修改集团信息弹框
 	function saveModifyGroupBusiness(){
-		var groupBusiName= $('#txtModifyGroupBusinessName').val();
-	    var loginName = $('#txtModifyLoginName').val();
-	    var pw = $('#txtModifyPassword').val();
-	    var confirmPw = $('#txtModifyConfirmPassword').val();
-	    var reg=/^[\u4E00-\u9FA5]$/;
-	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>10){
-	    	alert("集团名称必须在5-10个字符");
+		var groupBusiName= $('#txtModifyGroupBusinessName').val().trim();
+	    var loginName = $('#txtModifyLoginName').val().trim();
+	    var pw = $('#txtModifyPassword').val().trim();
+	    var confirmPw = $('#txtModifyConfirmPassword').val().trim();
+	    var reg=/^[\u4e00-\u9fa5]+$/;
+	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>30){
+	    	alert("集团名称必须在5-30个字符");
 	    	return;
 	    }
 	    if (reg.test(loginName)){
-	    	alert("登陆账号不能为中文字符");
+	    	alert("登录账号不能为中文字符");
 	    	return;
 	    }
 	    if(loginName.trim().length <6 || loginName.trim().length>20){
-	    	alert("登陆账号除中文外6-20位字符");
+	    	alert("登录账号除中文外6-20位字符");
 	    	return;
 	    }
 	    if( pw.trim().length == 0 &&  confirmPw.trim().length == 0 && pw.trim() == confirmPw.trim()){

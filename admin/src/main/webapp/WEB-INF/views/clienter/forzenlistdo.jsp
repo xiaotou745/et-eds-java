@@ -41,7 +41,7 @@
 
 				<td><%=list.get(i).getClienterPhone() %></td>
 
-				<td><%=list.get(i).getForzenamount() %></td>
+				<td><%=list.get(i).getForzenamountString() %></td>
 
 				<td><%=ParseHelper.ToDateString(list.get(i).getForzendate())%></td>
 
