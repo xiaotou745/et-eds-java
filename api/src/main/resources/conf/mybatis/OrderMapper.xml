@@ -1187,12 +1187,12 @@ declare @startDate date ;
 declare @endDate date ;
 set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate);  
 set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
-select  b.Id as ClienterId ,
-        b.PhoneNo as ClienterPhone ,
-        b.TrueName as ClienterName ,
+select  ISNULL(b.Id,0) as ClienterId ,
+        ISNULL(b.PhoneNo,'未知') as ClienterPhone ,
+        ISNULL(b.TrueName,'未知') as ClienterName ,
         SUM(a.OrderCount) as OrderCount ,
         CONVERT(VARCHAR(100), a.PubDate, 23) as PubDate,
-         MIN (b.HeadPhoto) as ClienterPhoto
+        ISNULL(MIN (b.HeadPhoto),'') as ClienterPhoto
 from    dbo.[order] (nolock)a
         join dbo.clienter (nolock) b on a.clienterId = b.Id
 where   a.Status = 1   and businessId=#{businessId}  
