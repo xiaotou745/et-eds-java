@@ -34,32 +34,31 @@ width: 100%;
 		<div class="col-lg-12">
 			<form method="POST" action="#" class="form-horizontal" id="searchForm">
 				<div class="row">
-					<div class="col-lg-3">
+					<div class="col-lg-2">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">开始日期:</label>
 							<div class="col-sm-8">		
 								<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" value="" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
+                                        <input placeholder="开始日期" type="text" class="form-control" value="" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
                                     </div>                                   					
 
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3">
+					<div class="col-lg-2">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">:</label>
+							<label class="col-sm-1 control-label">到</label>
 							<div class="col-sm-8">		
 								<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input class="form-control" type="text" value="结束日期" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
+                                        <input class="form-control" type="text" placeholder="结束日期" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
                                     </div>                                   					
 
 							</div>
 						</div>
 					</div>
 					
-					<div class="col-lg-3">
+					<div class="col-lg-2">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">用户类型:</label>
 							<div class="col-sm-8">
@@ -71,17 +70,16 @@ width: 100%;
 						</div>
 					</div>
 					
-					<div class="col-lg-3">
+					<div class="col-lg-2">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">门店名称/注册电话:</label>
 							<div class="col-sm-8">
-									<input  class="form-control" type="text" name="selectvalue" id="selectvalue">
+									<input placeholder="门店名称/注册电话"   class="form-control" type="text" name="selectvalue" id="selectvalue">
 							</div>
 						</div>
 					</div>
-				</div>
-<div class="row">				
-						<div class="col-lg-3">
+					
+					
+						<div class="col-lg-2">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">								
@@ -89,8 +87,7 @@ width: 100%;
 							</div>
 						</div>
 					</div>	
-</div>					
-				
+				</div>	
 	
 	
 					
