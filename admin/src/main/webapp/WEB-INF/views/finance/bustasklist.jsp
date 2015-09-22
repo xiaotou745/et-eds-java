@@ -47,7 +47,7 @@ width: 100%;
 					</div>
 					<div class="col-lg-2">
 						<div class="form-group">
-							<label class="col-sm-1 control-label">到</label>
+							
 							<div class="col-sm-8">		
 								<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -57,7 +57,7 @@ width: 100%;
 							</div>
 						</div>
 					</div> 
-					<div class="col-lg-2">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">用户类型:</label>
 							<div class="col-sm-8">
@@ -75,9 +75,7 @@ width: 100%;
 							</div>
 						</div>
 					</div>
-					
-					
-						<div class="col-lg-2">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">								
@@ -86,14 +84,14 @@ width: 100%;
 						</div>
 					</div>	
 				</div>	
-	
-	
-					
 				<div class="row">
-						<div class="col-lg-3">
-						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>
-						</div>
+					
+				</div>
+				<div class="row">
+					<div class="col-lg-3">
+					<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+						style="margin-left: 3px;height:30px;">查询</button>
+					</div>
 				</div>
 			</form>
 		</div>
