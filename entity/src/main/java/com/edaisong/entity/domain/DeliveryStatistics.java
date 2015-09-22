@@ -1,6 +1,9 @@
 package com.edaisong.entity.domain;
 
+import java.util.Date;
+
 public class DeliveryStatistics {
+private String deliveryCompanyID;
 private String deliveryCompanyName;
 private String deliveryCompanyCode;
 private Double clienterTotalSettleMoney;
@@ -8,6 +11,7 @@ private Double companyTotalSettleMoney;
 private Integer taskTotalNum;
 private Integer orderTotalNum;
 private Integer amountTotalNum;
+private String auditDate;
 /**
  * 物流公司名称
  * @author hailongzhao
@@ -119,5 +123,17 @@ public Integer getAmountTotalNum() {
  */
 public void setAmountTotalNum(Integer amountTotalNum) {
 	this.amountTotalNum = amountTotalNum;
+}
+public String getAuditDate() {
+	return auditDate;
+}
+public void setAuditDate(String auditDate) {
+	this.auditDate = auditDate;
+}
+public String getDeliveryCompanyID() {
+	return deliveryCompanyID;
+}
+public void setDeliveryCompanyID(String deliveryCompanyID) {
+	this.deliveryCompanyID = deliveryCompanyID;
 }
 }

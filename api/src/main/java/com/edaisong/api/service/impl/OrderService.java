@@ -1020,7 +1020,8 @@ public class OrderService implements IOrderService {
 		
 		//注释掉对用户状态的判断
 		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass.value()) {
-			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
+			resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
 		}
 		
@@ -1068,7 +1069,8 @@ public class OrderService implements IOrderService {
 		HttpResultModel<QueryOrderBResp> resultModel = new HttpResultModel<QueryOrderBResp>();
 		//验证商家状态
 		if (businessDao.getUserStatus(query.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass.value()) {
-			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
+			resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
 		}
 		QueryOrderBResp queryOrderBResp=orderDao.queryOrderB(query);
@@ -1124,10 +1126,12 @@ public class OrderService implements IOrderService {
 		HttpResultModel<List<QueryOrder>> res = new HttpResultModel<List<QueryOrder>>();
 		if ((type == 0 && businessDao.getUserStatus(query.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass.value())  //B端判断B端逻辑
 				|| (type == 1 && clienterService.getUserStatus(query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass.value())) {//C端判断C端逻辑
-			res.setStatus(QueryOrderReturnEnum.ErrStatus.value()).setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+			res.setStatus(QueryOrderReturnEnum.ErrStatus.value());
+			res.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return res;
 		}
-		return res.setResult(orderDao.queryOrder(query));
+		res.setResult(orderDao.queryOrder(query));
+		return res;
 	}
 	/**
 	 * 门店任务审核列表 

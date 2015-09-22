@@ -28,6 +28,12 @@ import com.edaisong.entity.resp.OrderStatisticsCResp;
 @Service
 public class OrderHttpService implements IOrderHttpService {
 
+	@Override
+	public String testVal() {
+		// TODO Auto-generated method stub
+		return "123";
+	}
+
 	@Autowired
 	private IOrderService orderService;
 
@@ -42,9 +48,10 @@ public class OrderHttpService implements IOrderHttpService {
 	@Override
 	public HttpResultModel<OrderStatisticsBResp> orderStatisticsB(OrderStatisticsBReq para) {
 		if (para.getMonthInfo() == null || para.getMonthInfo().trim().isEmpty() || para.getBusinessId() == 0 ) {
-			return new HttpResultModel<OrderStatisticsBResp>()
-			.setStatus(HttpReturnRnums.ParaError.value())
-			.setMessage(HttpReturnRnums.ParaError.desc());
+			HttpResultModel<OrderStatisticsBResp> result=new HttpResultModel<OrderStatisticsBResp>();
+			result.setStatus(HttpReturnRnums.ParaError.value());
+			result.setMessage(HttpReturnRnums.ParaError.desc());
+			return result;  
 		}
 		return orderService.getOrderStatisticsB(para);
 	}
@@ -63,7 +70,10 @@ public class OrderHttpService implements IOrderHttpService {
 				|| para.getBusinessId() == 0
 				|| (para.getStatus() != OrderStatus.New.value() && para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
-			return    new HttpResultModel<QueryOrderBResp>().setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
+			HttpResultModel<QueryOrderBResp> result=new HttpResultModel<QueryOrderBResp>();
+			result.setStatus(HttpReturnRnums.ParaError.value());
+			result.setMessage(HttpReturnRnums.ParaError.desc());
+			return result;   
 		}
 		para.setDateInfo(null);
 		para.setClienterId(null);
@@ -85,7 +95,10 @@ public class OrderHttpService implements IOrderHttpService {
 				|| para.getClienterId() == 0
 				|| ( para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
 						.value())) {
-			return  new HttpResultModel<QueryOrderCResp>().setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
+			HttpResultModel<QueryOrderCResp> result=new HttpResultModel<QueryOrderCResp>();
+			result.setStatus(HttpReturnRnums.ParaError.value());
+			result.setMessage(HttpReturnRnums.ParaError.desc());
+			return result; 
 		}
 		para.setDateInfo(null);
 		para.setBusinessId(null);
@@ -102,7 +115,10 @@ public class OrderHttpService implements IOrderHttpService {
 	@Override
 	public HttpResultModel<List<QueryOrder>> getCompliteOrderB(QueryOrderReq para) {
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getBusinessId() == null || para.getBusinessId() == 0) {
-			new HttpResultModel<List<QueryOrder>>().setStatus(HttpReturnRnums.ParaError.value()).setMessage(HttpReturnRnums.ParaError.desc());
+			HttpResultModel<List<QueryOrder>> result=new HttpResultModel<List<QueryOrder>>();
+			result.setStatus(HttpReturnRnums.ParaError.value());
+			result.setMessage(HttpReturnRnums.ParaError.desc());
+			return result; 
 		}
 		return orderService.getCompliteOrder(para,0);
 	}
@@ -119,9 +135,10 @@ public class OrderHttpService implements IOrderHttpService {
 	public HttpResultModel<List<QueryOrder>> getCompliteOrderC(QueryOrderReq para) {
 		para.setPageSize(1000);//TODO 因为WIKI接口没有写分页参数,暂时一次性将所有数据返回,
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getClienterId() == null || para.getClienterId() == 0) {
-			return new HttpResultModel<List<QueryOrder>>()
-			.setStatus(HttpReturnRnums.ParaError.value())
-			.setMessage(HttpReturnRnums.ParaError.desc());
+			HttpResultModel<List<QueryOrder>> result=new HttpResultModel<List<QueryOrder>>();
+			result.setStatus(HttpReturnRnums.ParaError.value());
+			result.setMessage(HttpReturnRnums.ParaError.desc());
+			return result; 
 		}
 		return orderService.getCompliteOrder(para,1);
 	}

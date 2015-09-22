@@ -22,7 +22,7 @@
 	<!-- 配置引用的环境相关引用文件 Start -->
 	<import resource="classpath:conf/core/dev-context.xml" /> 
 	 <!--<import resource="classpath:conf/core/test-context.xml" />-->
-	<!--<import resource="classpath:conf/core/pro-context.xml" /> -->
+<!-- 	<import resource="classpath:conf/core/pro-context.xml" /> -->
 	<!-- <import resource="classpath:conf/core/devtest-context.xml" /> -->
 	<!-- 配置引用的环境相关引用文件 END -->
 
@@ -53,12 +53,12 @@
 			<entry key="en" value="en-gb" />
 		</jaxrs:languageMappings>
 		<jaxrs:providers>
+		    <bean class="com.edaisong.api_http.common.GlobalExceptionHandler"/>  
 			<ref bean="jacksonProvider" />
 			<!-- <ref bean="jaxbProvider" /> -->
 			<!-- <ref bean="exceptionHandler" /> -->
 		</jaxrs:providers>
 	</jaxrs:server>
-	<bean id="exceptionHandler" class="com.edaisong.api_http.common.GlobalExceptionHandler" />
 
 	<!-- 返回值中会自动删除值为null的属性 ,反序列化时，会自动忽略无效的属性 -->
 	<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
