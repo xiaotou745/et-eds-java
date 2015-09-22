@@ -8,11 +8,11 @@
 <%@page import="com.edaisong.core.util.ParseHelper"%> 
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.entity.domain.BusTaskList"%>
-<%String basePath =PropertyUtils.getProperty("static.admin.url");%>
+<%String basePath =PropertyUtils.getProperty("java.admin.url");%>
 <%String StarStr=request.getAttribute("sDate").toString(); %>
 <%String EndStr=request.getAttribute("eDate").toString();%>
 
-<%String netUrl=PropertyUtils.getProperty("dynamic.admin.url");
+<%String netUrl=PropertyUtils.getProperty("net.admin.url");
 //TODO 以后java开放订单审核管理 这里的门店名称跳转就要按照登录来源区分跳转 茹化肖
 	PagedResponse<BusTaskList> data = (PagedResponse<BusTaskList>) request.getAttribute("listData");
 %>

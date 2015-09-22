@@ -5,7 +5,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%
-	String basePath =PropertyUtils.getProperty("static.admin.url");
+	String basePath =PropertyUtils.getProperty("java.admin.url");
 List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleData");
 %>
 <script src="<%=basePath%>/js/bootstrap-treeview.js"></script>

@@ -14,7 +14,7 @@
 <%
 PagedResponse<BusinessClienterRelationModel> responsePageList=	(PagedResponse<BusinessClienterRelationModel>)request.getAttribute("listData");
 List<BusinessClienterRelationModel> data = responsePageList.getResultList();
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
 if(data == null){
 	data = new ArrayList<BusinessClienterRelationModel>();
 }%>

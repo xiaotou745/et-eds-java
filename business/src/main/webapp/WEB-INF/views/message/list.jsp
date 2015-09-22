@@ -14,7 +14,7 @@
 <%@page import="com.edaisong.core.util.EnumHelper"%>
 
 <%	
-String basePath =PropertyUtils.getProperty("static.business.url");
+String basePath =PropertyUtils.getProperty("java.business.url");
 %>
 <div class="top cb">
 		<h3 class="cb">消息中心</h3>

@@ -7,7 +7,7 @@
 <%@page import="com.edaisong.entity.Account"%>
 <%@page import="java.util.List"%>
 <%
-	String basePath =PropertyUtils.getProperty("static.admin.url");
+	String basePath =PropertyUtils.getProperty("java.admin.url");
 %>
 
 <div class="wrapper wrapper-content animated fadeInRight">

@@ -6,7 +6,7 @@
 <%@page import="com.edaisong.core.util.EnumHelper"%>
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("java.admin.url");
 %>
 
 <div class="wrapper wrapper-content animated fadeInRight">

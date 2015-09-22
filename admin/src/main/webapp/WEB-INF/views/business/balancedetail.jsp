@@ -7,7 +7,7 @@
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%@page import="com.edaisong.core.enums.BusinessBalanceRecordRecordType"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("java.admin.url");
 	BusinessDetailModel detail = (BusinessDetailModel) request
 			.getAttribute("detail");
 	double chargeTotalAmount = (double) request

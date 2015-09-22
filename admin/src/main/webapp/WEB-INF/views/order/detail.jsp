@@ -14,7 +14,7 @@
 <%@page import="com.edaisong.core.enums.MealsSettleMode"%>
 <%@page import="java.lang.StringBuilder"%>
 <%
-	String basePath =PropertyUtils.getProperty("static.admin.url");
+	String basePath =PropertyUtils.getProperty("java.admin.url");
     OrderListModel orderListModel=	(OrderListModel)request.getAttribute("orderListModel");
 	List<OrderSubsidiesLog> orderSubsidiesLogs=	(List<OrderSubsidiesLog>)request.getAttribute("orderSubsidiesLogs");
 	boolean isShowAuditBtn=(boolean)request.getAttribute("isShowAuditBtn");

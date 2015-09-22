@@ -138,7 +138,7 @@ public class OrderController {
 			return;
 		}else {
 			//如果查询到的数据为空,则跳转到收支详情页
-			String basePath = PropertyUtils.getProperty("static.admin.url");
+			String basePath = PropertyUtils.getProperty("java.admin.url");
 			response.sendRedirect(basePath+"/order/list");
 		}
 	}

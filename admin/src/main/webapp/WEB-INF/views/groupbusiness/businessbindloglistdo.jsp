@@ -14,7 +14,7 @@
 <%
 PagedResponse<GroupBusinessBindOptionLogModel> responsePageList=	(PagedResponse<GroupBusinessBindOptionLogModel>)request.getAttribute("listData");
 List<GroupBusinessBindOptionLogModel> data = responsePageList.getResultList();
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
 if(data == null){
 	data = new ArrayList<GroupBusinessBindOptionLogModel>();
 }%>

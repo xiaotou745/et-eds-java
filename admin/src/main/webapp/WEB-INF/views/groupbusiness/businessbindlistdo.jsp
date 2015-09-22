@@ -14,7 +14,7 @@
 <%
 PagedResponse<GroupBusinessRelationModel> responsePageList=	(PagedResponse<GroupBusinessRelationModel>)request.getAttribute("listData");
 List<GroupBusinessRelationModel> data = responsePageList.getResultList();
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
 if(data == null){
 	data = new ArrayList<GroupBusinessRelationModel>();
 	
@@ -24,11 +24,11 @@ int loginFrom=context.getLoginFrom();
 String alink="";
 String alink2="";
 if (loginFrom==0) {
-	alink=PropertyUtils.getProperty("dynamic.admin.url") + "/BusinessManager/BusinessManager";
-	alink2=PropertyUtils.getProperty("dynamic.admin.url") + "/BusinessManager/BusinessDetail";
+	alink=PropertyUtils.getProperty("net.admin.url") + "/BusinessManager/BusinessManager";
+	alink2=PropertyUtils.getProperty("net.admin.url") + "/BusinessManager/BusinessDetail";
 }else {
-	alink=PropertyUtils.getProperty("static.admin.url")+"/business/list";
-	alink2=PropertyUtils.getProperty("static.admin.url")+"/business/balancedetail";
+	alink=PropertyUtils.getProperty("java.admin.url")+"/business/list";
+	alink2=PropertyUtils.getProperty("java.admin.url")+"/business/balancedetail";
 }
 
 %>

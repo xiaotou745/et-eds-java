@@ -9,7 +9,7 @@
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 
 <%
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
 	
 	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 	List<DeliveryCompany> dCListData=	(List<DeliveryCompany>)request.getAttribute("dCListData");

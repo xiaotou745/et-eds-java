@@ -10,8 +10,8 @@
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%	
-String basePath =PropertyUtils.getProperty("static.admin.url");
-String adminPath =PropertyUtils.getProperty("dynamic.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
+String adminPath =PropertyUtils.getProperty("net.admin.url");
 %>
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">

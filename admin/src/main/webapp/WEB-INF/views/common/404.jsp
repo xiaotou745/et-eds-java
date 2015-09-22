@@ -2,7 +2,7 @@
 <%@page isErrorPage="true"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("java.admin.url");
     response.setStatus(HttpServletResponse.SC_OK);
 %>
 <img src="<%=basePath%>/img/404sz.jpg" id="img1" />

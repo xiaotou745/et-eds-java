@@ -3,7 +3,7 @@
 	pageEncoding="utf-8"%>
 		<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
 <%
-	String basePath =PropertyUtils.getProperty("static.admin.url");
+	String basePath =PropertyUtils.getProperty("java.admin.url");
 %>
 <div class="row wrapper border-bottom white-bg page-heading">
 	<div class="col-lg-10">

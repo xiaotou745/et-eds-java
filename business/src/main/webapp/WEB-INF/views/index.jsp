@@ -9,7 +9,7 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 
 <%
-	String basePath = PropertyUtils.getProperty("static.business.url");
+	String basePath = PropertyUtils.getProperty("java.business.url");
 	BusinessOrderSummaryModel bos = (BusinessOrderSummaryModel)request.getAttribute("bos");
 	BusinessMessage message = (BusinessMessage)request.getAttribute("message");
 	List<BusiPubOrderTimeStatisticsModel> pubOrderTimestatistics = (List<BusiPubOrderTimeStatisticsModel>)request.getAttribute("pubOrderTimestatistics");
