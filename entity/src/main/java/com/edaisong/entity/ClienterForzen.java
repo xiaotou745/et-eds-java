@@ -1,5 +1,6 @@
 package com.edaisong.entity;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class ClienterForzen {
@@ -63,6 +64,10 @@ public class ClienterForzen {
 
     public Double getForzenamount() {
         return forzenamount;
+    }
+    
+    public String getForzenamountString(){
+    	return new DecimalFormat("0.00").format(forzenamount);
     }
 
     public void setForzenamount(Double forzenamount) {

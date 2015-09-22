@@ -9,7 +9,7 @@ public enum QueryOrderReturnEnum {
 	/**
 	 * 账号状态出错
 	 */
-	ErrStatus(-500,"账号状态出错");
+	ErrStatus(-500,"商铺尚未审核通过");
 	private int value = 0;
 	private String desc;
 	private QueryOrderReturnEnum(int value, String desc) { // 必须是private的，否则编译错误
