@@ -20,8 +20,8 @@
 						<th width="%5">编号</th>
 						<th width="%5">门店名称</th>
 						<th width="%5">注册电话</th>
-						<th width="%5">任务量</th>
-						<th width="%5">订单量</th>
+						<th width="%5">等审核任务量</th>
+						<th width="%5">等审核订单量</th>
 				</tr>
 			</thead>
 			
@@ -34,9 +34,9 @@
 					 <tr>
 						<td><%=list.get(i).getBusinessId() %></td>
 						<td><a target='_blank' href='<%=netUrl%>/Order/OrderAudit?businessName=<%=list.get(i).getName()%>&businessPhone=<%=list.get(i).getPhoneNo()%>&startDate=<%=StarStr%>&endDate=<%=EndStr%>'><%=list.get(i).getName()%></a></td>
-						<td><%=list.get(i).getPhoneNo() %></td>
-						<td><%=list.get(i).getTaskCount() %></td>
+						<td><%=list.get(i).getPhoneNo() %></td>						
 						<td><%=list.get(i).getOrderCount() %></td>
+						<td><%=list.get(i).getTaskCount() %></td>
 					</tr>
 				 <%}%> 	 	
 			</tbody>
