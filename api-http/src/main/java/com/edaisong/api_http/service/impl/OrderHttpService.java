@@ -80,6 +80,7 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq para) {
+		para.setPageSize(100);//TODO  该接口暂时不做分页 目前只取100条数据 茹化肖
 		if ( para.getClienterId() == null
 				|| para.getClienterId() == 0
 				|| ( para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
