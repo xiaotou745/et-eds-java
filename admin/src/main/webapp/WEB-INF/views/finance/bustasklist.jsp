@@ -34,6 +34,24 @@ width: 100%;
 		<div class="col-lg-12">
 			<form method="POST" action="#" class="form-horizontal" id="searchForm">
 				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">用户类型:</label>
+							<div class="col-sm-8">
+								<select id=selecttype class="form-control m-b">
+									<option value='1'>门店名称</option>
+									<option value='2'>注册电话</option>
+								</select>
+							</div>
+						</div>
+					</div> 
+					<div class="col-lg-2">
+						<div class="form-group">
+							<div class="col-sm-8">
+									<input style="width:160px" placeholder="门店名称/注册电话" class="form-control" type="text" name="selectvalue" id="selectvalue" onkeydown="return disableEnter(event)">
+							</div>
+						</div>
+					</div>
 					<div class="col-lg-2">
 						<div class="form-group">
 							<div class="col-sm-8">		
@@ -57,24 +75,8 @@ width: 100%;
 							</div>
 						</div>
 					</div> 
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">用户类型:</label>
-							<div class="col-sm-8">
-								<select id=selecttype class="form-control m-b">
-									<option value='1'>门店名称</option>
-									<option value='2'>注册电话</option>
-								</select>
-							</div>
-						</div>
-					</div> 
-					<div class="col-lg-2">
-						<div class="form-group">
-							<div class="col-sm-8">
-									<input style="width:160px" placeholder="门店名称/注册电话" class="form-control" type="text" name="selectvalue" id="selectvalue" onkeydown="return disableEnter(event)">
-							</div>
-						</div>
-					</div>
+					
+					
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
