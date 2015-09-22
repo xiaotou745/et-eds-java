@@ -23,6 +23,7 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.business.common.UserContext"%>
 <%@page import="com.edaisong.core.util.OrderNoHelper"%>
+<%@page import="com.edaisong.core.util.ParseHelper"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
@@ -57,7 +58,10 @@
 		//订单名称
 		String subject =groupInfo;// new String(request.getParameter("WIDsubject").getBytes("ISO-8859-1"),"UTF-8");
 		//必填		//付款金额
-		String total_fee = new String(request.getParameter("WIDtotal_fee").getBytes("ISO-8859-1"),"UTF-8");
+		double fee=ParseHelper.ToDouble(request.getParameter("WIDtotal_fee"), 0);
+		String total_fee = Double.toString(fee);
+		
+
 		//total_fee="0.01";
 		//必填
 		//订单描述
