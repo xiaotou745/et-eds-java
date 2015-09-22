@@ -40,12 +40,11 @@ String adminPath =PropertyUtils.getProperty("dynamic.admin.url");
 		%>
 		<tr>
 			<td><%=i + 1%></td>
-			<td><a class="blue2" href="<%=adminPath%>/DeliveryManager/OrderManager?deliverID=<%=data.get(i).getDeliveryCompanyID()%>"><%=data.get(i).getDeliveryCompanyName()%></a>
-</td>
+			<td><%=data.get(i).getDeliveryCompanyName()%></td>
 			<td><%=data.get(i).getDeliveryCompanyCode()%> </td>
 			<td><%=data.get(i).getClienterTotalSettleMoney()%></td>
 			<td><%=data.get(i).getCompanyTotalSettleMoney()%></td>
-			<td><%=data.get(i).getTaskTotalNum()%></td>
+			<td><a class="blue2" href="<%=adminPath%>/DeliveryManager/OrderManager?deliverID=<%=data.get(i).getDeliveryCompanyID()%>"><%=data.get(i).getTaskTotalNum()%></a></td>
 			<td><%=data.get(i).getOrderTotalNum()%></td>
 			<td><%=data.get(i).getAmountTotalNum()%></td>
 			<td><%=data.get(i).getAuditDate()%></td>
