@@ -40,7 +40,7 @@ public class LogServiceBLL {
 			case "business":
 				businessLogger.info(jsonMsg);
 				break;
-			case "apiHttp":
+			case "apihttp":
 				apiHttpLogger.info(jsonMsg);
 				break;
 			default:

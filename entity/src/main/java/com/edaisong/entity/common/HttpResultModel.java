@@ -21,9 +21,8 @@ public class HttpResultModel<T> {
 	 * 
 	 * @param status
 	 */
-	public HttpResultModel<T> setStatus(int status) {
+	public void setStatus(int status) {
 		Status = status;
-		return this;
 	}
 
 	/**
@@ -40,9 +39,8 @@ public class HttpResultModel<T> {
 	 * 
 	 * @param message
 	 */
-	public HttpResultModel<T> setMessage(String message) {
+	public void setMessage(String message) {
 		Message = message;
-		return this;
 	}
 
 	/**
@@ -57,9 +55,8 @@ public class HttpResultModel<T> {
 	 * 
 	 * @param result
 	 */
-	public HttpResultModel<T> setResult(T result) {
+	public void setResult(T result) {
 		Result = result;
-		return this;
 	}
 
 }
