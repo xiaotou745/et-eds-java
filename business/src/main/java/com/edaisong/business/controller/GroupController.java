@@ -86,6 +86,9 @@ public class GroupController {
 			record.setPaytype(request.getParameter("WIDdefaultbank"));
 			record.setOrderno(request.getParameter("WIDout_trade_no"));
 			record.setPayamount(ParseHelper.ToDouble(request.getParameter("WIDtotal_fee"), 0));
+			if (record.getPayamount()<1||record.getPayamount()>100000) {
+				throw new RuntimeException("充值金额必须在1到100000之间");
+			}
 			record.setPaystatus(0);
 			record.setPayby("");
 			record.setRequesttime(new Date());
