@@ -96,10 +96,16 @@ public class ParseHelper {
 	 */
 	public static Date ToDate(String o) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
+		if (o.length()==10) {
+			sdf = new SimpleDateFormat("yyyy-MM-dd");
+		}else if(o.length()<10) {
+			sdf =new SimpleDateFormat("yyyy-M-d");
+		}
 		Date defaultDate = null;
 		try {
 			defaultDate = sdf.parse(o);
-		} catch (ParseException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return defaultDate;
 	}

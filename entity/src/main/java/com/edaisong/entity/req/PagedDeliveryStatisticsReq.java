@@ -1,11 +1,15 @@
 package com.edaisong.entity.req;
 
+import java.util.Date;
+
 import com.edaisong.entity.common.PagedRequestBase;
 
 public class PagedDeliveryStatisticsReq extends PagedRequestBase{
+private String settlementYear;
 private String settlementMonth;
 private String deliveryName;
-private String settlementEndMonth;
+private String start;
+private String end;
 /**
  * 结算年月
  * @author hailongzhao
@@ -42,10 +46,23 @@ public String getDeliveryName() {
 public void setDeliveryName(String deliveryName) {
 	this.deliveryName = deliveryName;
 }
-public String getSettlementEndMonth() {
-	return settlementEndMonth;
+
+public String getSettlementYear() {
+	return settlementYear;
 }
-public void setSettlementEndMonth(String settlementEndMonth) {
-	this.settlementEndMonth = settlementEndMonth;
+public void setSettlementYear(String settlementYear) {
+	this.settlementYear = settlementYear;
+}
+public String getStart() {
+	return start;
+}
+public void setStart(String start) {
+	this.start = start;
+}
+public String getEnd() {
+	return end;
+}
+public void setEnd(String end) {
+	this.end = end;
 }
 }

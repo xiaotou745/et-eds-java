@@ -151,7 +151,6 @@ public class AccountController {
 		loginUser.setUserName(account.getUsername());
 		CookieUtils.setCookie(request,response,"admin", LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
 				true);
-		UserContext.setLoginFromJavaAdmin(account.getId());
 		response.sendRedirect(basePath+"/order/list");
 	}
 	
@@ -169,8 +168,7 @@ public class AccountController {
 		// 删除登录cookie
 		CookieUtils.deleteCookie(request, response,"admin", LoginUtil.LOGIN_COOKIE_NAME);
 		UserContext context=UserContext.getCurrentContext(request);
-		int loginFrom=UserContext.getLoginFrom(context.getId());
-		UserContext.clearLoginFrom(context.getId());
+		int loginFrom=context.getLoginFrom();
 		if (loginFrom==0) {
 			response.sendRedirect(PropertyUtils.getProperty("dynamic.admin.url") + "/account/login");
 		}else {
