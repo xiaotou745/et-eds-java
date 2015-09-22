@@ -2,7 +2,7 @@
 <%@page isErrorPage="true"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.business.url");
+	String basePath = PropertyUtils.getProperty("java.business.url");
 %>
 <!DOCTYPE html>
 <html>

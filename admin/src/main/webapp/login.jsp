@@ -6,7 +6,7 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.admin.common.LoginUtil"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("java.admin.url");
 %>
 <%
 	boolean isLogin = LoginUtil.checkIsLogin(request,response);

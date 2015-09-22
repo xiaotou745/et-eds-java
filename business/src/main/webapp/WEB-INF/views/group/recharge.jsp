@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%	
-String basePath =PropertyUtils.getProperty("static.business.url");
+String basePath =PropertyUtils.getProperty("java.business.url");
 %>
 <div class="top cb">
   <h3 class="cb">充值</h3>

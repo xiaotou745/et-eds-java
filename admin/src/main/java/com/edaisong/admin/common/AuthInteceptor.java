@@ -20,7 +20,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 	@Autowired
 	private IAuthorityMenuClassService authorityMenuClassService;
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String basePath =PropertyUtils.getProperty("static.admin.url");
+		String basePath =PropertyUtils.getProperty("java.admin.url");
 		if (handler instanceof HandlerMethod) {
 			// 判断是否登录
 			boolean isLogin = LoginUtil.checkIsLogin(request,response);

@@ -14,7 +14,7 @@
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
 String subsidyConfig=request.getAttribute("subsidyConfig").toString();
 
 String finalCheckPicUrl=request.getAttribute("finalCheckPicUrl").toString();

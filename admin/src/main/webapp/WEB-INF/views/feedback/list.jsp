@@ -12,7 +12,7 @@
 <%@page import="com.edaisong.core.enums.UserType"%>
 
 <%
-	String basePath =PropertyUtils.getProperty("static.admin.url");	
+	String basePath =PropertyUtils.getProperty("java.admin.url");	
  	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />

@@ -8,7 +8,7 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
 List<AreaModel> openCityList=	(List<AreaModel>)request.getAttribute("openCityList");
 List<BusinessGroup> businessGroupListData=	(List<BusinessGroup>)request.getAttribute("businessGroupListData");
 List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");

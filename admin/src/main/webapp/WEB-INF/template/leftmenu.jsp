@@ -12,8 +12,8 @@
 <%@ page language="java" import="java.util.ArrayList"%>
 <%@page import="com.edaisong.admin.common.UserContext"%>
 <%
-	String basePath =PropertyUtils.getProperty("static.admin.url");
-	String adminUrl =PropertyUtils.getProperty("dynamic.admin.url");
+	String basePath =PropertyUtils.getProperty("java.admin.url");
+	String adminUrl =PropertyUtils.getProperty("net.admin.url");
 	IAuthorityMenuClassService menuService = SpringBeanHelper.getCustomBeanByType(IAuthorityMenuClassService.class);
 	
 	UserContext context = UserContext.getCurrentContext(request);

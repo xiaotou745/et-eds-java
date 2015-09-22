@@ -92,7 +92,7 @@ public class AccountController {
 	public void login(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String username, @RequestParam String password, @RequestParam String code,
 			 Integer rememberMe) throws ServletException, IOException {
-		String basePath = PropertyUtils.getProperty("static.admin.url");
+		String basePath = PropertyUtils.getProperty("java.admin.url");
 		Date loginTime = new Date();
 		String sessionCode = LoginHelper.getAuthCode(request,LoginUtil.ADMIN_JSESSIONID);
 		//一次性验证码,防止暴力破解
@@ -170,9 +170,9 @@ public class AccountController {
 		UserContext context=UserContext.getCurrentContext(request);
 		int loginFrom=context.getLoginFrom();
 		if (loginFrom==0) {
-			response.sendRedirect(PropertyUtils.getProperty("dynamic.admin.url") + "/account/login");
+			response.sendRedirect(PropertyUtils.getProperty("net.admin.url") + "/account/login");
 		}else {
-			response.sendRedirect(PropertyUtils.getProperty("static.admin.url") + "/");
+			response.sendRedirect(PropertyUtils.getProperty("java.admin.url") + "/");
 		}
 	}
 }

@@ -10,7 +10,7 @@
 <%@page import="com.edaisong.admin.common.UserContext"%>
 <%@page import="com.edaisong.core.consts.AuthCode"%>
 <%
-	String basePath =PropertyUtils.getProperty("static.admin.url");
+	String basePath =PropertyUtils.getProperty("java.admin.url");
 boolean business_AuditPass=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_AuditPass);
 boolean business_Modify=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_Modify);
 boolean business_Recharge=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_Recharge);

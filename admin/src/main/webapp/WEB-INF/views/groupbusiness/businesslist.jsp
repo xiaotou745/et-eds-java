@@ -8,7 +8,7 @@
 <%@page import="com.edaisong.core.enums.BusinessBalanceRecordRecordType"%>
 <%@page import="com.edaisong.entity.domain.GroupBusinessModel"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("java.admin.url");
 	GroupBusinessModel detail = (GroupBusinessModel)request.getAttribute("detail");
 %>
 

@@ -8,16 +8,16 @@
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.entity.Mark" %>
-<%String basePath = PropertyUtils.getProperty("static.admin.url");
+<%String basePath = PropertyUtils.getProperty("java.admin.url");
 //if (loginFrom==0) {
-	//alink=PropertyUtils.getProperty("dynamic.admin.url") + "/BusinessManager/BusinessManager";
-	//alink2=PropertyUtils.getProperty("dynamic.admin.url") + "/BusinessManager/BusinessDetail";
+	//alink=PropertyUtils.getProperty("net.admin.url") + "/BusinessManager/BusinessManager";
+	//alink2=PropertyUtils.getProperty("net.admin.url") + "/BusinessManager/BusinessDetail";
 //}else {
-	//alink=PropertyUtils.getProperty("static.admin.url")+"/business/list";
-	//alink2=PropertyUtils.getProperty("static.admin.url")+"/business/balancedetail";
+	//alink=PropertyUtils.getProperty("java.admin.url")+"/business/list";
+	//alink2=PropertyUtils.getProperty("java.admin.url")+"/business/balancedetail";
 //}
-String busLink=PropertyUtils.getProperty("dynamic.admin.url") + "/BusinessManager/BusinessManager";
-String cliLink=PropertyUtils.getProperty("dynamic.admin.url") + "/SuperManManager/SuperManManager";
+String busLink=PropertyUtils.getProperty("net.admin.url") + "/BusinessManager/BusinessManager";
+String cliLink=PropertyUtils.getProperty("net.admin.url") + "/SuperManManager/SuperManManager";
 %>
 <%PagedResponse<Mark> data = (PagedResponse<Mark>) request.getAttribute("listData");%>
 <% if(data.getResultList()==null||data.getResultList().size()==0) 

@@ -131,6 +131,6 @@ public class AccountController {
 	@RequestMapping(value = "logoff")
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		CookieUtils.deleteCookie(request, response,"business", LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
-		response.sendRedirect(PropertyUtils.getProperty("static.business.url") + "/");
+		response.sendRedirect(PropertyUtils.getProperty("java.business.url") + "/");
 	}
 }

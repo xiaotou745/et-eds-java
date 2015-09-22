@@ -16,7 +16,7 @@
 
 
 <%	
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
 	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 	List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
 %>

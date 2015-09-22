@@ -25,9 +25,9 @@ int loginFrom=context.getLoginFrom();
 
 String basePath="";
 if (loginFrom==1) {
-	basePath =PropertyUtils.getProperty("static.admin.url")+ "/order/detail"; 
+	basePath =PropertyUtils.getProperty("java.admin.url")+ "/order/detail"; 
 }else {
-	basePath=PropertyUtils.getProperty("dynamic.admin.url") + "/Order/OrderDetail"; 
+	basePath=PropertyUtils.getProperty("net.admin.url") + "/Order/OrderDetail"; 
 }
 %>
 <table

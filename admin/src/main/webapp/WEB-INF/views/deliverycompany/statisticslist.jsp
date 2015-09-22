@@ -16,7 +16,7 @@
 
 
 <%	
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
 %>
 <style type="text/css">
 #map_contain {

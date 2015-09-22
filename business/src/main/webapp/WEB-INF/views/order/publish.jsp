@@ -4,7 +4,7 @@
 <%@page import="com.edaisong.entity.domain.BusinessModel"%>
 
 <%
-	String basePath = PropertyUtils.getProperty("static.business.url");
+	String basePath = PropertyUtils.getProperty("java.business.url");
     BusinessModel businessModel=(BusinessModel) request.getAttribute("businessModel");//商家基本信息
 %>
 <div class="top cb">

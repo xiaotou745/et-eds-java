@@ -38,7 +38,7 @@
 		%>充值金额或支付方式没有传递或没有登录<%
 	}else{
 		////////////////////////////////////请求参数//////////////////////////////////////
-		String basePath =PropertyUtils.getProperty("static.business.url");
+		String basePath =PropertyUtils.getProperty("java.business.url");
 		String groupInfo="易代送商家中心集团充值："+context.getBusinessName();
 		//groupInfo="zhaohlrecharge";
 		//支付类型
