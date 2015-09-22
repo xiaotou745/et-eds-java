@@ -1,5 +1,6 @@
 package com.edaisong.api.service.inter;
 
+import java.text.ParseException;
 import java.util.List;
 
 import com.edaisong.entity.Feedback;
@@ -14,7 +15,7 @@ import com.edaisong.entity.req.PagedGlobalConfigReq;
 
 public interface IFeedbackService {
 	 
-	 PagedResponse<FeedbackModel> query(PagedFeedbackReq req);
+	 PagedResponse<FeedbackModel> query(PagedFeedbackReq req) throws ParseException;
 	 
 	  int  addByData(Feedback record)  ;
 }

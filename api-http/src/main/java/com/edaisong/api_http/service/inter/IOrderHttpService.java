@@ -29,6 +29,17 @@ import com.edaisong.entity.resp.QueryOrderCResp;
 @Produces("application/json; charset=utf-8")
 // 当前类的所有方法都返回json格式的数据
 public interface IOrderHttpService {
+	
+	/**
+	 * 线上测试方法
+	 * 窦海超
+	 * 2015年9月22日 11:57:16
+	 * */
+	@POST
+	@Path("testval")
+	public String testVal();
+	
+	
 	/**
 	 * B端任务统计接口
 	 * 

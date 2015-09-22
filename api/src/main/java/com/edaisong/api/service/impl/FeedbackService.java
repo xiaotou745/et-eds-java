@@ -1,5 +1,7 @@
 package com.edaisong.api.service.impl;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,9 @@ import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.enums.UserType;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
+import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.Feedback;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.common.PagedResponse;
@@ -34,17 +38,19 @@ public class FeedbackService implements IFeedbackService {
 	@Override
 	public int  addByData(Feedback record) 
 	{
-/*		Feedback record=new Feedback();		
-		record.setFeedbackid(2121);
-		record.setUsertype((short)1);
-		record.setFeedbacktype((short)2);
-		record.setContent("测试");
-		return feedbackDao.insert(record);*/
 		return feedbackDao.insert(record);
 	}
 	
 	@Override
-	public PagedResponse<FeedbackModel> query(PagedFeedbackReq req){
+	public PagedResponse<FeedbackModel> query(PagedFeedbackReq req)  throws ParseException{
+		
+		if (!StringUtils.isEmpty(req.getEndTime()))		
+		{		
+			Date finalDt = ParseHelper.ToDate(req.getEndTime(), "yyyy-MM-dd");
+			finalDt = ParseHelper.plusDate(finalDt, 2, 1);
+			req.setEndTime(ParseHelper.ToDateString(finalDt, "yyyy-MM-dd"));
+		}
+		
 		return feedbackDao.query(req);
 	}		
 
