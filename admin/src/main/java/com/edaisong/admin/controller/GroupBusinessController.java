@@ -257,7 +257,7 @@ public class GroupBusinessController {
 		}
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "集团");
-		model.addObject("currenttitle", "绑定门店");
+		model.addObject("currenttitle", "绑定记录查询");
 		model.addObject("viewPath", "groupbusiness/businessbindloglist");
 		model.addObject("detail", detail);
 		return model;
