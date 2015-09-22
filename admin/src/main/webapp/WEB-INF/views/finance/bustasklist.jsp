@@ -1,4 +1,8 @@
 
+<%@page import="com.edaisong.core.util.ParseHelper"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
@@ -39,7 +43,7 @@ width: 100%;
 							<div class="col-sm-8">		
 								<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input style="width:120px" placeholder="开始日期" type="text" class="form-control" value="" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
+                                        <input style="width:120px" placeholder="开始日期" type="text" class="form-control" value="<%=ParseHelper.ToDateString(ParseHelper.plusDate(new Date(),2,-1),"yyyy-MM-dd") %>" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
                                     </div>                                   					
 
 							</div>
@@ -51,7 +55,7 @@ width: 100%;
 							<div class="col-sm-8">		
 								<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input style="width:120px" class="form-control" type="text" placeholder="结束日期" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
+                                        <input style="width:120px" class="form-control" type="text" placeholder="结束日期" value="<%=ParseHelper.ToDateString(new Date(),"yyyy-MM-dd") %>" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
                                     </div>                                   					
 
 							</div>
