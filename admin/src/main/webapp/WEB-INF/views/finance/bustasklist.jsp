@@ -73,7 +73,7 @@ width: 100%;
 					<div class="col-lg-2">
 						<div class="form-group">
 							<div class="col-sm-8">
-									<input placeholder="门店名称/注册电话"   class="form-control" type="text" name="selectvalue" id="selectvalue">
+									<input placeholder="门店名称/注册电话"   class="form-control" type="text" name="selectvalue" id="selectvalue" onkeydown="return disableEnter(event)">
 							</div>
 						</div>
 					</div>
@@ -131,4 +131,19 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+
+function disableEnter(event){
+	 var e = event || window.event || arguments.callee.caller.arguments[0];
+       if(e && e.keyCode==27){ // 按 Esc 
+           //要做的事情
+         }
+       if(e && e.keyCode==113){ // 按 F2 
+            //要做的事情
+          }            
+        if(e && e.keyCode==13){ // enter 键
+            //要做的事情
+     	  $('#btnSearch').click();
+         // jss.search(1);
+       }
+};
 </script>
