@@ -24,12 +24,10 @@
 						</div>
 					</div>
 					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label"></label>
-							<div class="col-sm-8">								
-								
-							</div>
-						</div>
+<button type="button" class="btn btn-w-m btn-primary" id=btnSearch style="margin-left: 3px;height:30px;">查询</button>
+<input type="button" value="添加集团" class="btn btn-w-m btn-primary" id="btnModifyGroupBusiness" onclick="showAddGroupBusiness()" style="margin-left: 3px;height:30px;" />
+<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1" />
+<input id="hiddenText" type="text" style="display:none" />
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
@@ -48,15 +46,7 @@
 						</div>
 					</div>
 				</div>				
-			    <div class="row">
-						<div class="col-lg-3">
-						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>
-					 <input type="button" value="添加集团" class="btn btn-w-m btn-primary" id="btnModifyGroupBusiness" onclick="showAddGroupBusiness()" style="margin-left: 3px;height:30px;" />
-			<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1" />
-			<input id="hiddenText" type="text" style="display:none" />
-					</div>							
-			</div>
+			  
 			</form>
 		</div>
 	</div>
