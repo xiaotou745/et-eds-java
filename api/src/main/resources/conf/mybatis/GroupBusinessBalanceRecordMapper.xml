@@ -40,7 +40,7 @@
 	       AND bbr.relationNo=''${relationNo}''
      </if>
      <if test="businessName !=null and businessName!=''">
-	       AND b.name=''${businessName}'' 
+	       AND b.name LIKE ''%${businessName}%'' 
      </if>
      
   </sql>
