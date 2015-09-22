@@ -385,7 +385,7 @@ public class GroupBusinessController {
 		// 导出数据
 		String filename = "集团收支记录%s";
 		if (!StringUtils.isEmpty(req.getStartDate()) && !StringUtils.isEmpty(req.getEndDate())) {
-			filename = String.format(filename, req.getStartDate() + "~" + req.getEndDate());
+			filename = String.format(filename, req.getStartDate().replace(" 00:00:00", "") + "~" + req.getEndDate().replace(" 23:59:59",""));
 		}
 		 
 		byte[] data = exportGroupBusinessBalanceRecord2Bytes(filename, records);
@@ -417,7 +417,7 @@ public class GroupBusinessController {
 		// add data
 		data.getColumnNames().add(new String[] { "交易类型","任务单号/交易流水号", "商铺名称", "收支金额", "集团余额", "门店余额",  "状态","交易日期", "操作人","备注" });
 		data.getFieldNames().add(
-				new String[] { "recordtypeString","relationno", "businessname", "amount", "groupafterbalance", "balance","statusString", "operatetime", "operator","remark" });
+				new String[] { "recordtypeString","relationno", "businessname", "groupamount", "groupafterbalance", "balance","statusString", "operatetime", "operator","remark" });
 		data.getDataMap().put(fileName, records);
 		return ExcelUtils.export2ByteArray(data);
 	}
