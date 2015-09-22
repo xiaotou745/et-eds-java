@@ -153,6 +153,12 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 	$("#btnSearch").click(function(){
 		jss.search(1);
 	});	
+	$('#txtClienterName,#txtClienterPhone').keyup(function(event){ 
+        if(event.keyCode == "13")    
+        { 
+            $("#btnSearch").click();
+        }
+    });
 	//解冻
    function confirmUnfreezeClienter(){
 	   var unfreezeReason = $("#txtUnfreezeReason").val();

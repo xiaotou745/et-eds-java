@@ -230,7 +230,9 @@
   </select>
 <sql id="getStatisticsListFrom">
 (SELECT  a.deliveryCompanyName ,
+		a.id as deliveryCompanyID,
         a.deliveryCompanyCode ,
+        cast(YEAR(c.AuditDate) as varchar(10))+''/''+cast(Month(c.AuditDate) as varchar(10)) as auditDate,
         SUM(b.RealOrderCommission) AS clienterTotalSettleMoney ,
         SUM(b.DeliveryCompanySettleMoney) AS companyTotalSettleMoney ,
         COUNT(0) AS taskTotalNum ,
@@ -241,23 +243,27 @@ FROM    DeliveryCompany a
         JOIN dbo.OrderOther c ON b.id = c.OrderId
 WHERE   b.DeliveryCompanyID > 0
         AND c.IsJoinWithdraw = 1
+        and c.AuditDate is not null 
         <if test="deliveryName != null and deliveryName!=''">
 			and a.deliveryCompanyName=''${deliveryName}''
 		</if>
-		<if test="settlementMonth != null and settlementMonth!=''">
-			  AND c.AuditDate >= ''${settlementMonth}''
+		<if test="start != null and end!=''">
+			  AND c.AuditDate >= ''${start}''
 		</if>
-		<if test="settlementEndMonth != null and settlementEndMonth!=''">
-			  AND ''${settlementEndMonth}'' > c.AuditDate
+		<if test="end != null and end!=''">
+			  AND ''${end}'' > c.AuditDate
 		</if>
-GROUP BY a.DeliveryCompanyName ,
-        a.DeliveryCompanyCode) mt 
+GROUP BY a.id,
+		a.DeliveryCompanyName ,
+        a.DeliveryCompanyCode,
+cast(YEAR(c.AuditDate) as varchar(10))+''/''+cast(Month(c.AuditDate) as varchar(10))
+        ) mt 
 	</sql>
 	<select id="getStatisticsList" resultType="com.edaisong.entity.domain.DeliveryStatistics"
 		parameterType="com.edaisong.entity.req.PagedDeliveryStatisticsReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' b.Id DESC ',
+		' mt.deliveryCompanyCode DESC ',
 		' * ',
 		'
 		<include refid="getStatisticsListFrom" />

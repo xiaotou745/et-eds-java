@@ -40,7 +40,7 @@
 					</span>
 					</a>
 					<ul class="dropdown-menu animated fadeInRight m-t-xs">
-						<li><a href="<%=basePath %>/Account/ChangePassword">设置</a></li>
+						<li><a href="<%=adminUrl %>/Account/ChangePassword">设置</a></li>
 <!-- 						<li><a href="contacts.html">联系方式</a></li> -->
 <!-- 						<li><a href="mailbox.html">消息</a></li> -->
 						<li class="divider"></li>
@@ -77,7 +77,7 @@
 									//此时表示这个页面需要跳转到老后台
 									if(submenu.getUrl()!=null&&
 									!submenu.getUrl().isEmpty()&&
-									UserContext.getLoginFrom(context.getId())==0){
+									context.getLoginFrom()==0){
 										%>
 										<li><a href="<%=adminUrl+submenu.getUrl()%>"><%=submenu.getMenuname()%></a></li>
 										<%
