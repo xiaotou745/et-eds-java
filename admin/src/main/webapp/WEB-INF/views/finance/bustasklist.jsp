@@ -47,19 +47,11 @@ width: 100%;
 					</div>
 					<div class="col-lg-2">
 						<div class="form-group">
-<<<<<<< HEAD
-							<label class="col-sm-4 control-label">到:</label>
-							<div class="col-sm-8">		
-								<div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input class="form-control" type="text" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
-=======
 							<label class="col-sm-1 control-label">到</label>
 							<div class="col-sm-8">		
 								<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <input class="form-control" type="text" placeholder="结束日期" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
->>>>>>> 04468ecc19e0b3c3ca05b90cee6b0488094ae432
                                     </div>                                   					
 
 							</div>
@@ -81,7 +73,7 @@ width: 100%;
 					<div class="col-lg-2">
 						<div class="form-group">
 							<div class="col-sm-8">
-									<input placeholder="门店名称/注册电话"   class="form-control" type="text" name="selectvalue" id="selectvalue">
+									<input placeholder="门店名称/注册电话"   class="form-control" type="text" name="selectvalue" id="selectvalue" onkeydown="return disableEnter(event)">
 							</div>
 						</div>
 					</div>
@@ -139,4 +131,19 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+
+function disableEnter(event){
+	 var e = event || window.event || arguments.callee.caller.arguments[0];
+       if(e && e.keyCode==27){ // 按 Esc 
+           //要做的事情
+         }
+       if(e && e.keyCode==113){ // 按 F2 
+            //要做的事情
+          }            
+        if(e && e.keyCode==13){ // enter 键
+            //要做的事情
+     	  $('#btnSearch').click();
+         // jss.search(1);
+       }
+};
 </script>
