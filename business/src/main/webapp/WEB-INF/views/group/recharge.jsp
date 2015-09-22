@@ -18,7 +18,7 @@ String basePath =PropertyUtils.getProperty("static.business.url");
 	</div>
 </div>
 <div class="box3">
-		<form name="alipayment" id="alipayment" action="alipayapi" method="post" target="_blank">
+		<form name="alipayment" id="alipayment" action="alipayapi" method="post" >
 			<div class="cb sBox" id="default">
 				<span class="fl fz14">充值金额</span> <label class="fl"> <input
 					class="fl" type="radio" name="WIDtotal_fee" value="500" checked="checked"> 500元
@@ -212,8 +212,8 @@ $(document).ready(function() {
 						alert("生成单号时出错了");
 						return;
 					}
-					$('.popup').show();
-					$("#failDiv").hide();
+					//$('.popup').show();
+					//$("#failDiv").hide();
 					$("#WIDout_trade_no").val(data);
 					$("#alipayment").submit();
 				}
