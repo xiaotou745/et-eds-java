@@ -31,12 +31,11 @@ public class AESInterceptor  extends AbstractPhaseInterceptor<Message> {
 				InputStream mContentString=message.getContent(InputStream.class);
 				String string=StreamUtils.copyToStringNoclose(mContentString);
 				AesParameterReq req=JsonUtil.str2obj(string, AesParameterReq.class);
-				System.out.println(string);
 				string=AES.aesDecrypt(StringUtils.trimRight(req.getData(), "\n"));//AES解密
 				InputStream stream=StreamUtils.StringToInputStream(string);
 				message.setContent(InputStream.class, stream);//回填流
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new RuntimeException(e.getMessage());
 			}
 		}
 		else
