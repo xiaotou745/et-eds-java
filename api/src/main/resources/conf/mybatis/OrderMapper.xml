@@ -1430,7 +1430,7 @@ where   Status = 1
             ISNULL(SUM(CASE Status
               when 4 then 1
               else 0
-            end),0)
+            end),0) takingCount
        from    dbo.[order] (nolock)
        where  clienterId=${clienterId}
 	</select>
