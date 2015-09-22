@@ -18,7 +18,7 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 	</div>
 </div>
 <div class="box3">
-		<form name="alipayment" id="alipayment" action="alipayapi" method="post" >
+		<form name="alipayment" id="alipayment" action="alipayapi" method="post" target="_blank" >
 			<div class="cb sBox" id="default">
 				<span class="fl fz14">充值金额</span> <label class="fl"> <input
 					class="fl" type="radio" name="WIDtotal_fee" value="500" checked="checked"> 500元
@@ -66,8 +66,8 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 		<h3>充值完成前请不要关闭此窗口</h3>
 		<img alt="支付" src="<%=basePath%>/images/zhifu.png">
 		<h2>请在新开的页面完成充值</h2>
-		<a href="javascript:void(0)" onclick="showRechargeStatus()">已完成充值</a>
-		<a class="wt" href="javascript:void(0)" onclick="failRecharge()">充值未成功</a>
+		<a href="javascript:void(0)" onclick="showRechargeStatus()">查看充值结果</a>
+<!-- 		<a class="wt" href="javascript:void(0)" onclick="failRecharge()">充值未成功</a> -->
 	</div>
 </div>
 
@@ -212,8 +212,8 @@ $(document).ready(function() {
 						alert("生成单号时出错了");
 						return;
 					}
-					//$('.popup').show();
-					//$("#failDiv").hide();
+					$('.popup').show();
+					$("#failDiv").hide();
 					$("#WIDout_trade_no").val(data);
 					$("#alipayment").submit();
 				}

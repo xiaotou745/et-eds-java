@@ -28,7 +28,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>支付宝纯网关接口</title>
+		<title>E代送支付宝充值</title>
 	</head>
 	<%
     UserContext context = UserContext.getCurrentContext(request);
