@@ -67,7 +67,7 @@ if (loginFrom==1) {
 				%>
 			</td>
 			<td><%=data.get(i).getBusinessname()%></td>
-			<td>￥<%=data.get(i).getGroupAmount()%></td><!-- data.get(i).getGroupid()>0?data.get(i).getGroupAmount():data.get(i).getAmount() -->
+			<td>￥<%=data.get(i).getGroupamount()%></td><!-- data.get(i).getGroupid()>0?data.get(i).getGroupAmount():data.get(i).getAmount() -->
 			<td>￥<%=data.get(i).getGroupafterbalance()%></td>
 			<td><%=data.get(i).getStatus()==BusinessBalanceRecordStatus.Success.value()? "交易成功" : "交易中"%></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getOperatetime())%></td>
