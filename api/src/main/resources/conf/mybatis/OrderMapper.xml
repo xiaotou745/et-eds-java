@@ -1194,7 +1194,7 @@ select  ISNULL(b.Id,0) as ClienterId ,
         CONVERT(VARCHAR(100), a.PubDate, 23) as PubDate,
         ISNULL(MIN (b.HeadPhoto),'') as ClienterPhoto
 from    dbo.[order] (nolock)a
-        join dbo.clienter (nolock) b on a.clienterId = b.Id
+        LEFT join dbo.clienter (nolock) b on a.clienterId = b.Id
 where   a.Status = 1   and businessId=#{businessId}  
 and a.PubDate>=@startDate and a.PubDate <![CDATA[ <]]> @endDate
 group by b.Id ,
