@@ -88,10 +88,10 @@ where 1=1 AND bbr.GroupId > 0
 	      AND bbr.[RelationNo]=#{relationNo,jdbcType=VARCHAR}
     </if>
     <if test="startDate != null and startDate != ''">
-	    AND bbr.OperateTime>=#{startDate,jdbcType=VARCHAR}
+	    AND bbr.OperateTime>=convert(char(10),#{startDate,jdbcType=VARCHAR},120) 
     </if>
     <if test="endDate != null and endDate != ''">
-	    AND #{endDate,jdbcType=VARCHAR} > bbr.OperateTime
+	    AND  DATEADD(DAY,1,CONVERT(CHAR(10),#{endDate,jdbcType=VARCHAR},120)) > bbr.OperateTime
     </if>
     <if test="businessName !=null and businessName!=''">
 	       AND b.name=''${businessName}'' 
