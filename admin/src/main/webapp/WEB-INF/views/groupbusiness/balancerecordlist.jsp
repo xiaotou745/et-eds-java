@@ -129,10 +129,7 @@
 						</div>
 						<div class="control-group">
 							充值金额:￥<span id="labRechargeAmount"></span>
-						</div>
-						<div class="control-group">
-							充值后余额: ￥<span id="labRechargeBalance"></span>
-						</div>
+						</div> 
 						<div class="control-group">
 							交易流水号: <span id="labRechargeWithwardNO"></span>
 						</div>
@@ -188,35 +185,55 @@
         window.location.href = url;
         return;
 	});	 
-	
+	Date.prototype.Format = function(fmt) 
+    {  
+      var o = { 
+        "M+" : this.getMonth()+1,                  
+        "d+" : this.getDate(),                     
+        "h+" : this.getHours(),                    
+        "m+" : this.getMinutes(),                  
+        "s+" : this.getSeconds(),                  
+        "q+" : Math.floor((this.getMonth()+3)/3), 
+        "S"  : this.getMilliseconds()              
+      }; 
+      if(/(y+)/.test(fmt)) 
+        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+      for(var k in o) 
+        if(new RegExp("("+ k +")").test(fmt)) 
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length))); 
+      return fmt; 
+    }
 	function funRechargeDetail(relationNo) {
        var paramaters = { "orderNo": relationNo };
-       var url = "<%=basePath%>/business/rechargedetail";
+       var url = "<%=basePath%>/groupbusiness/rechargedetail";
        $.ajax({
            type: 'POST',
            url: url,
            data: paramaters,
-           success: function (jsonstr) {
+           success: function (jsonstr) { 
                if (jsonstr != null) {
                	$('#RechargeDetail').modal('show');
                    var strPayType = "";
-                   if (jsonstr.paytype==1) {
+                   if (jsonstr.paytype=="alipay") {
                        strPayType = "支付宝";
-                   } else if (jsonstr.paytype == 2) {
-                       strPayType = "微信";
+                   } else {
+                       strPayType = "";
                    }
                    var strStatus = "";
-                   if (jsonstr.paytype == 0) {
+                   var paytimestr = "";
+                   if (jsonstr.paystatus == 0) {
                        strStatus = "待支付";
                    }
-                   else if (jsonstr.paytype == 1) {
+                   else if (jsonstr.paystatus == 1) {
                        strStatus = "已支付";
-                   }
-                   $('#labRechargeBussinessName').html(jsonstr.name);
-                   $('#labRechargeTime').html(jsonstr.paytime);
-                   $('#labRechargeAmount').html(jsonstr.amount);
-                   $('#labRechargeBalance').html(jsonstr.balance);
-                   $('#labRechargeWithwardNO').html(jsonstr.orderno);
+                       paytimestr = new Date(jsonstr.paytime).Format("yyyy-MM-dd hh:mm:ss") ;
+                   }else{
+                	   strStatus = "异常";
+                   }   
+                   $('#labRechargeBussinessName').html("<%=ParseHelper.ShowString(detail.getGroupbusiname())%>");
+                   $('#labRechargeTime').html(paytimestr);
+                   $('#labRechargeAmount').html(jsonstr.payamount);
+                   $('#labRechargeWithwardNO').html(jsonstr.originalorderno);
                    $('#labRechargePayType').html(strPayType);
                    $('#labRechargeStatus').html(strStatus);
                }else{
@@ -224,6 +241,7 @@
                }
            }
        });
+       
    }
 </script>
 

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.GroupBusinessLog;
+import com.edaisong.entity.GroupBusinessRecharge;
 import com.edaisong.entity.domain.GroupBusinessModel;
 import com.edaisong.entity.req.PagedGroupBusinessReq;
 import com.edaisong.admin.common.UserContext;
@@ -32,6 +33,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
+import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.GroupBusinessBalanceRecord;
 import com.edaisong.entity.domain.GroupBusinessBindOptionLogModel;
 import com.edaisong.entity.domain.GroupBusinessRelationModel;
@@ -418,6 +420,12 @@ public class GroupBusinessController {
 				new String[] { "recordtypeString","relationno", "businessname", "amount", "groupafterbalance", "balance","statusString", "operatetime", "operator","remark" });
 		data.getDataMap().put(fileName, records);
 		return ExcelUtils.export2ByteArray(data);
+	}
+	
+	@RequestMapping("rechargedetail")
+	@ResponseBody
+	public GroupBusinessRecharge rechargedetail(String orderNo) {  
+			return groupBusinessService.getRechargeDetail(orderNo); 
 	}
 	
 }

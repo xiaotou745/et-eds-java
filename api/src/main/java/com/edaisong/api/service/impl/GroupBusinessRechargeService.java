@@ -67,7 +67,5 @@ public class GroupBusinessRechargeService implements
 	@Override
 	public List<GroupBusinessBalance> getGroupBalance(int groupBusinessID) {
 		return groupBusinessRechargeDao.getGroupBalance(groupBusinessID);
-	}
-
-
+	} 
 }

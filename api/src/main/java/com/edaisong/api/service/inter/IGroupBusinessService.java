@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.entity.Business;
 import com.edaisong.entity.GroupBusiness;
+import com.edaisong.entity.GroupBusinessRecharge;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GroupBusinessBalanceRecord;
 import com.edaisong.entity.domain.GroupBusinessModel;
@@ -40,4 +41,5 @@ public interface IGroupBusinessService {
 			PagedGroupBussinessBalanceReq req);
 	List<GroupBusinessBalanceRecord> getGroupBusinessBalanceRecordForExport(
 			PagedGroupBussinessBalanceReq req);
+	GroupBusinessRecharge getRechargeDetail(String orderNo);
 }
