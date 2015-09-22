@@ -93,33 +93,29 @@ function showRechargeStatus(){
 				case 0:status="支付中";break;
 				case 1:status="支付成功";break;
 			}
-			if(data.paystatus!=1){
-				failRecharge();
-			}else{
-				$("#orderResult").html("<font style=\"color:red\">充值单号："+data.orderno+";充值金额："+data.payamount+";充值状态："+status+"</font>");
-				$('.popup').hide();
-				$("#rechargeResult").show();
-				
-				setTimeout(function (){
-					$("#rechargeResult").hide();
-					window.location.href = window.location.href;
-					}, 10000);
-				var intervalId=setInterval(function(){
-					var timeSection=document.getElementById('timespan');
-					var second=parseInt(timeSection.innerHTML);
-					if(second<=0){
-						clearInterval(intervalId);
-					}else{
-						timeSection.innerHTML=second-1;
-					}
-				},1000);
-			}
+			$("#orderResult").html("<font style=\"color:red\">充值单号："+data.orderno+";充值金额："+data.payamount+";充值状态："+status+"</font>");
+			$('.popup').hide();
+			$("#rechargeResult").show();
+			
+			setTimeout(function (){
+				$("#rechargeResult").hide();
+				window.location.href = window.location.href;
+				}, 10000);
+			var intervalId=setInterval(function(){
+				var timeSection=document.getElementById('timespan');
+				var second=parseInt(timeSection.innerHTML);
+				if(second<=0){
+					clearInterval(intervalId);
+				}else{
+					timeSection.innerHTML=second-1;
+				}
+			},1000);
 		}
 	});
 }
 function failRecharge(){
-	$("#confirmDiv").hide();
-	$("#failDiv").show();
+// 	$("#confirmDiv").hide();
+// 	$("#failDiv").show();
 }
 function check(pay){
 	var radio = $('.box3 input:radio:checked');
