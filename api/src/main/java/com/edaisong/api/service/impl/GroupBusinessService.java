@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.edaisong.api.dao.inter.IGroupBusinessBalanceDao;
 import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.service.inter.IGroupBusinessLogService;
+import com.edaisong.api.service.inter.IGroupBusinessRechargeService;
 import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.GroupBusinessLog;
+import com.edaisong.entity.GroupBusinessRecharge;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.common.ResponseCode;
@@ -33,7 +35,8 @@ public class GroupBusinessService implements IGroupBusinessService {
 	IGroupBusinessBalanceDao groupBusinessBalanceDao;
 	@Autowired
 	IGroupBusinessLogService groupBusinessLogService;
-
+	@Autowired
+	IGroupBusinessRechargeService groupBusinessRechargeService;
 	@Override
 	public PagedResponse<GroupBusinessModel> getPageList(
 			PagedGroupBusinessReq req) {
@@ -122,5 +125,10 @@ public class GroupBusinessService implements IGroupBusinessService {
 			PagedGroupBussinessBalanceReq req) {
 		return groupBusinessBalanceDao
 				.getGroupBusinessBalanceRecordForExport(req);
+	}
+
+	@Override
+	public GroupBusinessRecharge getRechargeDetail(String orderNo) {
+		 return groupBusinessRechargeService.getByOrderNo(orderNo);
 	}
 }
