@@ -109,7 +109,7 @@ public class GroupBusinessController {
 		gbr2.setloginName(bgm.getloginName());
 	 	GroupBusinessModel gbm2 = groupBusinessService.getSingle(gbr2);
 		if(gbm2!=null && gbm2.getGroupbusiname()!=null){ 
-			response.setMessage("此账号已经存在");
+			response.setMessage("此登录账号已经存在");
 			response.setResponseCode(0);
 			return response;
 		}
@@ -143,7 +143,7 @@ public class GroupBusinessController {
 	 	GroupBusinessModel gbm1 = groupBusinessService.getSingle(gbr1);
 		if(gbm1!=null && gbm1.getGroupbusiname()!=null){
 			if(gbm1.getId() != bgm.getId()){
-				response.setMessage("集团商铺名称已存在");
+				response.setMessage("集团名称已存在");
 				response.setResponseCode(0);
 				return response;
 			}
@@ -154,7 +154,7 @@ public class GroupBusinessController {
 	 	GroupBusinessModel gbm2 = groupBusinessService.getSingle(gbr2);
 		if(gbm2!=null &&gbm2.getGroupbusiname()!=null){ 
 			if(gbm2.getId() != bgm.getId()){
-				response.setMessage("此登陆账号已经存在");
+				response.setMessage("此登录账号已经存在");
 				response.setResponseCode(0);
 				return response;
 			}
@@ -162,7 +162,12 @@ public class GroupBusinessController {
 		GroupBusiness groupBusiness = new GroupBusiness();
 		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName().trim());
 		groupBusiness.setLoginname(bgm.getloginName().trim());
-		groupBusiness.setPassword(MD5Util.MD5(bgm.getpassWord().trim()));
+		if(!bgm.getpassWord().trim().equals("")){
+			groupBusiness.setPassword(MD5Util.MD5(bgm.getpassWord().trim()));
+		}else{
+			groupBusiness.setPassword("");
+		}
+		
 		groupBusiness.setId(bgm.getId());
 		groupBusiness.setIsAllowOverdraft(bgm.getIsAllowOverdraft());
 		groupBusiness.setModifyname(UserContext.getCurrentContext(request).getLoginName());
@@ -249,7 +254,7 @@ public class GroupBusinessController {
 		}
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "集团");
-		model.addObject("currenttitle", "绑定记录");
+		model.addObject("currenttitle", "绑定门店");
 		model.addObject("viewPath", "groupbusiness/businessbindloglist");
 		model.addObject("detail", detail);
 		return model;
@@ -282,7 +287,7 @@ public class GroupBusinessController {
 		}
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "集团");
-		model.addObject("currenttitle", "绑定记录");
+		model.addObject("currenttitle", "绑定门店");
 		model.addObject("viewPath", "groupbusiness/businesslist");
 		model.addObject("detail", detail);
 		return model;

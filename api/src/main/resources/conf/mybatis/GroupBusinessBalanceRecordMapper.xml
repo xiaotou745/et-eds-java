@@ -49,7 +49,7 @@
   parameterType="com.edaisong.entity.req.PagedGroupBussinessBalanceReq" statementType="CALLABLE">  
 	{call Sp_CustomPage2015_V1(
 	' bbr.OperateTime DESC ',
-	' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,isnull(bbr.WithwardId,0) as WithwardId,bbr.Amount,bbr.Balance,bbr.Status,OperateTime,Remark,Operator,bbr.groupid,bbr.GroupAfterBalance,ISNULL(b.Name,'''') businessname ',
+	' bbr.RecordType,ISNULL(bbr.RelationNo,'''') AS RelationNo,isnull(bbr.WithwardId,0) as WithwardId,bbr.Amount,bbr.GroupAmount,bbr.Balance,bbr.Status,OperateTime,Remark,Operator,bbr.groupid,bbr.GroupAfterBalance,ISNULL(b.Name,'''') businessname ',
 	' BusinessBalanceRecord AS bbr (nolock) left join dbo.business b (nolock) on bbr.BusinessId = b.Id ',
 	' <include refid="getTransDetailListWhere"/> ',
 	#{pageSize,mode=IN,jdbcType=INTEGER},

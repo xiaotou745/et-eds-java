@@ -90,6 +90,7 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq para) {
+		para.setPageSize(100);//TODO  该接口暂时不做分页 目前只取100条数据 茹化肖
 		if ( para.getClienterId() == null
 				|| para.getClienterId() == 0
 				|| ( para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
@@ -132,6 +133,7 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<List<QueryOrder>> getCompliteOrderC(QueryOrderReq para) {
+		para.setPageSize(1000);//TODO 因为WIKI接口没有写分页参数,暂时一次性将所有数据返回,
 		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getClienterId() == null || para.getClienterId() == 0) {
 			HttpResultModel<List<QueryOrder>> result=new HttpResultModel<List<QueryOrder>>();
 			result.setStatus(HttpReturnRnums.ParaError.value());

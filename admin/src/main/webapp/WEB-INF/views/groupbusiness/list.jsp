@@ -17,19 +17,19 @@
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">集团名称:</label>
+							
 							<div class="col-sm-8">							
-								<input id="groupBusinessName" type="tel" class="form-control"  name="groupBusinessName" onkeydown="return disableEnter(event)"/>								
+								<input id="groupBusinessName"
+								placeholder="集团名称,登录名称"
+								 type="tel" class="form-control"  name="groupBusinessName" onkeydown="return disableEnter(event)"/>								
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label"></label>
-							<div class="col-sm-8">								
-								
-							</div>
-						</div>
+<button type="button" class="btn btn-w-m btn-primary" id=btnSearch style="margin-left: 3px;height:30px;">查询</button>
+<input type="button" value="添加集团" class="btn btn-w-m btn-primary" id="btnModifyGroupBusiness" onclick="showAddGroupBusiness()" style="margin-left: 3px;height:30px;" />
+<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1" />
+<input id="hiddenText" type="text" style="display:none" />
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
@@ -48,15 +48,7 @@
 						</div>
 					</div>
 				</div>				
-			    <div class="row">
-						<div class="col-lg-3">
-						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>
-					 <input type="button" value="添加集团" class="btn btn-w-m btn-primary" id="btnModifyGroupBusiness" onclick="showAddGroupBusiness()" style="margin-left: 3px;height:30px;" />
-			<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1" />
-			<input id="hiddenText" type="text" style="display:none" />
-					</div>							
-			</div>
+			  
 			</form>
 		</div>
 	</div>
@@ -82,8 +74,8 @@
 				<div class="modal-body">
 					<fieldset>
             <br>
-            <div class="control-group">
-                <label >集团名称：</label><input  name="txtAddGroupBusinessName" id="txtAddGroupBusinessName" type="text">
+            <div class="control-group">  
+                <label>集团名称：</label><input  name="txtAddGroupBusinessName" id="txtAddGroupBusinessName" type="text">
             </div>
             <div class="control-group">
                 <label>是否允许透支：</label> 
@@ -131,18 +123,18 @@
 			                    <input  name="txtModifyGroupBusinessName" id="txtModifyGroupBusinessName" type="text">
 			                    <input  name="txtModifyGroupBusinessId" id="txtModifyGroupBusinessId" type="hidden">
 			                    
-			            </div>  
+			            </div>
 			            <div class="control-group">
 			                <label>是否允许透支：</label> 
 			                <input id="rModifyIsAllowOverdraftY" name="rModifyIsAllowOverdraft" type="radio" value="1"><label for="rModifyIsAllowOverdraftY">是</label>
 							<input id="rModifyIsAllowOverdraftN" name="rModifyIsAllowOverdraft" type="radio" value="0"><label for="rModifyIsAllowOverdraftN">否</label>
 			            </div>
 			            <div class="control-group">
-			                <label >登陆账号：</label> 
-			                    <input  name="txtModifyLoginName" id="txtModifyLoginName" type="text">
+			                <label >登录账号：</label> 
+			                    <input name="txtModifyLoginName" id="txtModifyLoginName" type="text" disabled="disabled">
 			            </div> 
 			            <div class="control-group">
-			                <label >密码：</label> 
+			                <label >密&nbsp;&nbsp;码：</label> 
 			                    <input  name="txtModifyPassword" id="txtModifyPassword" type="password">
 			            </div> 
 			            <div class="control-group">
@@ -204,21 +196,22 @@
 	}
 	//保存集团商户
 	function saveAddGroupBusiness(){
-		var groupBusiName= $('#txtAddGroupBusinessName').val();
-	    var loginName = $('#txtAddLoginName').val();
-	    var pw = $('#txtAddPassword').val();
-	    var confirmPw = $('#txtAddConfirmPassword').val();
-	    var reg=/^[\u4E00-\u9FA5]$/;
-	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>10){
-	    	alert("集团名称必须在5-10个字符");
+		var groupBusiName= $('#txtAddGroupBusinessName').val().trim();
+	    var loginName = $('#txtAddLoginName').val().trim();
+	    var pw = $('#txtAddPassword').val().trim();
+	    var confirmPw = $('#txtAddConfirmPassword').val().trim();
+	    var reg=/^[\u4e00-\u9fa5]+$/;
+	    
+	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>30){
+	    	alert("集团名称必须在5-30个字符");
 	    	return;
 	    }
 	    if (reg.test(loginName)){
-	    	alert("登陆账号不能为中文字符");
+	    	alert("登录账号不能为中文字符");
 	    	return;
 	    }
 	    if(loginName.trim().length <6 || loginName.trim().length>20){
-	    	alert("登陆账号除中文外6-20位字符");
+	    	alert("登录账号除中文外6-20位字符");
 	    	return;
 	    }
 	    if(pw.trim().length <6 || pw.trim().length>20){
@@ -240,10 +233,11 @@
                 "isAllowOverdraft":$('input[name="rAddIsAllowOverdraft"]:checked').val()
             };
        var url = "<%=basePath%>/groupbusiness/addgroupbusiness";
-	   	layer.confirm('是否确认创建集团？', {
+	   var la= layer.confirm('是否确认创建集团？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
 		},function(){
+			layer.close(la);
 			$.ajax({
 		           type: 'POST',
 		           url: url,
@@ -261,21 +255,21 @@
 	}
 	//显示修改集团信息弹框
 	function saveModifyGroupBusiness(){
-		var groupBusiName= $('#txtModifyGroupBusinessName').val();
-	    var loginName = $('#txtModifyLoginName').val();
-	    var pw = $('#txtModifyPassword').val();
-	    var confirmPw = $('#txtModifyConfirmPassword').val();
-	    var reg=/^[\u4E00-\u9FA5]$/;
-	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>10){
-	    	alert("集团名称必须在5-10个字符");
+		var groupBusiName= $('#txtModifyGroupBusinessName').val().trim();
+	    var loginName = $('#txtModifyLoginName').val().trim();
+	    var pw = $('#txtModifyPassword').val().trim();
+	    var confirmPw = $('#txtModifyConfirmPassword').val().trim();
+	    var reg=/^[\u4e00-\u9fa5]+$/;
+	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>30){
+	    	alert("集团名称必须在5-30个字符");
 	    	return;
 	    }
 	    if (reg.test(loginName)){
-	    	alert("登陆账号不能为中文字符");
+	    	alert("登录账号不能为中文字符");
 	    	return;
 	    }
 	    if(loginName.trim().length <6 || loginName.trim().length>20){
-	    	alert("登陆账号除中文外6-20位字符");
+	    	alert("登录账号除中文外6-20位字符");
 	    	return;
 	    }
 	    if( pw.trim().length == 0 &&  confirmPw.trim().length == 0 && pw.trim() == confirmPw.trim()){

@@ -84,6 +84,7 @@ String cliLink=PropertyUtils.getProperty("dynamic.admin.url") + "/SuperManManage
             
             $("#rIsEnableN").prop("checked",true);
         }
+		$("#editTip").html("修改标签");
 		$("#hdOperateType").val(1);
 		$("#oldTagName").val(tagName); 
 		$("#oldTagType").val(tagType);
