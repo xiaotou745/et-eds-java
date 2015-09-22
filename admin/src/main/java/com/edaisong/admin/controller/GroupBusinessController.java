@@ -162,7 +162,12 @@ public class GroupBusinessController {
 		GroupBusiness groupBusiness = new GroupBusiness();
 		groupBusiness.setGroupbusiname(bgm.getbusinessGroupName().trim());
 		groupBusiness.setLoginname(bgm.getloginName().trim());
-		groupBusiness.setPassword(MD5Util.MD5(bgm.getpassWord().trim()));
+		if(!bgm.getpassWord().trim().equals("")){
+			groupBusiness.setPassword(MD5Util.MD5(bgm.getpassWord().trim()));
+		}else{
+			groupBusiness.setPassword("");
+		}
+		
 		groupBusiness.setId(bgm.getId());
 		groupBusiness.setIsAllowOverdraft(bgm.getIsAllowOverdraft());
 		groupBusiness.setModifyname(UserContext.getCurrentContext(request).getLoginName());
@@ -249,7 +254,7 @@ public class GroupBusinessController {
 		}
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "集团");
-		model.addObject("currenttitle", "绑定记录");
+		model.addObject("currenttitle", "绑定门店");
 		model.addObject("viewPath", "groupbusiness/businessbindloglist");
 		model.addObject("detail", detail);
 		return model;
@@ -282,7 +287,7 @@ public class GroupBusinessController {
 		}
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "集团");
-		model.addObject("currenttitle", "绑定记录");
+		model.addObject("currenttitle", "绑定门店");
 		model.addObject("viewPath", "groupbusiness/businesslist");
 		model.addObject("detail", detail);
 		return model;

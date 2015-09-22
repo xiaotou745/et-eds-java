@@ -74,8 +74,8 @@
 				<div class="modal-body">
 					<fieldset>
             <br>
-            <div class="control-group">
-                <label >集团名称：</label><input  name="txtAddGroupBusinessName" id="txtAddGroupBusinessName" type="text">
+            <div class="control-group">  
+                <label>集团名称：</label><input  name="txtAddGroupBusinessName" id="txtAddGroupBusinessName" type="text">
             </div>
             <div class="control-group">
                 <label>是否允许透支：</label> 
@@ -123,7 +123,7 @@
 			                    <input  name="txtModifyGroupBusinessName" id="txtModifyGroupBusinessName" type="text">
 			                    <input  name="txtModifyGroupBusinessId" id="txtModifyGroupBusinessId" type="hidden">
 			                    
-			            </div>  
+			            </div>
 			            <div class="control-group">
 			                <label>是否允许透支：</label> 
 			                <input id="rModifyIsAllowOverdraftY" name="rModifyIsAllowOverdraft" type="radio" value="1"><label for="rModifyIsAllowOverdraftY">是</label>
@@ -131,10 +131,10 @@
 			            </div>
 			            <div class="control-group">
 			                <label >登录账号：</label> 
-			                    <input  name="txtModifyLoginName" id="txtModifyLoginName" type="text">
+			                    <input name="txtModifyLoginName" id="txtModifyLoginName" type="text" disabled="disabled">
 			            </div> 
 			            <div class="control-group">
-			                <label >密码：</label> 
+			                <label >密&nbsp;&nbsp;码：</label> 
 			                    <input  name="txtModifyPassword" id="txtModifyPassword" type="password">
 			            </div> 
 			            <div class="control-group">
@@ -233,10 +233,11 @@
                 "isAllowOverdraft":$('input[name="rAddIsAllowOverdraft"]:checked').val()
             };
        var url = "<%=basePath%>/groupbusiness/addgroupbusiness";
-	   	layer.confirm('是否确认创建集团？', {
+	   var la= layer.confirm('是否确认创建集团？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
 		},function(){
+			layer.close(la);
 			$.ajax({
 		           type: 'POST',
 		           url: url,

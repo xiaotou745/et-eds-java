@@ -51,8 +51,8 @@ if (loginFrom==0) {
 								<td><%=data.get(i).getId() %></td>
 								<td><a href="<%=alink%>?businessName=<%=data.get(i).getName()%>&businessPhone=<%=data.get(i).getPhoneNo()%>"><%=ParseHelper.ShowString(data.get(i).getName())%></a></td>
 								<td><%=data.get(i).getPhoneNo()%></td>
-								<td><a href="<%=alink2%>?businessId=<%=data.get(i).getBusinessid()%>"><%=data.get(i).getBalancePrice()%></a></td>
-								<td><%=data.get(i).getUseGroupMoney()%></td>
+								<td><a href="<%=alink2%>?businessId=<%=data.get(i).getBusinessid()%>"><%=data.get(i).getBalancePriceString()%></a></td>
+								<td><%=data.get(i).getUseGroupMoneyString()%></td>
 								<td><%=ParseHelper.ToDateString(data.get(i).getUpdatetime())%></td>
 		                        <td>
 		                        	<%if(data.get(i).getIsbind() == 1){%>

@@ -23,8 +23,8 @@
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">集团名称：</label>
-							<div class="col-sm-8">
-								<label class="col-sm-4 control-label"><%=ParseHelper.ToString(detail.getGroupbusiname(), "")%></label>
+							<div class="col-sm-4 control-label">
+								<label><%=ParseHelper.ToString(detail.getGroupbusiname(), "")%></label>
 							</div>
 						</div>
 					</div>
@@ -32,7 +32,7 @@
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">门店名称:</label>
+							<label class="col-sm-4 control-label">门店名称：</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" name="bizName" id="bizName" />
 							</div>

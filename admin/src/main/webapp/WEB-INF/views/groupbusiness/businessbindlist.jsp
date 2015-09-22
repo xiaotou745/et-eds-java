@@ -49,7 +49,7 @@
 								<div class="input-group date">
 									<span class="input-group-addon"><i
 										class="fa fa-calendar"></i></span> 
-										<input class="form-control" type="text" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
+										<input class="form-control" style="width:180px" type="text" name="startDate" id="startDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
 								</div>
 							</div>
 						</div>
@@ -61,7 +61,7 @@
 								<div class="input-group date">
 									<span class="input-group-addon"><i
 										class="fa fa-calendar"></i></span> 
-										<input class="form-control" type="text"  name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
+										<input class="form-control" style="width:180px" type="text"  name="endDate" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
 								</div>
 							</div>
 						</div>
