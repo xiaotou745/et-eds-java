@@ -80,20 +80,23 @@ width: 100%;
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3">
+					<div class="col-lg-4">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">物流公司名称:</label>
-							<div class="col-sm-8">
+							<div class="col-sm-5">
 								<input type="text" class="form-control"  name="deliveryName"  id="deliveryName"/>
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3">
-						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>
-					</div>
+					
 				</div>
 		</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-3">
+						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+							style="margin-left: 3px;height:30px;">查询</button>
 		</div>
 	</div>
 	<div class="row">
