@@ -39,7 +39,7 @@ width: 100%;
 							<div class="col-sm-8">		
 								<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input placeholder="开始日期" type="text" class="form-control" value="" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
+                                        <input style="width:120px" placeholder="开始日期" type="text" class="form-control" value="" name="startDate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
                                     </div>                                   					
 
 							</div>
@@ -51,13 +51,12 @@ width: 100%;
 							<div class="col-sm-8">		
 								<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input class="form-control" type="text" placeholder="结束日期" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
+                                        <input style="width:120px" class="form-control" type="text" placeholder="结束日期" name="endDate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
                                     </div>                                   					
 
 							</div>
 						</div>
-					</div>
-					
+					</div> 
 					<div class="col-lg-2">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">用户类型:</label>
@@ -68,12 +67,11 @@ width: 100%;
 								</select>
 							</div>
 						</div>
-					</div>
-					
+					</div> 
 					<div class="col-lg-2">
 						<div class="form-group">
 							<div class="col-sm-8">
-									<input placeholder="门店名称/注册电话"   class="form-control" type="text" name="selectvalue" id="selectvalue" onkeydown="return disableEnter(event)">
+									<input style="width:160px" placeholder="门店名称/注册电话" class="form-control" type="text" name="selectvalue" id="selectvalue" onkeydown="return disableEnter(event)">
 							</div>
 						</div>
 					</div>
