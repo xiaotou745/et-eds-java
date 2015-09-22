@@ -34,15 +34,15 @@
 						src="<%=basePath%>/img/profile_small.jpg" />
 					</span> <a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span
 						class="clear"> <span class="block m-t-xs"> <strong
-								class="font-bold">admin</strong>
-						</span> <span class="text-muted text-xs block">管理员 <b
+								class="font-bold"><%=context.getLoginName() %></strong>
+						</span> <span class="text-muted text-xs block"><%=context.getUserName() %> <b
 								class="caret"></b></span>
 					</span>
 					</a>
 					<ul class="dropdown-menu animated fadeInRight m-t-xs">
-						<li><a href="profile.html">个人信息</a></li>
-						<li><a href="contacts.html">联系方式</a></li>
-						<li><a href="mailbox.html">消息</a></li>
+						<li><a href="<%=adminUrl %>/Account/ChangePassword">设置</a></li>
+<!-- 						<li><a href="contacts.html">联系方式</a></li> -->
+<!-- 						<li><a href="mailbox.html">消息</a></li> -->
 						<li class="divider"></li>
 						<li><a href="<%=basePath %>/account/logoff">注销</a></li>
 					</ul>
@@ -77,7 +77,7 @@
 									//此时表示这个页面需要跳转到老后台
 									if(submenu.getUrl()!=null&&
 									!submenu.getUrl().isEmpty()&&
-									UserContext.getLoginFrom(context.getId())==0){
+									context.getLoginFrom()==0){
 										%>
 										<li><a href="<%=adminUrl+submenu.getUrl()%>"><%=submenu.getMenuname()%></a></li>
 										<%

@@ -195,7 +195,7 @@ public class OrderController {
 	@ResponseBody
 	public ResponseBase auditok(OptOrder auditOkOrder){
 		auditOkOrder.setOptUserId(UserContext.getCurrentContext(request).getId());
-		auditOkOrder.setOptUserName(UserContext.getCurrentContext(request).getName());
+		auditOkOrder.setOptUserName(UserContext.getCurrentContext(request).getLoginName());
 		ResponseBase responseBase= orderService.auditOk(auditOkOrder);
 		return responseBase;
 	}
@@ -210,7 +210,7 @@ public class OrderController {
 	@ResponseBody 
 	public ResponseBase auditrefuse(OptOrder auditrefuse){
 		auditrefuse.setOptUserId(UserContext.getCurrentContext(request).getId());
-		auditrefuse.setOptUserName(UserContext.getCurrentContext(request).getName());
+		auditrefuse.setOptUserName(UserContext.getCurrentContext(request).getLoginName());
 		ResponseBase responseBase= orderService.auditRefuse(auditrefuse);
 		return responseBase;
 	}
@@ -226,7 +226,7 @@ public class OrderController {
 	@ResponseBody
 	public ResponseBase cancelorder(OptOrder cancelorder){
 		cancelorder.setOptUserId(UserContext.getCurrentContext(request).getId());
-		cancelorder.setOptUserName(UserContext.getCurrentContext(request).getName());
+		cancelorder.setOptUserName(UserContext.getCurrentContext(request).getLoginName());
 		ResponseBase responseBase= orderService.cancelOrder(cancelorder);
 		return responseBase;
 	}

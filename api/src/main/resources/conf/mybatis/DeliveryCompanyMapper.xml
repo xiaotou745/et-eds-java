@@ -228,4 +228,52 @@
 	  <include refid="Base_Column_List" />
  from   dbo.DeliveryCompany dc ( nolock ) 
   </select>
+<sql id="getStatisticsListFrom">
+(SELECT  a.deliveryCompanyName ,
+		a.id as deliveryCompanyID,
+        a.deliveryCompanyCode ,
+        cast(YEAR(c.AuditDate) as varchar(10))+''/''+cast(Month(c.AuditDate) as varchar(10)) as auditDate,
+        SUM(b.RealOrderCommission) AS clienterTotalSettleMoney ,
+        SUM(b.DeliveryCompanySettleMoney) AS companyTotalSettleMoney ,
+        COUNT(0) AS taskTotalNum ,
+        SUM(b.OrderCount) AS orderTotalNum ,
+        SUM(b.Amount) AS amountTotalNum
+FROM    DeliveryCompany a
+        JOIN [order] b ON a.Id = b.DeliveryCompanyID
+        JOIN dbo.OrderOther c ON b.id = c.OrderId
+WHERE   b.DeliveryCompanyID > 0
+        AND c.IsJoinWithdraw = 1
+        and c.AuditDate is not null 
+        <if test="deliveryName != null and deliveryName!=''">
+			and a.deliveryCompanyName=''${deliveryName}''
+		</if>
+		<if test="start != null and end!=''">
+			  AND c.AuditDate >= ''${start}''
+		</if>
+		<if test="end != null and end!=''">
+			  AND ''${end}'' > c.AuditDate
+		</if>
+GROUP BY a.id,
+		a.DeliveryCompanyName ,
+        a.DeliveryCompanyCode,
+cast(YEAR(c.AuditDate) as varchar(10))+''/''+cast(Month(c.AuditDate) as varchar(10))
+        ) mt 
+	</sql>
+	<select id="getStatisticsList" resultType="com.edaisong.entity.domain.DeliveryStatistics"
+		parameterType="com.edaisong.entity.req.PagedDeliveryStatisticsReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' mt.deliveryCompanyCode DESC ',
+		' * ',
+		'
+		<include refid="getStatisticsListFrom" />
+		',
+		' 1=1 ',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 </mapper>

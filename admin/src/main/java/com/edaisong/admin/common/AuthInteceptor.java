@@ -33,7 +33,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 			if (isLogin) {//用户登录后，检查用户是否有当前页面的权限，没有则跳转到订单列表页
 				//用户登录后，将当前用户id和名称保存起来，用于记录操作日志
 				request.setAttribute("userID", UserContext.getCurrentContext(request).getId());
-				request.setAttribute("userName", UserContext.getCurrentContext(request).getName());
+				request.setAttribute("userName", UserContext.getCurrentContext(request).getLoginName());
 
 				if (needCheckPageAuth(request)) {
 					List<MenuEntity> menuList=authorityMenuClassService.getMenuListByUserID(UserContext.getCurrentContext(request).getId());

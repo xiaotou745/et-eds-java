@@ -20,7 +20,7 @@ if(data == null){
 	
 }
 UserContext context=UserContext.getCurrentContext(request);
-int loginFrom=UserContext.getLoginFrom(context.getId());
+int loginFrom=context.getLoginFrom();
 String alink="";
 String alink2="";
 if (loginFrom==0) {
