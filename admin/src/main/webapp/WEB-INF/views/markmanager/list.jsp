@@ -42,7 +42,7 @@
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
-				<div style="margin-top:-15px;"><h6 class="modal-title">编辑标签</h6></div> 
+				<div style="margin-top:-15px;"><h6 class="modal-title"  id="editTip">添加标签</h6></div> 
 			</div>
 			<small class="font-bold" >
 				<div class="modal-body" >
@@ -175,6 +175,7 @@
 		$("#editRemark").val('');
         $("#rIsEnableY").attr("checked", "checked");
 		$("#hdOperateType").val(0);
+		$("#editTip").html("添加标签");
 		$('#showEditTag').modal('show');
 	}
 </script>
