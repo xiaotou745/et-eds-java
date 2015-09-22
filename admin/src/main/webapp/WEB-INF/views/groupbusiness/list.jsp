@@ -20,7 +20,7 @@
 							
 							<div class="col-sm-8">							
 								<input id="groupBusinessName"
-								placeholder="集团名称,登录名称"
+								placeholder="集团名称、登录账号"
 								 type="tel" class="form-control"  name="groupBusinessName" onkeydown="return disableEnter(event)"/>								
 							</div>
 						</div>

@@ -9,5 +9,5 @@ public interface IGroupBusinessRechargeService {
     int insert(GroupBusinessRecharge record);
     GroupBusinessRecharge getByOrderNo(String orderNO);
     int recharge(GroupBusinessRecharge record);
-    List<GroupBusinessBalance> getGroupBalance(int groupBusinessID);
+    List<GroupBusinessBalance> getGroupBalance(int groupBusinessID); 
 }

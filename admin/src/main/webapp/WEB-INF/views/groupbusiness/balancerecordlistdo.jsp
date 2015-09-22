@@ -12,12 +12,23 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.core.enums.BusinessBalanceRecordStatus"%>
 <%@page import="com.edaisong.core.enums.BusinessBalanceRecordRecordType"%>
+<%@page import="com.edaisong.admin.common.UserContext"%>
 <%
 	PagedResponse<GroupBusinessBalanceRecord> responsePageList=	(PagedResponse<GroupBusinessBalanceRecord>)request.getAttribute("listData");
 List<GroupBusinessBalanceRecord> data = responsePageList.getResultList();
-String basePath =PropertyUtils.getProperty("static.admin.url");
+
 if(data == null){
 	data = new ArrayList<GroupBusinessBalanceRecord>();
+}
+UserContext context=UserContext.getCurrentContext(request);
+int loginFrom=context.getLoginFrom();
+String alink="";
+String alink2="";
+String basePath="";
+if (loginFrom==1) {
+	basePath=PropertyUtils.getProperty("dynamic.admin.url") + "/Order/OrderDetail"; 
+}else {
+	basePath =PropertyUtils.getProperty("static.admin.url")+ "/order/detail"; 
 }
 %>
 <table
@@ -50,7 +61,7 @@ if(data == null){
 				<%
 					} else{
 				%> <a
-				href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getRelationno()%>&orderid=<%=data.get(i).getWithwardid()%> "><%=data.get(i).getRelationno()%></a>
+				href="<%=basePath%>?orderno=<%=data.get(i).getRelationno()%>&orderid=<%=data.get(i).getWithwardid()%> "><%=data.get(i).getRelationno()%></a>
 				<%
 					}
 				%>
