@@ -39,8 +39,8 @@ String basePath =PropertyUtils.getProperty("static.admin.url");
 				<td><%=list.get(i).getId() %></td>
 				<td><%=list.get(i).getTrueName() %></td>
 				<td><%=list.get(i).getPhoneNo() %></td>
-				<td>￥<%=list.get(i).getAccountBalance() %></td>
-				<td><%=list.get(i).getAllowWithdrawPrice() %></td> 
+				<td>￥<%=list.get(i).getAccountBalanceString() %></td>
+				<td><%=list.get(i).getAllowWithdrawPriceString() %></td> 
 				<%
 				if (list.get(i).getStatus()== 0)
 				{

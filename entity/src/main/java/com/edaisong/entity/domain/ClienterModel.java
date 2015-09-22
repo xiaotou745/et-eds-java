@@ -2,6 +2,7 @@ package com.edaisong.entity.domain;
 
 
 import java.lang.Double;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class ClienterModel {
@@ -83,7 +84,9 @@ public class ClienterModel {
 	public Double getAccountBalance() {
 		return accountBalance;
 	}
-
+	public String getAccountBalanceString() {
+		return new DecimalFormat("0.00").format(accountBalance);
+	}
 	public void setAccountBalance(Double accountBalance) {
 		this.accountBalance = accountBalance;
 	}
@@ -122,6 +125,10 @@ public class ClienterModel {
 
 	public Double getAllowWithdrawPrice() {
 		return allowWithdrawPrice;
+	}
+	
+	public String getAllowWithdrawPriceString() {
+	    return new DecimalFormat("0.00").format(allowWithdrawPrice);
 	}
 
 	public void setAllowWithdrawPrice(Double allowWithdrawPrice) {

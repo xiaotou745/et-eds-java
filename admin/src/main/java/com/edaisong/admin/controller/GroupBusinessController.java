@@ -109,7 +109,7 @@ public class GroupBusinessController {
 		gbr2.setloginName(bgm.getloginName());
 	 	GroupBusinessModel gbm2 = groupBusinessService.getSingle(gbr2);
 		if(gbm2!=null && gbm2.getGroupbusiname()!=null){ 
-			response.setMessage("此账号已经存在");
+			response.setMessage("此登录账号已经存在");
 			response.setResponseCode(0);
 			return response;
 		}
@@ -143,7 +143,7 @@ public class GroupBusinessController {
 	 	GroupBusinessModel gbm1 = groupBusinessService.getSingle(gbr1);
 		if(gbm1!=null && gbm1.getGroupbusiname()!=null){
 			if(gbm1.getId() != bgm.getId()){
-				response.setMessage("集团商铺名称已存在");
+				response.setMessage("集团名称已存在");
 				response.setResponseCode(0);
 				return response;
 			}
@@ -154,7 +154,7 @@ public class GroupBusinessController {
 	 	GroupBusinessModel gbm2 = groupBusinessService.getSingle(gbr2);
 		if(gbm2!=null &&gbm2.getGroupbusiname()!=null){ 
 			if(gbm2.getId() != bgm.getId()){
-				response.setMessage("此登陆账号已经存在");
+				response.setMessage("此登录账号已经存在");
 				response.setResponseCode(0);
 				return response;
 			}
