@@ -26,10 +26,8 @@ public class LogServiceBLL {
 	 * @param
 	 */
 	public void SystemActionLog(ActionLog logEngity) {
-//		if (logEngity.getStackTrace() == null
-//				|| logEngity.getStackTrace().isEmpty()) {
-//			return;
-//		}
+		return ;
+/*
 		try {
 			initLog4DB(logEngity);
 			String jsonMsg = JsonUtil.obj2string(logEngity);
@@ -48,7 +46,7 @@ public class LogServiceBLL {
 			}
 		} catch (Exception e) {
 		}
-
+*/
 	}
 
 	public void LogInfo(ActionLog logEngity) {
