@@ -9,7 +9,7 @@
 <%@page import="com.edaisong.core.enums.BusinessBalanceRecordRecordType"%>
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%	
-String basePath =PropertyUtils.getProperty("static.business.url");
+String basePath =PropertyUtils.getProperty("java.business.url");
 %>
 <div class="top cb">
 

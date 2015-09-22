@@ -70,7 +70,7 @@ public class UserContext {
 	 * @param loginfrom
 	 */
 	public  int getLoginFrom() {
-		String staticUrl=PropertyUtils.getProperty("static.admin.url");
+		String staticUrl=PropertyUtils.getProperty("java.admin.url");
 		int index=staticUrl.indexOf(".");
 		if (index>0) {
 			String webDomain=staticUrl.substring(staticUrl.indexOf("."));

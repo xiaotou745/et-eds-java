@@ -8,7 +8,7 @@
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%@page import="com.edaisong.core.enums.BusinessBalanceRecordRecordType"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("java.admin.url");
 	List<AuthorityMenuClass> data = (List<AuthorityMenuClass>) request.getAttribute("listData");
 	AuthorityMenuClass currentMenu = (AuthorityMenuClass) request.getAttribute("currentMenu");
 %>

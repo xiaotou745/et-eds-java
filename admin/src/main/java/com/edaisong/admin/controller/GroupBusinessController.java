@@ -103,7 +103,7 @@ public class GroupBusinessController {
 		gbr1.setgroupBusinessName(bgm.getbusinessGroupName());
 	 	GroupBusinessModel gbm1 = groupBusinessService.getSingle(gbr1);
 		if(gbm1!=null && gbm1.getGroupbusiname()!=null){
-			response.setMessage("集团商铺名称已存在");
+			response.setMessage("集团名称已存在");
 			response.setResponseCode(0);
 			return response;
 		}
@@ -416,9 +416,9 @@ public class GroupBusinessController {
 		data.setFieldNames(new ArrayList<String[]>());
 		data.setDataMap(new LinkedHashMap<String, List<?>>());
 		// add data
-		data.getColumnNames().add(new String[] { "交易类型","任务单号/交易流水号", "商铺名称", "收支金额", "集团余额", "门店余额",  "状态","交易日期", "操作人","备注" });
+		data.getColumnNames().add(new String[] { "交易类型","任务单号/交易流水号", "商铺名称", "收支金额", "集团余额",   "状态","交易日期", "操作人","备注" });
 		data.getFieldNames().add(
-				new String[] { "recordtypeString","relationno", "businessname", "groupamount", "groupafterbalance", "balance","statusString", "operatetime", "operator","remark" });
+				new String[] { "recordtypeString","relationno", "businessname", "groupamount", "groupafterbalance","statusString", "operatetime", "operator","remark" });
 		data.getDataMap().put(fileName, records);
 		return ExcelUtils.export2ByteArray(data);
 	}

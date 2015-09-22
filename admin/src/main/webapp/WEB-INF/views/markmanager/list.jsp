@@ -5,7 +5,7 @@
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%@page import="com.edaisong.core.util.EnumHelper"%>
 <%@page import="com.edaisong.core.enums.TagType"%>
-<%String basePath =PropertyUtils.getProperty("static.admin.url");%>
+<%String basePath =PropertyUtils.getProperty("java.admin.url");%>
 
 <div class="row" style="margin-top: 5px;">
 	<div class="col-lg-3">

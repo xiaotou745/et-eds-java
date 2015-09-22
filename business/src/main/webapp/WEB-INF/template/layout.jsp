@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.business.url");
+	String basePath = PropertyUtils.getProperty("java.business.url");
 %>
 <!DOCTYPE html>
 <html>

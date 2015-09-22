@@ -3,7 +3,7 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@ page import="java.io.*"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("java.admin.url");
     //response.setStatus(HttpServletResponse.SC_OK);
 %>
 <script src="<%=basePath%>/js/jquery-2.1.1.js"></script>

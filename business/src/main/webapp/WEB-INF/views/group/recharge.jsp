@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%	
-String basePath =PropertyUtils.getProperty("static.business.url");
+String basePath =PropertyUtils.getProperty("java.business.url");
 %>
 <div class="top cb">
   <h3 class="cb">充值</h3>
@@ -129,6 +129,7 @@ function check(pay){
 	if(radio.parents('.sBox').find("#orderBox").length>0){
 		money = radio.parents('.sBox').find("#orderBox").val();
 		tip = "请输入1-100000范围内整数"
+		//$("#orderBox").val("");
 	}
 	$('#orderBox').parents('.sBox').find('.tishiyu').html(tip);
 	if(money>=1 && money<=100000){
@@ -174,6 +175,9 @@ $(document).ready(function() {
 		if(key==8){
 			return true;
 		}
+		if($("#orderBox").val()=="" && key==96){
+			return false;
+		}
 		if ((key<=57 && key>=48) || (key<=105 && key>=95)  ) { //数字
 		   	return true;
 		}
@@ -199,7 +203,7 @@ $(document).ready(function() {
 			
 			var selectedfee=$("input[name='WIDtotal_fee']:checked");
 	    	if(selectedfee.attr('id')=="customerfee"){
-	    		$("#selectedfee").val($("#orderBox").val());
+	    		selectedfee.val($("#orderBox").val());
 	    	}
 	    	var url = "<%=basePath%>/group/createorderno";
 			var paramaters="";

@@ -14,7 +14,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 		if (handler instanceof HandlerMethod) {
 			// 判断是否登录
 			boolean isLogin = LoginUtil.checkIsLogin(request, response);
-			String basePath = PropertyUtils.getProperty("static.business.url");
+			String basePath = PropertyUtils.getProperty("java.business.url");
 			if (!isLogin && 
 				!request.getServletPath().equals("/account/login")&& 
 				!request.getServletPath().equals("/account/code")&& 

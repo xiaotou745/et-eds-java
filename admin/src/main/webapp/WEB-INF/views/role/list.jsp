@@ -4,7 +4,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.AuthorityMenuClass"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("java.admin.url");
 %>
 <script src="<%=basePath%>/js/bootstrap-treeview.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">

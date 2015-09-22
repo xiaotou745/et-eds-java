@@ -3,7 +3,7 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@ page import="java.io.*"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.business.url");
+	String basePath = PropertyUtils.getProperty("java.business.url");
     //response.setStatus(HttpServletResponse.SC_OK);
 %>
 <!DOCTYPE html>

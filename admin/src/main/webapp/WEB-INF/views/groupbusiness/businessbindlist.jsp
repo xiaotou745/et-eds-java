@@ -10,7 +10,7 @@
 <%@page import="com.edaisong.entity.domain.GroupBusinessModel"%> 
 <%@page import="java.text.SimpleDateFormat"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("java.admin.url");
 	GroupBusinessModel detail = (GroupBusinessModel)request.getAttribute("detail");
 %>
 

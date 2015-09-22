@@ -5,7 +5,7 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 
 <%
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
 %>
  <script type="text/javascript" src="<%=basePath%>/js/admin.js"></script>
    <table border="0" cellspacing="0" cellpadding="0">

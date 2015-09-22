@@ -3,7 +3,7 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.business.common.UserContext"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.business.url");
+	String basePath = PropertyUtils.getProperty("java.business.url");
     String viewPath =request.getAttribute("viewPath").toString();
     UserContext context = UserContext.getCurrentContext(request);
     String groupName=context.getBusinessName();

@@ -9,7 +9,7 @@
 <%@page import="com.edaisong.core.enums.PayType"%>
 <%@page import="com.edaisong.core.enums.OrderIsPay"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.business.url");
+	String basePath = PropertyUtils.getProperty("java.business.url");
 	OrderDetailBusinessResp modelDatas = (OrderDetailBusinessResp) request
 			.getAttribute("modelDatas");
 %>

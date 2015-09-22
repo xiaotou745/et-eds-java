@@ -3,7 +3,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.business.url");
+	String basePath = PropertyUtils.getProperty("java.business.url");
     UserContext userContext = UserContext.getCurrentContext(request);
 	String name = userContext==null ? "游客" : userContext.getBusinessName();
 %>

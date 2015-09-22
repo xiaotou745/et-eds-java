@@ -6,7 +6,7 @@
 <%@page import="com.edaisong.core.util.EnumHelper"%>
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%
-	String basePath = PropertyUtils.getProperty("static.admin.url");
+	String basePath = PropertyUtils.getProperty("java.admin.url");
 %>
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -83,7 +83,7 @@
 				<input id="rAddIsAllowOverdraftN" name="rAddIsAllowOverdraft" type="radio" checked="checked" value="0"><label for="rAddIsAllowOverdraftN">否</label>
             </div>
             <div class="control-group">
-                <label >登陆账号：</label> 
+                <label >登录账号：</label> 
                     <input  name="txtAddLoginName" id="txtAddLoginName" type="text">
             </div> 
             <div class="control-group">
@@ -200,7 +200,7 @@
 	    var loginName = $('#txtAddLoginName').val().trim();
 	    var pw = $('#txtAddPassword').val().trim();
 	    var confirmPw = $('#txtAddConfirmPassword').val().trim();
-	    var reg=/^[\u4e00-\u9fa5]+$/;
+	    var reg=/[\u4e00-\u9fa5]+/;
 	    
 	    if(groupBusiName.trim().length <=4 || groupBusiName.trim().length>30){
 	    	alert("集团名称必须在5-30个字符");

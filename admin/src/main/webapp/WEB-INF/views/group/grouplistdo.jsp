@@ -5,7 +5,7 @@
 <%@page import="com.edaisong.entity.Group"%> 
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
-String basePath =PropertyUtils.getProperty("static.admin.url");
+String basePath =PropertyUtils.getProperty("java.admin.url");
 %>        
 <div class="ibox-content">		
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"  class="table">
