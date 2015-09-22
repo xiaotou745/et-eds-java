@@ -83,7 +83,7 @@ width: 100%;
 					<div class="col-lg-4">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">物流公司名称:</label>
-							<div class="col-sm-8">
+							<div class="col-sm-5">
 								<input type="text" class="form-control"  name="deliveryName"  id="deliveryName"/>
 							</div>
 						</div>
