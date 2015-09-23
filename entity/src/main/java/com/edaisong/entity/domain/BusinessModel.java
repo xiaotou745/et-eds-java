@@ -6,6 +6,7 @@ public class BusinessModel extends Business{
 private String groupname;
 private String businessgroupName;
 private int strategyId;
+private int groupBusinessID;
 public String getBusinessgroupName() {
 	return businessgroupName;
 }
@@ -23,6 +24,12 @@ public int getStrategyId() {
 }
 public void setStrategyId(int strategyId) {
 	this.strategyId = strategyId;
+}
+public int getGroupBusinessID() {
+	return groupBusinessID;
+}
+public void setGroupBusinessID(int groupBusinessID) {
+	this.groupBusinessID = groupBusinessID;
 }
 
 }

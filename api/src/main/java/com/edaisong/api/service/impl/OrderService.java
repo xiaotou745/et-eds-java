@@ -537,9 +537,9 @@ public class OrderService implements IOrderService {
 		order.setSettlemoney(settleMoney);
 		
 		//如果当前商家的余额不够支付订单了，则消费集团的金额
-		if (businessModel.getGroupid()>0&&
+		if (businessModel.getGroupBusinessID()>0&&
 			businessModel.getBalanceprice()<settleMoney) {
-			order.setGroupbusinessid(businessModel.getGroupid());
+			order.setGroupbusinessid(businessModel.getGroupBusinessID());
 		}
 
 		order.setBusinessreceivable(Double.valueOf(0));// 退还商家金额
@@ -608,8 +608,8 @@ public class OrderService implements IOrderService {
 				businessModel.getCommissionfixvalue(), req.getOrdercount(), businessModel.getDistribsubsidy(), req.getOrderfrom());
 		
 		if (businessModel.getBalanceprice() < settleMoney) {
-			if (businessModel.getGroupid()>0){
-				GroupBusiness groupBusiness=groupBusinessDao.select(businessModel.getGroupid());
+			if (businessModel.getGroupBusinessID()>0){
+				GroupBusiness groupBusiness=groupBusinessDao.select(businessModel.getGroupBusinessID());
 				if (groupBusiness.getAmount()<settleMoney&&
 					groupBusiness.getIsAllowOverdraft()==0) {
 					return PublishOrderReturnEnum.GroupBalancePriceLack;

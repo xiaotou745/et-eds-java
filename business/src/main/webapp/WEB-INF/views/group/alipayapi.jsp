@@ -50,7 +50,7 @@
 		//String notify_url = "http://pay186.yitaoyun.net:8011/group/return_url";
 		//需http://格式的完整路径，不能加?id=123这类自定义参数
 		//页面跳转同步通知页面路径
-		String return_url = basePath+"/group/return_url";
+		String return_url = basePath;
 		//需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
 		//商户订单号
 		String out_trade_no =new String(request.getParameter("WIDout_trade_no").getBytes("ISO-8859-1"),"UTF-8");
@@ -62,7 +62,7 @@
 		String total_fee = Double.toString(fee);
 		
 
-		//total_fee="0.01";
+		total_fee="0.01";
 		//必填
 		//订单描述
 		String body =groupInfo;// new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");
@@ -95,7 +95,7 @@
         sParaTemp.put("_input_charset", AlipayConfig.input_charset);
 		sParaTemp.put("payment_type", payment_type);
 		sParaTemp.put("notify_url", notify_url);
-		//sParaTemp.put("return_url", return_url);
+		sParaTemp.put("return_url", return_url);
 		sParaTemp.put("out_trade_no", out_trade_no);
 		sParaTemp.put("subject", subject);
 		sParaTemp.put("total_fee", total_fee);
