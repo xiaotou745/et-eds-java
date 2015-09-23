@@ -161,15 +161,11 @@ $(document).ready(function() {
 	$('#orderBox').on('focus',function(){
 		$("#customerfee").prop('checked','checked')
 	})
-	$('#orderBox').on('keydown',function(e){
-		var obj=e.srcElement || e.target;
-		var dot=obj.value.indexOf(".");//alert(e.which);
+	$('#orderBox').on('keypress',function(e){
 		var  key=e.keyCode|| e.which;
-		console.log(key);
-		if(key==8){
-			return true;
-		}
-		if($("#orderBox").val()=="" && key==96){
+		var oldValue=$("#orderBox").val();
+		if((oldValue==""||oldValue=="0") && key==48){
+			$("#orderBox").val("");
 			return false;
 		}
 		if ((key<=57 && key>=48) || (key<=105 && key>=95)  ) { //数字

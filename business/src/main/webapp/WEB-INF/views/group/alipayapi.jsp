@@ -62,7 +62,7 @@
 		String total_fee = Double.toString(fee);
 		
 
-		total_fee="0.01";
+		//total_fee="0.01";
 		//必填
 		//订单描述
 		String body =groupInfo;// new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");
