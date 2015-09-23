@@ -18,7 +18,7 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 	</div>
 </div>
 <div class="box3">
-		<form name="alipayment" id="alipayment" action="alipayapi" method="post" target="_blank" >
+		<form name="alipayment" id="alipayment" action="alipayapi" method="post">
 			<div class="cb sBox" id="default">
 				<span class="fl fz14">充值金额</span> <label class="fl"> <input
 					class="fl" type="radio" name="WIDtotal_fee" value="500" checked="checked"> 500元
@@ -146,9 +146,7 @@ function getGroupBalance(){
 		success : function(data) {
 			var info=data.split(";");
 			$("#balance").html("￥"+info[0]);
-			
-			var money=info[1]=="null"?"0.00":info[1];
- 			$("#total").html("￥"+money);
+ 			$("#total").html("￥"+info[1]);
 		}
 	});
 }
@@ -192,11 +190,10 @@ $(document).ready(function() {
 		$('#orderBox').parents('.sBox').find('.tishiyu').hide();
 	})
 	$('#pay').on('click',function(){
-		if (!confirm("是否确定充值？")){
-			return;
-		}
 		if(check(true)){
-			
+			if (!confirm("是否确定充值？")){
+				return;
+			}
 			var selectedfee=$("input[name='WIDtotal_fee']:checked");
 	    	if(selectedfee.attr('id')=="customerfee"){
 	    		selectedfee.val($("#orderBox").val());

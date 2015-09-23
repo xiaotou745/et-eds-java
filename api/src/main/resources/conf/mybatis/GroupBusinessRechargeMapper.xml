@@ -30,7 +30,7 @@ FROM    dbo.groupbusiness WITH ( NOLOCK )
 WHERE   id = #{groupBusinessID,jdbcType=INTEGER}
 UNION ALL
 SELECT  1 AS moneytype ,
-        SUM(PayAmount) AS amount
+         ISNULL(SUM(PayAmount),0) AS amount
 FROM    groupbusinessrecharge WITH ( NOLOCK )
 WHERE   GroupBusinessId = #{groupBusinessID,jdbcType=INTEGER}
         AND PayStatus = 1
