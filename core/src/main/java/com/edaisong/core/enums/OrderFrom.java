@@ -9,7 +9,7 @@ public enum OrderFrom {
 	/**
 	 * E代送B端
 	 */
-	EDaiSong(0, "E代送B端"),
+	EDaiSong(0, "B端"),
 	/**
 	 * 聚网客
 	 */

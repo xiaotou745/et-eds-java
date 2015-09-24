@@ -1094,14 +1094,13 @@
 	<select id="getOrderDetailBusiness" resultType="com.edaisong.entity.domain.OrderDetailBusiness"
 		parameterType="com.edaisong.entity.req.OrderDetailBusinessReq">
 		select top 1
-		a.Id,a.OrderNo,a.Status,a.OrderFrom,a.OriginalOrderNo,a.Remark,a.PubDate,
+		a.Id,a.OrderNo,a.Status,a.orderFrom,a.OriginalOrderNo,a.Remark,a.PubDate,
 		b.GrabTime,b.TakeTime,b.CancelTime,a.ActualDoneDate,a.RecevicePhoneNo,a.ReceviceAddress,c.TrueName,c.PhoneNo,
-		a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,
-		case when a.OrderFrom=0 then '客户端' else d.GroupName end GroupName
+		a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,isnull(d.GroupName,'') as orderFromName  
 		from dbo.[order] ( nolock ) a
 		join dbo.OrderOther ( nolock ) b on a.Id=b.OrderId
 		LEFT join dbo.clienter ( nolock ) c on a.clienterId=c.Id
-		left join dbo.[group] d on a.OrderFrom=d.Id
+		left join dbo.[group] d on a.orderfrom=d.Id
 		where a.OrderNo=#{orderNo,jdbcType=NVARCHAR} and a.BusinessId=
 		#{businessId,jdbcType=INTEGER}
 	</select>

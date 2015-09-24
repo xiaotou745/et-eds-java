@@ -68,7 +68,7 @@
 			<td><%=i + 1%></td>
 			<td>
 			<%=data.get(i).getOrderNo()%> <br /> 
-				来源:<%=ParseHelper.ShowString(data.get(i).getGroupName())%><br/>原单号:<%=ParseHelper.ShowString(data.get(i).getOriginalOrderNo())%>
+				来源:<%=ParseHelper.ShowString(data.get(i).getOrderFromName())%><br/>原单号:<%=ParseHelper.ShowString(data.get(i).getOriginalOrderNo())%>
 		    </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getBusinessName())%> <br /> <%=data.get(i).getBusinessPhoneNo()%>
 				<br /><%=ParseHelper.ShowString(data.get(i).getPickUpAddress())%></td>
