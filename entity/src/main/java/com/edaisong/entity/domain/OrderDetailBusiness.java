@@ -12,7 +12,7 @@ public class OrderDetailBusiness {
 	private int id;
 	private String orderNo;
 	private int status;
-	private String orderFromName;
+	private String groupName;
 	private String originalOrderNo;
 	private String remark;
 	private Date pubDate;
@@ -28,7 +28,8 @@ public class OrderDetailBusiness {
 	private int isPay;
 	private Double settleMoney;
 	private Date cancelTime;
-	private Integer orderFrom;
+    private Integer orderFrom ;
+    private String orderFromName ;
 
 	/**
 	 * ID
@@ -72,6 +73,19 @@ public class OrderDetailBusiness {
 		this.status = status;
 	}
 
+	/**
+	 * 订单来源
+	 */
+	public String getGroupName() {
+		return groupName;
+	}
+
+	/**
+	 * 订单来源
+	 */
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 
 	/**
 	 * 第三方订单号
@@ -291,18 +305,11 @@ public class OrderDetailBusiness {
 		this.cancelTime = cancelTime;
 	}
 
-	/**
-	 * 订单来源
-	 * @return
-	 */
-	public Integer getOrderFrom() {
+	public int getOrderFrom() {
 		return orderFrom;
 	}
-	/**
-	 * 订单来源
-	 * @return
-	 */
-	public void setOrderFrom(Integer orderFrom) {
+
+	public void setOrderFrom(int orderFrom) {
 		this.orderFrom = orderFrom;
 	}
 

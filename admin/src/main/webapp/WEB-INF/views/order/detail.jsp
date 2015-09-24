@@ -67,7 +67,7 @@
 			</td>
 			<td>是否已付款:<%=payStatus%></td>
 			<td>订单状态：<%=OrderStatus.getEnum(orderListModel.getStatus()).desc()%></td>
-			<td>订单来源：<%=orderListModel.getOrderFromName()%></td>
+			<td>订单来源：<%=orderListModel.getGroupName()%></td>
 		</tr>
 		<tr class="trclass">
 			<td>发布时间：<%=ParseHelper.ToDateString(orderListModel.getPubDate())%></td>
