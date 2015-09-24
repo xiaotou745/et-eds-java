@@ -35,7 +35,8 @@
 	    	<h5>
 		<%} %>
 			订单来源：
-			<%=modelDatas.getOrderModel().getOrderFromName()%></h5>
+			<%=ParseHelper.ShowString(modelDatas.getOrderModel()
+					.getGroupName())%></h5>
 		<h5 >
 			备注：<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getRemark())%></h5>

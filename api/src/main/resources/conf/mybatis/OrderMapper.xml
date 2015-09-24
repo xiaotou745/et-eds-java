@@ -812,9 +812,8 @@
 		c.PhoneNo ClienterPhoneNo , b.Name BusinessName ,b.PhoneNo
 		BusinessPhoneNo ,
 		b.Address BusinessAddress ,
-		CASE when o.OrderFrom = 0 then ''客户端''
-		else g.GroupName
-		end GroupName ,
+		 isnull(g.GroupName,'''') as GroupName,
+		 isnull(g.GroupName,'''') as OrderFromName,
 		o.[Adjustment] ,
 		ISNULL(oo.HadUploadCount, 0) HadUploadCount ,
 		CASE ISNULL(oo.GrabLatitude, 0)
@@ -1022,7 +1021,8 @@
 		,c.TrueName ClienterName
 		,c.AccountBalance AccountBalance
 		,b.GroupId
-		,case when o.orderfrom=0 then '客户端' else g.GroupName end GroupName
+		,isnull(g.GroupName,'''') as GroupName
+		,isnull(g.GroupName,'''') as OrderFromName
 		,o.OriginalOrderNo
 		,oo.NeedUploadCount
 		,oo.HadUploadCount
@@ -1094,13 +1094,15 @@
 	<select id="getOrderDetailBusiness" resultType="com.edaisong.entity.domain.OrderDetailBusiness"
 		parameterType="com.edaisong.entity.req.OrderDetailBusinessReq">
 		select top 1
-		a.Id,a.OrderNo,a.Status,a.orderFrom,a.OriginalOrderNo,a.Remark,a.PubDate,
+		a.Id,a.OrderNo,a.Status,a.OrderFrom,a.OriginalOrderNo,a.Remark,a.PubDate,
 		b.GrabTime,b.TakeTime,b.CancelTime,a.ActualDoneDate,a.RecevicePhoneNo,a.ReceviceAddress,c.TrueName,c.PhoneNo,
-		a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,isnull(d.GroupName,'') as orderFromName  
+		a.Amount,a.OrderCommission,a.IsPay,a.SettleMoney,
+		,isnull(d.GroupName,'''') as GroupName
+		,isnull(d.GroupName,'''') as OrderFromName 
 		from dbo.[order] ( nolock ) a
 		join dbo.OrderOther ( nolock ) b on a.Id=b.OrderId
 		LEFT join dbo.clienter ( nolock ) c on a.clienterId=c.Id
-		left join dbo.[group] d on a.orderfrom=d.Id
+		left join dbo.[group] d on a.OrderFrom=d.Id
 		where a.OrderNo=#{orderNo,jdbcType=NVARCHAR} and a.BusinessId=
 		#{businessId,jdbcType=INTEGER}
 	</select>
