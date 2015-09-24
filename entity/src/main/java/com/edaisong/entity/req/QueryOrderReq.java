@@ -120,4 +120,21 @@ public class QueryOrderReq extends PagedRequestBase {
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
+	
+	private int orderBy;
+/**
+ * 0 按照发单时间排序 1 按照完成时间排序
+ * @return
+ */
+	public int getorderBy() {
+		return orderBy;
+	}
+/**
+ *  0 按照发单时间排序 1 按照完成时间排序
+ * @param orderBy
+ */
+	public void setorderBy(int orderBy) {
+		this.orderBy = orderBy;
+	}
+	
 }

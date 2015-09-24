@@ -1318,7 +1318,14 @@ where   Status = 1
 		parameterType="com.edaisong.entity.req.QueryOrderReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' oo.TakeTime asc ',
+		'
+		<if test="orderBy  ==0 ">
+			o.PubDate asc
+		</if>
+		 <if test="orderBy  ==1 ">
+			o.ActualDoneDate desc
+		</if>
+		',
 		'
 		<include refid="queryOrderColums" />
 		',
@@ -1433,12 +1440,12 @@ where   Status = 1
        from    dbo.[order] (nolock)
        where  clienterId=${clienterId}
 	</select>
-		<!--  移动端 订单列表  add by caoheyang 20150910-->
+		<!--   c端查询待取货订单（会计算距离） 订单列表  add by caoheyang 20150910-->
 	<select id="queryDeliveryOrderC" resultType="com.edaisong.entity.domain.QueryOrder"
 		parameterType="com.edaisong.entity.req.QueryOrderReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' oo.TakeTime asc ',
+		' o.PubDate asc ',
 		'
 		<include refid="queryDeliveryOrderCColums" />
 		',
@@ -1455,6 +1462,7 @@ where   Status = 1
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>	
+	<!--  c端查询待取货订单（会计算距离） -->
 	<sql id="queryDeliveryOrderCColums">
 		 CONVERT(VARCHAR(5), o.ActualDoneDate, 108) as ActualDoneDate ,
         o.Amount ,
@@ -1497,7 +1505,7 @@ where   Status = 1
           else g.GroupName
         end as OrderFromName
 	</sql>
-	<!--   移动端 订单列表add by caoheyang 20150910 -->
+	<!--    c端查询待取货订单（会计算距离） 订单列表add by caoheyang 20150910 -->
 	<sql id="queryDeliveryOrderCFrom">
 		 [order] (nolock) as o
         join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
@@ -1506,7 +1514,7 @@ where   Status = 1
         left join dbo.[group] (nolock) g on o.OrderFrom = g.Id
                                             and g.IsValid = 1
 	</sql>
-	<!--   移动端 订单列表add by caoheyang 20150910 -->
+	<!--    c端查询待取货订单（会计算距离） 订单列表add by caoheyang 20150910 -->
 	<sql id="queryDeliveryOrderCWhere">
 		1=1 and o.IsEnable=1  
 	   <if test="clienterId != null and  clienterId !=0 ">

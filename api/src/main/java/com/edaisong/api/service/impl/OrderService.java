@@ -1130,6 +1130,7 @@ public class OrderService implements IOrderService {
 			res.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return res;
 		}
+		query.setorderBy(1);
 		res.setResult(orderDao.queryOrder(query));
 		return res;
 	}
