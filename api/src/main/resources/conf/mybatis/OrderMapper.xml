@@ -1353,8 +1353,8 @@ where   Status = 1
         o.OrderNo ,
         o.PickUpAddress ,
         CONVERT(VARCHAR(5), o.PubDate, 108) as PubDate ,
-        case   isnull(o.ReceviceAddress,'')  
-		when  null then ''附近3公里左右，由商户指定''
+        case   isnull(o.ReceviceAddress,'''')  
+		when  '''' then ''附近3公里左右，由商户指定''
 		else o.ReceviceAddress end as ReceviceAddress,
         o.ReceviceName ,
         o.RecevicePhoneNo ,
