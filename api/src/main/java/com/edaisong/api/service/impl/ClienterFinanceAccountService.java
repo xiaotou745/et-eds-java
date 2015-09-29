@@ -29,7 +29,7 @@ public class ClienterFinanceAccountService implements IClienterFinanceAccountSer
 		return clienterFinanceAccountDao.insert(record);
 	}
 	@Override
-	public boolean insertSelective(ClienterFinanceAccount record) {
+	public int insertSelective(ClienterFinanceAccount record) {
 		return clienterFinanceAccountDao.insertSelective(record);
 	}
 	@Override

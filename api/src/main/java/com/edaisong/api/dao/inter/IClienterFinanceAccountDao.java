@@ -7,7 +7,7 @@ public interface IClienterFinanceAccountDao {
 
     boolean insert(ClienterFinanceAccount record);
 
-    boolean insertSelective(ClienterFinanceAccount record);
+    int insertSelective(ClienterFinanceAccount record);
 
     ClienterFinanceAccount selectByPrimaryKey(Integer id);
 

@@ -15,7 +15,7 @@ public interface IClienterFinanceAccountService {
 	
 	boolean insert(ClienterFinanceAccount record);
 	
-	boolean insertSelective(ClienterFinanceAccount record);
+	int insertSelective(ClienterFinanceAccount record);
 	
 	boolean updateByPrimaryKeySelective(ClienterFinanceAccount record);
 	

@@ -32,8 +32,8 @@ public class ClienterFinanceAccountDao extends DaoBase implements IClienterFinan
 	}
 
 	@Override
-	public boolean insertSelective(ClienterFinanceAccount record) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.insertSelective",record) > 0;
+	public int insertSelective(ClienterFinanceAccount record) {
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.insertSelective",record);
 	}
 
 	@Override
