@@ -67,7 +67,7 @@ function password() {
 		$(".error2").css("display", "block");
 		return false;
 	}
-	if ($(".ex_pord").val().length > 6) {
+	if ($(".ex_pord").val().length < 6) {
 		$(".error2").html("密码格式错误！");
 		$(".error2").css("display", "block");
 		return false;
