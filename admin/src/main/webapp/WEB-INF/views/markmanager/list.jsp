@@ -24,7 +24,7 @@
 	<div class="col-lg-2">
 		<div class="form-group">
 			<div class="col-sm-11">
-				标签类型:<%=HtmlHelper.getSelect("tagtype", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, "-1", "全部", "", "")%>
+				标签类型:<%=HtmlHelper.getSelect("tagtype", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, "-1", "全部")%>
 			</div>
 		</div>
 	</div>
@@ -71,7 +71,7 @@
 				      		 </div>
 			                 <div style="font-size: 14px;float: left;margin-left: 5px;margin-top:10px">标签类型: </div>
 				             <div style="float:left;margin-top:10px;margin-left: 5px">
-				             	<%=HtmlHelper.getSelect("editTagType", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, null, null, "width:161px", "")%>
+				             	<%=HtmlHelper.getSelect("editTagType", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, null, null)%>
 				             </div> 
 			                 <div style="font-size: 14px;float: left;margin-left: 28px;clear:both;margin-top:10px"> 状 态:
 				                 <input id="rIsEnableY" name="rIsEnable" type="radio" value="1" >启用

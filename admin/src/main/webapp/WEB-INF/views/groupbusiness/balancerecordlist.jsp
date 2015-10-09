@@ -37,7 +37,7 @@
 							<div class="col-sm-8">
 								<%=HtmlHelper.getSelect("recordType", EnumHelper
 					.GetEnumItems(BusinessBalanceRecordRecordType.class),
-					"desc", "value", null, "-1", "全部", "", "form-control m-b")%>
+					"desc", "value", null, "-1", "全部")%>
 							</div>
 							
 						</div>

@@ -21,7 +21,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
                  <span class="">骑士名称: </span>
                  <input id="txtClienterName" type="tel" name="txtClienterName" />
                   <span class="">审核状态: </span>
-                        <select name="status" class="selectw" id="superManStatus" style="width:143px">
+                        <select name="status"  class="form-control m-b" id="superManStatus">
                             <option value="-1">全部</option>
                             <option value="1">审核通过</option>
                             <option value="0">被拒绝</option>

@@ -23,8 +23,7 @@ String busname=ParseHelper.ToString(request.getAttribute("businessName"),"");
 		<tr>
 			<td><span class="">商户名称: </span> <input id="businessName" value="<%=busname %>"
 				name="businessName" type="tel" /> <span class="">审核状态: </span> <select
-				name="status" class="selectw" id="status"
-				style="width: 143px">
+				name="status"  class="form-control m-b" id="status">
 					<option value="-1" selected="selected">全部</option>
 					<option value="1">审核通过</option>
 					<option value="0">未审核</option>
@@ -39,17 +38,17 @@ String busname=ParseHelper.ToString(request.getAttribute("businessName"),"");
 		</tr>
 		<tr>
 			<td><span class="">筛选城市: </span>
-				<%=HtmlHelper.getSelect("businessCity", openCityList, "name", "code",null,"","全部","width:155px")%>
+				<%=HtmlHelper.getSelect("businessCity", openCityList, "name", "code",null,"","全部")%>
 			<input id="groupId" type="hidden" value="<%=groupId%>"
 				name="groupId" /> <span class="">商家分组:</span> 
-				<%=HtmlHelper.getSelect("businessGroupId", businessGroupListData, "name", "id",0,"0","全部","width:143px")%>
+				<%=HtmlHelper.getSelect("businessGroupId", businessGroupListData, "name", "id",0,"0","全部")%>
 				 <span class="">结算类型: </span> <select name="commissionType"
-				class="selectw" id="commissionType" style="width: 143px">
+				 class="form-control m-b" id="commissionType" >
 					<option value="-1" selected="selected">全部</option>
 					<option value="1">固定比例</option>
 					<option value="2">固定金额</option>
 			</select> <span class="">餐费结算方式: </span> <select name="mealsSettleMode"
-				class="selectw" id="mealsSettleMode" style="width: 143px">
+				 class="form-control m-b" id="mealsSettleMode">
 					<option value="-1" selected="selected">全部</option>
 					<option value="0">线下结算</option>
 					<option value="1">线上结算</option>
@@ -99,7 +98,7 @@ String busname=ParseHelper.ToString(request.getAttribute("businessName"),"");
                 <input name="busPhone" id="busPhone" disabled="disabled" type="text">
             </div>
             <div class="control-group">
-                <label>充值类型：</label> <select id="RechargeType">
+                <label>充值类型：</label> <select id="RechargeType"  class="form-control m-b">
                     <option value="1">充值</option>
                     <option value="2">赠送</option>
                     <option value="3">充值+赠送</option>

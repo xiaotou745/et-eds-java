@@ -69,9 +69,9 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			</div>
 			<div class="control-group">
 				<label style="margin-left: 20px">城 市：</label>
-				<%=HtmlHelper.getSelect("busiCity", openCityList, "name", "code",detail.getCityid(),"","-请选择-","width:77px")%>
+				<%=HtmlHelper.getSelect("busiCity", openCityList, "name", "code",detail.getCityid(),"","-请选择-")%>
 				<label>区 域：</label>
-				<%=HtmlHelper.getSelect("busiDistrict", openAreaList, "name", "code",detail.getDistrictid(),"","-请选择-","width:77px")%>
+				<%=HtmlHelper.getSelect("busiDistrict", openAreaList, "name", "code",detail.getDistrictid(),"","-请选择-")%>
 			</div>
 			<div class="control-group">
 				<label style="margin-left: 20px">地 址：</label> <input name="busiAddr"
@@ -116,12 +116,12 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			</div>
 			<div class="control-group">
 				<label style="margin-left: 74px">补贴策略：</label>
-				<%=HtmlHelper.getSelect("businessGroupID", businessGroupListData, "name", "id",detail.getBusinessgroupid(),null,"","width:143px")%>
+				<%=HtmlHelper.getSelect("businessGroupID", businessGroupListData, "name", "id",detail.getBusinessgroupid(),null,"")%>
 			</div>
 			<div class="control-group" style="margin-left: 2px">
 				<label style="margin-left: 48px">餐费结算方式：</label> <select
-					name="busiMealsSettleMode" class="selectw" id="busiMealsSettleMode"
-					style="width: 143px">
+					name="busiMealsSettleMode"  class="form-control m-b" id="busiMealsSettleMode"
+					>
 					<option <%=detail.getMealssettlemode()==0?"selected":""%> value="0">线下结算</option>
 					<option <%=detail.getMealssettlemode()==1?"selected":""%> value="1">线上结算</option>
 				</select>
@@ -168,7 +168,7 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 								                else
 								                {
 				%>
-				<%=HtmlHelper.getSelect("busGroupId", modifyGroupListData, "groupname", "id",detail.getBusinessgroupid(),"0","--请选择--","width:100px")%>
+				<%=HtmlHelper.getSelect("busGroupId", modifyGroupListData, "groupname", "id",detail.getBusinessgroupid(),"0","--请选择--")%>
 				<%
 					}
 				%>

@@ -43,7 +43,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">反馈类型:</label>
 							<div class="col-sm-8">						
-								<%=HtmlHelper.getSelect("sltFeedbackType", EnumHelper.GetEnumItems(FeedbackType.class), "desc", "value",null,"-1","全部","","form-control m-b") %>
+								<%=HtmlHelper.getSelect("sltFeedbackType", EnumHelper.GetEnumItems(FeedbackType.class), "desc", "value",null,"-1","全部") %>
 							</div>
 						</div>
 					</div>
@@ -51,7 +51,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">								
-								<%=HtmlHelper.getSelect("sltCityId", areaListData, "name", "name",null,"-1","全部","","form-control m-b") %>
+								<%=HtmlHelper.getSelect("sltCityId", areaListData, "name", "name",null,"-1","全部") %>
 							</div>
 						</div>
 					</div>
@@ -59,7 +59,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">用户类型:</label>
 							<div class="col-sm-8">
-								<%=HtmlHelper.getSelect("sltUserType", EnumHelper.GetEnumItems(UserType.class), "desc", "value",null,"-1","全部","","form-control m-b") %>
+								<%=HtmlHelper.getSelect("sltUserType", EnumHelper.GetEnumItems(UserType.class), "desc", "value",null,"-1","全部") %>
 							</div>
 						</div>
 					</div>

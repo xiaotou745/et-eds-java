@@ -43,7 +43,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">年份:</label>
 							<div class="col-sm-8">
-								<select name="settlementYear" class="form-control m-b" id="settlementYear" style="width: 143px">
+								<select name="settlementYear" class="form-control m-b" id="settlementYear">
 <!-- 										<option value="-1" selected="selected">全部</option> -->
 										<%
 										Calendar cal = Calendar.getInstance();
@@ -62,7 +62,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">月份:</label>
 							<div class="col-sm-8">
-								<select name="settlementMonth" class="form-control m-b" id="settlementMonth" style="width: 143px">
+								<select name="settlementMonth" class="form-control m-b" id="settlementMonth">
 										<option value="" selected="selected">全部</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
