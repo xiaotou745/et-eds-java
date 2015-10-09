@@ -43,10 +43,10 @@ if(data == null){
 								<td>
 								<%if(data.get(i).getRecordtype()==BusinessBalanceRecordRecordType.Recharge.value()){%>
 								<a href="javascript:funRechargeDetail('<%=data.get(i).getRelationno()%>')"><%=data.get(i).getRelationno()%></a>
-								<%} else if(data.get(i).getRecordtype()==BusinessBalanceRecordRecordType.WithdrawApply.value()||
-										data.get(i).getRecordtype()==BusinessBalanceRecordRecordType.WithdrawRefuse.value()||
-										data.get(i).getRecordtype()==BusinessBalanceRecordRecordType.PayFailure.value()){ %>
-									<a href="javascript:funLookDetail(<%=data.get(i).getWithwardid()%>)"><%=data.get(i).getRelationno()%></a>
+<%-- 								<%} else if(data.get(i).getRecordtype()==BusinessBalanceRecordRecordType.WithdrawApply.value()|| --%>
+<%-- 										data.get(i).getRecordtype()==BusinessBalanceRecordRecordType.WithdrawRefuse.value()||--%>
+<%-- 										data.get(i).getRecordtype()==BusinessBalanceRecordRecordType.PayFailure.value()){ %> --%>
+<%-- 									<a href="javascript:funLookDetail(<%=data.get(i).getWithwardid()%>)"><%=data.get(i).getRelationno()%></a> --%>
 								<%}else{ %>
 									<a href="<%=basePath %>/order/detail?orderno=<%=data.get(i).getRelationno()%>&orderid=<%=data.get(i).getWithwardid()%> "><%=data.get(i).getRelationno()%></a>
 								<%}%>
