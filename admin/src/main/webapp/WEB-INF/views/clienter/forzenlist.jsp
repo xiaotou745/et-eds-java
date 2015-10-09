@@ -25,8 +25,8 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
                  <span class="">冻结状态: </span>
                  
                  <%=HtmlHelper.getSelect("forzenstatus", EnumHelper.GetEnumItems(ClienterForzenType.class),
-					"desc", "value", null, "0", "全部", "", "")%>                  
-                 <select name="datetype" class="selectw" id="selectdatetype" style="width:73px">
+					"desc", "value", null, "0", "全部")%>                  
+                 <select name="datetype"  class="form-control m-b" id="selectdatetype">
                       <option value="1">冻结时间</option>
                       <option value="2">解冻时间</option>
                   </select>

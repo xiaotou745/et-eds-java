@@ -82,7 +82,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">订单状态:</label>
 							<div class="col-sm-8">
-							<%=HtmlHelper.getSelect("orderStatus", EnumHelper.GetEnumItems(OrderStatus.class), "desc", "value",null,"-1","全部","","form-control m-b") %>
+							<%=HtmlHelper.getSelect("orderStatus", EnumHelper.GetEnumItems(OrderStatus.class), "desc", "value",null,"-1","全部") %>
 							</div>
 						</div>
 					</div>
@@ -112,7 +112,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">
-							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部","","form-control m-b") %>
+							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部") %>
 							</div>
 						</div>
 					</div>
@@ -122,7 +122,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选集团: </label>
 							<div class="col-sm-8">
-								  <%=HtmlHelper.getSelect("groupId", groupListData, "groupname", "id","-1","-1","全部","","form-control m-b") %>
+								  <%=HtmlHelper.getSelect("groupId", groupListData, "groupname", "id","-1","-1","全部") %>
 							</div>
 						</div>
 					</div>
@@ -147,7 +147,7 @@ width: 100%;
 					<div class="form-group">
 							<label class="col-sm-4 control-label">审核状态:</label>
 							<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("auditStatus", EnumHelper.GetEnumItems(OrderAuditStatus.class), "desc", "value",null,"-1","全部","","form-control m-b") %>
+									<%=HtmlHelper.getSelect("auditStatus", EnumHelper.GetEnumItems(OrderAuditStatus.class), "desc", "value",null,"-1","全部") %>
 							</div>
 						</div>
 					</div>

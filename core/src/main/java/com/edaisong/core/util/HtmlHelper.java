@@ -38,11 +38,11 @@ public class HtmlHelper {
 		StringBuffer htmlStrBuffer = new StringBuffer();
 		String selected = "";
 		String style = "";
-		if (styleString != null) {
+		if (styleString != null&&!styleString.isEmpty()) {
 			style = "style=\"" + styleString + "\"";
 		}
-		String strClass = "";
-		if (strClass != null) {
+		String strClass = "form-control m-b";
+		if (classString != null&&!classString.isEmpty()) {
 			strClass = classString;
 		}
 		htmlStrBuffer.append(" <select class=\""+strClass+"\" " + style + " id=\""
@@ -174,5 +174,22 @@ public class HtmlHelper {
 			Object defaultValue, String defaultText, String styleString) {
 		return getSelect(selectName, list, textName, valueName, null, defaultValue,
 				defaultText, styleString,null);
+	}
+	/**
+	 * 
+	 * @param selectName
+	 * @param list
+	 * @param textName
+	 * @param valueName
+	 * @param selectedValue
+	 * @param defaultValue
+	 * @param defaultText
+	 * @return
+	 */
+	public static <T> String getSelect(String selectName, List<T> list,
+			String textName, String valueName, Object selectedValue,
+			Object defaultValue, String defaultText) {
+		return getSelect(selectName, list, textName, valueName, null, defaultValue,
+				defaultText, null,null);
 	}
 }

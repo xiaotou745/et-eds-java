@@ -85,7 +85,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">								
-								<%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "name","-1","-1","全部城市","","form-control m-b") %>
+								<%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "name","-1","-1","全部城市") %>
 							</div>
 						</div>
 					</div>	

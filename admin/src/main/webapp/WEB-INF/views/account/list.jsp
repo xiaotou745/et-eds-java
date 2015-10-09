@@ -42,7 +42,7 @@
 登录名称：<input id="txtLoginName"/><br/><br/>
 登录密码：<input type="password" id="txtPwd"/><br/><br/>
 确认密码：<input type="password" id="txtConfirmPwd"/><br/><br/>
-城市选项：<select id="selCity"><option value="1">全部城市权限</option><option value="2">部分城市权限</option></select>
+城市选项：<select id="selCity"  class="form-control m-b"><option value="1">全部城市权限</option><option value="2">部分城市权限</option></select>
 <br/>
 <div style="padding-left:65px;display:none" id="divcity">
 <%
