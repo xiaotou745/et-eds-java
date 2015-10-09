@@ -20,16 +20,16 @@ public enum BusinessBalanceRecordRecordType {
 	/**
 	 * 提款申请
 	 */
-	WithdrawApply(3, "提款申请",1),
+	//WithdrawApply(3, "提款申请",1),
 
 	/**
 	 * 提款拒绝
 	 */
-	WithdrawRefuse(4, "提款拒绝",2),
+	//WithdrawRefuse(4, "提款拒绝",2),
 	/**
 	 * 打款失败
 	 */
-	PayFailure(5, "打款失败",2),
+	//PayFailure(5, "打款失败",2),
 	/**
 	 * 系统奖励
 	 */
@@ -53,7 +53,7 @@ public enum BusinessBalanceRecordRecordType {
 	/**
 	 * 手续费
 	 */
-	ProcedureFee(11, "手续费",1),
+	//ProcedureFee(11, "手续费",1),
 	/**
 	 * 充值赠送
 	 */
