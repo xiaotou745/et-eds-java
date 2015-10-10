@@ -32,8 +32,8 @@ import com.edaisong.entity.req.CardModifyAlipayReq;
 @Service
 public class FinanceService implements IFinanceService{
 
-	private final static String Email_Reg = "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$";
-	private final static String Phone_Reg = "^1[0-9]{10}$";
+	private final static String Email_Reg = "^([a-zA-Z0-9]+[_|\\_|\\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\\_|\\.]?)*[a-zA-Z0-9]+\\.[a-zA-Z]{1,63}$";
+	private final static String Phone_Reg = "^1\\d{10}$";
 	@Autowired
 	private IClienterFinanceAccountService clienterFinanceAccountService;
 	@Autowired
@@ -140,7 +140,7 @@ public class FinanceService implements IFinanceService{
 		if(!req.getAccount().equals(req.getAccount2())){
 			return CardBindC.AccountNotSame;
 		}
-		if(!Pattern.matches(Email_Reg, req.getAccount()) || !Pattern.matches(Phone_Reg, req.getAccount())){
+		if(!Pattern.matches(Email_Reg, req.getAccount()) && !Pattern.matches(Phone_Reg, req.getAccount())){
 			return CardBindC.AccountFormatError;
 		}
 		if(clienterFinanceAccountService.getCountByClientId(req.getUserId(), PayType.ZhiFuBao.value()) > 0){

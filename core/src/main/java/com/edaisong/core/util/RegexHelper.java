@@ -40,7 +40,7 @@ public class RegexHelper {
 	 */
 	public static Boolean yearMotnDayReg(String str)
 	{
-			String regStr="^(19\\d{2}|2(0\\d{2}|100))-(0[1-9]|1[0-2])-([012][1-9]|3[01])$";
+			String regStr="^(19\\d{2}|2(0\\d{2}|100))-(0[1-9]|1[0-2])-([012][0-9]|3[01])$";
 		  	return regexBool(regStr, str);
 	}
 }
