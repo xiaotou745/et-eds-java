@@ -168,7 +168,7 @@ $(document).ready(function() {
 			$("#orderBox").val("");
 			return false;
 		}
-		if ((key<=57 && key>=48) || (key<=105 && key>=95)  ) { //数字
+		if (key<=57 && key>=48) { //数字
 		   	return true;
 		}
 		return false;
