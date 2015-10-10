@@ -172,7 +172,7 @@ public class HtmlHelper {
 	public static <T> String getSelect(String selectName, List<T> list,
 			String textName, String valueName, Object selectedValue,
 			Object defaultValue, String defaultText, String styleString) {
-		return getSelect(selectName, list, textName, valueName, null, defaultValue,
+		return getSelect(selectName, list, textName, valueName, selectedValue, defaultValue,
 				defaultText, styleString,null);
 	}
 	/**
@@ -184,12 +184,13 @@ public class HtmlHelper {
 	 * @param selectedValue
 	 * @param defaultValue
 	 * @param defaultText
+	 * @param styleString
 	 * @return
 	 */
 	public static <T> String getSelect(String selectName, List<T> list,
 			String textName, String valueName, Object selectedValue,
 			Object defaultValue, String defaultText) {
-		return getSelect(selectName, list, textName, valueName, null, defaultValue,
+		return getSelect(selectName, list, textName, valueName, selectedValue, defaultValue,
 				defaultText, null,null);
 	}
 }
