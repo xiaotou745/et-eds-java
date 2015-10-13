@@ -76,6 +76,7 @@ public class AccountBillService implements IAccountBillService {
 		result.setMessage(AccountBillReturnEnum.Success.desc());
 		result.setResult(model);
 		return result; 
+
 	}
 
 	/**
