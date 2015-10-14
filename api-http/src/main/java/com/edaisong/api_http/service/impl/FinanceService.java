@@ -170,7 +170,7 @@ public class FinanceService implements IFinanceService{
 		if(!req.getAccount().equals(req.getAccount2())){
 			return CardModifyC.AccountNotSame;
 		}
-		if(!Pattern.matches(Email_Reg, req.getAccount()) || !Pattern.matches(Phone_Reg, req.getAccount())){
+		if(!Pattern.matches(Email_Reg, req.getAccount()) && !Pattern.matches(Phone_Reg, req.getAccount())){
 			return CardModifyC.AccountFormatError;
 		}
 		if(clienterFinanceAccountService.getCountByClientId(req.getUserId(), PayType.ZhiFuBao.value()) <= 0){
