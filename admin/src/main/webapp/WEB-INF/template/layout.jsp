@@ -143,9 +143,7 @@
 		//列表页下拉框改变时，自动查询
 		$("select").on("change",function(e){
 			try{
-				if($("#pagesearch").length>0){
-					jss.search(1);
-				}
+				jss.search(1);
 			}catch(e){
 			}
 		});
@@ -156,9 +154,7 @@
 						window.event|| 
 						arguments.callee.caller.arguments[0];
 				if (e && e.keyCode == 13) { // enter 键
-					if($("#pagesearch").length>0){
-						jss.search(1);
-					}
+					jss.search(1);
 				}
 			} catch (e) {
 			}
