@@ -140,6 +140,26 @@
 			    return false;
 			}
 		});
+		//列表页下拉框改变时，自动查询
+		$("select").on("change",function(e){
+			try{
+				jss.search(1);
+			}catch(e){
+			}
+		});
+		//列表页点击回车时，自动查询
+		$(document).on("keydown",function(event){
+			try {
+				var e = event || 
+						window.event|| 
+						arguments.callee.caller.arguments[0];
+				if (e && e.keyCode == 13) { // enter 键
+					//$("#btnSearch").click();
+					jss.search(1);
+				}
+			} catch (e) {
+			}
+		});
 	});
 </script>
 <tiles:insertAttribute name="header_js" ignore="true"></tiles:insertAttribute>

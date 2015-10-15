@@ -33,7 +33,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">门店名称:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="bizName" id="bizName" onkeydown="return disableEnter(event)"/>
+								<input type="text" class="form-control" name="bizName" id="bizName"/>
 								<input id="hiddenText" type="text" style="display:none" />
 							</div>
 						</div>
@@ -78,22 +78,6 @@ $(function(){
 	});
 	
 });
-//回车
-function disableEnter(event){
-	 var e = event || window.event || arguments.callee.caller.arguments[0];
-        if(e && e.keyCode==27){ // 按 Esc 
-            //要做的事情
-          }
-        if(e && e.keyCode==113){ // 按 F2 
-             //要做的事情
-           }            
-         if(e && e.keyCode==13){ // enter 键
-             //要做的事情
-      	  $('#btnSearch').click();
-          // jss.search(1);
-        }
-};
-
 
 	function funAddBusinessBind(businessId){
 		var groupBusinessId = $("#groupBusinessId").val();

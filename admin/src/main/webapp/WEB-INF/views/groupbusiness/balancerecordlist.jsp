@@ -46,7 +46,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">任务单号/交易流水号:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="relationNo" id="relationNo" onkeydown="return disableEnter(event)"/>
+								<input type="text" class="form-control" name="relationNo" id="relationNo"/>
 							</div>
 						</div>
 					</div>
@@ -54,7 +54,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">门店名称:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="Businessname" id="businessName" onkeydown="return disableEnter(event)"/>
+								<input type="text" class="form-control" name="Businessname" id="businessName"/>
 							</div>
 						</div>
 					</div> 
@@ -165,21 +165,6 @@
 	$("#btnSearch").click(function() {
 		jss.search(1);
 	});
-	//回车
-	function disableEnter(event){
-		 var e = event || window.event || arguments.callee.caller.arguments[0];
-	        if(e && e.keyCode==27){ // 按 Esc 
-	            //要做的事情
-	          }
-	        if(e && e.keyCode==113){ // 按 F2 
-	             //要做的事情
-	           }            
-	         if(e && e.keyCode==13){ // enter 键
-	             //要做的事情
-	      	  $('#btnSearch').click();
-	          // jss.search(1);
-	        }
-	};
 
 	//导出
 	$("#btnExport").click(function(){

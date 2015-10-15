@@ -21,7 +21,7 @@
 							<div class="col-sm-8">							
 								<input id="groupBusinessName"
 								placeholder="集团名称、登录账号"
-								 type="tel" class="form-control"  name="groupBusinessName" onkeydown="return disableEnter(event)"/>								
+								 type="tel" class="form-control"  name="groupBusinessName"/>								
 							</div>
 						</div>
 					</div>
@@ -171,21 +171,7 @@
 	$("#btnSearch").click(function() {
 		jss.search(1);
 	});
-	//回车
-	function disableEnter(event){
-		 var e = event || window.event || arguments.callee.caller.arguments[0];
-	        if(e && e.keyCode==27){ // 按 Esc 
-	            //要做的事情
-	          }
-	        if(e && e.keyCode==113){ // 按 F2 
-	             //要做的事情
-	           }            
-	         if(e && e.keyCode==13){ // enter 键
-	             //要做的事情
-	      	  $('#btnSearch').click();
-	          // jss.search(1);
-	        }
-	};
+	
 	function showAddGroupBusiness(){ 
 	        $('#txtAddGroupBusinessName').val('');
 	        $('#txtAddLoginName').val('');
