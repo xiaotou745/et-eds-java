@@ -49,7 +49,7 @@ public class GlobalExceptionHandler implements ExceptionMapper {
     }  
 	private void loginfo(Throwable ex){
 		String appServerIP = "localhost";
-		List<String> ipinfoList = SystemUtils.GetLocalIpInfo();
+		List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 		if (ipinfoList != null && ipinfoList.size() > 0) {
 			appServerIP = ipinfoList.get(0);
 		}

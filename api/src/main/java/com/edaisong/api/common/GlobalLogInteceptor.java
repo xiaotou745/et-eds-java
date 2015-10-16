@@ -71,7 +71,7 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 				// System.out.println("异常堆栈：" + stackTrace);
 			}
 			String appServerIP = "localhost";
-			List<String> ipinfoList = SystemUtils.GetLocalIpInfo();
+			List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 			if (ipinfoList != null && ipinfoList.size() > 0) {
 				appServerIP = ipinfoList.get(0);
 			}

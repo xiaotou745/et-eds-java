@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.edaisong.api.dao.inter.IActionLogDao;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.core.util.PropertyUtils;
+import com.edaisong.core.util.SystemUtils;
 import com.edaisong.entity.domain.ActionLog;
 
 @Component
@@ -26,10 +28,15 @@ public class LogServiceBLL {
 	 * @param
 	 */
 	public void SystemActionLog(ActionLog logEngity) {
-		return ;
-/*
 		try {
-			initLog4DB(logEngity);
+			if (logEngity.getStackTrace()!=null&&!logEngity.getStackTrace().isEmpty()) {
+				String alertBody=getAlertBody(logEngity);
+				String isSendMail = PropertyUtils.getProperty("IsSendMail");
+				if (isSendMail.equals("1")&&alertBody!=null&&!alertBody.isEmpty()) {
+					SystemUtils.sendAlertEmail(logEngity.getSourceSys()+"_java项目预警", alertBody);
+				}
+			}
+			//initLog4DB(logEngity);
 			String jsonMsg = JsonUtil.obj2string(logEngity);
 			switch (logEngity.getSourceSys()) {
 			case "admin":
@@ -46,7 +53,6 @@ public class LogServiceBLL {
 			}
 		} catch (Exception e) {
 		}
-*/
 	}
 
 	public void LogInfo(ActionLog logEngity) {
@@ -61,7 +67,25 @@ public class LogServiceBLL {
 	public void LogError(String msg) {
 
 	}
-
+	private String getAlertBody(ActionLog logEngity){
+		try {
+			StringBuilder sb = new StringBuilder();
+			String stackTrace = "";
+			for (Field field : fields) {
+				field.setAccessible(true);
+				if (field.getName().equals("stackTrace")) {
+					stackTrace = field.getName() + ":"+ field.get(logEngity).toString();
+				} else {
+					sb.append(field.getName() + ":"+ field.get(logEngity).toString() + "\n");
+				}
+			}
+			sb.append(stackTrace);
+			return sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 	private void initLog4DB(ActionLog logEngity) {
 		try {
 			MDC.clear();
