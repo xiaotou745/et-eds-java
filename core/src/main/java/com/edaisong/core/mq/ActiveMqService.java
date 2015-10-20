@@ -18,7 +18,7 @@ public class ActiveMqService {
 	private Destination queueDestination;
 
 	public void sendMessage(final String message) {
-		System.out.println("日志生产者发了一个日志消息：" + message);
+		//System.out.println("日志生产者发了一个日志消息：" + message);
 		try {
 			jmsTemplate.send(queueDestination, new MessageCreator() {
 				public Message createMessage(Session session) throws JMSException {
