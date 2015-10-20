@@ -15,6 +15,7 @@
 	<!-- <context:property-placeholder location="classpath:conf/custom/conf.properties" -->
 	<!-- ignore-unresolvable="true" /> -->
 	<import resource="classpath:conf/core/activemq-context.xml" />
+	<import resource="classpath:conf/core/mongo-context.xml" />
 	<mvc:annotation-driven />
 	<context:component-scan base-package="com.edaisong.core">
 		<context:include-filter type="annotation"
