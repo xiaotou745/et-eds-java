@@ -12,14 +12,15 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-<!-- 	<context:property-placeholder location="classpath:conf/custom/conf.properties" -->
-<!-- 		ignore-unresolvable="true" /> -->
+	<!-- <context:property-placeholder location="classpath:conf/custom/conf.properties" -->
+	<!-- ignore-unresolvable="true" /> -->
+	<import resource="classpath:conf/core/activemq-context.xml" />
 	<mvc:annotation-driven />
 	<context:component-scan base-package="com.edaisong.core">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Service" />
 	</context:component-scan>
-	
+
 	<bean id="log4jInitialization"
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
@@ -37,7 +38,7 @@
 		p:maxWaitMillis="${redis.max-wait-millis}">
 	</bean>
 	<!-- 配置Jedis connection -->
-	<bean id="connectionFactory"
+	<bean id="redisconnectionFactory"
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
 		p:poolConfig-ref="jedisPoolConfig" p:hostName="${redis.host}" p:port="${redis.port}"
 		p:usePool="true">
@@ -45,7 +46,7 @@
 
 	<!-- 配置 redisTemplate 利用Stringserializer -->
 	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
-		p:connectionFactory-ref="connectionFactory">
+		p:connectionFactory-ref="redisconnectionFactory">
 		<!-- 使用string主要是key 在redis端用命令好读 不然默认的序列化没办法读 -->
 		<property name="keySerializer">
 			<bean
@@ -55,5 +56,5 @@
 			<bean
 				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
 		</property>
-	</bean>
-</beans>
+	</bean>  
+</beans>  
