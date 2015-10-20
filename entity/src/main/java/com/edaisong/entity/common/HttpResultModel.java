@@ -3,9 +3,9 @@ package com.edaisong.entity.common;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 
 public class HttpResultModel<T> {
-	private int Status = HttpReturnRnums.Success.value();
-	private String Message = HttpReturnRnums.Success.desc();
-	private T Result;
+	private int status = HttpReturnRnums.Success.value();
+	private String message = HttpReturnRnums.Success.desc();
+	private T result;
 
 	/**
 	 * 状态
@@ -13,7 +13,7 @@ public class HttpResultModel<T> {
 	 * @return
 	 */
 	public int getStatus() {
-		return Status;
+		return status;
 	}
 
 	/**
@@ -22,7 +22,7 @@ public class HttpResultModel<T> {
 	 * @param status
 	 */
 	public void setStatus(int status) {
-		Status = status;
+		this.status = status;
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class HttpResultModel<T> {
 	 * @return
 	 */
 	public String getMessage() {
-		return Message;
+		return message;
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class HttpResultModel<T> {
 	 * @param message
 	 */
 	public void setMessage(String message) {
-		Message = message;
+		this.message = message;
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class HttpResultModel<T> {
 	 * @return
 	 */
 	public T getResult() {
-		return Result;
+		return result;
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class HttpResultModel<T> {
 	 * @param result
 	 */
 	public void setResult(T result) {
-		Result = result;
+		this.result = result;
 	}
 
 }

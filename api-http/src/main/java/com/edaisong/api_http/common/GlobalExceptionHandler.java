@@ -1,5 +1,6 @@
 package com.edaisong.api_http.common;
 
+import org.apache.cxf.message.Exchange;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,11 +31,8 @@ import java.util.Locale;
  */
 @Component
 public class GlobalExceptionHandler implements ExceptionMapper {
-	@Autowired
-	LogServiceBLL logServiceBLL;
 	@Override
     public Response toResponse(Throwable ex) {
-        //loginfo(ex);
     	HttpResultModel<String> rep=new HttpResultModel<String>();
         rep.setStatus(HttpReturnRnums.SystemError.value());
         rep.setMessage(HttpReturnRnums.SystemError.desc());
@@ -47,32 +45,6 @@ public class GlobalExceptionHandler implements ExceptionMapper {
         Response r = rb.build();
         return r;
     }  
-	private void loginfo(Throwable ex){
-		String appServerIP = "localhost";
-		List<String> ipinfoList = SystemUtils.getLocalIpInfo();
-		if (ipinfoList != null && ipinfoList.size() > 0) {
-			appServerIP = ipinfoList.get(0);
-		}
-		ActionLog logEngity = new ActionLog();
-		logEngity.setSourceSys("apihttp");
-		logEngity.setClientFrom(0);//暂时没用
-		logEngity.setRequestType(0);
-		logEngity.setAppServer(appServerIP);
-//		logEngity.setMethodName(methodName);
-//		logEngity.setParam(param);
-		logEngity.setException(ex.getMessage());
-		logEngity.setStackTrace(StringUtils.getStackTrace(ex));
-//		logEngity.setExecuteTime(0d);
-//
-//		Date requestTime = (Date) request.getAttribute("requestTime");
-//		logEngity.setRequestTime(ParseHelper.ToDateString(requestTime, ""));
-//		logEngity.setRequestEndTime(ParseHelper.ToDateString(new Date(), ""));
-//		
-//		logEngity.setUserID(userID);
-//		logEngity.setUserName(userName);
-
-		logServiceBLL.SystemActionLog(logEngity);
-	}
 }
 
 

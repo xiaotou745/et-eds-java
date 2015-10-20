@@ -7,17 +7,48 @@ import java.util.Date;
 public class ActionLog {
 	private int userID;
 	private String userName;
-	private String methodName;
+	private String methodName;		
 	private String param;
+	private String decryptMsg;
 	private String exception;
 	private String stackTrace;
 	private Long executeTime;
 	private String sourceSys;
-	private int clientFrom;
+	private String requestUrl;
 	private String requestTime;
 	private String requestEndTime;
 	private String appServer;
 	private int requestType;
+	private String clientIp;
+	private String requestMethod;
+	private String contentType;
+	private String header;
+	private String resultJson;
+	public String getRequestMethod() {
+		return requestMethod;
+	}
+	public void setRequestMethod(String requestMethod) {
+		this.requestMethod = requestMethod;
+	}
+	public String getContentType() {
+		return contentType;
+	}
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+	public String getHeader() {
+		return header;
+	}
+	public void setHeader(String header) {
+		this.header = header;
+	}
+	public String getResultJson() {
+		return resultJson;
+	}
+	public void setResultJson(String resultJson) {
+		this.resultJson = resultJson;
+	}
+
 	public String getMethodName() {
 		return methodName;
 	}
@@ -54,12 +85,6 @@ public class ActionLog {
 	public void setSourceSys(String sourceSys) {
 		this.sourceSys = sourceSys;
 	}
-	public int getClientFrom() {
-		return clientFrom;
-	}
-	public void setClientFrom(int clientFrom) {
-		this.clientFrom = clientFrom;
-	}
 	public String getAppServer() {
 		return appServer;
 	}
@@ -95,5 +120,23 @@ public class ActionLog {
 	}
 	public void setRequestType(int requestType) {
 		this.requestType = requestType;
+	}
+	public String getRequestUrl() {
+		return requestUrl;
+	}
+	public void setRequestUrl(String requestUrl) {
+		this.requestUrl = requestUrl;
+	}
+	public String getClientIp() {
+		return clientIp;
+	}
+	public void setClientIp(String clientIp) {
+		this.clientIp = clientIp;
+	}
+	public String getDecryptMsg() {
+		return decryptMsg;
+	}
+	public void setDecryptMsg(String decryptMsg) {
+		this.decryptMsg = decryptMsg;
 	}
 }

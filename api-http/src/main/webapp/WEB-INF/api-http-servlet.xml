@@ -38,13 +38,14 @@
 			<ref bean="feedbackHttpService" />
 			<ref bean="financeService" />
 		</jaxrs:serviceBeans>
+			<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
 		<jaxrs:inInterceptors>
-			<!-- <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean> -->
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
 			<bean class="com.edaisong.api_http.common.AESInterceptor"></bean>
 		</jaxrs:inInterceptors>
 		<jaxrs:outInterceptors>
+			<bean class="com.edaisong.api_http.common.RqeustInterceptor"></bean>
 			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
-			<bean class="com.edaisong.api_http.common.CustomerRqeustInterceptor"></bean>
 		</jaxrs:outInterceptors>
 		<!-- <jaxrs:extensionMappings> -->
 		<!-- <entry key="json" value="application/json" /> -->
@@ -56,8 +57,7 @@
 		<jaxrs:providers>
 		    <bean class="com.edaisong.api_http.common.GlobalExceptionHandler"/>  
 			<ref bean="jacksonProvider" />
-			<!-- <ref bean="jaxbProvider" /> -->
-			<!-- <ref bean="exceptionHandler" /> -->
+			<!-- <ref bean="jsonProvider" /> -->
 		</jaxrs:providers>
 	</jaxrs:server>
 
@@ -73,32 +73,5 @@
 	<bean id="jacksonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
 		<property name="mapper" ref="jacksonMapper" />
 	</bean>
-	<bean id="jacksonMapper" class="com.edaisong.core.util.ExtandObjectMapper">
-		<property name="dateFormat">
-			<bean class="java.text.SimpleDateFormat">
-				<constructor-arg type="java.lang.String" value="yyyy-MM-dd hh:MM:ss">
-				</constructor-arg>
-			</bean>
-		</property>
-		<!-- <property name="serializationConfig.dateFormat"> -->
-		<!-- <bean class="java.text.SimpleDateFormat"> -->
-		<!-- <constructor-arg value="yyyyMMddHH:mm:ss.S" /> -->
-		<!-- </bean> -->
-		<!-- </property> -->
-		<!-- <property name="deserializationConfig.dateFormat"> -->
-		<!-- <bean class="java.text.SimpleDateFormat"> -->
-		<!-- <constructor-arg value="yyyyMMddHH:mm:ss.S" /> -->
-		<!-- </bean> -->
-		<!-- </property> -->
-	</bean>
-	<!-- <bean id="formUrlEncodeProvider" class="org.apache.cxf.jaxrs.provider.FormEncodingProvider" 
-		/> -->
-	<!-- <bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider"> -->
-	<!-- <property name="jaxbElementClassMap" ref="propertiesMap" /> -->
-	<!-- </bean> -->
-	<!-- <util:map id="propertiesMap"> -->
-	<!-- <entry key="java.util.Date"> -->
-	<!-- <value type="java.text.SimpleDateFormat">yyyy-MM-dd hh:MM:ss</value> -->
-	<!-- </entry> -->
-	<!-- </util:map> -->
+	<bean id="jacksonMapper" class="com.edaisong.core.util.ExtandObjectMapper"/>
 </beans>
