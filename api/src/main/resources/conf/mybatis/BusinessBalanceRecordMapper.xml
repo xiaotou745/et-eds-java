@@ -314,7 +314,7 @@
 		<if test="recordType !=0"><!--非全部 -->
 			AND RecordType = ${recordType}
 		</if>
-		AND RecordType IN (1,2,8,9,12)
+	    and GroupId=0 AND RecordType IN (1,2,8,9,12)
 	</sql>
 	<!-- 获取商户日账单分页 茹化肖 2015年9月10日19:06:57 -->
 	<select id="getAccountBillDayBList" resultType="com.edaisong.entity.domain.AccountBillDayModel"
