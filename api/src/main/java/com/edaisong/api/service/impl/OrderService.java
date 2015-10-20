@@ -1029,7 +1029,7 @@ public class OrderService implements IOrderService {
 		List<ServiceClienter> serviceClienters = orderDao.getOrderStatisticsServiceClienterB(orderStatisticsBReq); //获取每天发单骑士信息
 		List<DaySatisticsB> daySatisticsBs = orderDao.getOrderStatisticsDaySatistics(orderStatisticsBReq); // B端任务统计接口
 																											// 天数据列表
-		serviceClienters.forEach(action->action.setClienterPhoto(PropertyUtils.getProperty("ImageServicePath")+action.getClienterPhoto()));
+		serviceClienters.forEach(action->action.setClienterPhoto(PropertyUtils.getProperty("ImageClienterServicePath")+action.getClienterPhoto()));
 		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
 			List<ServiceClienter> temp = serviceClienters.stream().filter(t -> t.getPubDate().equals(daySatisticsB.getMonthDate()))
 					.collect(Collectors.toList());
