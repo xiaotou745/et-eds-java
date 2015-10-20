@@ -7,11 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.api.service.inter.IAlipayBatchService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.entity.AlipayBatch;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.BusTaskList;
+import com.edaisong.entity.req.PagedAlipayBatchListReq;
 import com.edaisong.entity.req.PagedBusTaskListReq;
 
 @Controller
@@ -22,6 +25,9 @@ public class FinanceController {
 	//开放城市
 	 @Autowired
 	 private IPublicProvinceCityService  publicProvinceCityService;
+	 @Autowired
+	 private IAlipayBatchService alipayBatchService;
+	 
 	@RequestMapping("bustasklist")
 	public ModelAndView list() {
 		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();
@@ -44,4 +50,35 @@ public class FinanceController {
 		model.addObject("eDate",endString);
 		return model;
 	}
+	
+	/**
+	 *  支付宝批次单列表页查询
+	 *  @author CaoHeYang
+	 *  @date 20151020
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("alipaybatchlist")
+	public ModelAndView alipaybatchlist() {
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "财务管理");
+		model.addObject("currenttitle", "支付宝批次进度查询");
+		model.addObject("viewPath", "finance/alipaybatchlist");
+		return model;
+	}
+	/**
+	 *  支付宝批次单列表页查询
+	 *  @author CaoHeYang
+	 *  @date 20151020
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("alipaybatchlistdo")
+	public ModelAndView alipaybatchlistdo(PagedAlipayBatchListReq req) {
+		ModelAndView model = new ModelAndView("finance/alipaybatchlistdo");
+		PagedResponse<AlipayBatch>  datas=alipayBatchService.getAlipayBatchPagedList(req);
+		model.addObject("listData",datas);
+		return model;
+	}
+
 }
