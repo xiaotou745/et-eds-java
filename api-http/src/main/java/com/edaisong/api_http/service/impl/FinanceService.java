@@ -73,7 +73,11 @@ public class FinanceService implements IFinanceService{
 		result.setStatus(CardBindC.Success.value());
 		return result;
 	}
-
+	/**修改支付宝绑定
+	 * 
+	 * 
+	 * 
+	 */
 	@Override
 	public HttpResultModel<Object> cardModifyAlipayC(CardModifyAlipayReq req) {
 		CardModifyC checkRet = checkCardModifyAlipayC(req);
