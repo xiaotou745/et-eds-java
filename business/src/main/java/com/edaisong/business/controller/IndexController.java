@@ -42,6 +42,7 @@ public class IndexController {
 
 		BusinessOrderSummaryModel bos = orderService.getBusinessOrderSummary(context.getBusinessID());
 		if (bos==null) {
+			CookieUtils.deleteCookie(request, response,"business", LoginUtil.BUSINESS_LOGIN_COOKIE_NAME);
 			response.sendRedirect(request.getContextPath() + "/");
 			return null;
 		}
