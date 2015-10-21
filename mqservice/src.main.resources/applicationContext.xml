@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+    	">
+	 <import resource="classpath:conf/core/dev-context.xml" />
+<!-- 	<import resource="classpath:conf/core/test-context.xml" /> -->
+<!-- 	<import resource="classpath:conf/core/pro-context.xml" /> -->
+	<!-- <import resource="classpath:conf/core/devtest-context.xml" /> -->
+	<!-- <import resource="file:D:/conf/dev-context.xml" /> -->
+<!-- 消息监听器 -->
+	<bean id="consumerMessageListener" class="com.edaisong.api.activemq.LogConsumerMessageListener" />
+	<!-- 消息监听容器 -->
+	<bean id="jmsServiceContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="mqConnectionFactory" />
+		<property name="destination" ref="queueDestination" />
+		<property name="messageListener" ref="consumerMessageListener" />
+	</bean>
+</beans>
