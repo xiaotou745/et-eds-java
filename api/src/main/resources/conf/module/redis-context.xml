@@ -11,28 +11,8 @@
 		http://www.springframework.org/schema/util/spring-util-3.2.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
-
-	<!-- <context:property-placeholder location="classpath:conf/custom/conf.properties" -->
-	<!-- ignore-unresolvable="true" /> -->
-	<import resource="classpath:conf/core/activemq-context.xml" />
-	<import resource="classpath:conf/core/mongo-context.xml" />
-	<mvc:annotation-driven />
-	<context:component-scan base-package="com.edaisong.core">
-		<context:include-filter type="annotation"
-			expression="org.springframework.stereotype.Service" />
-	</context:component-scan>
-
-	<bean id="log4jInitialization"
-		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
-		<property name="targetMethod" value="initLogging" />
-		<property name="arguments">
-			<list>
-				<value>classpath:conf/core/log4j.xml</value>
-			</list>
-		</property>
-	</bean>
-
+<!-- 		<context:property-placeholder location="classpath:conf/custom/env.properties" -->
+<!-- 		ignore-unresolvable="true" /> -->
 	<!-- 配置Jedis的 缓冲池 -->
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
 		p:maxTotal="${redis.max-total}" p:maxIdle="${redis.max-idle}"

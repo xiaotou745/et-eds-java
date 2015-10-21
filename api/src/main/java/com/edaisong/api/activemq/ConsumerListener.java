@@ -1,4 +1,4 @@
-package com.edaisong.core.mq;
+package com.edaisong.api.activemq;
 
 public class ConsumerListener {
 	public void handleMessage(String message) {   

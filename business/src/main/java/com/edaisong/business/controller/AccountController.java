@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.common.LoginHelper;
+import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.business.common.LoginResp;
 import com.edaisong.business.common.LoginUtil;
 import com.edaisong.business.common.UserContext;
-import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.util.CookieUtils;

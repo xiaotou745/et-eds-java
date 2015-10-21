@@ -11,9 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-
-import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.api.redis.RedisService;
 import com.edaisong.core.util.IPUtil;
 import com.edaisong.core.util.SpringBeanHelper;
 

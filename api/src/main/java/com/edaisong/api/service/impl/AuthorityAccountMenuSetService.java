@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dao.inter.IAuthorityAccountMenuSetDao;
+import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IAuthorityAccountMenuSetService;
-import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.entity.AuthorityAccountMenuSet;
-import com.edaisong.entity.MenuEntity;
 
 @Service
 public class AuthorityAccountMenuSetService implements IAuthorityAccountMenuSetService{
