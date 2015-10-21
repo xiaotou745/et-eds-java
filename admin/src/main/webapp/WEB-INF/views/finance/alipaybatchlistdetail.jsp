@@ -16,6 +16,7 @@
 <%@page import="com.edaisong.core.enums.ClienterWithdrawFormStatus"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.admin.url");
+    String netUrl = PropertyUtils.getProperty("net.admin.url");
 	AlipayBatch alipayBatch = (AlipayBatch) request.getAttribute("alipayBatch");
 	List<AlipayBatchClienterWithdrawForm> list = (List<AlipayBatchClienterWithdrawForm>) request.getAttribute("withdrawForms");
 	String callTimeStr = alipayBatch.getStatus() == AlipayBatchStatus.PlayGame.value() ? "- -" : ParseHelper.ToDateString(alipayBatch.getLastOptTime());
@@ -91,7 +92,11 @@ label {
 								class="col-sm-6 control-label"><%=callTimeStr%></label>
 						</div>
 					</div>
-					<div class="col-lg-3"></div>
+					<div class="col-lg-3">
+					<div class="form-group">
+								<button type="button" class="btn btn-w-m btn-primary" id="btnDosure" style="margin-left: 3px;height:30px;">打款</button>
+						</div>
+					</div>
 		
 			</div>
 		</div>
@@ -119,8 +124,8 @@ label {
 		%>
 		<tr>
 			<td><%=list.get(i).getId()%></td>
-			<td><%=list.get(i).getWithwardNo()%></td>
-			<td><%=list.get(i).getAccountNo()%></td>
+			<td><a href="<%=netUrl%>/ClienterWithdraw/ClienterWithdrawDetail?withwardId=<%=list.get(i).getId()%>"><%=list.get(i).getWithwardNo()%></a></td>
+			<td><%=ParseHelper.toDecrypt(list.get(i).getAccountNo())%></td>
 			<td><%=list.get(i).getTrueName()%></td>
 			<td>
 				<%=list.get(i).getAmount()%>
@@ -140,3 +145,30 @@ label {
 		</div>
 	</div>
 </div>
+
+<script >
+/*确认打款功能*/
+$(function(){
+	$("#btnDosure").click(function (){
+		//询问框
+		layer.confirm('您确认要提交修改吗？？', {
+		    btn: ['确认','取消'], //按钮
+		    shade: false //显示遮罩
+		}, function(){
+			window.open("<%=netUrl%>/ClienterWithdraw/AlipayBatchTransfer?type=2&data="+<%=alipayBatch.getBatchNo()%>);
+			 var index= layer.alert('请在新打开的页面完成打款！', {
+				btn:["已完成打款"],
+			    skin: 'layui-layer-molv', //样式类名
+			    closeBtn: false
+			},function(){
+				window.location.reload();
+				layer.close(index);  //关闭弹层
+			}); 
+		}, function(){
+		    
+		});
+	})
+});
+
+
+</script>

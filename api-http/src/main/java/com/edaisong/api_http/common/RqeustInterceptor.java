@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.apache.cxf.interceptor.Fault;
+import org.apache.cxf.jaxrs.impl.ResponseImpl;
 import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageContentsList;
@@ -12,7 +13,9 @@ import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.lang.reflect.Method;
+
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +23,6 @@ import com.edaisong.api.common.LogServiceBLL;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
-
 import com.edaisong.core.util.SystemUtils;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.ActionLog;
@@ -75,14 +77,21 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			String stackTrace = "";
 			String resultJson = "";
 			MessageContentsList messageContentsList = (MessageContentsList) outMessage.getContent(List.class);
-			if (messageContentsList.get(0) instanceof HttpResultModel) {
-				HttpResultModel<Object> res = (HttpResultModel<Object>) messageContentsList.get(0);
-				if (res.getStatus() == HttpReturnRnums.SystemError.value()) {
-					exceptionMsg = res.getMessage();
-					stackTrace = (String) res.getResult();
-				} else {
-					resultJson = JsonUtil.obj2string(res);
+			//系统异常时，返回值的类型为ResponseImpl
+			if (messageContentsList.get(0) instanceof ResponseImpl) {
+				Object responseEntity=((ResponseImpl)messageContentsList.get(0)).getEntity();
+				if (responseEntity instanceof HttpResultModel) {
+					HttpResultModel<Object> res = (HttpResultModel<Object>)responseEntity;
+					if (res.getStatus() == HttpReturnRnums.SystemError.value()) {
+						exceptionMsg = res.getMessage();
+						stackTrace = (String) res.getResult();
+					}
 				}
+			}else if (messageContentsList.get(0) instanceof HttpResultModel) {
+				//正常返回时，返回值的类型为HttpResultModel<Object>)
+				//此时需要记录返回值的json
+				HttpResultModel<Object> res = (HttpResultModel<Object>)messageContentsList.get(0);
+				resultJson = JsonUtil.obj2string(res);
 			}
 	
 			TreeMap header = (TreeMap) inMessage.get(Message.PROTOCOL_HEADERS);

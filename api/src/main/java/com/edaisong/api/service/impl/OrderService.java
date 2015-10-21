@@ -290,14 +290,13 @@ public class OrderService implements IOrderService {
 			businessBalanceRecord.setWithwardid((long) req.getOrderId()); // 订单id
 			businessBalanceRecord.setRelationno(req.getOrderNo()); // 关联单号
 			businessBalanceRecord.setRemark("商户取消订单返回配送费"); // 注释
+			businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
 			if (orderRe.getGroupbusinessid()>0) {
-				businessBalanceRecord.setBusinessid(0);
 				businessBalanceRecord.setAmount(0d);
 				businessBalanceRecord.setGroupamount(orderRe.getSettlemoney());
 				businessBalanceRecord.setGroupid(orderRe.getGroupbusinessid());
 			}
 			else {
-				businessBalanceRecord.setBusinessid(req.getBusinessId());// 商户Id
 				businessBalanceRecord.setAmount(orderRe.getSettlemoney());
 				businessBalanceRecord.setGroupamount(0d);
 				businessBalanceRecord.setGroupid(0);
