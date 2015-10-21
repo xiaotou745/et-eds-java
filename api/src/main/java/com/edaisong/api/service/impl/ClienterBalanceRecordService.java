@@ -124,8 +124,8 @@ public class ClienterBalanceRecordService implements IClienterBalanceRecordServi
 		AccountBillDayCResultModel billDayModel= clienterBalanceRecordDao.getAccountInMoneyAndOutMoney(par);
 		
 		AccountBillDayCResultModel resultModel=new AccountBillDayCResultModel();
-		resultModel.setInMoney(billDayModel.getInMoney());
-		resultModel.setOutMoney(billDayModel.getOutMoney());
+		resultModel.setInMoney(billDayModel==null?0:billDayModel.getInMoney());
+		resultModel.setOutMoney(billDayModel==null?0:billDayModel.getOutMoney());
 		resultModel.setListRecordS((ArrayList<AccountBillDayCModel>)list);
 		return resultModel;
 	}

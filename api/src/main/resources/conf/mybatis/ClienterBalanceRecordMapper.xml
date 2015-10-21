@@ -267,15 +267,17 @@ where  WithwardId= #{id,jdbcType=BIGINT} and Remark='无效订单'
  WHERE  bbr.id=#{recordId,jdbcType=INTEGER}
  		AND ClienterId=#{clienterId,jdbcType=INTEGER}
 	</select>
-	<select id="getAccountInMoneyAndOutMoney" resultType="com.edaisong.entity.domain.AccountBillDayCResultModel">
+	<select id="getAccountInMoneyAndOutMoney" resultType="com.edaisong.entity.domain.AccountBillDayCResultModel"
+	parameterType="com.edaisong.entity.req.PagedAccountBillDayCReq"
+	>
 SELECT 
 sum(case when 0>Amount then amount else 0 end) as outMoney,
 sum(case when Amount>0 then amount else 0 end) as inMoney
  FROM dbo.ClienterBalanceRecord cbr(nolock)
 where 
 ClienterId=${clienterId} and RecordType!=7
-AND OperateTime > #{startDate,jdbcType=VARCHAR} 
-AND #{endDate,jdbcType=VARCHAR} > OperateTime
+AND OperateTime >'${stratDate}' 
+AND '${endDate}' > OperateTime
  group by ClienterId
 	</select>
 </mapper>
