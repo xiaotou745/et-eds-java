@@ -29,4 +29,15 @@ public class AlipayBatchDao  extends DaoBase  implements IAlipayBatchDao {
 				"com.edaisong.api.dao.inter.IAlipayBatchDao.getAlipayBatchPagedList", req);
 		return result;
 	}
+	/**
+	*根据id获取 支付宝批次
+	 * @author CaoHeYang
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public AlipayBatch getAlipayBatchById(Long id) {
+		return getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IAlipayBatchDao.getAlipayBatchById", id);
+	}
 }

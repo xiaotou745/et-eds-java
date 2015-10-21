@@ -17,4 +17,12 @@ public interface IAlipayBatchService {
 	 * @return
 	 */
 	PagedResponse<AlipayBatch>  getAlipayBatchPagedList(PagedAlipayBatchListReq req);
+	/**
+	*根据id获取 支付宝批次
+	 * @author CaoHeYang
+	 * @param req
+	 * @return
+	 */
+	AlipayBatch  getAlipayBatchById(Long id);
+	
 }

@@ -43,7 +43,7 @@
 		%>
 		<tr>
 			<td><%=list.get(i).getId()%></td>
-			<td><%=list.get(i).getBatchNo()%></td>
+			<td><a href="<%=basePath%>/finance/alipaybatchlistdetail?id=<%=list.get(i).getId()%>"><%=list.get(i).getBatchNo()%></a></td>
 			<td><%=list.get(i).getTotalWithdraw()%></td>
 			<td><%=list.get(i).getOptTimes()%></td>
 			<td>

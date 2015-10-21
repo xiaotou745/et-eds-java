@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IAlipayBatchService;
+import com.edaisong.api.service.inter.IClienterWithdrawFormService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.entity.AlipayBatch;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.AlipayBatchClienterWithdrawForm;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.req.PagedAlipayBatchListReq;
@@ -27,6 +29,8 @@ public class FinanceController {
 	 private IPublicProvinceCityService  publicProvinceCityService;
 	 @Autowired
 	 private IAlipayBatchService alipayBatchService;
+	 @Autowired
+	 private IClienterWithdrawFormService clienterWithdrawFormService;
 	 
 	@RequestMapping("bustasklist")
 	public ModelAndView list() {
@@ -80,5 +84,23 @@ public class FinanceController {
 		model.addObject("listData",datas);
 		return model;
 	}
-
+	/**
+	 *  支付宝批次单详情
+	 *  @author CaoHeYang
+	 *  @date 20151020
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("alipaybatchlistdetail")
+	public ModelAndView alipaybatchlistdetail(Long id) {
+		ModelAndView model = new ModelAndView("adminView");
+	    AlipayBatch alipayBatch=alipayBatchService.getAlipayBatchById(id);
+	    List<AlipayBatchClienterWithdrawForm> withdrawForms=clienterWithdrawFormService.getClienterWithdrawFormByBatchNo(id);
+		model.addObject("alipayBatch",alipayBatch);
+		model.addObject("withdrawForms",withdrawForms);
+		model.addObject("subtitle", "财务管理");
+		model.addObject("currenttitle", "支付宝批次进度查询> 批次详情");
+		model.addObject("viewPath","finance/alipaybatchlistdetail");
+		return model;
+	}
 }

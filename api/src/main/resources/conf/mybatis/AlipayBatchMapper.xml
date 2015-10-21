@@ -37,4 +37,10 @@
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
+		<!--支付宝批次单列表页查询 add by caoheyang 20151020 -->
+	<select id="getAlipayBatchById" resultType="com.edaisong.entity.AlipayBatch"
+		parameterType="java.lang.Long" >
+	 select a.Id,a.BatchNo,a.TotalWithdraw,a.OptTimes,a.SuccessTimes,a.FailTimes,a.Status,a.CallbackTime,a.LastOptUser,a.LastOptTime from [AlipayBatch] a with ( nolock )
+	 where a.id=#{id,jdbcType=INTEGER}
+	</select>
 </mapper>
