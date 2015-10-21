@@ -86,7 +86,7 @@
 			<td>
 			<%
 					if (list.get(i).getStatus() == AlipayBatchStatus.PlayGame.value()) {
-				%> <a href="javascript:doSure('<%=list.get(i).getId()%>')">打款</a> <%
+				%> <a href="javascript:doSure('<%=list.get(i).getBatchNo()%>')">打款</a> <%
 					} else  {
 				%>  --
 				<%
