@@ -55,7 +55,7 @@
 		values(#{businessid,jdbcType=INTEGER},
 		#{amount,jdbcType=DECIMAL},
 		#{status,jdbcType=SMALLINT},
-		0,
+		#{balance,jdbcType=DECIMAL},
 		#{recordtype,jdbcType=SMALLINT},
 		#{operator,jdbcType=NVARCHAR},
 		#{withwardid,jdbcType=BIGINT},
