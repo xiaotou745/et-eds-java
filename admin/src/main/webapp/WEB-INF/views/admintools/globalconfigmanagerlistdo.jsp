@@ -39,7 +39,7 @@ if(data == null){
 										onclick="EditConfig('<%=data.get(i).getId()%>')">编辑</button>
 									<button class="btn" type="button"
 										id="btns<%=data.get(i).getId()%>" name="save"
-										onclick="SaveConfig('<%=data.get(i).getId()%>')">保存</button>
+										onclick="SaveConfig('<%=data.get(i).getId()%>','<%=data.get(i).getKeyName()%>')">保存</button>
 									<button class="btn" type="button"
 										id="btnc<%=data.get(i).getId()%>" name="cancle"
 										onclick="CancleConfig('<%=data.get(i).getId()%>')">取消</button>

@@ -83,9 +83,10 @@ $("#btnSearch").click(function(){
 		$('#btnc' + id).show();
 	};
 	//保存事件
-	function SaveConfig(id) {
+	function SaveConfig(id,keyName) {		
 		var newvalue = $('#show' + id).val();
 		var oldvalue = $('#hid' + id).attr('value');
+	    
 		console.log(newvalue);
 		console.log(oldvalue);
 		if (newvalue == oldvalue) {
@@ -97,7 +98,8 @@ $("#btnSearch").click(function(){
 				url : '/admin/admintools/saveconfig',
 				data : {
 					id : id,
-					configValue : newvalue
+					configValue : newvalue,
+					keyName : keyName
 				},
 				success : function(data) {
 					if (data) {

@@ -4,6 +4,13 @@ import com.edaisong.entity.common.RequestBase;
 
 public class ConfigSaveReq extends RequestBase{
 	private Integer id;
+	private String keyName;
+	public String getKeyName() {
+		return keyName;
+	}
+	public void setKeyName(String keyName) {
+		this.keyName = keyName;
+	}
 	private String configValue;
 	public Integer getId() {
 		return id;

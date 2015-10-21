@@ -38,4 +38,17 @@
 				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
 		</property>
 	</bean>  
+		<!-- 配置 redisTemplate 利用Stringserializer -->
+	<bean id="netRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+		p:connectionFactory-ref="redisconnectionFactory">
+		<!-- 使用string主要是key 在redis端用命令好读 不然默认的序列化没办法读 -->
+		<property name="keySerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="valueSerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+	</bean>  
 </beans>  
