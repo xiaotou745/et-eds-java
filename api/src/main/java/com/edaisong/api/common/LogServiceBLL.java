@@ -7,8 +7,8 @@ import org.apache.log4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.edaisong.api.activemq.ActiveMqService;
 import com.edaisong.api.dao.inter.IActionLogDao;
-import com.edaisong.core.mq.ActiveMqService;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.SystemUtils;

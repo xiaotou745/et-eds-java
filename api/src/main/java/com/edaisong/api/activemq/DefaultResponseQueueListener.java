@@ -1,4 +1,4 @@
-package com.edaisong.core.mq;
+package com.edaisong.api.activemq;
 
 import javax.jms.MessageListener;
 import javax.jms.JMSException;   

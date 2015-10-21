@@ -1,4 +1,4 @@
-package com.edaisong.core.cache.redis;
+package com.edaisong.api.redis;
 
 import java.util.List;
 import java.util.Map;

@@ -2,15 +2,12 @@ package com.edaisong.api.common;
 
 import java.util.UUID;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.edaisong.core.cache.redis.RedisService;
-import com.edaisong.core.consts.GlobalSettings;
+import com.edaisong.api.redis.RedisService;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.SpringBeanHelper;
-import com.edaisong.entity.Business;
 
 public class LoginHelper {
 	private final static RedisService redisService;

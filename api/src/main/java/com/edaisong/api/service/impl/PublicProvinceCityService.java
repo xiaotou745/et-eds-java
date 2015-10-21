@@ -6,17 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
-import com.edaisong.entity.PublicProvinceCity;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.AreaModelList;
 import com.edaisong.entity.domain.OpenCityModel;
 import com.edaisong.api.dao.inter.IPublicProvinceCityDao;
-import com.edaisong.core.cache.redis.RedisService;
-import com.edaisong.core.consts.RedissCacheKey;
-import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 
 @Service

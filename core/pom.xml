@@ -18,7 +18,7 @@
 
 	<dependencies>
 	<dependency>
-			<groupId>javax.mail</groupId>
+		<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.1</version>
 		</dependency>
@@ -46,18 +46,6 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.3.6</version>
-		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>2.6.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-redis</artifactId>
-			<version>1.4.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
@@ -111,31 +99,16 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
-		  <dependency>  
-            <groupId>org.springframework</groupId>  
-            <artifactId>spring-jms</artifactId>  
-            <version>${spring.version}</version>  
-        </dependency>  
-        <dependency>  
-            <groupId>javax.annotation</groupId>  
-            <artifactId>jsr250-api</artifactId>  
-            <version>1.0</version>  
-        </dependency>  
-        <dependency>  
-            <groupId>org.apache.activemq</groupId>  
-            <artifactId>activemq-core</artifactId>  
-            <version>5.7.0</version>  
-        </dependency>  
-        <dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-mongodb</artifactId>
-			<version>1.8.0.RELEASE</version>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
 		</dependency>
- 		<dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>2.11.1</version>
-        </dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.9</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>compile</defaultGoal>

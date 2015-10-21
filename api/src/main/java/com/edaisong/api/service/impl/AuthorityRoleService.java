@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dao.inter.IAccountDao;
 import com.edaisong.api.dao.inter.IAuthorityRoleDao;
+import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IAuthorityRoleService;
-import com.edaisong.core.cache.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.AuthorityRole;

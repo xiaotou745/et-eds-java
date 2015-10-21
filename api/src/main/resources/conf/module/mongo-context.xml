@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
@@ -11,11 +10,10 @@
 		http://www.springframework.org/schema/data/mongo    
         http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd    
 		http://www.springframework.org/schema/context 
-		http://www.springframework.org/schema/context/spring-context-3.2.xsd" 
-    >
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
     
      <context:property-placeholder
-		location="classpath:/conf/custom/mongodb.properties"
+		location="classpath:/conf/custom/dev-env.properties"
 		ignore-unresolvable="true" />
      <mongo:mongo id="mongo" host="10.8.7.42" port="27017"></mongo:mongo>
 	
@@ -23,4 +21,4 @@
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
     </bean>
-</beans:beans>
+</beans>

@@ -1,20 +1,16 @@
 package com.edaisong.api.dao.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IAuthorityMenuClassDao;
-import com.edaisong.core.cache.redis.RedisService;
+import com.edaisong.api.redis.RedisService;
 import com.edaisong.core.consts.RedissCacheKey;
-import com.edaisong.entity.AuthorityAccountMenuSet;
 import com.edaisong.entity.AuthorityMenuClass;
 import com.edaisong.entity.MenuEntity;
-import com.edaisong.entity.req.AddNewMenuReq;
 
 @Repository
 public class AuthorityMenuClassDao extends DaoBase implements
