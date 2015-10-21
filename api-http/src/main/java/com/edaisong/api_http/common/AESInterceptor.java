@@ -47,19 +47,23 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 				encryptMsg = inputMsg;
 				decryptMsg = inputMsg;
 				System.out.println("暂未开启AES解密拦截器");
-				if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0) {
+				if (inputMsg.indexOf("data")>0) {
 					throw new RuntimeException("传递的入参是加密后的字符串，但是apihttp项目暂未开启AES解密");
 				}
 			}
 			InputStream stream = StreamUtils.StringToInputStream(decryptMsg);
 			message.setContent(InputStream.class, stream);// 回填流
 		} catch (Exception e) {
+			logCustomerInfo(message, encryptMsg, decryptMsg);
 			throw new RuntimeException("处理入参时出错:"+e.getMessage());
 		}
 
 		System.out.println("未解密的入参:" + encryptMsg);
 		System.out.println("解密后的入参:" + decryptMsg);
 		logCustomerInfo(message, encryptMsg, decryptMsg);
+		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0) {
+			throw new RuntimeException("传递的入参是加密后的字符串，但是apihttp项目暂未开启AES解密");
+		}
 	}
 
 	/**

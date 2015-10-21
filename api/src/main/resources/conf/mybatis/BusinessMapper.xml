@@ -64,53 +64,54 @@
 	<!-- 获取商户、集团、策略 2015年8月11日 17:48:47 胡灵波 -->
 	<select id="getBusiness" resultType="com.edaisong.entity.domain.BusinessModel"
 		parameterType="java.lang.Long">
-		SELECT top 1 
-		b.id ,
-		b.name ,
-		b.city ,
-		b.district ,
-		b.phoneno ,
-		b.phoneno2 ,
-		b.idcard ,
-		b.[address] ,
-		isnull(b.landline,'') as landline,
-		b.longitude ,
-		b.latitude ,
-		b.[status] ,
-		b.inserttime ,
-		b.districtid ,
-		b.cityid ,
-		b.provincecode ,
-		b.citycode ,
-		b.areacode ,
-		b.province ,
-		ISNULL(b.DistribSubsidy, 0.00) distribsubsidy ,
-		b.businesscommission ,
-		b.commissiontype ,
-		b.commissionfixvalue ,
-		b.businessgroupId ,
-		b.balanceprice ,
-		b.allowwithdrawprice ,
-		b.haswithdrawprice ,
-		b.checkpicurl ,
-		b.businesslicensepic ,
-		b.mealssettlemode ,
-		isnull(b.groupid,0) as groupid ,
-		b.originalbusiid ,
-		ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
-		b.isallowoverdraft ,
-		b.isemployertask ,
-		b.isAllowCashPay,
-		ISNULL(b.RecommendPhone, '') AS
-		recommendphone,
-		bg.StrategyId as StrategyId,
-		b.IsOrderChecked ,
-		isnull(g.groupid,0) as groupBusinessID
-		FROM business b WITH (NOLOCK )
-		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON
-		b.BusinessGroupId =bg.Id
-		left join GroupBusinessRelation g with(nolock) on b.id=g.businessid
-		WHERE b.Id = #{businessID} and isnull(g.isbind,1)=1 and isnull(g.isenable,1)=1
+				SELECT TOP 1
+		        b.id ,
+		        b.name ,
+		        b.city ,
+		        b.district ,
+		        b.phoneno ,
+		        b.phoneno2 ,
+		        b.idcard ,
+		        b.[address] ,
+		        ISNULL(b.landline, '') AS landline ,
+		        b.longitude ,
+		        b.latitude ,
+		        b.[status] ,
+		        b.inserttime ,
+		        b.districtid ,
+		        b.cityid ,
+		        b.provincecode ,
+		        b.citycode ,
+		        b.areacode ,
+		        b.province ,
+		        ISNULL(b.DistribSubsidy, 0.00) distribsubsidy ,
+		        b.businesscommission ,
+		        b.commissiontype ,
+		        b.commissionfixvalue ,
+		        b.businessgroupId ,
+		        b.balanceprice ,
+		        b.allowwithdrawprice ,
+		        b.haswithdrawprice ,
+		        b.checkpicurl ,
+		        b.businesslicensepic ,
+		        b.mealssettlemode ,
+		        ISNULL(b.groupid, 0) AS groupid ,
+		        b.originalbusiid ,
+		        ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
+		        b.isallowoverdraft ,
+		        b.isemployertask ,
+		        b.isAllowCashPay ,
+		        ISNULL(b.RecommendPhone, '') AS recommendphone ,
+		        bg.StrategyId AS StrategyId ,
+		        b.IsOrderChecked ,
+		        CASE WHEN ISNULL(g.isbind, 0) = 1
+		                  AND ISNULL(g.isenable, 0) = 1 THEN ISNULL(g.groupid, 0)
+		             ELSE 0
+		        END AS groupBusinessID
+		FROM    business b WITH ( NOLOCK )
+		        LEFT JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON b.BusinessGroupId = bg.Id
+		        LEFT JOIN GroupBusinessRelation g WITH ( NOLOCK ) ON b.id = g.businessid
+		WHERE   b.Id = #{businessID}
 	</select>
 
 	<update id="modifyBusiness" parameterType="com.edaisong.entity.domain.BusinessModifyModel">
