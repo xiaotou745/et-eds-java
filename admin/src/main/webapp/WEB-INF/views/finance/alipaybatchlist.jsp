@@ -115,4 +115,21 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+/*确认打款功能*/
+function doSure(id){
+	//询问框
+	layer.confirm('您确认要提交修改吗？？', {
+	    btn: ['确认','取消'], //按钮
+	    shade: false //显示遮罩
+	}, function(){
+		var index= layer.alert('请在新打开的页面完成打款！', {
+		    skin: 'layui-layer-molv', //样式类名
+		    closeBtn: false
+		},function(){
+			layer.close(index);  //关闭弹层
+		});
+	}, function(){
+	    
+	});
+}
 </script>
