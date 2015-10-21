@@ -67,7 +67,8 @@ public class FinanceService implements IFinanceService{
 		record.setIsenable(true);
 		record.setTruename(req.getTrueName());
 		record.setUpdateby(req.getTrueName());
-		result.setResult(ParseHelper.ToInt(clienterFinanceAccountService.insertSelective(record)));
+		int res=ParseHelper.ToInt(clienterFinanceAccountService.insertSelective(record));
+		result.setResult(record.getId());
 		result.setMessage(CardBindC.Success.desc());
 		result.setStatus(CardBindC.Success.value());
 		return result;
