@@ -54,4 +54,12 @@ public interface IClienterBalanceRecordDao {
 	 * 
 	 * */
 	AccountBillDetailCModel getAccountBillDetailC(AccountBillDetailCReq par);
+	
+	/**
+	 * 获取骑士收支
+	 * 2015年10月21日 19:50:11
+	 * 窦海超
+	 * */
+	AccountBillDayCResultModel getAccountInMoneyAndOutMoney(PagedAccountBillDayCReq par);
+	
 }
