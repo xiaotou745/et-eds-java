@@ -36,4 +36,14 @@ public class AlipayBatchService extends DaoBase implements IAlipayBatchService {
 	public PagedResponse<AlipayBatch>  getAlipayBatchPagedList(PagedAlipayBatchListReq req){
 		return alipayBatchDao.getAlipayBatchPagedList(req);
 	}
+	/**
+	*根据id获取 支付宝批次
+	 * @author CaoHeYang
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public AlipayBatch getAlipayBatchById(Long id) {
+		return alipayBatchDao.getAlipayBatchById(id);
+	}
 }

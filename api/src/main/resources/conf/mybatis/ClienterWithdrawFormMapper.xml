@@ -280,4 +280,13 @@
       OpenSubBank = #{opensubbank,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  <!--  根据批次号查询提现单  addby caoheyang 20151020 -->
+    <select id="getClienterWithdrawFormByBatchNo"  resultType="com.edaisong.entity.domain.AlipayBatchClienterWithdrawForm" parameterType="java.lang.Long" >
+       SELECT  a.Id,a.WithwardNo,a.AccountNo,a.TrueName,a.Amount,
+       a.Status,b.LastOptUser,a.PayFailedReason
+       FROM ClienterWithdrawForm as a (nolock)
+       LEFT join dbo.AlipayBatch as b(nolock) on a.AlipayBatchNo=b.BatchNo 
+      where b.id= #{id}
+  </select>
+  
 </mapper>
