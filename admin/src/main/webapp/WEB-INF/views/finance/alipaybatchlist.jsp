@@ -13,6 +13,7 @@
 <%@page import="java.util.ArrayList"%>
 <%	
 String basePath =PropertyUtils.getProperty("java.admin.url");
+String netUrl = PropertyUtils.getProperty("net.admin.url");
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
@@ -115,4 +116,24 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+/*确认打款功能*/
+function doSure(bacthNo){
+	//询问框
+	layer.confirm('您确认要提交修改吗？？', {
+	    btn: ['确认','取消'], //按钮
+	    shade: false //显示遮罩
+	}, function(){
+		window.open("<%=netUrl%>/ClienterWithdraw/AlipayBatchTransfer?type=2&data="+bacthNo);
+		 var index= layer.alert('请在新打开的页面完成打款！', {
+			btn:["已完成打款"],
+		    skin: 'layui-layer-molv', //样式类名
+		    closeBtn: false
+		},function(){
+			jss.search(1);  //刷新list
+			layer.close(index);  //关闭弹层
+		}); 
+	}, function(){
+	    
+	});
+}
 </script>
