@@ -356,6 +356,7 @@ public class OrderService implements IOrderService {
 			balanceRecord.setAmount(0d);
 			balanceRecord.setGroupamount(order.getSettlemoney());
 			balanceRecord.setGroupid(order.getGroupbusinessid());
+			balanceRecord.setBalance(businessModel.getBalanceprice());
 		}else {
 			balanceRecord.setAmount(order.getSettlemoney());
 			balanceRecord.setGroupamount(0);
