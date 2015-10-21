@@ -12,11 +12,14 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
     
-     <context:property-placeholder
-		location="classpath:/conf/custom/dev-env.properties"
-		ignore-unresolvable="true" />
-     <mongo:mongo id="mongo" host="10.8.7.42" port="27017"></mongo:mongo>
-	
+
+	<context:component-scan base-package="com.edaisong.api" />
+		  
+     <mongo:mongo id="mongo" host="${mongodb.host}" port="${mongodb.port}"></mongo:mongo>
+<!-- 	<bean id="mongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory"> -->
+<!-- 	    <constructor-arg value="test"/> -->
+<!-- 	     <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" /> -->
+<!-- 	</bean> -->
     <mongo:db-factory id="mongoDbFactory" dbname="edaisonglogdb"  mongo-ref="mongo" />
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
