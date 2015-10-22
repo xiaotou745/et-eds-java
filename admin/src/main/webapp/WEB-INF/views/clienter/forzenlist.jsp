@@ -24,7 +24,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">骑士名称:</label>
 							<div class="col-sm-8">
-								   <input id="txtClienterName" class="form-control" type="tel" name="ClienterName" />
+								   <input id="txtClienterName" class="form-control" type="text" name="ClienterName" />
 							</div>
 						</div>
 					</div>
@@ -32,7 +32,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">骑士电话:</label>
 							<div class="col-sm-8">
-							 <input id="txtClienterPhone" class="form-control" type="tel" name="ClienterPhone" />
+							 <input id="txtClienterPhone" class="form-control" type="text" name="ClienterPhone" />
 							</div>
 						</div>
 					</div>

@@ -22,7 +22,7 @@ String busname=ParseHelper.ToString(request.getAttribute("businessName"),"");
 	<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td><span class="">商户名称: </span> <input id="businessName" value="<%=busname %>"
-				name="businessName" type="tel" /> <span class="">审核状态: </span> <select
+				name="businessName" type="text" /> <span class="">审核状态: </span> <select
 				name="status"  class="form-control m-b" id="status">
 					<option value="-1" selected="selected">全部</option>
 					<option value="1">审核通过</option>

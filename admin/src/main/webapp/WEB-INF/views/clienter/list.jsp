@@ -19,7 +19,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
    <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                  <span class="">骑士名称: </span>
-                 <input id="txtClienterName" type="tel" name="txtClienterName" />
+                 <input id="txtClienterName" type="text" name="txtClienterName" />
                   <span class="">审核状态: </span>
                         <select name="status"  class="form-control m-b" id="superManStatus">
                             <option value="-1">全部</option>
