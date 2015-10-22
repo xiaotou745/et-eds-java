@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.Date"%>
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
@@ -85,7 +86,8 @@
 			<td><%=list.get(i).getLastOptUser()%></td>
 			<td>
 			<%
-					if (list.get(i).getStatus() == AlipayBatchStatus.PlayGame.value()) {
+					if (list.get(i).getStatus() == AlipayBatchStatus.PlayGame.value()&&ParseHelper.plusDate(list.get(i).getLastOptTime(), 4, 10)
+					.compareTo(new Date())<0) {
 				%> <a href="javascript:doSure('<%=list.get(i).getBatchNo()%>')">打款</a> <%
 					} else  {
 				%>  --
