@@ -29,8 +29,7 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 	// 解密数据
 	@Override
 	public void handleMessage(Message message) throws Fault {
-		//暂时注释加解密..等海龙回来修改
-		/*String encryptMsg = "";
+		String encryptMsg = "";
 		String decryptMsg = "";
 		try {
 			InputStream inputStream = message.getContent(InputStream.class);
@@ -64,7 +63,7 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 		logCustomerInfo(message, encryptMsg, decryptMsg);
 		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0) {
 			throw new RuntimeException("传递的入参是加密后的字符串，但是apihttp项目暂未开启AES解密");
-		}*/
+		}
 	}
 
 	/**

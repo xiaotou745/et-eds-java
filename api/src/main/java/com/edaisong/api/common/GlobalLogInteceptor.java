@@ -58,7 +58,7 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			Date requestTime = (Date) request.getAttribute("requestTime");
 			int userID=ParseHelper.ToInt(request.getAttribute("userID"),-1);
 			String userName = ParseHelper.ToString(request.getAttribute("userName"),"");
-			String clientIp = request.getRemoteAddr();
+			
 			String headers = JsonUtil.obj2string(getHeadersInfo(request));
 			String exceptionMsg = "";
 			String stackTrace = "";
@@ -72,11 +72,10 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 				exceptionMsg = ex.getMessage() == null ? "" : ex.getMessage();
 				stackTrace = StringUtils.getStackTrace(ex);
 			}
-			String appServerIP = "localhost";
+			String clientIp = SystemUtils.getClientIp(request);
+			
 			List<String> ipinfoList = SystemUtils.getLocalIpInfo();
-			if (ipinfoList != null && ipinfoList.size() > 0) {
-				appServerIP = ipinfoList.get(0);
-			}
+			String appServerIP = JsonUtil.obj2string(ipinfoList);
 
 			ActionLog logEngity = new ActionLog();
 			logEngity.setClientIp(clientIp);

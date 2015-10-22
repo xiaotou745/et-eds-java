@@ -368,7 +368,7 @@ public class OrderService implements IOrderService {
 		balanceRecord.setOperator(businessModel.getName());
 		balanceRecord.setWithwardid((long) order.getId());
 		balanceRecord.setRelationno(order.getOrderno());
-		balanceRecord.setRemark("扣除商家结算费");
+		balanceRecord.setRemark("配送费支出金额");
 		businessService.updateForWithdrawC(0,balanceRecord);
 
 		// 记录补贴日志

@@ -112,10 +112,6 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 	            	
 	            	$("#groupList").html(result);	            	
 	                	
-	            },
-	            error:function(err)
-	            {
-	            	alert(err.responseText);
 	            }
 	            });
 	        });    
@@ -135,11 +131,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
             success: function (result) {         
             	if(result=="ok")
             	window.location.href = "<%=basePath%>/group/list";            	
-            },
-        error:function(err)
-        {
-        	alert(err.responseText);
-        }
+            }
         });
     });     
 
@@ -160,10 +152,6 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
             success: function (result) {
             	if(result=="ok")
                 	window.location.href = "<%=basePath%>/group/list";  
-            },
-            error:function(err)
-            {
-            	alert(err.responseText);
             }
         });
     });

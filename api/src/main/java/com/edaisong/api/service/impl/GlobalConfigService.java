@@ -1,6 +1,5 @@
 package com.edaisong.api.service.impl;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dao.inter.IGlobalConfigDao;
 import com.edaisong.api.redis.NetRedisService;
-import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.entity.GlobalConfig;
@@ -28,28 +26,16 @@ public class GlobalConfigService implements IGlobalConfigService {
 	@Autowired
 	private NetRedisService redisService;
 	/*
-	 * 获取全局配置变量
-	 * 茹化肖
-	 * 2015年7月20日17:48:31
-	 * */
-	@Override
-	public List<GlobalConfigModel> getGlobalConfigByGroupId(Integer groupID) {
-		return iGlobalConfigDao.getGlobalConfigByGroupId(groupID);
-	}
-	/*
 	 * 修改全局变量参数
 	 * */
 	@Override
 	public int update(ConfigSaveReq par) {
 		GlobalConfigModel model = iGlobalConfigDao.getGlobalConfigByPrimaryId(par.getId());
 		int ret = iGlobalConfigDao.update(par);
-		/*if(model != null){
-			redisService.remove(RedissCacheKey.GlobalConfig_Key+model.getGroupId());
-		}*/
-		
 		if(ret>0)
 		{
-			String key="GlobalConfig_"+par.getKeyName()+"_0";	
+			String key=String.format(RedissCacheKey.GlobalConfig_Key, par.getKeyName());
+			redisService.remove(key);
 			redisService.set(key, par.getConfigValue());
 		}			
 		
@@ -72,8 +58,14 @@ public class GlobalConfigService implements IGlobalConfigService {
 	 * */
 	@Override
 	public int insert(GlobalConfig par) {
-		//redisService.remove(RedissCacheKey.GlobalConfig_Key+par.getGroupid());
-		return iGlobalConfigDao.insert(par);
+		int ret= iGlobalConfigDao.insert(par);
+		if(ret>0)
+		{
+			String key=String.format(RedissCacheKey.GlobalConfig_Key, par.getKeyname());
+			redisService.remove(key);
+			redisService.set(key, par.getValue());
+		}
+		return ret;
 	}
 	
 	@Override
