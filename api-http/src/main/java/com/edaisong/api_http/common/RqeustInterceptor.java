@@ -105,10 +105,11 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			if (request != null) {
 				ip = request.getRemoteAddr();
 			}
+			
 			String appServerIP = "localhost";
 			List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 			if (ipinfoList != null && ipinfoList.size() > 0) {
-				appServerIP = ipinfoList.get(0);
+				appServerIP = JsonUtil.obj2string(ipinfoList);
 			}
 	
 	

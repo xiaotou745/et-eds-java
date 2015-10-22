@@ -129,10 +129,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
                 } else {
                 	layer.msg(result.message, {shift: 6});
                 }
-            },
-        	error: function(errorData){
-        		layer.msg(errorData, {shift: 6});
-        	}
+            }
         });
         addUserTr(phoneNo);
 	}

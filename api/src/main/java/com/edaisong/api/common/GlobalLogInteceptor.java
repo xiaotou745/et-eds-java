@@ -75,7 +75,7 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			String appServerIP = "localhost";
 			List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 			if (ipinfoList != null && ipinfoList.size() > 0) {
-				appServerIP = ipinfoList.get(0);
+				appServerIP = JsonUtil.obj2string(ipinfoList);
 			}
 
 			ActionLog logEngity = new ActionLog();

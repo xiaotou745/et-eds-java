@@ -43,7 +43,6 @@
 						                                           键名:<input type="text" value="" id="keyname" /><font style="color:red">键名一旦保存不可修改</font><br /> 
 										描述:<input type="text" value="" id="keyremark" /><font style="color:red">描述一旦保存不可修改</font><br />
 										键值:<input type="text" value="" id="keyvalue" /><br /> 
-										正则:<input type="text" value="" id="keyregx" /><br />
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-white" data-dismiss="modal" id="boxcancle">关闭</button>
@@ -102,7 +101,7 @@ $("#btnSearch").click(function(){
 					keyName : keyName
 				},
 				success : function(data) {
-					if (data) {
+					if (data>0) {
 						alert('保存成功');
 						$('#show' + id).attr('disabled', 'true');
 						$('#show' + id).attr('value', newvalue);
@@ -113,9 +112,6 @@ $("#btnSearch").click(function(){
 					} else {
 						alert('保存失败');
 					}
-				},
-				error : function(myErrorData) {
-					alert(myErrorData.responseText);
 				}
 			});
 			$('#show' + id).attr('disabled', 'true');
@@ -162,17 +158,13 @@ $("#btnSearch").click(function(){
 					remark:keyremark
 				},
 				success : function(data) {
-					if (data) {
-						console.log(data);
+					if (data>0) {
 						alert('添加成功');
 						ClaenBox();
 						window.location.reload();
 					} else {
-						alert('保存失败');
+						alert('保存失败:keyname已经存在');
 					}
-				},
-				error : function(myErrorData) {
-					alert(myErrorData.responseText);
 				}
 			});
 	};
