@@ -354,4 +354,19 @@
  WHERE bbr.id=#{recordId,jdbcType=INTEGER}
  		AND BusinessId=#{businessId,jdbcType=INTEGER}
 	</select>
+	
+	<select id="getAccountInMoneyAndOutMoney" resultType="com.edaisong.entity.domain.AccountBillDayResultModel"
+	parameterType="com.edaisong.entity.req.PagedAccountBillDayReq"
+	>
+SELECT 
+sum(case when 0>Amount then amount else 0 end) as outMoney,
+sum(case when Amount>0 then amount else 0 end) as inMoney
+ FROM dbo.BusinessBalanceRecord bbr(nolock)
+where 
+BusinessId=${businessId} and RecordType!=7
+AND OperateTime >'${stratDate}' 
+AND '${endDate}' > OperateTime
+ group by BusinessId
+	</select>
+	
 </mapper>

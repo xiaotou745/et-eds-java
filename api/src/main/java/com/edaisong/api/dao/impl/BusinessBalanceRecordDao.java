@@ -14,6 +14,7 @@ import java.util.Map;
 
 
 
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -23,6 +24,7 @@ import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AccountBillDayModel;
+import com.edaisong.entity.domain.AccountBillDayResultModel;
 import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
@@ -54,6 +56,18 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 		resp = getReadOnlySqlSessionUtil().selectPageList(
 				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getTransDetailList", par);
 		return resp;
+	}
+
+	/**
+	 * 获取商家收入支出
+	 * 2015年10月21日 20:40:39
+	 * 窦海超 
+	 * */
+	@Override
+	public AccountBillDayResultModel getAccountInMoneyAndOutMoney(
+			PagedAccountBillDayReq par) {
+		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getAccountInMoneyAndOutMoney",
+				par);
 	}
 
 	@Override

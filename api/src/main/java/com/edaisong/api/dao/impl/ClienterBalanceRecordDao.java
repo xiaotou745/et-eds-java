@@ -25,6 +25,11 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 		return 0;
 	}
 
+	@Override
+	public AccountBillDayCResultModel getAccountInMoneyAndOutMoney(PagedAccountBillDayCReq par) {
+		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.getAccountInMoneyAndOutMoney",
+				par);
+	}
 	/**
 	 * 
 	 */

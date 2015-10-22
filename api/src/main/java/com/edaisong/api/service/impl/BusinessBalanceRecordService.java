@@ -117,20 +117,22 @@ public class BusinessBalanceRecordService implements IBusinessBalanceRecordServi
 		par.setStratDate(daystr+" 00:00:00");//设置开始时间
 		par.setEndDate(daystr+" 23:59:59");//设置结束时间
 		List<AccountBillDayModel> list=businessBalanceRecordDao.getAccountBillListDayB(par);
-		double outmoney=0;
-		double inmoney=0;
-		for (AccountBillDayModel accountBillDayModel : list) {
-			if(accountBillDayModel.getAmount()>0)
-			{
-				inmoney+=accountBillDayModel.getAmount();
-			}
-			else {
-				outmoney+=accountBillDayModel.getAmount();
-			}
-		}
+//		double outmoney=0;
+//		double inmoney=0;
+//		for (AccountBillDayModel accountBillDayModel : list) {
+//			if(accountBillDayModel.getAmount()>0)
+//			{
+//				inmoney+=accountBillDayModel.getAmount();
+//			}
+//			else {
+//				outmoney+=accountBillDayModel.getAmount();
+//			}
+//		}
+		AccountBillDayResultModel billDayModel= businessBalanceRecordDao.getAccountInMoneyAndOutMoney(par);
+		
 		AccountBillDayResultModel resultModel=new AccountBillDayResultModel();
-		resultModel.setInMoney(inmoney);
-		resultModel.setOutMoney(outmoney);
+		resultModel.setInMoney(billDayModel==null?0:billDayModel.getInMoney());
+		resultModel.setOutMoney(billDayModel==null?0:billDayModel.getOutMoney());
 		resultModel.setListRecordS((ArrayList<AccountBillDayModel>)list);
 		return resultModel;
 	}
