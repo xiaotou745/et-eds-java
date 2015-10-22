@@ -8,7 +8,7 @@
 	String basePath =PropertyUtils.getProperty("java.admin.url");
 %>
 
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight  form-horizontal">
 
 	<div class="row">
 		<div class="col-lg-12">
@@ -94,7 +94,7 @@ $("#btnSearch").click(function(){
 			//ajax
 			$.ajax({
 				type : 'Post',
-				url : '/admin/admintools/saveconfig',
+				url : '<%=basePath%>/admintools/saveconfig',
 				data : {
 					id : id,
 					configValue : newvalue,
@@ -151,7 +151,7 @@ $("#btnSearch").click(function(){
 		//获取参数
 		$.ajax({
 				type : 'Post',
-				url : '/admin/admintools/addconfig',
+				url : '<%=basePath%>/admintools/addconfig',
 				data : {
 					keyname : keyname,
 					value : keyvalue,

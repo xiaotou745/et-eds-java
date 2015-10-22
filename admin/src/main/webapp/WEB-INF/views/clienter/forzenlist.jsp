@@ -15,38 +15,82 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 	//List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 	//List<DeliveryCompany> dCListData=	(List<DeliveryCompany>)request.getAttribute("dCListData");
 %>
-   <table >
-            <tr>
-            	<td>
-                 <span>骑士名称: </span>
-                 <input id="txtClienterName" type="tel" name="ClienterName" />
-                 <span class="">骑士电话: </span>
-                 <input id="txtClienterPhone" type="tel" name="ClienterPhone" />
-                 <span class="">冻结状态: </span>
-                 
-                 <%=HtmlHelper.getSelect("forzenstatus", EnumHelper.GetEnumItems(ClienterForzenType.class),
-					"desc", "value", null, "0", "全部")%>                  
-                 <select name="datetype"  class="form-control m-b" id="selectdatetype">
+<div class="wrapper wrapper-content animated fadeInRight form-horizontal">
+
+	<div class="row">
+		<div class="col-lg-12">
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">骑士名称:</label>
+							<div class="col-sm-8">
+								   <input id="txtClienterName" class="form-control" type="tel" name="ClienterName" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">骑士电话:</label>
+							<div class="col-sm-8">
+							 <input id="txtClienterPhone" class="form-control" type="tel" name="ClienterPhone" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">冻结状态:</label>
+							<div class="col-sm-8">
+							 <%=HtmlHelper.getSelect("forzenstatus", EnumHelper.GetEnumItems(ClienterForzenType.class),"desc", "value", null, "0", "全部")%>   
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+				<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label"></label>
+							<div class="col-sm-8">
+					<select name="datetype"  class="form-control m-b" id="selectdatetype">
                       <option value="1">冻结时间</option>
                       <option value="2">解冻时间</option>
                   </select>
-                  <input id="txtstartdate" type="text" name="startdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'txtenddate\')||\'2020-10-01\'}'})"/>
-                       <span class="">到 </span>
-                  <input id="txtenddate" type="text" name="enddate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2020-10-01'})"/>
-                          
-      			<input type="submit" value="查询" class="searchBtn" id="btnSearch" />  
-      			<input type="button" value="骑士余额冻结" class="searchBtn" id="btnForzenClienter" onclick="showForzenClienterAmount()" />  
-      			        
-                </td>
-            </tr>
-        
-        </table>  
-        
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label"></label>
+							<div class="col-sm-8">
+								   <input id="txtstartdate" class="form-control" type="text" name="startdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'txtenddate\')||\'2020-10-01\'}'})"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">到:</label>
+							<div class="col-sm-8">
+							 <input id="txtenddate" class="form-control" type="text" name="enddate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2020-10-01'})"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			    <div class="row">
+						<div class="col-lg-3">
+							   <button type="button" class="btn btn-w-m btn-primary" id="btnSearch"
+							style="margin-left: 3px;height:30px;">查询</button>
+								<button type="button" class="btn btn-w-m btn-primary" id="btnForzenClienter" onclick="showForzenClienterAmount()" 
+							style="margin-left: 3px;height:30px;">骑士余额冻结</button>
+      		
+					</div>
+			</div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox-content" id="content"></div>
 		</div>
 	</div>
+</div>
 <div tabindex="-1" class="modal inmodal" id="showUnfreezeClienter"
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
@@ -153,12 +197,6 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 	$("#btnSearch").click(function(){
 		jss.search(1);
 	});	
-	$('#txtClienterName,#txtClienterPhone').keyup(function(event){ 
-        if(event.keyCode == "13")    
-        { 
-            $("#btnSearch").click();
-        }
-    });
 	//解冻
    function confirmUnfreezeClienter(){
 	   var unfreezeReason = $("#txtUnfreezeReason").val();

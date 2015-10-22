@@ -10,7 +10,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
-@Service
+//@Service
 public class MongoService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
