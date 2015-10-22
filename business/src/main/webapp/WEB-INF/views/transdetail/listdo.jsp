@@ -10,9 +10,11 @@
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.enums.BusinessBalanceRecordRecordType"%>
 <%@page import="com.edaisong.core.enums.BusinessBalanceRecordStatus"%>
-
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%
 PagedResponse<BusinessBalanceRecord> responsePageList = (PagedResponse<BusinessBalanceRecord>) request.getAttribute("result");
+ String basePath = PropertyUtils.getProperty("java.business.url");
+ 
 %>
 			<table width="100%" class="stripe">
 				<tr>
@@ -27,7 +29,7 @@ PagedResponse<BusinessBalanceRecord> responsePageList = (PagedResponse<BusinessB
 				{%>
 				<tr>
 					<td><%=BusinessBalanceRecordRecordType.getEnum((int)responsePageList.getResultList().get(i).getRecordtype()).desc() %></td>
-					<td><%=responsePageList.getResultList().get(i).getRelationno() %></td>
+					<td><a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=responsePageList.getResultList().get(i).getRelationno()%>"><%=responsePageList.getResultList().get(i).getRelationno()%></a></td>
 					<td>￥<%=responsePageList.getResultList().get(i).getAmount() %></td>
 					<td>￥<%=responsePageList.getResultList().get(i).getBalance() %></td>
 					<td><%=BusinessBalanceRecordStatus.getEnum((int)responsePageList.getResultList().get(i).getStatus()).desc()%></td>
