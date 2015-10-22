@@ -10,7 +10,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class ActiveMqService {
 	@Autowired
 	private JmsTemplate jmsTemplate;

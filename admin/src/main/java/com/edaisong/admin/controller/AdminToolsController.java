@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,25 +29,12 @@ import com.edaisong.entity.req.PagedGlobalConfigReq;
 public class AdminToolsController {
 	@Autowired
 	private IGlobalConfigService globalConfigService;
-//	@Autowired
-//	private IBusinessFinanceService businessFinanceService;
 	@RequestMapping("list")
 	public ModelAndView globalConfigManager(HttpServletRequest request, HttpServletResponse res){
-//		TransDetailReq par=new TransDetailReq();
-//		par.setBusinessid(1791);
-//		par.setCurrentPage(1);
-//		par.setEndDate("");
-//		par.setStartDate("");
-//		par.setNumType("1");
-//		par.setTransType("");
-//		par.setNumString("1791150522202221066");
-//		businessFinanceService.getTransDetailList(par);
-		List<GlobalConfigModel> data= globalConfigService.getGlobalConfigByGroupId(0);
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "公共变量管理");
 		model.addObject("viewPath", "admintools/globalconfigmanager");
-		model.addObject("DataList",data);
 		return model;
 	}
 	
@@ -58,16 +46,17 @@ public class AdminToolsController {
 		return view;
 	}
 	
-	/*保存修改全局变量值*/
-	@RequestMapping("saveconfig")
+	/*保存修改全局变量值*/	
+	@RequestMapping(value="saveconfig",method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean saveConfig(ConfigSaveReq par){
-		return globalConfigService.update(par)>0;
+	public int saveConfig(ConfigSaveReq par){
+		return globalConfigService.update(par);
 	}
 	/*添加全局变量值*/
 	@RequestMapping("addconfig")
-	public Boolean addConfig(GlobalConfig par){
-		return globalConfigService.insert(par)>0;
+	@ResponseBody
+	public int addConfig(GlobalConfig par){
+		return globalConfigService.insert(par);
 	}
 
 }

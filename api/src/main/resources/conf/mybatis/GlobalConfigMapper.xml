@@ -37,16 +37,18 @@
 		where Id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.edaisong.entity.GlobalConfig">
-		insert into GlobalConfig (Id,
+	IF NOT EXISTS(SELECT 1 FROM GlobalConfig (nolock) WHERE keyname=#{keyname,jdbcType=NVARCHAR})
+		insert into GlobalConfig (
 		KeyName, Value,
 		LastUpdateTime, Remark, GroupId,
 		StrategyId)
 		values
-		(#{id,jdbcType=INTEGER}, #{keyname,jdbcType=NVARCHAR},
+		(#{keyname,jdbcType=NVARCHAR},
 		#{value,jdbcType=NVARCHAR},
-		#{lastupdatetime,jdbcType=TIMESTAMP},
-		#{remark,jdbcType=NVARCHAR}, #{groupid,jdbcType=INTEGER},
-		#{strategyid,jdbcType=INTEGER})
+		getdate(),
+		#{remark,jdbcType=NVARCHAR}, 
+		0,
+		-1)
 	</insert>
 	<insert id="insertSelective" parameterType="com.edaisong.entity.GlobalConfig">
 		insert into GlobalConfig
@@ -152,23 +154,6 @@
 		UPDATE GlobalConfig set Value = #{parvalue,jdbcType=NVARCHAR}
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
-	<insert id="insertConifg" parameterType="java.util.Map">
-		INSERT INTO dbo.GlobalConfig
-		        ( KeyName ,
-		          Value ,
-		          Remark ,
-		          GroupId ,
-		          StrategyId
-		        )
-		VALUES  ( #{keyname} , 
-		          #{value} , 
-		          #{remark} , 
-		          0 , 
-		          -1  
-		        )
-	</insert>
-	
-	
   <sql id="getPagedGlobalConfigModelsColums" >
   	Id ,Remark ,KeyName ,Value 
   </sql>

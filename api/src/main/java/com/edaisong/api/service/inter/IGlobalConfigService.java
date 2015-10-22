@@ -9,8 +9,6 @@ import com.edaisong.entity.req.ConfigSaveReq;
 import com.edaisong.entity.req.PagedGlobalConfigReq;
 
 public interface IGlobalConfigService {
-
-	 List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) ;
 	 int update(ConfigSaveReq par);
 	 String getConfigValueByKey(int groupID,String key);
 	 int insert(GlobalConfig par);

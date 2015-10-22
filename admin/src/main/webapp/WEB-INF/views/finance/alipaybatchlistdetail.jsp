@@ -109,7 +109,7 @@ label {
 	<thead>
 		<tr class="tdbg">
 			<th width="%5">编号</th>
-			<th width="%5">体现单号</th>
+			<th width="%5">提现单号</th>
 			<th width="%5">支付宝账号</th>
 			<th width="%5">支付宝账户名</th>
 			<th width="%5">提现金额</th>

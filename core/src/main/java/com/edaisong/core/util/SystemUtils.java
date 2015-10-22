@@ -1,8 +1,10 @@
 package com.edaisong.core.util;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
@@ -11,24 +13,67 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
 public class SystemUtils {
+	/**
+	 * 获取本机的内网ip，本机名，外网ip
+	 * @date 20151022
+	 * @author zhaohl
+	 * @return
+	 */
 	public static List<String> getLocalIpInfo(){
-		String ip = "";
-		String address = "";
-		List<String> result = new ArrayList<>();
-		InetAddress addr;
-		try {
-			addr = InetAddress.getLocalHost();
-			ip = addr.getHostAddress().toString();// 获得本机IP　　
-			address = addr.getHostName().toString();// 获得本机名称
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+		String localip = null;// 本地IP，如果没有配置外网IP则返回它  
+        String netip = null;// 外网IP  
+        String hostName = null;// 本机名称
+        try {  
+            InetAddress ip = null;  
+            boolean finded = false;// 是否找到外网IP  
+            Enumeration<NetworkInterface> netInterfaces = NetworkInterface.getNetworkInterfaces();  
+            while (netInterfaces.hasMoreElements() && !finded) {  
+                NetworkInterface ni = netInterfaces.nextElement();  
+                Enumeration<InetAddress> address = ni.getInetAddresses();  
+                while (address.hasMoreElements()) {  
+                    ip = address.nextElement();  
+                    if (!ip.isLoopbackAddress()&&ip.getHostAddress().indexOf(":") == -1) {
+						if (ip.isSiteLocalAddress()) {
+	                        localip = ip.getHostAddress();// 内网IP 
+	                        hostName = ip.getHostName();
+						}else {
+	                        netip = ip.getHostAddress();// 外网IP  
+	                        finded = true;  
+	                        break; 
+						}
+					}
+                }  
+            }  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        } 
+        if (localip==null) {
+        	localip="";
 		}
-
-		result.add(ip);
-		result.add(address);
+        if (netip==null) {
+        	netip="";
+		}
+        if (hostName==null) {
+        	hostName="";
+		}
+		List<String> result = new ArrayList<>();
+		result.add(localip);
+		result.add(hostName);
+		result.add(netip);
 		return result;
+	}
+	public static String getClientIp(HttpServletRequest request){
+		if (request==null) {
+			return "";
+		}
+		String clientIp = request.getHeader("x-forwarded-for");
+		if (clientIp==null||clientIp.isEmpty()||clientIp.toLowerCase().equals("unknown")) {
+			clientIp = request.getRemoteAddr();
+		}
+		return clientIp;
 	}
 	/**
 	 * 发送邮件

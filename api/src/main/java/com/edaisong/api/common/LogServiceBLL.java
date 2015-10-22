@@ -18,7 +18,7 @@ import com.edaisong.entity.domain.ActionLog;
 public class LogServiceBLL {
 	@Autowired
 	private IActionLogDao iActionLogDao;
-	@Autowired
+//	@Autowired
 //	private ActiveMqService activeMqService;
 
 	private static Logger businessLogger = Logger.getLogger("businessLogger");
@@ -41,7 +41,7 @@ public class LogServiceBLL {
 			}
 			//initLog4DB(logEngity);
 			String jsonMsg = JsonUtil.obj2string(logEngity);
-//			activeMqService.sendMessage(jsonMsg);
+			//activeMqService.sendMessage(jsonMsg);
 			switch (logEngity.getSourceSys()) {
 			case "admin":
 				adminLogger.info(jsonMsg);
