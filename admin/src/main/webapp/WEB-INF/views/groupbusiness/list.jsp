@@ -19,9 +19,7 @@
 						<div class="form-group">
 							
 							<div class="col-sm-8">							
-								<input id="groupBusinessName"
-								placeholder="集团名称、登录账号"
-								 type="tel" class="form-control"  name="groupBusinessName"/>								
+								<input id="groupBusinessName" placeholder="集团名称、登录账号" type="text" class="form-control"  name="groupBusinessName"/>								
 							</div>
 						</div>
 					</div>

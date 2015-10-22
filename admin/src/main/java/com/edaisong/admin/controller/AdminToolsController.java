@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,8 +46,8 @@ public class AdminToolsController {
 		return view;
 	}
 	
-	/*保存修改全局变量值*/
-	@RequestMapping("saveconfig")
+	/*保存修改全局变量值*/	
+	@RequestMapping(value="saveconfig",method = RequestMethod.POST)
 	@ResponseBody
 	public int saveConfig(ConfigSaveReq par){
 		return globalConfigService.update(par);
