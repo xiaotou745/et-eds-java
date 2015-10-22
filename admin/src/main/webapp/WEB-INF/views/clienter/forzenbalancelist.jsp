@@ -13,24 +13,43 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 %>
 
+<div class="wrapper wrapper-content animated fadeInRight form-horizontal">
 
-   <table border="0" cellspacing="0" cellpadding="0">
-            <tr>
-            <td>
-                 <span class="">骑士名称: </span>
-                 <input id="txtClienterName" type="text" name="txtClienterName" />
-            </td>
-            <td>
-               <span class="">筛选城市: </span><%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "code") %>
-             <input type="submit" value="查询" class="searchBtn" id="btnSearch" />
-            </td>
-            </tr>
-        </table>
+	<div class="row">
+		<div class="col-lg-12">
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">骑士名称:</label>
+							<div class="col-sm-8">
+							    <input id="txtClienterName" class="form-control" type="text" name="txtClienterName" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">筛选城市:</label>
+							<div class="col-sm-8">
+							<%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "code") %>
+							</div>
+						</div>
+					</div>
+				</div>
+			    <div class="row">
+						<div class="col-lg-3">					  
+							   <button type="button" class="btn btn-w-m btn-primary" id="btnSearch"
+							style="margin-left: 3px;height:30px;">查询</button>
+					</div>
+			</div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox-content" id="content"></div>
 		</div>
 	</div>
+</div>
+
     <div tabindex="-1" class="modal inmodal" id="forzenClienterBalance"
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
