@@ -16,7 +16,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">标签名称:</label>
 							<div class="col-sm-8">
-							<input id="txtSuperManPhone" class="form-control" type="text" name="txtSuperManPhone" placeholder="标签名称"/>
+							<input id="txtTagName" class="form-control" type="text" name="txtTagName" placeholder="标签名称"/>
 							</div>
 						</div>
 					</div>
@@ -77,7 +77,7 @@
 			             <div class="control-group" style="width:260px;">
 			                 <div style="font-size: 14px;float: left;margin-left: 5px;">标签名称: </div>
 				      		 <div style="float:left;margin-left: 5px">
-				      		 	<input id="editTagName" type="tel" name="editTagName" />
+				      		 	<input id="editTagName" type="text" name="editTagName" />
 				      		 </div>
 			                 <div style="font-size: 14px;float: left;margin-left: 5px;margin-top:10px">标签类型: </div>
 				             <div style="float:left;margin-top:10px;margin-left: 5px">
