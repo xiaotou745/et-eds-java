@@ -38,6 +38,7 @@
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
+						<label class="col-sm-4 control-label">门店名称:</label>
 							<div class="col-sm-6">
 								<input placeholder="门店名称"  type="text" class="form-control" name="bizName" id="bizName"/>
 							</div>
@@ -45,6 +46,7 @@
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
+						<label class="col-sm-4 control-label">门店电话:</label>
 							<div class="col-sm-6">
 								<input placeholder="门店电话"  type="text" class="form-control" name="bizPhone" id="bizPhone"/>
 							</div>
@@ -52,6 +54,7 @@
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
+						<label class="col-sm-4 control-label">开始日期:</label>
 							<div class="col-sm-6">
 								<div class="input-group date">
 									<span class="input-group-addon"><i
@@ -63,7 +66,7 @@
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">到:</label>
+							<label class="col-sm-4 control-label">结束日期:</label>
 							<div class="col-sm-8">
 								<div class="input-group date">
 									<span class="input-group-addon"><i

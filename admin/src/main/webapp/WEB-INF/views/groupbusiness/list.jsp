@@ -17,7 +17,7 @@
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							
+								<label class="col-sm-4 control-label">名称或账号：</label>
 							<div class="col-sm-8">							
 								<input id="groupBusinessName" placeholder="集团名称、登录账号" type="text" class="form-control"  name="groupBusinessName"/>								
 							</div>
@@ -28,22 +28,6 @@
 <input type="button" value="添加集团" class="btn btn-w-m btn-primary" id="btnModifyGroupBusiness" onclick="showAddGroupBusiness()" style="margin-left: 3px;height:30px;" />
 <input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1" />
 <input id="hiddenText" type="text" style="display:none" />
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label"></label>
-							<div class="col-sm-8">
-								
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label"></label>
-							<div class="col-sm-8">
-								
-							</div>
-						</div>
 					</div>
 				</div>				
 			  
