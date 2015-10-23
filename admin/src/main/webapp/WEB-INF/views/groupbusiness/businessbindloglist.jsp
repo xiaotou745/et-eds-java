@@ -24,7 +24,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">集团名称：</label>
 							<div class="col-sm-4 control-label">
-								<label><%=ParseHelper.ToString(detail.getGroupbusiname(), "")%></label>
+								<%=ParseHelper.ToString(detail.getGroupbusiname(), "")%>
 							</div>
 						</div>
 					</div>

@@ -14,6 +14,7 @@
 <%@page import="com.edaisong.core.enums.AlipayBatchStatus"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.core.enums.ClienterWithdrawFormStatus"%>
+<%@page import="com.edaisong.admin.common.UserContext"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.admin.url");
     String netUrl = PropertyUtils.getProperty("net.admin.url");
@@ -93,9 +94,13 @@ label {
 						</div>
 					</div>
 					<div class="col-lg-3">
+					<%if(alipayBatch.getStatus() == AlipayBatchStatus.PlayGame.value()
+					&&(UserContext.getCurrentContext(request).getLoginName().trim().equals("admin")||
+							UserContext.getCurrentContext(request).getLoginName().trim().equals("douhaichao"))) {%>
 					<div class="form-group">
 								<button type="button" class="btn btn-w-m btn-primary" id="btnDosure" style="margin-left: 3px;height:30px;">打款</button>
 						</div>
+						<%} %>
 					</div>
 		
 			</div>
@@ -109,7 +114,7 @@ label {
 	<thead>
 		<tr class="tdbg">
 			<th width="%5">编号</th>
-			<th width="%5">体现单号</th>
+			<th width="%5">提现单号</th>
 			<th width="%5">支付宝账号</th>
 			<th width="%5">支付宝账户名</th>
 			<th width="%5">提现金额</th>

@@ -7,49 +7,59 @@
 <%@page import="com.edaisong.core.enums.TagType"%>
 <%String basePath =PropertyUtils.getProperty("java.admin.url");%>
 
-<div class="row" style="margin-top: 5px;">
-	<div class="col-lg-3">
-		<input type="button" value="添加标签" class="btn btn-w-m btn-primary" id="addMark"  onclick="addMark() "/>    
-	</div>
-</div> 
+<div class="wrapper wrapper-content animated fadeInRight form-horizontal">
 
-<div class="row"  style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;">
-	<div class="col-lg-2">
-		<div class="form-group">
-			<div class="col-sm-8">
-				<input id="txtTagName" type="tel" name="txtTagName" placeholder="标签名称"/>
+	<div class="row">
+		<div class="col-lg-12">
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">标签名称:</label>
+							<div class="col-sm-8">
+							<input id="txtTagName" class="form-control" type="text" name="txtTagName" placeholder="标签名称"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">标签类型:</label>
+							<div class="col-sm-8">
+							<%=HtmlHelper.getSelect("tagtype", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, "-1", "全部")%>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">创建时间:</label>
+							<div class="col-sm-8">
+							<input id="txtstartdate" class="form-control" type="text" name="startdate" placeholder="创建时间起"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'txtenddate\')||\'2120-10-01\'}'})"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">到:</label>
+							<div class="col-sm-8">
+							<input id="txtenddate" class="form-control" type="text" name="enddate" placeholder="创建时间止"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2120-10-01'})"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			    <div class="row">
+						<div class="col-lg-3">
+						<button type="button" class="btn btn-w-m btn-primary" id="addMark" onclick="addMark() "
+							style="margin-left: 3px;height:30px;">添加标签</button>
+					   <button type="button" class="btn btn-w-m btn-primary" id="btnSearch"
+							style="margin-left: 3px;height:30px;">查询</button>
+					</div>
 			</div>
-		</div>
-	</div>
-	<div class="col-lg-2">
-		<div class="form-group">
-			<div class="col-sm-11">
-				标签类型:<%=HtmlHelper.getSelect("tagtype", EnumHelper.GetEnumItems(TagType.class),"desc", "value", null, "-1", "全部")%>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-2">
-		<div class="form-group">
-			<div class="col-sm-8">
-				<input id="txtstartdate" type="text" name="startdate" placeholder="创建时间起"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'txtenddate\')||\'2120-10-01\'}'})"/>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-2">
-		<div class="form-group">
-			<div class="col-sm-8">
-				<input id="txtenddate" type="text" name="enddate" placeholder="创建时间止"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2120-10-01'})"/>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-2">
-		<input type="submit" value="查询" class="btn btn-w-m btn-primary" id="btnSearch" />
-	</div>		
-</div>
 
-<div class="row">
-	<div class="col-lg-12">
-		<div class="ibox-content" id="content"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox-content" id="content"></div>
+		</div>
 	</div>
 </div>
 <div tabindex="-1" class="modal inmodal" id="showEditTag" role="dialog" aria-hidden="true" style="display: none;">
@@ -67,7 +77,7 @@
 			             <div class="control-group" style="width:260px;">
 			                 <div style="font-size: 14px;float: left;margin-left: 5px;">标签名称: </div>
 				      		 <div style="float:left;margin-left: 5px">
-				      		 	<input id="editTagName" type="tel" name="editTagName" />
+				      		 	<input id="editTagName" type="text" name="editTagName" />
 				      		 </div>
 			                 <div style="font-size: 14px;float: left;margin-left: 5px;margin-top:10px">标签类型: </div>
 				             <div style="float:left;margin-top:10px;margin-left: 5px">
