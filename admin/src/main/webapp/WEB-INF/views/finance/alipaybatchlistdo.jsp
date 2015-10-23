@@ -9,10 +9,17 @@
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.core.enums.AlipayBatchStatus"%>
 <%@page import="com.edaisong.entity.AlipayBatch"%>
+<%@page import="com.edaisong.admin.common.UserContext"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.admin.url");
 	String netUrl = PropertyUtils.getProperty("net.admin.url");
 	PagedResponse<AlipayBatch> data = (PagedResponse<AlipayBatch>) request.getAttribute("listData");
+	
+	UserContext context = UserContext.getCurrentContext(request);
+	if(context == null){
+		response.sendRedirect(basePath);
+		return;
+	}
 %>
 <%
 	if (data.getResultList() == null || data.getResultList().size() == 0) {
@@ -87,7 +94,8 @@
 			<td>
 			<%
 					if (list.get(i).getStatus() == AlipayBatchStatus.PlayGame.value()&&ParseHelper.plusDate(list.get(i).getLastOptTime(), 4, 10)
-					.compareTo(new Date())<0) {
+					.compareTo(new Date())<0&&(UserContext.getCurrentContext(request).getLoginName().trim().equals("admin")||
+							UserContext.getCurrentContext(request).getLoginName().trim().equals("douhaichao"))) {
 				%> <a href="javascript:doSure('<%=list.get(i).getBatchNo()%>')">打款</a> <%
 					} else  {
 				%>  --

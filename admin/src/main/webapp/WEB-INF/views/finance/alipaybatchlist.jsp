@@ -11,6 +11,7 @@
 <%@page import="com.edaisong.core.util.EnumHelper"%>
 <%@page import="com.edaisong.core.enums.AlipayBatchStatus"%>
 <%@page import="java.util.ArrayList"%>
+
 <%	
 String basePath =PropertyUtils.getProperty("java.admin.url");
 String netUrl = PropertyUtils.getProperty("net.admin.url");

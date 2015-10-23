@@ -56,7 +56,7 @@ public enum ClienterBalanceRecordRecordType {
 	 */
 	ForzenBalance(12,"冻结金额",1),
 	
-	UnfreezeBalance(13,"解冻金额",1);
+	UnfreezeBalance(13,"解冻金额",2);
 	private int value = 0;
 	private String desc;
 	private int  type;
