@@ -20,9 +20,29 @@ public class ActiveMqService {
 	private JmsTemplate jmsTemplate;
 	@Autowired
 	private Destination queueDestination;
-
-	public void sendMessage(final String message) {
-		//System.out.println("日志生产者发了一个日志消息：" + message);
+/**
+ * 异步发送mq消息
+ * @author hailongzhao
+ * @date 20151023
+ * @param message
+ */
+	public void asynSendMessage(final String message) {
+		Thread dThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synSendMessage(message);
+			}
+		});
+		dThread.setDaemon(false);
+		dThread.start();
+	}
+	/**
+	 * 同步发送mq消息
+	 * @author hailongzhao
+	 * @date 20151023
+	 * @param message
+	 */
+	public void synSendMessage(final String message){
 		try {
 			jmsTemplate.send(queueDestination, new MessageCreator() {
 				public Message createMessage(Session session) throws JMSException {
@@ -37,6 +57,5 @@ public class ActiveMqService {
 				SystemUtils.sendAlertEmail("ActiveMq_java项目预警", e.getMessage()+"\n"+stackTrace);
 			}
 		}
-
 	}
 }

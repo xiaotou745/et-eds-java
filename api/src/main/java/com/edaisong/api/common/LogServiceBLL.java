@@ -41,7 +41,7 @@ public class LogServiceBLL {
 			}
 			//initLog4DB(logEngity);
 			String jsonMsg = JsonUtil.obj2string(logEngity);
-			//activeMqService.sendMessage(jsonMsg);
+			//activeMqService.asynSendMessage(jsonMsg);
 			switch (logEngity.getSourceSys()) {
 			case "admin":
 				adminLogger.info(jsonMsg);
@@ -58,7 +58,6 @@ public class LogServiceBLL {
 		} catch (Exception e) {
 		}
 	}
-
 	public void LogInfo(ActionLog logEngity) {
 	}
 
