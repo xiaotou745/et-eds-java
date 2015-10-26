@@ -70,7 +70,7 @@
 			<div class="r-top" style="position:relative">
 				<iframe allowtransparency="true" frameborder="0" width="290" stype="z-index:-1;position:absolutely;left:0;top:0"
 					height="96" scrolling="no"
-					src="http://tianqi.2345.com/plugin/widget/index.htm?s=2&z=3&t=0&v=0&d=2&bd=0&k=&f=&q=1&e=1&a=1&c=54511&w=290&h=96&align=center"></iframe>
+					src="http://tianqi.2345.com/plugin/widget/index.htm?s=1&z=1&t=0&v=0&d=2&bd=0&k=&f=&q=1&e=0&a=0&c=54511&w=290&h=96&align=center"></iframe>
 				<!-- 遮罩层 -->
 				<div style="position:absolute;width:100%;height:100%;z-index:1;left:0;top:0"></div>
 			</div>

@@ -33,8 +33,8 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 				<select class="fl"  name="orderStatus"  id="orderStatus">
 					<option value="-1">全部</option>
 					<option value="0">待接单</option>
-					<option value="2">已接单</option>
-					<option value="4">已取货</option>
+					<option value="2">取货中</option>
+					<option value="4">送货中</option>
 					<option value="1">已完成</option>
 					<option value="3">已取消</option>
 				</select>
