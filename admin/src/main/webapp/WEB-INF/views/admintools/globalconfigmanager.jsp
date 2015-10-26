@@ -40,10 +40,27 @@
                                                <h4 class="modal-title">添加全局公共配置</h4>
                                        	</div>
                                         <div class="modal-body">
-						                                           键名:<input type="text" value="" id="keyname" /><font style="color:red">键名一旦保存不可修改</font><br /> 
-										描述:<input type="text" value="" id="keyremark" /><font style="color:red">描述一旦保存不可修改</font><br />
-										键值:<input type="text" value="" id="keyvalue" /><br /> 
-                                        </div>
+					<table>
+						<tr>
+							<td>变量名称:</td>
+							<td><input type="text" class="form-control" value=""
+								id="keyname" /></td>
+							<td><font style="color: red">变量名称一旦保存不可修改</font></td>
+						</tr>
+						<tr>
+							<td>变量说明:</td>
+							<td><input type="text" class="form-control" value=""
+								id="keyremark" /></td>
+							<td><font style="color: red">变量说明一旦保存不可修改</font></td>
+						</tr>
+						<tr>
+							<td>变量值:</td>
+							<td><input type="text" class="form-control" value=""
+								id="keyvalue" /></td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-white" data-dismiss="modal" id="boxcancle">关闭</button>
                                             <button type="button" class="btn btn-primary" id="btnaddconfig">保存</button>

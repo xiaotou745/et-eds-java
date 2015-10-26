@@ -14,13 +14,12 @@ if(data == null){
 }
 
 							%>
-<table
-						class="table table-striped table-bordered table-hover dataTables-example">
+<table class="table table-striped table-bordered table-hover dataTables-example">
 						<thead>
 							<tr>
-							<th>KeyMark</th>
-								<th>KeyName</th>
-								<th>KeyValue</th>
+							<th>变量说明</th>
+								<th>变量名称</th>
+								<th>变量值</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -29,7 +28,7 @@ if(data == null){
 							<tr>
 								<td><%=data.get(i).getRemark()%></td>
 								<td><%=data.get(i).getKeyName()%></td>
-								<td><input type="text" id="show<%=data.get(i).getId()%>" value="<%=data.get(i).getValue()%>" disabled="true" /> 
+								<td><input type="text" class="form-control" id="show<%=data.get(i).getId()%>" value="<%=data.get(i).getValue()%>" disabled="true" /> 
 									<inupt type="hidden" id="hid<%=data.get(i).getId()%>" value="<%=data.get(i).getValue()%>" /></td>
 								<td>
 									<button class="btn" type="button" id="btne<%=data.get(i).getId()%>" onclick="EditConfig('<%=data.get(i).getId()%>')">修改</button>
