@@ -33,8 +33,7 @@
 			<td><%=(i+1)%></td>
 			<td><%=list.get(i).getLoginname()%></td>
 			<td><%=list.get(i).getStatus() > 0 ? "可用" : "锁定"%></td>
-			<td><a href="javascript:void(0)"
-				onclick="setauth(<%=list.get(i).getId()%>)">分配权限</a></td>
+			<td><a href="javascript:void(0)" onclick="setauth(<%=list.get(i).getId()%>)">分配权限</a></td>
 		</tr>
 		<%
 			}

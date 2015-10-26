@@ -32,7 +32,9 @@
 			<td><%=list.get(i).getUsername()%></td>
 			<td><%=list.get(i).getLoginname()%></td>
 			<td><%=list.get(i).getStatus() == 1 ? "√" : "×"%></td>
-			<td><a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId()%>)">编辑</a></td>
+			<td><a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId()%>)">编辑</a>
+			<a href="javascript:void(0)" onclick="setauth(<%=list.get(i).getId()%>)">分配权限</a>
+			</td>
 		</tr>
 		<%
 			}

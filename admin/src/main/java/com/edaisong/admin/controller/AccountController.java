@@ -23,6 +23,7 @@ import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IAccountLoginLogService;
 import com.edaisong.api.service.inter.IAccountService;
 import com.edaisong.api.service.inter.IAuthorityAccountMenuSetService;
+import com.edaisong.api.service.inter.IAuthorityRoleService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.consts.GlobalSettings;
@@ -33,6 +34,7 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.AccountLog;
+import com.edaisong.entity.AuthorityRole;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
@@ -56,7 +58,8 @@ public class AccountController {
 	private IAccountLoginLogService accountLoginLogService;
 	@Autowired
 	private IAuthorityAccountMenuSetService authorityAccountMenuSetService;
-
+	@Autowired
+	private IAuthorityRoleService authorityRoleService;
 	@RequestMapping("list")
 	public ModelAndView list() {
 		ModelAndView view = new ModelAndView("adminView");
@@ -64,11 +67,12 @@ public class AccountController {
 		view.addObject("currenttitle", "用户管理");
 
 		List<AreaModel> listArea = publicProvinceCityService.getOpenCityByJiBie(1);
-		List<DeliveryCompany> listDc = deliveryCompanyService
-				.getDeliveryCompanyList();
+		List<DeliveryCompany> listDc = deliveryCompanyService.getDeliveryCompanyList();
 
 		view.addObject("listArea", listArea);
 		view.addObject("listDc", listDc);
+		List<AuthorityRole> datalist=authorityRoleService.selectList();
+		view.addObject("roleData", datalist);
 		view.addObject("viewPath", "account/list");
 		return view;
 	}
