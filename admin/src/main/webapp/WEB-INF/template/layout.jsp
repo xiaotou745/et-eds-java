@@ -117,10 +117,11 @@
 		$(document).on("click", "#pagesearch", function(){
 			var page=$("#pagesearchvalue").val();
 			var maxpage=$("#pagesearchmax").val();
+			var currentpage=$("#pagesearchcurrentpage").val();
 			var s = new RegExp("^\\s*(\\d+)\\s*$");
 			if(!s.test(page)||parseInt(page) < 1 || parseInt(page) > maxpage){
 			  alert("页索引超出范围");
-			  $("#pagesearchvalue").val("1");
+			  $("#pagesearchvalue").val(currentpage);
 			  return;
 			}
 			jss.search(page);

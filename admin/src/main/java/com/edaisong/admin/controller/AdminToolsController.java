@@ -33,8 +33,8 @@ public class AdminToolsController {
 	public ModelAndView globalConfigManager(HttpServletRequest request, HttpServletResponse res){
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
-		model.addObject("currenttitle", "公共变量管理");
-		model.addObject("viewPath", "admintools/globalconfigmanager");
+		model.addObject("currenttitle", "公共配置管理");
+		model.addObject("viewPath", "admintools/list");
 		return model;
 	}
 	

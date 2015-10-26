@@ -47,7 +47,7 @@ public class OpenCityManagerController {
 		model.addObject("currenttitle", "开通城市管理");
 		model.addObject("listData",citys);
 		model.addObject("cityname",cityname);
-		model.addObject("viewPath", "opencitymanager/opencitymanager");
+		model.addObject("viewPath", "opencitymanager/list");
 		model.addObject("listData", citys);
 		return model;
 	}
