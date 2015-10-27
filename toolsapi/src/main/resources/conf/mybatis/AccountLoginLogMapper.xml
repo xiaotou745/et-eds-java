@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.toolsapi.dao.inter.IAccountLoginLogDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.toolsentity.AccountLog" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="LoginName" property="loginName" jdbcType="NVARCHAR" />
+    <result column="LoginTime" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="Mac" property="mac" jdbcType="NVARCHAR" />
+    <result column="LoginType" property="loginType" jdbcType="INTEGER" />
+    <result column="Ip" property="ip" jdbcType="VARCHAR" />
+    <result column="Browser" property="browser" jdbcType="NVARCHAR" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+  </resultMap>
+  
+  <insert id="addLog" parameterType="com.edaisong.toolsentity.AccountLog" >
+    insert into AccountLoginLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="loginName != null" >
+        loginName,
+      </if>
+      <if test="loginTime != null" >
+        loginTime,
+      </if>
+      <if test="mac != null" >
+        mac,
+      </if>
+      <if test="loginType != null" >
+        loginType,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="browser != null" >
+        browser,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=NVARCHAR},
+      </if>
+      <if test="mac != null" >
+        #{mac,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mac != null" >
+        #{mac,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginType != null" >
+        #{loginType,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="browser != null" >
+        #{browser,jdbcType=NVARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

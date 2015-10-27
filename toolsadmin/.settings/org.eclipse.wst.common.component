@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="toolsadmin">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <dependent-module archiveName="toolsapi-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/toolsapi/toolsapi">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="toolscore-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/toolscore/toolscore">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="toolsentity-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/toolsentity/toolsentity">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="toolsadmin"/>
+        <property name="java-output-path" value="/toolsadmin/target/classes"/>
+    </wb-module>
+</project-modules>
