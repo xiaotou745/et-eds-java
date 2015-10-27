@@ -4,8 +4,10 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.GlobalConfigModel"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="com.edaisong.admin.common.UserContext"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.admin.url");
+	UserContext context=UserContext.getCurrentContext(request);
 %>
 
 <div class="wrapper wrapper-content animated fadeInRight  form-horizontal">
@@ -13,8 +15,10 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="input-group" style="margin-bottom: 5px;">
-			<button type="button" class="btn btn-w-m btn-primary" id="btnaddboxshow"
-					style="margin-left: 3px;">添加</button> 
+			<%if(context.getLoginName().equals("admin")){%>
+				<button type="button" class="btn btn-w-m btn-primary" id="btnaddboxshow"
+						style="margin-left: 3px;">添加</button> 
+			<%}%>
 			</div>
 		</div>
 

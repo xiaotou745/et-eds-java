@@ -94,7 +94,8 @@ label {
 						</div>
 					</div>
 					<div class="col-lg-3">
-					<%if(alipayBatch.getStatus() == AlipayBatchStatus.PlayGame.value()
+					<%if(alipayBatch.getStatus() == AlipayBatchStatus.PlayGame.value()&&ParseHelper.plusDate(alipayBatch.getLastOptTime(), 4, 10)
+							.compareTo(new Date())<0
 					&&(UserContext.getCurrentContext(request).getLoginName().trim().equals("admin")||
 							UserContext.getCurrentContext(request).getLoginName().trim().equals("douhaichao"))) {%>
 					<div class="form-group">
@@ -160,7 +161,7 @@ $(function(){
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
 		}, function(){
-			window.open("<%=netUrl%>/ClienterWithdraw/AlipayBatchTransfer?type=2&data="+<%=alipayBatch.getBatchNo()%>);
+			window.open("<%=netUrl%>/ClienterWithdraw/AlipayBatchTransfer?type=2&data=<%=alipayBatch.getBatchNo()+""%>");
 			 var index= layer.alert('请在新打开的页面完成打款！', {
 				btn:["已完成打款"],
 			    skin: 'layui-layer-molv', //样式类名
