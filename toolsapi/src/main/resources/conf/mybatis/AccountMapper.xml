@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.toolsapi.dao.inter.IAccountDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.toolsentity.Account" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Password" property="password" jdbcType="NVARCHAR" />
+    <result column="UserName" property="username" jdbcType="NVARCHAR" />
+    <result column="LoginName" property="loginname" jdbcType="NVARCHAR" />
+    <result column="Status" property="status" jdbcType="INTEGER" />
+    <result column="AccountType" property="accounttype" jdbcType="INTEGER" />
+    <result column="FADateTime" property="fadatetime" jdbcType="TIMESTAMP" />
+    <result column="FAUser" property="fauser" jdbcType="NVARCHAR" />
+    <result column="LCDateTime" property="lcdatetime" jdbcType="TIMESTAMP" />
+    <result column="LCUser" property="lcuser" jdbcType="NVARCHAR" />
+    <result column="GroupId" property="groupid" jdbcType="INTEGER" />
+    <result column="RoleId" property="roleid" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    Id, Password, UserName, LoginName, Status, AccountType, FADateTime, FAUser, LCDateTime, 
+    LCUser, GroupId, RoleId
+    
+   
+  </sql>
+ <sql id="queryWhere">
+		1=1
+		<if test="keyword != null and keyword!=''">
+			and UserName like ''%${keyword}%''
+		</if>
+	</sql> 
+<select id="query" resultType="com.edaisong.toolsentity.Account" parameterType="com.edaisong.toolsentity.req.PagedAccountReq" statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+		' Id desc ',
+		' Id,UserName,LoginName,Status ',
+		' account(nolock) ',
+		'
+		<include refid="queryWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)} 
+  </select>
+  
+  <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from account
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="getByRoleID" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from account
+    where RoleId = #{roleID,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from account
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.toolsentity.Account" >
+    insert into account (Id, Password, UserName, 
+      LoginName, Status, AccountType, 
+      FADateTime, FAUser, LCDateTime, 
+      LCUser, GroupId, RoleId
+      )
+    values (#{id,jdbcType=INTEGER}, #{password,jdbcType=NVARCHAR}, #{username,jdbcType=NVARCHAR}, 
+      #{loginname,jdbcType=NVARCHAR}, #{status,jdbcType=INTEGER}, #{accounttype,jdbcType=INTEGER}, 
+      #{fadatetime,jdbcType=TIMESTAMP}, #{fauser,jdbcType=NVARCHAR}, #{lcdatetime,jdbcType=TIMESTAMP}, 
+      #{lcuser,jdbcType=NVARCHAR}, #{groupid,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER}
+      )
+  </insert>
+   <select id="login" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	SELECT TOP 1 [Id]
+                ,[Password]
+                ,[UserName]
+                ,[LoginName]
+                ,[Status]
+                ,[AccountType]
+                ,[FADateTime]
+                ,[FAUser]
+                ,[LCDateTime]
+                ,[LCUser]
+                ,[GroupId]
+                ,[RoleId]
+            FROM [account] with(nolock)
+            where LoginName=#{username,jdbcType=NVARCHAR} AND Password=#{password,jdbcType=NVARCHAR}
+  </select>
+  <update id="updateRoleID"  parameterType="java.util.Map" >
+    update account set roleid=#{newRoleID,jdbcType=INTEGER}
+    where Id = #{userID,jdbcType=INTEGER}
+  </update>
+</mapper>
