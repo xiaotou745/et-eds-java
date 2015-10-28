@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IDeliveryCompanyDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.DeliveryCompany" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="DeliveryCompanyName" property="deliverycompanyname" jdbcType="NVARCHAR" />
+    <result column="DeliveryCompanyCode" property="deliverycompanycode" jdbcType="VARCHAR" />
+    <result column="IsEnable" property="isenable" jdbcType="INTEGER" />
+    <result column="SettleType" property="settletype" jdbcType="INTEGER" />
+    <result column="ClienterFixMoney" property="clienterfixmoney" jdbcType="DECIMAL" />
+    <result column="ClienterSettleRatio" property="clientersettleratio" jdbcType="DECIMAL" />
+    <result column="DeliveryCompanySettleMoney" property="deliverycompanysettlemoney" jdbcType="DECIMAL" />
+    <result column="DeliveryCompanyRatio" property="deliverycompanyratio" jdbcType="DECIMAL" />
+    <result column="BusinessQuantity" property="businessquantity" jdbcType="INTEGER" />
+    <result column="ClienterQuantity" property="clienterquantity" jdbcType="INTEGER" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
+    <result column="ModifyName" property="modifyname" jdbcType="NVARCHAR" />
+    <result column="ModifyTime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="IsDisplay" property="isdisplay" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, DeliveryCompanyName, DeliveryCompanyCode, IsEnable, SettleType, ClienterFixMoney, 
+    ClienterSettleRatio, DeliveryCompanySettleMoney, DeliveryCompanyRatio, BusinessQuantity, 
+    ClienterQuantity, CreateTime, CreateName, ModifyName, ModifyTime, IsDisplay
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from DeliveryCompany
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from DeliveryCompany
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.DeliveryCompany" >
+    insert into DeliveryCompany (Id, DeliveryCompanyName, DeliveryCompanyCode, 
+      IsEnable, SettleType, ClienterFixMoney, 
+      ClienterSettleRatio, DeliveryCompanySettleMoney, 
+      DeliveryCompanyRatio, BusinessQuantity, 
+      ClienterQuantity, CreateTime, CreateName, 
+      ModifyName, ModifyTime, IsDisplay
+      )
+    values (#{id,jdbcType=INTEGER}, #{deliverycompanyname,jdbcType=NVARCHAR}, #{deliverycompanycode,jdbcType=VARCHAR}, 
+      #{isenable,jdbcType=INTEGER}, #{settletype,jdbcType=INTEGER}, #{clienterfixmoney,jdbcType=DECIMAL}, 
+      #{clientersettleratio,jdbcType=DECIMAL}, #{deliverycompanysettlemoney,jdbcType=DECIMAL}, 
+      #{deliverycompanyratio,jdbcType=DECIMAL}, #{businessquantity,jdbcType=INTEGER}, 
+      #{clienterquantity,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=NVARCHAR}, 
+      #{modifyname,jdbcType=NVARCHAR}, #{modifytime,jdbcType=TIMESTAMP}, #{isdisplay,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.DeliveryCompany" >
+    insert into DeliveryCompany
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="deliverycompanyname != null" >
+        DeliveryCompanyName,
+      </if>
+      <if test="deliverycompanycode != null" >
+        DeliveryCompanyCode,
+      </if>
+      <if test="isenable != null" >
+        IsEnable,
+      </if>
+      <if test="settletype != null" >
+        SettleType,
+      </if>
+      <if test="clienterfixmoney != null" >
+        ClienterFixMoney,
+      </if>
+      <if test="clientersettleratio != null" >
+        ClienterSettleRatio,
+      </if>
+      <if test="deliverycompanysettlemoney != null" >
+        DeliveryCompanySettleMoney,
+      </if>
+      <if test="deliverycompanyratio != null" >
+        DeliveryCompanyRatio,
+      </if>
+      <if test="businessquantity != null" >
+        BusinessQuantity,
+      </if>
+      <if test="clienterquantity != null" >
+        ClienterQuantity,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="createname != null" >
+        CreateName,
+      </if>
+      <if test="modifyname != null" >
+        ModifyName,
+      </if>
+      <if test="modifytime != null" >
+        ModifyTime,
+      </if>
+      <if test="isdisplay != null" >
+        IsDisplay,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="deliverycompanyname != null" >
+        #{deliverycompanyname,jdbcType=NVARCHAR},
+      </if>
+      <if test="deliverycompanycode != null" >
+        #{deliverycompanycode,jdbcType=VARCHAR},
+      </if>
+      <if test="isenable != null" >
+        #{isenable,jdbcType=INTEGER},
+      </if>
+      <if test="settletype != null" >
+        #{settletype,jdbcType=INTEGER},
+      </if>
+      <if test="clienterfixmoney != null" >
+        #{clienterfixmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="clientersettleratio != null" >
+        #{clientersettleratio,jdbcType=DECIMAL},
+      </if>
+      <if test="deliverycompanysettlemoney != null" >
+        #{deliverycompanysettlemoney,jdbcType=DECIMAL},
+      </if>
+      <if test="deliverycompanyratio != null" >
+        #{deliverycompanyratio,jdbcType=DECIMAL},
+      </if>
+      <if test="businessquantity != null" >
+        #{businessquantity,jdbcType=INTEGER},
+      </if>
+      <if test="clienterquantity != null" >
+        #{clienterquantity,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null" >
+        #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="modifyname != null" >
+        #{modifyname,jdbcType=NVARCHAR},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdisplay != null" >
+        #{isdisplay,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.DeliveryCompany" >
+    update DeliveryCompany
+    <set >
+      <if test="deliverycompanyname != null" >
+        DeliveryCompanyName = #{deliverycompanyname,jdbcType=NVARCHAR},
+      </if>
+      <if test="deliverycompanycode != null" >
+        DeliveryCompanyCode = #{deliverycompanycode,jdbcType=VARCHAR},
+      </if>
+      <if test="isenable != null" >
+        IsEnable = #{isenable,jdbcType=INTEGER},
+      </if>
+      <if test="settletype != null" >
+        SettleType = #{settletype,jdbcType=INTEGER},
+      </if>
+      <if test="clienterfixmoney != null" >
+        ClienterFixMoney = #{clienterfixmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="clientersettleratio != null" >
+        ClienterSettleRatio = #{clientersettleratio,jdbcType=DECIMAL},
+      </if>
+      <if test="deliverycompanysettlemoney != null" >
+        DeliveryCompanySettleMoney = #{deliverycompanysettlemoney,jdbcType=DECIMAL},
+      </if>
+      <if test="deliverycompanyratio != null" >
+        DeliveryCompanyRatio = #{deliverycompanyratio,jdbcType=DECIMAL},
+      </if>
+      <if test="businessquantity != null" >
+        BusinessQuantity = #{businessquantity,jdbcType=INTEGER},
+      </if>
+      <if test="clienterquantity != null" >
+        ClienterQuantity = #{clienterquantity,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null" >
+        CreateName = #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="modifyname != null" >
+        ModifyName = #{modifyname,jdbcType=NVARCHAR},
+      </if>
+      <if test="modifytime != null" >
+        ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdisplay != null" >
+        IsDisplay = #{isdisplay,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.DeliveryCompany" >
+    update DeliveryCompany
+    set DeliveryCompanyName = #{deliverycompanyname,jdbcType=NVARCHAR},
+      DeliveryCompanyCode = #{deliverycompanycode,jdbcType=VARCHAR},
+      IsEnable = #{isenable,jdbcType=INTEGER},
+      SettleType = #{settletype,jdbcType=INTEGER},
+      ClienterFixMoney = #{clienterfixmoney,jdbcType=DECIMAL},
+      ClienterSettleRatio = #{clientersettleratio,jdbcType=DECIMAL},
+      DeliveryCompanySettleMoney = #{deliverycompanysettlemoney,jdbcType=DECIMAL},
+      DeliveryCompanyRatio = #{deliverycompanyratio,jdbcType=DECIMAL},
+      BusinessQuantity = #{businessquantity,jdbcType=INTEGER},
+      ClienterQuantity = #{clienterquantity,jdbcType=INTEGER},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      CreateName = #{createname,jdbcType=NVARCHAR},
+      ModifyName = #{modifyname,jdbcType=NVARCHAR},
+      ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+      IsDisplay = #{isdisplay,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getDeliveryCompanyList"  resultMap="BaseResultMap" >
+	 select 
+	  <include refid="Base_Column_List" />
+ from   dbo.DeliveryCompany dc ( nolock ) 
+  </select>
+<sql id="getStatisticsListFrom">
+(SELECT  a.deliveryCompanyName ,
+		a.id as deliveryCompanyID,
+        a.deliveryCompanyCode ,
+        cast(YEAR(c.AuditDate) as varchar(10))+''/''+cast(Month(c.AuditDate) as varchar(10)) as auditDate,
+        SUM(b.RealOrderCommission) AS clienterTotalSettleMoney ,
+        SUM(b.DeliveryCompanySettleMoney) AS companyTotalSettleMoney ,
+        COUNT(0) AS taskTotalNum ,
+        SUM(b.OrderCount) AS orderTotalNum ,
+        SUM(b.Amount) AS amountTotalNum
+FROM    DeliveryCompany a
+        JOIN [order] b ON a.Id = b.DeliveryCompanyID
+        JOIN dbo.OrderOther c ON b.id = c.OrderId
+WHERE   b.DeliveryCompanyID > 0
+        AND c.IsJoinWithdraw = 1
+        and c.AuditDate is not null 
+        <if test="deliveryName != null and deliveryName!=''">
+			and a.deliveryCompanyName=''${deliveryName}''
+		</if>
+		<if test="start != null and end!=''">
+			  AND c.AuditDate >= ''${start}''
+		</if>
+		<if test="end != null and end!=''">
+			  AND ''${end}'' > c.AuditDate
+		</if>
+GROUP BY a.id,
+		a.DeliveryCompanyName ,
+        a.DeliveryCompanyCode,
+cast(YEAR(c.AuditDate) as varchar(10))+''/''+cast(Month(c.AuditDate) as varchar(10))
+        ) mt 
+	</sql>
+	<select id="getStatisticsList" resultType="com.edaisong.entity.domain.DeliveryStatistics"
+		parameterType="com.edaisong.entity.req.PagedDeliveryStatisticsReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' mt.deliveryCompanyCode DESC ',
+		' * ',
+		'
+		<include refid="getStatisticsListFrom" />
+		',
+		' 1=1 ',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+</mapper>

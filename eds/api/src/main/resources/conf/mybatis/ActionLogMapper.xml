@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IActionLogDao" >
+  <insert id="WriteActionLog" parameterType="com.edaisong.entity.domain.ActionLog" useGeneratedKeys="true" keyProperty="id">
+    insert into ActionLog (id,methodName,param,exception,stackTrace,executeTime,sourceSys,clientFrom,appServer,opDate)
+    values (#{id},#{methodName},#{param},#{exception},#{stackTrace},#{executeTime},#{sourceSys},#{clientFrom},#{appServer},GETDATE())
+  </insert>
+    <insert id="WriteLog2DB" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+    insert into ActionLog (id,exception,sourceSys,clientFrom,appServer,opDate)
+    values (#{id},#{0},'admin','0','127.0.0.1',GETDATE())
+  </insert>
+</mapper>

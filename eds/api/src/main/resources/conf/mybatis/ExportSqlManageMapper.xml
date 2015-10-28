@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IExportSqlManageDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.ExportSqlManage" >
+    <result column="Id" property="id" jdbcType="BIGINT" />
+    <result column="Name" property="name" jdbcType="NVARCHAR" />
+    <result column="Executetime" property="executetime" jdbcType="NVARCHAR" />
+    <result column="ReceiveEmail" property="receiveemail" jdbcType="NVARCHAR" />
+    <result column="IsEnable" property="isenable" jdbcType="SMALLINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.edaisong.entity.ExportSqlManage" extends="BaseResultMap" >
+    <result column="SqlText" property="sqltext" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Blob_Column_List" >
+    SqlText
+  </sql>
+  <insert id="insert" parameterType="com.edaisong.entity.ExportSqlManage" >
+    insert into ExportSqlManage (Id, Name, Executetime, 
+      ReceiveEmail, IsEnable, SqlText
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=NVARCHAR}, #{executetime,jdbcType=NVARCHAR}, 
+      #{receiveemail,jdbcType=NVARCHAR}, #{isenable,jdbcType=SMALLINT}, #{sqltext,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.ExportSqlManage" >
+    insert into ExportSqlManage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="executetime != null" >
+        Executetime,
+      </if>
+      <if test="receiveemail != null" >
+        ReceiveEmail,
+      </if>
+      <if test="isenable != null" >
+        IsEnable,
+      </if>
+      <if test="sqltext != null" >
+        SqlText,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="executetime != null" >
+        #{executetime,jdbcType=NVARCHAR},
+      </if>
+      <if test="receiveemail != null" >
+        #{receiveemail,jdbcType=NVARCHAR},
+      </if>
+      <if test="isenable != null" >
+        #{isenable,jdbcType=SMALLINT},
+      </if>
+      <if test="sqltext != null" >
+        #{sqltext,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

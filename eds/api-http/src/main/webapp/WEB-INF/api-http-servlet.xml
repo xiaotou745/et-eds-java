@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util-3.0.xsd
+    http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd 
+	http://camel.apache.org/schema/spring 
+	http://camel.apache.org/schema/cxf 
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<!-- 配置引用的环境相关引用文件 Start -->
+	<import resource="classpath:conf/core/dev-context.xml" />  
+ 	 <!-- <import resource="classpath:conf/core/test-context.xml" />-->
+<!-- 	<import resource="classpath:conf/core/pro-context.xml" /> -->
+	<!-- <import resource="classpath:conf/core/devtest-context.xml" /> -->
+	<!-- 配置引用的环境相关引用文件 END -->
+
+	<context:component-scan base-package="com.edaisong.api_http.service.impl" />
+
+	<jaxrs:server id="myService" address="/">
+		<jaxrs:serviceBeans>
+			<ref bean="testService" />
+			<ref bean="commonService" />
+			<ref bean="messageHttpService" />
+			<ref bean="orderHttpService" />
+			<ref bean="accountBillService" />
+			<ref bean="feedbackHttpService" />
+			<ref bean="financeService" />
+		</jaxrs:serviceBeans>
+			<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
+		<jaxrs:inInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
+			<bean class="com.edaisong.api_http.common.AESInterceptor"></bean>
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<bean class="com.edaisong.api_http.common.RqeustInterceptor"></bean>
+			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+		</jaxrs:outInterceptors>
+		<!-- <jaxrs:extensionMappings> -->
+		<!-- <entry key="json" value="application/json" /> -->
+		<!-- <entry key="xml" value="application/xml" /> -->
+		<!-- </jaxrs:extensionMappings> -->
+		<jaxrs:languageMappings>
+			<entry key="en" value="en-gb" />
+		</jaxrs:languageMappings>
+		<jaxrs:providers>
+		    <bean class="com.edaisong.api_http.common.GlobalExceptionHandler"/>  
+			<ref bean="jacksonProvider" />
+			<!-- <ref bean="jsonProvider" /> -->
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<!-- 返回值中会自动删除值为null的属性 ,反序列化时，会自动忽略无效的属性 -->
+	<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+		<property name="serializeAsArray" value="true" />
+		<property name="ignoreNamespaces" value="true" />
+		<property name="dropRootElement" value="true" />
+		<property name="ignoreMixedContent" value="true" />
+		<property name="supportUnwrapped" value="true" />
+		<property name="attributesToElements" value="true" />
+	</bean>
+	<bean id="jacksonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
+		<property name="mapper" ref="jacksonMapper" />
+	</bean>
+	<bean id="jacksonMapper" class="com.edaisong.core.util.ExtandObjectMapper"/>
+</beans>

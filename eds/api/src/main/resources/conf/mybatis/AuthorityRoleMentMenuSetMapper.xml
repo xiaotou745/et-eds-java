@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IAuthorityRoleMentMenuSetDao" >
+  <update id="modifyAuthList" parameterType="java.util.List">
+	 <foreach collection="list" index="index" item="item">    
+IF EXISTS ( SELECT  1
+            FROM    AuthorityRoleMentMenuSet with(nolock)
+            WHERE   RoleId = #{item.roleid,jdbcType=INTEGER} 
+                    AND MenuId = #{item.menuid,jdbcType=INTEGER} )
+    BEGIN
+        DELETE  AuthorityRoleMentMenuSet
+        WHERE   RoleId = #{item.roleid,jdbcType=INTEGER}
+                AND MenuId = #{item.menuid,jdbcType=INTEGER}
+    END
+ELSE
+    INSERT  INTO AuthorityRoleMentMenuSet
+            (RoleId, MenuId)
+    VALUES  ( #{item.roleid,jdbcType=INTEGER}, #{item.menuid,jdbcType=INTEGER} )
+     </foreach>
+	</update>
+</mapper>

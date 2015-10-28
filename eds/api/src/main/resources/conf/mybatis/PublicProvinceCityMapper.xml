@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IPublicProvinceCityDao" >
+  <!--获取开放城市列表（非分页） add by caoheyang 20150720  -->
+  <select id="getOpenCityList"  resultType="com.edaisong.entity.domain.OpenCityModel" 
+    parameterType="java.util.Map" >
+	select  p.code ProvinceCode,
+	        p.name ProvinceName,
+	        c.code CityCode,
+	        c.name CityName,
+	        d.code DistrictCode,
+	        d.name DistrictName,
+	        d.IsPublic
+	from    PublicProvinceCity d with ( nolock )
+	        join PublicProvinceCity c with ( nolock ) on d.parentid = c.code
+	        join PublicProvinceCity p with ( nolock ) on c.parentid = p.code
+	 where   1 = 1  
+	 <if test="cityName != null" >
+	     and c.name like '%${cityName}%'
+     </if>
+  </select>
+  
+  
+  <!--开放城市  add by caoheyang 20150721  -->
+  <update id="updateOpen" parameterType="java.util.Map"  >
+  UPDATE PublicProvinceCity SET IsPublic=1 WHERE code IN(${OpenCityCodeList});
+  
+  UPDATE PublicProvinceCity SET IsPublic=1  WHERE code=( SELECT parentid FROM PublicProvinceCity WHERE code= #{MainCode,jdbcType=TINYINT});
+  
+  UPDATE PublicProvinceCity SET IsPublic=1  WHERE code=(SELECT c.parentid  FROM  PublicProvinceCity d WITH(NOLOCK)
+                                        JOIN PublicProvinceCity c ON c.code=d.parentid
+                                        WHERE d.code=#{MainCode,jdbcType=TINYINT});
+  </update>
+  
+  <!--关闭开放城市  add by caoheyang 20150721  -->
+  <update id="updateClose" parameterType="java.util.Map"  >
+ 	UPDATE PublicProvinceCity SET IsPublic=0 WHERE code IN(${OpenCityCodeList});   
+ 	
+ 	update  PublicProvinceCity
+	set     IsPublic = 0
+	where   code = ( select parentid
+	                 from   PublicProvinceCity
+	                 where  code = #{MainCode,jdbcType=TINYINT}
+	               )
+	        and ( select    COUNT(1)
+	              from      PublicProvinceCity
+	              where     parentid = ( select parentid
+	                                     from   PublicProvinceCity
+	                                     where  code = 12
+	                                   )
+	                        and IsPublic = 1
+	            ) = 0;
+	            
+	            
+	update  PublicProvinceCity
+	set     IsPublic = 0
+	where   code = ( select parentid
+	                 from   PublicProvinceCity
+	                 where  code = ( select parentid
+	                                 from   PublicProvinceCity
+	                                 where  code = #{MainCode,jdbcType=TINYINT}
+	                               )
+	               )
+	        and ( select    COUNT(1)
+	              from      PublicProvinceCity
+	              where     parentid = ( select parentid
+	                                     from   PublicProvinceCity
+	                                     where  code = ( select parentid
+	                                                     from   PublicProvinceCity
+	                                                     where  code = #{MainCode,jdbcType=TINYINT}
+	                                                   )
+	                                   )
+	                        and IsPublic = 1
+	            ) = 0            
+  </update>
+  
+    <!--获取开通城市的省市区  add by caoheyang 20150727  -->
+  <select id="getOpenCitySql"  resultType="com.edaisong.entity.domain.AreaModel" >
+	select  a.Code ,
+	        a.Name ,
+	        a.JiBie ,
+	        a.Parentid
+	from    dbo.PublicProvinceCity a ( nolock )
+	where   IsPublic = 1 and jibie=2
+  </select>
+    <select id="getOpenCityListByAccountID"  resultType="com.edaisong.entity.domain.AreaModel" parameterType="java.lang.Integer">
+  SELECT  ppc.code ,
+        ppc.name ,
+        ppc.jiBie ,
+        ppc.parentid
+FROM    [AccountCityRelation] acr WITH ( NOLOCK )
+        JOIN PublicProvinceCity ppc WITH ( NOLOCK ) ON acr.CityId = ppc.code
+WHERE   acr.AccountId = #{accountID}
+        AND acr.IsEnable = 1
+        AND ppc.IsPublic = 1
+        and ppc.JiBie=2
+  </select>
+
+</mapper>

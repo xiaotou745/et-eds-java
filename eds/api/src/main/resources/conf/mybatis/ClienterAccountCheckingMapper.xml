@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IClienterAccountCheckingDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.ClienterAccountChecking" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="ClienterId" property="clienterid" jdbcType="INTEGER" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="FlowStatMoney" property="flowstatmoney" jdbcType="DECIMAL" />
+    <result column="ClienterTotalMoney" property="clientertotalmoney" jdbcType="DECIMAL" />
+    <result column="StartDate" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="EndDate" property="enddate" jdbcType="TIMESTAMP" />
+    <result column="LastTotalMoney" property="lasttotalmoney" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, ClienterId, CreateDate, FlowStatMoney, ClienterTotalMoney, StartDate, EndDate, 
+    LastTotalMoney
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ClienterAccountChecking
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ClienterAccountChecking
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.ClienterAccountChecking" >
+    insert into ClienterAccountChecking (Id, ClienterId, CreateDate, 
+      FlowStatMoney, ClienterTotalMoney, StartDate, 
+      EndDate, LastTotalMoney)
+    values (#{id,jdbcType=INTEGER}, #{clienterid,jdbcType=INTEGER}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{flowstatmoney,jdbcType=DECIMAL}, #{clientertotalmoney,jdbcType=DECIMAL}, #{startdate,jdbcType=TIMESTAMP}, 
+      #{enddate,jdbcType=TIMESTAMP}, #{lasttotalmoney,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.ClienterAccountChecking" >
+    insert into ClienterAccountChecking
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="clienterid != null" >
+        ClienterId,
+      </if>
+      <if test="createdate != null" >
+        CreateDate,
+      </if>
+      <if test="flowstatmoney != null" >
+        FlowStatMoney,
+      </if>
+      <if test="clientertotalmoney != null" >
+        ClienterTotalMoney,
+      </if>
+      <if test="startdate != null" >
+        StartDate,
+      </if>
+      <if test="enddate != null" >
+        EndDate,
+      </if>
+      <if test="lasttotalmoney != null" >
+        LastTotalMoney,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="clienterid != null" >
+        #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flowstatmoney != null" >
+        #{flowstatmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="clientertotalmoney != null" >
+        #{clientertotalmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="startdate != null" >
+        #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null" >
+        #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lasttotalmoney != null" >
+        #{lasttotalmoney,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.ClienterAccountChecking" >
+    update ClienterAccountChecking
+    <set >
+      <if test="clienterid != null" >
+        ClienterId = #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null" >
+        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flowstatmoney != null" >
+        FlowStatMoney = #{flowstatmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="clientertotalmoney != null" >
+        ClienterTotalMoney = #{clientertotalmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="startdate != null" >
+        StartDate = #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null" >
+        EndDate = #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lasttotalmoney != null" >
+        LastTotalMoney = #{lasttotalmoney,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.ClienterAccountChecking" >
+    update ClienterAccountChecking
+    set ClienterId = #{clienterid,jdbcType=INTEGER},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      FlowStatMoney = #{flowstatmoney,jdbcType=DECIMAL},
+      ClienterTotalMoney = #{clientertotalmoney,jdbcType=DECIMAL},
+      StartDate = #{startdate,jdbcType=TIMESTAMP},
+      EndDate = #{enddate,jdbcType=TIMESTAMP},
+      LastTotalMoney = #{lasttotalmoney,jdbcType=DECIMAL}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

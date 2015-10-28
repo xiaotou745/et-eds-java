@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderOtherDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderOther" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="OrderId" property="orderid" jdbcType="INTEGER" />
+    <result column="NeedUploadCount" property="needuploadcount" jdbcType="INTEGER" />
+    <result column="ReceiptPic" property="receiptpic" jdbcType="VARCHAR" />
+    <result column="HadUploadCount" property="haduploadcount" jdbcType="INTEGER" />
+    <result column="IsJoinWithdraw" property="isjoinwithdraw" jdbcType="INTEGER" />
+    <result column="PubLongitude" property="publongitude" jdbcType="DOUBLE" />
+    <result column="PubLatitude" property="publatitude" jdbcType="DOUBLE" />
+    <result column="GrabTime" property="grabtime" jdbcType="TIMESTAMP" />
+    <result column="GrabLongitude" property="grablongitude" jdbcType="DOUBLE" />
+    <result column="GrabLatitude" property="grablatitude" jdbcType="DOUBLE" />
+    <result column="CompleteLongitude" property="completelongitude" jdbcType="DOUBLE" />
+    <result column="CompleteLatitude" property="completelatitude" jdbcType="DOUBLE" />
+    <result column="TakeTime" property="taketime" jdbcType="TIMESTAMP" />
+    <result column="TakeLongitude" property="takelongitude" jdbcType="DOUBLE" />
+    <result column="TakeLatitude" property="takelatitude" jdbcType="DOUBLE" />
+    <result column="PubToGrabDistance" property="pubtograbdistance" jdbcType="DOUBLE" />
+    <result column="GrabToCompleteDistance" property="grabtocompletedistance" jdbcType="DOUBLE" />
+    <result column="PubToCompleteDistance" property="pubtocompletedistance" jdbcType="DOUBLE" />
+    <result column="OneKeyPubOrder" property="onekeypuborder" jdbcType="INTEGER" />
+    <result column="IsNotRealOrder" property="isnotrealorder" jdbcType="INTEGER" />
+    <result column="IsOrderChecked" property="isorderchecked" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, OrderId, NeedUploadCount, ReceiptPic, HadUploadCount, IsJoinWithdraw, PubLongitude, 
+    PubLatitude, GrabTime, GrabLongitude, GrabLatitude, CompleteLongitude, CompleteLatitude, 
+    TakeTime, TakeLongitude, TakeLatitude, PubToGrabDistance, GrabToCompleteDistance, 
+    PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderOther
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from OrderOther
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.OrderOther" >
+    insert into OrderOther (Id, OrderId, NeedUploadCount, 
+      ReceiptPic, HadUploadCount, IsJoinWithdraw, 
+      PubLongitude, PubLatitude, GrabTime, 
+      GrabLongitude, GrabLatitude, CompleteLongitude, 
+      CompleteLatitude, TakeTime, TakeLongitude, 
+      TakeLatitude, PubToGrabDistance, GrabToCompleteDistance, 
+      PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked,isAllowCashPay
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, #{needuploadcount,jdbcType=INTEGER}, 
+      #{receiptpic,jdbcType=VARCHAR}, #{haduploadcount,jdbcType=INTEGER}, #{isjoinwithdraw,jdbcType=INTEGER}, 
+      #{publongitude,jdbcType=DOUBLE}, #{publatitude,jdbcType=DOUBLE}, #{grabtime,jdbcType=TIMESTAMP}, 
+      #{grablongitude,jdbcType=DOUBLE}, #{grablatitude,jdbcType=DOUBLE}, #{completelongitude,jdbcType=DOUBLE}, 
+      #{completelatitude,jdbcType=DOUBLE}, #{taketime,jdbcType=TIMESTAMP}, #{takelongitude,jdbcType=DOUBLE}, 
+      #{takelatitude,jdbcType=DOUBLE}, #{pubtograbdistance,jdbcType=DOUBLE}, #{grabtocompletedistance,jdbcType=DOUBLE}, 
+      #{pubtocompletedistance,jdbcType=DOUBLE}, #{onekeypuborder,jdbcType=INTEGER}, #{isnotrealorder,jdbcType=INTEGER}
+      , #{isorderchecked,jdbcType=INTEGER}, #{isallowcashpay,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.OrderOther" >
+    insert into OrderOther
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orderid != null" >
+        OrderId,
+      </if>
+      <if test="needuploadcount != null" >
+        NeedUploadCount,
+      </if>
+      <if test="receiptpic != null" >
+        ReceiptPic,
+      </if>
+      <if test="haduploadcount != null" >
+        HadUploadCount,
+      </if>
+      <if test="isjoinwithdraw != null" >
+        IsJoinWithdraw,
+      </if>
+      <if test="publongitude != null" >
+        PubLongitude,
+      </if>
+      <if test="publatitude != null" >
+        PubLatitude,
+      </if>
+      <if test="grabtime != null" >
+        GrabTime,
+      </if>
+      <if test="grablongitude != null" >
+        GrabLongitude,
+      </if>
+      <if test="grablatitude != null" >
+        GrabLatitude,
+      </if>
+      <if test="completelongitude != null" >
+        CompleteLongitude,
+      </if>
+      <if test="completelatitude != null" >
+        CompleteLatitude,
+      </if>
+      <if test="taketime != null" >
+        TakeTime,
+      </if>
+      <if test="takelongitude != null" >
+        TakeLongitude,
+      </if>
+      <if test="takelatitude != null" >
+        TakeLatitude,
+      </if>
+      <if test="pubtograbdistance != null" >
+        PubToGrabDistance,
+      </if>
+      <if test="grabtocompletedistance != null" >
+        GrabToCompleteDistance,
+      </if>
+      <if test="pubtocompletedistance != null" >
+        PubToCompleteDistance,
+      </if>
+      <if test="onekeypuborder != null" >
+        OneKeyPubOrder,
+      </if>
+      <if test="isnotrealorder != null" >
+        IsNotRealOrder,
+      </if>
+      <if test="isAllowCashPay != null" >
+        isAllowCashPay,
+      </if>
+      <if test="isorderchecked != null" >
+        isorderchecked,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="needuploadcount != null" >
+        #{needuploadcount,jdbcType=INTEGER},
+      </if>
+      <if test="receiptpic != null" >
+        #{receiptpic,jdbcType=VARCHAR},
+      </if>
+      <if test="haduploadcount != null" >
+        #{haduploadcount,jdbcType=INTEGER},
+      </if>
+      <if test="isjoinwithdraw != null" >
+        #{isjoinwithdraw,jdbcType=INTEGER},
+      </if>
+      <if test="publongitude != null" >
+        #{publongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="publatitude != null" >
+        #{publatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grabtime != null" >
+        #{grabtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="grablongitude != null" >
+        #{grablongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablatitude != null" >
+        #{grablatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="completelongitude != null" >
+        #{completelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="completelatitude != null" >
+        #{completelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="taketime != null" >
+        #{taketime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="takelongitude != null" >
+        #{takelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="takelatitude != null" >
+        #{takelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pubtograbdistance != null" >
+        #{pubtograbdistance,jdbcType=DOUBLE},
+      </if>
+      <if test="grabtocompletedistance != null" >
+        #{grabtocompletedistance,jdbcType=DOUBLE},
+      </if>
+      <if test="pubtocompletedistance != null" >
+        #{pubtocompletedistance,jdbcType=DOUBLE},
+      </if>
+      <if test="onekeypuborder != null" >
+        #{onekeypuborder,jdbcType=INTEGER},
+      </if>
+      <if test="isnotrealorder != null" >
+        #{isnotrealorder,jdbcType=INTEGER},
+      </if>
+      <if test="isAllowCashPay != null" >
+        #{isAllowCashPay,jdbcType=INTEGER},
+      </if>
+      <if test="isorderchecked != null" >
+        #{isorderchecked,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderOther" >
+    update OrderOther
+    <set >
+      <if test="needuploadcount != null" >
+        NeedUploadCount = #{needuploadcount,jdbcType=INTEGER},
+      </if>
+      <if test="receiptpic != null" >
+        ReceiptPic = #{receiptpic,jdbcType=VARCHAR},
+      </if>
+      <if test="haduploadcount != null" >
+        HadUploadCount = #{haduploadcount,jdbcType=INTEGER},
+      </if>
+      <if test="isjoinwithdraw != null" >
+        IsJoinWithdraw = #{isjoinwithdraw,jdbcType=INTEGER},
+      </if>
+      <if test="publongitude != null" >
+        PubLongitude = #{publongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="publatitude != null" >
+        PubLatitude = #{publatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grabtime != null" >
+        GrabTime = #{grabtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="grablongitude != null" >
+        GrabLongitude = #{grablongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablatitude != null" >
+        GrabLatitude = #{grablatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="completelongitude != null" >
+        CompleteLongitude = #{completelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="completelatitude != null" >
+        CompleteLatitude = #{completelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="taketime != null" >
+        TakeTime = #{taketime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="takelongitude != null" >
+        TakeLongitude = #{takelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="takelatitude != null" >
+        TakeLatitude = #{takelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pubtograbdistance != null" >
+        PubToGrabDistance = #{pubtograbdistance,jdbcType=DOUBLE},
+      </if>
+      <if test="grabtocompletedistance != null" >
+        GrabToCompleteDistance = #{grabtocompletedistance,jdbcType=DOUBLE},
+      </if>
+      <if test="pubtocompletedistance != null" >
+        PubToCompleteDistance = #{pubtocompletedistance,jdbcType=DOUBLE},
+      </if>
+      <if test="onekeypuborder != null" >
+        OneKeyPubOrder = #{onekeypuborder,jdbcType=INTEGER},
+      </if>
+      <if test="isnotrealorder != null" >
+        IsNotRealOrder = #{isnotrealorder,jdbcType=INTEGER},
+      </if>
+       <if test="cancelTime != null" >
+        CancelTime = getdate()
+      </if>
+    </set>
+    where OrderId = #{orderid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderOther" >
+    update OrderOther
+    set OrderId = #{orderid,jdbcType=INTEGER},
+      NeedUploadCount = #{needuploadcount,jdbcType=INTEGER},
+      ReceiptPic = #{receiptpic,jdbcType=VARCHAR},
+      HadUploadCount = #{haduploadcount,jdbcType=INTEGER},
+      IsJoinWithdraw = #{isjoinwithdraw,jdbcType=INTEGER},
+      PubLongitude = #{publongitude,jdbcType=DOUBLE},
+      PubLatitude = #{publatitude,jdbcType=DOUBLE},
+      GrabTime = #{grabtime,jdbcType=TIMESTAMP},
+      GrabLongitude = #{grablongitude,jdbcType=DOUBLE},
+      GrabLatitude = #{grablatitude,jdbcType=DOUBLE},
+      CompleteLongitude = #{completelongitude,jdbcType=DOUBLE},
+      CompleteLatitude = #{completelatitude,jdbcType=DOUBLE},
+      TakeTime = #{taketime,jdbcType=TIMESTAMP},
+      TakeLongitude = #{takelongitude,jdbcType=DOUBLE},
+      TakeLatitude = #{takelatitude,jdbcType=DOUBLE},
+      PubToGrabDistance = #{pubtograbdistance,jdbcType=DOUBLE},
+      GrabToCompleteDistance = #{grabtocompletedistance,jdbcType=DOUBLE},
+      PubToCompleteDistance = #{pubtocompletedistance,jdbcType=DOUBLE},
+      OneKeyPubOrder = #{onekeypuborder,jdbcType=INTEGER},
+      IsNotRealOrder = #{isnotrealorder,jdbcType=INTEGER},
+      isorderchecked = #{isorderchecked,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 更新已提现状态 caoheyang 20150831 -->
+    <update id="updateJoinWithdraw" parameterType="java.util.Map" >
+    update OrderOther set IsJoinWithdraw=1 where orderId=#{orderId,jdbcType=INTEGER}
+    </update>
+      <!-- 更新审核状态 caoheyang 20150831 -->
+    <update id="updateAuditStatus" parameterType="java.util.Map" >
+    update dbo.OrderOther set auditstatus =#{auditstatus,jdbcType=INTEGER} where OrderId=#{orderId,jdbcType=INTEGER}
+    </update>
+    
+      <!-- 更新审核状态 caoheyang 20150831 -->
+    <update id="updateOrderIsReal" parameterType="com.edaisong.entity.req.OrderOtherSearch" >
+   update OrderOther 
+set IsNotRealOrder=1, DeductCommissionReason=#{deductCommissionReason,jdbcType=VARCHAR},
+DeductCommissionType=#{deductCommissionType,jdbcType=INTEGER}
+where orderid=#{orderId,jdbcType=INTEGER}
+    </update>
+    
+</mapper>

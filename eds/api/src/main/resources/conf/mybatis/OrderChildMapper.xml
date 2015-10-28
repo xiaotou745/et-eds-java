@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderChildDao">
+	<insert id="insert" parameterType="com.edaisong.entity.OrderChild"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into OrderChild (OrderId,
+		ChildId,
+		TotalPrice, GoodPrice, DeliveryPrice,
+		PayStyle, PayType,
+		PayStatus,
+		PayBy, PayTime, PayPrice,
+		HasUploadTicket, TicketUrl,
+		CreateBy,
+		CreateTime, UpdateBy, UpdateTime,
+		OriginalOrderNo, WxCodeUrl,
+		ThirdPayStatus
+		)
+		values (#{orderid,jdbcType=INTEGER},
+		#{childid,jdbcType=INTEGER},
+		#{totalprice,jdbcType=DECIMAL},
+		#{goodprice,jdbcType=DECIMAL}, #{deliveryprice,jdbcType=DECIMAL},
+		#{paystyle,jdbcType=SMALLINT}, #{paytype,jdbcType=SMALLINT},
+		#{paystatus,jdbcType=SMALLINT},
+		#{payby,jdbcType=NVARCHAR},
+		#{paytime,jdbcType=TIMESTAMP}, #{payprice,jdbcType=DECIMAL},
+		#{hasuploadticket,jdbcType=BIT}, #{ticketurl,jdbcType=VARCHAR},
+		#{createby,jdbcType=NVARCHAR},
+		#{createtime,jdbcType=TIMESTAMP},
+		#{updateby,jdbcType=NVARCHAR}, #{updatetime,jdbcType=TIMESTAMP},
+		#{originalorderno,jdbcType=VARCHAR}, #{wxcodeurl,jdbcType=VARCHAR},
+		#{thirdpaystatus,jdbcType=SMALLINT}
+		)
+	</insert>
+	<update id="insertList" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" >
+			insert into OrderChild (OrderId, ChildId,
+			TotalPrice, GoodPrice, DeliveryPrice,
+			PayStyle, PayType, PayStatus,
+			PayBy, PayTime, PayPrice,
+			HasUploadTicket, TicketUrl, CreateBy,
+			CreateTime, UpdateBy, UpdateTime,
+			OriginalOrderNo, WxCodeUrl, ThirdPayStatus
+			) values (
+			#{item.orderid,jdbcType=INTEGER},
+			#{item.childid,jdbcType=INTEGER},
+			#{item.totalprice,jdbcType=DECIMAL},
+			#{item.goodprice,jdbcType=DECIMAL},
+			#{item.deliveryprice,jdbcType=DECIMAL},
+			#{item.paystyle,jdbcType=SMALLINT},
+			#{item.paytype,jdbcType=SMALLINT},
+			#{item.paystatus,jdbcType=SMALLINT},
+			#{item.payby,jdbcType=NVARCHAR},
+			#{item.paytime,jdbcType=TIMESTAMP},
+			#{item.payprice,jdbcType=DECIMAL},
+			#{item.hasuploadticket,jdbcType=BIT},
+			#{item.ticketurl,jdbcType=VARCHAR},
+			#{item.createby,jdbcType=NVARCHAR},
+			getdate(),
+			#{item.updateby,jdbcType=NVARCHAR},
+			getdate(),
+			#{item.originalorderno,jdbcType=VARCHAR},
+			#{item.wxcodeurl,jdbcType=VARCHAR},
+			#{item.thirdpaystatus,jdbcType=SMALLINT}
+			);
+		</foreach>
+	</update>
+
+	<!-- 根据订单号 骑士id 查询子订单详情集合 add by caoheyang 20150804 -->
+	<select id="getOrderChildByOrderInfo" parameterType="java.util.Map"
+		resultType="com.edaisong.entity.OrderChild">
+		select oc.Id ,oc.OrderId ,oc.ChildId ,oc.TotalPrice
+		,oc.GoodPrice
+		,oc.DeliveryPrice ,oc.PayStyle ,
+		oc.PayType ,oc.PayStatus
+		, oc.PayBy , oc.PayTime ,oc.PayPrice
+		,oc.HasUploadTicket ,
+		oc.TicketUrl
+		,oc.CreateBy ,oc.CreateTime ,oc.UpdateBy ,oc.UpdateTime
+		from
+		dbo.OrderChild oc ( nolock )
+		join dbo.[order] (nolock)o on
+		oc.OrderId=o.Id
+		where  1=1 
+		<if test="OrderNo != null and OrderNo != '' ">
+			and o.OrderNo = #{OrderNo,jdbcType=NVARCHAR}
+		</if>
+		<if test="BusinessId >0">
+				and  o.businessId=#{BusinessId,jdbcType=INTEGER}
+		</if>
+<!-- 		o.OrderNo=#{OrderNo,jdbcType=NVARCHAR} and
+		o.businessId=#{BusinessId,jdbcType=INTEGER} -->
+	</select>
+	
+	<!--   获取任务支付状态（0：未支付 1：部分支付 2：已支付） add by caoheyang 20150831 -->
+	<select id="getOrderTaskPayStatus" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		SELECT CASE SUM(oc.PayStatus) 
+				WHEN 0 
+				THEN 0 
+			ELSE 
+				CASE 
+					WHEN  SUM(oc.PayStatus)=COUNT(oc.PayStatus) 
+					THEN 2 
+					ELSE 1 
+				END 
+			END PayStatus
+	  FROM OrderChild oc WITH(NOLOCK)
+	  WHERE OrderId=#{orderId,jdbcType=INTEGER}
+	</select>
+</mapper>

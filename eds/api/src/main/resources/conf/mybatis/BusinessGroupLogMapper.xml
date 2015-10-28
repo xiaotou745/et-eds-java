@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IBusinessGroupLogDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.BusinessGroupLog" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Name" property="name" jdbcType="NVARCHAR" />
+    <result column="StrategyId" property="strategyid" jdbcType="INTEGER" />
+    <result column="InsertTime" property="inserttime" jdbcType="TIMESTAMP" />
+    <result column="OptName" property="optname" jdbcType="NVARCHAR" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, Name, StrategyId, InsertTime, OptName, Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from BusinessGroupLog
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from BusinessGroupLog
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.BusinessGroupLog" >
+    insert into BusinessGroupLog (Id, Name, StrategyId, 
+      InsertTime, OptName, Remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=NVARCHAR}, #{strategyid,jdbcType=INTEGER}, 
+      #{inserttime,jdbcType=TIMESTAMP}, #{optname,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.BusinessGroupLog" >
+    insert into BusinessGroupLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="strategyid != null" >
+        StrategyId,
+      </if>
+      <if test="inserttime != null" >
+        InsertTime,
+      </if>
+      <if test="optname != null" >
+        OptName,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="strategyid != null" >
+        #{strategyid,jdbcType=INTEGER},
+      </if>
+      <if test="inserttime != null" >
+        #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optname != null" >
+        #{optname,jdbcType=NVARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.BusinessGroupLog" >
+    update BusinessGroupLog
+    <set >
+      <if test="name != null" >
+        Name = #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="strategyid != null" >
+        StrategyId = #{strategyid,jdbcType=INTEGER},
+      </if>
+      <if test="inserttime != null" >
+        InsertTime = #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optname != null" >
+        OptName = #{optname,jdbcType=NVARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.BusinessGroupLog" >
+    update BusinessGroupLog
+    set Name = #{name,jdbcType=NVARCHAR},
+      StrategyId = #{strategyid,jdbcType=INTEGER},
+      InsertTime = #{inserttime,jdbcType=TIMESTAMP},
+      OptName = #{optname,jdbcType=NVARCHAR},
+      Remark = #{remark,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

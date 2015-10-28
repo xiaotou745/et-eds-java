@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IClienterMessageDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.ClienterMessage" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="ClienterId" property="clienterid" jdbcType="INTEGER" />
+    <result column="Content" property="content" jdbcType="NVARCHAR" />
+    <result column="IsRead" property="isread" jdbcType="SMALLINT" />
+    <result column="PubDate" property="pubdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, ClienterId, Content, IsRead, PubDate
+  </sql>
+  <!-- 获取最新消息  add by caoheyang 20150908-->
+    <select id="getLatestMessage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+     SELECT TOP 1 
+	 <include refid="Base_Column_List" />
+	 FROM ClienterMessage WHERE 
+	 ClienterId= #{clienterId,jdbcType=INTEGER}
+	 ORDER BY PubDate desc;
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ClienterMessage
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ClienterMessage
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.ClienterMessage" >
+    insert into ClienterMessage (Id, ClienterId, Content, 
+      IsRead, PubDate)
+    values (#{id,jdbcType=BIGINT}, #{clienterid,jdbcType=INTEGER}, #{content,jdbcType=NVARCHAR}, 
+      #{isread,jdbcType=SMALLINT}, #{pubdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.ClienterMessage" >
+    insert into ClienterMessage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="clienterid != null" >
+        ClienterId,
+      </if>
+      <if test="content != null" >
+        Content,
+      </if>
+      <if test="isread != null" >
+        IsRead,
+      </if>
+      <if test="pubdate != null" >
+        PubDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clienterid != null" >
+        #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=NVARCHAR},
+      </if>
+      <if test="isread != null" >
+        #{isread,jdbcType=SMALLINT},
+      </if>
+      <if test="pubdate != null" >
+        #{pubdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.ClienterMessage" >
+    update ClienterMessage
+    <set >
+      <if test="clienterid != null" >
+        ClienterId = #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        Content = #{content,jdbcType=NVARCHAR},
+      </if>
+      <if test="isread != null" >
+        IsRead = #{isread,jdbcType=SMALLINT},
+      </if>
+      <if test="pubdate != null" >
+        PubDate = #{pubdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.ClienterMessage" >
+    update ClienterMessage
+    set ClienterId = #{clienterid,jdbcType=INTEGER},
+      Content = #{content,jdbcType=NVARCHAR},
+      IsRead = #{isread,jdbcType=SMALLINT},
+      PubDate = #{pubdate,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

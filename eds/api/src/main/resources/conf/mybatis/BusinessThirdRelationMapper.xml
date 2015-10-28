@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IBusinessThirdRelationDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.BusinessThirdRelation" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
+    <result column="OriginalBusiId" property="originalbusiid" jdbcType="INTEGER" />
+    <result column="GroupId" property="groupid" jdbcType="INTEGER" />
+    <result column="GroupName" property="groupname" jdbcType="VARCHAR" />
+    <result column="AuditStatus" property="auditstatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, BusinessId, OriginalBusiId, GroupId, GroupName, AuditStatus
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from BusinessThirdRelation
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from BusinessThirdRelation
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.BusinessThirdRelation" >
+    insert into BusinessThirdRelation (Id, BusinessId, OriginalBusiId, 
+      GroupId, GroupName, AuditStatus
+      )
+    values (#{id,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, #{originalbusiid,jdbcType=INTEGER}, 
+      #{groupid,jdbcType=INTEGER}, #{groupname,jdbcType=VARCHAR}, #{auditstatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.BusinessThirdRelation" >
+    insert into BusinessThirdRelation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="businessid != null" >
+        BusinessId,
+      </if>
+      <if test="originalbusiid != null" >
+        OriginalBusiId,
+      </if>
+      <if test="groupid != null" >
+        GroupId,
+      </if>
+      <if test="groupname != null" >
+        GroupName,
+      </if>
+      <if test="auditstatus != null" >
+        AuditStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="originalbusiid != null" >
+        #{originalbusiid,jdbcType=INTEGER},
+      </if>
+      <if test="groupid != null" >
+        #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="groupname != null" >
+        #{groupname,jdbcType=VARCHAR},
+      </if>
+      <if test="auditstatus != null" >
+        #{auditstatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.BusinessThirdRelation" >
+    update BusinessThirdRelation
+    <set >
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="originalbusiid != null" >
+        OriginalBusiId = #{originalbusiid,jdbcType=INTEGER},
+      </if>
+      <if test="groupid != null" >
+        GroupId = #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="groupname != null" >
+        GroupName = #{groupname,jdbcType=VARCHAR},
+      </if>
+      <if test="auditstatus != null" >
+        AuditStatus = #{auditstatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.BusinessThirdRelation" >
+    update BusinessThirdRelation
+    set BusinessId = #{businessid,jdbcType=INTEGER},
+      OriginalBusiId = #{originalbusiid,jdbcType=INTEGER},
+      GroupId = #{groupid,jdbcType=INTEGER},
+      GroupName = #{groupname,jdbcType=VARCHAR},
+      AuditStatus = #{auditstatus,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+   <select id="getListByBusinessID" resultType="com.edaisong.entity.domain.BusinessThirdRelationModel" parameterType="java.lang.Integer" >
+    SELECT  btr.[id] ,
+        btr.[businessid] ,
+        btr.[originalbusiid] ,
+        btr.[groupid] ,
+        btr.[groupname] ,
+        btr.[auditstatus] ,
+        ISNULL(g.IsModifyBind, 0) isModifyBind
+FROM    BusinessThirdRelation btr WITH ( NOLOCK )
+        JOIN [group] g WITH ( NOLOCK ) ON btr.GroupId = g.Id
+WHERE   btr.BusinessId = #{businessID}
+ORDER BY btr.Id
+  </select>
+</mapper>

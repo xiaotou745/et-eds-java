@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IAuthorityMenuClassDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.AuthorityMenuClass" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="ParId" property="parid" jdbcType="INTEGER" />
+    <result column="MenuName" property="menuname" jdbcType="VARCHAR" />
+    <result column="BeLock" property="belock" jdbcType="BIT" />
+    <result column="Url" property="url" jdbcType="VARCHAR" />
+    <result column="JavaUrl" property="javaUrl" jdbcType="VARCHAR" />
+    <result column="IsButton" property="isbutton" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, ParId, MenuName, BeLock, Url, IsButton
+  </sql>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from AuthorityMenuClass
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.AuthorityMenuClass" >
+    insert into AuthorityMenuClass (ParId, MenuName, 
+      BeLock, Url, IsButton)
+    values (#{parid,jdbcType=INTEGER}, #{menuname,jdbcType=VARCHAR}, 
+      #{belock,jdbcType=BIT}, #{url,jdbcType=VARCHAR}, #{isbutton,jdbcType=BIT})
+  </insert>
+  <select id="getMenuListByUserID" resultType="com.edaisong.entity.MenuEntity" parameterType="java.lang.Integer" >
+DECLARE @roleID INT
+SELECT @roleID=ISNULL(b.Id,0) FROM dbo.account a left JOIN (select * from  AuthorityRole where BeLock=0 ) b ON 
+a.RoleId=b.Id WHERE a.id=#{accountId}
+
+IF @roleID>0
+    SELECT  #{accountId} AS AccoutId ,
+            MenuId ,
+            ParId ,
+            MenuName ,
+            ISNULL(Url, '') AS Url ,
+            amc.IsButton ,
+            ISNULL(javaUrl, '/order/list') AS javaUrl
+    FROM    AuthorityMenuClass amc ( NOLOCK )
+            JOIN dbo.AuthorityRoleMentMenuSet aam ( NOLOCK ) ON aam.MenuId = amc.Id
+    WHERE   aam.RoleId = @roleID
+            and amc.BeLock = CAST(0 AS BIT)	
+UNION 
+	
+    SELECT  #{accountId} AS AccoutId ,
+            id AS MenuId ,
+            ParId ,
+            MenuName ,
+            ISNULL(Url, '') AS Url ,
+            IsButton ,
+            ISNULL(javaUrl, '/order/list') AS javaUrl
+    FROM    AuthorityMenuClass
+    WHERE   ParId = 0
+            AND BeLock = CAST(0 AS BIT)
+            AND id IN (
+            SELECT  ParId
+            FROM   AuthorityMenuClass amc ( NOLOCK ) 
+                   JOIN dbo.AuthorityRoleMentMenuSet aam ( NOLOCK ) ON aam.MenuId = amc.Id
+            WHERE   aam.RoleId = @roleID 
+            		and amc.IsButton=0 
+                    and amc.BeLock = CAST(0 AS BIT)	)
+ELSE
+    SELECT  AccoutId ,
+            MenuId ,
+            ParId ,
+            MenuName ,
+            ISNULL(Url, '') AS Url ,
+            amc.IsButton ,
+            ISNULL(javaUrl, '/order/list') AS javaUrl
+    FROM    AuthorityMenuClass amc ( NOLOCK )
+            JOIN dbo.AuthorityAccountMenuSet aam ( NOLOCK ) ON aam.MenuId = amc.Id
+    WHERE   aam.AccoutId = #{accountId}
+            AND amc.BeLock = CAST(0 AS BIT) 
+    UNION 
+	
+    SELECT  #{accountId} AS AccoutId ,
+            id AS MenuId ,
+            ParId ,
+            MenuName ,
+            ISNULL(Url, '') AS Url ,
+            IsButton ,
+            ISNULL(javaUrl, '/order/list') AS javaUrl
+    FROM    AuthorityMenuClass
+    WHERE   ParId = 0
+            AND BeLock = CAST(0 AS BIT)
+            AND id IN (
+            SELECT  ParId
+            FROM  AuthorityMenuClass amc ( NOLOCK )  
+                    JOIN dbo.AuthorityAccountMenuSet aam ( NOLOCK ) ON aam.MenuId = amc.Id
+            WHERE   aam.AccoutId = #{accountId}  
+            		and amc.IsButton=0 
+                    AND amc.BeLock = CAST(0 AS BIT) )
+  </select>
+   <select id="getAuthSettingList" resultType="com.edaisong.entity.MenuEntity"  parameterType="java.lang.Integer" >
+    SELECT  * ,
+            -1 AS accoutid
+    FROM    (select * from AuthorityMenuClass a WITH ( NOLOCK )) a 
+            LEFT JOIN ( SELECT  b.MenuId
+                        FROM    AuthorityAccountMenuSet b WITH ( NOLOCK )
+                        WHERE   b.AccoutId = #{userID}
+                      ) t ON a.Id = t.MenuId   
+    where a.BeLock = CAST(0 AS BIT)	
+  </select>
+     <select id="getRoleAuthSettingList" resultType="com.edaisong.entity.MenuEntity"  parameterType="java.lang.Integer" >
+SELECT  *,-1 as accoutid 
+FROM    AuthorityMenuClass a WITH ( NOLOCK )
+        LEFT JOIN ( SELECT  b.MenuId
+                    FROM    AuthorityRoleMentMenuSet b WITH ( NOLOCK )
+                    WHERE   b.roleid = #{roleID}
+                  ) t ON a.Id = t.MenuId 
+  where a.BeLock = CAST(0 AS BIT)	
+  </select>
+  
+  <select id="getListMenuByParId" resultMap="BaseResultMap" parameterType="int">
+  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,JavaUrl FROM AuthorityMenuClass with(nolock) where ParId=#{parId,jdbcType=INTEGER} and BeLock = CAST(0 AS BIT)	 
+  </select>
+  
+    <select id="getMenuById" resultMap="BaseResultMap" parameterType="int">
+  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,JavaUrl FROM AuthorityMenuClass with(nolock) where Id=#{Id,jdbcType=INTEGER} 
+  </select>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IAuthorityRoleDao" >
+  <select id="selectList" resultType="com.edaisong.entity.AuthorityRole">
+    select Id, RoleName, BeLock from AuthorityRole with(nolock)
+  </select>
+  
+  <insert id="insert" parameterType="com.edaisong.entity.AuthorityRole" >
+    insert into AuthorityRole (RoleName, BeLock)
+    values (#{rolename,jdbcType=VARCHAR}, #{belock,jdbcType=BIT})
+  </insert>
+<update id="update" parameterType="com.edaisong.entity.AuthorityRole" >
+    update AuthorityRole
+    set RoleName = #{rolename,jdbcType=VARCHAR},
+      BeLock = #{belock,jdbcType=BIT}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

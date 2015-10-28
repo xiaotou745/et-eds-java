@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.ICrossShopStatisticLogDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.CrossShopStatisticLog" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="TotalAmount" property="totalamount" jdbcType="DECIMAL" />
+    <result column="OnceCount" property="oncecount" jdbcType="INTEGER" />
+    <result column="TwiceCount" property="twicecount" jdbcType="INTEGER" />
+    <result column="ThreeTimesCount" property="threetimescount" jdbcType="INTEGER" />
+    <result column="FourTimesCount" property="fourtimescount" jdbcType="INTEGER" />
+    <result column="FiveTimesCount" property="fivetimescount" jdbcType="INTEGER" />
+    <result column="SixTimesCount" property="sixtimescount" jdbcType="INTEGER" />
+    <result column="SevenTimesCount" property="seventimescount" jdbcType="INTEGER" />
+    <result column="EightTimesCount" property="eighttimescount" jdbcType="INTEGER" />
+    <result column="NineTimesCount" property="ninetimescount" jdbcType="INTEGER" />
+    <result column="ExceedNineTimesCount" property="exceedninetimescount" jdbcType="INTEGER" />
+    <result column="OncePrice" property="onceprice" jdbcType="DECIMAL" />
+    <result column="TwicePrice" property="twiceprice" jdbcType="DECIMAL" />
+    <result column="ThreeTimesPrice" property="threetimesprice" jdbcType="DECIMAL" />
+    <result column="FourTimesPrice" property="fourtimesprice" jdbcType="DECIMAL" />
+    <result column="FiveTimesPrice" property="fivetimesprice" jdbcType="DECIMAL" />
+    <result column="SixTimesPrice" property="sixtimesprice" jdbcType="DECIMAL" />
+    <result column="SevenTimesPrice" property="seventimesprice" jdbcType="DECIMAL" />
+    <result column="EightTimesPrice" property="eighttimesprice" jdbcType="DECIMAL" />
+    <result column="NineTimesPrice" property="ninetimesprice" jdbcType="DECIMAL" />
+    <result column="ExceedNineTimesPrice" property="exceedninetimesprice" jdbcType="DECIMAL" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="StatisticalTime" property="statisticaltime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, TotalAmount, OnceCount, TwiceCount, ThreeTimesCount, FourTimesCount, FiveTimesCount, 
+    SixTimesCount, SevenTimesCount, EightTimesCount, NineTimesCount, ExceedNineTimesCount, 
+    OncePrice, TwicePrice, ThreeTimesPrice, FourTimesPrice, FiveTimesPrice, SixTimesPrice, 
+    SevenTimesPrice, EightTimesPrice, NineTimesPrice, ExceedNineTimesPrice, CreateTime, 
+    StatisticalTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from CrossShopStatisticLog
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from CrossShopStatisticLog
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.CrossShopStatisticLog" >
+    insert into CrossShopStatisticLog (Id, TotalAmount, OnceCount, 
+      TwiceCount, ThreeTimesCount, FourTimesCount, 
+      FiveTimesCount, SixTimesCount, SevenTimesCount, 
+      EightTimesCount, NineTimesCount, ExceedNineTimesCount, 
+      OncePrice, TwicePrice, ThreeTimesPrice, 
+      FourTimesPrice, FiveTimesPrice, SixTimesPrice, 
+      SevenTimesPrice, EightTimesPrice, NineTimesPrice, 
+      ExceedNineTimesPrice, CreateTime, StatisticalTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{totalamount,jdbcType=DECIMAL}, #{oncecount,jdbcType=INTEGER}, 
+      #{twicecount,jdbcType=INTEGER}, #{threetimescount,jdbcType=INTEGER}, #{fourtimescount,jdbcType=INTEGER}, 
+      #{fivetimescount,jdbcType=INTEGER}, #{sixtimescount,jdbcType=INTEGER}, #{seventimescount,jdbcType=INTEGER}, 
+      #{eighttimescount,jdbcType=INTEGER}, #{ninetimescount,jdbcType=INTEGER}, #{exceedninetimescount,jdbcType=INTEGER}, 
+      #{onceprice,jdbcType=DECIMAL}, #{twiceprice,jdbcType=DECIMAL}, #{threetimesprice,jdbcType=DECIMAL}, 
+      #{fourtimesprice,jdbcType=DECIMAL}, #{fivetimesprice,jdbcType=DECIMAL}, #{sixtimesprice,jdbcType=DECIMAL}, 
+      #{seventimesprice,jdbcType=DECIMAL}, #{eighttimesprice,jdbcType=DECIMAL}, #{ninetimesprice,jdbcType=DECIMAL}, 
+      #{exceedninetimesprice,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP}, #{statisticaltime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.CrossShopStatisticLog" >
+    insert into CrossShopStatisticLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="totalamount != null" >
+        TotalAmount,
+      </if>
+      <if test="oncecount != null" >
+        OnceCount,
+      </if>
+      <if test="twicecount != null" >
+        TwiceCount,
+      </if>
+      <if test="threetimescount != null" >
+        ThreeTimesCount,
+      </if>
+      <if test="fourtimescount != null" >
+        FourTimesCount,
+      </if>
+      <if test="fivetimescount != null" >
+        FiveTimesCount,
+      </if>
+      <if test="sixtimescount != null" >
+        SixTimesCount,
+      </if>
+      <if test="seventimescount != null" >
+        SevenTimesCount,
+      </if>
+      <if test="eighttimescount != null" >
+        EightTimesCount,
+      </if>
+      <if test="ninetimescount != null" >
+        NineTimesCount,
+      </if>
+      <if test="exceedninetimescount != null" >
+        ExceedNineTimesCount,
+      </if>
+      <if test="onceprice != null" >
+        OncePrice,
+      </if>
+      <if test="twiceprice != null" >
+        TwicePrice,
+      </if>
+      <if test="threetimesprice != null" >
+        ThreeTimesPrice,
+      </if>
+      <if test="fourtimesprice != null" >
+        FourTimesPrice,
+      </if>
+      <if test="fivetimesprice != null" >
+        FiveTimesPrice,
+      </if>
+      <if test="sixtimesprice != null" >
+        SixTimesPrice,
+      </if>
+      <if test="seventimesprice != null" >
+        SevenTimesPrice,
+      </if>
+      <if test="eighttimesprice != null" >
+        EightTimesPrice,
+      </if>
+      <if test="ninetimesprice != null" >
+        NineTimesPrice,
+      </if>
+      <if test="exceedninetimesprice != null" >
+        ExceedNineTimesPrice,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="statisticaltime != null" >
+        StatisticalTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="totalamount != null" >
+        #{totalamount,jdbcType=DECIMAL},
+      </if>
+      <if test="oncecount != null" >
+        #{oncecount,jdbcType=INTEGER},
+      </if>
+      <if test="twicecount != null" >
+        #{twicecount,jdbcType=INTEGER},
+      </if>
+      <if test="threetimescount != null" >
+        #{threetimescount,jdbcType=INTEGER},
+      </if>
+      <if test="fourtimescount != null" >
+        #{fourtimescount,jdbcType=INTEGER},
+      </if>
+      <if test="fivetimescount != null" >
+        #{fivetimescount,jdbcType=INTEGER},
+      </if>
+      <if test="sixtimescount != null" >
+        #{sixtimescount,jdbcType=INTEGER},
+      </if>
+      <if test="seventimescount != null" >
+        #{seventimescount,jdbcType=INTEGER},
+      </if>
+      <if test="eighttimescount != null" >
+        #{eighttimescount,jdbcType=INTEGER},
+      </if>
+      <if test="ninetimescount != null" >
+        #{ninetimescount,jdbcType=INTEGER},
+      </if>
+      <if test="exceedninetimescount != null" >
+        #{exceedninetimescount,jdbcType=INTEGER},
+      </if>
+      <if test="onceprice != null" >
+        #{onceprice,jdbcType=DECIMAL},
+      </if>
+      <if test="twiceprice != null" >
+        #{twiceprice,jdbcType=DECIMAL},
+      </if>
+      <if test="threetimesprice != null" >
+        #{threetimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="fourtimesprice != null" >
+        #{fourtimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="fivetimesprice != null" >
+        #{fivetimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="sixtimesprice != null" >
+        #{sixtimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="seventimesprice != null" >
+        #{seventimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="eighttimesprice != null" >
+        #{eighttimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="ninetimesprice != null" >
+        #{ninetimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="exceedninetimesprice != null" >
+        #{exceedninetimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statisticaltime != null" >
+        #{statisticaltime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.CrossShopStatisticLog" >
+    update CrossShopStatisticLog
+    <set >
+      <if test="totalamount != null" >
+        TotalAmount = #{totalamount,jdbcType=DECIMAL},
+      </if>
+      <if test="oncecount != null" >
+        OnceCount = #{oncecount,jdbcType=INTEGER},
+      </if>
+      <if test="twicecount != null" >
+        TwiceCount = #{twicecount,jdbcType=INTEGER},
+      </if>
+      <if test="threetimescount != null" >
+        ThreeTimesCount = #{threetimescount,jdbcType=INTEGER},
+      </if>
+      <if test="fourtimescount != null" >
+        FourTimesCount = #{fourtimescount,jdbcType=INTEGER},
+      </if>
+      <if test="fivetimescount != null" >
+        FiveTimesCount = #{fivetimescount,jdbcType=INTEGER},
+      </if>
+      <if test="sixtimescount != null" >
+        SixTimesCount = #{sixtimescount,jdbcType=INTEGER},
+      </if>
+      <if test="seventimescount != null" >
+        SevenTimesCount = #{seventimescount,jdbcType=INTEGER},
+      </if>
+      <if test="eighttimescount != null" >
+        EightTimesCount = #{eighttimescount,jdbcType=INTEGER},
+      </if>
+      <if test="ninetimescount != null" >
+        NineTimesCount = #{ninetimescount,jdbcType=INTEGER},
+      </if>
+      <if test="exceedninetimescount != null" >
+        ExceedNineTimesCount = #{exceedninetimescount,jdbcType=INTEGER},
+      </if>
+      <if test="onceprice != null" >
+        OncePrice = #{onceprice,jdbcType=DECIMAL},
+      </if>
+      <if test="twiceprice != null" >
+        TwicePrice = #{twiceprice,jdbcType=DECIMAL},
+      </if>
+      <if test="threetimesprice != null" >
+        ThreeTimesPrice = #{threetimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="fourtimesprice != null" >
+        FourTimesPrice = #{fourtimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="fivetimesprice != null" >
+        FiveTimesPrice = #{fivetimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="sixtimesprice != null" >
+        SixTimesPrice = #{sixtimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="seventimesprice != null" >
+        SevenTimesPrice = #{seventimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="eighttimesprice != null" >
+        EightTimesPrice = #{eighttimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="ninetimesprice != null" >
+        NineTimesPrice = #{ninetimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="exceedninetimesprice != null" >
+        ExceedNineTimesPrice = #{exceedninetimesprice,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statisticaltime != null" >
+        StatisticalTime = #{statisticaltime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.CrossShopStatisticLog" >
+    update CrossShopStatisticLog
+    set TotalAmount = #{totalamount,jdbcType=DECIMAL},
+      OnceCount = #{oncecount,jdbcType=INTEGER},
+      TwiceCount = #{twicecount,jdbcType=INTEGER},
+      ThreeTimesCount = #{threetimescount,jdbcType=INTEGER},
+      FourTimesCount = #{fourtimescount,jdbcType=INTEGER},
+      FiveTimesCount = #{fivetimescount,jdbcType=INTEGER},
+      SixTimesCount = #{sixtimescount,jdbcType=INTEGER},
+      SevenTimesCount = #{seventimescount,jdbcType=INTEGER},
+      EightTimesCount = #{eighttimescount,jdbcType=INTEGER},
+      NineTimesCount = #{ninetimescount,jdbcType=INTEGER},
+      ExceedNineTimesCount = #{exceedninetimescount,jdbcType=INTEGER},
+      OncePrice = #{onceprice,jdbcType=DECIMAL},
+      TwicePrice = #{twiceprice,jdbcType=DECIMAL},
+      ThreeTimesPrice = #{threetimesprice,jdbcType=DECIMAL},
+      FourTimesPrice = #{fourtimesprice,jdbcType=DECIMAL},
+      FiveTimesPrice = #{fivetimesprice,jdbcType=DECIMAL},
+      SixTimesPrice = #{sixtimesprice,jdbcType=DECIMAL},
+      SevenTimesPrice = #{seventimesprice,jdbcType=DECIMAL},
+      EightTimesPrice = #{eighttimesprice,jdbcType=DECIMAL},
+      NineTimesPrice = #{ninetimesprice,jdbcType=DECIMAL},
+      ExceedNineTimesPrice = #{exceedninetimesprice,jdbcType=DECIMAL},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      StatisticalTime = #{statisticaltime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

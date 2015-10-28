@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IRecordsDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.Records" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Platform" property="platform" jdbcType="INTEGER" />
+    <result column="UserId" property="userid" jdbcType="INTEGER" />
+    <result column="Amount" property="amount" jdbcType="DECIMAL" />
+    <result column="Balance" property="balance" jdbcType="DECIMAL" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="AdminId" property="adminid" jdbcType="INTEGER" />
+    <result column="IsDel" property="isdel" jdbcType="TINYINT" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+    <result column="OrderId" property="orderid" jdbcType="INTEGER" />
+    <result column="RecordType" property="recordtype" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, Platform, UserId, Amount, Balance, CreateTime, AdminId, IsDel, Remark, OrderId, 
+    RecordType
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from Records
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Records
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.Records" >
+    insert into Records (Id, Platform, UserId, 
+      Amount, Balance, CreateTime, 
+      AdminId, IsDel, Remark, 
+      OrderId, RecordType)
+    values (#{id,jdbcType=INTEGER}, #{platform,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{amount,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{adminid,jdbcType=INTEGER}, #{isdel,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, 
+      #{orderid,jdbcType=INTEGER}, #{recordtype,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.Records" >
+    insert into Records
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="platform != null" >
+        Platform,
+      </if>
+      <if test="userid != null" >
+        UserId,
+      </if>
+      <if test="amount != null" >
+        Amount,
+      </if>
+      <if test="balance != null" >
+        Balance,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="adminid != null" >
+        AdminId,
+      </if>
+      <if test="isdel != null" >
+        IsDel,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="orderid != null" >
+        OrderId,
+      </if>
+      <if test="recordtype != null" >
+        RecordType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="platform != null" >
+        #{platform,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adminid != null" >
+        #{adminid,jdbcType=INTEGER},
+      </if>
+      <if test="isdel != null" >
+        #{isdel,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="recordtype != null" >
+        #{recordtype,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Records" >
+    update Records
+    <set >
+      <if test="platform != null" >
+        Platform = #{platform,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        UserId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        Amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        Balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adminid != null" >
+        AdminId = #{adminid,jdbcType=INTEGER},
+      </if>
+      <if test="isdel != null" >
+        IsDel = #{isdel,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="recordtype != null" >
+        RecordType = #{recordtype,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Records" >
+    update Records
+    set Platform = #{platform,jdbcType=INTEGER},
+      UserId = #{userid,jdbcType=INTEGER},
+      Amount = #{amount,jdbcType=DECIMAL},
+      Balance = #{balance,jdbcType=DECIMAL},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      AdminId = #{adminid,jdbcType=INTEGER},
+      IsDel = #{isdel,jdbcType=TINYINT},
+      Remark = #{remark,jdbcType=VARCHAR},
+      OrderId = #{orderid,jdbcType=INTEGER},
+      RecordType = #{recordtype,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
