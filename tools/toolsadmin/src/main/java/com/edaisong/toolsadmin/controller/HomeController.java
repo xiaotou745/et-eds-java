@@ -21,4 +21,14 @@ public class HomeController {
 		model.addObject("viewPath", "home/history");
 		return model;
 	}
+	
+	
+	@RequestMapping("toolsindex")
+	public ModelAndView list(){		
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "工具欢迎页");
+		model.addObject("currenttitle", "工具欢迎页");	
+		model.addObject("viewPath", "home/toolsindex");
+		return model;
+	}
 }

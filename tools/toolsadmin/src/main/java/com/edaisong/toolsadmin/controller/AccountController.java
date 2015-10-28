@@ -91,7 +91,7 @@ public class AccountController {
 		boolean isLogin = LoginUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
-			response.sendRedirect("http://www.baidu.com");
+			response.sendRedirect(basePath+"/home/toolsindex"); 
 			return;
 		}
 		AccountLog log = new AccountLog();
@@ -141,7 +141,7 @@ public class AccountController {
 		loginUser.setUserName(account.getUsername());
 		CookieUtils.setCookie(request,response,"admin", LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
 				true);
-		response.sendRedirect("http://www.baidu.com");
+		response.sendRedirect(basePath+"/home/toolsindex"); 
 	}
 	
 	/**
