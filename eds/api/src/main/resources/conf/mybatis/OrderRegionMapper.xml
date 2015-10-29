@@ -185,4 +185,11 @@
       OptName = #{optname,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 获取商户区域信息 wangchao --> 
+  <select id="getOrderRegion" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderRegion (nolock)
+    where BusinessId = #{businessId,jdbcType=INTEGER}
+  </select>
 </mapper>
