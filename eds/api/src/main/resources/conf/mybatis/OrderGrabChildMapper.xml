@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderGrabChildDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderGrabChild" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="GrabOrderId" property="graborderid" jdbcType="INTEGER" />
+    <result column="OrderId" property="orderid" jdbcType="INTEGER" />
+    <result column="OrderChildId" property="orderchildid" jdbcType="INTEGER" />
+    <result column="ChildId" property="childid" jdbcType="INTEGER" />
+    <result column="Status" property="status" jdbcType="TINYINT" />
+    <result column="ActualDoneDate" property="actualdonedate" jdbcType="TIMESTAMP" />
+    <result column="DoneLongitude" property="donelongitude" jdbcType="DOUBLE" />
+    <result column="DoneLatitude" property="donelatitude" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, GrabOrderId, OrderId, OrderChildId, ChildId, Status, ActualDoneDate, DoneLongitude, 
+    DoneLatitude
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderGrabChild
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from OrderGrabChild
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.OrderGrabChild" >
+    insert into OrderGrabChild (Id, GrabOrderId, OrderId, 
+      OrderChildId, ChildId, Status, 
+      ActualDoneDate, DoneLongitude, DoneLatitude
+      )
+    values (#{id,jdbcType=INTEGER}, #{graborderid,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, 
+      #{orderchildid,jdbcType=INTEGER}, #{childid,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{actualdonedate,jdbcType=TIMESTAMP}, #{donelongitude,jdbcType=DOUBLE}, #{donelatitude,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.OrderGrabChild" >
+    insert into OrderGrabChild
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="graborderid != null" >
+        GrabOrderId,
+      </if>
+      <if test="orderid != null" >
+        OrderId,
+      </if>
+      <if test="orderchildid != null" >
+        OrderChildId,
+      </if>
+      <if test="childid != null" >
+        ChildId,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="actualdonedate != null" >
+        ActualDoneDate,
+      </if>
+      <if test="donelongitude != null" >
+        DoneLongitude,
+      </if>
+      <if test="donelatitude != null" >
+        DoneLatitude,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="graborderid != null" >
+        #{graborderid,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="orderchildid != null" >
+        #{orderchildid,jdbcType=INTEGER},
+      </if>
+      <if test="childid != null" >
+        #{childid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="actualdonedate != null" >
+        #{actualdonedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="donelongitude != null" >
+        #{donelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelatitude != null" >
+        #{donelatitude,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderGrabChild" >
+    update OrderGrabChild
+    <set >
+      <if test="graborderid != null" >
+        GrabOrderId = #{graborderid,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="orderchildid != null" >
+        OrderChildId = #{orderchildid,jdbcType=INTEGER},
+      </if>
+      <if test="childid != null" >
+        ChildId = #{childid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="actualdonedate != null" >
+        ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="donelongitude != null" >
+        DoneLongitude = #{donelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelatitude != null" >
+        DoneLatitude = #{donelatitude,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderGrabChild" >
+    update OrderGrabChild
+    set GrabOrderId = #{graborderid,jdbcType=INTEGER},
+      OrderId = #{orderid,jdbcType=INTEGER},
+      OrderChildId = #{orderchildid,jdbcType=INTEGER},
+      ChildId = #{childid,jdbcType=INTEGER},
+      Status = #{status,jdbcType=TINYINT},
+      ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
+      DoneLongitude = #{donelongitude,jdbcType=DOUBLE},
+      DoneLatitude = #{donelatitude,jdbcType=DOUBLE}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

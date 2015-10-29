@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderGrabDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderGrab" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="OrderId" property="orderid" jdbcType="INTEGER" />
+    <result column="GrabOrderNo" property="graborderno" jdbcType="VARCHAR" />
+    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
+    <result column="ClienterId" property="clienterid" jdbcType="INTEGER" />
+    <result column="OrderCount" property="ordercount" jdbcType="NCHAR" />
+    <result column="Status" property="status" jdbcType="TINYINT" />
+    <result column="ActualDoneDate" property="actualdonedate" jdbcType="TIMESTAMP" />
+    <result column="GrabTime" property="grabtime" jdbcType="TIMESTAMP" />
+    <result column="PickUpTime" property="pickuptime" jdbcType="TIMESTAMP" />
+    <result column="PickUpLongitude" property="pickuplongitude" jdbcType="DOUBLE" />
+    <result column="PickUpLatitude" property="pickuplatitude" jdbcType="DOUBLE" />
+    <result column="GrabLongitude" property="grablongitude" jdbcType="DOUBLE" />
+    <result column="GrabLatitude" property="grablatitude" jdbcType="DOUBLE" />
+    <result column="DoneLongitude" property="donelongitude" jdbcType="DOUBLE" />
+    <result column="DoneLatitude" property="donelatitude" jdbcType="DOUBLE" />
+    <result column="OrderCommission" property="ordercommission" jdbcType="DOUBLE" />
+    <result column="SettleMoney" property="settlemoney" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, OrderId, GrabOrderNo, BusinessId, ClienterId, OrderCount, Status, ActualDoneDate, 
+    GrabTime, PickUpTime, PickUpLongitude, PickUpLatitude, GrabLongitude, GrabLatitude, 
+    DoneLongitude, DoneLatitude, OrderCommission, SettleMoney
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderGrab
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from OrderGrab
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.OrderGrab" >
+    insert into OrderGrab (Id, OrderId, GrabOrderNo, 
+      BusinessId, ClienterId, OrderCount, 
+      Status, ActualDoneDate, GrabTime, 
+      PickUpTime, PickUpLongitude, PickUpLatitude, 
+      GrabLongitude, GrabLatitude, DoneLongitude, 
+      DoneLatitude, OrderCommission, SettleMoney
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, #{graborderno,jdbcType=VARCHAR}, 
+      #{businessid,jdbcType=INTEGER}, #{clienterid,jdbcType=INTEGER}, #{ordercount,jdbcType=NCHAR}, 
+      #{status,jdbcType=TINYINT}, #{actualdonedate,jdbcType=TIMESTAMP}, #{grabtime,jdbcType=TIMESTAMP}, 
+      #{pickuptime,jdbcType=TIMESTAMP}, #{pickuplongitude,jdbcType=DOUBLE}, #{pickuplatitude,jdbcType=DOUBLE}, 
+      #{grablongitude,jdbcType=DOUBLE}, #{grablatitude,jdbcType=DOUBLE}, #{donelongitude,jdbcType=DOUBLE}, 
+      #{donelatitude,jdbcType=DOUBLE}, #{ordercommission,jdbcType=DOUBLE}, #{settlemoney,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.OrderGrab" >
+    insert into OrderGrab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orderid != null" >
+        OrderId,
+      </if>
+      <if test="graborderno != null" >
+        GrabOrderNo,
+      </if>
+      <if test="businessid != null" >
+        BusinessId,
+      </if>
+      <if test="clienterid != null" >
+        ClienterId,
+      </if>
+      <if test="ordercount != null" >
+        OrderCount,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="actualdonedate != null" >
+        ActualDoneDate,
+      </if>
+      <if test="grabtime != null" >
+        GrabTime,
+      </if>
+      <if test="pickuptime != null" >
+        PickUpTime,
+      </if>
+      <if test="pickuplongitude != null" >
+        PickUpLongitude,
+      </if>
+      <if test="pickuplatitude != null" >
+        PickUpLatitude,
+      </if>
+      <if test="grablongitude != null" >
+        GrabLongitude,
+      </if>
+      <if test="grablatitude != null" >
+        GrabLatitude,
+      </if>
+      <if test="donelongitude != null" >
+        DoneLongitude,
+      </if>
+      <if test="donelatitude != null" >
+        DoneLatitude,
+      </if>
+      <if test="ordercommission != null" >
+        OrderCommission,
+      </if>
+      <if test="settlemoney != null" >
+        SettleMoney,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="graborderno != null" >
+        #{graborderno,jdbcType=VARCHAR},
+      </if>
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="clienterid != null" >
+        #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="ordercount != null" >
+        #{ordercount,jdbcType=NCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="actualdonedate != null" >
+        #{actualdonedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="grabtime != null" >
+        #{grabtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickuptime != null" >
+        #{pickuptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickuplongitude != null" >
+        #{pickuplongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pickuplatitude != null" >
+        #{pickuplatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablongitude != null" >
+        #{grablongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablatitude != null" >
+        #{grablatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelongitude != null" >
+        #{donelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelatitude != null" >
+        #{donelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="ordercommission != null" >
+        #{ordercommission,jdbcType=DOUBLE},
+      </if>
+      <if test="settlemoney != null" >
+        #{settlemoney,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderGrab" >
+    update OrderGrab
+    <set >
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="graborderno != null" >
+        GrabOrderNo = #{graborderno,jdbcType=VARCHAR},
+      </if>
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="clienterid != null" >
+        ClienterId = #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="ordercount != null" >
+        OrderCount = #{ordercount,jdbcType=NCHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="actualdonedate != null" >
+        ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="grabtime != null" >
+        GrabTime = #{grabtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickuptime != null" >
+        PickUpTime = #{pickuptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickuplongitude != null" >
+        PickUpLongitude = #{pickuplongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pickuplatitude != null" >
+        PickUpLatitude = #{pickuplatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablongitude != null" >
+        GrabLongitude = #{grablongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablatitude != null" >
+        GrabLatitude = #{grablatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelongitude != null" >
+        DoneLongitude = #{donelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelatitude != null" >
+        DoneLatitude = #{donelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="ordercommission != null" >
+        OrderCommission = #{ordercommission,jdbcType=DOUBLE},
+      </if>
+      <if test="settlemoney != null" >
+        SettleMoney = #{settlemoney,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderGrab" >
+    update OrderGrab
+    set OrderId = #{orderid,jdbcType=INTEGER},
+      GrabOrderNo = #{graborderno,jdbcType=VARCHAR},
+      BusinessId = #{businessid,jdbcType=INTEGER},
+      ClienterId = #{clienterid,jdbcType=INTEGER},
+      OrderCount = #{ordercount,jdbcType=NCHAR},
+      Status = #{status,jdbcType=TINYINT},
+      ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
+      GrabTime = #{grabtime,jdbcType=TIMESTAMP},
+      PickUpTime = #{pickuptime,jdbcType=TIMESTAMP},
+      PickUpLongitude = #{pickuplongitude,jdbcType=DOUBLE},
+      PickUpLatitude = #{pickuplatitude,jdbcType=DOUBLE},
+      GrabLongitude = #{grablongitude,jdbcType=DOUBLE},
+      GrabLatitude = #{grablatitude,jdbcType=DOUBLE},
+      DoneLongitude = #{donelongitude,jdbcType=DOUBLE},
+      DoneLatitude = #{donelatitude,jdbcType=DOUBLE},
+      OrderCommission = #{ordercommission,jdbcType=DOUBLE},
+      SettleMoney = #{settlemoney,jdbcType=DOUBLE}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

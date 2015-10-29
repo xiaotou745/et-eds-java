@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderRegionDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderRegion" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
+    <result column="Name" property="name" jdbcType="NVARCHAR" />
+    <result column="Coordinate" property="coordinate" jdbcType="VARCHAR" />
+    <result column="ParentId" property="parentid" jdbcType="INTEGER" />
+    <result column="Status" property="status" jdbcType="TINYINT" />
+    <result column="WaitingCount" property="waitingcount" jdbcType="INTEGER" />
+    <result column="Distributioning" property="distributioning" jdbcType="INTEGER" />
+    <result column="DoneCount" property="donecount" jdbcType="INTEGER" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
+    <result column="OptTime" property="opttime" jdbcType="TIMESTAMP" />
+    <result column="OptName" property="optname" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, BusinessId, Name, Coordinate, ParentId, Status, WaitingCount, Distributioning, 
+    DoneCount, CreateTime, CreateName, OptTime, OptName
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderRegion
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from OrderRegion
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.OrderRegion" >
+    insert into OrderRegion (Id, BusinessId, Name, 
+      Coordinate, ParentId, Status, 
+      WaitingCount, Distributioning, DoneCount, 
+      CreateTime, CreateName, OptTime, 
+      OptName)
+    values (#{id,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, #{name,jdbcType=NVARCHAR}, 
+      #{coordinate,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{waitingcount,jdbcType=INTEGER}, #{distributioning,jdbcType=INTEGER}, #{donecount,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=NVARCHAR}, #{opttime,jdbcType=TIMESTAMP}, 
+      #{optname,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.OrderRegion" >
+    insert into OrderRegion
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="businessid != null" >
+        BusinessId,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="coordinate != null" >
+        Coordinate,
+      </if>
+      <if test="parentid != null" >
+        ParentId,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="waitingcount != null" >
+        WaitingCount,
+      </if>
+      <if test="distributioning != null" >
+        Distributioning,
+      </if>
+      <if test="donecount != null" >
+        DoneCount,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="createname != null" >
+        CreateName,
+      </if>
+      <if test="opttime != null" >
+        OptTime,
+      </if>
+      <if test="optname != null" >
+        OptName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="coordinate != null" >
+        #{coordinate,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="waitingcount != null" >
+        #{waitingcount,jdbcType=INTEGER},
+      </if>
+      <if test="distributioning != null" >
+        #{distributioning,jdbcType=INTEGER},
+      </if>
+      <if test="donecount != null" >
+        #{donecount,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null" >
+        #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="opttime != null" >
+        #{opttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optname != null" >
+        #{optname,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderRegion" >
+    update OrderRegion
+    <set >
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        Name = #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="coordinate != null" >
+        Coordinate = #{coordinate,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        ParentId = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="waitingcount != null" >
+        WaitingCount = #{waitingcount,jdbcType=INTEGER},
+      </if>
+      <if test="distributioning != null" >
+        Distributioning = #{distributioning,jdbcType=INTEGER},
+      </if>
+      <if test="donecount != null" >
+        DoneCount = #{donecount,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null" >
+        CreateName = #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="opttime != null" >
+        OptTime = #{opttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optname != null" >
+        OptName = #{optname,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderRegion" >
+    update OrderRegion
+    set BusinessId = #{businessid,jdbcType=INTEGER},
+      Name = #{name,jdbcType=NVARCHAR},
+      Coordinate = #{coordinate,jdbcType=VARCHAR},
+      ParentId = #{parentid,jdbcType=INTEGER},
+      Status = #{status,jdbcType=TINYINT},
+      WaitingCount = #{waitingcount,jdbcType=INTEGER},
+      Distributioning = #{distributioning,jdbcType=INTEGER},
+      DoneCount = #{donecount,jdbcType=INTEGER},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      CreateName = #{createname,jdbcType=NVARCHAR},
+      OptTime = #{opttime,jdbcType=TIMESTAMP},
+      OptName = #{optname,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

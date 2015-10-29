@@ -46,12 +46,39 @@ public class OrderChild implements Serializable {
     private String wxcodeurl;
 
     private Short thirdpaystatus;
+    private Short status;
+    private Double orderCommission;
+    private Double settleMoney;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public Short getStatus() {
+		return status;
+	}
+
+	public void setStatus(Short status) {
+		this.status = status;
+	}
+
+	public Double getOrderCommission() {
+		return orderCommission;
+	}
+
+	public void setOrderCommission(Double orderCommission) {
+		this.orderCommission = orderCommission;
+	}
+
+	public Double getSettleMoney() {
+		return settleMoney;
+	}
+
+	public void setSettleMoney(Double settleMoney) {
+		this.settleMoney = settleMoney;
+	}
+
+	public void setId(Long id) {
         this.id = id;
     }
 

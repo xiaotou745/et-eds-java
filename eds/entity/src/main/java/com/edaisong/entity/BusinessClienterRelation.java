@@ -20,8 +20,17 @@ public class BusinessClienterRelation {
     private Date updatetime;
 
     private Short isbind;
+    private Short auditStatus;
 
-    public Integer getId() {
+    public Short getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(Short auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+	public Integer getId() {
         return id;
     }
 

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderRegionLogDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderRegionLog" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="OrderRegionId" property="orderregionid" jdbcType="INTEGER" />
+    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
+    <result column="Name" property="name" jdbcType="NVARCHAR" />
+    <result column="Coordinate" property="coordinate" jdbcType="VARCHAR" />
+    <result column="ParentId" property="parentid" jdbcType="INTEGER" />
+    <result column="Status" property="status" jdbcType="TINYINT" />
+    <result column="OptType" property="opttype" jdbcType="INTEGER" />
+    <result column="OptTime" property="opttime" jdbcType="TIMESTAMP" />
+    <result column="OptName" property="optname" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, OrderRegionId, BusinessId, Name, Coordinate, ParentId, Status, OptType, OptTime, 
+    OptName
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderRegionLog
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from OrderRegionLog
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.OrderRegionLog" >
+    insert into OrderRegionLog (Id, OrderRegionId, BusinessId, 
+      Name, Coordinate, ParentId, 
+      Status, OptType, OptTime, 
+      OptName)
+    values (#{id,jdbcType=INTEGER}, #{orderregionid,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, 
+      #{name,jdbcType=NVARCHAR}, #{coordinate,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{opttype,jdbcType=INTEGER}, #{opttime,jdbcType=TIMESTAMP}, 
+      #{optname,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.OrderRegionLog" >
+    insert into OrderRegionLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orderregionid != null" >
+        OrderRegionId,
+      </if>
+      <if test="businessid != null" >
+        BusinessId,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="coordinate != null" >
+        Coordinate,
+      </if>
+      <if test="parentid != null" >
+        ParentId,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="opttype != null" >
+        OptType,
+      </if>
+      <if test="opttime != null" >
+        OptTime,
+      </if>
+      <if test="optname != null" >
+        OptName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderregionid != null" >
+        #{orderregionid,jdbcType=INTEGER},
+      </if>
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="coordinate != null" >
+        #{coordinate,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="opttype != null" >
+        #{opttype,jdbcType=INTEGER},
+      </if>
+      <if test="opttime != null" >
+        #{opttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optname != null" >
+        #{optname,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderRegionLog" >
+    update OrderRegionLog
+    <set >
+      <if test="orderregionid != null" >
+        OrderRegionId = #{orderregionid,jdbcType=INTEGER},
+      </if>
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        Name = #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="coordinate != null" >
+        Coordinate = #{coordinate,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        ParentId = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="opttype != null" >
+        OptType = #{opttype,jdbcType=INTEGER},
+      </if>
+      <if test="opttime != null" >
+        OptTime = #{opttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optname != null" >
+        OptName = #{optname,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderRegionLog" >
+    update OrderRegionLog
+    set OrderRegionId = #{orderregionid,jdbcType=INTEGER},
+      BusinessId = #{businessid,jdbcType=INTEGER},
+      Name = #{name,jdbcType=NVARCHAR},
+      Coordinate = #{coordinate,jdbcType=VARCHAR},
+      ParentId = #{parentid,jdbcType=INTEGER},
+      Status = #{status,jdbcType=TINYINT},
+      OptType = #{opttype,jdbcType=INTEGER},
+      OptTime = #{opttime,jdbcType=TIMESTAMP},
+      OptName = #{optname,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
