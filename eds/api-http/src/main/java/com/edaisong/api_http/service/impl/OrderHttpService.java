@@ -2,6 +2,9 @@ package com.edaisong.api_http.service.impl;
 
 import java.util.List;
 
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +13,9 @@ import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
@@ -157,5 +162,19 @@ public class OrderHttpService implements IOrderHttpService {
 		httpResultModel.setResult(orderStatisticsResp);
 		return httpResultModel;
 	}
-
+	/**
+	 *  骑士端获取店内任务
+	 * @version 3.0  
+	 * @author CaoHeYang
+	 * @date 20151030
+	 * @param para
+	 * @return
+	 */
+	@POST
+	@Path("/getinstoretask")
+	@Override
+	public HttpResultModel<InStoreTask>  getInStoreTask(InStoreTaskReq para){
+		 HttpResultModel<InStoreTask> res=new  HttpResultModel<InStoreTask>();
+		 return res;
+	}
 }

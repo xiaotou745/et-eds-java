@@ -80,6 +80,7 @@ import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -87,6 +88,7 @@ import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
+import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
@@ -1169,6 +1171,18 @@ public class OrderService implements IOrderService {
 		}
 		return this.orderDao.busTaskList(req);
 	}
+	
+	/**
+	 *  骑士端获取店内任务
+	 * @version 3.0  
+	 * @author CaoHeYang
+	 * @date 20151030
+	 * @param para
+	 * @return
+	 */
+	 public  InStoreTask  getInStoreTask(InStoreTaskReq para){
+		 return null;
+	 }
 
 	@Override
 	public List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) {

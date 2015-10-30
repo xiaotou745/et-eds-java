@@ -8,7 +8,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.QueryOrderReq;
@@ -110,5 +112,16 @@ public interface IOrderHttpService {
 	@Path("/orderstatisticsc")
 	public HttpResultModel<OrderStatisticsCResp> orderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
 
+	/**
+	 *  骑士端获取店内任务
+	 * @version 3.0  
+	 * @author CaoHeYang
+	 * @date 20151030
+	 * @param para
+	 * @return
+	 */
+	@POST
+	@Path("/getinstoretask")
+	public HttpResultModel<InStoreTask>  getInStoreTask(InStoreTaskReq para);
 
 }
