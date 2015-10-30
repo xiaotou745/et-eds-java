@@ -2,17 +2,16 @@ package com.edaisong.api.service.inter;
 
 import java.util.Date;
 import java.util.List;
-
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessOptionLog;
-import com.edaisong.entity.GroupBusiness;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
-import com.edaisong.entity.req.BusinessLoginReq;
 import com.edaisong.entity.req.BusinessMoney;
+import com.edaisong.entity.req.IsAllowInputMoneyReq;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.PagedBusinessReq;
@@ -107,5 +106,14 @@ public interface IBusinessService {
 	 * @date 20150831
 	 */
     void updateBBalanceAndWithdraw(BusinessMoney businessMoney);
+    
+	/**
+	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要  默认0
+	 * @author CaoHeYang
+	 * @date 20151030
+	 * @param par
+	 * @return
+	 */
+	  Integer getIsAllowInputMoney(IsAllowInputMoneyReq par);
     
 }

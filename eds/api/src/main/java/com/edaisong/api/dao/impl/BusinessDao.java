@@ -20,6 +20,7 @@ import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessStatus;
+import com.edaisong.entity.req.IsAllowInputMoneyReq;
 import com.edaisong.entity.req.PagedBusinessReq;
 
 @Repository
@@ -165,5 +166,17 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	@Override
 	public BusinessStatus getUserStatus(int userid) {
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getUserStatus", userid);
+	}
+	
+	/**
+	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要  默认0
+	 * @author CaoHeYang
+	 * @date 20151030
+	 * @param businessId
+	 * @return
+	 */
+	@Override
+	public  Integer getIsAllowInputMoney(Long businessId){
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getIsAllowInputMoney", businessId);
 	}
 }

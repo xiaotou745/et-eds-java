@@ -3,6 +3,7 @@ package com.edaisong.api.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.GroupBusiness;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusinessDetailModel;
@@ -31,6 +33,7 @@ import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.BusinessMoney;
+import com.edaisong.entity.req.IsAllowInputMoneyReq;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
@@ -352,4 +355,15 @@ public class BusinessService implements IBusinessService {
 		businessBalanceRecordDao.insert(businessBalanceRecord);
 	}
 
+	/**
+	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要  默认0
+	 * @author CaoHeYang
+	 * @date 20151030
+	 * @param par
+	 * @return
+	 */
+	@Override
+	public  Integer getIsAllowInputMoney(IsAllowInputMoneyReq par){
+	 return iBusinessDao.getIsAllowInputMoney(par.getBusinessId());
+	}
 }
