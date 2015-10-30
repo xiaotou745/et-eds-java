@@ -1,5 +1,7 @@
 package com.edaisong.api.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.OrderRegion;
 
 public interface IOrderRegionDao {
@@ -14,4 +16,10 @@ public interface IOrderRegionDao {
     int updateByPrimaryKeySelective(OrderRegion record);
 
     int updateByPrimaryKey(OrderRegion record);
+    
+    /*
+     * 获取商户区域信息
+     * wangchao
+     */
+    List<OrderRegion> getOrderRegion(Integer businessId);
 }

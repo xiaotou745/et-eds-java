@@ -468,7 +468,7 @@
 		#{businessId,jdbcType=INTEGER};
 	</update>
 
-	<!-- 获取用户状态信息  add by caoheyang 20150911-->
+	<!-- 获取商家是否需要录入金额才可以发单 0 需要 1 不需要  默认0 20151030 caoheyang-->
 	<select id="getUserStatus" resultType="com.edaisong.entity.domain.BusinessStatus"
 		parameterType="java.lang.Long">
 		select Id as userid,[status] as
@@ -476,4 +476,9 @@
 		from dbo.business with(nolock) WHERE id=#{userid,jdbcType=INTEGER}
 	</select>
 
+  	<!-- 获取用户状态信息  add by caoheyang 20150911-->
+	<select id="getIsAllowInputMoney" resultType="java.lang.Integer"
+		parameterType="java.lang.Long">
+	  SELECT IsAllowInputMoney FROM dbo.business(nolock) where Id=#{businessId}
+	</select>
 </mapper>
