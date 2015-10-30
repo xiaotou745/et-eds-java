@@ -84,6 +84,8 @@ import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.domain.RegionOrderDetail;
+import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
@@ -1166,6 +1168,16 @@ public class OrderService implements IOrderService {
 			req.setCityName("");
 		}
 		return this.orderDao.busTaskList(req);
+	}
+
+	@Override
+	public List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) {
+		return orderDao.queryTodayOrderDetail(businessId);
+	}
+
+	@Override
+	public List<RegionOrderTotal> queryTodayOrderTotal(Long businessId) {
+		return orderDao.queryTodayOrderTotal(businessId);
 	}
 
 }
