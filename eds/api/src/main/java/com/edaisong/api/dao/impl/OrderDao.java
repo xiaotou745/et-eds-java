@@ -25,6 +25,8 @@ import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.domain.RegionOrderDetail;
+import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
@@ -358,6 +360,18 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public PagedResponse<BusTaskList> busTaskList(PagedBusTaskListReq req){
 		return  getReadOnlySqlSessionUtil().selectPageList(
 				"com.edaisong.api.dao.inter.IOrderDao.busTaskList", req);
+	}
+
+	@Override
+	public List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) {
+		return  getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderDao.queryTodayOrderDetail", businessId);
+	}
+
+	@Override
+	public List<RegionOrderTotal> queryTodayOrderTotal(Long businessId) {
+		return  getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderDao.queryTodayOrderTotal", businessId);
 	}
 	
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.entity.OrderRegion;
+import com.edaisong.entity.req.OrderRegionReq;
 @Repository
 public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
 
@@ -47,9 +48,9 @@ public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
 	}
 
 	@Override
-	public List<OrderRegion> getOrderRegion(Integer businessId) {
+	public List<OrderRegion> getOrderRegion(OrderRegionReq orderRegionReq) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderRegionDao.getOrderRegion", businessId);
+				"com.edaisong.api.dao.inter.IOrderRegionDao.getOrderRegion", orderRegionReq);
 	}
 
 }

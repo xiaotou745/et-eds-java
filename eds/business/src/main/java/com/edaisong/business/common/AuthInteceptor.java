@@ -18,6 +18,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 			if (!isLogin && 
 				!request.getServletPath().equals("/account/login")&& 
 				!request.getServletPath().equals("/account/code")&& 
+				!request.getServletPath().equals("/order/todaylist")&& 
 				!request.getServletPath().equals("/group/return_url")) {
 				response.sendRedirect(basePath + "/");
 				return false;
@@ -52,7 +53,9 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 						return true;
 					}
 				} else {
-					if (request.getServletPath().equals("/index")|| 
+					if (request.getServletPath().equals("/index")||
+						 request.getServletPath().equals("/orderregion/list")||
+						 request.getServletPath().equals("/order/todaylist")||
 					    request.getServletPath().equals("/order/publish")||
 					    request.getServletPath().equals("/order/detail")||
 					    request.getServletPath().equals("/order/list")||
