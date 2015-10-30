@@ -3,6 +3,8 @@ package com.edaisong.api.dao.inter;
 import java.util.List;
 
 import com.edaisong.entity.OrderRegion;
+import com.edaisong.entity.req.OrderRegionReq;
+import com.edaisong.entity.resp.OrderRegionResp;
 
 public interface IOrderRegionDao {
     int deleteByPrimaryKey(Integer id);
@@ -21,5 +23,5 @@ public interface IOrderRegionDao {
      * 获取商户区域信息
      * wangchao
      */
-    List<OrderRegion> getOrderRegion(Integer businessId);
+    List<OrderRegion> getOrderRegion(OrderRegionReq orderRegionReq);
 }

@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.edaisong.entity.common.HttpResultModel; 
+import com.edaisong.entity.req.OrderRegionReq;
 import com.edaisong.entity.resp.OrderRegionResp;
 
 @Path("/orderregion")
@@ -19,6 +20,6 @@ public interface IOrderRegionHttpService {
 	 */
 	@POST
 	@Path("/getorderregion")
-	public HttpResultModel<List<OrderRegionResp>> getOrderRegion(Integer businessId);
+	public HttpResultModel<List<OrderRegionResp>> getOrderRegion(OrderRegionReq orderRegionReq);
 
 }

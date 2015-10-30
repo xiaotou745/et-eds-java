@@ -13,6 +13,7 @@ import com.edaisong.api_http.service.inter.IOrderRegionHttpService;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.req.OrderRegionReq;
 import com.edaisong.entity.resp.OrderRegionResp; 
 import com.edaisong.entity.resp.TwoOrderRegion;
 
@@ -24,13 +25,13 @@ public class OrderRegionHttpService implements IOrderRegionHttpService {
 	
 	@Override
 	public HttpResultModel<List<OrderRegionResp>> getOrderRegion(
-			Integer businessId) { 
+			OrderRegionReq orderRegionReq) { 
 		HttpResultModel<List<OrderRegionResp>> result=new HttpResultModel<List<OrderRegionResp>>();
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
 		List<OrderRegionResp> orderRegionRespList =  new ArrayList<OrderRegionResp>();
 		
-		List<OrderRegion> orderRegionList = iOrderRegionService.getOrderRegion(businessId);
+		List<OrderRegion> orderRegionList = iOrderRegionService.getOrderRegion(orderRegionReq);
 		
 		if(orderRegionList!=null && orderRegionList.size()>0){
 			//获取一级区域信息
