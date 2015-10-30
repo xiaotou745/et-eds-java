@@ -1,6 +1,7 @@
 package com.edaisong.business.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +18,8 @@ import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.OrderListModel;
+import com.edaisong.entity.domain.RegionOrderDetail;
+import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderReq;
@@ -200,5 +203,30 @@ public class OrderController {
 		OrderResp resp = new OrderResp();
 		req.setBusinessid(UserContext.getCurrentContext(request).getBusinessID());
 		return orderService.getBalanceInfo(req);
+	}
+
+	/**
+	 * e代送新流程中的h5今日订单页面区域统计(给手机app用，当前站点不显示)
+	 * 根据区域查询订单数量
+	 * @author zhaohailong
+	 * @Date 20151029
+	 * @return
+	 */
+	@RequestMapping("todaytotal")
+	@ResponseBody
+	public List<RegionOrderTotal> todayTotal(Long businessId) {
+		return orderService.queryTodayOrderTotal(businessId);
+	}
+	/**
+	 * e代送新流程中的h5今日订单页面区域详情
+	 * 根据区域查询订单数量
+	 * @author zhaohailong
+	 * @Date 20151029
+	 * @return
+	 */
+	@RequestMapping("todaydetail")
+	@ResponseBody
+	public List<RegionOrderDetail> todayDetail(Long businessId) {
+		return orderService.queryTodayOrderDetail(businessId);
 	}
 }

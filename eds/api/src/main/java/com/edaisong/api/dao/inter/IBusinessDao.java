@@ -8,12 +8,14 @@ import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessStatus;
+import com.edaisong.entity.req.IsAllowInputMoneyReq;
 import com.edaisong.entity.req.PagedBusinessReq;
 
 public interface IBusinessDao {
@@ -114,4 +116,13 @@ public interface IBusinessDao {
 	 * @return
 	 */
 	BusinessStatus getUserStatus(int userid);
+	
+	/**
+	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要  默认0
+	 * @author CaoHeYang
+	 * @date 20151030
+	 * @param businessId
+	 * @return
+	 */
+	  Integer getIsAllowInputMoney(Long businessId);
 }
