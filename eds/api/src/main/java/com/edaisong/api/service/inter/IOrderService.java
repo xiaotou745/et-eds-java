@@ -255,7 +255,7 @@ public interface IOrderService {
 	 * @param businessId
 	 * @return
 	 */
-	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) ;
+	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) ;	
 	/**
 	 *  骑士端获取店内任务
 	 * @version 3.0  
@@ -265,4 +265,12 @@ public interface IOrderService {
 	 * @return
 	 */
 	 InStoreTask  getInStoreTask(InStoreTaskReq para);
+	/**
+	 * 获取指定区域下今日未完成的订单数量
+	 * @date 20151030
+	 * @author hailongzhao
+	 * @param regionId
+	 * @return
+	 */
+	Long queryIngOrderByRegionId(Long regionId) ;
 }

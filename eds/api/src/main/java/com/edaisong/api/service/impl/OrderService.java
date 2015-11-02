@@ -1194,4 +1194,9 @@ public class OrderService implements IOrderService {
 		return orderDao.queryTodayOrderTotal(businessId);
 	}
 
+	@Override
+	public Long queryIngOrderByRegionId(Long regionId) {
+		return orderDao.queryIngOrderByRegionId(regionId);
+	}
+
 }

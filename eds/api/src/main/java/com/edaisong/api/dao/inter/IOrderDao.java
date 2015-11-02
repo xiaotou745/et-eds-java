@@ -258,4 +258,12 @@ public interface IOrderDao {
 	 * @return
 	 */
 	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) ;
+	/**
+	 * 获取指定区域下今日未完成的订单数量
+	 * @date 20151030
+	 * @author hailongzhao
+	 * @param regionId
+	 * @return
+	 */
+	Long queryIngOrderByRegionId(Long regionId) ;
 }
