@@ -24,6 +24,7 @@ import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
+import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
@@ -78,6 +79,7 @@ import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.InStoreOrderRegionInfo;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderCommission;
+import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.QueryOrder;
@@ -90,6 +92,7 @@ import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderDetailCReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderRegionReq;
@@ -145,7 +148,8 @@ public class OrderService implements IOrderService {
 	@Autowired
 	private IOrderRegionDao orderRegionDao;
 	
-
+	@Autowired
+	private IOrderGrabDao iOrderGrabDao;
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -1451,6 +1455,10 @@ public class OrderService implements IOrderService {
 		return PublishOrderReturnEnum.VerificationSuccess;
 	}
 	
-	
+		@Override
+	public OrderGrabDetailModel getMyOrderDetailC(
+			OrderDetailCReq orderDetailCReq) {
+		 return iOrderGrabDao.getMyOrderDetailC(orderDetailCReq);
+	}
 
 }

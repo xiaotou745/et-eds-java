@@ -35,6 +35,10 @@ public enum OrderFrom {
 	 */
 	Tourism(6, "首旅"),
 	/**
+	 * 首旅
+	 */
+	FastOrder(10, "门店高速版"),
+	/**
 	 * 商家版后台
 	 */
 	BusinessWeb(99, "商户web版"),
