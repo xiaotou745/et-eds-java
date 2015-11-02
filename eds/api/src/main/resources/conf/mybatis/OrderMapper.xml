@@ -1594,7 +1594,7 @@ where   Status = 1
                FROM     dbo.[order] a ( NOLOCK )
                         JOIN dbo.OrderChild b ( NOLOCK ) ON a.id = b.OrderId
                         JOIN dbo.OrderRegion c ( NOLOCK ) ON b.OrderRegionOneId = c.id
-               WHERE    a.businessId=${businessId}
+               WHERE    a.businessId=#{businessId}
                			AND c.status=1
                			AND a.Platform = 2
                         AND b.OrderRegionOneId > 0
@@ -1618,7 +1618,7 @@ where   Status = 1
                FROM     dbo.[order] a ( NOLOCK )
                         JOIN dbo.OrderChild b ( NOLOCK ) ON a.id = b.OrderId
                         JOIN dbo.OrderRegion c ( NOLOCK ) ON b.OrderRegionTwoId = c.id
-               WHERE     a.businessId=${businessId}
+               WHERE     a.businessId=#{businessId}
                			AND c.status=1
                			AND a.Platform = 2
                         AND b.OrderRegionOneId > 0
@@ -1663,11 +1663,11 @@ where   Status = 1
                                     m.OrderRegionTwoId
                             FROM    [order] b ( NOLOCK )
                                     JOIN dbo.OrderChild m ( NOLOCK ) ON b.id = m.OrderId
-                            WHERE   b.businessId=${businessId}
+                            WHERE   b.businessId=#{businessId}
                             		AND b.Platform = 2
                                     AND CONVERT(VARCHAR(10), b.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
                                     AND m.OrderRegionOneId > 0
-                          ) mb ON  a.businessId=${businessId}
+                          ) mb ON  a.businessId=#{businessId}
                           		  AND a.status = 1
                                   AND ( mb.OrderRegionTwoId = 0
                                         AND a.Id = mb.OrderRegionOneId
@@ -1686,8 +1686,8 @@ where   Status = 1
             JOIN dbo.OrderChild b ( NOLOCK ) ON a.Id = b.OrderId
   WHERE     a.Platform = 2
             AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-            AND ( b.OrderRegionOneId = ${regionId}
-                  OR b.OrderRegionTwoId = ${regionId}
+            AND ( b.OrderRegionOneId = #{regionId}
+                  OR b.OrderRegionTwoId = #{regionId}
                 )
             AND b.Status IN ( 0, 2, 4 )
 	</select>
