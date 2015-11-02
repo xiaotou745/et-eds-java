@@ -492,9 +492,9 @@ select  b.id as BusinessId,
 b.name as BusinessName,b.address as BusinessAddress
 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(@cliernterPoint),0) as DistanceToBusiness,
 WaitingCounts
-from    BusinessClienterRelation a
-join dbo.business b on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER} 
-join (select ISNULL(SUM(WaitingCount),0) as  WaitingCounts,BusinessId from OrderRegion where Status=1 group by BusinessId ) c on a.BusinessId=c.BusinessId
+from    BusinessClienterRelation a (nolock)
+join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER} 
+join (select ISNULL(SUM(WaitingCount),0) as  WaitingCounts,BusinessId from OrderRegion (nolock) where Status=1 group by BusinessId ) c on a.BusinessId=c.BusinessId
 and c.WaitingCounts>0
 where   a.IsEnable = 1
 and a.IsBind = 1

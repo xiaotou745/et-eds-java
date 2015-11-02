@@ -143,17 +143,17 @@ select  a.id ,
         a.BusinessId ,
         a.HasChild ,
         a.ParentId
-from    OrderRegion a
+from    OrderRegion a (nolock)
         join ( select distinct
                         ( temp.BusinessId )
-               from     BusinessClienterRelation temp
+               from     BusinessClienterRelation temp (nolock)
                where    temp.IsEnable = 1
                         and temp.IsBind = 1
                         and  temp.ClienterId=#{clienterId,jdbcType=INTEGER} 
              ) as b on a.BusinessId = b.BusinessId  
         join ( select   ISNULL(SUM(WaitingCount), 0) as WaitingCounts ,
                         BusinessId
-               from     OrderRegion tempregion
+               from     OrderRegion tempregion (nolock)
                where    tempregion.Status = 1
                group by tempregion.BusinessId
              ) c on a.BusinessId = c.BusinessId

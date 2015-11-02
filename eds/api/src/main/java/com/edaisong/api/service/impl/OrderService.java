@@ -1380,12 +1380,12 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	 public  List<InStoreTask>  getInStoreTask(InStoreTaskReq para){
-		 List<InStoreTask>  list=businessDao.getInStoreTaskStroes(para);
-		 List<InStoreOrderRegionInfo> regionInfos=orderRegionDao.getInStoreOrderRegions(para);
-		 list.forEach(action->action.setList(
-				 regionInfos.stream().filter(
-						 predicate->predicate.getBusinessId()==action.getBusinessId()
-						 &&predicate.getParentId()==0).collect(Collectors.toList())));
+		 List<InStoreTask>  list=businessDao.getInStoreTaskStroes(para);  //获取当前骑士的所有含有未接单订单的 雇主信息
+		 List<InStoreOrderRegionInfo> regionInfos=orderRegionDao.getInStoreOrderRegions(para); //获取当前骑士的所有含有未接单订单的 雇主信息
+		 List<InStoreOrderRegionInfo> temp= regionInfos.stream().filter(predicate->predicate.getParentId()==0).collect(Collectors.toList()); //筛选出所有的一级区域
+		 temp.stream().filter(predicate->predicate.getHasChild()==1).
+		 			forEach(action->action.setChilds(regionInfos.stream().filter(pre->pre.getParentId()==action.getId()).collect(Collectors.toList())));  //为所有的一级区域中含有子区域的设置二级区域
+		 list.forEach(action->action.setList(temp.stream().filter(predicate->predicate.getBusinessId()==action.getBusinessId()).collect(Collectors.toList()))); //将所有的区域归类到对应的商家下
 		 return list;
 	 }
 
