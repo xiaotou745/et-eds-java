@@ -2,18 +2,13 @@ package com.edaisong.api.service.impl;
 
 import java.lang.Double;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.objenesis.instantiator.basic.NewInstanceInstantiator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +24,7 @@ import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
+import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
@@ -56,7 +52,6 @@ import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
-import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
@@ -78,12 +73,13 @@ import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
-import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.InStoreOrderRegionInfo;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderCommission;
+import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.QueryOrder;
@@ -96,6 +92,7 @@ import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderDetailCReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderRegionReq;
@@ -151,7 +148,8 @@ public class OrderService implements IOrderService {
 	@Autowired
 	private IOrderRegionDao orderRegionDao;
 	
-
+	@Autowired
+	private IOrderGrabDao iOrderGrabDao;
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -1387,7 +1385,17 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	 public  List<InStoreTask>  getInStoreTask(InStoreTaskReq para){
-		 return null;
+		 List<InStoreTask>  list=businessDao.getInStoreTaskStroes(para);  //获取当前骑士的所有含有未接单订单的 雇主信息
+		 List<InStoreOrderRegionInfo> regionInfos=orderRegionDao.getInStoreOrderRegions(para); //获取当前骑士的所有含有未接单订单的 雇主信息
+		 List<InStoreOrderRegionInfo> temp= regionInfos.stream().filter(predicate->predicate.getParentId()==0).collect(Collectors.toList()); //筛选出所有的一级区域
+		 temp.stream().filter(predicate->predicate.getHasChild()==1).
+		 			forEach(action->action.setChilds(regionInfos.stream().filter(pre->pre.getParentId()==action.getId()).collect(Collectors.toList())));  //为所有的一级区域中含有子区域的设置二级区域
+		 for (InStoreTask  action : list) {//将所有的区域归类到对应的商家下
+			 action.setList(temp.stream().filter(predicate->predicate.getBusinessId()==action.getBusinessId()).collect(Collectors.toList()));
+			 Double tempDis=ParseHelper.ToDouble(action.getDistanceToBusiness(), 0);
+			 action.setDistanceToBusiness(tempDis<1000?tempDis+"m":  ParseHelper.digitsNum( tempDis * 0.001,2)+"km");
+		}
+		 return list;
 	 }
 
 	@Override
@@ -1447,6 +1455,10 @@ public class OrderService implements IOrderService {
 		return PublishOrderReturnEnum.VerificationSuccess;
 	}
 	
-	
+		@Override
+	public OrderGrabDetailModel getMyOrderDetailC(
+			OrderDetailCReq orderDetailCReq) {
+		 return iOrderGrabDao.getMyOrderDetailC(orderDetailCReq);
+	}
 
 }

@@ -15,6 +15,8 @@ import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessStatus;
+import com.edaisong.entity.domain.InStoreTask;
+import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.IsAllowInputMoneyReq;
 import com.edaisong.entity.req.PagedBusinessReq;
 
@@ -125,4 +127,16 @@ public interface IBusinessDao {
 	 * @return
 	 */
 	  Integer getIsAllowInputMoney(Long businessId);
+	  
+		/**
+		 * 骑士端获取店内任务  获取当前骑士的所有含有未接单订单的 雇主信息
+		 * @version 3.0  
+		 * @author CaoHeYang
+		 * @date 20151102
+		 * @param para
+		 * @return
+		 */
+	    List<InStoreTask> getInStoreTaskStroes(InStoreTaskReq para);
+	    
+	    
 }

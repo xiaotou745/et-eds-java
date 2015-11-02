@@ -14,6 +14,7 @@ public class InStoreOrderRegionInfo {
 	private String regionName;
 	private int hasChild;
 	private int parentId;
+	private int businessId;
 	private List<InStoreOrderRegionInfo> childs;
 	/**
 	 * 区域id
@@ -98,6 +99,20 @@ public class InStoreOrderRegionInfo {
 	 */
 	public void setChilds(List<InStoreOrderRegionInfo> childs) {
 		this.childs = childs;
+	}
+	/**
+	 * 商户id
+	 * @return
+	 */
+	public int getBusinessId() {
+		return businessId;
+	}
+	/**
+	 * 商户id
+	 * @param businessId
+	 */
+	public void setBusinessId(int businessId) {
+		this.businessId = businessId;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.edaisong.core.util;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -290,5 +291,26 @@ public class ParseHelper {
 		} catch (Exception ex) {
 			return 0;
 		}
+	}
+	
+	/**
+	 * 按照指定的精度保留n位小数
+	 * @param numVaule 要处理的数值
+	 * @param digits 小数位数
+	 * @date 20151013
+	 * @author hailongzhao
+	 * @return
+	 */
+	public static String digitsNum(Object numVaule, int digits){
+		if (digits<0) {
+			digits=2;
+		}
+		String f=".0000000000";
+		String aString=f.substring(0, digits+1);
+		if (Double.parseDouble(numVaule.toString())==0d) {
+			return "0"+aString;
+		}
+		DecimalFormat decimalFormat=new DecimalFormat(aString);//构造方法的字符格式这里如果小数不足2位,会以0补足.
+		return decimalFormat.format(numVaule);
 	}
 }

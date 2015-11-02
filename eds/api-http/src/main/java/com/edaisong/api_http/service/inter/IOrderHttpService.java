@@ -7,9 +7,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.resp.MyOrderDetailResp;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderReq;
@@ -17,6 +19,7 @@ import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.req.OrderDetailCReq;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
@@ -153,5 +156,12 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/getinstoretask")
 	public HttpResultModel<List<InStoreTask>>  getInStoreTask(InStoreTaskReq para);
-
+	/*
+	 * 获取我的任务详情
+	 * wangchao
+	 */
+	@POST
+	@Path("/getmyorderdetailc")
+	public HttpResultModel<MyOrderDetailResp> getMyOrderDetailC(OrderDetailCReq orderDetailCReq);
+	
 }

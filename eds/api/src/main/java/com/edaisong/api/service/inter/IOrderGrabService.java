@@ -1,5 +1,12 @@
 package com.edaisong.api.service.inter;
 
+import java.util.List;
+
+import com.edaisong.entity.OrderGrab;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.FastOrderMapDetail;
+import com.edaisong.entity.domain.FastOrderModel;
+import com.edaisong.entity.req.PagedFastOrderSearchReq;
 import java.util.Date;
 import java.util.List;
 
@@ -40,26 +47,30 @@ import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
-
 public interface IOrderGrabService {
-	/**
-	 * æ·»åŠ æŠ¢å•è¡¨
+    int deleteById(Long id);
+    int insert(OrderGrab record);
+    OrderGrab selectById(Long id);
+    List<FastOrderMapDetail> getMapDetailById(Long id);
+    PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req);
+/**
+	 * Ìí¼ÓÇÀµ¥±í
 	 * 
 	 * @param req
-	 *            å‚æ•°
-	 * @author èƒ¡çµæ³¢
-	 * @Date 2015å¹´11æœˆ2æ—¥ 16:15:23
+	 *            ²ÎÊı
+	 * @author ºúÁé²¨
+	 * @Date 2015Äê11ÔÂ2ÈÕ 16:15:23
 	 * @return
 	 */	
 	int  add(OrderGrab record);
 	
 	/**
-	 * æŠ¢å•
+	 * ÇÀµ¥
 	 * 
 	 * @param req
-	 *            å‚æ•°
-	 * @author èƒ¡çµæ³¢
-	 * @Date 2015å¹´11æœˆ2æ—¥ 16:15:23
+	 *            ²ÎÊı
+	 * @author ºúÁé²¨
+	 * @Date 2015Äê11ÔÂ2ÈÕ 16:15:23
 	 * @return
 	 */	
 	OrderGrabResp GrabOrder(OrderGrabReq req);
