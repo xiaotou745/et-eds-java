@@ -26,13 +26,13 @@
     GrabTime, PickUpTime, PickUpLongitude, PickUpLatitude, GrabLongitude, GrabLatitude, 
     DoneLongitude, DoneLatitude, OrderCommission, SettleMoney
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from OrderGrab
     where Id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteById" parameterType="java.lang.Integer" >
     delete from OrderGrab
     where Id = #{id,jdbcType=INTEGER}
   </delete>
@@ -52,178 +52,111 @@
       #{donelatitude,jdbcType=DOUBLE}, #{ordercommission,jdbcType=DOUBLE}, #{settlemoney,jdbcType=DOUBLE}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.OrderGrab" >
-    insert into OrderGrab
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="orderid != null" >
-        OrderId,
-      </if>
-      <if test="graborderno != null" >
-        GrabOrderNo,
-      </if>
-      <if test="businessid != null" >
-        BusinessId,
-      </if>
-      <if test="clienterid != null" >
-        ClienterId,
-      </if>
-      <if test="ordercount != null" >
-        OrderCount,
-      </if>
-      <if test="status != null" >
-        Status,
-      </if>
-      <if test="actualdonedate != null" >
-        ActualDoneDate,
-      </if>
-      <if test="grabtime != null" >
-        GrabTime,
-      </if>
-      <if test="pickuptime != null" >
-        PickUpTime,
-      </if>
-      <if test="pickuplongitude != null" >
-        PickUpLongitude,
-      </if>
-      <if test="pickuplatitude != null" >
-        PickUpLatitude,
-      </if>
-      <if test="grablongitude != null" >
-        GrabLongitude,
-      </if>
-      <if test="grablatitude != null" >
-        GrabLatitude,
-      </if>
-      <if test="donelongitude != null" >
-        DoneLongitude,
-      </if>
-      <if test="donelatitude != null" >
-        DoneLatitude,
-      </if>
-      <if test="ordercommission != null" >
-        OrderCommission,
-      </if>
-      <if test="settlemoney != null" >
-        SettleMoney,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="orderid != null" >
-        #{orderid,jdbcType=INTEGER},
-      </if>
-      <if test="graborderno != null" >
-        #{graborderno,jdbcType=VARCHAR},
-      </if>
-      <if test="businessid != null" >
-        #{businessid,jdbcType=INTEGER},
-      </if>
-      <if test="clienterid != null" >
-        #{clienterid,jdbcType=INTEGER},
-      </if>
-      <if test="ordercount != null" >
-        #{ordercount,jdbcType=NCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="actualdonedate != null" >
-        #{actualdonedate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="grabtime != null" >
-        #{grabtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pickuptime != null" >
-        #{pickuptime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pickuplongitude != null" >
-        #{pickuplongitude,jdbcType=DOUBLE},
-      </if>
-      <if test="pickuplatitude != null" >
-        #{pickuplatitude,jdbcType=DOUBLE},
-      </if>
-      <if test="grablongitude != null" >
-        #{grablongitude,jdbcType=DOUBLE},
-      </if>
-      <if test="grablatitude != null" >
-        #{grablatitude,jdbcType=DOUBLE},
-      </if>
-      <if test="donelongitude != null" >
-        #{donelongitude,jdbcType=DOUBLE},
-      </if>
-      <if test="donelatitude != null" >
-        #{donelatitude,jdbcType=DOUBLE},
-      </if>
-      <if test="ordercommission != null" >
-        #{ordercommission,jdbcType=DOUBLE},
-      </if>
-      <if test="settlemoney != null" >
-        #{settlemoney,jdbcType=DOUBLE},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderGrab" >
-    update OrderGrab
-    <set >
-      <if test="orderid != null" >
-        OrderId = #{orderid,jdbcType=INTEGER},
-      </if>
-      <if test="graborderno != null" >
-        GrabOrderNo = #{graborderno,jdbcType=VARCHAR},
-      </if>
-      <if test="businessid != null" >
-        BusinessId = #{businessid,jdbcType=INTEGER},
-      </if>
-      <if test="clienterid != null" >
-        ClienterId = #{clienterid,jdbcType=INTEGER},
-      </if>
-      <if test="ordercount != null" >
-        OrderCount = #{ordercount,jdbcType=NCHAR},
-      </if>
-      <if test="status != null" >
-        Status = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="actualdonedate != null" >
-        ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="grabtime != null" >
-        GrabTime = #{grabtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pickuptime != null" >
-        PickUpTime = #{pickuptime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pickuplongitude != null" >
-        PickUpLongitude = #{pickuplongitude,jdbcType=DOUBLE},
-      </if>
-      <if test="pickuplatitude != null" >
-        PickUpLatitude = #{pickuplatitude,jdbcType=DOUBLE},
-      </if>
-      <if test="grablongitude != null" >
-        GrabLongitude = #{grablongitude,jdbcType=DOUBLE},
-      </if>
-      <if test="grablatitude != null" >
-        GrabLatitude = #{grablatitude,jdbcType=DOUBLE},
-      </if>
-      <if test="donelongitude != null" >
-        DoneLongitude = #{donelongitude,jdbcType=DOUBLE},
-      </if>
-      <if test="donelatitude != null" >
-        DoneLatitude = #{donelatitude,jdbcType=DOUBLE},
-      </if>
-      <if test="ordercommission != null" >
-        OrderCommission = #{ordercommission,jdbcType=DOUBLE},
-      </if>
-      <if test="settlemoney != null" >
-        SettleMoney = #{settlemoney,jdbcType=DOUBLE},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
+	 <!-- 快单列表页面 查询列集合 add by zhaohl 20151102 -->
+	<sql id="queryFrom">
+		SELECT  o.id ,
+        o.GrabOrderNo as orderNo ,
+        a.OrderFrom ,
+        b.Name as businessName,
+        b.PhoneNo as businessPhone,
+        ISNULL(c.TrueName, '') AS clienterName ,
+        ISNULL(c.PhoneNo, '') AS clienterPhoneNo ,
+        o.GrabTime ,
+        o.OrderRegionOneName ,
+        o.OrderRegionTwoName ,
+        o.ActualDoneDate ,
+        o.OrderCount ,
+        o.Status
+FROM    dbo.[order] a WITH ( NOLOCK )
+        JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
+        JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
+        JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
+        LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId
+<include refid="queryColumsWhere" />
+GROUP BY o.id ,
+        o.GrabOrderNo ,
+        a.OrderFrom ,
+        b.Name ,
+        b.PhoneNo,
+        c.TrueName ,
+        c.PhoneNo ,
+        o.GrabTime ,
+        o.OrderRegionOneName ,
+        o.OrderRegionTwoName ,
+        o.ActualDoneDate ,
+        o.OrderCount ,
+        o.Status
+	</sql>
+	 <!-- 快单列表页面 查询列集合 add by zhaohl 20151102 -->
+	<sql id="queryColumsWhere">
+		1=1
+		<if test="businessName != null and businessName != ''">
+			and b.Name=''${businessName}''
+		</if>
+		<if test="businessPhone != null and businessPhone!='' ">
+			and b.PhoneNo=''${businessPhone}''
+		</if>
+		<if test="orderNo != null and orderNo!=''">
+			and o.GrabOrderNo=''${orderNo}''
+		</if>
+		<if test="orderStatus != null and orderStatus>-1">
+			and o.Status=${orderStatus}
+		</if>
+		<if test="superManName != null and superManName!=''">
+			and c.TrueName=''${superManName}''
+		</if>
+		<if test="superManPhone != null and superManPhone!='' ">
+			and c.PhoneNo=''${superManPhone}''
+		</if>
+		<if test="orderGrabStart != null and orderGrabStart!=''">
+			and o.GrabTime>= ''${orderPubStart} 00:00:00''
+		</if>
+		<if test="orderGrabEnd != null and orderGrabEnd!=''">
+			and  ''${orderPubEnd} 23:59:59''>=o.GrabTime
+		</if>
+		<if test="businessCity != null and businessCity>-1">
+			and b.cityCode= ${businessCity}
+		</if>
+	</sql>
+
+	 <!-- 快单列表页面 查询列集合 add by zhaohl 20151102 -->
+	<select id="query" resultType="com.edaisong.entity.domain.FastOrderModel"
+		parameterType="com.edaisong.entity.req.PagedFastOrderSearchReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' id desc ',
+		' * ',
+		'
+		<include refid="queryFrom" />
+		',
+		' 1=1 ',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+	<select id="getMapDetailById" resultType="com.edaisong.entity.domain.FastOrderMapDetail"
+		parameterType="java.lang.Long">
+		SELECT  a.Pubdate ,
+                m.Latitude ,
+                m.Longitude ,
+                c.GrabTime ,
+                c.GrabLatitude ,
+                c.GrabLongitude ,
+                c.PickUpTime ,
+                c.PickUpLatitude ,
+                c.PickUpLongitude ,
+                b.ActualDoneDate ,
+                b.DoneLatitude ,
+                b.DoneLongitude
+        FROM    dbo.[order] a WITH ( NOLOCK )
+                JOIN OrderGrabChild b WITH ( NOLOCK ) ON a.Id = b.OrderId
+                JOIN dbo.OrderGrab c WITH ( NOLOCK ) ON c.id = b.GrabOrderId
+                JOIN business m WITH ( NOLOCK ) ON b.id = m.id
+                WHERE   c.Id = #{id,jdbcType=INTEGER}
+	</select>
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderGrab" >
     update OrderGrab
     set OrderId = #{orderid,jdbcType=INTEGER},
