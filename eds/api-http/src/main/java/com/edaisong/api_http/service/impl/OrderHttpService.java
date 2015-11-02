@@ -1,13 +1,8 @@
 package com.edaisong.api_http.service.impl;
 
 import java.util.List;
-
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
@@ -188,8 +183,6 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @param para
 	 * @return
 	 */
-	@POST
-	@Path("/getinstoretask")
 	@Override
 	public HttpResultModel<List<InStoreTask>>  getInStoreTask(InStoreTaskReq para){
 		 HttpResultModel<List<InStoreTask>> res=new  HttpResultModel<List<InStoreTask>>();

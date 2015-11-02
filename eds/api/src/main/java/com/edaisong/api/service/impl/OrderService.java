@@ -74,6 +74,7 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.InStoreOrderRegionInfo;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
@@ -1380,7 +1381,11 @@ public class OrderService implements IOrderService {
 	 */
 	 public  List<InStoreTask>  getInStoreTask(InStoreTaskReq para){
 		 List<InStoreTask>  list=businessDao.getInStoreTaskStroes(para);
-		 
+		 List<InStoreOrderRegionInfo> regionInfos=orderRegionDao.getInStoreOrderRegions(para);
+		 list.forEach(action->action.setList(
+				 regionInfos.stream().filter(
+						 predicate->predicate.getBusinessId()==action.getBusinessId()
+						 &&predicate.getParentId()==0).collect(Collectors.toList())));
 		 return list;
 	 }
 
