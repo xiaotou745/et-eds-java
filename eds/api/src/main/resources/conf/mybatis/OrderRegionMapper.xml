@@ -7,7 +7,7 @@
     <result column="Name" property="name" jdbcType="NVARCHAR" />
     <result column="Coordinate" property="coordinate" jdbcType="VARCHAR" />
     <result column="ParentId" property="parentid" jdbcType="INTEGER" />
-    <result column="HasChild" property="hasChild" jdbcType="BIT" />
+    <result column="HasChild" property="haschild" jdbcType="BIT" />
     <result column="Status" property="status" jdbcType="TINYINT" />
     <result column="WaitingCount" property="waitingcount" jdbcType="INTEGER" />
     <result column="Distributioning" property="distributioning" jdbcType="INTEGER" />
