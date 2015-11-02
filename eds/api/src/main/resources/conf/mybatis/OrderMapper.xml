@@ -389,6 +389,9 @@
 			<if test="basecommission != null">
 				basecommission,
 			</if>
+			<if test="platform != null">
+				platform,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderno != null">
@@ -558,6 +561,9 @@
 			</if>
 			<if test="basecommission != null">
 				#{basecommission,jdbcType=NUMERIC},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=INTEGER},
 			</if>
 		</trim>
 	</insert>

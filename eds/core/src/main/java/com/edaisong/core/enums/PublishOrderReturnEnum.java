@@ -11,6 +11,11 @@ public enum PublishOrderReturnEnum {
 	 */
 	Success(1,""),
 	/**
+	 * 验证成功
+	 */
+	
+	VerificationSuccess(2,""),
+	/**
 	 * 收货人手机号不能为空
 	 */
 	RecevicePhoneIsNULL(-1, "收货人手机号不能为空"), 
