@@ -69,7 +69,8 @@ public class AuthManageController {
 	public int updateRoleID(int userID,int newRoleID) {
 		return accountService.updateRoleID(userID, newRoleID);
 	}
-	@RequestMapping(value = "authlist", produces= "application/json; charset=utf-8")
+	//@RequestMapping(value = "authlist", produces= "application/json; charset=utf-8")
+	@RequestMapping("authlist")
 	@ResponseBody
 	public String getAuthList(int userID) {
 		List<MenuEntity> menuList = authorityMenuClassService.getAuthSettingList(userID);

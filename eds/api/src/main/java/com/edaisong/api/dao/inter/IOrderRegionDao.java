@@ -19,5 +19,5 @@ public interface IOrderRegionDao {
      */
     List<OrderRegion> getOrderRegion(OrderRegionReq orderRegionReq);
     
-    
+    int updateByPrimaryKeySelective(OrderRegion record);
 }

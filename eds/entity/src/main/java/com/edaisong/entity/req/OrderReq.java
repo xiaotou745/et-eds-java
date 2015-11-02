@@ -584,4 +584,23 @@ public class OrderReq {
 		public void setListOrderChild(List<OrderChild> listOrderChild) {
 			this.listOrderChild = listOrderChild;
 		}
+		
+		
+		 private Integer platform;
+		 private List<OrderRegionReq> listOrderRegion;
+			
+		    public Integer getPlatform() {
+				return platform;
+			}
+
+			public void setPlatform(Integer platform) {
+				this.platform = platform;
+			}
+		    public List<OrderRegionReq> getListOrderRegion() {
+				return listOrderRegion;
+			}
+
+			public void setListOrderRegion(List<OrderRegionReq> listOrderRegion) {
+				this.listOrderRegion = listOrderRegion;
+			}	
 }

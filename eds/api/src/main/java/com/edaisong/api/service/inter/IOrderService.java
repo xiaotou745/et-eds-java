@@ -29,6 +29,7 @@ import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
+import com.edaisong.entity.resp.OrderPushResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
@@ -124,6 +125,17 @@ public interface IOrderService {
 	 * @return
 	 */
 	OrderResp AddOrder(OrderReq req);
+	
+	/**
+	 * 发布订单 api调用
+	 * 
+	 * @param req
+	 *            参数
+	 * @author 胡灵波
+	 * @Date 2015年8月6日 09:51:47
+	 * @return
+	 */
+	OrderResp PushOrder(OrderReq req);
 
 	/**
 	 * 商户发单，点击按纽钱查询商户余额信息，以及该订单的结算信息

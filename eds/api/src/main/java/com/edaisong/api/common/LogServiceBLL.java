@@ -33,10 +33,12 @@ public class LogServiceBLL {
 	public void SystemActionLog(ActionLog logEngity) {
 		try {
 			if (logEngity.getStackTrace()!=null&&!logEngity.getStackTrace().isEmpty()) {
-				String alertBody=getAlertBody(logEngity);
 				String isSendMail = PropertyUtils.getProperty("IsSendMail");
-				if (isSendMail.equals("1")&&alertBody!=null&&!alertBody.isEmpty()) {
-					SystemUtils.sendAlertEmail(logEngity.getSourceSys()+"_java项目预警", alertBody);
+				if (isSendMail.equals("1")) {
+					String alertBody=getAlertBody(logEngity);
+					if (alertBody!=null&&!alertBody.isEmpty()) {
+						SystemUtils.sendAlertEmail(logEngity.getSourceSys()+"_java项目预警", alertBody);
+					}
 				}
 			}
 			//initLog4DB(logEngity);
@@ -74,12 +76,14 @@ public class LogServiceBLL {
 		try {
 			StringBuilder sb = new StringBuilder();
 			String stackTrace = "";
+			String propertyValue="";
 			for (Field field : fields) {
 				field.setAccessible(true);
+				propertyValue=field.get(logEngity)==null?"null":field.get(logEngity).toString();
 				if (field.getName().equals("stackTrace")) {
-					stackTrace = field.getName() + ":"+ field.get(logEngity).toString();
+					stackTrace = field.getName() + ":"+ propertyValue;
 				} else {
-					sb.append(field.getName() + ":"+ field.get(logEngity).toString() + "\n");
+					sb.append(field.getName() + ":"+ propertyValue + "\n");
 				}
 			}
 			sb.append(stackTrace);
@@ -92,9 +96,11 @@ public class LogServiceBLL {
 	private void initLog4DB(ActionLog logEngity) {
 		try {
 			MDC.clear();
+			String propertyValue="";
 			for (Field field : fields) {
 				field.setAccessible(true);
-				MDC.put(field.getName(), field.get(logEngity));
+				propertyValue=field.get(logEngity)==null?"null":field.get(logEngity).toString();
+				MDC.put(field.getName(), propertyValue);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
