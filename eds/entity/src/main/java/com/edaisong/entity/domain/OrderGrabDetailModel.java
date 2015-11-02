@@ -10,7 +10,13 @@ public class OrderGrabDetailModel {
     private String graborderno;
 
     private Integer businessid;
-
+    
+    private String businessName;
+    
+    private String businessPhone;
+    
+    private String businessAddress;
+    
     private Integer clienterid;
 
     private String ordercount;
@@ -121,5 +127,29 @@ public class OrderGrabDetailModel {
 
     public void setSettlemoney(Double settlemoney) {
         this.settlemoney = settlemoney;
-    } 
+    }
+
+	public String getBusinessName() {
+		return businessName;
+	}
+
+	public void setBusinessName(String businessName) {
+		this.businessName = businessName;
+	}
+
+	public String getBusinessPhone() {
+		return businessPhone;
+	}
+
+	public void setBusinessPhone(String businessPhone) {
+		this.businessPhone = businessPhone;
+	}
+
+	public String getBusinessAddress() {
+		return businessAddress;
+	}
+
+	public void setBusinessAddress(String businessAddress) {
+		this.businessAddress = businessAddress;
+	} 
 }

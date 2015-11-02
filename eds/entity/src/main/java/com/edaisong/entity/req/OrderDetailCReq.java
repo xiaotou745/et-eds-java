@@ -1,11 +1,14 @@
 package com.edaisong.entity.req;
 
 public class OrderDetailCReq {
+	
 	private Integer clienterId;
 	
-	private Integer orderId;
+	private Integer grabOrderId;
 	
-	private String orderNo;
+	private Integer grabOrderChildId;
+	
+	private String grabOrderNo;
 
 	public Integer getClienterId() {
 		return clienterId;
@@ -15,19 +18,27 @@ public class OrderDetailCReq {
 		this.clienterId = clienterId;
 	}
 
-	public Integer getOrderId() {
-		return orderId;
+	public Integer getGrabOrderId() {
+		return grabOrderId;
 	}
 
-	public void setOrderId(Integer orderId) {
-		this.orderId = orderId;
+	public void setGrabOrderId(Integer grabOrderId) {
+		this.grabOrderId = grabOrderId;
 	}
 
-	public String getOrderNo() {
-		return orderNo;
+	public Integer getGrabOrderChildId() {
+		return grabOrderChildId;
 	}
 
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
+	public void setGrabOrderChildId(Integer grabOrderChildId) {
+		this.grabOrderChildId = grabOrderChildId;
 	}
+
+	public String getGrabOrderNo() {
+		return grabOrderNo;
+	}
+
+	public void setGrabOrderNo(String grabOrderNo) {
+		this.grabOrderNo = grabOrderNo;
+	} 
 }
