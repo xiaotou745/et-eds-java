@@ -1,5 +1,5 @@
 package com.edaisong.entity.resp;
 
-public class MyGrabOrderCResp {
+public class MyOrderGrabCResp {
 
 }

@@ -1,6 +1,6 @@
 package com.edaisong.entity.req;
 
-public class MyGrabOrderCReq {
+public class MyOrderGrabCReq {
 	
 	private Integer clienterId;
 	
