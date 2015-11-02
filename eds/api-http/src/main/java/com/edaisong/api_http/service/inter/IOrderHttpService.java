@@ -9,9 +9,13 @@ import javax.ws.rs.Produces;
 
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.CardBindAlipayReq;
+import com.edaisong.entity.req.OrderPushReq;
+import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
@@ -39,6 +43,18 @@ public interface IOrderHttpService {
 	@Path("testval")
 	public String testVal();
 	
+	
+	/**
+	 * 发布订单
+	 * @author 胡灵波
+	 * @date 2015年10月30日 11:29:00
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/push")
+	public OrderResp Push(OrderReq req);
 	
 	/**
 	 * B端任务统计接口

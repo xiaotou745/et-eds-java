@@ -2,6 +2,9 @@ package com.edaisong.api_http.service.impl;
 
 import java.util.List;
 
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +13,13 @@ import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.AccountBillDayResultModel;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.OrderPushReq;
+import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
@@ -36,6 +43,22 @@ public class OrderHttpService implements IOrderHttpService {
 
 	@Autowired
 	private IOrderService orderService;
+
+
+	/**
+	 * 发布订单
+	 * @author 胡灵波
+	 * @date 2015年10月30日 11:29:00
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public OrderResp Push(OrderReq req) {
+		
+		OrderResp resp= orderService.PushOrder(req);			
+		return resp;
+	}
 
 	/**
 	 * B端任务统计接口
