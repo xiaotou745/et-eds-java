@@ -36,8 +36,8 @@ public class OrderRegionController {
 	public ModelAndView list(HttpServletRequest request) {
 		OrderRegionReq orderRegionReq=new OrderRegionReq();
 		UserContext context=UserContext.getCurrentContext(request);
-		orderRegionReq.setBusinessId(context.getBusinessID());
-		orderRegionReq.setStatus(1);
+/*		orderRegionReq.setBusinessId(context.getBusinessID());
+		orderRegionReq.setStatus(1);*/
 		List<OrderRegion> listData=orderRegionService.getOrderRegion(orderRegionReq);
 		ModelAndView view = new ModelAndView("businessView");
 		view.addObject("subtitle", "区域管理");
