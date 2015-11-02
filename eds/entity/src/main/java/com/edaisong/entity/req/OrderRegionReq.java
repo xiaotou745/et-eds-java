@@ -8,9 +8,9 @@ import com.edaisong.entity.OrderChild;
 
 public class OrderRegionReq {
 
-    //private Integer businessId;
+private Integer businessId;
 	
-	/*private Integer status;
+	private Integer status;
 
 	public Integer getBusinessId() {
 		return businessId;
@@ -26,7 +26,7 @@ public class OrderRegionReq {
 
 	public void setStatus(Integer status) {
 		this.status = status;
-	}*/
+	}
 		private Integer orderRegionOneId;
 		
 		private Integer orderRegionTwoId;

@@ -7,7 +7,7 @@
     <result column="GrabOrderNo" property="graborderno" jdbcType="VARCHAR" />
     <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
     <result column="ClienterId" property="clienterid" jdbcType="INTEGER" />
-    <result column="OrderCount" property="ordercount" jdbcType="NCHAR" />
+    <result column="orderCount" property="orderCount" jdbcType="NCHAR" />
     <result column="Status" property="status" jdbcType="TINYINT" />
     <result column="ActualDoneDate" property="actualdonedate" jdbcType="TIMESTAMP" />
     <result column="GrabTime" property="grabtime" jdbcType="TIMESTAMP" />
@@ -22,7 +22,7 @@
     <result column="SettleMoney" property="settlemoney" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, OrderId, GrabOrderNo, BusinessId, ClienterId, OrderCount, Status, ActualDoneDate, 
+    Id, OrderId, GrabOrderNo, BusinessId, ClienterId, orderCount, Status, ActualDoneDate, 
     GrabTime, PickUpTime, PickUpLongitude, PickUpLatitude, GrabLongitude, GrabLatitude, 
     DoneLongitude, DoneLatitude, OrderCommission, SettleMoney
   </sql>
@@ -54,24 +54,18 @@
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.OrderGrab" >
     insert into OrderGrab
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="orderid != null" >
-        OrderId,
-      </if>
+    <trim prefix="(" suffix=")" suffixOverrides="," >    
       <if test="graborderno != null" >
         GrabOrderNo,
-      </if>
-      <if test="businessid != null" >
-        BusinessId,
+      </if>    
+        <if test="businessid != null" >
+        businessid,
       </if>
       <if test="clienterid != null" >
         ClienterId,
       </if>
-      <if test="ordercount != null" >
-        OrderCount,
+      <if test="orderCount != null" >
+        orderCount,
       </if>
       <if test="status != null" >
         Status,
@@ -103,31 +97,31 @@
       <if test="donelatitude != null" >
         DoneLatitude,
       </if>
-      <if test="ordercommission != null" >
-        OrderCommission,
+      <if test="orderRegionOneId != null" >
+        orderRegionOneId,
       </if>
-      <if test="settlemoney != null" >
-        SettleMoney,
+      <if test="orderRegionOneName != null" >
+        orderRegionOneName,
+      </if>      
+       <if test="orderRegionTwoId != null" >
+        orderRegionTwoId,
+      </if>
+      <if test="orderRegionTwoName != null" >
+        orderRegionTwoName,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="orderid != null" >
-        #{orderid,jdbcType=INTEGER},
-      </if>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >    
       <if test="graborderno != null" >
         #{graborderno,jdbcType=VARCHAR},
-      </if>
+      </if>         
       <if test="businessid != null" >
         #{businessid,jdbcType=INTEGER},
       </if>
       <if test="clienterid != null" >
         #{clienterid,jdbcType=INTEGER},
       </if>
-      <if test="ordercount != null" >
-        #{ordercount,jdbcType=NCHAR},
+      <if test="orderCount != null" >
+        #{orderCount,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
@@ -159,11 +153,18 @@
       <if test="donelatitude != null" >
         #{donelatitude,jdbcType=DOUBLE},
       </if>
-      <if test="ordercommission != null" >
-        #{ordercommission,jdbcType=DOUBLE},
+      <if test="orderRegionOneId != null" >
+        #{orderRegionOneId,jdbcType=INTEGER},
       </if>
-      <if test="settlemoney != null" >
-        #{settlemoney,jdbcType=DOUBLE},
+      <if test="orderRegionOneName != null" >
+        #{orderRegionOneName,jdbcType=VARCHAR},
+      </if>
+      
+       <if test="orderRegionTwoId != null" >
+        #{orderRegionTwoId ,jdbcType=INTEGER},
+      </if>
+      <if test="orderRegionTwoName != null" >
+        #{orderRegionTwoName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -182,8 +183,8 @@
       <if test="clienterid != null" >
         ClienterId = #{clienterid,jdbcType=INTEGER},
       </if>
-      <if test="ordercount != null" >
-        OrderCount = #{ordercount,jdbcType=NCHAR},
+      <if test="orderCount != null" >
+        orderCount = #{orderCount,jdbcType=NCHAR},
       </if>
       <if test="status != null" >
         Status = #{status,jdbcType=TINYINT},

@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
@@ -15,10 +16,12 @@ import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
@@ -43,10 +46,13 @@ public class OrderHttpService implements IOrderHttpService {
 
 	@Autowired
 	private IOrderService orderService;
+	
+	@Autowired
+	private IOrderGrabService orderGrabService;
 
 
 	/**
-	 * 发布订单 (api调用)
+	 * 发布订单 
 	 * @author 胡灵波
 	 * @date 2015年10月30日 11:29:00
 	 * @version 1.0
@@ -59,6 +65,21 @@ public class OrderHttpService implements IOrderHttpService {
 		OrderResp resp= orderService.PushOrder(req);			
 		return resp;
 	}
+	/**
+	 * 用户抢单
+	 * @author 胡灵波
+	 * @date 2015年11月2日 14:56:05
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public OrderGrabResp Receive(OrderGrabReq req)
+	{
+		OrderGrabResp resp=orderGrabService.GrabOrder(req);			
+		return resp;
+	}
+	
 	
 	/**
 	 * B端任务统计接口

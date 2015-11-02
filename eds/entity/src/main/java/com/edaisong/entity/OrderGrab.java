@@ -5,15 +5,13 @@ import java.util.Date;
 public class OrderGrab {
     private Integer id;
 
-    private Integer orderid;
-
     private String graborderno;
 
-    private Integer businessid;
+    private Integer businessid;     
 
-    private Integer clienterid;
+	private Integer clienterid;
 
-    private String ordercount;
+    private Integer orderCount;
 
     private Byte status;
 
@@ -33,153 +31,168 @@ public class OrderGrab {
 
     private Double donelongitude;
 
-    private Double donelatitude;
+    private Double donelatitude;   
 
-    private Double ordercommission;
+	private Integer orderRegionOneId;
+    
+    private String orderRegionOneName;
+    
+    private Integer  orderRegionTwoId;
+    
+    private String orderRegionTwoName;
 
-    private Double settlemoney;
+	public Integer getId() {
+		return id;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public String getGraborderno() {
+		return graborderno;
+	}
 
-    public Integer getOrderid() {
-        return orderid;
-    }
+	public void setGraborderno(String graborderno) {
+		this.graborderno = graborderno;
+	}
 
-    public void setOrderid(Integer orderid) {
-        this.orderid = orderid;
-    }
+	public Integer getBusinessid() {
+		return businessid;
+	}
 
-    public String getGraborderno() {
-        return graborderno;
-    }
+	public void setBusinessid(Integer businessid) {
+		this.businessid = businessid;
+	}
 
-    public void setGraborderno(String graborderno) {
-        this.graborderno = graborderno == null ? null : graborderno.trim();
-    }
+	public Integer getClienterid() {
+		return clienterid;
+	}
 
-    public Integer getBusinessid() {
-        return businessid;
-    }
+	public void setClienterid(Integer clienterid) {
+		this.clienterid = clienterid;
+	}
 
-    public void setBusinessid(Integer businessid) {
-        this.businessid = businessid;
-    }
+	public Integer getOrderCount() {
+		return orderCount;
+	}
 
-    public Integer getClienterid() {
-        return clienterid;
-    }
+	public void setOrderCount(Integer ordercount) {
+		this.orderCount = ordercount;
+	}
 
-    public void setClienterid(Integer clienterid) {
-        this.clienterid = clienterid;
-    }
+	public Byte getStatus() {
+		return status;
+	}
 
-    public String getOrdercount() {
-        return ordercount;
-    }
+	public void setStatus(Byte status) {
+		this.status = status;
+	}
 
-    public void setOrdercount(String ordercount) {
-        this.ordercount = ordercount == null ? null : ordercount.trim();
-    }
+	public Date getActualdonedate() {
+		return actualdonedate;
+	}
 
-    public Byte getStatus() {
-        return status;
-    }
+	public void setActualdonedate(Date actualdonedate) {
+		this.actualdonedate = actualdonedate;
+	}
 
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
+	public Date getGrabtime() {
+		return grabtime;
+	}
 
-    public Date getActualdonedate() {
-        return actualdonedate;
-    }
+	public void setGrabtime(Date grabtime) {
+		this.grabtime = grabtime;
+	}
 
-    public void setActualdonedate(Date actualdonedate) {
-        this.actualdonedate = actualdonedate;
-    }
+	public Date getPickuptime() {
+		return pickuptime;
+	}
 
-    public Date getGrabtime() {
-        return grabtime;
-    }
+	public void setPickuptime(Date pickuptime) {
+		this.pickuptime = pickuptime;
+	}
 
-    public void setGrabtime(Date grabtime) {
-        this.grabtime = grabtime;
-    }
+	public Double getPickuplongitude() {
+		return pickuplongitude;
+	}
 
-    public Date getPickuptime() {
-        return pickuptime;
-    }
+	public void setPickuplongitude(Double pickuplongitude) {
+		this.pickuplongitude = pickuplongitude;
+	}
 
-    public void setPickuptime(Date pickuptime) {
-        this.pickuptime = pickuptime;
-    }
+	public Double getPickuplatitude() {
+		return pickuplatitude;
+	}
 
-    public Double getPickuplongitude() {
-        return pickuplongitude;
-    }
+	public void setPickuplatitude(Double pickuplatitude) {
+		this.pickuplatitude = pickuplatitude;
+	}
 
-    public void setPickuplongitude(Double pickuplongitude) {
-        this.pickuplongitude = pickuplongitude;
-    }
+	public Double getGrablongitude() {
+		return grablongitude;
+	}
 
-    public Double getPickuplatitude() {
-        return pickuplatitude;
-    }
+	public void setGrablongitude(Double grablongitude) {
+		this.grablongitude = grablongitude;
+	}
 
-    public void setPickuplatitude(Double pickuplatitude) {
-        this.pickuplatitude = pickuplatitude;
-    }
+	public Double getGrablatitude() {
+		return grablatitude;
+	}
 
-    public Double getGrablongitude() {
-        return grablongitude;
-    }
+	public void setGrablatitude(Double grablatitude) {
+		this.grablatitude = grablatitude;
+	}
 
-    public void setGrablongitude(Double grablongitude) {
-        this.grablongitude = grablongitude;
-    }
+	public Double getDonelongitude() {
+		return donelongitude;
+	}
 
-    public Double getGrablatitude() {
-        return grablatitude;
-    }
+	public void setDonelongitude(Double donelongitude) {
+		this.donelongitude = donelongitude;
+	}
 
-    public void setGrablatitude(Double grablatitude) {
-        this.grablatitude = grablatitude;
-    }
+	public Double getDonelatitude() {
+		return donelatitude;
+	}
 
-    public Double getDonelongitude() {
-        return donelongitude;
-    }
+	public void setDonelatitude(Double donelatitude) {
+		this.donelatitude = donelatitude;
+	}
 
-    public void setDonelongitude(Double donelongitude) {
-        this.donelongitude = donelongitude;
-    }
+	public Integer getOrderRegionOneId() {
+		return orderRegionOneId;
+	}
 
-    public Double getDonelatitude() {
-        return donelatitude;
-    }
+	public void setOrderRegionOneId(Integer orderRegionOneId) {
+		this.orderRegionOneId = orderRegionOneId;
+	}
 
-    public void setDonelatitude(Double donelatitude) {
-        this.donelatitude = donelatitude;
-    }
+	public String getOrderRegionOneName() {
+		return orderRegionOneName;
+	}
 
-    public Double getOrdercommission() {
-        return ordercommission;
-    }
+	public void setOrderRegionOneName(String orderRegionOneName) {
+		this.orderRegionOneName = orderRegionOneName;
+	}
 
-    public void setOrdercommission(Double ordercommission) {
-        this.ordercommission = ordercommission;
-    }
+	public Integer getOrderRegionTwoId() {
+		return orderRegionTwoId;
+	}
 
-    public Double getSettlemoney() {
-        return settlemoney;
-    }
+	public void setOrderRegionTwoId(Integer orderRegionTwoId) {
+		this.orderRegionTwoId = orderRegionTwoId;
+	}
 
-    public void setSettlemoney(Double settlemoney) {
-        this.settlemoney = settlemoney;
-    }
+	public String getOrderRegionTwoName() {
+		return orderRegionTwoName;
+	}
+
+	public void setOrderRegionTwoName(String orderRegionTwoName) {
+		this.orderRegionTwoName = orderRegionTwoName;
+	}
+    
+
+   
 }
