@@ -66,7 +66,8 @@
         o.OrderRegionTwoName ,
         o.ActualDoneDate ,
         o.OrderCount ,
-        o.Status
+        o.Status,
+        MIN(m.ordercommission) AS orderCommission
 FROM    dbo.[order] a WITH ( NOLOCK )
         JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
