@@ -9,12 +9,17 @@ import javax.ws.rs.Produces;
 
 import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
-import com.edaisong.entity.req.OrderDetailCReq;
+import com.edaisong.entity.resp.MyOrderDetailResp;
+import com.edaisong.entity.req.OrderPushReq;
+import com.edaisong.entity.req.OrderReq;
+import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.QueryOrderReq;
-import com.edaisong.entity.resp.MyOrderDetailResp;
+import com.edaisong.entity.req.OrderDetailCReq;
+import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
@@ -42,6 +47,18 @@ public interface IOrderHttpService {
 	@Path("testval")
 	public String testVal();
 	
+	
+	/**
+	 * 发布订单
+	 * @author 胡灵波
+	 * @date 2015年10月30日 11:29:00
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/push")
+	public OrderResp Push(OrderReq req);
 	
 	/**
 	 * B端任务统计接口
@@ -113,6 +130,23 @@ public interface IOrderHttpService {
 	@Path("/orderstatisticsc")
 	public HttpResultModel<OrderStatisticsCResp> orderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
 
+	/**
+	 *  骑士端获取店内任务
+	 * @version 3.0  
+	 * @author CaoHeYang
+	 * @date 20151030
+	 * @param para
+	 * @return
+	 */
+	@POST
+	@Path("/getinstoretask")
+	public HttpResultModel<List<InStoreTask>>  getInStoreTask(InStoreTaskReq para);
+	/*
+	 * 获取我的任务详情
+	 * wangchao
+	 */
+	@POST
+	@Path("/getmyorderdetailc")
 	public HttpResultModel<MyOrderDetailResp> getMyOrderDetailC(OrderDetailCReq orderDetailCReq);
 	
 }

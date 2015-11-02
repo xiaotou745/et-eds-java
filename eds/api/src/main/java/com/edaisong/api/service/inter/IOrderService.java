@@ -2,7 +2,6 @@ package com.edaisong.api.service.inter;
 
 import java.util.Date;
 import java.util.List;
-
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
@@ -11,9 +10,11 @@ import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderGrabDetailModel;
+import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.req.OptOrder;
@@ -30,6 +31,7 @@ import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
+import com.edaisong.entity.resp.OrderPushResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
@@ -125,6 +127,17 @@ public interface IOrderService {
 	 * @return
 	 */
 	OrderResp AddOrder(OrderReq req);
+	
+	/**
+	 * 发布订单 api调用
+	 * 
+	 * @param req
+	 *            参数
+	 * @author 胡灵波
+	 * @Date 2015年8月6日 09:51:47
+	 * @return
+	 */
+	OrderResp PushOrder(OrderReq req);
 
 	/**
 	 * 商户发单，点击按纽钱查询商户余额信息，以及该订单的结算信息
@@ -256,7 +269,24 @@ public interface IOrderService {
 	 * @param businessId
 	 * @return
 	 */
-	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) ;
+	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) ;	
+	/**
+	 *  骑士端获取店内任务
+	 * @version 3.0  
+	 * @author CaoHeYang
+	 * @date 20151030
+	 * @param para
+	 * @return
+	 */
+	List<InStoreTask>  getInStoreTask(InStoreTaskReq para);
+	/**
+	 * 获取指定区域下今日未完成的订单数量
+	 * @date 20151030
+	 * @author hailongzhao
+	 * @param regionId
+	 * @return
+	 */
+	Long queryIngOrderByRegionId(Long regionId) ;
 	/*
 	 * 获取我的任务详情
 	 * wangchao

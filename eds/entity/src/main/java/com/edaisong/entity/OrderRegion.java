@@ -12,6 +12,7 @@ public class OrderRegion {
     private String coordinate;
 
     private Integer parentid;
+    private Boolean haschild;
 
     private Byte status;
 
@@ -132,4 +133,12 @@ public class OrderRegion {
     public void setOptname(String optname) {
         this.optname = optname == null ? null : optname.trim();
     }
+
+	public Boolean getHaschild() {
+		return haschild;
+	}
+
+	public void setHaschild(Boolean haschild) {
+		this.haschild = haschild;
+	}
 }

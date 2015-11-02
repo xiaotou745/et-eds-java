@@ -39,7 +39,10 @@
 			PayBy, PayTime, PayPrice,
 			HasUploadTicket, TicketUrl, CreateBy,
 			CreateTime, UpdateBy, UpdateTime,
-			OriginalOrderNo, WxCodeUrl, ThirdPayStatus
+			OriginalOrderNo, WxCodeUrl, ThirdPayStatus,
+			Status,OrderRegionOneId,OrderRegionTwoId,
+			OrderCommission,SettleMoney,CommissionRate,
+			BaseCommission,WebsiteSubsidy,Adjustment
 			) values (
 			#{item.orderid,jdbcType=INTEGER},
 			#{item.childid,jdbcType=INTEGER},
@@ -60,7 +63,16 @@
 			getdate(),
 			#{item.originalorderno,jdbcType=VARCHAR},
 			#{item.wxcodeurl,jdbcType=VARCHAR},
-			#{item.thirdpaystatus,jdbcType=SMALLINT}
+			#{item.thirdpaystatus,jdbcType=SMALLINT},
+			#{item.status,jdbcType=SMALLINT},
+			#{item.orderRegionOneId,jdbcType=INTEGER},
+			#{item.orderRegionTwoId,jdbcType=INTEGER},
+			#{item.orderCommission,jdbcType=DECIMAL},
+			#{item.settleMoney,jdbcType=DECIMAL},
+			#{item.commissionRate,jdbcType=DECIMAL},
+			#{item.baseCommission,jdbcType=DECIMAL},
+			#{item.websiteSubsidy,jdbcType=DECIMAL},
+			#{item.adjustment,jdbcType=DECIMAL}
 			);
 		</foreach>
 	</update>

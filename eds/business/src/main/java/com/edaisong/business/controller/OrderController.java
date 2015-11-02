@@ -212,10 +212,26 @@ public class OrderController {
 	 * @Date 20151029
 	 * @return
 	 */
-	@RequestMapping("todaytotal")
+	@RequestMapping("todaylist")
+	public ModelAndView todayList(HttpServletRequest request) {	
+		ModelAndView model = new ModelAndView("businessView");
+		model.addObject("subtitle", "今日订单");
+		model.addObject("currenttitle", "今日订单");
+		model.addObject("viewPath", "order/todaylist");
+		return model;
+	}
+	/**
+	 * e代送新流程中的h5今日订单页面区域统计(给手机app用，当前站点不显示)
+	 * 根据区域查询订单数量
+	 * @author zhaohailong
+	 * @Date 20151029
+	 * @return
+	 */
+	@RequestMapping(value = "todaytotal", produces= "application/json; charset=utf-8")
 	@ResponseBody
-	public List<RegionOrderTotal> todayTotal(Long businessId) {
-		return orderService.queryTodayOrderTotal(businessId);
+	public List<RegionOrderTotal> todayTotal(HttpServletRequest request) {
+		UserContext context = UserContext.getCurrentContext(request);
+		return orderService.queryTodayOrderTotal((long)context.getBusinessID());
 	}
 	/**
 	 * e代送新流程中的h5今日订单页面区域详情
@@ -224,9 +240,10 @@ public class OrderController {
 	 * @Date 20151029
 	 * @return
 	 */
-	@RequestMapping("todaydetail")
+	@RequestMapping(value = "todaydetail", produces= "application/json; charset=utf-8")
 	@ResponseBody
-	public List<RegionOrderDetail> todayDetail(Long businessId) {
-		return orderService.queryTodayOrderDetail(businessId);
+	public List<RegionOrderDetail> todayDetail(HttpServletRequest request) {
+		UserContext context = UserContext.getCurrentContext(request);
+		return orderService.queryTodayOrderDetail((long)context.getBusinessID());
 	}
 }

@@ -118,8 +118,7 @@ public class Order {
     
     private Double basecommission;
     private Integer platform;
-	private Integer orderRegionOneId;
-    private Integer orderRegionTwoId;
+	
     public Integer getPlatform() {
 		return platform;
 	}
@@ -127,22 +126,7 @@ public class Order {
 	public void setPlatform(Integer platform) {
 		this.platform = platform;
 	}
-
-	public Integer getOrderRegionOneId() {
-		return orderRegionOneId;
-	}
-
-	public void setOrderRegionOneId(Integer orderRegionOneId) {
-		this.orderRegionOneId = orderRegionOneId;
-	}
-
-	public Integer getOrderRegionTwoId() {
-		return orderRegionTwoId;
-	}
-
-	public void setOrderRegionTwoId(Integer orderRegionTwoId) {
-		this.orderRegionTwoId = orderRegionTwoId;
-	}
+	
     public int getId() {
         return id;
     }

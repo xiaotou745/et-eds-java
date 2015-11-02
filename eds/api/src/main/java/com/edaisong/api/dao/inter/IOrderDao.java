@@ -11,6 +11,7 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -18,6 +19,7 @@ import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
+import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderStatisticsBReq;
@@ -258,4 +260,13 @@ public interface IOrderDao {
 	 * @return
 	 */
 	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) ;
+	/**
+	 * 获取指定区域下今日未完成的订单数量
+	 * @date 20151030
+	 * @author hailongzhao
+	 * @param regionId
+	 * @return
+	 */
+	Long queryIngOrderByRegionId(Long regionId) ;
+	
 }

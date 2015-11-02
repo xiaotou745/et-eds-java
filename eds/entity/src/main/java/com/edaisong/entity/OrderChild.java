@@ -49,7 +49,60 @@ public class OrderChild implements Serializable {
     private Short status;
     private Double orderCommission;
     private Double settleMoney;
+    private Integer orderRegionOneId;
+    private Integer orderRegionTwoId;
+    public Double getCommissionRate() {
+		return commissionRate;
+	}
 
+	public void setCommissionRate(Double commissionRate) {
+		this.commissionRate = commissionRate;
+	}
+
+	public Double getBaseCommission() {
+		return baseCommission;
+	}
+
+	public void setBaseCommission(Double baseCommission) {
+		this.baseCommission = baseCommission;
+	}
+
+	public Double getWebsiteSubsidy() {
+		return websiteSubsidy;
+	}
+
+	public void setWebsiteSubsidy(Double websiteSubsidy) {
+		this.websiteSubsidy = websiteSubsidy;
+	}
+
+	public Double getAdjustment() {
+		return adjustment;
+	}
+
+	public void setAdjustment(Double adjustment) {
+		this.adjustment = adjustment;
+	}
+
+	private Double commissionRate;
+    private Double baseCommission;
+    private Double websiteSubsidy;
+    private Double adjustment;
+
+    public Integer getOrderRegionOneId() {
+		return orderRegionOneId;
+	}
+
+	public void setOrderRegionOneId(Integer orderRegionOneId) {
+		this.orderRegionOneId = orderRegionOneId;
+	}
+
+	public Integer getOrderRegionTwoId() {
+		return orderRegionTwoId;
+	}
+
+	public void setOrderRegionTwoId(Integer orderRegionTwoId) {
+		this.orderRegionTwoId = orderRegionTwoId;
+	}
     public Long getId() {
         return id;
     }

@@ -389,6 +389,9 @@
 			<if test="basecommission != null">
 				basecommission,
 			</if>
+			<if test="platform != null">
+				platform,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderno != null">
@@ -558,6 +561,9 @@
 			</if>
 			<if test="basecommission != null">
 				#{basecommission,jdbcType=NUMERIC},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=INTEGER},
 			</if>
 		</trim>
 	</insert>
@@ -1578,23 +1584,23 @@ where   Status = 1
 	     WITH    onedetailregion
           AS (
 				--没有二级区域的区域的今日订单统计
-               SELECT   a.OrderRegionOneId ,
+               SELECT   b.OrderRegionOneId ,
                 c.Name AS OneName ,
                         0 AS OrderRegionTwoId ,
                         '' AS TwoName ,
                         b.Status ,
                         COUNT(0) AS Num,
                         0 AS LevelType
-               FROM     dbo.[order] a
-                        JOIN dbo.OrderChild b ON a.id = b.OrderId
-                        JOIN dbo.OrderRegion c ON a.OrderRegionOneId = c.id
-               WHERE    a.businessId=${businessId}
+               FROM     dbo.[order] a ( NOLOCK )
+                        JOIN dbo.OrderChild b ( NOLOCK ) ON a.id = b.OrderId
+                        JOIN dbo.OrderRegion c ( NOLOCK ) ON b.OrderRegionOneId = c.id
+               WHERE    a.businessId=#{businessId}
                			AND c.status=1
                			AND a.Platform = 2
-                        AND a.OrderRegionOneId > 0
-                        AND a.OrderRegionTwoId = 0
+                        AND b.OrderRegionOneId > 0
+                        AND b.OrderRegionTwoId = 0
                         AND CONVERT(VARCHAR(10), b.CreateTime, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-               GROUP BY a.OrderRegionOneId ,
+               GROUP BY b.OrderRegionOneId ,
                         c.Name ,
                         b.Status
              ),
@@ -1602,24 +1608,24 @@ where   Status = 1
         twodetailregion
           AS ( 
                 --二级区域的今日订单统计
-          SELECT   a.OrderRegionOneId ,
+          SELECT   b.OrderRegionOneId ,
                         '' AS OneName ,
-                        a.OrderRegionTwoId ,
+                        b.OrderRegionTwoId ,
                         c.Name AS TwoName,
                         b.Status ,
                         COUNT(0) AS Num,
                          1 AS LevelType
-               FROM     dbo.[order] a
-                        JOIN dbo.OrderChild b ON a.id = b.OrderId
-                        JOIN dbo.OrderRegion c ON a.OrderRegionTwoId = c.id
-               WHERE     a.businessId=${businessId}
+               FROM     dbo.[order] a ( NOLOCK )
+                        JOIN dbo.OrderChild b ( NOLOCK ) ON a.id = b.OrderId
+                        JOIN dbo.OrderRegion c ( NOLOCK ) ON b.OrderRegionTwoId = c.id
+               WHERE     a.businessId=#{businessId}
                			AND c.status=1
                			AND a.Platform = 2
-                        AND a.OrderRegionOneId > 0
-                        AND a.OrderRegionTwoId > 0
+                        AND b.OrderRegionOneId > 0
+                        AND b.OrderRegionTwoId > 0
                         AND CONVERT(VARCHAR(10), b.CreateTime, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-               GROUP BY a.OrderRegionOneId ,
-                        a.OrderRegionTwoId ,
+               GROUP BY b.OrderRegionOneId ,
+                        b.OrderRegionTwoId ,
                         c.Name ,
                         b.Status
              ),
@@ -1648,24 +1654,41 @@ where   Status = 1
 	<!--商家端新模式下的今日订单 addby zhaohailong 20151030 -->
 	<select id="queryTodayOrderTotal" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderTotal">
 		SELECT  a.id ,
-                         a.ParentId ,
-                         a.name ,
-                         ISNULL(SUM(b.OrderCount), 0) AS num
-                 FROM    OrderRegion a
-                         LEFT JOIN [order] b ON b.Platform = 2
-                         						AND a.status=1
-                         					   AND a.businessId=${businessId}
-                         					   AND b.businessId=${businessId}
-                                                AND CONVERT(VARCHAR(10), b.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-                                                AND b.OrderRegionOneId > 0
-                                                AND ( b.OrderRegionTwoId = 0
-                                                      AND a.Id = b.OrderRegionOneId
-                                                    )
-                                                OR ( b.OrderRegionTwoId > 0
-                                                     AND a.Id = b.OrderRegionTwoId
-                                                   )
-                 GROUP BY a.id ,
-                         a.ParentId ,
-                         a.name       
+                a.ParentId ,
+                a.name ,
+                ISNULL(SUM(mb.tb), 0) AS num
+        FROM    OrderRegion a ( NOLOCK )
+                LEFT JOIN ( SELECT  1 AS tb ,
+                                    m.OrderRegionOneId ,
+                                    m.OrderRegionTwoId
+                            FROM    [order] b ( NOLOCK )
+                                    JOIN dbo.OrderChild m ( NOLOCK ) ON b.id = m.OrderId
+                            WHERE   b.businessId=#{businessId}
+                            		AND b.Platform = 2
+                                    AND CONVERT(VARCHAR(10), b.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                                    AND m.OrderRegionOneId > 0
+                          ) mb ON  a.businessId=#{businessId}
+                          		  AND a.status = 1
+                                  AND ( mb.OrderRegionTwoId = 0
+                                        AND a.Id = mb.OrderRegionOneId
+                                      )
+                                  OR ( mb.OrderRegionTwoId > 0
+                                       AND a.Id = mb.OrderRegionTwoId
+                                     )
+        GROUP BY a.id ,
+                a.ParentId ,
+                a.name  
+	</select>
+	<!--商家端新模式下给定区域下是否有处理中的订单addby zhaohailong 20151030 -->
+	<select id="queryIngOrderByRegionId" parameterType="java.lang.Long"   resultType="java.lang.Long">
+		  SELECT    COUNT(0) AS num
+  FROM      dbo.[order] a ( NOLOCK )
+            JOIN dbo.OrderChild b ( NOLOCK ) ON a.Id = b.OrderId
+  WHERE     a.Platform = 2
+            AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+            AND ( b.OrderRegionOneId = #{regionId}
+                  OR b.OrderRegionTwoId = #{regionId}
+                )
+            AND b.Status IN ( 0, 2, 4 )
 	</select>
 </mapper>

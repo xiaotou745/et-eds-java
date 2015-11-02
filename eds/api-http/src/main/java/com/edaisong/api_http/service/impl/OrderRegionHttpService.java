@@ -36,8 +36,9 @@ public class OrderRegionHttpService implements IOrderRegionHttpService {
 		if(orderRegionList!=null && orderRegionList.size()>0){
 			//获取一级区域信息
 			List<OrderRegion> firstOrderRegionList=	orderRegionList.stream().filter(k->k.getParentid()==0).collect(Collectors.toList());
-			OrderRegionResp orderRegionResp = new OrderRegionResp();
+			
 			for (OrderRegion firserOrderRegion : firstOrderRegionList) { 
+				OrderRegionResp orderRegionResp = new OrderRegionResp();
 				orderRegionResp.setId(firserOrderRegion.getId());
 				orderRegionResp.setRegionName(firserOrderRegion.getName()); 
 				orderRegionRespList.add(orderRegionResp);		
@@ -61,7 +62,7 @@ public class OrderRegionHttpService implements IOrderRegionHttpService {
 			result.setStatus(HttpReturnRnums.NoData.value());
 			result.setMessage(HttpReturnRnums.NoData.desc());
 		}
-		 
+		result.setResult(orderRegionRespList);
 		return result;   
 	}
 
