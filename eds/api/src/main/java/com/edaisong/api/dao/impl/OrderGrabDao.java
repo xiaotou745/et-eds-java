@@ -43,5 +43,10 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 						"com.edaisong.api.dao.inter.IOrderGrabDao.getMapDetailById",
 						id);
 	}
-
+	@Override
+	public OrderGrabDetailModel getMyOrderDetailC(
+			OrderDetailCReq orderDetailCReq) {
+		return getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderGrabDao.getMyOrderDetailC", orderDetailCReq);
+	}
 }

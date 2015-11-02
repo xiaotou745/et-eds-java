@@ -1,24 +1,22 @@
 package com.edaisong.api_http.service.impl;
 
 import java.util.List;
-
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.OrderDetailCReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.MyOrderDetailResp; 
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
@@ -46,7 +44,7 @@ public class OrderHttpService implements IOrderHttpService {
 
 
 	/**
-	 * 发布订单
+	 * 发布订单 (api调用)
 	 * @author 胡灵波
 	 * @date 2015年10月30日 11:29:00
 	 * @version 1.0
@@ -59,7 +57,7 @@ public class OrderHttpService implements IOrderHttpService {
 		OrderResp resp= orderService.PushOrder(req);			
 		return resp;
 	}
-
+	
 	/**
 	 * B端任务统计接口
 	 * 
@@ -188,12 +186,19 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @param para
 	 * @return
 	 */
-	@POST
-	@Path("/getinstoretask")
 	@Override
 	public HttpResultModel<List<InStoreTask>>  getInStoreTask(InStoreTaskReq para){
 		 HttpResultModel<List<InStoreTask>> res=new  HttpResultModel<List<InStoreTask>>();
 		 res.setResult(orderService.getInStoreTask(para));
 		 return res;
 	}
+	@Override
+	public HttpResultModel<MyOrderDetailResp> getMyOrderDetailC(OrderDetailCReq orderDetailCReq) {
+		HttpResultModel<MyOrderDetailResp> result=new HttpResultModel<MyOrderDetailResp>();
+		result.setStatus(HttpReturnRnums.Success.value());
+		result.setMessage(HttpReturnRnums.Success.desc());
+		OrderGrabDetailModel orderGrabDetailModel= orderService.getMyOrderDetailC(orderDetailCReq);
+		return result;
+	}
+
 }

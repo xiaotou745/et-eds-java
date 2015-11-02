@@ -481,4 +481,25 @@
 		parameterType="java.lang.Long">
 	  SELECT IsAllowInputMoney FROM dbo.business(nolock) where Id=#{businessId}
 	</select>
+	
+	
+  	<!--  骑士端获取店内任务  获取当前骑士的所有含有未接单订单的 雇主信息    add by caoheyang 20151102-->
+	<select id="getInStoreTaskStroes" resultType="com.edaisong.entity.domain.InStoreTask"
+		parameterType="com.edaisong.entity.req.InStoreTaskReq">
+ declare @cliernterPoint geography ;
+select @cliernterPoint=geography::Point(42.2222222,132.22222,4326) ;
+select  b.id as BusinessId,  
+b.name as BusinessName,b.address as BusinessAddress
+,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(@cliernterPoint),0) as DistanceToBusiness,
+WaitingCounts
+from    BusinessClienterRelation a (nolock)
+join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER} 
+join (select ISNULL(SUM(WaitingCount),0) as  WaitingCounts,BusinessId from OrderRegion (nolock) where Status=1 group by BusinessId ) c on a.BusinessId=c.BusinessId
+and c.WaitingCounts>0
+where   a.IsEnable = 1
+and a.IsBind = 1
+and a.AuditStatus=1
+order by c.WaitingCounts desc  
+	</select>
+	
 </mapper>

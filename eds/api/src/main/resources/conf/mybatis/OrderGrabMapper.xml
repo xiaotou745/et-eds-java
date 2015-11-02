@@ -178,4 +178,10 @@ GROUP BY o.id ,
       SettleMoney = #{settlemoney,jdbcType=DOUBLE}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getMyOrderDetailC" resultMap="BaseResultMap" parameterType="com.edaisong.entity.req.OrderDetailCReq" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderGrab
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
 </mapper>

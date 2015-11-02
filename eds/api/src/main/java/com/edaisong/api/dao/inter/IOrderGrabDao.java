@@ -4,6 +4,8 @@ package com.edaisong.api.dao.inter;
 import java.util.List;
 
 import com.edaisong.entity.OrderGrab;
+import com.edaisong.entity.domain.OrderGrabDetailModel;
+import com.edaisong.entity.req.OrderDetailCReq;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel;
@@ -15,4 +17,5 @@ public interface IOrderGrabDao {
     OrderGrab selectById(Long id);
     List<FastOrderMapDetail> getMapDetailById(Long id);
     PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req);
+	OrderGrabDetailModel getMyOrderDetailC(OrderDetailCReq orderDetailCReq);
 }
