@@ -2,6 +2,8 @@ package com.edaisong.api.dao.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.entity.OrderGrab;
@@ -11,7 +13,7 @@ import com.edaisong.entity.domain.FastOrderModel;
 import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.req.OrderDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
-
+@Repository
 public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 
 	@Override
