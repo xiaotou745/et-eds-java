@@ -10,6 +10,7 @@ import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.QueryOrder;
@@ -18,6 +19,7 @@ import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderDetailCReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
@@ -255,4 +257,9 @@ public interface IOrderService {
 	 * @return
 	 */
 	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) ;
+	/*
+	 * 获取我的任务详情
+	 * wangchao
+	 */
+	OrderGrabDetailModel getMyOrderDetailC(OrderDetailCReq orderDetailCReq);
 }

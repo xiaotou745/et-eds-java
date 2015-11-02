@@ -7,11 +7,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.OrderDetailCReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.MyOrderDetailResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
@@ -110,5 +113,6 @@ public interface IOrderHttpService {
 	@Path("/orderstatisticsc")
 	public HttpResultModel<OrderStatisticsCResp> orderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
 
-
+	public HttpResultModel<MyOrderDetailResp> getMyOrderDetailC(OrderDetailCReq orderDetailCReq);
+	
 }
