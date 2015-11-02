@@ -38,7 +38,8 @@
 			<ref bean="feedbackHttpService" />
 			<ref bean="financeService" />
 			<ref bean="businessHttpService" />
-			<ref bean="orderRegionHttpService" /> 
+			<ref bean="orderRegionHttpService" />
+			<ref bean="grabOrderHttpService" />			
 		</jaxrs:serviceBeans>
 			<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
 		<jaxrs:inInterceptors>
