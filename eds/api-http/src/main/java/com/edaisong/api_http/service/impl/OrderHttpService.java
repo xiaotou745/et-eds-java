@@ -13,10 +13,10 @@ import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.common.HttpResultModel;
-import com.edaisong.entity.domain.AccountBillDayResultModel;
+import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
-import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderReq;
+import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.OrderResp;
@@ -180,5 +180,20 @@ public class OrderHttpService implements IOrderHttpService {
 		httpResultModel.setResult(orderStatisticsResp);
 		return httpResultModel;
 	}
-
+	/**
+	 *  骑士端获取店内任务
+	 * @version 3.0  
+	 * @author CaoHeYang
+	 * @date 20151030
+	 * @param para
+	 * @return
+	 */
+	@POST
+	@Path("/getinstoretask")
+	@Override
+	public HttpResultModel<List<InStoreTask>>  getInStoreTask(InStoreTaskReq para){
+		 HttpResultModel<List<InStoreTask>> res=new  HttpResultModel<List<InStoreTask>>();
+		 res.setResult(orderService.getInStoreTask(para));
+		 return res;
+	}
 }

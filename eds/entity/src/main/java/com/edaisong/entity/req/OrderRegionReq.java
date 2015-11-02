@@ -8,6 +8,25 @@ import com.edaisong.entity.OrderChild;
 
 public class OrderRegionReq {
 
+private Integer businessId;
+	
+	private Integer status;
+
+	public Integer getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Integer businessId) {
+		this.businessId = businessId;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 		private Integer orderRegionOneId;
 		
 		private Integer orderRegionTwoId;

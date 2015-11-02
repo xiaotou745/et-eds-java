@@ -15,6 +15,8 @@ import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.domain.RegionOrderDetail;
+import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
@@ -240,4 +242,28 @@ public interface IOrderDao {
 		 * @return
 		 */
 	PagedResponse<BusTaskList> busTaskList(PagedBusTaskListReq req);
+	/**
+	 * 获取商家的今日订单的区域统计数据
+	 * @date 20151030
+	 * @author hailongzhao
+	 * @param businessId
+	 * @return
+	 */
+	List<RegionOrderTotal> queryTodayOrderTotal(Long businessId) ;
+	/**
+	 * 获取商家的今日订单的区域统计详细数据
+	 * @date 20151030
+	 * @author hailongzhao
+	 * @param businessId
+	 * @return
+	 */
+	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) ;
+	/**
+	 * 获取指定区域下今日未完成的订单数量
+	 * @date 20151030
+	 * @author hailongzhao
+	 * @param regionId
+	 * @return
+	 */
+	Long queryIngOrderByRegionId(Long regionId) ;
 }
