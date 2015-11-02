@@ -115,4 +115,31 @@
     from OrderRegion (nolock)
     where parentId = #{parentId,jdbcType=INTEGER}
   </select>
+  
+  	<!--  骑士端获取店内任务  获取当前骑士的所有含有未接单订单的 雇主信息    add by caoheyang 20151102-->
+   <select id="getInStoreOrderRegions" resultType="com.edaisong.entity.domain.InStoreOrderRegionInfo"
+    parameterType="com.edaisong.entity.req.InStoreTaskReq" >
+select  a.id ,
+        a.waitingCount ,
+        a.Name as regionName ,
+        a.BusinessId ,
+        a.HasChild ,
+        a.ParentId
+from    OrderRegion a
+        join ( select distinct
+                        ( temp.BusinessId )
+               from     BusinessClienterRelation temp
+               where    temp.IsEnable = 1
+                        and temp.IsBind = 1
+                        and temp.ClienterId = a.ClienterId=#{clienterId,jdbcType=INTEGER} 
+             ) as b on a.BusinessId = b.BusinessId
+        join ( select   ISNULL(SUM(WaitingCount), 0) as WaitingCounts ,
+                        BusinessId
+               from     OrderRegion
+               where    Status = 1
+               group by BusinessId
+             ) c on a.BusinessId = c.BusinessId
+                    and c.WaitingCounts > 0
+where   a.Status = 1 
+  </select>
 </mapper>

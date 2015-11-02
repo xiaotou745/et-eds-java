@@ -1,5 +1,7 @@
 package com.edaisong.entity.domain;
 
+import java.util.List;
+
 /**
  * 门店订单信息基本情况
  * @author CaoHeYang
@@ -10,7 +12,7 @@ public class InStoreTask {
 	private String businessName;
 	private String businessAddress;
 	private String distanceToBusiness;
-	private InStoreOrderRegionInfo list;
+	private List<InStoreOrderRegionInfo> list;
 
 	/**
 	 * 商户id
@@ -89,7 +91,7 @@ public class InStoreTask {
 	 * 
 	 * @return
 	 */
-	public InStoreOrderRegionInfo getList() {
+	public List<InStoreOrderRegionInfo> getList() {
 		return list;
 	}
 
@@ -98,7 +100,7 @@ public class InStoreTask {
 	 * 
 	 * @param list
 	 */
-	public void setList(InStoreOrderRegionInfo list) {
+	public void setList(List<InStoreOrderRegionInfo> list) {
 		this.list = list;
 	}
 

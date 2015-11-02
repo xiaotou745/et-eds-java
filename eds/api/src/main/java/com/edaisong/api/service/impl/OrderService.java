@@ -2,18 +2,12 @@ package com.edaisong.api.service.impl;
 
 import java.lang.Double;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.objenesis.instantiator.basic.NewInstanceInstantiator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +24,7 @@ import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
+import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
 import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService;
@@ -55,7 +50,6 @@ import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
-import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
@@ -76,7 +70,6 @@ import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
-import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
@@ -142,6 +135,8 @@ public class OrderService implements IOrderService {
 	private IClienterDao clienterDao;
 	@Autowired
 	private IGroupBusinessDao groupBusinessDao;
+	@Autowired
+	private IOrderRegionDao orderRegion;
 
 	/**
 	 * 后台订单列表页面
@@ -1181,7 +1176,9 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	 public  List<InStoreTask>  getInStoreTask(InStoreTaskReq para){
-		 return null;
+		 List<InStoreTask>  list=businessDao.getInStoreTaskStroes(para);
+		 
+		 return list;
 	 }
 
 	@Override
