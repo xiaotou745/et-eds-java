@@ -13,7 +13,7 @@ public class OrderGrabDetailModel {
     
     private String businessName;
     
-    private String businessPhone;
+    private String businessPhoneNo;
     
     private String businessAddress;
     
@@ -136,20 +136,20 @@ public class OrderGrabDetailModel {
 	public void setBusinessName(String businessName) {
 		this.businessName = businessName;
 	}
-
-	public String getBusinessPhone() {
-		return businessPhone;
-	}
-
-	public void setBusinessPhone(String businessPhone) {
-		this.businessPhone = businessPhone;
-	}
-
+ 
 	public String getBusinessAddress() {
 		return businessAddress;
 	}
 
 	public void setBusinessAddress(String businessAddress) {
 		this.businessAddress = businessAddress;
+	}
+
+	public String getBusinessPhoneNo() {
+		return businessPhoneNo;
+	}
+
+	public void setBusinessPhoneNo(String businessPhoneNo) {
+		this.businessPhoneNo = businessPhoneNo;
 	} 
 }

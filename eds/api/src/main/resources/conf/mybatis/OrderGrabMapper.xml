@@ -117,8 +117,7 @@ GROUP BY o.id ,
 		<if test="businessCity != null and businessCity>-1">
 			and b.cityCode= ${businessCity}
 		</if>
-	</sql>
-
+	</sql> 
 	 <!-- 快单列表页面 查询列集合 add by zhaohl 20151102 -->
 	<select id="query" resultType="com.edaisong.entity.domain.FastOrderModel"
 		parameterType="com.edaisong.entity.req.PagedFastOrderSearchReq"
@@ -178,10 +177,54 @@ GROUP BY o.id ,
       SettleMoney = #{settlemoney,jdbcType=DOUBLE}
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="getMyOrderDetailC" resultMap="BaseResultMap" parameterType="com.edaisong.entity.req.OrderDetailCReq" >
-    select 
-    <include refid="Base_Column_List" />
-    from OrderGrab
-    where Id = #{id,jdbcType=INTEGER}
+  <!-- 获取任务详情 wangchao -->
+  <select id="getMyOrderGrabDetailC" resultType="com.edaisong.entity.resp.MyOrderGrabDetailResp" parameterType="com.edaisong.entity.req.OrderGrabDetailCReq" >
+    select 	b.Name BusinessName ,
+        	b.PhoneNo BusinessPhoneNo ,
+        	b.[Address] BusinessAddress ,
+            og.OrderRegionOneName ,
+            og.OrderRegionTwoName ,
+            og.OrderCount ,
+            og.Id GrabOrderId ,
+            og.GrabOrderNo , 
+            isnull(og.GrabTime, '') GrabTime ,
+            isnull(og.PickUpTime, '') PickUpTime ,
+            isnull(og.ActualDoneDate, '') ActualDoneDate ,
+            og.[Status] ,
+            ( select    sum(a.OrderCommission)
+              from      dbo.OrderGrabChild a ( nolock )
+              where     a.GrabOrderId = #{grabOrderId,jdbcType=INTEGER}
+            ) OrderCommission ,
+            ( select    count(b.Id)
+              from      dbo.OrderGrabChild b ( nolock )
+              where     b.GrabOrderId = #{grabOrderId,jdbcType=INTEGER}
+                        and b.[Status] = 1
+            ) HadCompleteOrderGrab
+     from   dbo.OrderGrab og ( nolock ) 
+            join dbo.business b ( nolock ) on og.BusinessId = b.Id
+     where  og.ClienterId = #{clienterId,jdbcType=INTEGER}
+            and og.Id = #{grabOrderId,jdbcType=INTEGER}
+  </select>
+  <!-- 获取我的任务 wangchao -->
+  <select id="getMyOrderGrabC" resultType="com.edaisong.entity.resp.MyOrderGrabCResp" parameterType="com.edaisong.entity.req.MyOrderGrabCReq" >
+select b.Name BusinessName ,
+        b.PhoneNo BusinessPhoneNo ,
+        b.[Address] BusinessAddress ,
+        isnull(og.GrabTime,'') GrabTime,
+        og.OrderRegionOneName ,
+        og.OrderRegionTwoName ,
+        og.OrderCount ,
+        og.Id GrabOrderId,
+        og.GrabOrderNo 
+      <!-- <if test="status == 2">
+		 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(#{clienterLatitude,jdbcType=DOUBLE},#{clienterLongitude,jdbcType=DOUBLE},4326)),0) as DistanceToBusiness  
+	  </if> -->
+	   <if test="status != 2">
+		,0 DistanceToBusiness 
+	  </if> 
+ from   dbo.OrderGrab og ( nolock )
+        join dbo.business b ( nolock ) on og.BusinessId = b.Id
+ where  og.ClienterId = #{clienterId,jdbcType=INTEGER}
+        and og.[Status] = #{status,jdbcType=INTEGER}
   </select>
 </mapper>
