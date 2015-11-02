@@ -1,5 +1,10 @@
 package com.edaisong.entity.domain;
 
+/**
+ * 门店订单信息基本情况
+ * @author CaoHeYang
+ * @date 20151102
+ */
 public class InStoreTask {
 	private int businessId;
 	private String businessName;

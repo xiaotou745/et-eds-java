@@ -1180,7 +1180,7 @@ public class OrderService implements IOrderService {
 	 * @param para
 	 * @return
 	 */
-	 public  InStoreTask  getInStoreTask(InStoreTaskReq para){
+	 public  List<InStoreTask>  getInStoreTask(InStoreTaskReq para){
 		 return null;
 	 }
 

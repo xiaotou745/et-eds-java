@@ -173,8 +173,9 @@ public class OrderHttpService implements IOrderHttpService {
 	@POST
 	@Path("/getinstoretask")
 	@Override
-	public HttpResultModel<InStoreTask>  getInStoreTask(InStoreTaskReq para){
-		 HttpResultModel<InStoreTask> res=new  HttpResultModel<InStoreTask>();
+	public HttpResultModel<List<InStoreTask>>  getInStoreTask(InStoreTaskReq para){
+		 HttpResultModel<List<InStoreTask>> res=new  HttpResultModel<List<InStoreTask>>();
+		 res.setResult(orderService.getInStoreTask(para));
 		 return res;
 	}
 }

@@ -264,7 +264,7 @@ public interface IOrderService {
 	 * @param para
 	 * @return
 	 */
-	 InStoreTask  getInStoreTask(InStoreTaskReq para);
+	List<InStoreTask>  getInStoreTask(InStoreTaskReq para);
 	/**
 	 * 获取指定区域下今日未完成的订单数量
 	 * @date 20151030

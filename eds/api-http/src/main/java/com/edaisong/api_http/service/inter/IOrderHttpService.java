@@ -122,6 +122,6 @@ public interface IOrderHttpService {
 	 */
 	@POST
 	@Path("/getinstoretask")
-	public HttpResultModel<InStoreTask>  getInStoreTask(InStoreTaskReq para);
+	public HttpResultModel<List<InStoreTask>>  getInStoreTask(InStoreTaskReq para);
 
 }
