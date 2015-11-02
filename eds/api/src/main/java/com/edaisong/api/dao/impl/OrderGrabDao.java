@@ -8,6 +8,8 @@ import com.edaisong.entity.OrderGrab;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel;
+import com.edaisong.entity.domain.OrderGrabDetailModel;
+import com.edaisong.entity.req.OrderDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
 
 public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
