@@ -1,12 +1,15 @@
 package com.edaisong.api_http.service.impl;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
+import com.edaisong.core.enums.returnenums.InStoreTaskReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
@@ -186,6 +189,12 @@ public class OrderHttpService implements IOrderHttpService {
 	@Override
 	public HttpResultModel<List<InStoreTask>>  getInStoreTask(InStoreTaskReq para){
 		 HttpResultModel<List<InStoreTask>> res=new  HttpResultModel<List<InStoreTask>>();
+		 if (para.getClienterId()==0) {
+			return res.setStatus(InStoreTaskReturnEnum.ClienterIdError.value()).setMessage(InStoreTaskReturnEnum.ClienterIdError.desc());
+	     }
+		 if (para.getLongitude()==null||para.getLongitude()==0||para.getLatitude()==null||para.getLatitude()==0) {
+				return res.setStatus(InStoreTaskReturnEnum.LocationError.value()).setMessage(InStoreTaskReturnEnum.LocationError.desc());
+		  }
 		 res.setResult(orderService.getInStoreTask(para));
 		 return res;
 	}

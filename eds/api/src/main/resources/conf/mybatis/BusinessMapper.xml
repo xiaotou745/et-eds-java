@@ -487,7 +487,7 @@
 	<select id="getInStoreTaskStroes" resultType="com.edaisong.entity.domain.InStoreTask"
 		parameterType="com.edaisong.entity.req.InStoreTaskReq">
  declare @cliernterPoint geography ;
-select @cliernterPoint=geography::Point(42.2222222,132.22222,4326) ;
+select @cliernterPoint=geography::Point(#{latitude},#{longitude},4326) ;
 select  b.id as BusinessId,  
 b.name as BusinessName,b.address as BusinessAddress
 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(@cliernterPoint),0) as DistanceToBusiness,
