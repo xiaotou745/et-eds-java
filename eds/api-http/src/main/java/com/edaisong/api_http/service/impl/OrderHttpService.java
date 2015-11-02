@@ -46,7 +46,7 @@ public class OrderHttpService implements IOrderHttpService {
 
 
 	/**
-	 * 发布订单
+	 * 发布订单 (api调用)
 	 * @author 胡灵波
 	 * @date 2015年10月30日 11:29:00
 	 * @version 1.0
@@ -59,7 +59,7 @@ public class OrderHttpService implements IOrderHttpService {
 		OrderResp resp= orderService.PushOrder(req);			
 		return resp;
 	}
-
+	
 	/**
 	 * B端任务统计接口
 	 * 

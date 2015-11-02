@@ -30,6 +30,7 @@ import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
+import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
 import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService;
@@ -66,6 +67,7 @@ import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.OrderOther;
+import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.Location;
@@ -145,6 +147,10 @@ public class OrderService implements IOrderService {
 	private IClienterDao clienterDao;
 	@Autowired
 	private IGroupBusinessDao groupBusinessDao;
+	
+	@Autowired
+	private IOrderRegionDao orderRegionDao;
+	
 
 	/**
 	 * 后台订单列表页面
@@ -420,7 +426,7 @@ public class OrderService implements IOrderService {
 	 * @author 胡灵波
 	 * @Date 2015年10月30日 11:45:19
 	 */
-	//@Transactional(rollbackFor = Exception.class, timeout = 30)
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public OrderResp PushOrder(OrderReq req) {		
 		OrderResp resp=new OrderResp();
 		BusinessModel businessModel = businessDao.getBusiness(req.getBusinessid());		
@@ -509,10 +515,37 @@ public class OrderService implements IOrderService {
 						businessModel.getCommissionfixvalue(), 1, businessModel.getDistribsubsidy(), req.getOrderfrom());
 				child.setSettleMoney(settleMoney);
 				listOrderChild.add(child);
-			}			
+			}				
 		}
 		int orderChildID=orderChildDao.insertList(listOrderChild);
 	
+		int orderRegionId=0;
+		//更新区
+		for (int i = 0; i < listOrderRegion.size(); i++)
+		{
+			OrderRegion orderRegion=new OrderRegion();
+			int OneId= listOrderRegion.get(i).getOrderRegionOneId();
+			int TwoId= listOrderRegion.get(i).getOrderRegionTwoId();
+			int orderCount=listOrderRegion.get(i).getOrderCount();
+			if(TwoId>0)//二级
+			{
+				orderRegion.setId(TwoId);		
+				orderRegion.setWaitingcount(orderCount); 
+				orderRegionId=orderRegionDao.updateByPrimaryKeySelective(orderRegion);
+				
+				orderRegion.setId(OneId);		
+				orderRegion.setWaitingcount(orderCount); 
+				orderRegion.setHaschild(true); 
+				orderRegionId=orderRegionDao.updateByPrimaryKeySelective(orderRegion);
+			}
+			else
+			{
+				orderRegion.setId(OneId);				
+				orderRegion.setWaitingcount(orderCount); 
+				orderRegionId=orderRegionDao.updateByPrimaryKeySelective(orderRegion);
+			}		
+		}
+		
 		// 扣除商家结算费
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 		balanceRecord.setBusinessid(req.getBusinessid());
@@ -556,36 +589,27 @@ public class OrderService implements IOrderService {
 			adjustRecord.setOptname(TaskStatus.PublishOrder.desc());
 			adjustRecord.setRemark("补贴加钱,订单金额:" + order.getAmount() + "-佣金补贴策略id:" + order.getCommissionformulamode());
 			adjustRecord.setPlatform(SuperPlatform.Business.value());
-			 orderSubsidiesLogDao.insert(adjustRecord);
+			int orderSubsidieslogId= orderSubsidiesLogDao.insert(adjustRecord);
+			if(orderSubsidieslogId<=0)
+				throw new RuntimeException("记录补贴日志错误");
 		}
 		
-		
+		//订单表 订单otherID表 订单child表
+		//区域表 商户及流水表
+		//发单日志表
+		//补贴日志表
 		if(orderId>0 && 
 		  orderOtherId>0 && 
+		  orderChildID>0 && 
+		  orderRegionId>0 &&
 		  bbcId>0 &&
 		  ordersubsidiesId>0)
 		{
 			resp.setResponseCode(PublishOrderReturnEnum.Success.value());
 			resp.setMessage(PublishOrderReturnEnum.Success.desc());
 			return resp;
-		}	
+		}			
 
-		
-		/*	
-		
-	
-
-
-
-	
-		
-
-		// 写入OrderChild
-		if (req.getListOrderChild() != null && req.getListOrderChild().size() > 0) {
-			fillOrderChild(req, businessModel, order);
-			orderChildDao.insertList(req.getListOrderChild());
-		}		
-		*/
 		return resp;
 	}
 

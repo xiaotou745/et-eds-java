@@ -18,4 +18,6 @@ public interface IOrderRegionDao {
      * wangchao
      */
     List<OrderRegion> getOrderRegion(OrderRegionReq orderRegionReq);
+    
+    int updateByPrimaryKeySelective(OrderRegion record);
 }

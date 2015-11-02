@@ -46,6 +46,24 @@
       #{optname,jdbcType=NVARCHAR})
   </insert>
   
+   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderRegion" >
+    update dbo.[OrderRegion]
+    <set >
+      <if test="haschild != null" >
+        haschild = #{haschild,jdbcType=BIT},
+      </if>
+      <if test="waitingcount != null" >
+        waitingcount += #{waitingcount,jdbcType=INTEGER},
+      </if>
+      <if test="distributioning != null" >
+        distributioning += #{distributioning,jdbcType=INTEGER},
+      </if>
+      <if test="donecount != null" >
+        donecount += #{donecount,jdbcType=INTEGER},
+      </if>     
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
   
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderRegion" >
     update OrderRegion
