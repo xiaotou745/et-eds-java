@@ -9,6 +9,7 @@ import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api_http.service.inter.IBusinessHttpService;
 import com.edaisong.core.enums.ClienterBindBusinessEnum;
+import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.ServiceClienters;
@@ -58,6 +59,14 @@ public class BusinessHttpService implements IBusinessHttpService {
 	@Override
 	public HttpResultModel<List<ServiceClienters>> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
 		HttpResultModel<List<ServiceClienters>> result = new HttpResultModel<List<ServiceClienters>>();
+		if (req.getBusinessId()==0) {
+		  return result.setStatus(GetMyServiceClientersReturnEnum.BusinessIdError.value()).setMessage(
+				  GetMyServiceClientersReturnEnum.BusinessIdError.desc());	
+		}
+		if (req.getAuditStatus()==null||req.getAuditStatus()>1) {
+			  return result.setStatus(GetMyServiceClientersReturnEnum.AuditStatusError.value()).setMessage(
+					  GetMyServiceClientersReturnEnum.AuditStatusError.desc());	
+		}
 		result.setResult(businessClienterRelationService.getMyServiceClienters(req));
 		return result;
 	}
