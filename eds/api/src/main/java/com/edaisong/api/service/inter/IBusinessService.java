@@ -2,12 +2,14 @@ package com.edaisong.api.service.inter;
 
 import java.util.Date;
 import java.util.List;
+
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.req.BusinessMoney;
@@ -114,6 +116,16 @@ public interface IBusinessService {
 	 * @param par
 	 * @return
 	 */
-	  Integer getIsAllowInputMoney(IsAllowInputMoneyReq par);
+	Integer getIsAllowInputMoney(IsAllowInputMoneyReq par);
+	/*
+	 * 绑定骑士 建立关系
+	 * wangchao
+	 */
+	int bindClienter(BindClienterBusiness bindClienterBusiness);
+	/*
+	 * 判断骑士商户是否绑定
+	 * wangchao
+	 */
+	boolean getClienterBind(BindClienterBusiness bindClienterBusiness);
     
 }
