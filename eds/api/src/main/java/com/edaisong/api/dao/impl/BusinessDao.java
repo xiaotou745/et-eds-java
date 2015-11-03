@@ -15,6 +15,7 @@ import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
@@ -193,5 +194,16 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	@Override
 	public List<InStoreTask> getInStoreTaskStroes(InStoreTaskReq para){
 		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IBusinessDao.getInStoreTaskStroes", para);
+	}
+
+	@Override
+	public int bindClienter(BindClienterBusiness bindClienterBusiness) {
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessDao.bindClienter",bindClienterBusiness);
+	}
+
+	@Override
+	public boolean getClienterBind(BindClienterBusiness bindClienterBusiness) {
+		int i= getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getClienterBind",bindClienterBusiness);
+		return i>0;
 	}
 }

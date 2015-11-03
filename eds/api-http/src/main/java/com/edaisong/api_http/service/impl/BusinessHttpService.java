@@ -1,11 +1,19 @@
 package com.edaisong.api_http.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api_http.service.inter.IBusinessHttpService;
+import com.edaisong.core.enums.ClienterBindBusinessEnum;
+import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.BindClienterBusiness;
+import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.req.IsAllowInputMoneyReq;
 
 /**
@@ -21,6 +29,9 @@ public class BusinessHttpService implements IBusinessHttpService {
 	 */
 	@Autowired
 	private IBusinessService businessService;
+	
+   @Autowired
+   private IBusinessClienterRelationService businessClienterRelationService;
 
 	/**
 	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要 默认0
@@ -35,6 +46,51 @@ public class BusinessHttpService implements IBusinessHttpService {
 		HttpResultModel<Integer> result = new HttpResultModel<Integer>();
 		result.setResult(businessService.getIsAllowInputMoney(par));
 		return result;
+	}
+	
+	/**
+	 * 商戶端 我的骑士
+	 * @version 20151103
+	 * @author CaoHeYang
+	 * @date 20151103
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<List<ServiceClienters>> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
+		HttpResultModel<List<ServiceClienters>> result = new HttpResultModel<List<ServiceClienters>>();
+		if (req.getBusinessId()==0) {
+		  return result.setStatus(GetMyServiceClientersReturnEnum.BusinessIdError.value()).setMessage(
+				  GetMyServiceClientersReturnEnum.BusinessIdError.desc());	
+		}
+		if (req.getAuditStatus()==null||req.getAuditStatus()>1) {
+			  return result.setStatus(GetMyServiceClientersReturnEnum.AuditStatusError.value()).setMessage(
+					  GetMyServiceClientersReturnEnum.AuditStatusError.desc());	
+		}
+		result.setResult(businessClienterRelationService.getMyServiceClienters(req));
+		return result;
+	}
+
+	@Override
+	public HttpResultModel<Object> bindClienter(
+			BindClienterBusiness bindClienterBusiness) {
+	   HttpResultModel<Object> result = new HttpResultModel<Object>(); 
+	   result.setStatus(ClienterBindBusinessEnum.Success.value());
+	   result.setMessage(ClienterBindBusinessEnum.Success.desc());
+	    
+	   boolean b = businessService.getClienterBind(bindClienterBusiness);
+	   if(!b){
+		   int bindResult =  businessService.bindClienter(bindClienterBusiness);
+		   if(bindResult<=0){
+			   result.setStatus(ClienterBindBusinessEnum.Fail.value());
+			   result.setMessage(ClienterBindBusinessEnum.Fail.desc());
+		   }
+	   }else{
+		   result.setStatus(ClienterBindBusinessEnum.HadBind.value());
+		   result.setMessage(ClienterBindBusinessEnum.HadBind.desc());
+	   } 
+	   return result;
+	   
 	}
 
 }

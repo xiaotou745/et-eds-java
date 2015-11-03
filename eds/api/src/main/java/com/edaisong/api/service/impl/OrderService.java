@@ -1434,6 +1434,10 @@ public class OrderService implements IOrderService {
 		{
 			return PublishOrderReturnEnum.HadCancelQualification;
 		}	
+		if (businessModel.getStrategyId()!= 4)
+		{
+			return PublishOrderReturnEnum.StrategyErr;
+		}	
 		
 		
 /*		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(req.getAmount(), businessModel.getBusinesscommission(),

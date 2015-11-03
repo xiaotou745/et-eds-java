@@ -51,7 +51,7 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 						id);
 	} 
 	/*
-	 * ��ȡ�ҵ�����
+	 * 获取我的任务
 	 * wangchao
 	 */
 	@Override
@@ -61,7 +61,7 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 				"com.edaisong.api.dao.inter.IOrderGrabDao.getMyOrderGrabC", myOrderGrabCReq);
 	}
 	/*
-	 * ��ȡ�ҵ���������
+	 * 获取我的任务详情
 	 * wangchao
 	 */
 	@Override

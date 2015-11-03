@@ -62,23 +62,28 @@ public interface IOrderGrabService {
     PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req);
     List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req);
 /**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ?????????
 	 * 
 	 * @param req
-	 *            ï¿½ï¿½ï¿½ï¿½
-	 * @author ï¿½ï¿½ï¿½é²¨
-	 * @Date 2015ï¿½ï¿½11ï¿½ï¿½2ï¿½ï¿½ 16:15:23
+	 *            ????
+	 * @author ???öè
+	 * @Date 2015??11??2?? 16:15:23
 	 * @return
 	 */	
 	int  add(OrderGrab record);
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½
+	 * ÇÀµ¥
+	 * ????
 	 * 
 	 * @param req
-	 *            ï¿½ï¿½ï¿½ï¿½
-	 * @author ï¿½ï¿½ï¿½é²¨
-	 * @Date 2015ï¿½ï¿½11ï¿½ï¿½2ï¿½ï¿½ 16:15:23
+	 *            ²ÎÊý
+	 * @author ºúÁé²¨
+	 * @Date 2015Äê11ÔÂ2ÈÕ 16:15:23
+	 * @param req 
+	 * @author wangchao
+	 * »ñÈ¡ÎÒµÄÈÎÎñ
+
 	 * @return
 	 */	
 	OrderGrabResp GrabOrder(OrderGrabReq req);
