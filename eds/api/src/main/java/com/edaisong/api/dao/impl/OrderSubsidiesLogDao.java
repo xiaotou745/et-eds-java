@@ -27,7 +27,7 @@ public class OrderSubsidiesLogDao extends DaoBase implements IOrderSubsidiesLogD
    * @return
    */
 	@Override
-	public List<OrderSubsidiesLog> GetOrderOptionLog(int orderId) {
+	public List<OrderSubsidiesLog> GetOrderOptionLog(Long orderId) {
 		Map<String, Object> map=new HashedMap();
 		map.put("OrderId", orderId);
 		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IOrderSubsidiesLogDao.GetOrderOptionLog", 

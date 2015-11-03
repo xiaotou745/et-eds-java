@@ -157,7 +157,7 @@ public class OrderController {
 	   if (orderListModel==null) {
 		   throw new RuntimeException("没有找到orderno="+orderno+"的订单");
 	   }
-	    List<OrderSubsidiesLog> orderSubsidiesLogs=orderSubsidiesLogService.GetOrderOptionLog(orderid);
+	    List<OrderSubsidiesLog> orderSubsidiesLogs=orderSubsidiesLogService.GetOrderOptionLog((long)orderid);
 		model.addObject("subtitle", "订单列表");
 		model.addObject("currenttitle", "订单详情");
 		model.addObject("viewPath", "order/detail");

@@ -47,6 +47,7 @@ import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
+import com.edaisong.api.dao.inter.IOrderGrabChildDao;
 import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderRegionDao;
@@ -87,6 +88,7 @@ import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.OrderGrab;
+import com.edaisong.entity.OrderGrabChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderSubsidiesLog;
@@ -103,6 +105,7 @@ import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.FastOrderDetail;
 import com.edaisong.entity.domain.FastOrderExportModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderCommission;
@@ -144,7 +147,11 @@ public class OrderGrabService implements IOrderGrabService {
 
 	@Autowired
 	private IOrderGrabDao orderGrabDao;
-
+	@Autowired
+	private IOrderGrabChildDao orderGrabChildDao;
+	@Autowired
+	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
+	
 	@Override
 	public int deleteById(Long id) {
 		return orderGrabDao.deleteById(id);
@@ -156,8 +163,11 @@ public class OrderGrabService implements IOrderGrabService {
 	}
 
 	@Override
-	public OrderGrab selectById(Long id) {
-		return orderGrabDao.selectById(id);
+	public FastOrderDetail selectById(Long id) {
+		FastOrderDetail result= orderGrabDao.selectById(id);
+		List<OrderGrabChild>  childs=orderGrabChildDao.selectByGrabOrderId(id);
+		result.setOrderChilds(childs);
+		return result;
 	}
 
 	@Override

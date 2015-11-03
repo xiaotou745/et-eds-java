@@ -10,7 +10,11 @@
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.enums.OrderStatus"%>
 <%@page import="com.edaisong.core.enums.OrderFrom"%>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%	
+String basePath =PropertyUtils.getProperty("java.admin.url");
 
+%>
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
@@ -39,8 +43,7 @@
 		%>
 		<tr>
 			<td><%=i + 1%></td>
-			<td>
-			<%=data.get(i).getOrderNo()%> <br /> 
+			<td><a href="<%=basePath%>/fastorder/detail?orderid=<%=data.get(i).getId()%>"><%=data.get(i).getOrderNo()%></a><br /> 
 			来源:<%=OrderFrom.getEnum(data.get(i).getOrderFrom()).desc() %>
 		    </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getBusinessName())%> <br /> 
