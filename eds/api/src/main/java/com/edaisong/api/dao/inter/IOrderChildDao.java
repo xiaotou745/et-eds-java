@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderOther;
+import com.edaisong.entity.req.OrderGrabReq;
 
 public interface IOrderChildDao {
     int insert(OrderChild record);
@@ -27,4 +28,9 @@ public interface IOrderChildDao {
     * @return
     */
     int   getOrderTaskPayStatus(int orderId);
+    
+    List<Integer>   updateGradOne(OrderGrabReq record);  
+	
+
+    List<Integer>   updateGradTwo(OrderGrabReq record) ;
 }
