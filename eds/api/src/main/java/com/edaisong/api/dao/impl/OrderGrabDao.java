@@ -9,11 +9,10 @@ import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.entity.OrderGrab;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.FastOrderMapDetail;
-import com.edaisong.entity.domain.FastOrderModel;
-import com.edaisong.entity.domain.OrderGrabDetailModel;
+import com.edaisong.entity.domain.FastOrderModel; 
 import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
-import com.edaisong.entity.req.PagedFastOrderSearchReq;
+import com.edaisong.entity.req.PagedFastOrderSearchReq; 
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.MyOrderGrabDetailResp;
 @Repository
@@ -51,7 +50,7 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 						id);
 	} 
 	/*
-	 * 获取我的任务
+	 * ��ȡ�ҵ�����
 	 * wangchao
 	 */
 	@Override
@@ -61,12 +60,19 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 				"com.edaisong.api.dao.inter.IOrderGrabDao.getMyOrderGrabC", myOrderGrabCReq);
 	}
 	/*
-	 * 获取我的任务详情
+	 * ��ȡ�ҵ���������
 	 * wangchao
 	 */
 	@Override
 	public MyOrderGrabDetailResp getMyOrderGrabDetailC(
 			OrderGrabDetailCReq orderGrabDetailCReq) { 
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderGrabDao.getMyOrderGrabDetailC", orderGrabDetailCReq);
+	}
+
+	@Override
+	public int insertSelective(OrderGrab record) {
+	
+		return getMasterSqlSessionUtil().insert(
+				"com.edaisong.api.dao.inter.IOrderGrabDao.insertSelective", record);
 	}
 }

@@ -8,7 +8,7 @@ import com.edaisong.entity.OrderChild;
 
 public class OrderRegionReq {
 
-    private Integer businessId;
+private Integer businessId;
 	
 	private Integer status;
 

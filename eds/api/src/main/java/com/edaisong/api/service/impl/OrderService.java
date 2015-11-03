@@ -4,6 +4,7 @@ import java.lang.Double;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -1389,7 +1390,11 @@ public class OrderService implements IOrderService {
 		 List<InStoreOrderRegionInfo> temp= regionInfos.stream().filter(predicate->predicate.getParentId()==0).collect(Collectors.toList()); //筛选出所有的一级区域
 		 temp.stream().filter(predicate->predicate.getHasChild()==1).
 		 			forEach(action->action.setChilds(regionInfos.stream().filter(pre->pre.getParentId()==action.getId()).collect(Collectors.toList())));  //为所有的一级区域中含有子区域的设置二级区域
-		 list.forEach(action->action.setList(temp.stream().filter(predicate->predicate.getBusinessId()==action.getBusinessId()).collect(Collectors.toList()))); //将所有的区域归类到对应的商家下
+		 for (InStoreTask  action : list) {//将所有的区域归类到对应的商家下
+			 action.setList(temp.stream().filter(predicate->predicate.getBusinessId()==action.getBusinessId()).collect(Collectors.toList()));
+			 Double tempDis=ParseHelper.ToDouble(action.getDistanceToBusiness(), 0);
+			 action.setDistanceToBusiness(tempDis<1000?tempDis+"m":  ParseHelper.digitsNum( tempDis * 0.001,2)+"km");
+		}
 		 return list;
 	 }
 

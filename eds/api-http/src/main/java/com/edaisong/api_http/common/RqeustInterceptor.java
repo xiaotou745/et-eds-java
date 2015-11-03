@@ -72,6 +72,10 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			Exchange exchange = message.getExchange();
 			Message inMessage = exchange.getInMessage();
 			Message outMessage = exchange.getOutMessage();
+			Method methodName = (Method) inMessage.get("org.apache.cxf.resource.method");
+			if(methodName==null){
+				return;
+			}
 	
 			String exceptionMsg = "";
 			String stackTrace = "";
@@ -98,7 +102,7 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			String contentType = (String) inMessage.get(Message.CONTENT_TYPE);
 			String httpRequestMethod = (String) inMessage.get(Message.HTTP_REQUEST_METHOD);
 			String url = (String) inMessage.get(Message.REQUEST_URL);
-			Method methodName = (Method) inMessage.get("org.apache.cxf.resource.method");
+		
 	
 			HttpServletRequest request = (HttpServletRequest) inMessage.get(AbstractHTTPDestination.HTTP_REQUEST);// 这句可以获取到request
 			String clientIp = SystemUtils.getClientIp(request);

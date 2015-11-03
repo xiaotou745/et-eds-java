@@ -52,7 +52,123 @@
       #{donelatitude,jdbcType=DOUBLE}, #{ordercommission,jdbcType=DOUBLE}, #{settlemoney,jdbcType=DOUBLE}
       )
   </insert>
-	 <!-- 快单列表页面 查询列集合 add by zhaohl 20151102 -->
+<insert id="insertSelective" parameterType="com.edaisong.entity.OrderGrab" >
+    insert into OrderGrab
+    <trim prefix="(" suffix=")" suffixOverrides="," >    
+      <if test="graborderno != null" >
+        GrabOrderNo,
+      </if>    
+        <if test="businessid != null" >
+        businessid,
+      </if>
+      <if test="clienterid != null" >
+        ClienterId,
+      </if>
+      <if test="orderCount != null" >
+        orderCount,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="actualdonedate != null" >
+        ActualDoneDate,
+      </if>
+      <if test="grabtime != null" >
+        GrabTime,
+      </if>
+      <if test="pickuptime != null" >
+        PickUpTime,
+      </if>
+      <if test="pickuplongitude != null" >
+        PickUpLongitude,
+      </if>
+      <if test="pickuplatitude != null" >
+        PickUpLatitude,
+      </if>
+      <if test="grablongitude != null" >
+        GrabLongitude,
+      </if>
+      <if test="grablatitude != null" >
+        GrabLatitude,
+      </if>
+      <if test="donelongitude != null" >
+        DoneLongitude,
+      </if>
+      <if test="donelatitude != null" >
+        DoneLatitude,
+      </if>
+      <if test="orderRegionOneId != null" >
+        orderRegionOneId,
+      </if>
+      <if test="orderRegionOneName != null" >
+        orderRegionOneName,
+      </if>      
+       <if test="orderRegionTwoId != null" >
+        orderRegionTwoId,
+      </if>
+      <if test="orderRegionTwoName != null" >
+        orderRegionTwoName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >    
+      <if test="graborderno != null" >
+        #{graborderno,jdbcType=VARCHAR},
+      </if>         
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="clienterid != null" >
+        #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="orderCount != null" >
+        #{orderCount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="actualdonedate != null" >
+        #{actualdonedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="grabtime != null" >
+        #{grabtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickuptime != null" >
+        #{pickuptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickuplongitude != null" >
+        #{pickuplongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pickuplatitude != null" >
+        #{pickuplatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablongitude != null" >
+        #{grablongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablatitude != null" >
+        #{grablatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelongitude != null" >
+        #{donelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelatitude != null" >
+        #{donelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="orderRegionOneId != null" >
+        #{orderRegionOneId,jdbcType=INTEGER},
+      </if>
+      <if test="orderRegionOneName != null" >
+        #{orderRegionOneName,jdbcType=VARCHAR},
+      </if>
+      
+       <if test="orderRegionTwoId != null" >
+        #{orderRegionTwoId ,jdbcType=INTEGER},
+      </if>
+      <if test="orderRegionTwoName != null" >
+        #{orderRegionTwoName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+	 <!--  add by zhaohl 20151102 -->
 	<sql id="queryFrom">
 		SELECT  o.id ,
         o.GrabOrderNo as orderNo ,
@@ -66,7 +182,8 @@
         o.OrderRegionTwoName ,
         o.ActualDoneDate ,
         o.OrderCount ,
-        o.Status
+        o.Status,
+        MIN(m.ordercommission) AS orderCommission
 FROM    dbo.[order] a WITH ( NOLOCK )
         JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
@@ -87,7 +204,7 @@ GROUP BY o.id ,
         o.OrderCount ,
         o.Status
 	</sql>
-	 <!-- 快单列表页面 查询列集合 add by zhaohl 20151102 -->
+	 <!-- �쵥�б�ҳ�� ��ѯ�м��� add by zhaohl 20151102 -->
 	<sql id="queryColumsWhere">
 		1=1
 		<if test="businessName != null and businessName != ''">
@@ -118,7 +235,7 @@ GROUP BY o.id ,
 			and b.cityCode= ${businessCity}
 		</if>
 	</sql> 
-	 <!-- 快单列表页面 查询列集合 add by zhaohl 20151102 -->
+	 <!-- �쵥�б�ҳ�� ��ѯ�м��� add by zhaohl 20151102 -->
 	<select id="query" resultType="com.edaisong.entity.domain.FastOrderModel"
 		parameterType="com.edaisong.entity.req.PagedFastOrderSearchReq"
 		statementType="CALLABLE">
@@ -177,7 +294,7 @@ GROUP BY o.id ,
       SettleMoney = #{settlemoney,jdbcType=DOUBLE}
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  <!-- 获取任务详情 wangchao -->
+  <!-- 获取我的任务详情 wangchao -->
   <select id="getMyOrderGrabDetailC" resultType="com.edaisong.entity.resp.MyOrderGrabDetailResp" parameterType="com.edaisong.entity.req.OrderGrabDetailCReq" >
     select 	b.Name BusinessName ,
         	b.PhoneNo BusinessPhoneNo ,
@@ -205,7 +322,7 @@ GROUP BY o.id ,
      where  og.ClienterId = #{clienterId,jdbcType=INTEGER}
             and og.Id = #{grabOrderId,jdbcType=INTEGER}
   </select>
-  <!-- 获取我的任务 wangchao -->
+  <!-- 获取我的任务wangchao -->
   <select id="getMyOrderGrabC" resultType="com.edaisong.entity.resp.MyOrderGrabCResp" parameterType="com.edaisong.entity.req.MyOrderGrabCReq" >
 select b.Name BusinessName ,
         b.PhoneNo BusinessPhoneNo ,

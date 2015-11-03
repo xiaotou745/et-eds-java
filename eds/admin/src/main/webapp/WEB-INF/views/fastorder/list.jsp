@@ -45,33 +45,33 @@ width: 100%;
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">超人电话:</label>
+							<label class="col-sm-4 control-label">骑士电话:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="superManPhone"  id="txtSuperManPhone" />
+								<input type="text" class="form-control" name="superManPhone"  id="superManPhone" />
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">超人姓名:</label>
+							<label class="col-sm-4 control-label">骑士姓名:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control"  name="superManName"  id="txtSuperManName"/>
+								<input type="text" class="form-control"  name="superManName"  id="superManName"/>
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">商户电话:</label>
+							<label class="col-sm-4 control-label">门店电话:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="businessPhone"  id="txtBusinessPhone"/>
+								<input type="text" class="form-control" name="businessPhone"  id="businessPhone"/>
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">商户名称:</label>
+							<label class="col-sm-4 control-label">门店名称:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="businessName"  id="txtBusinessName"/>
+								<input type="text" class="form-control" name="businessName"  id="businessName"/>
 							</div>
 						</div>
 					</div>
@@ -87,11 +87,11 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">发布时间:</label>
+							<label class="col-sm-4 control-label">抢单时间:</label>
 							<div class="col-sm-8">
 							<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" value="" name="OrderPubStart"  id="txtOrderPubStart"/>
+                                        <input type="text" class="form-control" value="" name="orderGrabStart"  id="orderGrabStart"/>
                                     </div>
 							</div>
 						</div>
@@ -102,16 +102,16 @@ width: 100%;
 							<div class="col-sm-8">
 							     <div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" value="" name="OrderPubEnd"  id="txtOrderPubEnd"/>
+                                        <input type="text" class="form-control" value="" name="orderGrabEnd"  id="orderGrabEnd"/>
                                     </div>
    						</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">筛选城市:</label>
+							<label class="col-sm-4 control-label">商家城市:</label>
 							<div class="col-sm-8">
-							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部") %>
+							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "code","-1","-1","全部") %>
 							</div>
 						</div>
 					</div>
@@ -119,29 +119,14 @@ width: 100%;
 					<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">原订单号:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" name="originalOrderNo" />
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
 							<label class="col-sm-4 control-label">订单号:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="orderId" />
+								<input type="text" class="form-control" name="orderNo" id="orderNo" />
 							</div>
 						</div>
 					</div>
 					<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
-					<div class="col-lg-3">
-					<div class="form-group">
-							<label class="col-sm-4 control-label">审核状态:</label>
-							<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("auditStatus", EnumHelper.GetEnumItems(OrderAuditStatus.class), "desc", "value",null,"-1","全部") %>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 			    <div class="row">
 						<div class="col-lg-3">
@@ -192,8 +177,7 @@ width: 100%;
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
 		 var data=$("#searchForm").serialize();
-// 			data.currentPage=currentPage;
-			$.post("<%=basePath%>/order/listdo",data, function(d) {
+			$.post("<%=basePath%>/fastorder/listdo",data, function(d) {
 				$("#content").html(d);
 			});
 		}
@@ -234,7 +218,7 @@ width: 100%;
 	        //弹出地图时，禁用滚动条
 	        document.documentElement.style.overflow = "hidden";
 	        document.body.style.overflow = "hidden";
-	        var url = "<%=basePath%>/order/ordermap?orderid="+orderid;
+	        var url = "<%=basePath%>/fastorder/ordermap?orderid="+orderid;
 	        $.ajax({
 	            type: 'POST',
 	            url: url,
