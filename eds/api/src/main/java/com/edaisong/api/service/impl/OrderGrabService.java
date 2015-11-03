@@ -154,7 +154,11 @@ public class OrderGrabService implements IOrderGrabService {
 	private IOrderGrabChildDao orderGrabChildDao;
 	@Autowired
 	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
-@Override
+	
+	@Autowired
+	private IOrderRegionDao orderRegionDao;
+	
+    @Override
 	public int deleteById(Long id) {
 		return orderGrabDao.deleteById(id);
 	}
