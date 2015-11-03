@@ -1,36 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edaisong.api.dao.inter.IOrderGrabDao" >
-  <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderGrab" >
-    <id column="Id" property="id" jdbcType="INTEGER" />
-    <result column="OrderId" property="orderid" jdbcType="INTEGER" />
-    <result column="GrabOrderNo" property="graborderno" jdbcType="VARCHAR" />
-    <result column="BusinessId" property="businessid" jdbcType="INTEGER" />
-    <result column="ClienterId" property="clienterid" jdbcType="INTEGER" />
-    <result column="OrderCount" property="ordercount" jdbcType="NCHAR" />
-    <result column="Status" property="status" jdbcType="TINYINT" />
-    <result column="ActualDoneDate" property="actualdonedate" jdbcType="TIMESTAMP" />
-    <result column="GrabTime" property="grabtime" jdbcType="TIMESTAMP" />
-    <result column="PickUpTime" property="pickuptime" jdbcType="TIMESTAMP" />
-    <result column="PickUpLongitude" property="pickuplongitude" jdbcType="DOUBLE" />
-    <result column="PickUpLatitude" property="pickuplatitude" jdbcType="DOUBLE" />
-    <result column="GrabLongitude" property="grablongitude" jdbcType="DOUBLE" />
-    <result column="GrabLatitude" property="grablatitude" jdbcType="DOUBLE" />
-    <result column="DoneLongitude" property="donelongitude" jdbcType="DOUBLE" />
-    <result column="DoneLatitude" property="donelatitude" jdbcType="DOUBLE" />
-    <result column="OrderCommission" property="ordercommission" jdbcType="DOUBLE" />
-    <result column="SettleMoney" property="settlemoney" jdbcType="DOUBLE" />
-  </resultMap>
   <sql id="Base_Column_List" >
-    Id, OrderId, GrabOrderNo, BusinessId, ClienterId, OrderCount, Status, ActualDoneDate, 
+    Id, GrabOrderNo, BusinessId, ClienterId, OrderCount, Status, ActualDoneDate, 
     GrabTime, PickUpTime, PickUpLongitude, PickUpLatitude, GrabLongitude, GrabLatitude, 
-    DoneLongitude, DoneLatitude, OrderCommission, SettleMoney
+    DoneLongitude, DoneLatitude, OrderCommission, SettleMoney,OrderRegionOneId,
+    OrderRegionOneName,OrderRegionTwoId ,OrderRegionTwoName,commissionRate,
+    baseCommission,websitesubsidy,adjustment ,distribsubsidy
   </sql>
-  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from OrderGrab
-    where Id = #{id,jdbcType=INTEGER}
+  <select id="selectById" resultType="com.edaisong.entity.domain.FastOrderDetail" parameterType="java.lang.Long" >
+   SELECT  o.id ,
+        o.GrabOrderNo ,
+        a.OrderFrom ,
+        b.Name AS businessName ,
+        b.PhoneNo AS businessPhoneNo ,
+        b.PhoneNo2 AS businessPhoneNo2 ,
+        b.address ,
+        ISNULL(c.TrueName, '') AS clienterName ,
+        ISNULL(c.PhoneNo, '') AS clienterPhoneNo ,
+        o.OrderRegionOneName ,
+        o.OrderRegionTwoName ,
+        o.ActualDoneDate ,
+        o.orderCommission ,
+        o.OrderCount ,
+        o.Status ,
+        o.distribsubsidy,
+        MIN(m.websitesubsidy) AS singlewebsitesubsidy ,
+        MIN(m.adjustment) AS singleadjustment
+FROM    dbo.[order] a WITH ( NOLOCK )
+        JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
+        JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
+        JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
+        LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId
+WHERE o.id = #{id,jdbcType=INTEGER} and  a.Platform = 2
+GROUP BY o.id ,
+        o.GrabOrderNo ,
+        a.OrderFrom ,
+        b.Name ,
+        b.PhoneNo ,
+        b.PhoneNo2 ,
+        b.address ,
+        c.TrueName ,
+        c.PhoneNo ,
+        o.OrderRegionOneName ,
+        o.OrderRegionTwoName ,
+        o.ActualDoneDate ,
+        o.orderCommission ,
+        o.OrderCount ,
+        o.Status,
+        o.distribsubsidy
   </select>
   <delete id="deleteById" parameterType="java.lang.Integer" >
     delete from OrderGrab

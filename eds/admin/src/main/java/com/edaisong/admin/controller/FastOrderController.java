@@ -25,6 +25,7 @@ import com.edaisong.entity.OrderGrab;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.FastOrderDetail;
 import com.edaisong.entity.domain.FastOrderExportModel;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel;
@@ -136,15 +137,16 @@ public class FastOrderController {
 	@RequestMapping("detail")
 	public ModelAndView detail(Long orderid){
 		ModelAndView model = new ModelAndView("adminView");
-		OrderGrab orderListModel =orderGrabService.selectById(orderid);
-	   if (orderListModel==null) {
+		FastOrderDetail detailModel =orderGrabService.selectById(orderid);
+	   if (detailModel==null) {
 		   throw new RuntimeException("没有找到orderid="+orderid+"的订单");
 	   }
-	    List<OrderSubsidiesLog> orderSubsidiesLogs=new ArrayList<>();
+	  
+	    List<OrderSubsidiesLog> orderSubsidiesLogs= orderSubsidiesLogService.GetOrderOptionLog(orderid);
 		model.addObject("subtitle", "订单列表");
 		model.addObject("currenttitle", "订单详情");
 		model.addObject("viewPath", "fastorder/detail");
-		model.addObject("orderListModel", orderListModel);
+		model.addObject("detailModel", detailModel);
 		model.addObject("orderSubsidiesLogs", orderSubsidiesLogs);
 		return model;
 	}

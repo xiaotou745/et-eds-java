@@ -7,8 +7,9 @@ import org.springframework.stereotype.Repository;
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IOrderGrabChildDao;
 import com.edaisong.entity.OrderGrabChild;
+
 @Repository
-public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao{
+public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao {
 
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
@@ -51,4 +52,12 @@ public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao{
 	{
 		return 0;
 	}
+	@Override
+	public List<OrderGrabChild> selectByGrabOrderId(Long grabOrderId) {
+		return getReadOnlySqlSessionUtil()
+				.selectList(
+						"com.edaisong.api.dao.inter.IOrderGrabChildDao.selectByGrabOrderId",
+						grabOrderId);
+	}
+
 }

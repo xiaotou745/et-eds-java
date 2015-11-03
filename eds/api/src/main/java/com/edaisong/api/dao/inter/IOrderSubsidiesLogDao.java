@@ -14,5 +14,5 @@ public interface IOrderSubsidiesLogDao {
      * @date 20150827  
      * @return
      */
-   List<OrderSubsidiesLog>  GetOrderOptionLog(int orderId);
+   List<OrderSubsidiesLog>  GetOrderOptionLog(Long orderId);
 }
