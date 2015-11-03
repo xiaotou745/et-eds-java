@@ -2,6 +2,9 @@ package com.edaisong.api_http.service.impl;
 
 import java.util.List;
 
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,7 @@ import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.req.IsAllowInputMoneyReq;
 
@@ -93,4 +97,18 @@ public class BusinessHttpService implements IBusinessHttpService {
 	   
 	}
 
+	/**
+	 * 商戶端 我的骑士   申请中 同意/拒绝功能
+	 * @version 20151103
+	 * @author CaoHeYang
+	 * @date 20151103
+	 * @param req
+	 * @return
+	 */
+	@Override
+	 public HttpResultModel<Object>  optBindClienter(OptBindClienterReq req){
+		HttpResultModel<Object> res=new HttpResultModel<Object> ();
+		
+		return res;
+	 }
 }
