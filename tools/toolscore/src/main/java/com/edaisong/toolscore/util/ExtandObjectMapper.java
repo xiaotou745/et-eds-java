@@ -1,5 +1,8 @@
 package com.edaisong.toolscore.util;
  
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper; 
 import com.fasterxml.jackson.databind.SerializationFeature; 
@@ -18,6 +21,8 @@ public class ExtandObjectMapper  extends ObjectMapper{
         // 禁用空对象转换json校验
         this.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         this.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
+        this.setDateFormat(df);
         //驼峰命名法转换为小写加下划线
         // this.setPropertyNamingStrategy(new ExtandNameStrategy());
     }
