@@ -1,11 +1,6 @@
 package com.edaisong.core.enums;
 
-/**
- * 商户发单返回值枚举
- * @author CaoHeYang
- * @Date 20150818
- */
-public enum PublishOrderReturnEnum {
+public enum OrderGrabReturnEnum {
 	/**
 	 * 
 	 */
@@ -66,7 +61,7 @@ public enum PublishOrderReturnEnum {
 	private int value = 0;
 	private String desc;
 
-	private PublishOrderReturnEnum(int value, String desc) { // 必须是private的，否则编译错误
+	private OrderGrabReturnEnum(int value, String desc) { // 必须是private的，否则编译错误
 		this.value = value;
 		this.desc = desc;
 	}
@@ -79,8 +74,8 @@ public enum PublishOrderReturnEnum {
 		return this.desc;
 	}
 
-	public static PublishOrderReturnEnum getEnum(int index) {
-		for (PublishOrderReturnEnum c : PublishOrderReturnEnum.values()) {
+	public static OrderGrabReturnEnum getEnum(int index) {
+		for (OrderGrabReturnEnum c : OrderGrabReturnEnum.values()) {
 			if (c.value() == index) {
 				return c;
 			}
