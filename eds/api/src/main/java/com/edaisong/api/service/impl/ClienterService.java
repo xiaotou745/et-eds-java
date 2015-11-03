@@ -21,9 +21,11 @@ import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
+import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
+import com.edaisong.entity.resp.MyBusinessResp;
 
 @Service
 public class ClienterService implements IClienterService {
@@ -187,4 +189,10 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	  public ClienterStatus getUserStatus(int userid){
 		  return clienterDao.getUserStatus(userid);
 	  }
+
+
+	@Override
+	public List<MyBusinessResp> getMyBusiness(MyBusinessReq myBusinessReq) { 
+		return clienterDao.getMyBusiness(myBusinessReq);
+	}
 }
