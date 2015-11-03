@@ -15,7 +15,7 @@
         b.Name AS businessName ,
         b.PhoneNo AS businessPhoneNo ,
         b.PhoneNo2 AS businessPhoneNo2 ,
-        b.address ,
+        b.address as businessAddress,
         ISNULL(c.TrueName, '') AS clienterName ,
         ISNULL(c.PhoneNo, '') AS clienterPhoneNo ,
         o.OrderRegionOneName ,

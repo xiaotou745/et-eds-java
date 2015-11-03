@@ -39,100 +39,130 @@ FastOrderDetail detailModel=	(FastOrderDetail)request.getAttribute("detailModel"
 }
 </style>
 <div style="width: 1000px">
-	<table class="tbstyle222" border="0"
-		style="font-size: 13px; font-weight: bold; line-height: 300%; width: 1000px;">
-		<tr class="trclass">
-			<td>任务单号：<%=detailModel.getGrabOrderNo()%>
-			</td>
-			<td>是否已付款:顾客已付款</td>
-			<td>订单状态：<%=OrderStatus.getEnum(detailModel.getStatus()).desc()%></td>
-			<td>订单来源：<%=OrderFrom.getEnum(detailModel.getOrderFrom()).desc()%></td>
-		</tr>
-		<tr class="trclass">
-			<td>订单数量：<%=detailModel.getOrderCount()%></td>
-			<td>订单佣金： <%=ParseHelper.ShowString(detailModel.getOrderCommission())%></td>
-			<td>外送费：<%=ParseHelper.ShowString(detailModel.getDistribsubsidy())%></td>
-			<td>网站补贴： <%=ParseHelper.ShowString(detailModel.getSingleWebsitesubsidy())%></td>
-			<td>任务补贴： <%=ParseHelper.ShowString(detailModel.getSingleAdjustment())%></td>
-			
-		</tr>
-		<tr class="trclass">
-			<td>商户名称：<%=ParseHelper.ShowString(detailModel.getBusinessName())%></td>
-			<td>商户电话：<%=ParseHelper.ShowString(detailModel.getBusinessPhoneNo())%></td>
-			<td>联系电话：<%=ParseHelper.ShowString(detailModel.getBusinessPhoneNo2())%></td>
-			<td>商户地址：<%=ParseHelper.ShowString(detailModel.getBusinessAddress())%></td>
-		</tr>
-		<tr class="trclass">
-			<td>收货地址：<%=ParseHelper.ShowString(detailModel.getOrderRegionOneName())+"-"+ParseHelper.ShowString(detailModel.getOrderRegionTwoName())%></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr class="trclass">
-			<td></td>
-			<td></td>
-			<td>骑士姓名：<%=ParseHelper.ShowString(detailModel.getClienterName())%></td>
-			<td>骑士电话：<%=ParseHelper.ShowString(detailModel.getClienterPhone())%></td>
-		</tr>
-	</table>
-	<hr />
-	<div style="float: left; width: 1000px;">
-		
-		<table border="0" cellspacing="0" cellpadding="0" class="tbstyle"
-			width="1000">
-			<thead>
-				<tr class="tdbg">
-					<th>单号</th>
-					<th>订单状态</th>
-					<th>完成时间</th>
-					<th>完成位置</th>
-				</tr>
-			</thead>
-			<tbody>
-				<%
-					List<OrderGrabChild> orderChildList =detailModel.getOrderChilds();
-					for (OrderGrabChild curOrderChild :orderChildList){
-				%>
-				<tr>
-					<td><%=ParseHelper.ShowString(curOrderChild.getChildid())%></td>
-					<td><%=ParseHelper.ShowString(OrderStatus.getEnum(curOrderChild.getStatus()).desc())%></td>
-					<td><%=ParseHelper.ToDateString(curOrderChild.getActualdonedate())%></td>
-					<td><%=curOrderChild.getDonelatitude()+"_"+curOrderChild.getDonelatitude()%></td>
-				</tr>
-				<%
-					}
-				%>
-			</tbody>
+	<fieldset>
+		<legend>任务信息</legend>
+		<table class="tbstyle222" border="0"
+			style="font-size: 13px; font-weight: bold; line-height: 300%; width: 1000px;">
+			<tr class="trclass">
+				<td>任务单号：<%=detailModel.getGrabOrderNo()%></td>
+				<td>是否已付款:顾客已付款</td>
+				<td>订单状态：<%=OrderStatus.getEnum(detailModel.getStatus()).desc()%></td>
+				<td>订单来源：<%=OrderFrom.getEnum(detailModel.getOrderFrom()).desc()%></td>
+			</tr>
+			<tr class="trclass">
+				<td>订单数量：<%=detailModel.getOrderCount()%></td>
+				<td>订单佣金： <%=ParseHelper.ShowString(detailModel.getOrderCommission())%></td>
+				<td>外送费：<%=ParseHelper.ShowString(detailModel.getDistribsubsidy())%></td>
+				<td>网站补贴： <%=ParseHelper.ShowString(detailModel.getSingleWebsitesubsidy())%></td>
+				<td>任务补贴： <%=ParseHelper.ShowString(detailModel.getSingleAdjustment())%></td>
+			</tr>
 		</table>
-	</div>
+	</fieldset>
 	<hr />
-	<div style="float: left; width: 1000px; padding-top: 30px">
-		<lable style="font-size:13px;font-weight:bold;">订单操作记录：</lable>
-		<table border="0" cellspacing="0" cellpadding="0" class="tbstyle"
-			width="1000">
-			<thead>
-				<tr class="tdbg">
-					<th>操作类型</th>
-					<th>操作人</th>
-					<th width="150">操作时间</th>
-					<th width="500">操作描述</th>
-					<th>操作平台</th>
-				</tr>
-			</thead>
-			<tbody>
-				<%
-				for(OrderSubsidiesLog item :orderSubsidiesLogs){%>
-				<tr id="<%=item.getId()%>">
-					<td><%=ParseHelper.ShowString(OrderStatus.getEnum(item.getOrderstatus()).desc())%></td>
-					<td><%=ParseHelper.ShowString(item.getOptname())%></td>
-					<td><%=ParseHelper.ToDateString(item.getInserttime())%></td>
-					<td><%=ParseHelper.ShowString(item.getRemark())%></td>
-					<td><%=OrderPlatform.getEnum(item.getPlatform()).desc()%></td>
-				</tr>
-				<%
-					}
-				%>
-			</tbody>
+	<fieldset>
+		<legend>商户信息</legend>
+		<table class="tbstyle222" border="0"
+			style="font-size: 13px; font-weight: bold; line-height: 300%; width: 1000px;">
+			<tr class="trclass">
+				<td>商户名称：<%=ParseHelper.ShowString(detailModel.getBusinessName())%></td>
+				<td>商户电话：<%=ParseHelper.ShowString(detailModel.getBusinessPhoneNo())%></td>
+				<td>联系电话：<%=ParseHelper.ShowString(detailModel.getBusinessPhoneNo2())%></td>
+				<td>商户地址：<%=ParseHelper.ShowString(detailModel.getBusinessAddress())%></td>
+			</tr>
 		</table>
-	</div>
-	</div>
+	</fieldset>
+	<hr />
+	<fieldset>
+		<legend>收货信息</legend>
+		<table class="tbstyle222" border="0"
+			style="font-size: 13px; font-weight: bold; line-height: 300%; width: 1000px;">
+			<tr class="trclass">
+				<td>收货地址：<%=ParseHelper.ShowString(detailModel.getOrderRegionOneName())+ "-"+ ParseHelper.ShowString(detailModel.getOrderRegionTwoName())%></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</fieldset>
+	<hr />
+	<fieldset>
+		<legend>骑士信息</legend>
+		<table class="tbstyle222" border="0"
+			style="font-size: 13px; font-weight: bold; line-height: 300%; width: 1000px;">
+			<tr class="trclass">
+				<td>骑士姓名：<%=ParseHelper.ShowString(detailModel.getClienterName())%></td>
+				<td>骑士电话：<%=ParseHelper.ShowString(detailModel.getClienterPhoneNo())%></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</fieldset>
+	<hr />
+	<fieldset>
+		<legend>订单列表</legend>
+		<div style="float: left; width: 1000px;">
+
+			<table border="0" cellspacing="0" cellpadding="0" class="tbstyle"
+				width="1000">
+				<thead>
+					<tr class="tdbg">
+						<th>单号</th>
+						<th>订单状态</th>
+						<th>完成时间</th>
+						<th>完成位置</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%
+						List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
+						for (OrderGrabChild curOrderChild : orderChildList) {
+					%>
+					<tr>
+						<td><%=ParseHelper.ShowString(curOrderChild.getChildid())%></td>
+						<td><%=ParseHelper.ShowString(OrderStatus.getEnum(
+						curOrderChild.getStatus()).desc())%></td>
+						<td><%=ParseHelper.ToDateString(curOrderChild.getActualdonedate())%></td>
+						<td><%=curOrderChild.getDonelatitude() + "_"+ curOrderChild.getDonelatitude()%></td>
+					</tr>
+					<%
+						}
+					%>
+				</tbody>
+			</table>
+		</div>
+	</fieldset>
+	<hr />
+	<fieldset>
+		<legend>订单操作记录</legend>
+		<div style="float: left; width: 1000px; padding-top: 30px">
+			<table border="0" cellspacing="0" cellpadding="0" class="tbstyle"
+				width="1000">
+				<thead>
+					<tr class="tdbg">
+						<th>操作类型</th>
+						<th>操作人</th>
+						<th width="150">操作时间</th>
+						<th width="500">操作描述</th>
+						<th>操作平台</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%
+						for (OrderSubsidiesLog item : orderSubsidiesLogs) {
+					%>
+					<tr id="<%=item.getId()%>">
+						<td><%=ParseHelper.ShowString(OrderStatus.getEnum(
+						item.getOrderstatus()).desc())%></td>
+						<td><%=ParseHelper.ShowString(item.getOptname())%></td>
+						<td><%=ParseHelper.ToDateString(item.getInserttime())%></td>
+						<td><%=ParseHelper.ShowString(item.getRemark())%></td>
+						<td><%=OrderPlatform.getEnum(item.getPlatform()).desc()%></td>
+					</tr>
+					<%
+						}
+					%>
+				</tbody>
+			</table>
+		</div>
+	</fieldset>
+</div>

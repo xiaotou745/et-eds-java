@@ -26,7 +26,7 @@ public class FastOrderDetail {
 	private String businessPhoneNo2;
 	private String businessAddress;
 	private String clienterName;
-	private String clienterPhone;
+	private String clienterPhoneNo;
 	private List<OrderGrabChild> orderChilds;
 
 	public Long getId() {
@@ -165,20 +165,20 @@ public class FastOrderDetail {
 		this.clienterName = clienterName;
 	}
 
-	public String getClienterPhone() {
-		return clienterPhone;
-	}
-
-	public void setClienterPhone(String clienterPhone) {
-		this.clienterPhone = clienterPhone;
-	}
-
 	public List<OrderGrabChild> getOrderChilds() {
 		return orderChilds;
 	}
 
 	public void setOrderChilds(List<OrderGrabChild> orderChilds) {
 		this.orderChilds = orderChilds;
+	}
+
+	public String getClienterPhoneNo() {
+		return clienterPhoneNo;
+	}
+
+	public void setClienterPhoneNo(String clienterPhoneNo) {
+		this.clienterPhoneNo = clienterPhoneNo;
 	}
 
 }
