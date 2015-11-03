@@ -1,11 +1,16 @@
 package com.edaisong.api_http.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api_http.service.inter.IBusinessHttpService;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.req.IsAllowInputMoneyReq;
 
 /**
@@ -21,6 +26,9 @@ public class BusinessHttpService implements IBusinessHttpService {
 	 */
 	@Autowired
 	private IBusinessService businessService;
+	
+   @Autowired
+   private IBusinessClienterRelationService businessClienterRelationService;
 
 	/**
 	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要 默认0
@@ -36,5 +44,21 @@ public class BusinessHttpService implements IBusinessHttpService {
 		result.setResult(businessService.getIsAllowInputMoney(par));
 		return result;
 	}
+	
+	/**
+	 * 商戶端 我的骑士
+	 * @version 20151103
+	 * @author CaoHeYang
+	 * @date 20151103
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<List<ServiceClienters>> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
+		HttpResultModel<List<ServiceClienters>> result = new HttpResultModel<List<ServiceClienters>>();
+		result.setResult(businessClienterRelationService.getMyServiceClienters(req));
+		return result;
+	}
 
+	
 }

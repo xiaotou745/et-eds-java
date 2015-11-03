@@ -1,5 +1,7 @@
 package com.edaisong.api.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,8 +13,10 @@ import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
+import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
+import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 
 @Service
 public class BusinessClienterRelationService implements IBusinessClienterRelationService {
@@ -146,5 +150,17 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	@Override
 	public BusinessClienterRelation getDetails(int businessId, int clienterId) {
 		return businessClienterRelationDao.getDetails(businessId,clienterId);
+	}
+	/**
+	 * 商戶端 我的骑士
+	 * @version 20151103
+	 * @author CaoHeYang
+	 * @date 20151103
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public  List<ServiceClienters>  getMyServiceClienters(PagedGetMyServiceClientersReq req){
+		return businessClienterRelationDao.getMyServiceClienters(req);
 	}
 }
