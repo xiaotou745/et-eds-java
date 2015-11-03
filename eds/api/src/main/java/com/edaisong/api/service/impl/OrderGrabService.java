@@ -163,8 +163,6 @@ public class OrderGrabService implements IOrderGrabService {
 return orderGrabDao.getMapDetailById(id);
 	}
 
-@Autowired
-	private IOrderGrabDao orderGrabDao;
 
 	@Override
 	public int add(OrderGrab record) {

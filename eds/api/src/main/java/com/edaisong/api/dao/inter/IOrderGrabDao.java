@@ -18,4 +18,5 @@ public interface IOrderGrabDao {
     List<FastOrderMapDetail> getMapDetailById(Long id);
     PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req);
 	OrderGrabDetailModel getMyOrderDetailC(OrderDetailCReq orderDetailCReq);
+	int insertSelective(OrderGrab record);
 }

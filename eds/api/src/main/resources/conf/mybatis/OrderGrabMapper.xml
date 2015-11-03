@@ -168,7 +168,7 @@
       </if>
     </trim>
   </insert>
-	 <!-- ¿ìµ¥ÁÐ±íÒ³Ãæ ²éÑ¯ÁÐ¼¯ºÏ add by zhaohl 20151102 -->
+
 	<sql id="queryFrom">
 		SELECT  o.id ,
         o.GrabOrderNo as orderNo ,
@@ -204,7 +204,7 @@ GROUP BY o.id ,
         o.OrderCount ,
         o.Status
 	</sql>
-	 <!-- ¿ìµ¥ÁÐ±íÒ³Ãæ ²éÑ¯ÁÐ¼¯ºÏ add by zhaohl 20151102 -->
+	 <!-- ï¿½ìµ¥ï¿½Ð±ï¿½Ò³ï¿½ï¿½ ï¿½ï¿½Ñ¯ï¿½Ð¼ï¿½ï¿½ï¿½ add by zhaohl 20151102 -->
 	<sql id="queryColumsWhere">
 		1=1
 		<if test="businessName != null and businessName != ''">
@@ -236,7 +236,7 @@ GROUP BY o.id ,
 		</if>
 	</sql>
 
-	 <!-- ¿ìµ¥ÁÐ±íÒ³Ãæ ²éÑ¯ÁÐ¼¯ºÏ add by zhaohl 20151102 -->
+	 <!-- ï¿½ìµ¥ï¿½Ð±ï¿½Ò³ï¿½ï¿½ ï¿½ï¿½Ñ¯ï¿½Ð¼ï¿½ï¿½ï¿½ add by zhaohl 20151102 -->
 	<select id="query" resultType="com.edaisong.entity.domain.FastOrderModel"
 		parameterType="com.edaisong.entity.req.PagedFastOrderSearchReq"
 		statementType="CALLABLE">
