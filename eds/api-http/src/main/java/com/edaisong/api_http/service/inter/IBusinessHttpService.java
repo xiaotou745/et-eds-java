@@ -12,6 +12,8 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.ClienterBindOptionReq;
+import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.req.IsAllowInputMoneyReq;
 
@@ -55,4 +57,28 @@ public interface IBusinessHttpService {
 	@POST
 	@Path("/getmyserviceclienters")	
 	 public HttpResultModel<List<ServiceClienters>>  getMyServiceClienters(PagedGetMyServiceClientersReq req);
+	
+	/**
+	 * 商戶端 我的骑士   申请中 同意/拒绝功能
+	 * @version 20151103
+	 * @author CaoHeYang
+	 * @date 20151103
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/optbindclienter")	
+	 public HttpResultModel<Object>  optBindClienter(OptBindClienterReq req);
+	
+	/**
+	 * 商家解绑
+	 * @version 20151103
+	 * @author CaoHeYang
+	 * @date 20151103
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/removerelation")	
+	 public HttpResultModel<Object>  removeRelation(ClienterBindOptionReq  req);
 }

@@ -21,7 +21,7 @@ public class ClienterBindOptionReq {
 	// 是否绑定(0:否 1:是)
 	private int isBind;
 	// 操作人Id
-	private int optId;
+	private int optId;	
 	public int getOptId() {
 		return optId;
 	}
