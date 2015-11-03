@@ -204,7 +204,7 @@ GROUP BY o.id ,
         o.OrderCount ,
         o.Status
 	</sql>
-	 <!-- ???§Ò???? ????§Þ??? add by zhaohl 20151102 -->
+	 <!-- ???ï¿½ï¿½???? ????ï¿½ï¿½??? add by zhaohl 20151102 -->
 	<sql id="queryColumsWhere">
 		1=1
 		<if test="businessName != null and businessName != ''">
@@ -235,7 +235,7 @@ GROUP BY o.id ,
 			and b.cityCode= ${businessCity}
 		</if>
 	</sql> 
-	 <!-- ???§Ò???? ????§Þ??? add by zhaohl 20151102 -->
+	 <!-- ???ï¿½ï¿½???? ????ï¿½ï¿½??? add by zhaohl 20151102 -->
 	<select id="query" resultType="com.edaisong.entity.domain.FastOrderModel"
 		parameterType="com.edaisong.entity.req.PagedFastOrderSearchReq"
 		statementType="CALLABLE">
@@ -294,7 +294,7 @@ GROUP BY o.id ,
       SettleMoney = #{settlemoney,jdbcType=DOUBLE}
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  <!-- »ñÈ¡ÎÒµÄÈÎÎñÏêÇé wangchao -->
+  <!-- èŽ·å–æˆ‘çš„ä»»åŠ¡è¯¦æƒ… wangchao -->
   <select id="getMyOrderGrabDetailC" resultType="com.edaisong.entity.resp.MyOrderGrabDetailResp" parameterType="com.edaisong.entity.req.OrderGrabDetailCReq" >
     select 	b.Name BusinessName ,
         	b.PhoneNo BusinessPhoneNo ,
@@ -322,7 +322,7 @@ GROUP BY o.id ,
      where  og.ClienterId = #{clienterId,jdbcType=INTEGER}
             and og.Id = #{grabOrderId,jdbcType=INTEGER}
   </select>
-  <!-- »ñÈ¡ÎÒµÄÈÎÎñwangchao -->
+  <!-- èŽ·å–æˆ‘çš„ä»»åŠ¡wangchao -->
   <select id="getMyOrderGrabC" resultType="com.edaisong.entity.resp.MyOrderGrabCResp" parameterType="com.edaisong.entity.req.MyOrderGrabCReq" >
 select b.Name BusinessName ,
         b.PhoneNo BusinessPhoneNo ,

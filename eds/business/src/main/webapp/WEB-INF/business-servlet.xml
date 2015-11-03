@@ -30,6 +30,11 @@
 					</list>
 				</property>
 			</bean>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">  
+                <property name="objectMapper">  
+                    	<bean id="jacksonMapper" class="com.edaisong.core.util.ExtandObjectMapper"/>
+                </property>  
+            </bean>  
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 	<mvc:resources mapping="/**" location="/resources/" />

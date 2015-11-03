@@ -59,23 +59,22 @@ public interface IOrderGrabService {
     List<FastOrderMapDetail> getMapDetailById(Long id);
     PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req);
 /**
-	 * Ìí¼ÓÇÀµ¥±í
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param req
-	 *            ²ÎÊı
-	 * @author ºúÁé²¨
-	 * @Date 2015Äê11ÔÂ2ÈÕ 16:15:23
+	 *            ï¿½ï¿½ï¿½ï¿½
+	 * @author ï¿½ï¿½ï¿½é²¨
+	 * @Date 2015ï¿½ï¿½11ï¿½ï¿½2ï¿½ï¿½ 16:15:23
 	 * @return
 	 */	
 	int  add(OrderGrab record);
 	
 	/**
-	 * ÇÀµ¥
+	 * ï¿½ï¿½ï¿½ï¿½
 	 * 
-	 * @param req
-	 *            ²ÎÊı
-	 * @author ºúÁé²¨
-	 * @Date 2015Äê11ÔÂ2ÈÕ 16:15:23
+	 * @param req 
+	 * @author wangchao
+	 * è·å–æˆ‘çš„ä»»åŠ¡
 	 * @return
 	 */	
 	OrderGrabResp GrabOrder(OrderGrabReq req);
