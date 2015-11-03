@@ -21,6 +21,7 @@ public interface IOrderGrabChildDao {
     
 	
 	int updateList(List<Integer> ids);	 
-
+	
+	int insertList(List<OrderGrabChild> record);
 
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IOrderGrabChildDao;
+import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderGrabChild;
 @Repository
 public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao{
@@ -50,5 +51,12 @@ public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao{
 	public int updateList(List<Integer> ids)
 	{
 		return 0;
+	}
+	
+
+	@Override
+	public int insertList(List<OrderGrabChild> record) {
+		return getMasterSqlSessionUtil().insert(
+				"com.edaisong.api.dao.inter.IOrderGrabChildDao.insertList", record);
 	}
 }

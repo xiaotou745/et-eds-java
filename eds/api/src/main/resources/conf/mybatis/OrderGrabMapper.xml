@@ -53,6 +53,10 @@
       )
   </insert>
 <insert id="insertSelective" parameterType="com.edaisong.entity.OrderGrab" >
+<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			select @@IDENTITY as id
+		</selectKey>
     insert into OrderGrab
     <trim prefix="(" suffix=")" suffixOverrides="," >    
       <if test="graborderno != null" >
@@ -341,6 +345,7 @@ GROUP BY o.GrabOrderNo ,
         o.WebsiteSubsidy,
         o.Adjustment
   </select>
+  
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderGrab" >
     update OrderGrab
     set OrderId = #{orderid,jdbcType=INTEGER},

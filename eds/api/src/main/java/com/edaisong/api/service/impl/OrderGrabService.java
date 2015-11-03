@@ -47,6 +47,7 @@ import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
+import com.edaisong.api.dao.inter.IOrderGrabChildDao;
 import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderRegionDao;
@@ -87,13 +88,11 @@ import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
-import com.edaisong.entity.OrderGrab;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.Location;
-import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.common.ResponseCode;
@@ -140,14 +139,26 @@ import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
+import com.edaisong.entity.OrderGrabChild;
 @Service
 public class OrderGrabService implements IOrderGrabService {
 
+	
 	@Autowired
 	private IOrderGrabDao orderGrabDao;
 	
 	@Autowired
+	private IOrderGrabChildDao orderGrabChildDao;	
+	
+	@Autowired
 	private IOrderChildDao orderChildDao;
+	
+	@Autowired
+	private IOrderRegionDao orderRegionDao;
+	
+	@Autowired
+	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
+	
 
 	@Override
 	public int deleteById(Long id) {
@@ -195,19 +206,54 @@ public class OrderGrabService implements IOrderGrabService {
 		orderGrab.setGrablatitude(req.getGrabLatitude());				
 		int orderGrabId=orderGrabDao.insertSelective(orderGrab);		
 
-		if(req.getOrderRegionTwoId()>0)//二级区
+		if(req.getOrderRegionTwoId()>0)//二级区域
 		{
-			List<Integer>  listOrderChildTwo=orderChildDao.updateGradTwo(req);	
+			//更新抢单状态
+			List<Integer>  listOrderChild=orderChildDao.updateGradTwo(req);	
 			
-					
-			//更新数量
+			List<OrderGrabChild> listOrderGrabChild= fillOrderGrabChild(listOrderChild,orderGrab,req);
+			
+			//写入抢单子表
+			int ogcId= orderGrabChildDao.insertList(listOrderGrabChild);
+			
+			//更新数量			
+			OrderRegion orModelTwo=new OrderRegion();
+			orModelTwo.setId(req.getOrderRegionTwoId());
+			orModelTwo.setWaitingcount(-listOrderChild.size());
+			orModelTwo.setDistributioning(listOrderChild.size());
+			orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+			
+			OrderRegion orModelOne=new OrderRegion();
+			orModelOne.setId(req.getOrderRegionOneId());
+			orModelOne.setWaitingcount(-listOrderChild.size());		
+			orModelTwo.setDistributioning(listOrderChild.size());
+			orderRegionDao.updateByPrimaryKeySelective(orModelOne);		
 		}
-		else
+		else//一级区域
 		{
-			List<Integer>  listOrderChildOne=orderChildDao.updateGradOne(req);	
-		}
+			List<Integer>  listOrderChild=orderChildDao.updateGradOne(req);	
+			List<OrderGrabChild> listOrderGrabChild= fillOrderGrabChild(listOrderChild,orderGrab,req);
+			
+			//写入抢单表
+			int ogcId= orderGrabChildDao.insertList(listOrderGrabChild);
+			
+			OrderRegion orModelOne=new OrderRegion();
+			orModelOne.setId(req.getOrderRegionOneId());
+			orModelOne.setWaitingcount(-listOrderChild.size());			
+			orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+		}					
 		
-		//orderCount
+		// 记录发单日志
+		OrderSubsidiesLog record = new OrderSubsidiesLog();
+		record.setOrderid(orderGrab.getId());
+		record.setOrderstatus(OrderStatus.Delivery.value());
+		record.setOptid(req.getClienterId());
+		record.setPrice(0d);
+		record.setOptname("");//临时
+		record.setRemark(TaskStatus.OrderHadRush.desc());
+		record.setPlatform(SuperPlatform.Clienter.value());
+		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);
+
 		if(orderGrabId>0)
 					{
 						resp.setResponseCode(OrderGrabReturnEnum.Success.value());
@@ -236,5 +282,41 @@ public class OrderGrabService implements IOrderGrabService {
 	@Override
 	public List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req) {
 		return orderGrabDao.exportOrder(req);
+	}
+	
+	
+	/**
+	 * 骑士抢单  插入子订单
+	 * 
+	 * @param req
+	 * @param businessModel
+	 * @param order
+	 */
+	private List<OrderGrabChild> fillOrderGrabChild(List<Integer> list,OrderGrab orderGrab,OrderGrabReq req) {
+		List<OrderGrabChild> listOrderGrabChild=new ArrayList<OrderGrabChild>();
+		
+		for(int i=0;i<list.size();i++)
+		{
+			OrderGrabChild model=new OrderGrabChild();
+			int childid=list.get(i);
+			model.setOrderchildid(childid);			
+			model.setGraborderid(orderGrab.getId());//产表Id							
+			model.setChildid(i + 1);
+			model.setBusinessid(req.getBusinessId());
+			model.setStatus((byte)OrderStatus.Delivery.value());			
+			
+			//获取订单
+			OrderChild ocModel= orderChildDao.selectByPrimaryKey(childid);		
+			model.setOrderid(ocModel.getOrderid());//订单id			
+			model.setOrderCommission(ocModel.getOrderCommission());
+		    model.setWebsiteSubsidy(ocModel.getWebsiteSubsidy());
+			model.setCommissionRate(ocModel.getCommissionRate());
+			model.setAdjustment(ocModel.getAdjustment());
+			model.setBaseCommission(ocModel.getBaseCommission());
+			model.setSettleMoney(ocModel.getSettleMoney());
+			listOrderGrabChild.add(model);
+		}
+
+		return listOrderGrabChild;
 	}
 }

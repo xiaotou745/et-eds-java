@@ -86,4 +86,11 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 		return getMasterSqlSessionUtil().selectList(
 				"com.edaisong.api.dao.inter.IOrderChildDao.updateGradTwo", record);
 	}
+	
+	@Override
+	public OrderChild selectByPrimaryKey(Integer id)
+	{
+		return getMasterSqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderChildDao.selectByPrimaryKey", id);
+	}
 }
