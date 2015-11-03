@@ -28,6 +28,7 @@ import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
+import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
@@ -365,5 +366,15 @@ public class BusinessService implements IBusinessService {
 	@Override
 	public  Integer getIsAllowInputMoney(IsAllowInputMoneyReq par){
 	 return iBusinessDao.getIsAllowInputMoney(par.getBusinessId());
+	}
+
+	@Override
+	public int bindClienter(BindClienterBusiness bindClienterBusiness) { 
+		return iBusinessDao.bindClienter(bindClienterBusiness);
+	}
+
+	@Override
+	public boolean getClienterBind(BindClienterBusiness bindClienterBusiness) {
+		return iBusinessDao.getClienterBind(bindClienterBusiness);
 	}
 }
