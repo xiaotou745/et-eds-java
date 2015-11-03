@@ -3,11 +3,16 @@ package com.edaisong.api.service.inter;
 import java.util.List;
 
 import com.edaisong.entity.OrderGrab;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel;
+import com.edaisong.entity.domain.OrderGrabDetailModel;
+import com.edaisong.entity.req.MyOrderGrabCReq;
+import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
-import java.util.Date;
+import com.edaisong.entity.resp.MyOrderGrabCResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailResp;import java.util.Date;
 import java.util.List;
 
 import com.edaisong.entity.Feedback;
@@ -74,4 +79,7 @@ public interface IOrderGrabService {
 	 * @return
 	 */	
 	OrderGrabResp GrabOrder(OrderGrabReq req);
+	List<MyOrderGrabCResp> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
+	MyOrderGrabDetailResp getMyOrderGrabDetailC(
+			OrderGrabDetailCReq orderGrabDetailCReq);
 }

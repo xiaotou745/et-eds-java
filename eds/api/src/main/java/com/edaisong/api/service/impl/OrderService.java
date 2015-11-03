@@ -92,7 +92,7 @@ import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
-import com.edaisong.entity.req.OrderDetailCReq;
+import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderRegionReq;
@@ -1453,12 +1453,5 @@ public class OrderService implements IOrderService {
 		}*/
 		
 		return PublishOrderReturnEnum.VerificationSuccess;
-	}
-	
-		@Override
-	public OrderGrabDetailModel getMyOrderDetailC(
-			OrderDetailCReq orderDetailCReq) {
-		 return iOrderGrabDao.getMyOrderDetailC(orderDetailCReq);
-	}
-
+	} 
 }

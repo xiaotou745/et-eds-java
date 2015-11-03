@@ -14,15 +14,13 @@ import com.edaisong.core.enums.returnenums.InStoreTaskReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.InStoreTask;
-import com.edaisong.entity.domain.QueryOrder;
-import com.edaisong.entity.req.OrderDetailCReq;
+import com.edaisong.entity.domain.QueryOrder; 
 
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
-import com.edaisong.entity.req.QueryOrderReq;
-import com.edaisong.entity.resp.MyOrderDetailResp; 
+import com.edaisong.entity.req.QueryOrderReq;  
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
@@ -222,14 +220,6 @@ public class OrderHttpService implements IOrderHttpService {
 		  }
 		 res.setResult(orderService.getInStoreTask(para));
 		 return res;
-	}
-	@Override
-	public HttpResultModel<MyOrderDetailResp> getMyOrderDetailC(OrderDetailCReq orderDetailCReq) {
-		HttpResultModel<MyOrderDetailResp> result=new HttpResultModel<MyOrderDetailResp>();
-		result.setStatus(HttpReturnRnums.Success.value());
-		result.setMessage(HttpReturnRnums.Success.desc());
-		OrderGrabDetailModel orderGrabDetailModel= orderService.getMyOrderDetailC(orderDetailCReq);
-		return result;
 	}
 
 }

@@ -20,7 +20,7 @@ import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
-import com.edaisong.entity.req.OrderDetailCReq;
+import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
@@ -286,10 +286,5 @@ public interface IOrderService {
 	 * @param regionId
 	 * @return
 	 */
-	Long queryIngOrderByRegionId(Long regionId) ;
-	/*
-	 * 获取我的任务详情
-	 * wangchao
-	 */
-	OrderGrabDetailModel getMyOrderDetailC(OrderDetailCReq orderDetailCReq);
+	Long queryIngOrderByRegionId(Long regionId) ; 
 }
