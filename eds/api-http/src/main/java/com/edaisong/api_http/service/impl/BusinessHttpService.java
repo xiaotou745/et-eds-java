@@ -143,6 +143,9 @@ public class BusinessHttpService implements IBusinessHttpService {
 		 if (req.getClienterId() <= 0) {
 				return res.setStatus(RemoveRelationReturnEnum.ClienterIdError.value()).setMessage(RemoveRelationReturnEnum.ClienterIdError.desc());
 	     }
+		 if (req.getRemark()==null||req.getRemark().isEmpty()||req.getRemark().length()<5||req.getRemark().length()>100) {
+				return res.setStatus(RemoveRelationReturnEnum.RemarkError.value()).setMessage(RemoveRelationReturnEnum.RemarkError.desc());
+	     }
          req.setInsertTime(new Date());
          req.setOptName("门店");
          req.setOptId(req.getBusinessId());

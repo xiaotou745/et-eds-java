@@ -12,7 +12,11 @@ public enum RemoveRelationReturnEnum {
 	/**
 	 * 商户不存在
 	 */
-	ClienterIdError(3, "骑士不存在");
+	ClienterIdError(3, "骑士不存在"),
+	/**
+	 * 解除绑定原因必须在5-100字符之间
+	 */
+	RemarkError(4, "解除绑定原因必须在5-100字符之间");
 	private int value = 0;
 	private String desc;
 
