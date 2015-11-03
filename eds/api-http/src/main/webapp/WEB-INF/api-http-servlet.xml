@@ -59,7 +59,7 @@
 			<entry key="en" value="en-gb" />
 		</jaxrs:languageMappings>
 		<jaxrs:providers>
-		    <!-- <bean class="com.edaisong.api_http.common.GlobalExceptionHandler"/> -->  
+		    <bean class="com.edaisong.api_http.common.GlobalExceptionHandler"/> 
 			<ref bean="jacksonProvider" />
 			<!-- <ref bean="jsonProvider" /> -->
 		</jaxrs:providers>
