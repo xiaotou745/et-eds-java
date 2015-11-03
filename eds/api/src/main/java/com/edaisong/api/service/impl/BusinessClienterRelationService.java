@@ -10,6 +10,7 @@ import com.edaisong.api.dao.inter.IBusinessClienterRelationDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
@@ -161,6 +162,8 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	 */
 	@Override
 	public  List<ServiceClienters>  getMyServiceClienters(PagedGetMyServiceClientersReq req){
-		return businessClienterRelationDao.getMyServiceClienters(req);
+		List<ServiceClienters>  list=businessClienterRelationDao.getMyServiceClienters(req);
+		list.forEach(action->action.setHeadPhoto(PropertyUtils.getProperty("ImageServicePath")+action.getHeadPhoto()));
+		return list;
 	}
 }
