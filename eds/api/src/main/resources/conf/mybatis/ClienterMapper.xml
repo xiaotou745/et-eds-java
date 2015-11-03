@@ -738,4 +738,27 @@
 		left join dbo.DeliveryCompany d ( nolock ) on c.DeliveryCompanyId = d.Id
 		where c.Id= #{userid,jdbcType=INTEGER}
 	</select>
+	<!-- 获取我的商户 add by wangchao -->
+	<select id="getMyBusiness" resultType="com.edaisong.entity.resp.MyBusinessResp"
+		parameterType="com.edaisong.entity.req.MyBusinessReq">
+	select  
+		bcr.Id BindId,
+		bcr.ClienterId ,
+        bcr.BusinessId ,
+        b.Name BusinessName ,
+        b.PhoneNo BusinessPhoneNo ,
+        bcr.IsBind ,
+        bcr.AuditStatus,
+        bcr.CreateTime
+from    dbo.BusinessClienterRelation bcr ( nolock )
+        join dbo.business b ( nolock ) on bcr.BusinessId = b.Id
+where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{auditStatus,jdbcType=INTEGER} and bcr.IsBind = 1 and bcr.IsEnable = 1 
+	</select> 
+	<update id="unBindMyClienter" parameterType="com.edaisong.entity.req.ClienterOptionReq">
+		 update dbo.BusinessClienterRelation
+			set IsBind = 0 ,IsEnable = 0,AuditStatus = 2
+				where Id = 1
+	</update>
+	
+	
 </mapper>
