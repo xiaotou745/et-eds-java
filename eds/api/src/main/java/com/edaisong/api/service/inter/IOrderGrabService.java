@@ -12,7 +12,8 @@ import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
-import com.edaisong.entity.resp.MyOrderGrabDetailResp;import java.util.Date;
+import com.edaisong.entity.resp.MyOrderGrabDetailResp;
+import java.util.Date;
 import java.util.List;
 
 import com.edaisong.entity.Feedback;
@@ -24,6 +25,7 @@ import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.FastOrderExportModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -58,24 +60,25 @@ public interface IOrderGrabService {
     OrderGrab selectById(Long id);
     List<FastOrderMapDetail> getMapDetailById(Long id);
     PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req);
+    List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req);
 /**
-	 * Ìí¼ÓÇÀµ¥±í
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param req
-	 *            ²ÎÊý
-	 * @author ºúÁé²¨
-	 * @Date 2015Äê11ÔÂ2ÈÕ 16:15:23
+	 *            ï¿½ï¿½ï¿½ï¿½
+	 * @author ï¿½ï¿½ï¿½é²¨
+	 * @Date 2015ï¿½ï¿½11ï¿½ï¿½2ï¿½ï¿½ 16:15:23
 	 * @return
 	 */	
 	int  add(OrderGrab record);
 	
 	/**
-	 * ÇÀµ¥
+	 * ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param req
-	 *            ²ÎÊý
-	 * @author ºúÁé²¨
-	 * @Date 2015Äê11ÔÂ2ÈÕ 16:15:23
+	 *            ï¿½ï¿½ï¿½ï¿½
+	 * @author ï¿½ï¿½ï¿½é²¨
+	 * @Date 2015ï¿½ï¿½11ï¿½ï¿½2ï¿½ï¿½ 16:15:23
 	 * @return
 	 */	
 	OrderGrabResp GrabOrder(OrderGrabReq req);

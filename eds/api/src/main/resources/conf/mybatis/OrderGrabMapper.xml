@@ -170,26 +170,26 @@
   </insert>
 	 <!--  add by zhaohl 20151102 -->
 	<sql id="queryFrom">
-		SELECT  o.id ,
+		(SELECT  o.id ,
         o.GrabOrderNo as orderNo ,
         a.OrderFrom ,
         b.Name as businessName,
-        b.PhoneNo as businessPhone,
-        ISNULL(c.TrueName, '') AS clienterName ,
-        ISNULL(c.PhoneNo, '') AS clienterPhoneNo ,
+        b.PhoneNo as businessPhoneNo,
+        ISNULL(c.TrueName, '''') AS clienterName ,
+        ISNULL(c.PhoneNo, '''') AS clienterPhoneNo ,
         o.GrabTime ,
         o.OrderRegionOneName ,
         o.OrderRegionTwoName ,
         o.ActualDoneDate ,
         o.OrderCount ,
         o.Status,
-        MIN(m.ordercommission) AS orderCommission
+        o.ordercommission
 FROM    dbo.[order] a WITH ( NOLOCK )
         JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
         JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
-        LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId
-<include refid="queryColumsWhere" />
+        LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId 
+        where <include refid="queryColumsWhere" />
 GROUP BY o.id ,
         o.GrabOrderNo ,
         a.OrderFrom ,
@@ -202,11 +202,12 @@ GROUP BY o.id ,
         o.OrderRegionTwoName ,
         o.ActualDoneDate ,
         o.OrderCount ,
-        o.Status
+        o.Status,
+        o.ordercommission) mb 
 	</sql>
 	 <!-- ???��???? ????��??? add by zhaohl 20151102 -->
 	<sql id="queryColumsWhere">
-		1=1
+		a.Platform = 2
 		<if test="businessName != null and businessName != ''">
 			and b.Name=''${businessName}''
 		</if>
@@ -226,10 +227,10 @@ GROUP BY o.id ,
 			and c.PhoneNo=''${superManPhone}''
 		</if>
 		<if test="orderGrabStart != null and orderGrabStart!=''">
-			and o.GrabTime>= ''${orderPubStart} 00:00:00''
+			and o.GrabTime>= ''${orderGrabStart} 00:00:00''
 		</if>
 		<if test="orderGrabEnd != null and orderGrabEnd!=''">
-			and  ''${orderPubEnd} 23:59:59''>=o.GrabTime
+			and  ''${orderGrabEnd} 23:59:59''>=o.GrabTime
 		</if>
 		<if test="businessCity != null and businessCity>-1">
 			and b.cityCode= ${businessCity}
@@ -266,13 +267,80 @@ GROUP BY o.id ,
                 c.PickUpLongitude ,
                 b.ActualDoneDate ,
                 b.DoneLatitude ,
-                b.DoneLongitude
+                b.DoneLongitude,
+                b.status
         FROM    dbo.[order] a WITH ( NOLOCK )
                 JOIN OrderGrabChild b WITH ( NOLOCK ) ON a.Id = b.OrderId
                 JOIN dbo.OrderGrab c WITH ( NOLOCK ) ON c.id = b.GrabOrderId
-                JOIN business m WITH ( NOLOCK ) ON b.id = m.id
-                WHERE   c.Id = #{id,jdbcType=INTEGER}
+                JOIN business m WITH ( NOLOCK ) ON b.businessid = m.id
+                WHERE a.Platform = 2 and   c.Id = #{id,jdbcType=INTEGER}
 	</select>
+	<!-- 导出快单列表 zhaohl 20151103 -->
+	<sql id="exportOrderWhere">
+		a.Platform = 2
+		<if test="businessName != null and businessName != ''">
+			and b.Name='${businessName}'
+		</if>
+		<if test="businessPhone != null and businessPhone!='' ">
+			and b.PhoneNo='${businessPhone}'
+		</if>
+		<if test="orderNo != null and orderNo!=''">
+			and o.GrabOrderNo='${orderNo}'
+		</if>
+		<if test="orderStatus != null and orderStatus>-1">
+			and o.Status=${orderStatus}
+		</if>
+		<if test="superManName != null and superManName!=''">
+			and c.TrueName='${superManName}'
+		</if>
+		<if test="superManPhone != null and superManPhone!='' ">
+			and c.PhoneNo='${superManPhone}'
+		</if>
+		<if test="orderGrabStart != null and orderGrabStart!=''">
+			and o.GrabTime>= '${orderGrabStart} 00:00:00'
+		</if>
+		<if test="orderGrabEnd != null and orderGrabEnd!=''">
+			and  '${orderGrabEnd} 23:59:59'>=o.GrabTime
+		</if>
+		<if test="businessCity != null and businessCity>-1">
+			and b.cityCode= ${businessCity}
+		</if>
+	</sql> 
+  <select id="exportOrder" resultType="com.edaisong.entity.domain.FastOrderExportModel" 
+  parameterType="com.edaisong.entity.req.PagedFastOrderSearchReq" >
+  SELECT  o.grabOrderNo ,
+        b.Name as businessName,
+        b.phoneno as businessPhoneNo,
+        ISNULL(c.TrueName, '') AS clienterName ,
+        ISNULL(c.PhoneNo, '') AS clienterPhoneNo ,
+        o.GrabTime ,
+        o.PickUpTime ,
+        o.ActualDoneDate ,
+        o.orderCommission ,
+        o.OrderCount ,
+        o.distribsubsidy ,
+        o.WebsiteSubsidy,
+        o.Adjustment
+FROM     dbo.[order] a WITH ( NOLOCK )
+        JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
+        JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
+        JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
+        LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId
+      where   <include refid="exportOrderWhere" />
+GROUP BY o.GrabOrderNo ,
+        b.Name ,
+        b.phoneno ,
+        c.TrueName ,
+        c.PhoneNo ,
+        o.GrabTime ,
+        o.PickUpTime ,
+        o.ActualDoneDate ,
+        o.ordercommission ,
+        o.OrderCount ,
+        o.distribsubsidy,
+        o.WebsiteSubsidy,
+        o.Adjustment
+  </select>
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderGrab" >
     update OrderGrab
     set OrderId = #{orderid,jdbcType=INTEGER},

@@ -1,7 +1,13 @@
 package com.edaisong.admin.controller;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +18,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.core.util.ExcelUtils;
+import com.edaisong.core.util.ExcelUtils.ExcelExportData;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.OrderGrab;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.FastOrderExportModel;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
@@ -73,50 +83,50 @@ public class FastOrderController {
 		return orderGrabService.getMapDetailById(orderid);
 	}
 	
-//	/**
-//	 * 订单列表导出数据
-//	 * @author zhaohl
-//	 * @Date 20151102
-//	 * @param superManPhone 骑士电话
-//	 * @param superManName  骑士姓名
-//	 * @param businessPhone  商户电话
-//	 * @param businessName 商户姓名
-//	 * @param orderStatus 订单状态
-//	 * @param businessCity 城市
-//	 * @param orderPubStart 开始时间
-//	 * @param orderPubEnd 结束时间
-//	 * @param groupId 集团id
-//	 */
-//	@RequestMapping(value="exportorder" )
-//	public void exportorder(PagedOrderSearchReq searchReq,HttpServletResponse response)throws Exception{
-//	   List<ExportOrder> records=	 orderService.exportOrder(searchReq) ;
-//	   if(records.size() > 0){
-//			//导出数据
-//			String fileName = "e代送-%s-订单数据";
-//			fileName = String.format(fileName, searchReq.getOrderPubStart() + "到" +searchReq.getOrderPubEnd());
-//			ExcelExportData data = new ExcelUtils.ExcelExportData();
-//			data.setTitles(new String[]{"商户提款流水记录"});
-//			data.setColumnNames(new ArrayList<String[]>());
-//			data.setFieldNames(new ArrayList<String[]>());
-//			data.setDataMap(new LinkedHashMap<String, List<?>>());
-//			//add data
-//			data.getColumnNames().add(new String[]{"订单号","商户信息","骑士信息","发布时间","完成时间","订单金额",
-//					"订单总金额","订单佣金","订单数量","外送费用","每单补贴","任务补贴","商家结算"});
-//			data.getFieldNames().add(new String[]{"orderNo","businessInfo","clienterInfo","pubDate","actualDoneDate","amount"
-//					,"totalAmount","orderCommission","orderCount","distribSubsidy","websiteSubsidy","adjustment","settleMoney"});
-//			data.getDataMap().put(fileName, records);
-//			byte[] datas = ExcelUtils.export2ByteArray(data);
-//			response.setContentType("application/ms-excel");
-//			response.setHeader("Content-Disposition", "attachment; filename="+new String((fileName+".xls").getBytes("utf-8"),"iso8859-1"));
-//			response.setHeader("Content-Length",String.valueOf(datas.length));
-//			response.getOutputStream().write(datas,0,datas.length);
-//			return;
-//		}else {
-//			//如果查询到的数据为空,则跳转到收支详情页
-//			String basePath = PropertyUtils.getProperty("java.admin.url");
-//			response.sendRedirect(basePath+"/fastorder/list");
-//		}
-//	}
+	/**
+	 * 订单列表导出数据
+	 * @author zhaohl
+	 * @Date 20151102
+	 * @param superManPhone 骑士电话
+	 * @param superManName  骑士姓名
+	 * @param businessPhone  商户电话
+	 * @param businessName 商户姓名
+	 * @param orderStatus 订单状态
+	 * @param businessCity 城市
+	 * @param orderPubStart 开始时间
+	 * @param orderPubEnd 结束时间
+	 * @param groupId 集团id
+	 */
+	@RequestMapping(value="exportorder" )
+	public void exportorder(PagedFastOrderSearchReq searchReq,HttpServletResponse response)throws Exception{
+	   List<FastOrderExportModel> records=	 orderGrabService.exportOrder(searchReq) ;
+	   if(records.size() > 0){
+			//导出数据
+			String fileName = "e代送-%s-快单数据";
+			fileName = String.format(fileName, searchReq.getOrderGrabStart() + "到" +searchReq.getOrderGrabEnd());
+			//add data
+			Map<String,String> columnTitiles=new HashMap<String,String>();
+			columnTitiles.put("订单号", "grabOrderNo");
+			columnTitiles.put("商户电话", "businessPhoneNo");
+			columnTitiles.put("商户名称", "businessName");
+			columnTitiles.put("骑士电话", "clienterPhoneNo");
+			columnTitiles.put("骑士名称", "clienterName");
+			columnTitiles.put("抢单时间", "grabTime");
+			columnTitiles.put("取货时间", "pickUpTime");
+			columnTitiles.put("完成时间", "actualDoneDate");
+			columnTitiles.put("订单佣金", "orderCommission");
+			columnTitiles.put("订单数量", "orderCount");
+			columnTitiles.put("外送费用", "distribSubsidy");
+			columnTitiles.put("每单补贴", "websiteSubsidy");
+			columnTitiles.put("任务补贴", "adjustment");
+			ExcelUtils.export2Excel(fileName,"快单记录",columnTitiles,records,response);
+			return;
+		}else {
+			//如果查询到的数据为空,则跳转到收支详情页
+			String basePath = PropertyUtils.getProperty("java.admin.url");
+			response.sendRedirect(basePath+"/fastorder/list");
+		}
+	}
 	/**
 	 * 快单详情页面
 	 * @author zhaohl

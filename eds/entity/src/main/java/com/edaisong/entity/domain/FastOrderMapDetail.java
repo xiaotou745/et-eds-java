@@ -15,6 +15,7 @@ public class FastOrderMapDetail {
 	private Date actualDoneDate ;
 	private Double doneLatitude ;
 	private Double doneLongitude;
+	private Integer status;
 	public Date getPubDate() {
 		return pubDate;
 	}
@@ -86,5 +87,11 @@ public class FastOrderMapDetail {
 	}
 	public void setDoneLongitude(Double doneLongitude) {
 		this.doneLongitude = doneLongitude;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 }

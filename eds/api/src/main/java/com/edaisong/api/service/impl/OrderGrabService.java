@@ -103,6 +103,7 @@ import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.FastOrderExportModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
@@ -207,5 +208,10 @@ public class OrderGrabService implements IOrderGrabService {
 	@Override
 	public int add(OrderGrab record) { 
 		return orderGrabDao.insertSelective(record);
+	}
+
+	@Override
+	public List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req) {
+		return orderGrabDao.exportOrder(req);
 	}
 }
