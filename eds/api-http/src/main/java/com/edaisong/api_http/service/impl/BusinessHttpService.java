@@ -16,6 +16,7 @@ import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.enums.ClienterBindBusinessEnum;
 import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
 import com.edaisong.core.enums.returnenums.OptBindClienterReturnEnum;
+import com.edaisong.core.enums.returnenums.RemoveRelationReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.ServiceClienters;
@@ -136,11 +137,17 @@ public class BusinessHttpService implements IBusinessHttpService {
 	@Override
 	 public HttpResultModel<Object>   removeRelation(ClienterBindOptionReq  req){
 		 HttpResultModel<Object> res = new HttpResultModel<Object>();
+		 if (req.getBusinessId() <= 0) {
+				return res.setStatus(RemoveRelationReturnEnum.BusinessIdError.value()).setMessage(RemoveRelationReturnEnum.BusinessIdError.desc());
+		 }
+		 if (req.getClienterId() <= 0) {
+				return res.setStatus(RemoveRelationReturnEnum.ClienterIdError.value()).setMessage(RemoveRelationReturnEnum.ClienterIdError.desc());
+	     }
          req.setInsertTime(new Date());
          req.setOptName("门店");
          req.setOptId(req.getBusinessId());
          req.setIsBind(0);  //解除绑定
-	      boolean r=	businessClienterRelationService.modifyClienterBind(req);
+	     businessClienterRelationService.modifyClienterBind(req);
 	      return res;
 	 }
 }
