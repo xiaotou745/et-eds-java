@@ -47,7 +47,6 @@ import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderDetailDao;
-import com.edaisong.api.dao.inter.IOrderGrabChildDao;
 import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderRegionDao;
@@ -55,6 +54,7 @@ import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
 import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IClienterService;
+import com.edaisong.api.service.inter.IOrderGrabChildService;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.core.consts.RedissCacheKey;
@@ -84,12 +84,12 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.ClienterBalanceRecord;
+import com.edaisong.entity.Group;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.OrderGrab;
-import com.edaisong.entity.OrderGrabChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderSubsidiesLog;
@@ -106,8 +106,7 @@ import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
-import com.edaisong.entity.domain.FastOrderDetail;
-import com.edaisong.entity.domain.FastOrderExportModel;
+import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderCommission;
 import com.edaisong.entity.domain.OrderListModel;
@@ -116,6 +115,7 @@ import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
+import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
@@ -144,105 +144,8 @@ import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
 @Service
-public class OrderGrabService implements IOrderGrabService {
-
-	@Autowired
-	private IOrderGrabDao orderGrabDao;
-   @Autowired
-	private IOrderChildDao orderChildDao;
-	@Autowired
-	private IOrderGrabChildDao orderGrabChildDao;
-	@Autowired
-	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
-@Override
-	public int deleteById(Long id) {
-		return orderGrabDao.deleteById(id);
-	}
-
-	@Override
-	public int insert(OrderGrab record) {
-		return orderGrabDao.insert(record);
-	}
-
-	@Override
-	public FastOrderDetail selectById(Long id) {
-		FastOrderDetail result= orderGrabDao.selectById(id);
-		List<OrderGrabChild>  childs=orderGrabChildDao.selectByGrabOrderId(id);
-		result.setOrderChilds(childs);
-		return result;
-	}
-
-	@Override
-	public PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req) {
-		return orderGrabDao.query(req);
-	}
-
-	@Override
-	public List<FastOrderMapDetail> getMapDetailById(Long id) {
-		return orderGrabDao.getMapDetailById(id);
-	} 
+public class OrderGrabChildService implements IOrderGrabChildService {
 	
-	@Override
-	public OrderGrabResp GrabOrder(OrderGrabReq req)	
-	{
-		OrderGrabResp resp=new OrderGrabResp();
-		
-		//抢单主表
-		OrderGrab orderGrab=new OrderGrab();
-		orderGrab.setBusinessid(req.getBusinessId());	
-		orderGrab.setClienterid(req.getClienterId());		
-		orderGrab.setOrderRegionOneId(req.getOrderRegionOneId());		
-		orderGrab.setOrderRegionOneName(req.getOrderRegionOneName());		
-		orderGrab.setOrderRegionTwoId(req.getOrderRegionTwoId());		
-		orderGrab.setOrderRegionTwoName(req.getOrderRegionTwoName());
-		orderGrab.setOrderCount(req.getOrderCount());		
-		orderGrab.setGraborderno(OrderNoHelper.generateOrderCode(req.getClienterId()));
-		orderGrab.setStatus((byte)OrderStatus.Delivery.value());
-		orderGrab.setGrabtime(new Date());
-		orderGrab.setGrablongitude(req.getGrabLongitude());
-		orderGrab.setGrablatitude(req.getGrabLatitude());				
-		int orderGrabId=orderGrabDao.insertSelective(orderGrab);		
 
-		if(req.getOrderRegionTwoId()>0)//二级区
-		{
-			List<Integer>  listOrderChildTwo=orderChildDao.updateGradTwo(req);	
-			
-					
-			//更新数量
-		}
-		else
-		{
-			List<Integer>  listOrderChildOne=orderChildDao.updateGradOne(req);	
-		}
-		
-		//orderCount
-		if(orderGrabId>0)
-					{
-						resp.setResponseCode(OrderGrabReturnEnum.Success.value());
-						resp.setMessage(OrderGrabReturnEnum.Success.desc());
-						return resp;
-					}	
-		return resp;
-	}
-	@Override
-	public List<MyOrderGrabCResp> getMyOrderGrabC(
-			MyOrderGrabCReq myOrderGrabCReq) { 
-		return orderGrabDao.getMyOrderGrabC(myOrderGrabCReq);
-	}
-
-	@Override
-	public MyOrderGrabDetailResp getMyOrderGrabDetailC(
-			OrderGrabDetailCReq orderGrabDetailCReq) { 
-		return orderGrabDao.getMyOrderGrabDetailC(orderGrabDetailCReq);
-	}
-
-	@Override
-	public int add(OrderGrab record) { 
-		return orderGrabDao.insertSelective(record);
-	}
-
-	@Override
-	public List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req) {
-		return orderGrabDao.exportOrder(req);
-	}
+	
 }

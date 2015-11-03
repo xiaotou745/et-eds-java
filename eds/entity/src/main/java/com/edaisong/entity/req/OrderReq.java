@@ -587,7 +587,9 @@ public class OrderReq {
 		
 		
 		 private Integer platform;
-		 private List<OrderRegionReq> listOrderRegion;
+		 private String listOrderRegionStr;		
+
+		private List<OrderRegionReq> listOrderRegion;
 			
 		    public Integer getPlatform() {
 				return platform;
@@ -596,6 +598,14 @@ public class OrderReq {
 			public void setPlatform(Integer platform) {
 				this.platform = platform;
 			}
+			 public String getListOrderRegionStr() {
+					return listOrderRegionStr;
+				}
+
+				public void setListOrderRegionStr(String listOrderRegionStr) {
+					this.listOrderRegionStr = listOrderRegionStr;
+				}
+
 		    public List<OrderRegionReq> getListOrderRegion() {
 				return listOrderRegion;
 			}

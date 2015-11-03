@@ -46,7 +46,12 @@ public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
+	@Override
+	public int updateList(List<Integer> ids)
+	{
+		return 0;
+	}
 	@Override
 	public List<OrderGrabChild> selectByGrabOrderId(Long grabOrderId) {
 		return getReadOnlySqlSessionUtil()

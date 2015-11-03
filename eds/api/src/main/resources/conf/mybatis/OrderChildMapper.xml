@@ -76,7 +76,18 @@
 			);
 		</foreach>
 	</update>
-
+    <update id="updateGradOne" parameterType="com.edaisong.entity.req.OrderGrabReq" >
+update dbo.OrderChild set status=1 output inserted.Id where status=0 and  id in(
+select top ${orderCount} id from dbo.OrderChild 
+where businessid= ${businessId}
+ and orderRegionOneId=#{orderRegionOneId})
+  </update>
+  <select id="updateGradTwo" resultType="java.lang.Integer" parameterType="com.edaisong.entity.req.OrderGrabReq" >
+update dbo.OrderChild set status=1 output inserted.Id where status=0 and  id in(
+select top ${orderCount} id from dbo.OrderChild 
+where businessid= ${businessId}
+and orderRegionTwoId=${orderRegionTwoId})
+  </select>
 	<!-- 根据订单号 骑士id 查询子订单详情集合 add by caoheyang 20150804 -->
 	<select id="getOrderChildByOrderInfo" parameterType="java.util.Map"
 		resultType="com.edaisong.entity.OrderChild">

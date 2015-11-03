@@ -36,7 +36,7 @@ public interface IBusinessHttpService {
 	@Path("/getisallowinputmoney")	
 	public HttpResultModel<Integer> getIsAllowInputMoney(IsAllowInputMoneyReq par);
 	
-	/*
+	/**
 	 * 绑定骑士商户
 	 * wangchao
 	 */
