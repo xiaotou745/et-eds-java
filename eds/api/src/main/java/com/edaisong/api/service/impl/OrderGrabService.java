@@ -49,8 +49,10 @@ public class OrderGrabService implements IOrderGrabService {
 	@Autowired
 	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
 	
+	@Autowired
 	private IOrderRegionDao orderRegionDao;
-@Override
+	
+    @Override
 	public int deleteById(Long id) {
 		return orderGrabDao.deleteById(id);
 	}
