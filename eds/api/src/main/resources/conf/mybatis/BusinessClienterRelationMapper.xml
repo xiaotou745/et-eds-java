@@ -230,7 +230,14 @@
 	set    bcr.IsBind=#{isBind,jdbcType=INTEGER}
 	<include refid="modifyClienterBindOutput"></include>
 	from BusinessClienterRelation bcr WITH ( ROWLOCK )
-	where bcr.BusinessId=${businessId} AND bcr.ClienterId=${clienterId};
+	where bcr.BusinessId=${businessId} AND bcr.ClienterId=${clienterId} 
+    <if test="isBind == 0" >
+  		AND isBind = 1
+  	</if>
+  	<if test="isBind == 1" >
+  		AND isBind = 0
+  	</if>
+
   </update>
   
     <!-- 移除骑士绑定  add by pengyi 20150901 -->

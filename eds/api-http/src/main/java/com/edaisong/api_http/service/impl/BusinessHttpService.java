@@ -1,8 +1,14 @@
 package com.edaisong.api_http.service.impl;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api_http.service.inter.IBusinessHttpService;
@@ -13,6 +19,7 @@ import com.edaisong.core.enums.returnenums.OptBindClienterReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.req.IsAllowInputMoneyReq;
@@ -118,4 +125,22 @@ public class BusinessHttpService implements IBusinessHttpService {
 		return businessClienterRelationService.optBindClienter(req) <= 0 ? res.setStatus(OptBindClienterReturnEnum.StatusError.value()).setMessage(
 				OptBindClienterReturnEnum.StatusError.desc()) : res;
 	}
+	/**
+	 * 商家解绑
+	 * @version 20151103
+	 * @author CaoHeYang
+	 * @date 20151103
+	 * @param req
+	 * @return
+	 */
+	@Override
+	 public HttpResultModel<Object>   removeRelation(ClienterBindOptionReq  req){
+		 HttpResultModel<Object> res = new HttpResultModel<Object>();
+         req.setInsertTime(new Date());
+         req.setOptName("门店");
+         req.setOptId(req.getBusinessId());
+         req.setIsBind(0);  //解除绑定
+	      boolean r=	businessClienterRelationService.modifyClienterBind(req);
+	      return res;
+	 }
 }
