@@ -26,7 +26,11 @@ public enum OrderPlatform {
 	/**
 	 * 第三方对接平台
 	 */
-	OtherThird(4, "已支付");
+	OtherThird(4, "第三方"),
+	/**
+	 * 骑士高速版
+	 */
+	FastClienter(5, "骑士高速版");
 	private int value = 0;
 	private String desc;
 
