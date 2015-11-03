@@ -81,11 +81,10 @@ public class BusinessHttpService implements IBusinessHttpService {
 	}
 
 	@Override
-	public HttpResultModel<Object> bindClienter(BindClienterBusiness bindClienterBusiness) {
+	public HttpResultModel<Object> bindClienterBusiness(BindClienterBusiness bindClienterBusiness) {
 		HttpResultModel<Object> result = new HttpResultModel<Object>();
 		result.setStatus(ClienterBindBusinessEnum.Success.value());
-		result.setMessage(ClienterBindBusinessEnum.Success.desc());
-
+		result.setMessage(ClienterBindBusinessEnum.Success.desc()); 
 		boolean b = businessService.getClienterBind(bindClienterBusiness);
 		if (!b) {
 			int bindResult = businessService.bindClienter(bindClienterBusiness);
@@ -135,7 +134,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 	 * @return
 	 */
 	@Override
-	 public HttpResultModel<Object>   removeRelation(ClienterBindOptionReq  req){
+	 public HttpResultModel<Object> removeRelation(ClienterBindOptionReq  req){
 		 HttpResultModel<Object> res = new HttpResultModel<Object>();
 		 if (req.getBusinessId() <= 0) {
 				return res.setStatus(RemoveRelationReturnEnum.BusinessIdError.value()).setMessage(RemoveRelationReturnEnum.BusinessIdError.desc());
@@ -151,6 +150,6 @@ public class BusinessHttpService implements IBusinessHttpService {
          req.setOptId(req.getBusinessId());
          req.setIsBind(0);  //解除绑定
 	     businessClienterRelationService.modifyClienterBind(req);
-	      return res;
+	     return res;
 	 }
 }

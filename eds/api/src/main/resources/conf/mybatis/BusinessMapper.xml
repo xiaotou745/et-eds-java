@@ -502,7 +502,7 @@ and a.AuditStatus=1
 order by c.WaitingCounts desc  
 	</select>
 	<!-- 骑士绑定商户 建立关系 wangchao-->
-	<insert id="bindClienter" parameterType="com.edaisong.entity.domain.BindClienterBusiness">
+	<insert id="bindClienterBusiness" parameterType="com.edaisong.entity.domain.BindClienterBusiness">
 		insert  into dbo.BusinessClienterRelation
 		        ( BusinessId, ClienterId, CreateBy )
 		values  ( #{businessId,jdbcType=INTEGER},  

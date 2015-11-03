@@ -754,11 +754,4 @@ from    dbo.BusinessClienterRelation bcr ( nolock )
         join dbo.business b ( nolock ) on bcr.BusinessId = b.Id
 where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{auditStatus,jdbcType=INTEGER} and bcr.IsBind = 1 and bcr.IsEnable = 1 
 	</select> 
-	<update id="unBindMyClienter" parameterType="com.edaisong.entity.req.ClienterOptionReq">
-		 update dbo.BusinessClienterRelation
-			set IsBind = 0 ,IsEnable = 0,AuditStatus = 2
-				where Id = 1
-	</update>
-	
-	
 </mapper>

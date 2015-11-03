@@ -111,7 +111,6 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 		clienterAllowWithdrawRecordDao.insert(clienterAllowWithdrawRecord);
 	}
 
-
 	/**
 	 * 更新骑士余额、可提现余额
 	 * 
@@ -189,7 +188,6 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	  public ClienterStatus getUserStatus(int userid){
 		  return clienterDao.getUserStatus(userid);
 	  }
-
 
 	@Override
 	public List<MyBusinessResp> getMyBusiness(MyBusinessReq myBusinessReq) { 

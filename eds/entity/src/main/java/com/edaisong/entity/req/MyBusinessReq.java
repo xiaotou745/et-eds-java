@@ -7,6 +7,10 @@ public class MyBusinessReq {
 	private Integer clienterId;
 	
 	private String clienterName;
+	
+	private Integer businessId;
+	
+	private String unbindReason;
 	/*
 	 * 绑定的商户状态  （默认0待审核，1审核通过，2审核拒绝）
 	 */
@@ -35,6 +39,22 @@ public class MyBusinessReq {
 
 	public void setClienterName(String clienterName) {
 		this.clienterName = clienterName;
+	}
+
+	public String getUnbindReason() {
+		return unbindReason;
+	}
+
+	public void setUnbindReason(String unbindReason) {
+		this.unbindReason = unbindReason;
+	}
+
+	public Integer getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Integer businessId) {
+		this.businessId = businessId;
 	}
  
 }
