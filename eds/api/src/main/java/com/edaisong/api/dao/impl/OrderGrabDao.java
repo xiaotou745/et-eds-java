@@ -8,6 +8,7 @@ import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.entity.OrderGrab;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.FastOrderExportModel;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel; 
 import com.edaisong.entity.req.MyOrderGrabCReq;
@@ -74,5 +75,10 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 	
 		return getMasterSqlSessionUtil().insert(
 				"com.edaisong.api.dao.inter.IOrderGrabDao.insertSelective", record);
+	}
+
+	@Override
+	public List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req) {
+return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IOrderGrabDao.exportOrder", req);
 	}
 }

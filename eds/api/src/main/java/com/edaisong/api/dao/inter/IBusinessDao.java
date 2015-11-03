@@ -10,6 +10,7 @@ import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
@@ -137,6 +138,12 @@ public interface IBusinessDao {
 		 * @return
 		 */
 	    List<InStoreTask> getInStoreTaskStroes(InStoreTaskReq para);
+		/*
+		 * 绑定骑士 建立商户和骑士关系
+		 * wangchao
+		 */
+	    int bindClienter(BindClienterBusiness bindClienterBusiness);
+		boolean getClienterBind(BindClienterBusiness bindClienterBusiness);
 	    
 	    
 }

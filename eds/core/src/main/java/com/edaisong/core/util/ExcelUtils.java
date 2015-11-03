@@ -6,12 +6,18 @@ import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.MDC;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -50,7 +56,39 @@ public class ExcelUtils {
 	public static boolean export2File(ExcelExportData setInfo, String outputExcelFileName) throws Exception {
 		return FileUtil.write(outputExcelFileName, export2ByteArray(setInfo), true, true);
 	}
-
+	/**
+	 * 导出数据到excel
+	 * @date 20151103
+	 * @author hailongzhao
+	 * @param fileName
+	 * @param title
+	 * @param columnTitiles
+	 * @param records
+	 * @param response
+	 * @throws Exception
+	 */
+	public static void export2Excel(String fileName,String title,Map<String,String> columnTitiles,
+			List<?> records,HttpServletResponse response) throws Exception{
+		if (records==null||records.size()==0||columnTitiles==null||columnTitiles.size()==0) {
+			return;
+		}
+		ExcelExportData data = new ExcelUtils.ExcelExportData();
+		data.setTitles(new String[]{title});
+		data.setColumnNames(new ArrayList<String[]>());
+		data.setFieldNames(new ArrayList<String[]>());
+		data.setDataMap(new LinkedHashMap<String, List<?>>());
+		//add data
+		
+		List<String> columnNames=new ArrayList<String>(columnTitiles.keySet());  
+		data.getColumnNames().add((String[])columnNames.toArray(new String[columnNames.size()]));
+		data.getFieldNames().add((String[])columnTitiles.values().toArray(new String[columnTitiles.size()]));
+		data.getDataMap().put(fileName, records);
+		byte[] datas = ExcelUtils.export2ByteArray(data);
+		response.setContentType("application/ms-excel");
+		response.setHeader("Content-Disposition", "attachment; filename="+new String((fileName+".xls").getBytes("iso8859-1"),"iso8859-1"));
+		response.setHeader("Content-Length",String.valueOf(datas.length));
+		response.getOutputStream().write(datas,0,datas.length);
+	}
 	/**
 	 * 导出到byte数组
 	 *

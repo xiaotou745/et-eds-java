@@ -1,10 +1,15 @@
 package com.edaisong.api.service.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.BusinessClienterRelation;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
+import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
+import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 
 public interface IBusinessClienterRelationService {
 	int getBusinessBindClienterQty(int businessId);
@@ -32,4 +37,14 @@ public interface IBusinessClienterRelationService {
 	boolean addClienterBind(ClienterBindOptionReq req);
 	
 	BusinessClienterRelation getDetails(int businessId,int clienterId);
+	
+	/**
+	 * 商戶端 我的骑士
+	 * @version 20151103
+	 * @author CaoHeYang
+	 * @date 20151103
+	 * @param req
+	 * @return
+	 */
+	  List<ServiceClienters>  getMyServiceClienters(PagedGetMyServiceClientersReq req);
 }
