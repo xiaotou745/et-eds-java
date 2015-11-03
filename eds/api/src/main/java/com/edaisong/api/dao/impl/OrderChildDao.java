@@ -19,6 +19,7 @@ import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
 @Repository
@@ -72,4 +73,17 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 		return res;
 	}
 	
+	@Override
+	 public List<Integer>  updateGradOne(OrderGrabReq record)
+	 {
+		return getMasterSqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderChildDao.updateGradOne", record);
+	 }
+		
+	@Override
+	public	List<Integer>  updateGradTwo(OrderGrabReq record)
+	{
+		return getMasterSqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderChildDao.updateGradTwo", record);
+	}
 }

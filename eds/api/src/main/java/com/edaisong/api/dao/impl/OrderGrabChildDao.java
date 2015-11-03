@@ -1,5 +1,7 @@
 package com.edaisong.api.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -43,5 +45,10 @@ public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
+	@Override
+	public int updateList(List<Integer> ids)
+	{
+		return 0;
+	}
 }

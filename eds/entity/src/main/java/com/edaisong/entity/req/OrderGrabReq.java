@@ -9,9 +9,16 @@ public class OrderGrabReq {
 	private String orderRegionOneName;
 	private Integer orderRegionTwoId;
 	private String  orderRegionTwoName;
-	private Integer orderCount;
+	private Integer orderCount;	
+	private Integer id;
 	
-	
+
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public Integer getBusinessId() {
 		return businessId;
 	}
