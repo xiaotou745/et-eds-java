@@ -92,6 +92,26 @@
       </if>
     </trim>
   </insert>
+  	<update id="insertList" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" >
+			insert into OrderGrabChild (GrabOrderId,OrderId,OrderChildId,ChildId,BusinessId,Status,
+OrderCommission,SettleMoney,CommissionRate,BaseCommission,WebsiteSubsidy,Adjustment
+			) values (
+			#{item.graborderid,jdbcType=INTEGER},			
+			#{item.orderid,jdbcType=INTEGER},
+			#{item.orderchildid,jdbcType=INTEGER},			
+			#{item.childid,jdbcType=INTEGER},
+			#{item.businessid,jdbcType=INTEGER},
+			#{item.status,jdbcType=BIT},
+			#{item.orderCommission,jdbcType=DECIMAL},
+			#{item.settleMoney,jdbcType=DECIMAL},
+			#{item.commissionRate,jdbcType=DECIMAL},
+			#{item.baseCommission,jdbcType=DECIMAL},
+			#{item.websiteSubsidy,jdbcType=DECIMAL},
+			#{item.adjustment,jdbcType=DECIMAL}		
+			);
+		</foreach>
+	</update>
   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderGrabChild" >
     update OrderGrabChild
     <set >

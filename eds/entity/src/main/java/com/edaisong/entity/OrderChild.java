@@ -10,8 +10,19 @@ public class OrderChild implements Serializable {
     private Integer orderid;
 
     private Integer childid;
+    
+    private Integer businessid;    
+    
 
-    private Double totalprice;
+    public Integer getBusinessid() {
+		return businessid;
+	}
+
+	public void setBusinessid(Integer businessid) {
+		this.businessid = businessid;
+	}
+
+	private Double totalprice;
 
     private Double goodprice;
 
