@@ -1,15 +1,20 @@
 package com.edaisong.entity.req;
 
-public class OrderDetailCReq {
+public class OrderGrabDetailCReq {
 	
 	private Integer clienterId;
 	
 	private Integer grabOrderId;
 	
+	 
 	private Integer grabOrderChildId;
 	
 	private String grabOrderNo;
-
+	private Integer hadCompleteOrderGrab;
+	
+	private double clienterLongitude;
+	
+	private double clienterLatitude;
 	public Integer getClienterId() {
 		return clienterId;
 	}
@@ -40,5 +45,29 @@ public class OrderDetailCReq {
 
 	public void setGrabOrderNo(String grabOrderNo) {
 		this.grabOrderNo = grabOrderNo;
+	}
+
+	public Integer getHadCompleteOrderGrab() {
+		return hadCompleteOrderGrab;
+	}
+
+	public void setHadCompleteOrderGrab(Integer hadCompleteOrderGrab) {
+		this.hadCompleteOrderGrab = hadCompleteOrderGrab;
+	}
+
+	public double getClienterLongitude() {
+		return clienterLongitude;
+	}
+
+	public void setClienterLongitude(double clienterLongitude) {
+		this.clienterLongitude = clienterLongitude;
+	}
+
+	public double getClienterLatitude() {
+		return clienterLatitude;
+	}
+
+	public void setClienterLatitude(double clienterLatitude) {
+		this.clienterLatitude = clienterLatitude;
 	} 
 }
