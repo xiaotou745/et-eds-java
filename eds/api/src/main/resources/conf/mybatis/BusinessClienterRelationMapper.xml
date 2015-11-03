@@ -308,4 +308,31 @@
 		</if>
   </sql>
   
+    <!--商戶端 我的骑士 申请中 同意/拒绝功能  caoheyang  20151103 -->
+  <update id="optBindClienter" parameterType="com.edaisong.entity.req.OptBindClienterReq">
+  	update bcr
+	set    bcr.AuditStatus=#{auditStatus},
+	bcr.IsEnable=#{isEnable},
+	bcr.IsBind=#{isBind},
+	UpdateBy=${businessId},
+    UpdateTime=getdate()
+	
+    OUTPUT
+	  Inserted.BusinessId,
+	  Inserted.ClienterId,
+	  ${businessId},
+	  '${optName}',
+	  getdate(),
+	  '${remark}'
+	INTO ClienterBindOptionLog
+	  ( BusinessId
+	   ,ClienterId
+	   ,OptId
+	   ,OptName
+	   ,InsertTime
+	   ,Remark)
+	from BusinessClienterRelation bcr WITH ( ROWLOCK )
+	where bcr.BusinessId=${businessId}  AND bcr.id=${relationId} and  bcr.AuditStatus=0  
+  </update>
+ 
 </mapper>

@@ -10,6 +10,7 @@ import com.edaisong.api.dao.inter.IBusinessClienterRelationDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
+import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.common.PagedResponse;
@@ -178,8 +179,17 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	 */
 	@Override
 	public int optBindClienter(OptBindClienterReq req) {
-	 
-		return 0;
+	  if (req.getAuditStatus()==BusinessClienterRelationAuditStatus.Pass.value()) {
+		  req.setRemark("门店审核通过骑士申请");
+		  req.setIsEnable(1);
+		  req.setIsBind(1);
+    	}else   if (req.getAuditStatus()==BusinessClienterRelationAuditStatus.Refuse.value()){
+		req.setRemark("门店拒绝通过骑士申请");
+		  req.setIsEnable(1);
+		  req.setIsBind(0);
+	   }
+	   req.setOptName("门店本人");
+		return businessClienterRelationDao.optBindClienter(req);
 	}
 	
 	

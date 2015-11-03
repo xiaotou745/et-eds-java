@@ -13,6 +13,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.ClienterBindOptionReq;
+import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 
@@ -145,5 +146,19 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 		PagedResponse<ServiceClienters> lists= getMasterSqlSessionUtil().selectPageList(
 				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getMyServiceClienters", req);
 		return lists.getResultList();
+	}
+	
+	/**
+	 * 商戶端 我的骑士 申请中 同意/拒绝功能
+	 * 
+	 * @version 20151103
+	 * @author CaoHeYang
+	 * @date 20151103
+	 * @param req
+	 * @return
+	 */
+	public	int optBindClienter(OptBindClienterReq req){
+		return getReadOnlySqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.optBindClienter", req);
 	}
 }
