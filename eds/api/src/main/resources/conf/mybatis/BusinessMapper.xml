@@ -476,10 +476,10 @@
 		from dbo.business with(nolock) WHERE id=#{userid,jdbcType=INTEGER}
 	</select>
 
-  	<!-- 获取用户状态信息  add by caoheyang 20150911-->
-	<select id="getIsAllowInputMoney" resultType="java.lang.Integer"
+  	<!-- 获取门店发单模式   add by caoheyang 20151104-->
+	<select id="getPushOrderType" resultType="java.lang.Integer"
 		parameterType="java.lang.Long">
-	  SELECT IsAllowInputMoney FROM dbo.business(nolock) where Id=#{businessId}
+	  SELECT PushOrderType FROM dbo.business(nolock) where Id=#{businessId}
 	</select>
 	
 	
