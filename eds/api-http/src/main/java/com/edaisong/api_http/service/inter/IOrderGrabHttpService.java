@@ -8,9 +8,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.edaisong.entity.common.HttpResultModel; 
+import com.edaisong.entity.req.MyOrderGrabBReq;
 import com.edaisong.entity.req.MyOrderGrabCReq;
+import com.edaisong.entity.req.OrderGrabDetailBReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
-import com.edaisong.entity.resp.MyOrderGrabDetailResp;
+import com.edaisong.entity.resp.MyOrderGrabBResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailBResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 
 
@@ -20,7 +24,7 @@ import com.edaisong.entity.resp.MyOrderGrabCResp;
 @Produces("application/json; charset=utf-8")//当前类的所有方法都返回json格式的数据
 public interface IOrderGrabHttpService {
 	/*
-	 * 获取我的任务
+	 * 获取我的任务C
 	 * wangchao
 	 */
 	@POST
@@ -28,11 +32,12 @@ public interface IOrderGrabHttpService {
 	HttpResultModel<List<MyOrderGrabCResp>> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
 	
 	/*
-	 * 获取我的任务详情
+	 * 获取我的任务详情C
 	 * wangchao
 	 */
 	@POST
 	@Path("/getmyordergrabdetailc")
-	public HttpResultModel<MyOrderGrabDetailResp> getMyOrderGrabDetailC(OrderGrabDetailCReq orderGrabDetailCReq);
+	public HttpResultModel<MyOrderGrabDetailCResp> getMyOrderGrabDetailC(OrderGrabDetailCReq orderGrabDetailCReq);
 	
+	 
 }

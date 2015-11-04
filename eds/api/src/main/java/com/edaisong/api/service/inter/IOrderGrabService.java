@@ -12,7 +12,7 @@ import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
-import com.edaisong.entity.resp.MyOrderGrabDetailResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 
 import java.util.Date;
 import java.util.List;
@@ -35,9 +35,11 @@ import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
+import com.edaisong.entity.req.MyOrderGrabBReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderGrabDetailBReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
@@ -48,6 +50,8 @@ import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
+import com.edaisong.entity.resp.MyOrderGrabBResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailBResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderPushResp;
@@ -90,6 +94,6 @@ public interface IOrderGrabService {
 	 */	
 	OrderGrabResp GrabOrder(OrderGrabReq req);
 	List<MyOrderGrabCResp> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
-	MyOrderGrabDetailResp getMyOrderGrabDetailC(
-			OrderGrabDetailCReq orderGrabDetailCReq);
+	MyOrderGrabDetailCResp getMyOrderGrabDetailC(
+			OrderGrabDetailCReq orderGrabDetailCReq); 
 }
