@@ -2,6 +2,7 @@ package com.edaisong.api.dao.inter;
 
 import java.util.List;
 
+import com.edaisong.entity.CommissionType;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.req.OrderGrabReq;
@@ -33,4 +34,7 @@ public interface IOrderChildDao {
 	
 
     List<Integer>   updateGradTwo(OrderGrabReq record) ;
+    
+    
+    OrderChild selectByPrimaryKey(Integer id);
 }

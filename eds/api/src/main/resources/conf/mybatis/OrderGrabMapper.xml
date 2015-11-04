@@ -71,6 +71,10 @@ GROUP BY o.id ,
       )
   </insert>
 <insert id="insertSelective" parameterType="com.edaisong.entity.OrderGrab" >
+<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			select @@IDENTITY as id
+		</selectKey>
     insert into OrderGrab
     <trim prefix="(" suffix=")" suffixOverrides="," >    
       <if test="graborderno != null" >
@@ -359,6 +363,7 @@ GROUP BY o.GrabOrderNo ,
         o.WebsiteSubsidy,
         o.Adjustment
   </select>
+  
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderGrab" >
     update OrderGrab
     set OrderId = #{orderid,jdbcType=INTEGER},
@@ -381,7 +386,7 @@ GROUP BY o.GrabOrderNo ,
     where Id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 获取我的任务详情 wangchao -->
-  <select id="getMyOrderGrabDetailC" resultType="com.edaisong.entity.resp.MyOrderGrabDetailResp" parameterType="com.edaisong.entity.req.OrderGrabDetailCReq" >
+  <select id="getMyOrderGrabDetailC" resultType="com.edaisong.entity.resp.MyOrderGrabDetailCResp" parameterType="com.edaisong.entity.req.OrderGrabDetailCReq" >
     select 	b.Name BusinessName ,
         	b.PhoneNo BusinessPhoneNo ,
         	b.[Address] BusinessAddress ,

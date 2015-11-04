@@ -4,6 +4,7 @@ public class BindClienterBusiness {
 	private Integer clienterId; 
 	private Integer businessId;
 	private String businessName;
+	private String clienterName;
 	public Integer getClienterId() {
 		return clienterId;
 	}
@@ -26,5 +27,13 @@ public class BindClienterBusiness {
 
 	public void setBusinessName(String businessName) {
 		this.businessName = businessName;
+	}
+
+	public String getClienterName() {
+		return clienterName;
+	}
+
+	public void setClienterName(String clienterName) {
+		this.clienterName = clienterName;
 	}
 }

@@ -452,33 +452,6 @@ public class OrderService implements IOrderService {
 		resetOrderHasExist(req.getBusinessid());
 		return resp;
 	}
-
-	public List<OrderRegionReq> converAnswerFormString(String answer) {
-		if (answer == null || answer.equals(""))
-			return new ArrayList();
-		
-		List<OrderRegionReq> list=new ArrayList<OrderRegionReq> () ;
-		JSONArray jsonArray;
-		try {
-			jsonArray = new JSONArray(answer);
-			for (int i = 0; i < jsonArray.length(); i++) 
-			{
-				OrderRegionReq model=new OrderRegionReq();
-				model.setOrderRegionOneId(jsonArray.getJSONObject(i).getInt("orderRegionOneId"));
-				model.setOrderRegionTwoId(jsonArray.getJSONObject(i).getInt("orderRegionTwoId"));
-				model.setOrderCount(jsonArray.getJSONObject(i).getInt("orderCount"));
-				list.add(model);
-			}			
-			 
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return list;
-
-	}
-
 	/**
 	 * 发布订单功能 api调用
 	 * 
@@ -488,19 +461,20 @@ public class OrderService implements IOrderService {
 	 * @Date 2015年10月30日 11:45:19
 	 */
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public OrderResp PushOrder(OrderReq req) {
+	public HttpResultModel<OrderResp> PushOrder(OrderReq req) {
+		
+		HttpResultModel<OrderResp> resp=new HttpResultModel<OrderResp>();
 		
 		List<OrderRegionReq> list=converAnswerFormString(req.getListOrderRegionStr());
-		req.setListOrderRegion(list);
-		OrderResp resp = new OrderResp();
+		req.setListOrderRegion(list);		
+		
 		BusinessModel businessModel = businessDao.getBusiness(req
 				.getBusinessid());
-
 		// 校验是否可以正常发单
 		PublishOrderReturnEnum returnEnum = verificationPushOrder(req,
 				businessModel);
 		if (returnEnum != PublishOrderReturnEnum.VerificationSuccess) {
-			resp.setResponseCode(returnEnum.value());
+			resp.setStatus(returnEnum.value());
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
@@ -533,6 +507,7 @@ public class OrderService implements IOrderService {
 		double goodPrice = order.getAmount() / order.getOrdercount();// 单价
 		List<OrderChild> listOrderChild = new ArrayList<OrderChild>();
 		List<OrderRegionReq> listOrderRegion = req.getListOrderRegion();
+		int num=0;
 		for (int i = 0; i < listOrderRegion.size(); i++) {
 
 			for (int j = 0; j < ((OrderRegionReq) listOrderRegion.get(i))
@@ -544,8 +519,10 @@ public class OrderService implements IOrderService {
 								.getMealssettlemode() == MealsSettleMode.LineOff
 								.value())) {
 					payStatus = 1;
-				}
-				child.setChildid(i + 1);
+				}			
+				num=num+1;
+				child.setChildid(num);
+				child.setBusinessid(req.getBusinessid());
 				child.setCreateby(businessModel.getName());
 				child.setUpdateby(businessModel.getName());
 				child.setDeliveryprice(order.getDistribsubsidy());
@@ -692,7 +669,7 @@ public class OrderService implements IOrderService {
 		// 补贴日志表
 		if (orderId > 0 && orderOtherId > 0 && orderChildID > 0
 				&& orderRegionId > 0 && bbcId > 0 && ordersubsidiesId > 0) {
-			resp.setResponseCode(PublishOrderReturnEnum.Success.value());
+			resp.setStatus(PublishOrderReturnEnum.Success.value());
 			resp.setMessage(PublishOrderReturnEnum.Success.desc());
 			return resp;
 		}
@@ -1644,24 +1621,32 @@ public class OrderService implements IOrderService {
 			return PublishOrderReturnEnum.StrategyErr;
 		}
 
-		/*
-		 * Double settleMoney =
-		 * OrderSettleMoneyHelper.GetSettleMoney(req.getAmount(),
-		 * businessModel.getBusinesscommission(),
-		 * businessModel.getCommissionfixvalue(), req.getOrdercount(),
-		 * businessModel.getDistribsubsidy(), req.getOrderfrom());
-		 * 
-		 * if (businessModel.getBalanceprice() < settleMoney) { if
-		 * (businessModel.getGroupBusinessID()>0){ GroupBusiness
-		 * groupBusiness=groupBusinessDao
-		 * .select(businessModel.getGroupBusinessID()); if
-		 * (groupBusiness.getAmount()<settleMoney&&
-		 * groupBusiness.getIsAllowOverdraft()==0) { return
-		 * PublishOrderReturnEnum.GroupBalancePriceLack; } }else if
-		 * (businessModel.getIsallowoverdraft() == 0) { //商家不允许透支 return
-		 * PublishOrderReturnEnum.BusiBalancePriceLack; } }
-		 */
-
 		return PublishOrderReturnEnum.VerificationSuccess;
+	}	
+
+	private List<OrderRegionReq> converAnswerFormString(String answer) {
+		if (answer == null || answer.equals(""))
+			return new ArrayList();
+		
+		List<OrderRegionReq> list=new ArrayList<OrderRegionReq> () ;
+		JSONArray jsonArray;
+		try {
+			jsonArray = new JSONArray(answer);
+			for (int i = 0; i < jsonArray.length(); i++) 
+			{
+				OrderRegionReq model=new OrderRegionReq();
+				model.setOrderRegionOneId(jsonArray.getJSONObject(i).getInt("orderRegionOneId"));
+				model.setOrderRegionTwoId(jsonArray.getJSONObject(i).getInt("orderRegionTwoId"));
+				model.setOrderCount(jsonArray.getJSONObject(i).getInt("orderCount"));
+				list.add(model);
+			}			
+			 
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return list;
+
 	}
 }

@@ -7,6 +7,14 @@ import com.edaisong.entity.common.ResponseBase;
  * @author 胡灵波
  * @Date 2015年10月30日 11:57:27
  */
-public class OrderPushResp extends ResponseBase{
+public class OrderPushResp{
+    private Integer id;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 }

@@ -10,6 +10,7 @@ import com.edaisong.api.dao.inter.IBusinessClienterRelationDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
+import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.common.PagedResponse;
@@ -42,6 +43,7 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 
 	/**
 	 * 修改骑士绑定
+	 * 
 	 * @author pengyi
 	 * @date 20150901
 	 */
@@ -49,7 +51,7 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	@Override
 	public boolean modifyClienterBind(ClienterBindOptionReq req) {
 		boolean flag = false;
-		if (businessClienterRelationDao.modifyClienterBind(req)) {
+		if (businessClienterRelationDao.modifyClienterBind(req)) { // 更新绑定状态
 			if (req.getIsBind() == 1) {// 绑定
 				if (businessDao.updateBusinessIsBind(req.getBusinessId(), 1)) {
 					if (clienterDao.updateClienterIsBind(req.getClienterId(), 1)) {
@@ -86,6 +88,7 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 
 	/**
 	 * 删除骑士绑定
+	 * 
 	 * @author pengyi
 	 * @date 20150901
 	 */
@@ -118,6 +121,7 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 
 	/**
 	 * 确实骑士是否已绑定商家
+	 * 
 	 * @author pengyi
 	 * @date 20150901
 	 */
@@ -128,33 +132,36 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 
 	/**
 	 * 添加骑士绑定
+	 * 
 	 * @author pengyi
 	 * @date 20150901
 	 * @param req
 	 * @return
 	 */
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public boolean addClienterBind(ClienterBindOptionReq req){
+	public boolean addClienterBind(ClienterBindOptionReq req) {
 		boolean reg = false;
-		if (businessClienterRelationDao.addClienterBind(req)){
-            if (businessDao.updateBusinessIsBind(req.getBusinessId(), 1)){
-                if (clienterDao.updateClienterIsBind(req.getClienterId(), 1)){
-                    reg = true;
-                }
-            }
-        }
+		if (businessClienterRelationDao.addClienterBind(req)) {
+			if (businessDao.updateBusinessIsBind(req.getBusinessId(), 1)) {
+				if (clienterDao.updateClienterIsBind(req.getClienterId(), 1)) {
+					reg = true;
+				}
+			}
+		}
 		if (!reg) {
 			throw new RuntimeException("添加骑士绑定失败");
 		}
-        return reg;
+		return reg;
 	}
 
 	@Override
 	public BusinessClienterRelation getDetails(int businessId, int clienterId) {
-		return businessClienterRelationDao.getDetails(businessId,clienterId);
+		return businessClienterRelationDao.getDetails(businessId, clienterId);
 	}
+
 	/**
 	 * 商戶端 我的骑士
+	 * 
 	 * @version 20151103
 	 * @author CaoHeYang
 	 * @date 20151103
@@ -162,14 +169,15 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	 * @return
 	 */
 	@Override
-	public  List<ServiceClienters>  getMyServiceClienters(PagedGetMyServiceClientersReq req){
-		List<ServiceClienters>  list=businessClienterRelationDao.getMyServiceClienters(req);
-		list.forEach(action->action.setHeadPhoto(PropertyUtils.getProperty("ImageServicePath")+action.getHeadPhoto()));
+	public List<ServiceClienters> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
+		List<ServiceClienters> list = businessClienterRelationDao.getMyServiceClienters(req);
+		list.forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageServicePath") + action.getHeadPhoto()));
 		return list;
 	}
 
 	/**
-	 * 商戶端 我的骑士   申请中 同意/拒绝功能
+	 * 商戶端 我的骑士 申请中 同意/拒绝功能
+	 * 
 	 * @version 20151103
 	 * @author CaoHeYang
 	 * @date 20151103
@@ -178,9 +186,17 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	 */
 	@Override
 	public int optBindClienter(OptBindClienterReq req) {
-	 
-		return 0;
+		if (req.getAuditStatus() == BusinessClienterRelationAuditStatus.Pass.value()) {
+			req.setRemark("门店审核通过骑士申请");
+			req.setIsEnable(1);
+			req.setIsBind(1);
+		} else if (req.getAuditStatus() == BusinessClienterRelationAuditStatus.Refuse.value()) {
+			req.setRemark("门店拒绝通过骑士申请");
+			req.setIsEnable(1);
+			req.setIsBind(0);
+		}
+		req.setOptName("门店");
+		return businessClienterRelationDao.optBindClienter(req);
 	}
-	
-	
+
 }
