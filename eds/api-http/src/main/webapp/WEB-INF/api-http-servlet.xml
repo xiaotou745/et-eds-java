@@ -58,21 +58,11 @@
 			<entry key="en" value="en-gb" />
 		</jaxrs:languageMappings>
 		<jaxrs:providers>
-		    <!-- <bean class="com.edaisong.api_http.common.GlobalExceptionHandler"/> -->  
+		    <bean class="com.edaisong.api_http.common.GlobalExceptionHandler"/>  
 			<ref bean="jacksonProvider" />
-			<!-- <ref bean="jsonProvider" /> -->
 		</jaxrs:providers>
 	</jaxrs:server>
 
-	<!-- 返回值中会自动删除值为null的属性 ,反序列化时，会自动忽略无效的属性 -->
-	<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
-		<property name="serializeAsArray" value="true" />
-		<property name="ignoreNamespaces" value="true" />
-		<property name="dropRootElement" value="true" />
-		<property name="ignoreMixedContent" value="true" />
-		<property name="supportUnwrapped" value="true" />
-		<property name="attributesToElements" value="true" />
-	</bean>
 	<bean id="jacksonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
 		<property name="mapper" ref="jacksonMapper" />
 	</bean>
