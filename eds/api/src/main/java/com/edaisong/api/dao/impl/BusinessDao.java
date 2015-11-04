@@ -198,7 +198,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 
 	@Override
 	public int bindClienter(BindClienterBusiness bindClienterBusiness) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessDao.bindClienter",bindClienterBusiness);
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessDao.bindClienterBusiness",bindClienterBusiness);
 	}
 
 	@Override

@@ -16,7 +16,10 @@ public enum RemoveRelationReturnEnum {
 	/**
 	 * 解除绑定原因必须在5-100字符之间
 	 */
-	RemarkError(4, "解除绑定原因必须在5-100字符之间");
+	RemarkError(4, "解除绑定原因必须在5-100字符之间"),
+	
+	OptNameError(5,"操作人名称不能为空");
+	
 	private int value = 0;
 	private String desc;
 

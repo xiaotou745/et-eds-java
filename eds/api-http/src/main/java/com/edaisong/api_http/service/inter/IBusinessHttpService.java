@@ -43,8 +43,8 @@ public interface IBusinessHttpService {
 	 * wangchao
 	 */
 	@POST
-	@Path("/bindclienter")
-	public HttpResultModel<Object> bindClienter(BindClienterBusiness bindClienterBusiness);
+	@Path("/bindclienterbusiness")
+	public HttpResultModel<Object> bindClienterBusiness(BindClienterBusiness bindClienterBusiness);
 	
 	/**
 	 * 商戶端 我的骑士
@@ -68,7 +68,7 @@ public interface IBusinessHttpService {
 	 */
 	@POST
 	@Path("/optbindclienter")	
-	 public HttpResultModel<Object>  optBindClienter(OptBindClienterReq req);
+	 public HttpResultModel<Object> optBindClienter(OptBindClienterReq req);
 	
 	/**
 	 * 商家解绑
@@ -80,5 +80,5 @@ public interface IBusinessHttpService {
 	 */
 	@POST
 	@Path("/removerelation")	
-	 public HttpResultModel<Object>  removeRelation(ClienterBindOptionReq  req);
+	 public HttpResultModel<Object> removeRelation(ClienterBindOptionReq req);
 }

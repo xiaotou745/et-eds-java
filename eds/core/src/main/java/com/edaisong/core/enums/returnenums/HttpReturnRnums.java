@@ -20,8 +20,9 @@ public enum HttpReturnRnums {
 	/*
 	 * 无数据
 	 */
-	NoData(-3,"无数据");
+	NoData(-3,"无数据"),
 	
+	Fail(-100,"失败");
 	private int value = 0;
 	private String desc;
 	private HttpReturnRnums(int value, String desc) { // 必须是private的，否则编译错误
