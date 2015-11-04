@@ -7,12 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.JavaType;
 
 public class JsonUtil {
-	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private final static ExtandObjectMapper mapper = new ExtandObjectMapper();
-	private static ExtandObjectMapper getMapper(){
-		 mapper.setDateFormat(dateFormat);
-		return mapper;
-	}
 	/** 
      * 将对象转换为json字符串 
      *  
@@ -26,7 +21,7 @@ public class JsonUtil {
 		}
         StringWriter sw = new StringWriter();  
         try {  
-        	getMapper().writeValue(sw, obj);  
+        	mapper.writeValue(sw, obj);  
         } catch (Exception e) {  
         	throw new RuntimeException("序列化时出错:"+e.getMessage());
         }  
@@ -44,9 +39,9 @@ public class JsonUtil {
     public static <T> List<T> str2list(String jsonStr, Class<T> cls) {  
         List<T> objList = null;  
         try {  
-            JavaType t = getMapper().getTypeFactory().constructParametricType(  
+            JavaType t = mapper.getTypeFactory().constructParametricType(  
                     List.class, cls);  
-            objList = getMapper().readValue(jsonStr, t);  
+            objList = mapper.readValue(jsonStr, t);  
         } catch (Exception e) {  
         	throw new RuntimeException("反序列化为List对象时出错:"+e.getMessage());
         }  
@@ -64,7 +59,7 @@ public class JsonUtil {
     public static <T> T str2obj(String jsonStr, Class<T> cls) {  
         T obj = null;  
         try {  
-            obj = getMapper().readValue(jsonStr, cls);  
+            obj = mapper.readValue(jsonStr, cls);  
         } catch (Exception e) {  
         	throw new RuntimeException("反序列化时出错:"+e.getMessage());
         }  
