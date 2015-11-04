@@ -8,19 +8,17 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.entity.OrderGrab;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.FastOrderMapDetail;
-import com.edaisong.entity.domain.FastOrderModel; 
-import com.edaisong.entity.req.MyOrderGrabBReq;
-import com.edaisong.entity.req.MyOrderGrabCReq;
-import com.edaisong.entity.req.OrderGrabDetailBReq;
+import com.edaisong.entity.domain.FastOrderModel;  
+import com.edaisong.entity.req.MyOrderGrabCReq; 
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
-import com.edaisong.entity.resp.MyOrderGrabBResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
-import com.edaisong.entity.resp.MyOrderGrabDetailBResp;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
  
+
 
 import java.util.ArrayList;
 import java.util.Date; 

@@ -7,12 +7,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.edaisong.entity.common.HttpResultModel; 
-import com.edaisong.entity.req.MyOrderGrabBReq;
-import com.edaisong.entity.req.MyOrderGrabCReq;
-import com.edaisong.entity.req.OrderGrabDetailBReq;
+import com.edaisong.entity.common.HttpResultModel;  
+import com.edaisong.entity.req.MyOrderGrabCReq; 
 import com.edaisong.entity.req.OrderGrabDetailCReq;
  
+import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.OrderGrabResp;
