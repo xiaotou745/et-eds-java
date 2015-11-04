@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.dao.inter.IClienterForzenDao;
 import com.edaisong.api.dao.inter.IClienterForzenLogDao;
@@ -65,7 +66,7 @@ public class ClienterForzenService implements IClienterForzenService {
 			clienterForzenLog.setRemark("冻结骑士金额" + req.getForzenAmount());
 			int iResult = clienterForzenLogDao.insert(clienterForzenLog);
 			if (iResult <= 0) {
-				throw new RuntimeException("冻结骑士金额错误");
+				throw new TransactionalRuntimeException("冻结骑士金额错误");
 			}
 			if (iResult > 0) {
 				// 减骑士余额 和可提现余额
@@ -109,7 +110,7 @@ public class ClienterForzenService implements IClienterForzenService {
 			clienterForzenLog.setRemark("解冻骑士金额" + req.getForzenAmount());
 			int iResult = clienterForzenLogDao.insert(clienterForzenLog);
 			if(iResult <=0){
-				throw new RuntimeException("解冻骑士金额错误");
+				throw new TransactionalRuntimeException("解冻骑士金额错误");
 			}
 			if(iResult>0){ 
 				// 增加骑士余额和可提现余额

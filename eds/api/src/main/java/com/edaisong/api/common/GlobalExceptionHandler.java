@@ -28,6 +28,9 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
 		String param = "";
 		String msg = ex.getMessage();
 		String stackTrace = StringUtils.getStackTrace(ex);
+    	if (ex instanceof TransactionalRuntimeException) {
+    		stackTrace = "";
+		}
 
 		/*
 		 * 全局LogInteceptor中统一记录方法调用的actionlog和异常信息

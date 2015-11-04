@@ -11,7 +11,7 @@ public class OrderGrab {
 
 	private Integer clienterid;
 
-    private Integer orderCount;
+    private Integer ordercount;
 
     private Byte status;
 
@@ -40,6 +40,86 @@ public class OrderGrab {
     private Integer  orderRegionTwoId;
     
     private String orderRegionTwoName;
+    
+	
+    private Double distribsubsidy;
+
+	private Long ordercommission;
+
+    private Double settlemoney;
+
+    private Long commissionrate;
+
+    private Double basecommission;
+
+    private Double websitesubsidy;
+
+    private Double adjustment;   
+    
+
+	private Double orderCommission;
+    private Double settleMoney;
+    private Double commissionRate;
+    private Double baseCommission ;
+    private Double websitesubsidy;
+    private Double adjustment ;
+    private Double distribsubsidy;
+
+    public Double getOrderCommission() {
+		return orderCommission;
+	}
+
+	public void setOrderCommission(Double orderCommission) {
+		this.orderCommission = orderCommission;
+	}
+
+	public Double getSettleMoney() {
+		return settleMoney;
+	}
+
+	public void setSettleMoney(Double settleMoney) {
+		this.settleMoney = settleMoney;
+	}
+
+	public Double getCommissionRate() {
+		return commissionRate;
+	}
+
+	public void setCommissionRate(Double commissionRate) {
+		this.commissionRate = commissionRate;
+	}
+
+	public Double getBaseCommission() {
+		return baseCommission;
+	}
+
+	public void setBaseCommission(Double baseCommission) {
+		this.baseCommission = baseCommission;
+	}
+
+	public Double getWebsitesubsidy() {
+		return websitesubsidy;
+	}
+
+	public void setWebsitesubsidy(Double websitesubsidy) {
+		this.websitesubsidy = websitesubsidy;
+	}
+
+	public Double getAdjustment() {
+		return adjustment;
+	}
+
+	public void setAdjustment(Double adjustment) {
+		this.adjustment = adjustment;
+	}
+
+	public Double getDistribsubsidy() {
+		return distribsubsidy;
+	}
+
+	public void setDistribsubsidy(Double distribsubsidy) {
+		this.distribsubsidy = distribsubsidy;
+	}
 
 	public Integer getId() {
 		return id;
@@ -73,12 +153,12 @@ public class OrderGrab {
 		this.clienterid = clienterid;
 	}
 
-	public Integer getOrderCount() {
-		return orderCount;
+	public Integer getOrdercount() {
+		return ordercount;
 	}
 
-	public void setOrderCount(Integer ordercount) {
-		this.orderCount = ordercount;
+	public void setOrdercount(Integer ordercount) {
+		this.ordercount = ordercount;
 	}
 
 	public Byte getStatus() {
@@ -192,7 +272,61 @@ public class OrderGrab {
 	public void setOrderRegionTwoName(String orderRegionTwoName) {
 		this.orderRegionTwoName = orderRegionTwoName;
 	}
-    
+	public Double getDistribsubsidy() {
+		return distribsubsidy;
+	}
+
+	public void setDistribsubsidy(Double distribsubsidy) {
+		this.distribsubsidy = distribsubsidy;
+	}
+	
+    public Long getOrdercommission() {
+		return ordercommission;
+	}
+
+	public void setOrdercommission(Long ordercommission) {
+		this.ordercommission = ordercommission;
+	}
+
+	public Double getSettlemoney() {
+		return settlemoney;
+	}
+
+	public void setSettlemoney(Double settlemoney) {
+		this.settlemoney = settlemoney;
+	}
+
+	public Long getCommissionrate() {
+		return commissionrate;
+	}
+
+	public void setCommissionrate(Long commissionrate) {
+		this.commissionrate = commissionrate;
+	}
+
+	public Double getBasecommission() {
+		return basecommission;
+	}
+
+	public void setBasecommission(Double basecommission) {
+		this.basecommission = basecommission;
+	}
+
+	public Double getWebsitesubsidy() {
+		return websitesubsidy;
+	}
+
+	public void setWebsitesubsidy(Double websitesubsidy) {
+		this.websitesubsidy = websitesubsidy;
+	}
+
+	public Double getAdjustment() {
+		return adjustment;
+	}
+
+	public void setAdjustment(Double adjustment) {
+		this.adjustment = adjustment;
+	}
 
    
 }

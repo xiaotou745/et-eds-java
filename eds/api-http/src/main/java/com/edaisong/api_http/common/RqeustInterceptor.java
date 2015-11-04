@@ -23,9 +23,11 @@ import com.edaisong.api.common.LogServiceBLL;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
+import com.edaisong.core.util.StringUtils;
 import com.edaisong.core.util.SystemUtils;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.ActionLog;
+
 
 public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 	@Autowired
@@ -95,7 +97,27 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 				//正常返回时，返回值的类型为HttpResultModel<Object>)
 				//此时需要记录返回值的json
 				HttpResultModel<Object> res = (HttpResultModel<Object>)messageContentsList.get(0);
-				resultJson = JsonUtil.obj2string(res);
+				try {
+					resultJson = JsonUtil.obj2string(res);
+				} catch (Exception e) {
+					exceptionMsg = e.getMessage();
+					stackTrace = StringUtils.getStackTrace(e);
+					//如果当前请求返回的结果没问题，但是序列化时出错了，
+					//此时需要将outMessage.messageContentsList中的正确的方法返回值改为异常对象
+					//否则，由于cxf框架在序列化时
+					//是根据outMessage.messageContentsList转换为json输出流+GlobalExceptionHandler中返回的Response的json输出流
+					//而outMessage.messageContentsList无法正确序列化，导致输出流中只输出了部分json（不包含出错的节点）
+					//例如：一个方法返回值中的data对象中有两个属性total和count，而count属性导致了序列化失败，则最终输出的json：
+					//{"code": 200,"msg": "success","data": {"total": 5}}{"code": -1,"msg": "系统错误","data": "堆栈信息。。"}
+					//而不是期望的：{"code": -1,"msg": "系统错误","data": "堆栈信息。。"}
+					
+					HttpResultModel<String> rep=new HttpResultModel<String>();
+			        rep.setStatus(HttpReturnRnums.SystemError.value());
+			        rep.setMessage(HttpReturnRnums.SystemError.desc());
+			        rep.setResult(stackTrace);
+			        messageContentsList.remove(0);
+			        messageContentsList.add(0, rep);
+				}
 			}
 	
 			TreeMap header = (TreeMap) inMessage.get(Message.PROTOCOL_HEADERS);

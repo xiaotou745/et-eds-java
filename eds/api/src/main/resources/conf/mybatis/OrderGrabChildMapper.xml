@@ -3,7 +3,7 @@
 <mapper namespace="com.edaisong.api.dao.inter.IOrderGrabChildDao" >
   <sql id="Base_Column_List" >
     Id, GrabOrderId, OrderId, OrderChildId, ChildId, Status, ActualDoneDate, DoneLongitude, 
-    DoneLatitude,businessId,OrderCommission,SettleMoney,CommissionRate,BaseCommission,websitesubsidy,adjustment
+    DoneLatitude,businessId,OrderCommission,SettleMoney,CommissionRate,BaseCommission,websitesubsidy,adjustment,distribsubsidy
   </sql>
   <select id="selectByPrimaryKey" resultType="com.edaisong.entity.OrderGrabChild" parameterType="java.lang.Integer" >
     select 
@@ -94,8 +94,10 @@
   </insert>
   	<update id="insertList" parameterType="java.util.List">
 		<foreach collection="list" item="item" index="index" >
-			insert into OrderGrabChild (GrabOrderId,OrderId,OrderChildId,ChildId,BusinessId,Status,
-OrderCommission,SettleMoney,CommissionRate,BaseCommission,WebsiteSubsidy,Adjustment
+			insert into OrderGrabChild (GrabOrderId, OrderId, OrderChildId, ChildId,
+			businessId,Status, ActualDoneDate, DoneLongitude,DoneLatitude,
+			 OrderCommission,SettleMoney,CommissionRate,BaseCommission,
+			 websitesubsidy,adjustment,distribsubsidy
 			) values (
 			#{item.graborderid,jdbcType=INTEGER},			
 			#{item.orderid,jdbcType=INTEGER},
@@ -103,12 +105,16 @@ OrderCommission,SettleMoney,CommissionRate,BaseCommission,WebsiteSubsidy,Adjustm
 			#{item.childid,jdbcType=INTEGER},
 			#{item.businessid,jdbcType=INTEGER},
 			#{item.status,jdbcType=BIT},
+			#{item.actualdonedate,jdbcType=TIMESTAMP},
+			#{item.donelongitude,jdbcType=DECIMAL},
+			#{item.donelatitude,jdbcType=DECIMAL},
 			#{item.orderCommission,jdbcType=DECIMAL},
 			#{item.settleMoney,jdbcType=DECIMAL},
 			#{item.commissionRate,jdbcType=DECIMAL},
 			#{item.baseCommission,jdbcType=DECIMAL},
 			#{item.websiteSubsidy,jdbcType=DECIMAL},
-			#{item.adjustment,jdbcType=DECIMAL}		
+			#{item.adjustment,jdbcType=DECIMAL},
+			#{item.distribsubsidy,jdbcType=DECIMAL}				
 			);
 		</foreach>
 	</update>
@@ -141,6 +147,36 @@ OrderCommission,SettleMoney,CommissionRate,BaseCommission,WebsiteSubsidy,Adjustm
       </if>
     </set>
     where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByGraborderidSelective" parameterType="com.edaisong.entity.OrderGrabChild" >
+    update OrderGrabChild
+    <set >
+      <if test="graborderid != null" >
+        GrabOrderId = #{graborderid,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="orderchildid != null" >
+        OrderChildId = #{orderchildid,jdbcType=INTEGER},
+      </if>
+      <if test="childid != null" >
+        ChildId = #{childid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="actualdonedate != null" >
+        ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="donelongitude != null" >
+        DoneLongitude = #{donelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelatitude != null" >
+        DoneLatitude = #{donelatitude,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where GrabOrderId = #{graborderid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderGrabChild" >
     update OrderGrabChild

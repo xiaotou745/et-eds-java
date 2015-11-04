@@ -19,7 +19,7 @@ import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.req.InStoreTaskReq;
-import com.edaisong.entity.req.IsAllowInputMoneyReq;
+import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
 import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.req.PagedBusinessReq;
@@ -126,13 +126,13 @@ public interface IBusinessDao {
 	BusinessStatus getUserStatus(int userid);
 	
 	/**
-	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要  默认0
+	 * 获取门店发单模式：0 普通模式（默认），1 快单模式   默认0
 	 * @author CaoHeYang
 	 * @date 20151030
 	 * @param businessId
 	 * @return
 	 */
-	  Integer getIsAllowInputMoney(Long businessId);
+	  Integer getPushOrderType(Long businessId);
 	  
 		/**
 		 * 骑士端获取店内任务  获取当前骑士的所有含有未接单订单的 雇主信息

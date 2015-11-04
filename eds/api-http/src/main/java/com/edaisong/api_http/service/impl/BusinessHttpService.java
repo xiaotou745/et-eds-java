@@ -16,6 +16,7 @@ import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.enums.ClienterBindBusinessEnum;
 import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
+import com.edaisong.core.enums.returnenums.GetPushOrderTypeReturnEnum;
 import com.edaisong.core.enums.returnenums.OptBindClienterReturnEnum;
 import com.edaisong.core.enums.returnenums.RemoveRelationReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
@@ -26,7 +27,8 @@ import com.edaisong.entity.req.MyOrderBReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
-import com.edaisong.entity.req.IsAllowInputMoneyReq;
+import com.edaisong.entity.req.GetPushOrderTypeReq;
+import com.edaisong.entity.resp.GetMyServiceClientersResp;
 import com.edaisong.entity.resp.MyOrderBResp;
 import com.edaisong.entity.resp.MyOrderDetailBResp;
 
@@ -48,7 +50,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 	private IBusinessClienterRelationService businessClienterRelationService;
 
 	/**
-	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要 默认0
+	 * 获取门店发单模式：0 普通模式（默认），1 快单模式   默认0
 	 * 
 	 * @author CaoHeYang
 	 * @date 20151030
@@ -56,9 +58,13 @@ public class BusinessHttpService implements IBusinessHttpService {
 	 * @return
 	 */
 	@Override
-	public HttpResultModel<Integer> getIsAllowInputMoney(IsAllowInputMoneyReq par) {
+	public HttpResultModel<Integer> getPushOrderType(GetPushOrderTypeReq req) {
 		HttpResultModel<Integer> result = new HttpResultModel<Integer>();
-		result.setResult(businessService.getIsAllowInputMoney(par));
+		Integer type=businessService.getPushOrderType(req);
+		if (req.getBusinessId() == 0||type==null) {
+			return result.setStatus(GetPushOrderTypeReturnEnum.BusinessIdError.value()).setMessage(GetPushOrderTypeReturnEnum.BusinessIdError.desc());
+		}
+		result.setResult(type);
 		return result;
 	}
 
@@ -72,8 +78,8 @@ public class BusinessHttpService implements IBusinessHttpService {
 	 * @return
 	 */
 	@Override
-	public HttpResultModel<List<ServiceClienters>> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
-		HttpResultModel<List<ServiceClienters>> result = new HttpResultModel<List<ServiceClienters>>();
+	public HttpResultModel<GetMyServiceClientersResp> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
+		HttpResultModel<GetMyServiceClientersResp> result = new HttpResultModel<GetMyServiceClientersResp>();
 		if (req.getBusinessId() == 0) {
 			return result.setStatus(GetMyServiceClientersReturnEnum.BusinessIdError.value()).setMessage(GetMyServiceClientersReturnEnum.BusinessIdError.desc());
 		}

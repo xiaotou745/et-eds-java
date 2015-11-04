@@ -3,21 +3,19 @@ package com.edaisong.core.util;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Dictionary;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.MDC;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -31,7 +29,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  * 导出excel辅助类 Created by zhaohailong on 15/7/24.
- * modify by pengyi 20150907
  */
 public class ExcelUtils {
 
@@ -53,12 +50,12 @@ public class ExcelUtils {
 	 * @param outputExcelFileName
 	 * @return
 	 */
-	public static boolean export2File(ExcelExportData setInfo, String outputExcelFileName) throws Exception {
+	private static boolean export2File(ExcelExportData setInfo, String outputExcelFileName) throws Exception {
 		return FileUtil.write(outputExcelFileName, export2ByteArray(setInfo), true, true);
 	}
 	/**
 	 * 导出数据到excel
-	 * @date 20151103
+	 * @date 20151104
 	 * @author hailongzhao
 	 * @param fileName
 	 * @param title
@@ -67,8 +64,8 @@ public class ExcelUtils {
 	 * @param response
 	 * @throws Exception
 	 */
-	public static void export2Excel(String fileName,String title,Map<String,String> columnTitiles,
-			List<?> records,HttpServletResponse response) throws Exception{
+	public static void export2Excel(String fileName,String title,LinkedHashMap<String,String> columnTitiles,
+			List<?> records,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		if (records==null||records.size()==0||columnTitiles==null||columnTitiles.size()==0) {
 			return;
 		}
@@ -85,9 +82,37 @@ public class ExcelUtils {
 		data.getDataMap().put(fileName, records);
 		byte[] datas = ExcelUtils.export2ByteArray(data);
 		response.setContentType("application/ms-excel");
-		response.setHeader("Content-Disposition", "attachment; filename="+new String((fileName+".xls").getBytes("iso8859-1"),"iso8859-1"));
+		response.setHeader("Content-Disposition", "attachment;"+getFileName(request,fileName+".xls"));
 		response.setHeader("Content-Length",String.valueOf(datas.length));
 		response.getOutputStream().write(datas,0,datas.length);
+	}
+	private static String getFileName(HttpServletRequest request,String fileName) throws Exception{
+//		各浏览器支持的对应编码格式为：
+//		1.  IE浏览器，采用URLEncoder编码
+//		2.  Opera浏览器，采用filename*方式
+//		3.  Safari浏览器，采用ISO编码的中文输出
+//		4.  Chrome浏览器，采用Base64编码或ISO编码的中文输出
+//		5.  FireFox浏览器，采用Base64或filename*或ISO编码的中文输出
+
+		//默认使用ISO编码
+		String new_filename = new String(fileName.getBytes("UTF-8"), "ISO8859-1");
+		String rtn = "filename=\"" + new_filename + "\"";
+		String userAgent = request.getHeader("user-agent");
+		if (userAgent != null) {
+			userAgent = userAgent.toLowerCase();
+			if (userAgent.indexOf("msie") != -1||
+			   (userAgent.indexOf("trident") != -1&&userAgent.indexOf("rv:") != -1)) {//ie
+				rtn = "filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"";
+			} else if (userAgent.indexOf("opera") != -1) {//Opera
+				rtn = "filename*=UTF-8''" + URLEncoder.encode(fileName, "UTF-8");
+			} 
+//			else if (userAgent.indexOf("safari") != -1//Safari
+//					|| userAgent.indexOf("applewebkit") != -1//Chrome
+//					|| userAgent.indexOf("mozilla") != -1) {//FireFox
+//				rtn = "filename=\""+ new String(fileName.getBytes("UTF-8"), "ISO8859-1")+ "\"";
+//			}
+		}
+		return rtn;
 	}
 	/**
 	 * 导出到byte数组
@@ -96,7 +121,7 @@ public class ExcelUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] export2ByteArray(ExcelExportData setInfo) throws Exception {
+	private static byte[] export2ByteArray(ExcelExportData setInfo) throws Exception {
 		return export2Stream(setInfo).toByteArray();
 	}
 
@@ -107,7 +132,7 @@ public class ExcelUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static ByteArrayOutputStream export2Stream(ExcelExportData setInfo) throws Exception {
+	private static ByteArrayOutputStream export2Stream(ExcelExportData setInfo) throws Exception {
 		init();
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -457,7 +482,7 @@ public class ExcelUtils {
 	 *
 	 * @author jimmy
 	 */
-	public static class ExcelExportData {
+	private static class ExcelExportData {
 
 		/**
 		 * 导出数据 key:String 表示每个Sheet的名称 value:List<?> 表示每个Sheet里的所有数据行

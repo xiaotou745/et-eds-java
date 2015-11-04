@@ -16,6 +16,7 @@ import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
+import com.edaisong.entity.resp.GetMyServiceClientersResp;
 
 @Repository
 public class BusinessClienterRelationDao extends DaoBase implements IBusinessClienterRelationDao{
@@ -148,6 +149,20 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 		return lists.getResultList();
 	}
 	
+	/**
+	 *  商戶端 查詢  我的骑士数量信息
+	 * 
+	 * @version 20151103
+	 * @author CaoHeYang
+	 * @date 20151103
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public GetMyServiceClientersResp getMyServiceClientersCountInfo(PagedGetMyServiceClientersReq req){
+		return getMasterSqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getMyServiceClientersCountInfo", req);
+	}
 	/**
 	 * 商戶端 我的骑士 申请中 同意/拒绝功能
 	 * 

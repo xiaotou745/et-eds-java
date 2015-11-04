@@ -132,7 +132,7 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 		clienterBalanceRecord.setWithwardid((long) clienterMoney.getWithwardId()); // 关联单id
 		clienterBalanceRecord.setRelationno(clienterMoney.getRelationNo()); // 关联单号
 		clienterBalanceRecord.setRemark(clienterMoney.getRemark()); // 注释
-		clienterBalanceRecordDao.insert(clienterBalanceRecord);
+		int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecord);
 		//插入骑士余额可提现流水
 		ClienterAllowWithdrawRecord clienterAllowWithdrawRecord = new ClienterAllowWithdrawRecord();
 		clienterAllowWithdrawRecord.setClienterid(clienterMoney.getClienterId());// 商户Id

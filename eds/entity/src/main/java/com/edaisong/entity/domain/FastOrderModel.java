@@ -15,6 +15,7 @@ public class FastOrderModel {
     private String orderRegionTwoName;
     private Date actualDoneDate;
 	private Double  orderCommission;
+	private Double singleOrderCommission;
     public Long getId() {
 		return id;
 	}
@@ -98,6 +99,12 @@ public class FastOrderModel {
 	}
 	public void setOrderCommission(Double orderCommission) {
 		this.orderCommission = orderCommission;
+	}
+	public Double getSingleOrderCommission() {
+		return singleOrderCommission;
+	}
+	public void setSingleOrderCommission(Double singleOrderCommission) {
+		this.singleOrderCommission = singleOrderCommission;
 	}
 	private Integer orderCount ;
     private Integer status;

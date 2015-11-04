@@ -15,41 +15,56 @@ import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 
 import com.edaisong.entity.domain.FastOrderDetail;
 import com.edaisong.entity.domain.FastOrderExportModel;
+import com.edaisong.entity.req.OrderGrabCompleteReq;
+import com.edaisong.entity.req.OrderGrabConfirmTakeReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.resp.OrderGrabResp;
 public interface IOrderGrabService {
-    int deleteById(Long id);
-    int insert(OrderGrab record);
+	int insert(OrderGrab record);
+	int deleteById(Long id);   
     FastOrderDetail selectById(Long id);
     List<FastOrderMapDetail> getMapDetailById(Long id);
     PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req);
     List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req);
 /**
-	 * ?????????
+	 * 添加订单基础信息表
 	 * 
 	 * @param req
-	 *            ????
-	 * @author ???��
-	 * @Date 2015??11??2?? 16:15:23
+	 *            
+	 * @author 胡灵波
+	 * @Date 2015年11月4日 11:15:24
 	 * @return
 	 */	
 	int  add(OrderGrab record);
 	
 	/**
-	 * ����
-	 * ????
-	 * 
-	 * @param req
-	 *            ����
-	 * @author ���鲨
-	 * @Date 2015��11��2�� 16:15:23
+	 * 骑士抢单         
+	 * @author 胡灵波
+	 * @Date 2015年11月4日 11:16:24
 	 * @param req 
-	 * @author wangchao
-	 * ��ȡ�ҵ�����
-
 	 * @return
 	 */	
 	HttpResultModel<OrderGrabResp> GrabOrder(OrderGrabReq req);
+	
+	/**
+	 * 骑士取货 
+	 * @author 胡灵波
+	 * @Date 2015年11月4日 11:16:24
+	 * @param req 
+	 * @return
+	 */	
+	HttpResultModel<Integer> ConfirmTake(OrderGrabConfirmTakeReq req);
+	
+	/**
+	 * 骑士完成订单
+	 * @author 胡灵波
+	 * @Date 2015年11月4日 11:17:46
+	 * @param req 
+	 * @return
+	 */	
+	HttpResultModel<Integer> Complete(OrderGrabCompleteReq req);
+	
+	
 	List<MyOrderGrabCResp> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
 	MyOrderGrabDetailCResp getMyOrderGrabDetailC(
 			OrderGrabDetailCReq orderGrabDetailCReq); 

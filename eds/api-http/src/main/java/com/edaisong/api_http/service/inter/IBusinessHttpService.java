@@ -19,7 +19,8 @@ import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
-import com.edaisong.entity.req.IsAllowInputMoneyReq;
+import com.edaisong.entity.req.GetPushOrderTypeReq;
+import com.edaisong.entity.resp.GetMyServiceClientersResp;
 import com.edaisong.entity.resp.MyOrderBResp;
 import com.edaisong.entity.resp.MyOrderDetailBResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
@@ -36,15 +37,15 @@ import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 public interface IBusinessHttpService {
 
 	/**
-	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要  默认0
+	 * 获取门店发单模式：0 普通模式（默认），1 快单模式   默认0
 	 * @author CaoHeYang
 	 * @date 20151030
 	 * @param par
 	 * @return
 	 */
 	@POST
-	@Path("/getisallowinputmoney")	
-	public HttpResultModel<Integer> getIsAllowInputMoney(IsAllowInputMoneyReq par);
+	@Path("/getpushordertype")	
+	public HttpResultModel<Integer> getPushOrderType(GetPushOrderTypeReq par);
 	
 	/**
 	 * 绑定骑士商户
@@ -64,7 +65,7 @@ public interface IBusinessHttpService {
 	 */
 	@POST
 	@Path("/getmyserviceclienters")	
-	 public HttpResultModel<List<ServiceClienters>>  getMyServiceClienters(PagedGetMyServiceClientersReq req);
+	 public HttpResultModel<GetMyServiceClientersResp>  getMyServiceClienters(PagedGetMyServiceClientersReq req);
 	
 	/**
 	 * 商戶端 我的骑士   申请中 同意/拒绝功能
