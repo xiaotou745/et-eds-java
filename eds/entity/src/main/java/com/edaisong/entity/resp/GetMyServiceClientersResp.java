@@ -17,7 +17,7 @@ public class GetMyServiceClientersResp {
 	private List<ServiceClienters> list;
 
 	/**
-	 * 服务中骑士数量
+	 * 申请中骑士数量
 	 * 
 	 * @return
 	 */
@@ -26,7 +26,7 @@ public class GetMyServiceClientersResp {
 	}
 
 	/**
-	 * 服务中骑士数量
+	 *  申请中骑士数量
 	 * 
 	 * @param waitAduitCount
 	 */
@@ -35,7 +35,7 @@ public class GetMyServiceClientersResp {
 	}
 
 	/**
-	 * 申请中骑士数量
+	 * 服务中骑士数量
 	 * 
 	 * @return
 	 */
@@ -44,7 +44,7 @@ public class GetMyServiceClientersResp {
 	}
 
 	/**
-	 * 申请中骑士数量
+	 *服务中骑士数量
 	 * 
 	 * @param serviceCount
 	 */
