@@ -35,7 +35,7 @@ public interface IBusinessHttpService {
 	 * @return
 	 */
 	@POST
-	@Path("/getpubshordertype")	
+	@Path("/getpushordertype")	
 	public HttpResultModel<Integer> getPushOrderType(GetPushOrderTypeReq par);
 	
 	/**
