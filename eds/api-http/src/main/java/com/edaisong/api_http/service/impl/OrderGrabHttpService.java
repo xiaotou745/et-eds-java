@@ -17,16 +17,34 @@ import com.edaisong.entity.req.MyOrderGrabBReq;
 import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OrderGrabDetailBReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
-import com.edaisong.entity.resp.MyOrderGrabBResp;
-import com.edaisong.entity.resp.MyOrderGrabDetailBResp;
+ 
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
+import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderRegionResp;
 
 @Service
 public class OrderGrabHttpService implements IOrderGrabHttpService {
 	@Autowired
 	private IOrderGrabService iOrderGrabService;
+	
+	@Autowired
+	private IOrderGrabService orderGrabService;
+	/**
+	 * 用户抢单
+	 * @author 胡灵波
+	 * @date 2015年11月2日 14:56:05
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderGrabResp> Receive(OrderGrabReq req)
+	{
+		HttpResultModel<OrderGrabResp> resp=orderGrabService.GrabOrder(req);			
+		return resp;
+	}
+	
 	/*
 	 * 获取我的任务
 	 * wangchao

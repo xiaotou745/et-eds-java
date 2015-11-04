@@ -137,7 +137,7 @@ public interface IOrderService {
 	 * @Date 2015年8月6日 09:51:47
 	 * @return
 	 */
-	OrderResp PushOrder(OrderReq req);
+	HttpResultModel<OrderResp> PushOrder(OrderReq req);
 
 	/**
 	 * 商户发单，点击按纽钱查询商户余额信息，以及该订单的结算信息
