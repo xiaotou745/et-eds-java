@@ -29,7 +29,6 @@ import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.ExcelUtils;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.StringUtils;
-import com.edaisong.core.util.ExcelUtils.ExcelExportData;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
@@ -388,13 +387,10 @@ public class GroupBusinessController {
 		if (!StringUtils.isEmpty(req.getStartDate()) && !StringUtils.isEmpty(req.getEndDate())) {
 			filename = String.format(filename, req.getStartDate().replace(" 00:00:00", "") + "~" + req.getEndDate().replace(" 23:59:59",""));
 		}
-		 
-		byte[] data = exportGroupBusinessBalanceRecord2Bytes(filename, records);
-		response.setContentType("application/ms-excel");
-		response.setHeader("Content-Disposition",
-				"attachment; filename=" + new String((filename + ".xls").getBytes("utf-8"), "iso8859-1"));
-		response.setHeader("Content-Length", String.valueOf(data.length));
-		response.getOutputStream().write(data);
+		 if (records!=null&&records.size()>0) {
+			 exportGroupBusinessBalanceRecord(filename, records,request, response);
+		}
+
 		return;
 	}
 	
@@ -408,19 +404,20 @@ public class GroupBusinessController {
 	 * @return
 	 * @throws Exception
 	 */
-	private byte[] exportGroupBusinessBalanceRecord2Bytes(String fileName, List<GroupBusinessBalanceRecord> records)
+	private void exportGroupBusinessBalanceRecord(String fileName, List<GroupBusinessBalanceRecord> records,
+				HttpServletRequest request,HttpServletResponse response)
 			throws Exception {  
-		ExcelExportData data = new ExcelUtils.ExcelExportData();
-		data.setTitles(new String[] { "集团收支记录" });
-		data.setColumnNames(new ArrayList<String[]>());
-		data.setFieldNames(new ArrayList<String[]>());
-		data.setDataMap(new LinkedHashMap<String, List<?>>());
-		// add data
-		data.getColumnNames().add(new String[] { "交易类型","任务单号/交易流水号", "商铺名称", "收支金额", "集团余额",   "状态","交易日期", "操作人","备注" });
-		data.getFieldNames().add(
-				new String[] { "recordtypeString","relationno", "businessname", "groupamount", "groupafterbalance","statusString", "operatetime", "operator","remark" });
-		data.getDataMap().put(fileName, records);
-		return ExcelUtils.export2ByteArray(data);
+		LinkedHashMap<String,String> columnTitiles=new LinkedHashMap<String,String>();
+		columnTitiles.put("交易类型", "recordtypeString");
+		columnTitiles.put("任务单号/交易流水号", "relationno");
+		columnTitiles.put("商铺名称", "businessname");
+		columnTitiles.put("收支金额", "groupamount");
+		columnTitiles.put("集团余额", "groupafterbalance");
+		columnTitiles.put("状态", "statusString");
+		columnTitiles.put("交易日期", "operatetime");
+		columnTitiles.put("操作人", "operator");
+		columnTitiles.put("备注", "remark");
+		ExcelUtils.export2Excel(fileName,"集团收支记录",columnTitiles,records,request,response);
 	}
 	
 	@RequestMapping("rechargedetail")

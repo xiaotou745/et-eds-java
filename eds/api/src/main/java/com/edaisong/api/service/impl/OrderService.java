@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.edaisong.api.common.CommissionFactory;
 import com.edaisong.api.common.OrderPriceBaseProvider;
 import com.edaisong.api.common.OrderSettleMoneyHelper;
+import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
@@ -348,7 +349,7 @@ public class OrderService implements IOrderService {
 			orderOther.setCancelTime(new Date());
 			orderOtherDao.updateByPrimaryKeySelective(orderOther);
 		} else {
-			throw new RuntimeException("更新订单状态为取消状态时失败");
+			throw new TransactionalRuntimeException("更新订单状态为取消状态时失败");
 		}
 	}
 
@@ -660,7 +661,7 @@ public class OrderService implements IOrderService {
 			adjustRecord.setPlatform(SuperPlatform.Business.value());
 			int orderSubsidieslogId = orderSubsidiesLogDao.insert(adjustRecord);
 			if (orderSubsidieslogId <= 0)
-				throw new RuntimeException("记录补贴日志错误");
+				throw new TransactionalRuntimeException("记录补贴日志错误");
 		}
 
 		// 订单表 订单otherID表 订单child表

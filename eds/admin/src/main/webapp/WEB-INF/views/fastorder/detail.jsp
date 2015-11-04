@@ -14,6 +14,7 @@
 <%
 	String basePath =PropertyUtils.getProperty("java.admin.url");
 FastOrderDetail detailModel=	(FastOrderDetail)request.getAttribute("detailModel");
+List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
 	List<OrderSubsidiesLog> orderSubsidiesLogs=	(List<OrderSubsidiesLog>)request.getAttribute("orderSubsidiesLogs");
 %>
 <style type="text/css">
@@ -44,17 +45,22 @@ FastOrderDetail detailModel=	(FastOrderDetail)request.getAttribute("detailModel"
 		<table class="tbstyle222" border="0"
 			style="font-size: 13px; font-weight: bold; line-height: 300%; width: 1000px;">
 			<tr class="trclass">
-				<td>任务单号：<%=detailModel.getGrabOrderNo()%></td>
+				<td>任务单号：<%=detailModel.getGraborderno()%></td>
 				<td>是否已付款:顾客已付款</td>
 				<td>订单状态：<%=OrderStatus.getEnum(detailModel.getStatus()).desc()%></td>
 				<td>订单来源：<%=OrderFrom.getEnum(detailModel.getOrderFrom()).desc()%></td>
 			</tr>
 			<tr class="trclass">
 				<td>订单数量：<%=detailModel.getOrderCount()%></td>
-				<td>订单佣金： <%=ParseHelper.ShowString(detailModel.getOrderCommission())%></td>
-				<td>外送费：<%=ParseHelper.ShowString(detailModel.getDistribsubsidy())%></td>
-				<td>网站补贴： <%=ParseHelper.ShowString(detailModel.getSingleWebsitesubsidy())%></td>
-				<td>任务补贴： <%=ParseHelper.ShowString(detailModel.getSingleAdjustment())%></td>
+				<td>订单总佣金： <%=ParseHelper.ShowString(detailModel.getOrderCommission())%></td>
+				<td>配送费：<%=ParseHelper.ShowString(orderChildList.get(0).getDistribsubsidy())%>/单</td>
+				<td>网站补贴： <%=ParseHelper.ShowString(orderChildList.get(0).getWebsiteSubsidy())%>/单</td>
+			</tr>
+			<tr class="trclass">
+				<td>订单是否需要审核：否</td>
+				<td></td>
+				<td></td>
+				<td></td>
 			</tr>
 		</table>
 	</fieldset>
@@ -114,7 +120,6 @@ FastOrderDetail detailModel=	(FastOrderDetail)request.getAttribute("detailModel"
 				</thead>
 				<tbody>
 					<%
-						List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
 						for (OrderGrabChild curOrderChild : orderChildList) {
 					%>
 					<tr>

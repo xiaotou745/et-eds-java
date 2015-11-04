@@ -12,13 +12,14 @@ import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api_http.service.inter.IOrderGrabHttpService;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.common.HttpResultModel; 
-import com.edaisong.entity.domain.OrderGrabDetailModel;
-import com.edaisong.entity.req.MyOrderGrabCReq;
+import com.edaisong.entity.domain.OrderGrabDetailModel; 
+import com.edaisong.entity.req.MyOrderGrabCReq; 
 import com.edaisong.entity.req.OrderGrabCompleteReq;
 import com.edaisong.entity.req.OrderGrabConfirmTakeReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
+ 
 import com.edaisong.entity.req.OrderGrabReq;
-import com.edaisong.entity.resp.MyOrderGrabDetailResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderRegionResp;
@@ -76,7 +77,7 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	
 	/*
 	 * 获取我的任务
-	 * @see com.edaisong.api_http.service.inter.IOrderGrabHttpService#getMyGrabOrderC(com.edaisong.entity.req.MyOrderGrabCReq)
+	 * wangchao
 	 */
 	@Override
 	public HttpResultModel<List<MyOrderGrabCResp>> getMyOrderGrabC(
@@ -89,16 +90,13 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 		return  result;
 	}
 	@Override
-	public HttpResultModel<MyOrderGrabDetailResp> getMyOrderGrabDetailC(
+	public HttpResultModel<MyOrderGrabDetailCResp> getMyOrderGrabDetailC(
 			OrderGrabDetailCReq orderGrabDetailCReq) {  
-		HttpResultModel<MyOrderGrabDetailResp> result =new HttpResultModel<MyOrderGrabDetailResp>();
+		HttpResultModel<MyOrderGrabDetailCResp> result =new HttpResultModel<MyOrderGrabDetailCResp>();
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
 		MyOrderGrabDetailResp orderGrabDetailModel= orderGrabService.getMyOrderGrabDetailC(orderGrabDetailCReq); 
 		result.setResult(orderGrabDetailModel);		
 		return result;
 	}
-
-	 
-	 
 }

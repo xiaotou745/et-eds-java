@@ -2,7 +2,7 @@ package com.edaisong.entity.resp;
 
 import java.util.Date;
 
-public class MyOrderGrabDetailResp {
+public class MyOrderGrabDetailCResp {
 	private String orderRegionOneName;
 	private String orderRegionTwoName;
 	private Integer orderCount;

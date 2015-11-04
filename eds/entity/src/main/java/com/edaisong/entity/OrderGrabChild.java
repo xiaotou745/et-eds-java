@@ -14,7 +14,20 @@ public class OrderGrabChild {
     private Integer childid;
     
     private Integer businessid;   
-    
+	private Byte status;
+
+    private Date actualdonedate;
+
+    private Double donelongitude;
+
+    private Double donelatitude;
+	private Double orderCommission;
+    private Double settleMoney;
+	private Double commissionRate;
+    private Double baseCommission;
+    private Double websiteSubsidy;
+    private Double adjustment;
+    private Double distribsubsidy;
     public Integer getBusinessid() {
 		return businessid;
 	}
@@ -23,13 +36,7 @@ public class OrderGrabChild {
 		this.businessid = businessid;
 	}
 
-	private Byte status;
 
-    private Date actualdonedate;
-
-    private Double donelongitude;
-
-    private Double donelatitude;
     public Double getOrderCommission() {
 		return orderCommission;
 	}
@@ -78,12 +85,7 @@ public class OrderGrabChild {
 		this.adjustment = adjustment;
 	}
 
-	private Double orderCommission;
-    private Double settleMoney;
-	private Double commissionRate;
-    private Double baseCommission;
-    private Double websiteSubsidy;
-    private Double adjustment;
+
 
 
     public Integer getId() {
@@ -157,4 +159,12 @@ public class OrderGrabChild {
     public void setDonelatitude(Double donelatitude) {
         this.donelatitude = donelatitude;
     }
+
+	public Double getDistribsubsidy() {
+		return distribsubsidy;
+	}
+
+	public void setDistribsubsidy(Double distribsubsidy) {
+		this.distribsubsidy = distribsubsidy;
+	}
 }

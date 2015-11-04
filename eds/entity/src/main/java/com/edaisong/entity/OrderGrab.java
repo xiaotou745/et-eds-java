@@ -57,6 +57,70 @@ public class OrderGrab {
     private Double adjustment;   
     
 
+	private Double orderCommission;
+    private Double settleMoney;
+    private Double commissionRate;
+    private Double baseCommission ;
+    private Double websitesubsidy;
+    private Double adjustment ;
+    private Double distribsubsidy;
+
+    public Double getOrderCommission() {
+		return orderCommission;
+	}
+
+	public void setOrderCommission(Double orderCommission) {
+		this.orderCommission = orderCommission;
+	}
+
+	public Double getSettleMoney() {
+		return settleMoney;
+	}
+
+	public void setSettleMoney(Double settleMoney) {
+		this.settleMoney = settleMoney;
+	}
+
+	public Double getCommissionRate() {
+		return commissionRate;
+	}
+
+	public void setCommissionRate(Double commissionRate) {
+		this.commissionRate = commissionRate;
+	}
+
+	public Double getBaseCommission() {
+		return baseCommission;
+	}
+
+	public void setBaseCommission(Double baseCommission) {
+		this.baseCommission = baseCommission;
+	}
+
+	public Double getWebsitesubsidy() {
+		return websitesubsidy;
+	}
+
+	public void setWebsitesubsidy(Double websitesubsidy) {
+		this.websitesubsidy = websitesubsidy;
+	}
+
+	public Double getAdjustment() {
+		return adjustment;
+	}
+
+	public void setAdjustment(Double adjustment) {
+		this.adjustment = adjustment;
+	}
+
+	public Double getDistribsubsidy() {
+		return distribsubsidy;
+	}
+
+	public void setDistribsubsidy(Double distribsubsidy) {
+		this.distribsubsidy = distribsubsidy;
+	}
+
 	public Integer getId() {
 		return id;
 	}

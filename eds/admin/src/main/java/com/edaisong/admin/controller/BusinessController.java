@@ -33,7 +33,6 @@ import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.util.ExcelUtils;
-import com.edaisong.core.util.ExcelUtils.ExcelExportData;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
@@ -509,12 +508,10 @@ public class BusinessController {
 		for (int i = 0; i < records.size(); i++) {
 			records.get(i).setAccountNo(ParseHelper.toDecrypt(records.get(i).getAccountNo()));
 		}
-		byte[] data = exportBusinessBalanceRecord2Bytes(filename, records);
-		response.setContentType("application/ms-excel");
-		response.setHeader("Content-Disposition",
-				"attachment; filename=" + new String((filename + ".xls").getBytes("utf-8"), "iso8859-1"));
-		response.setHeader("Content-Length", String.valueOf(data.length));
-		response.getOutputStream().write(data);
+		if (records!=null&&records.size()>0) {
+			exportBusinessBalanceRecord(filename, records,request,response);
+		}
+
 		return;
 	}
 
@@ -603,19 +600,21 @@ public class BusinessController {
 	 * @return
 	 * @throws Exception
 	 */
-	private byte[] exportBusinessBalanceRecord2Bytes(String fileName, List<BusinessBalanceRecordModel> records)
+	private void exportBusinessBalanceRecord(String fileName, List<BusinessBalanceRecordModel> records,
+			HttpServletRequest request,HttpServletResponse response)
 			throws Exception {
-		ExcelExportData data = new ExcelUtils.ExcelExportData();
-		data.setTitles(new String[] { "商户提款流水记录" });
-		data.setColumnNames(new ArrayList<String[]>());
-		data.setFieldNames(new ArrayList<String[]>());
-		data.setDataMap(new LinkedHashMap<String, List<?>>());
-		// add data
-		data.getColumnNames().add(new String[] { "任务单号/交易流水号", "所属银行", "卡号", "收支金额", "余额", "完成时间", "操作人" });
-		data.getFieldNames().add(
-				new String[] { "relationno", "openBank", "accountNo", "amount", "balance", "operatetime", "operator" });
-		data.getDataMap().put(fileName, records);
-		return ExcelUtils.export2ByteArray(data);
+		//add data
+		LinkedHashMap<String,String> columnTitiles=new LinkedHashMap<String,String>();
+		columnTitiles.put("任务单号/交易流水号", "relationno");
+		columnTitiles.put("所属银行", "openBank");
+		columnTitiles.put("卡号", "accountNo");
+		columnTitiles.put("收支金额", "amount");
+		columnTitiles.put("余额", "balance");
+		columnTitiles.put("完成时间", "operatetime");
+		columnTitiles.put("操作人", "operator");
+	
+		ExcelUtils.export2Excel(fileName,"商户提款流水记录",columnTitiles,records,request,response);
+
 	}
 
 	private List<BusinessBindClienter> checkClienterImport(List<ImportClienterInfo> infos) {

@@ -7,13 +7,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.edaisong.entity.common.HttpResultModel; 
-import com.edaisong.entity.req.MyOrderGrabCReq;
+import com.edaisong.entity.common.HttpResultModel;  
+import com.edaisong.entity.req.MyOrderGrabCReq; 
 import com.edaisong.entity.req.OrderGrabCompleteReq;
 import com.edaisong.entity.req.OrderGrabConfirmTakeReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
+ 
 import com.edaisong.entity.req.OrderGrabReq;
-import com.edaisong.entity.resp.MyOrderGrabDetailResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 
@@ -60,7 +61,7 @@ public interface IOrderGrabHttpService {
 	HttpResultModel<Integer> Complete(OrderGrabCompleteReq req);
 	
 	/*
-	 * 获取我的任务
+	 * 获取我的任务C
 	 * wangchao
 	 */
 	@POST
@@ -68,11 +69,12 @@ public interface IOrderGrabHttpService {
 	HttpResultModel<List<MyOrderGrabCResp>> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
 	
 	/*
-	 * 获取我的任务详情
+	 * 获取我的任务详情C
 	 * wangchao
 	 */
 	@POST
 	@Path("/getmyordergrabdetailc")
-	public HttpResultModel<MyOrderGrabDetailResp> getMyOrderGrabDetailC(OrderGrabDetailCReq orderGrabDetailCReq);
+	public HttpResultModel<MyOrderGrabDetailCResp> getMyOrderGrabDetailC(OrderGrabDetailCReq orderGrabDetailCReq);
 	
+	 
 }

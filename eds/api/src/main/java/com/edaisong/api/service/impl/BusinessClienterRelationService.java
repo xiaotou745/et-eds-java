@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.dao.inter.IBusinessClienterRelationDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterDao;
@@ -20,6 +21,7 @@ import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
+import com.edaisong.entity.resp.GetMyServiceClientersResp;
 
 @Service
 public class BusinessClienterRelationService implements IBusinessClienterRelationService {
@@ -81,7 +83,7 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 			}
 		}
 		if (!flag) {
-			throw new RuntimeException("修改骑士绑定失败");
+			throw new TransactionalRuntimeException("修改骑士绑定失败");
 		}
 		return flag;
 	}
@@ -114,7 +116,7 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 			}
 		}
 		if (!flag) {
-			throw new RuntimeException("修改骑士绑定失败");
+			throw new TransactionalRuntimeException("修改骑士绑定失败");
 		}
 		return flag;
 	}
@@ -149,7 +151,7 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 			}
 		}
 		if (!reg) {
-			throw new RuntimeException("添加骑士绑定失败");
+			throw new TransactionalRuntimeException("添加骑士绑定失败");
 		}
 		return reg;
 	}
@@ -169,10 +171,11 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	 * @return
 	 */
 	@Override
-	public List<ServiceClienters> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
-		List<ServiceClienters> list = businessClienterRelationDao.getMyServiceClienters(req);
-		list.forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageServicePath") + action.getHeadPhoto()));
-		return list;
+	public GetMyServiceClientersResp  getMyServiceClienters(PagedGetMyServiceClientersReq req) {
+		GetMyServiceClientersResp result=businessClienterRelationDao.getMyServiceClientersCountInfo(req);
+		result.setList( businessClienterRelationDao.getMyServiceClienters(req));
+		result.getList().forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageServicePath") + action.getHeadPhoto()));
+		return result;
 	}
 
 	/**

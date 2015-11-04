@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.dao.inter.IGroupBusinessBalanceDao;
 import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.service.inter.IGroupBusinessLogService;
@@ -67,7 +68,7 @@ public class GroupBusinessService implements IGroupBusinessService {
 			gbl.setRemark("添加集团商户");
 			int logResult = groupBusinessLogService.insert(gbl); //插入日志
 			if (logResult <= 0) {
-				throw new RuntimeException("添加集团运行错误");
+				throw new TransactionalRuntimeException("添加集团运行错误");
 			}
 		}
 		return groupResult;
@@ -85,7 +86,7 @@ public class GroupBusinessService implements IGroupBusinessService {
 			gbl.setRemark(remark);
 			int logResult = groupBusinessLogService.insert(gbl); //插入日志
 			if (logResult <= 0) {
-				throw new RuntimeException("修改集团运行错误");
+				throw new TransactionalRuntimeException("修改集团运行错误");
 			}
 		}
 		return groupBusinessDao.modifyGroupBusiness(groupBusiness);

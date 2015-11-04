@@ -4,13 +4,10 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.JavaType;
+import com.fasterxml.jackson.databind.JavaType;
 
 public class JsonUtil {
-	private final static SimpleDateFormat dateFormat = new SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss");//指定日期格式,和.net平台json序列化日期一致
+	private final static ExtandObjectMapper mapper = new ExtandObjectMapper();
 	/** 
      * 将对象转换为json字符串 
      *  
@@ -23,11 +20,10 @@ public class JsonUtil {
 			return "";
 		}
         StringWriter sw = new StringWriter();  
-        ObjectMapper mapper = new ObjectMapper(); 
-        mapper.setDateFormat(dateFormat);
         try {  
-            mapper.writeValue(sw, obj);  
+        	mapper.writeValue(sw, obj);  
         } catch (Exception e) {  
+        	throw new RuntimeException("序列化时出错:"+e.getMessage());
         }  
         return sw.toString();  
     }  
@@ -41,14 +37,13 @@ public class JsonUtil {
      * @return 
      */  
     public static <T> List<T> str2list(String jsonStr, Class<T> cls) {  
-        ObjectMapper mapper = new ObjectMapper();  
-        mapper.setDateFormat(dateFormat);
         List<T> objList = null;  
         try {  
             JavaType t = mapper.getTypeFactory().constructParametricType(  
                     List.class, cls);  
             objList = mapper.readValue(jsonStr, t);  
         } catch (Exception e) {  
+        	throw new RuntimeException("反序列化为List对象时出错:"+e.getMessage());
         }  
         return objList;  
     }  
@@ -62,30 +57,12 @@ public class JsonUtil {
      * @return 
      */  
     public static <T> T str2obj(String jsonStr, Class<T> cls) {  
-        ObjectMapper mapper = new ObjectMapper();  
-        mapper.setDateFormat(dateFormat);
         T obj = null;  
         try {  
             obj = mapper.readValue(jsonStr, cls);  
         } catch (Exception e) {  
+        	throw new RuntimeException("反序列化时出错:"+e.getMessage());
         }  
         return obj;  
-    }  
-      
-      
-    /** 
-     * 将字符串转为json节点 
-     * @param jsonStr 
-     * @return 
-     */  
-    public static JsonNode str2node(String jsonStr) {  
-        ObjectMapper mapper = new ObjectMapper();  
-        mapper.setDateFormat(dateFormat);
-        try {  
-            return mapper.readTree(jsonStr);  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }  
-        return null;  
-    }  
+    }   
 }

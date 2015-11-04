@@ -12,15 +12,14 @@ import com.edaisong.entity.OrderGrab;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.FastOrderMapDetail;
-import com.edaisong.entity.domain.FastOrderModel; 
-import com.edaisong.entity.req.ClienterMoney;
-import com.edaisong.entity.req.MyOrderGrabCReq;
-import com.edaisong.entity.req.OrderGrabCompleteReq;
+import com.edaisong.entity.domain.FastOrderModel;  
+import com.edaisong.entity.req.MyOrderGrabCReq; 
+import com.edaisong.entity.req.MyOrderGrabCReq;import com.edaisong.entity.req.OrderGrabCompleteReq;
 import com.edaisong.entity.req.OrderGrabConfirmTakeReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
-import com.edaisong.entity.resp.MyOrderGrabDetailResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
  
 
 
@@ -353,7 +352,7 @@ public class OrderGrabService implements IOrderGrabService {
 	}
 
 	@Override
-	public MyOrderGrabDetailResp getMyOrderGrabDetailC(
+	public MyOrderGrabDetailCResp getMyOrderGrabDetailC(
 			OrderGrabDetailCReq orderGrabDetailCReq) { 
 		return orderGrabDao.getMyOrderGrabDetailC(orderGrabDetailCReq);
 	}
@@ -403,4 +402,5 @@ public class OrderGrabService implements IOrderGrabService {
 
 		return listOrderGrabChild;
 	}
+ 
 }

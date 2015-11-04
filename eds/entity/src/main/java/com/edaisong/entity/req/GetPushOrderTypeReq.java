@@ -5,7 +5,7 @@ package com.edaisong.entity.req;
  * @author CaoHeYang
  * @date 20151030
  */
-public class IsAllowInputMoneyReq {
+public class GetPushOrderTypeReq {
 	private Long businessId;
 
 	/**
