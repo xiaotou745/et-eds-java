@@ -51,7 +51,7 @@ List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
 				<td>订单来源：<%=OrderFrom.getEnum(detailModel.getOrderFrom()).desc()%></td>
 			</tr>
 			<tr class="trclass">
-				<td>订单数量：<%=detailModel.getOrderCount()%></td>
+				<td>订单数量：<%=detailModel.getOrdercount()%></td>
 				<td>订单总佣金： <%=ParseHelper.ShowString(detailModel.getOrderCommission())%></td>
 				<td>配送费：<%=ParseHelper.ShowString(orderChildList.get(0).getDistribsubsidy())%>/单</td>
 				<td>网站补贴： <%=ParseHelper.ShowString(orderChildList.get(0).getWebsiteSubsidy())%>/单</td>

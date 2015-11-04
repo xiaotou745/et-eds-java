@@ -2,17 +2,13 @@ package com.edaisong.api_http.service.impl;
 
 import java.util.List;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api_http.service.inter.IOrderGrabHttpService;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
-import com.edaisong.entity.common.HttpResultModel; 
-import com.edaisong.entity.domain.OrderGrabDetailModel; 
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.MyOrderGrabCReq; 
 import com.edaisong.entity.req.OrderGrabCompleteReq;
 import com.edaisong.entity.req.OrderGrabConfirmTakeReq;
@@ -22,7 +18,6 @@ import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.OrderGrabResp;
-import com.edaisong.entity.resp.OrderRegionResp;
 
 @Service
 public class OrderGrabHttpService implements IOrderGrabHttpService {
@@ -95,7 +90,7 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 		HttpResultModel<MyOrderGrabDetailCResp> result =new HttpResultModel<MyOrderGrabDetailCResp>();
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
-		MyOrderGrabDetailResp orderGrabDetailModel= orderGrabService.getMyOrderGrabDetailC(orderGrabDetailCReq); 
+		MyOrderGrabDetailCResp orderGrabDetailModel= orderGrabService.getMyOrderGrabDetailC(orderGrabDetailCReq); 
 		result.setResult(orderGrabDetailModel);		
 		return result;
 	}

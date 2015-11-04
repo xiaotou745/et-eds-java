@@ -520,9 +520,9 @@ GROUP BY o.GrabOrderNo ,
             og.OrderCount ,
             og.Id GrabOrderId ,
             og.GrabOrderNo , 
-            isnull(og.GrabTime, '') GrabTime ,
-            isnull(og.PickUpTime, '') PickUpTime ,
-            isnull(og.ActualDoneDate, '') ActualDoneDate ,
+            og.GrabTime,
+            og.PickUpTime ,
+            og.ActualDoneDate ,
             og.[Status] ,
             ( select    sum(a.OrderCommission)
               from      dbo.OrderGrabChild a ( nolock )
@@ -543,17 +543,17 @@ GROUP BY o.GrabOrderNo ,
 select b.Name BusinessName ,
         b.PhoneNo BusinessPhoneNo ,
         b.[Address] BusinessAddress ,
-        isnull(og.GrabTime,'') GrabTime,
+        og.GrabTime,
         og.OrderRegionOneName ,
         og.OrderRegionTwoName ,
         og.OrderCount ,
         og.Id GrabOrderId,
         og.GrabOrderNo 
-      <!-- <if test="status == 2">
+       <if test="status == 2">
 		 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(#{clienterLatitude,jdbcType=DOUBLE},#{clienterLongitude,jdbcType=DOUBLE},4326)),0) as DistanceToBusiness  
-	  </if> -->
+	  </if>
 	   <if test="status != 2">
-		,0 DistanceToBusiness 
+		,'--' DistanceToBusiness 
 	  </if> 
  from   dbo.OrderGrab og ( nolock )
         join dbo.business b ( nolock ) on og.BusinessId = b.Id
