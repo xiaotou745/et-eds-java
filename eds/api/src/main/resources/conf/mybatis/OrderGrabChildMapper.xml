@@ -142,6 +142,36 @@ OrderCommission,SettleMoney,CommissionRate,BaseCommission,WebsiteSubsidy,Adjustm
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateByGraborderidSelective" parameterType="com.edaisong.entity.OrderGrabChild" >
+    update OrderGrabChild
+    <set >
+      <if test="graborderid != null" >
+        GrabOrderId = #{graborderid,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="orderchildid != null" >
+        OrderChildId = #{orderchildid,jdbcType=INTEGER},
+      </if>
+      <if test="childid != null" >
+        ChildId = #{childid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="actualdonedate != null" >
+        ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="donelongitude != null" >
+        DoneLongitude = #{donelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelatitude != null" >
+        DoneLatitude = #{donelatitude,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where GrabOrderId = #{graborderid,jdbcType=INTEGER}
+  </update>
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderGrabChild" >
     update OrderGrabChild
     set GrabOrderId = #{graborderid,jdbcType=INTEGER},

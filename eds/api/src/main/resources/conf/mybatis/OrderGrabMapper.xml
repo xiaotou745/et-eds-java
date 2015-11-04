@@ -8,6 +8,12 @@
     OrderRegionOneName,OrderRegionTwoId ,OrderRegionTwoName,commissionRate,
     baseCommission,websitesubsidy,adjustment ,distribsubsidy
   </sql>
+    <select id="selectByPrimaryKey" resultType="com.edaisong.entity.OrderGrab" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderGrab
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
   <select id="selectById" resultType="com.edaisong.entity.domain.FastOrderDetail" parameterType="java.lang.Long" >
    SELECT  o.id ,
         o.GrabOrderNo ,
@@ -383,6 +389,87 @@ GROUP BY o.GrabOrderNo ,
       DoneLatitude = #{donelatitude,jdbcType=DOUBLE},
       OrderCommission = #{ordercommission,jdbcType=DOUBLE},
       SettleMoney = #{settlemoney,jdbcType=DOUBLE}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderGrab" >
+    update OrderGrab
+    <set >
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="distribsubsidy != null" >
+        DistribSubsidy = #{distribsubsidy,jdbcType=DECIMAL},
+      </if>
+      <if test="graborderno != null" >
+        GrabOrderNo = #{graborderno,jdbcType=VARCHAR},
+      </if>
+      <if test="clienterid != null" >
+        ClienterId = #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="ordercount != null" >
+        OrderCount = #{ordercount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="actualdonedate != null" >
+        ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="grabtime != null" >
+        GrabTime = #{grabtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickuptime != null" >
+        PickUpTime = #{pickuptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickuplongitude != null" >
+        PickUpLongitude = #{pickuplongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pickuplatitude != null" >
+        PickUpLatitude = #{pickuplatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablongitude != null" >
+        GrabLongitude = #{grablongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablatitude != null" >
+        GrabLatitude = #{grablatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelongitude != null" >
+        DoneLongitude = #{donelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelatitude != null" >
+        DoneLatitude = #{donelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="orderRegionOneId != null" >
+        OrderRegionOneId = #{orderRegionOneId,jdbcType=INTEGER},
+      </if>
+      <if test="orderRegionOneName != null" >
+        OrderRegionOneName = #{orderRegionOneName,jdbcType=NVARCHAR},
+      </if>
+      <if test="orderRegionTwoId != null" >
+        OrderRegionTwoId = #{orderRegionTwoId,jdbcType=INTEGER},
+      </if>
+      <if test="orderRegionTwoName != null" >
+        OrderRegionTwoName = #{orderRegionTwoName,jdbcType=NVARCHAR},
+      </if>
+      <if test="ordercommission != null" >
+        OrderCommission = #{ordercommission,jdbcType=DOUBLE},
+      </if>
+      <if test="settlemoney != null" >
+        SettleMoney = #{settlemoney,jdbcType=DOUBLE},
+      </if>
+      <if test="commissionrate != null" >
+        CommissionRate = #{commissionrate,jdbcType=DOUBLE},
+      </if>
+      <if test="basecommission != null" >
+        BaseCommission = #{basecommission,jdbcType=DOUBLE},
+      </if>
+      <if test="websitesubsidy != null" >
+        WebsiteSubsidy = #{websitesubsidy,jdbcType=DOUBLE},
+      </if>
+      <if test="adjustment != null" >
+        Adjustment = #{adjustment,jdbcType=DECIMAL},
+      </if>
+    </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 获取我的任务详情 wangchao -->

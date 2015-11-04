@@ -17,8 +17,10 @@ public class OrderRegion {
     private Byte status;
 
     private Integer waitingcount;
+    
+    private Integer grabcount;  
 
-    private Integer distributioning;
+	private Integer distributioning;
 
     private Integer donecount;
 
@@ -85,6 +87,13 @@ public class OrderRegion {
     public void setWaitingcount(Integer waitingcount) {
         this.waitingcount = waitingcount;
     }
+    public Integer getGrabcount() {
+  		return grabcount;
+  	}
+
+  	public void setGrabcount(Integer grabcount) {
+  		this.grabcount = grabcount;
+  	}
 
     public Integer getDistributioning() {
         return distributioning;

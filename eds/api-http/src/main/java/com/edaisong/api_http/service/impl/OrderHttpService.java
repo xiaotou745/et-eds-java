@@ -61,10 +61,8 @@ public class OrderHttpService implements IOrderHttpService {
 		
 		HttpResultModel<OrderResp> resp= orderService.PushOrder(req);			
 		return resp;
-	}
-	
-	
-	//ConfirmTake
+	}	
+
 	
 	/**
 	 * B端任务统计接口

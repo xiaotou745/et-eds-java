@@ -13,6 +13,38 @@ import com.edaisong.entity.OrderGrabChild;
 public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao {
 
 	@Override
+	public int insertList(List<OrderGrabChild> record) {
+		return getMasterSqlSessionUtil().insert(
+				"com.edaisong.api.dao.inter.IOrderGrabChildDao.insertList", record);
+	}	
+	@Override
+	public int updateByPrimaryKeySelective(OrderGrabChild record) {
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IOrderGrabChildDao.updateByPrimaryKeySelective", record);
+	}
+	
+	@Override
+	public int updateByGraborderidSelective(OrderGrabChild record) {
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IOrderGrabChildDao.updateByGraborderidSelective", record);
+	}
+	
+
+
+	@Override
+	public List<OrderGrabChild> selectByGrabOrderId(Long grabOrderId) {
+		return getReadOnlySqlSessionUtil()
+				.selectList(
+						"com.edaisong.api.dao.inter.IOrderGrabChildDao.selectByGrabOrderId",
+						grabOrderId);
+	}
+	@Override
+	public OrderGrabChild selectByPrimaryKey(Integer id) {
+		return getMasterSqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderGrabChildDao.selectByPrimaryKey", id);
+	}
+	
+	@Override
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -29,41 +61,12 @@ public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	@Override
-	public OrderGrabChild selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(OrderGrabChild record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(OrderGrabChild record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	@Override
-	public int updateList(List<Integer> ids)
-	{
-		return 0;
-	}
-	@Override
-	public List<OrderGrabChild> selectByGrabOrderId(Long grabOrderId) {
-		return getReadOnlySqlSessionUtil()
-				.selectList(
-						"com.edaisong.api.dao.inter.IOrderGrabChildDao.selectByGrabOrderId",
-						grabOrderId);
-	}
+	public int updateByPrimaryKey(OrderGrabChild record) {
+			return 0;
+	}	
 
-	@Override
-	public int insertList(List<OrderGrabChild> record) {
-		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderGrabChildDao.insertList", record);
-	}
+
+	
 }
