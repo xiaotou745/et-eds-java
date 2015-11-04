@@ -16,6 +16,7 @@ import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
+import com.edaisong.entity.resp.GetMyServiceClientersResp;
 
 /**
  *  商家相关 
@@ -56,7 +57,7 @@ public interface IBusinessHttpService {
 	 */
 	@POST
 	@Path("/getmyserviceclienters")	
-	 public HttpResultModel<List<ServiceClienters>>  getMyServiceClienters(PagedGetMyServiceClientersReq req);
+	 public HttpResultModel<GetMyServiceClientersResp>  getMyServiceClienters(PagedGetMyServiceClientersReq req);
 	
 	/**
 	 * 商戶端 我的骑士   申请中 同意/拒绝功能

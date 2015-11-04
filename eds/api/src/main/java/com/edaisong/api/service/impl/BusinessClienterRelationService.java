@@ -20,6 +20,7 @@ import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
+import com.edaisong.entity.resp.GetMyServiceClientersResp;
 
 @Service
 public class BusinessClienterRelationService implements IBusinessClienterRelationService {
@@ -169,10 +170,11 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	 * @return
 	 */
 	@Override
-	public List<ServiceClienters> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
-		List<ServiceClienters> list = businessClienterRelationDao.getMyServiceClienters(req);
-		list.forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageServicePath") + action.getHeadPhoto()));
-		return list;
+	public GetMyServiceClientersResp  getMyServiceClienters(PagedGetMyServiceClientersReq req) {
+		GetMyServiceClientersResp result=businessClienterRelationDao.getMyServiceClientersCountInfo(req);
+		result.setList( businessClienterRelationDao.getMyServiceClienters(req));
+		result.getList().forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageServicePath") + action.getHeadPhoto()));
+		return result;
 	}
 
 	/**

@@ -25,6 +25,7 @@ import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
+import com.edaisong.entity.resp.GetMyServiceClientersResp;
 
 /**
  * 商家相关
@@ -72,8 +73,8 @@ public class BusinessHttpService implements IBusinessHttpService {
 	 * @return
 	 */
 	@Override
-	public HttpResultModel<List<ServiceClienters>> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
-		HttpResultModel<List<ServiceClienters>> result = new HttpResultModel<List<ServiceClienters>>();
+	public HttpResultModel<GetMyServiceClientersResp> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
+		HttpResultModel<GetMyServiceClientersResp> result = new HttpResultModel<GetMyServiceClientersResp>();
 		if (req.getBusinessId() == 0) {
 			return result.setStatus(GetMyServiceClientersReturnEnum.BusinessIdError.value()).setMessage(GetMyServiceClientersReturnEnum.BusinessIdError.desc());
 		}

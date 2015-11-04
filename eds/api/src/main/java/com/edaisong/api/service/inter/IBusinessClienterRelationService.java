@@ -11,6 +11,7 @@ import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
+import com.edaisong.entity.resp.GetMyServiceClientersResp;
 
 public interface IBusinessClienterRelationService {
 	int getBusinessBindClienterQty(int businessId);
@@ -47,7 +48,7 @@ public interface IBusinessClienterRelationService {
 	 * @param req
 	 * @return
 	 */
-	  List<ServiceClienters>  getMyServiceClienters(PagedGetMyServiceClientersReq req);
+	GetMyServiceClientersResp   getMyServiceClienters(PagedGetMyServiceClientersReq req);
 
 	/**
 	 * 商戶端 我的骑士 申请中 同意/拒绝功能
