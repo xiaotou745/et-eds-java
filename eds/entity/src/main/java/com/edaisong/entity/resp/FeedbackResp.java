@@ -9,6 +9,6 @@ import com.edaisong.entity.common.ResponseBase;
  * @param search 返回
  * @return
  */
-public class FeedbackResp extends ResponseBase{
+public class FeedbackResp{
 
 }

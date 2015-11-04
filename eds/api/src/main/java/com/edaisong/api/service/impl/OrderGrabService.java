@@ -187,9 +187,9 @@ public class OrderGrabService implements IOrderGrabService {
 	} 
 	
 	@Override
-	public OrderGrabResp GrabOrder(OrderGrabReq req)	
+	public HttpResultModel<OrderGrabResp> GrabOrder(OrderGrabReq req)	
 	{
-		OrderGrabResp resp=new OrderGrabResp();
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
 		
 		//抢单主表
 		OrderGrab orderGrab=new OrderGrab();
@@ -257,7 +257,7 @@ public class OrderGrabService implements IOrderGrabService {
 
 		if(orderGrabId>0)
 					{
-						resp.setResponseCode(OrderGrabReturnEnum.Success.value());
+						resp.setStatus(OrderGrabReturnEnum.Success.value());
 						resp.setMessage(OrderGrabReturnEnum.Success.desc());
 						return resp;
 					}	

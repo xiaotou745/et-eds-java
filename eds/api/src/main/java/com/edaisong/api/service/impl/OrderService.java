@@ -461,19 +461,20 @@ public class OrderService implements IOrderService {
 	 * @Date 2015年10月30日 11:45:19
 	 */
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public OrderResp PushOrder(OrderReq req) {
+	public HttpResultModel<OrderResp> PushOrder(OrderReq req) {
+		
+		HttpResultModel<OrderResp> resp=new HttpResultModel<OrderResp>();
 		
 		List<OrderRegionReq> list=converAnswerFormString(req.getListOrderRegionStr());
-		req.setListOrderRegion(list);
-		OrderResp resp = new OrderResp();
+		req.setListOrderRegion(list);		
+		
 		BusinessModel businessModel = businessDao.getBusiness(req
 				.getBusinessid());
-
 		// 校验是否可以正常发单
 		PublishOrderReturnEnum returnEnum = verificationPushOrder(req,
 				businessModel);
 		if (returnEnum != PublishOrderReturnEnum.VerificationSuccess) {
-			resp.setResponseCode(returnEnum.value());
+			resp.setStatus(returnEnum.value());
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
@@ -668,7 +669,7 @@ public class OrderService implements IOrderService {
 		// 补贴日志表
 		if (orderId > 0 && orderOtherId > 0 && orderChildID > 0
 				&& orderRegionId > 0 && bbcId > 0 && ordersubsidiesId > 0) {
-			resp.setResponseCode(PublishOrderReturnEnum.Success.value());
+			resp.setStatus(PublishOrderReturnEnum.Success.value());
 			resp.setMessage(PublishOrderReturnEnum.Success.desc());
 			return resp;
 		}

@@ -88,7 +88,7 @@ public interface IOrderGrabService {
 
 	 * @return
 	 */	
-	OrderGrabResp GrabOrder(OrderGrabReq req);
+	HttpResultModel<OrderGrabResp> GrabOrder(OrderGrabReq req);
 	List<MyOrderGrabCResp> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
 	MyOrderGrabDetailResp getMyOrderGrabDetailC(
 			OrderGrabDetailCReq orderGrabDetailCReq);
