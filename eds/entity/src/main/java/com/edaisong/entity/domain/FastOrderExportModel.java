@@ -14,6 +14,9 @@ public class FastOrderExportModel {
 	private Double distribSubsidy;
 	private Double websiteSubsidy;
 	private Integer adjustment;
+	private Double commissionRate;
+	private Double baseCommission;
+	
 	public String getGrabOrderNo() {
 		return grabOrderNo;
 	}
@@ -91,5 +94,17 @@ public class FastOrderExportModel {
 	}
 	public void setAdjustment(Integer adjustment) {
 		this.adjustment = adjustment;
+	}
+	public Double getCommissionRate() {
+		return commissionRate;
+	}
+	public void setCommissionRate(Double commissionRate) {
+		this.commissionRate = commissionRate;
+	}
+	public Double getBaseCommission() {
+		return baseCommission;
+	}
+	public void setBaseCommission(Double baseCommission) {
+		this.baseCommission = baseCommission;
 	}
 }

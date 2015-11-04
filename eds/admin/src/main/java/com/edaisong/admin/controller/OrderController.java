@@ -24,7 +24,6 @@ import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StringUtils;
-import com.edaisong.core.util.ExcelUtils.ExcelExportData;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
@@ -116,25 +115,23 @@ public class OrderController {
 	public void exportorder(PagedOrderSearchReq searchReq,HttpServletResponse response)throws Exception{
 	   List<ExportOrder> records=	 orderService.exportOrder(searchReq) ;
 	   if(records.size() > 0){
-			//导出数据
 			String fileName = "e代送-%s-订单数据";
-			fileName = String.format(fileName, searchReq.getOrderPubStart() + "到" +searchReq.getOrderPubEnd());
-			ExcelExportData data = new ExcelUtils.ExcelExportData();
-			data.setTitles(new String[]{"商户提款流水记录"});
-			data.setColumnNames(new ArrayList<String[]>());
-			data.setFieldNames(new ArrayList<String[]>());
-			data.setDataMap(new LinkedHashMap<String, List<?>>());
-			//add data
-			data.getColumnNames().add(new String[]{"订单号","商户信息","骑士信息","发布时间","完成时间","订单金额",
-					"订单总金额","订单佣金","订单数量","外送费用","每单补贴","任务补贴","商家结算"});
-			data.getFieldNames().add(new String[]{"orderNo","businessInfo","clienterInfo","pubDate","actualDoneDate","amount"
-					,"totalAmount","orderCommission","orderCount","distribSubsidy","websiteSubsidy","adjustment","settleMoney"});
-			data.getDataMap().put(fileName, records);
-			byte[] datas = ExcelUtils.export2ByteArray(data);
-			response.setContentType("application/ms-excel");
-			response.setHeader("Content-Disposition", "attachment; filename="+new String((fileName+".xls").getBytes("utf-8"),"iso8859-1"));
-			response.setHeader("Content-Length",String.valueOf(datas.length));
-			response.getOutputStream().write(datas,0,datas.length);
+			fileName = String.format(fileName, searchReq.getOrderPubStart()+ "到" + searchReq.getOrderPubEnd());
+			LinkedHashMap<String, String> columnTitiles = new LinkedHashMap<String, String>();
+			columnTitiles.put("订单号", "orderNo");
+			columnTitiles.put("商户信息", "businessInfo");
+			columnTitiles.put("骑士信息", "clienterInfo");
+			columnTitiles.put("发布时间", "pubDate");
+			columnTitiles.put("完成时间", "actualDoneDate");
+			columnTitiles.put("订单金额", "amount");
+			columnTitiles.put("订单总金额", "totalAmount");
+			columnTitiles.put("订单佣金", "orderCommission");
+			columnTitiles.put("订单数量", "orderCount");
+			columnTitiles.put("外送费用", "distribSubsidy");
+			columnTitiles.put("每单补贴", "websiteSubsidy");
+			columnTitiles.put("任务补贴", "adjustment");
+			columnTitiles.put("商家结算", "settleMoney");
+			ExcelUtils.export2Excel(fileName, "商户提款流水记录", columnTitiles,records, request, response);
 			return;
 		}else {
 			//如果查询到的数据为空,则跳转到收支详情页

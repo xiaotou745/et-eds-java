@@ -9,45 +9,78 @@
     baseCommission,websitesubsidy,adjustment ,distribsubsidy
   </sql>
   <select id="selectById" resultType="com.edaisong.entity.domain.FastOrderDetail" parameterType="java.lang.Long" >
-   SELECT  o.id ,
-        o.GrabOrderNo ,
-        a.OrderFrom ,
+   SELECT  a.OrderFrom ,
         b.Name AS businessName ,
         b.PhoneNo AS businessPhoneNo ,
         b.PhoneNo2 AS businessPhoneNo2 ,
-        b.address as businessAddress,
+        b.address AS businessAddress ,
         ISNULL(c.TrueName, '') AS clienterName ,
         ISNULL(c.PhoneNo, '') AS clienterPhoneNo ,
-        o.OrderRegionOneName ,
-        o.OrderRegionTwoName ,
-        o.ActualDoneDate ,
-        o.orderCommission ,
+        o.Id ,
+        o.GrabOrderNo ,
+        o.BusinessId ,
+        o.ClienterId ,
         o.OrderCount ,
         o.Status ,
-        o.distribsubsidy,
-        MIN(m.websitesubsidy) AS singlewebsitesubsidy ,
-        MIN(m.adjustment) AS singleadjustment
+        o.ActualDoneDate ,
+        o.GrabTime ,
+        o.PickUpTime ,
+        o.PickUpLongitude ,
+        o.PickUpLatitude ,
+        o.GrabLongitude ,
+        o.GrabLatitude ,
+        o.DoneLongitude ,
+        o.DoneLatitude ,
+        o.OrderCommission ,
+        o.SettleMoney ,
+        o.OrderRegionOneId ,
+        o.OrderRegionOneName ,
+        o.OrderRegionTwoId ,
+        o.OrderRegionTwoName ,
+        o.commissionRate ,
+        o.baseCommission ,
+        o.websitesubsidy ,
+        o.adjustment ,
+        o.distribsubsidy
 FROM    dbo.[order] a WITH ( NOLOCK )
         JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
         JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
         LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId
-WHERE o.id = #{id,jdbcType=INTEGER} and  a.Platform = 2
-GROUP BY o.id ,
-        o.GrabOrderNo ,
-        a.OrderFrom ,
+WHERE   o.id = #{id,jdbcType=INTEGER}
+        AND a.Platform = 2
+GROUP BY a.OrderFrom ,
         b.Name ,
         b.PhoneNo ,
         b.PhoneNo2 ,
         b.address ,
         c.TrueName ,
         c.PhoneNo ,
-        o.OrderRegionOneName ,
-        o.OrderRegionTwoName ,
-        o.ActualDoneDate ,
-        o.orderCommission ,
+        o.Id ,
+        o.GrabOrderNo ,
+        o.BusinessId ,
+        o.ClienterId ,
         o.OrderCount ,
-        o.Status,
+        o.Status ,
+        o.ActualDoneDate ,
+        o.GrabTime ,
+        o.PickUpTime ,
+        o.PickUpLongitude ,
+        o.PickUpLatitude ,
+        o.GrabLongitude ,
+        o.GrabLatitude ,
+        o.DoneLongitude ,
+        o.DoneLatitude ,
+        o.OrderCommission ,
+        o.SettleMoney ,
+        o.OrderRegionOneId ,
+        o.OrderRegionOneName ,
+        o.OrderRegionTwoId ,
+        o.OrderRegionTwoName ,
+        o.commissionRate ,
+        o.baseCommission ,
+        o.websitesubsidy ,
+        o.adjustment ,
         o.distribsubsidy
   </select>
   <delete id="deleteById" parameterType="java.lang.Integer" >
@@ -205,7 +238,8 @@ GROUP BY o.id ,
         o.ActualDoneDate ,
         o.OrderCount ,
         o.Status,
-        o.ordercommission
+        o.ordercommission,
+        min(m.ordercommission) as singleOrderCommission
 FROM    dbo.[order] a WITH ( NOLOCK )
         JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
@@ -338,11 +372,13 @@ GROUP BY o.id ,
         o.GrabTime ,
         o.PickUpTime ,
         o.ActualDoneDate ,
-        o.orderCommission ,
         o.OrderCount ,
-        o.distribsubsidy ,
-        o.WebsiteSubsidy,
-        o.Adjustment
+        o.orderCommission ,
+        o.commissionRate,
+    	o.baseCommission,
+    	o.websitesubsidy,
+    	o.adjustment,
+    	o.distribsubsidy
 FROM     dbo.[order] a WITH ( NOLOCK )
         JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
@@ -357,11 +393,13 @@ GROUP BY o.GrabOrderNo ,
         o.GrabTime ,
         o.PickUpTime ,
         o.ActualDoneDate ,
-        o.ordercommission ,
         o.OrderCount ,
-        o.distribsubsidy,
-        o.WebsiteSubsidy,
-        o.Adjustment
+        o.orderCommission ,
+        o.commissionRate,
+    	o.baseCommission,
+    	o.websitesubsidy,
+    	o.adjustment,
+    	o.distribsubsidy
   </select>
   
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderGrab" >
