@@ -17,9 +17,14 @@ import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.domain.InStoreTask;
+import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.IsAllowInputMoneyReq;
+import com.edaisong.entity.req.MyOrderBReq;
+import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.req.PagedBusinessReq;
+import com.edaisong.entity.resp.MyOrderBResp;
+import com.edaisong.entity.resp.MyOrderDetailBResp;
 
 public interface IBusinessDao {
 	/**
@@ -144,6 +149,9 @@ public interface IBusinessDao {
 		 */
 	    int bindClienter(BindClienterBusiness bindClienterBusiness);
 		boolean getClienterBind(BindClienterBusiness bindClienterBusiness);
+		List<OrderRespModel> getMyOrdeB(MyOrderBReq myOrderBReq);
+		MyOrderBResp getOrderCountTotal(MyOrderBReq myOrderBReq);
+		MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq);
 	    
 	    
 }

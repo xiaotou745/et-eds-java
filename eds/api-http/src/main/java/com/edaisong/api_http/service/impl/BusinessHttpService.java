@@ -11,19 +11,24 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessService;
-import com.edaisong.api_http.service.inter.IBusinessHttpService;
+import com.edaisong.api_http.service.inter.IBusinessHttpService; 
 import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.enums.ClienterBindBusinessEnum;
 import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
+import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.enums.returnenums.OptBindClienterReturnEnum;
 import com.edaisong.core.enums.returnenums.RemoveRelationReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.ClienterBindOptionReq;
+import com.edaisong.entity.req.MyOrderBReq;
 import com.edaisong.entity.req.OptBindClienterReq;
+import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.req.IsAllowInputMoneyReq;
+import com.edaisong.entity.resp.MyOrderBResp;
+import com.edaisong.entity.resp.MyOrderDetailBResp;
 
 /**
  * 商家相关
@@ -152,4 +157,28 @@ public class BusinessHttpService implements IBusinessHttpService {
 	     businessClienterRelationService.modifyClienterBind(req);
 	     return res;
 	 }
+
+	@Override
+	public HttpResultModel<MyOrderBResp> getMyOrdeB(
+			MyOrderBReq myOrderBReq) {
+		HttpResultModel<MyOrderBResp> result = new HttpResultModel<MyOrderBResp>();
+		result.setStatus(HttpReturnRnums.Success.value());
+		result.setMessage(HttpReturnRnums.Success.desc());
+		MyOrderBResp orderBResps = businessService.getMyOrdeB(myOrderBReq);
+		
+		result.setResult(orderBResps);
+		return result;
+	}
+
+	@Override
+	public HttpResultModel<MyOrderDetailBResp> getMyOrderDetailB(
+			OrderDetailBReq orderGrabBReq) {
+		HttpResultModel<MyOrderDetailBResp> result = new HttpResultModel<MyOrderDetailBResp>();
+		result.setStatus(HttpReturnRnums.Success.value());
+		result.setMessage(HttpReturnRnums.Success.desc());
+		MyOrderDetailBResp orderDetailBResp = businessService.getMyOrderDetailB(orderGrabBReq);
+		
+		result.setResult(orderDetailBResp);
+		return result;
+	}
 }

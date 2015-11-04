@@ -5,12 +5,9 @@ public class OrderGrabDetailCReq {
 	private Integer clienterId;
 	
 	private Integer grabOrderId;
-	
 	 
-	private Integer grabOrderChildId;
 	
-	private String grabOrderNo;
-	private Integer hadCompleteOrderGrab;
+	private String grabOrderNo; 
 	
 	private double clienterLongitude;
 	
@@ -30,14 +27,7 @@ public class OrderGrabDetailCReq {
 	public void setGrabOrderId(Integer grabOrderId) {
 		this.grabOrderId = grabOrderId;
 	}
-
-	public Integer getGrabOrderChildId() {
-		return grabOrderChildId;
-	}
-
-	public void setGrabOrderChildId(Integer grabOrderChildId) {
-		this.grabOrderChildId = grabOrderChildId;
-	}
+ 
 
 	public String getGrabOrderNo() {
 		return grabOrderNo;
@@ -46,14 +36,7 @@ public class OrderGrabDetailCReq {
 	public void setGrabOrderNo(String grabOrderNo) {
 		this.grabOrderNo = grabOrderNo;
 	}
-
-	public Integer getHadCompleteOrderGrab() {
-		return hadCompleteOrderGrab;
-	}
-
-	public void setHadCompleteOrderGrab(Integer hadCompleteOrderGrab) {
-		this.hadCompleteOrderGrab = hadCompleteOrderGrab;
-	}
+ 
 
 	public double getClienterLongitude() {
 		return clienterLongitude;

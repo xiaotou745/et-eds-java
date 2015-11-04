@@ -22,9 +22,15 @@ import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.domain.InStoreTask;
+import com.edaisong.entity.domain.OrderRespModel;
+import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.IsAllowInputMoneyReq;
+import com.edaisong.entity.req.MyOrderBReq;
+import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.req.PagedBusinessReq;
+import com.edaisong.entity.resp.MyOrderBResp;
+import com.edaisong.entity.resp.MyOrderDetailBResp;
 
 @Repository
 public class BusinessDao extends DaoBase implements IBusinessDao {
@@ -205,5 +211,22 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public boolean getClienterBind(BindClienterBusiness bindClienterBusiness) {
 		int i= getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getClienterBind",bindClienterBusiness);
 		return i>0;
+	}
+
+	@Override
+	public List<OrderRespModel> getMyOrdeB(MyOrderBReq myOrderBReq) {
+		PagedResponse<OrderRespModel> lists= getMasterSqlSessionUtil().selectPageList(
+				"com.edaisong.api.dao.inter.IBusinessDao.getMyOrdeB", myOrderBReq);
+		return lists.getResultList();
+	}
+
+	@Override
+	public MyOrderBResp getOrderCountTotal(MyOrderBReq myOrderBReq) { 
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getOrderCountTotal",myOrderBReq);
+	}
+
+	@Override
+	public MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq) {
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getMyOrderDetailB",orderGrabBReq);
 	}
 }

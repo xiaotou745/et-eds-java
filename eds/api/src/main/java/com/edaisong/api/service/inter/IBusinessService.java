@@ -14,10 +14,14 @@ import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.IsAllowInputMoneyReq;
+import com.edaisong.entity.req.MyOrderBReq;
+import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
+import com.edaisong.entity.resp.MyOrderBResp;
+import com.edaisong.entity.resp.MyOrderDetailBResp;
 
 
 
@@ -127,5 +131,8 @@ public interface IBusinessService {
 	 * wangchao
 	 */
 	boolean getClienterBind(BindClienterBusiness bindClienterBusiness);
+	
+	MyOrderBResp getMyOrdeB(MyOrderBReq myOrderBReq);
+	MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq);
     
 }
