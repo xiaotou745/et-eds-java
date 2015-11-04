@@ -386,7 +386,7 @@ GROUP BY o.GrabOrderNo ,
     where Id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 获取我的任务详情 wangchao -->
-  <select id="getMyOrderGrabDetailC" resultType="com.edaisong.entity.resp.MyOrderGrabDetailResp" parameterType="com.edaisong.entity.req.OrderGrabDetailCReq" >
+  <select id="getMyOrderGrabDetailC" resultType="com.edaisong.entity.resp.MyOrderGrabDetailCResp" parameterType="com.edaisong.entity.req.OrderGrabDetailCReq" >
     select 	b.Name BusinessName ,
         	b.PhoneNo BusinessPhoneNo ,
         	b.[Address] BusinessAddress ,
