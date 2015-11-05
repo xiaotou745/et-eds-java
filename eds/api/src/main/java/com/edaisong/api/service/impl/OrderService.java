@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.edaisong.api.common.CommissionFactory;
 import com.edaisong.api.common.OrderPriceBaseProvider;
 import com.edaisong.api.common.OrderSettleMoneyHelper;
+import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
@@ -348,7 +349,7 @@ public class OrderService implements IOrderService {
 			orderOther.setCancelTime(new Date());
 			orderOtherDao.updateByPrimaryKeySelective(orderOther);
 		} else {
-			throw new RuntimeException("更新订单状态为取消状态时失败");
+			throw new TransactionalRuntimeException("更新订单状态为取消状态时失败");
 		}
 	}
 
@@ -461,19 +462,20 @@ public class OrderService implements IOrderService {
 	 * @Date 2015年10月30日 11:45:19
 	 */
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public OrderResp PushOrder(OrderReq req) {
+	public HttpResultModel<OrderResp> PushOrder(OrderReq req) {
+		
+		HttpResultModel<OrderResp> resp=new HttpResultModel<OrderResp>();
 		
 		List<OrderRegionReq> list=converAnswerFormString(req.getListOrderRegionStr());
-		req.setListOrderRegion(list);
-		OrderResp resp = new OrderResp();
+		req.setListOrderRegion(list);		
+		
 		BusinessModel businessModel = businessDao.getBusiness(req
 				.getBusinessid());
-
 		// 校验是否可以正常发单
 		PublishOrderReturnEnum returnEnum = verificationPushOrder(req,
 				businessModel);
 		if (returnEnum != PublishOrderReturnEnum.VerificationSuccess) {
-			resp.setResponseCode(returnEnum.value());
+			resp.setStatus(returnEnum.value());
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
@@ -659,7 +661,7 @@ public class OrderService implements IOrderService {
 			adjustRecord.setPlatform(SuperPlatform.Business.value());
 			int orderSubsidieslogId = orderSubsidiesLogDao.insert(adjustRecord);
 			if (orderSubsidieslogId <= 0)
-				throw new RuntimeException("记录补贴日志错误");
+				throw new TransactionalRuntimeException("记录补贴日志错误");
 		}
 
 		// 订单表 订单otherID表 订单child表
@@ -668,7 +670,7 @@ public class OrderService implements IOrderService {
 		// 补贴日志表
 		if (orderId > 0 && orderOtherId > 0 && orderChildID > 0
 				&& orderRegionId > 0 && bbcId > 0 && ordersubsidiesId > 0) {
-			resp.setResponseCode(PublishOrderReturnEnum.Success.value());
+			resp.setStatus(PublishOrderReturnEnum.Success.value());
 			resp.setMessage(PublishOrderReturnEnum.Success.desc());
 			return resp;
 		}

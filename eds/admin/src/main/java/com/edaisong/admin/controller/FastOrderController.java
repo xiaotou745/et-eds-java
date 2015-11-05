@@ -1,5 +1,6 @@
 package com.edaisong.admin.controller;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,7 @@ import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.util.ExcelUtils;
-import com.edaisong.core.util.ExcelUtils.ExcelExportData;
 import com.edaisong.core.util.PropertyUtils;
-import com.edaisong.entity.OrderGrab;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
@@ -99,14 +99,14 @@ public class FastOrderController {
 	 * @param groupId 集团id
 	 */
 	@RequestMapping(value="exportorder" )
-	public void exportorder(PagedFastOrderSearchReq searchReq,HttpServletResponse response)throws Exception{
+	public void exportorder(PagedFastOrderSearchReq searchReq,HttpServletRequest request,HttpServletResponse response)throws Exception{
 	   List<FastOrderExportModel> records=	 orderGrabService.exportOrder(searchReq) ;
 	   if(records.size() > 0){
 			//导出数据
 			String fileName = "e代送-%s-快单数据";
 			fileName = String.format(fileName, searchReq.getOrderGrabStart() + "到" +searchReq.getOrderGrabEnd());
 			//add data
-			Map<String,String> columnTitiles=new HashMap<String,String>();
+			LinkedHashMap<String,String> columnTitiles=new LinkedHashMap<String,String>();
 			columnTitiles.put("订单号", "grabOrderNo");
 			columnTitiles.put("商户电话", "businessPhoneNo");
 			columnTitiles.put("商户名称", "businessName");
@@ -118,9 +118,12 @@ public class FastOrderController {
 			columnTitiles.put("订单佣金", "orderCommission");
 			columnTitiles.put("订单数量", "orderCount");
 			columnTitiles.put("外送费用", "distribSubsidy");
-			columnTitiles.put("每单补贴", "websiteSubsidy");
 			columnTitiles.put("任务补贴", "adjustment");
-			ExcelUtils.export2Excel(fileName,"快单记录",columnTitiles,records,response);
+//			columnTitiles.put("每单补贴", "websiteSubsidy");
+//			columnTitiles.put("佣金比例", "commissionRate");
+//			columnTitiles.put("基本佣金", "baseCommission");
+			
+			ExcelUtils.export2Excel(fileName,"快单记录",columnTitiles,records,request,response);
 			return;
 		}else {
 			//如果查询到的数据为空,则跳转到收支详情页

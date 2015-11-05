@@ -33,10 +33,15 @@ import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
+import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.req.BusinessMoney;
-import com.edaisong.entity.req.IsAllowInputMoneyReq;
+import com.edaisong.entity.req.GetPushOrderTypeReq;
+import com.edaisong.entity.req.MyOrderBReq;
+import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
+import com.edaisong.entity.resp.MyOrderBResp;
+import com.edaisong.entity.resp.MyOrderDetailBResp;
 
 @Service
 public class BusinessService implements IBusinessService {
@@ -357,15 +362,15 @@ public class BusinessService implements IBusinessService {
 	}
 
 	/**
-	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要  默认0
+	 * 获取门店发单模式：0 普通模式（默认），1 快单模式   默认0
 	 * @author CaoHeYang
 	 * @date 20151030
 	 * @param par
 	 * @return
 	 */
 	@Override
-	public  Integer getIsAllowInputMoney(IsAllowInputMoneyReq par){
-	 return iBusinessDao.getIsAllowInputMoney(par.getBusinessId());
+	public  Integer getPushOrderType(GetPushOrderTypeReq par){
+	 return iBusinessDao.getPushOrderType(par.getBusinessId());
 	}
 
 	@Override
@@ -376,5 +381,27 @@ public class BusinessService implements IBusinessService {
 	@Override
 	public boolean getClienterBind(BindClienterBusiness bindClienterBusiness) {
 		return iBusinessDao.getClienterBind(bindClienterBusiness);
+	}
+
+	@Override
+	public MyOrderBResp getMyOrdeB(MyOrderBReq myOrderBReq) { 
+		List<OrderRespModel> orderRespModels = iBusinessDao.getMyOrdeB(myOrderBReq);
+		if(orderRespModels!=null &&orderRespModels.size() > 0){		
+			orderRespModels.forEach(action -> action.setClienterHeadPhoto((PropertyUtils.getProperty("ImageServicePath") + action.getClienterHeadPhoto())));
+		}
+		MyOrderBResp myOrderBResp = new MyOrderBResp();
+		myOrderBResp.setOrderRespModel(orderRespModels);
+		
+		MyOrderBResp orderCountBResp = iBusinessDao.getOrderCountTotal(myOrderBReq);
+		myOrderBResp.setQuHuoOrderCountTotal(orderCountBResp.getQuHuoOrderCountTotal());
+		myOrderBResp.setPeiSongOrderCountTotal(orderCountBResp.getPeiSongOrderCountTotal());
+		myOrderBResp.setYiWanChenOrderCountTotal(orderCountBResp.getYiWanChenOrderCountTotal());
+		
+		return myOrderBResp;
+	}
+
+	@Override
+	public MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq) { 
+		return iBusinessDao.getMyOrderDetailB(orderGrabBReq);
 	}
 }

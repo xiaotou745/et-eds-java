@@ -1,28 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion> 
-  <groupId>tools</groupId>
-  <artifactId>toolscore</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging> 
-  <name>toolscore</name>
-  <url>http://maven.apache.org</url> 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>4.1.1.RELEASE</spring.version>
-  </properties> 
-  <dependencies>
-  <dependency>
-  				<groupId>javax.mail</groupId>
-				<artifactId>mail</artifactId>
-				<version>1.4.1</version>
-			</dependency>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>tools</groupId>
+	<artifactId>toolscore</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>toolscore</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>4.1.1.RELEASE</spring.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.1</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>
 			<artifactId>activation</artifactId>
 			<version>1.1</version>
 		</dependency>
-  		<dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
@@ -42,11 +42,11 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.2.3</version>
 		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.8</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.codehaus.jackson</groupId> -->
+<!-- 			<artifactId>jackson-mapper-asl</artifactId> -->
+<!-- 			<version>1.9.8</version> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -101,7 +101,7 @@
 			<artifactId>spring-data-redis</artifactId>
 			<version>1.4.1.RELEASE</version>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>${spring.version}</version>
@@ -144,5 +144,5 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.9</version>
 		</dependency>
-  </dependencies>
+	</dependencies>
 </project>

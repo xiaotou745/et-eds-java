@@ -47,9 +47,6 @@ public class OrderHttpService implements IOrderHttpService {
 	@Autowired
 	private IOrderService orderService;
 	
-	@Autowired
-	private IOrderGrabService orderGrabService;
-
 
 	/**
 	 * 发布订单 
@@ -60,26 +57,12 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public OrderResp Push(OrderReq req) {
+	public HttpResultModel<OrderResp> Push(OrderReq req) {
 		
-		OrderResp resp= orderService.PushOrder(req);			
+		HttpResultModel<OrderResp> resp= orderService.PushOrder(req);			
 		return resp;
-	}
-	/**
-	 * 用户抢单
-	 * @author 胡灵波
-	 * @date 2015年11月2日 14:56:05
-	 * @version 1.0
-	 * @param req
-	 * @return
-	 */
-	@Override
-	public OrderGrabResp Receive(OrderGrabReq req)
-	{
-		OrderGrabResp resp=orderGrabService.GrabOrder(req);			
-		return resp;
-	}
-	
+	}	
+
 	
 	/**
 	 * B端任务统计接口

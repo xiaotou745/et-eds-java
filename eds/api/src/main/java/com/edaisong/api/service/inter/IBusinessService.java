@@ -13,11 +13,15 @@ import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.req.BusinessMoney;
-import com.edaisong.entity.req.IsAllowInputMoneyReq;
+import com.edaisong.entity.req.GetPushOrderTypeReq;
+import com.edaisong.entity.req.MyOrderBReq;
+import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
+import com.edaisong.entity.resp.MyOrderBResp;
+import com.edaisong.entity.resp.MyOrderDetailBResp;
 
 
 
@@ -110,13 +114,13 @@ public interface IBusinessService {
     void updateBBalanceAndWithdraw(BusinessMoney businessMoney);
     
 	/**
-	 * 获取商家是否需要录入金额才可以发单 0 需要 1 不需要  默认0
+	 * 获取门店发单模式：0 普通模式（默认），1 快单模式   默认0
 	 * @author CaoHeYang
 	 * @date 20151030
 	 * @param par
 	 * @return
 	 */
-	Integer getIsAllowInputMoney(IsAllowInputMoneyReq par);
+	Integer getPushOrderType(GetPushOrderTypeReq par);
 	/*
 	 * 绑定骑士 建立关系
 	 * wangchao
@@ -127,5 +131,8 @@ public interface IBusinessService {
 	 * wangchao
 	 */
 	boolean getClienterBind(BindClienterBusiness bindClienterBusiness);
+	
+	MyOrderBResp getMyOrdeB(MyOrderBReq myOrderBReq);
+	MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq);
     
 }

@@ -25,7 +25,9 @@ import com.edaisong.business.common.LoginUtil;
 import com.edaisong.business.common.UserContext;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
+import com.edaisong.core.security.AES;
 import com.edaisong.core.util.CookieUtils;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.GroupBusiness;
@@ -109,8 +111,8 @@ public class AccountController {
 			}
 			userInfo="1;"+groupBusiness.getId()+";"+groupBusiness.getGroupbusiname();
 		}
-
-		CookieUtils.setCookie(request,response,"business", LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, userInfo, cookieMaxAge,
+		String encyCookie=AES.aesEncrypt(userInfo);
+		CookieUtils.setCookie(request,response,"business", LoginUtil.BUSINESS_LOGIN_COOKIE_NAME, encyCookie, cookieMaxAge,
 				true);
 		//设置账户cookie
 		CookieUtils.setCookie(request,response,"business", "username", phoneNo, 365 * 60 * 60 * 24,

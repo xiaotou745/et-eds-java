@@ -6,23 +6,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dao.inter.IOrderGrabDao;
+import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.entity.OrderGrab;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.FastOrderMapDetail;
-import com.edaisong.entity.domain.FastOrderModel; 
-import com.edaisong.entity.req.MyOrderGrabCReq;
+import com.edaisong.entity.domain.FastOrderModel;  
+import com.edaisong.entity.req.ClienterMoney;
+import com.edaisong.entity.req.MyOrderGrabCReq; 
+import com.edaisong.entity.req.MyOrderGrabCReq;import com.edaisong.entity.req.OrderGrabCompleteReq;
+import com.edaisong.entity.req.OrderGrabConfirmTakeReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
-import com.edaisong.entity.resp.MyOrderGrabDetailResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
  
+
+
+
+
+
+
+
+
 import java.util.ArrayList;
 import java.util.Date; 
+
 import com.edaisong.api.dao.inter.IOrderChildDao; 
 import com.edaisong.api.dao.inter.IOrderGrabChildDao; 
 import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao; 
+import com.edaisong.core.enums.ClienterBalanceRecordRecordType;
+import com.edaisong.core.enums.ClienterBalanceRecordStatus;
 import com.edaisong.core.enums.OrderGrabReturnEnum; 
 import com.edaisong.core.enums.OrderStatus; 
 import com.edaisong.core.enums.SuperPlatform;
@@ -42,7 +58,7 @@ public class OrderGrabService implements IOrderGrabService {
 	
 	@Autowired
 	private IOrderGrabDao orderGrabDao;
-   @Autowired
+    @Autowired
 	private IOrderChildDao orderChildDao;
 	@Autowired
 	private IOrderGrabChildDao orderGrabChildDao;
@@ -51,6 +67,9 @@ public class OrderGrabService implements IOrderGrabService {
 	
 	@Autowired
 	private IOrderRegionDao orderRegionDao;
+	
+	@Autowired
+	private IClienterService clienterService;
 	
     @Override
 	public int deleteById(Long id) {
@@ -80,10 +99,17 @@ public class OrderGrabService implements IOrderGrabService {
 		return orderGrabDao.getMapDetailById(id);
 	} 
 	
+	/**
+	 * 骑士抢单
+	 * @author 胡灵波
+	 * @Date 2015年11月3日 11:17:24
+	 * @param req 
+	 * @return
+	 */	
 	@Override
-	public OrderGrabResp GrabOrder(OrderGrabReq req)	
+	public HttpResultModel<OrderGrabResp> GrabOrder(OrderGrabReq req)	
 	{
-		OrderGrabResp resp=new OrderGrabResp();
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
 		
 		//抢单主表
 		OrderGrab orderGrab=new OrderGrab();
@@ -93,7 +119,7 @@ public class OrderGrabService implements IOrderGrabService {
 		orderGrab.setOrderRegionOneName(req.getOrderRegionOneName());		
 		orderGrab.setOrderRegionTwoId(req.getOrderRegionTwoId());		
 		orderGrab.setOrderRegionTwoName(req.getOrderRegionTwoName());
-		orderGrab.setOrderCount(req.getOrderCount());		
+		orderGrab.setOrdercount(req.getOrderCount());		
 		orderGrab.setGraborderno(OrderNoHelper.generateOrderCode(req.getClienterId()));
 		orderGrab.setStatus((byte)OrderStatus.Delivery.value());
 		orderGrab.setGrabtime(new Date());
@@ -115,13 +141,13 @@ public class OrderGrabService implements IOrderGrabService {
 			OrderRegion orModelTwo=new OrderRegion();
 			orModelTwo.setId(req.getOrderRegionTwoId());
 			orModelTwo.setWaitingcount(-listOrderChild.size());
-			orModelTwo.setDistributioning(listOrderChild.size());
+			orModelTwo.setGrabcount(listOrderChild.size());
 			orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
 			
 			OrderRegion orModelOne=new OrderRegion();
 			orModelOne.setId(req.getOrderRegionOneId());
 			orModelOne.setWaitingcount(-listOrderChild.size());		
-			orModelTwo.setDistributioning(listOrderChild.size());
+			orModelOne.setGrabcount(listOrderChild.size());
 			orderRegionDao.updateByPrimaryKeySelective(orModelOne);		
 		}
 		else//一级区域
@@ -134,11 +160,11 @@ public class OrderGrabService implements IOrderGrabService {
 			
 			OrderRegion orModelOne=new OrderRegion();
 			orModelOne.setId(req.getOrderRegionOneId());
-			orModelOne.setWaitingcount(-listOrderChild.size());			
+			orModelOne.setGrabcount(-listOrderChild.size());			
 			orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
 		}					
 		
-		// 记录发单日志
+		// 记录抢单日志
 		OrderSubsidiesLog record = new OrderSubsidiesLog();
 		record.setOrderid(orderGrab.getId());
 		record.setOrderstatus(OrderStatus.Delivery.value());
@@ -151,12 +177,176 @@ public class OrderGrabService implements IOrderGrabService {
 
 		if(orderGrabId>0)
 					{
-						resp.setResponseCode(OrderGrabReturnEnum.Success.value());
+						resp.setStatus(OrderGrabReturnEnum.Success.value());
 						resp.setMessage(OrderGrabReturnEnum.Success.desc());
 						return resp;
 					}	
 		return resp;
 	}
+	
+	/**
+	 * 骑士取货 
+	 * @author 胡灵波
+	 * @Date 2015年11月4日 11:16:24
+	 * @param req 
+	 * @return
+	 */	
+	@Override
+	public HttpResultModel<Integer> ConfirmTake(OrderGrabConfirmTakeReq req)
+	{
+		HttpResultModel<Integer> resp=new HttpResultModel<Integer>();
+
+		//更新抢单主表	
+		OrderGrab ogModel=new OrderGrab ();		
+		ogModel.setId(req.getGrabOrderId());
+		ogModel.setPickuplongitude(req.getPickUpLongitude());
+		ogModel.setPickuplatitude(req.getPickUpLatitude());
+		ogModel.setStatus((byte)OrderStatus.Taking.value());
+		int ogId=orderGrabDao.updateByPrimaryKeySelective(ogModel);
+		
+		//更新抢单子表
+		OrderGrabChild ogcModel=new OrderGrabChild();
+		ogcModel.setGraborderid(req.getGrabOrderId());
+		ogcModel.setStatus((byte)OrderStatus.Taking.value());
+		orderGrabChildDao.updateByGraborderidSelective(ogcModel);
+		
+		//更新发单子表
+		List<OrderGrabChild> listOgc= orderGrabChildDao.selectByGrabOrderId((long)req.getGrabOrderId());
+		List<OrderChild> listOc=new ArrayList<OrderChild>();
+		for(int i=0;i<listOgc.size();i++)
+		{
+			OrderChild orderChildModel=new OrderChild();
+			orderChildModel.setId((long)listOgc.get(i).getOrderchildid());
+			orderChildModel.setStatus((short)OrderStatus.Taking.value());
+			orderChildModel.setUpdateby(req.getClienterId().toString());
+			listOc.add(orderChildModel);			
+		}
+		orderChildDao.updateList(listOc);
+		
+		//更新区域表		
+		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(req.getGrabOrderId());
+		if(currOgModel.getOrderRegionTwoId()>0)//二级区域
+		{
+			//更新数量			
+			OrderRegion orModelTwo=new OrderRegion();
+			orModelTwo.setId(currOgModel.getOrderRegionTwoId());
+			orModelTwo.setGrabcount(-currOgModel.getOrdercount());
+			orModelTwo.setDistributioning(currOgModel.getOrdercount());
+			orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+			
+			OrderRegion orModelOne=new OrderRegion();
+			orModelOne.setId(currOgModel.getOrderRegionOneId());
+			orModelOne.setGrabcount(-currOgModel.getOrdercount());		
+			orModelOne.setDistributioning(currOgModel.getOrdercount());
+			orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+		}
+		else
+		{
+			OrderRegion orModelOne=new OrderRegion();
+			orModelOne.setId(currOgModel.getOrderRegionOneId());
+			orModelOne.setGrabcount(-currOgModel.getOrdercount());		
+			orModelOne.setDistributioning(currOgModel.getOrdercount());
+			orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+		}
+		
+		// 记录取货日志
+		OrderSubsidiesLog record = new OrderSubsidiesLog();
+		record.setOrderid(req.getGrabOrderId());
+		record.setOrderstatus(OrderStatus.Taking.value());
+		record.setOptid(req.getClienterId());
+		record.setPrice(0d);
+		record.setOptname("");//临时
+		record.setRemark(TaskStatus.Taking.desc());
+		record.setPlatform(SuperPlatform.Clienter.value());
+		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);		
+
+		return resp;
+	}
+	
+	/**
+	 * 骑士完成订单
+	 * @author 胡灵波
+	 * @Date 2015年11月4日 11:17:46
+	 * @param req 
+	 * @return
+	 */	
+	@Override
+	public  HttpResultModel<Integer> Complete(OrderGrabCompleteReq req)
+	{
+		HttpResultModel<Integer> resp=new HttpResultModel<Integer>();
+
+		OrderGrabChild currOgcModel=  orderGrabChildDao.selectByPrimaryKey(req.getOrderGrabChildId());
+		//更新骑士余额		
+		ClienterMoney clienterMoney = new ClienterMoney();
+		clienterMoney.setAmount(currOgcModel.getOrderCommission()); 
+		clienterMoney.setClienterId(req.getClienterId());
+		clienterMoney
+				.setRecordType(ClienterBalanceRecordRecordType.OrderCommission
+						.value());
+		clienterMoney.setRelationNo("");
+		clienterMoney.setWithwardId(currOgcModel.getId());
+		clienterMoney.setOperator(req.getClienterId().toString());
+		clienterMoney.setStatus(ClienterBalanceRecordStatus.Success
+				.value());
+		clienterMoney.setRemark("完成订单");
+		clienterService.updateCBalanceAndWithdraw(clienterMoney);
+		
+		
+		//更新子订单
+		OrderGrabChild ogcModel=new OrderGrabChild();
+		ogcModel.setId(req.getOrderGrabChildId());
+		ogcModel.setStatus((byte)OrderStatus.Complite.value());
+		ogcModel.setDonelatitude(req.getDoneLatitude());
+		ogcModel.setDonelongitude(req.getDoneLongitude());
+		orderGrabChildDao.updateByPrimaryKeySelective(ogcModel);
+		
+		//更新发单子表
+		OrderChild orderChildModel=new OrderChild();
+		orderChildModel.setId((long)currOgcModel.getOrderchildid());
+		orderChildModel.setStatus((short)OrderStatus.Complite.value());
+		orderChildModel.setUpdateby(req.getClienterId().toString());
+		orderChildDao.updateByPrimaryKeySelective(orderChildModel);
+		
+		//更新区域表			
+		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(currOgcModel.getGraborderid());
+		if(currOgModel.getOrderRegionTwoId()>0)//二级区域
+		{
+			//更新数量			
+			OrderRegion orModelTwo=new OrderRegion();
+			orModelTwo.setId(currOgModel.getOrderRegionTwoId());
+			orModelTwo.setDistributioning(-currOgModel.getOrdercount());
+			orModelTwo.setDonecount(currOgModel.getOrdercount());
+			orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+			
+			OrderRegion orModelOne=new OrderRegion();
+			orModelOne.setId(currOgModel.getOrderRegionOneId());
+			orModelOne.setDistributioning(-currOgModel.getOrdercount());		
+			orModelOne.setDonecount(currOgModel.getOrdercount());
+			orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+		}
+		else
+		{
+			OrderRegion orModelOne=new OrderRegion();
+			orModelOne.setId(currOgModel.getOrderRegionOneId());
+			orModelOne.setDistributioning(-currOgModel.getOrdercount());		
+			orModelOne.setDonecount(currOgModel.getOrdercount());
+			orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+		}
+		
+		// 记录取货日志
+		OrderSubsidiesLog record = new OrderSubsidiesLog();
+		record.setOrderid(req.getOrderGrabChildId());
+		record.setOrderstatus(OrderStatus.Complite.value());
+		record.setOptid(req.getClienterId());
+		record.setPrice(0d);
+		record.setOptname("");//临时
+		record.setRemark(TaskStatus.OrderFinish.desc());
+		record.setPlatform(SuperPlatform.Clienter.value());
+		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);		
+
+		return resp;
+	}
+	
 	@Override
 	public List<MyOrderGrabCResp> getMyOrderGrabC(
 			MyOrderGrabCReq myOrderGrabCReq) { 
@@ -164,7 +354,7 @@ public class OrderGrabService implements IOrderGrabService {
 	}
 
 	@Override
-	public MyOrderGrabDetailResp getMyOrderGrabDetailC(
+	public MyOrderGrabDetailCResp getMyOrderGrabDetailC(
 			OrderGrabDetailCReq orderGrabDetailCReq) { 
 		return orderGrabDao.getMyOrderGrabDetailC(orderGrabDetailCReq);
 	}
@@ -214,4 +404,5 @@ public class OrderGrabService implements IOrderGrabService {
 
 		return listOrderGrabChild;
 	}
+ 
 }

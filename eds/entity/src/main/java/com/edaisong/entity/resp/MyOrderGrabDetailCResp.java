@@ -2,7 +2,7 @@ package com.edaisong.entity.resp;
 
 import java.util.Date;
 
-public class MyOrderGrabDetailResp {
+public class MyOrderGrabDetailCResp {
 	private String orderRegionOneName;
 	private String orderRegionTwoName;
 	private Integer orderCount;
@@ -21,11 +21,11 @@ public class MyOrderGrabDetailResp {
      
     private Byte status;
 
-    private Date actualDoneDate;
+    private String actualDoneDate;
 
-    private Date grabTime;
+    private String grabTime;
 
-    private Date pickUpTime;
+    private String pickUpTime;
   
     private Double orderCommission;
 	public String getOrderRegionOneName() {
@@ -124,27 +124,26 @@ public class MyOrderGrabDetailResp {
 		this.status = status;
 	}
 
-	public Date getActualDoneDate() {
+
+	public String getActualDoneDate() {
+		if(actualDoneDate == null){actualDoneDate = "";}
 		return actualDoneDate;
 	}
-
-	public void setActualDoneDate(Date actualDoneDate) {
+	public void setActualDoneDate(String actualDoneDate) {
 		this.actualDoneDate = actualDoneDate;
 	}
-
-	public Date getGrabTime() {
+	public String getGrabTime() {
+		if(grabTime == null){grabTime = "";}
 		return grabTime;
 	}
-
-	public void setGrabTime(Date grabTime) {
+	public void setGrabTime(String grabTime) {
 		this.grabTime = grabTime;
 	}
-
-	public Date getPickUpTime() {
+	public String getPickUpTime() {
+		if(pickUpTime == null){pickUpTime = "";}
 		return pickUpTime;
 	}
-
-	public void setPickUpTime(Date pickUpTime) {
+	public void setPickUpTime(String pickUpTime) {
 		this.pickUpTime = pickUpTime;
 	}
 

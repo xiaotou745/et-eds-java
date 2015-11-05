@@ -11,7 +11,7 @@ import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
-import com.edaisong.entity.resp.MyOrderGrabDetailResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderReq;
@@ -60,20 +60,9 @@ public interface IOrderHttpService {
 	 */
 	@POST
 	@Path("/push")
-	public OrderResp Push(OrderReq req);	
+	public HttpResultModel<OrderResp> Push(OrderReq req);	
 
 	
-	/**
-	 * 发布订单
-	 * @author 胡灵波
-	 * @date 2015年11月2日 15:44:40
-	 * @version 1.0
-	 * @param req
-	 * @return
-	 */
-	@POST
-	@Path("/receive")
-	public OrderGrabResp Receive(OrderGrabReq req);
 	
 	/**
 	 * B端任务统计接口
