@@ -21,6 +21,8 @@ import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.util.ExcelUtils;
+import com.edaisong.core.util.HttpClientUtils;
+import com.edaisong.core.util.HttpUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
@@ -145,7 +147,7 @@ public class FastOrderController {
 		   throw new RuntimeException("没有找到orderid="+orderid+"的订单");
 	   }
 	  
-	    List<OrderSubsidiesLog> orderSubsidiesLogs= orderSubsidiesLogService.GetOrderOptionLog(orderid);
+	    List<OrderSubsidiesLog> orderSubsidiesLogs= orderSubsidiesLogService.GetFastOrderOptionLog(orderid);
 		model.addObject("subtitle", "订单列表");
 		model.addObject("currenttitle", "订单详情");
 		model.addObject("viewPath", "fastorder/detail");

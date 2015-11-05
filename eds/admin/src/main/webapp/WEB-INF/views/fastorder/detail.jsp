@@ -108,7 +108,7 @@ List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
 		<legend>订单列表</legend>
 		<div style="float: left; width: 1000px;">
 
-			<table border="0" cellspacing="0" cellpadding="0" class="tbstyle"
+			<table id="tborderchild" border="0" cellspacing="0" cellpadding="0" class="tbstyle"
 				width="1000">
 				<thead>
 					<tr class="tdbg">
@@ -124,10 +124,10 @@ List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
 					%>
 					<tr>
 						<td><%=ParseHelper.ShowString(curOrderChild.getChildid())%></td>
-						<td><%=ParseHelper.ShowString(OrderStatus.getEnum(
-						curOrderChild.getStatus()).desc())%></td>
-						<td><%=ParseHelper.ToDateString(curOrderChild.getActualdonedate())%></td>
-						<td><%=curOrderChild.getDonelatitude() + "_"+ curOrderChild.getDonelatitude()%></td>
+						<td><%=ParseHelper.ShowString(OrderStatus.getEnum(curOrderChild.getStatus()).desc())%></td>
+						<td><%=curOrderChild.getActualdonedate()==null?"--":ParseHelper.ToDateString(curOrderChild.getActualdonedate())%></td>
+						<td>--</td>
+						<td style="display:none"><%=curOrderChild.getDonelatitude() + ";"+ curOrderChild.getDonelongitude()%></td>
 					</tr>
 					<%
 						}
@@ -156,12 +156,11 @@ List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
 						for (OrderSubsidiesLog item : orderSubsidiesLogs) {
 					%>
 					<tr id="<%=item.getId()%>">
-						<td><%=ParseHelper.ShowString(OrderStatus.getEnum(
-						item.getOrderstatus()).desc())%></td>
+						<td><%=ParseHelper.ShowString(OrderStatus.getEnum(item.getOrderstatus()).desc())%></td>
 						<td><%=ParseHelper.ShowString(item.getOptname())%></td>
 						<td><%=ParseHelper.ToDateString(item.getInserttime())%></td>
 						<td><%=ParseHelper.ShowString(item.getRemark())%></td>
-						<td><%=OrderPlatform.getEnum(item.getPlatform()).desc()%></td>
+						<td><%=OrderPlatform.FastClienter.desc()%></td>
 					</tr>
 					<%
 						}
@@ -171,3 +170,39 @@ List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
 		</div>
 	</fieldset>
 </div>
+<script>
+ $(function(){
+	 var trs=$("#tborderchild tr");
+			 for(var i=1;i<trs.length;i++){ 
+			     var tr=$(trs[i]);
+			     var td=tr.children('td').eq(4);
+			     var param=$(td).html();
+			     var ab=param.split(";");
+			     var addressTd=tr.children('td').eq(3);
+			     getAddress($(addressTd),ab[0],ab[1]);
+			 }
+ });
+ function getAddress(addressTd,lat,lng){
+	if(parseFloat(lat)==0||parseFloat(lng)==0){
+		return;
+	} 
+	var url = "http://api.map.baidu.com/geocoder/v2/?ak=dAeaG6HwIFGlkbqtyKkyFGEC&callback=renderReverse&location="+lat+","+lng+"&output=json&pois=1";
+     $.ajax({
+         type: 'POST',
+         global: false,
+         url: url,
+         data: {},
+         dataType: 'jsonp',
+  	   	 jsonp: 'callback',
+  	   	 jsonpCallback:"jsonpCallback",
+         success: function (data) {
+        	 if(data.result.formatted_address!=""){
+        		 addressTd.html(data.result.formatted_address);
+        	 }
+         },error:function(data){
+        	
+         }
+     });
+	}
+ </script>
+	
