@@ -13,10 +13,18 @@ import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.req.AccountBillBReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
+import com.edaisong.entity.req.MyOrderBReq;
+import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OptBindClienterReq;
+import com.edaisong.entity.req.OrderDetailBReq;
+import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.resp.GetMyServiceClientersResp;
+import com.edaisong.entity.resp.MyOrderBResp;
+import com.edaisong.entity.resp.MyOrderDetailBResp;
+import com.edaisong.entity.resp.MyOrderGrabCResp;
+import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 
 /**
  *  商家相关 
@@ -82,4 +90,20 @@ public interface IBusinessHttpService {
 	@POST
 	@Path("/removerelation")	
 	 public HttpResultModel<Object> removeRelation(ClienterBindOptionReq req);
+	
+	/*
+	 * 获取我的任务B
+	 * wangchao
+	 */
+	@POST
+	@Path("/getmyorderb")
+	HttpResultModel<MyOrderBResp> getMyOrdeB(MyOrderBReq myOrderBReq);
+	
+	/*
+	 * 获取我的任务详情B
+	 * wangchao
+	 */
+	@POST
+	@Path("/getmyorderdetailb")
+	public HttpResultModel<MyOrderDetailBResp> getMyOrderDetailB(OrderDetailBReq orderGrabBReq); 
 }

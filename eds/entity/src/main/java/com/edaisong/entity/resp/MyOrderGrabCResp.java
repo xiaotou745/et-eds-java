@@ -10,7 +10,7 @@ public class MyOrderGrabCResp {
 	private Integer orderCount;
 	private Integer grabOrderId;
 	private String grabOrderNo; 
-	private double distanceToBusiness;
+	private String distanceToBusiness;
 	public String getBusinessName() {
 		return businessName;
 	}
@@ -28,6 +28,7 @@ public class MyOrderGrabCResp {
 	}
 
 	public String getGrabTime() {
+		if(grabTime == null){grabTime = "";}
 		return grabTime;
 	}
 
@@ -76,11 +77,11 @@ public class MyOrderGrabCResp {
 	}
  
 
-	public double getDistanceToBusiness() {
+	public String getDistanceToBusiness() {
 		return distanceToBusiness;
 	}
 
-	public void setDistanceToBusiness(double distanceToBusiness) {
+	public void setDistanceToBusiness(String distanceToBusiness) {
 		this.distanceToBusiness = distanceToBusiness;
 	}
 

@@ -3,6 +3,7 @@ package com.edaisong.api.dao.inter;
 
 import java.util.List;
 
+import com.edaisong.entity.Group;
 import com.edaisong.entity.OrderGrab;
 import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
@@ -16,10 +17,14 @@ import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 
 public interface IOrderGrabDao {
+	
+	int insert(OrderGrab record);	
+	int insertSelective(OrderGrab record);
     int deleteById(Long id);
-    int insert(OrderGrab record);
+    int updateByPrimaryKeySelective(OrderGrab record);
+    OrderGrab selectByPrimaryKeyWrite(Integer id);
+    
     FastOrderDetail selectById(Long id);
-    int insertSelective(OrderGrab record);
     List<FastOrderMapDetail> getMapDetailById(Long id);
     PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req);
     List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req);

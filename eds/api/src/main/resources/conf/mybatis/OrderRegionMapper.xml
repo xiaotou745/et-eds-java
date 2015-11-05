@@ -55,6 +55,9 @@
       <if test="waitingcount != null" >
         waitingcount += #{waitingcount,jdbcType=INTEGER},
       </if>
+       <if test="grabcount != null" >
+        grabcount += #{grabcount,jdbcType=INTEGER},
+      </if>
       <if test="distributioning != null" >
         distributioning += #{distributioning,jdbcType=INTEGER},
       </if>
