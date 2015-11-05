@@ -24,6 +24,7 @@ import com.edaisong.toolsapi.service.inter.IAccountLoginLogService;
 import com.edaisong.toolsapi.service.inter.IAccountService;
 import com.edaisong.toolsapi.service.inter.IAuthorityAccountMenuSetService;
 import com.edaisong.toolsapi.service.inter.IAuthorityRoleService;  
+import com.edaisong.toolscore.security.AES;
 import com.edaisong.toolscore.util.CookieUtils;
 import com.edaisong.toolscore.util.IPUtil;
 import com.edaisong.toolscore.util.JsonUtil;
@@ -139,7 +140,8 @@ public class AccountController {
 		loginUser.setPassword("");
 		loginUser.setRoleId(account.getRoleid());
 		loginUser.setUserName(account.getUsername());
-		CookieUtils.setCookie(request,response,"admin", LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
+		String encyCookie=AES.aesEncrypt(JsonUtil.obj2string(loginUser));
+		CookieUtils.setCookie(request,response,"admin", LoginUtil.LOGIN_COOKIE_NAME, encyCookie, cookieMaxAge,
 				true);
 		response.sendRedirect("http://www.baidu.com");
 	}

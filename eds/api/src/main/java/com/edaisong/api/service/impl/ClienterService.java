@@ -19,6 +19,7 @@ import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
+import com.edaisong.entity.domain.MyBusinessModel;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.MyBusinessReq;
@@ -132,7 +133,7 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 		clienterBalanceRecord.setWithwardid((long) clienterMoney.getWithwardId()); // 关联单id
 		clienterBalanceRecord.setRelationno(clienterMoney.getRelationNo()); // 关联单号
 		clienterBalanceRecord.setRemark(clienterMoney.getRemark()); // 注释
-		clienterBalanceRecordDao.insert(clienterBalanceRecord);
+		int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecord);
 		//插入骑士余额可提现流水
 		ClienterAllowWithdrawRecord clienterAllowWithdrawRecord = new ClienterAllowWithdrawRecord();
 		clienterAllowWithdrawRecord.setClienterid(clienterMoney.getClienterId());// 商户Id
@@ -188,9 +189,20 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	  public ClienterStatus getUserStatus(int userid){
 		  return clienterDao.getUserStatus(userid);
 	  }
-
+	  
+	  /*
+	   * 骑士端 获取我的商户
+	   * wangchao
+	   */
 	@Override
-	public List<MyBusinessResp> getMyBusiness(MyBusinessReq myBusinessReq) { 
-		return clienterDao.getMyBusiness(myBusinessReq);
+	public MyBusinessResp getMyBusiness(MyBusinessReq myBusinessReq) {  
+		MyBusinessResp myBusinessResp = new MyBusinessResp();
+		List<MyBusinessModel> myBusinessModelList =clienterDao.getMyBusiness(myBusinessReq);
+		myBusinessResp.setMyBusinessModelList(myBusinessModelList); 
+		MyBusinessResp myBusinessRespTotal = clienterDao.getServiceBusinessTotal(myBusinessReq);
+		myBusinessResp.setFuWuZhongTotal(myBusinessRespTotal.getFuWuZhongTotal());
+		myBusinessResp.setShenQingZhongTotal(myBusinessRespTotal.getShenQingZhongTotal());	
+		
+		return myBusinessResp;
 	}
 }

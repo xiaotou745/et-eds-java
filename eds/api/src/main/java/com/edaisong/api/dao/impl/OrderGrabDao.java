@@ -21,17 +21,30 @@ import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 
 	@Override
-	public int deleteById(Long id) {
-		return getMasterSqlSessionUtil().delete(
-				"com.edaisong.api.dao.inter.IOrderGrabDao.deleteById", id);
-	}
-
-	@Override
 	public int insert(OrderGrab record) {
 		return getMasterSqlSessionUtil().insert(
 				"com.edaisong.api.dao.inter.IOrderGrabDao.insert", record);
 	}
+	@Override
+	public int deleteById(Long id) {
+		return getMasterSqlSessionUtil().delete(
+				"com.edaisong.api.dao.inter.IOrderGrabDao.deleteById", id);
+	}
+	
+	@Override
+	public int updateByPrimaryKeySelective(OrderGrab record)
+	{
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IOrderGrabDao.updateByPrimaryKeySelective", record);
+	}	
 
+	@Override
+	public OrderGrab selectByPrimaryKeyWrite(Integer id)
+	{
+		return getMasterSqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderGrabDao.selectByPrimaryKey", id);		
+	}
+		
 	@Override
 	public FastOrderDetail selectById(Long id) {
 		return getReadOnlySqlSessionUtil().selectOne(

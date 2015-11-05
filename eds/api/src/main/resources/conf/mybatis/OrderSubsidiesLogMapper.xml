@@ -23,8 +23,23 @@
                                     InsertTime,
                                     Platform,
                                     Remark
+                            FROM OrderSubsidiesLog (nolock)
+                            WHERE OrderId= #{orderId,jdbcType=INTEGER} and 101>Platform
+                            ORDER BY Id;
+	</select>
+	    <!-- 获取快单操作日志  zhaohl 20151105 -->
+	<select id="GetFastOrderOptionLog" resultType="com.edaisong.entity.OrderSubsidiesLog"
+		parameterType="java.util.Map">
+		SELECT  Id,
+                                    OrderId,
+                                    OrderStatus,
+                                    OptId,
+                                    OptName,
+                                    InsertTime,
+                                    Platform,
+                                    Remark
                             FROM OrderSubsidiesLog(nolock)
-                            WHERE OrderId= #{OrderId,jdbcType=INTEGER}
+                            WHERE OrderId= #{orderId,jdbcType=INTEGER} and Platform>100
                             ORDER BY Id;
 	</select>
 </mapper>

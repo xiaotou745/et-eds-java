@@ -13,6 +13,7 @@ import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
+import com.edaisong.entity.OrderGrabChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.OrderDetailBusiness;
@@ -31,6 +32,61 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 		return getMasterSqlSessionUtil().insert(
 				"com.edaisong.api.dao.inter.IOrderChildDao.insertSelective", record);
 	}	
+	
+	@Override
+	public int insertList(List<OrderChild> record) {
+		return getMasterSqlSessionUtil().insert(
+				"com.edaisong.api.dao.inter.IOrderChildDao.insertList", record);
+	}
+	
+	@Override
+	public int updateByPrimaryKeySelective(OrderChild record)
+	{
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IOrderChildDao.updateByPrimaryKeySelective", record);
+	}
+	
+	@Override
+	public  int updateList(List<OrderChild> record)
+	{
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IOrderChildDao.updateList", record);
+	}
+    /**
+     * 取消订单 （取消前一天快单发单且未被抢单的子订单时）
+     * @param 日期
+     * @author 胡灵波
+     * @Date 2015年11月5日 11:40:37
+     * @return
+     */
+	@Override
+	public List<Integer> updateCancel(OrderChild record)
+	{
+		return getMasterSqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderChildDao.updateCancel", record);
+	}
+	
+	@Override
+	 public List<Integer>  updateGradOne(OrderGrabReq record)
+	 {
+		return getMasterSqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderChildDao.updateGradOne", record);
+	 }
+		
+	@Override
+	public	List<Integer>  updateGradTwo(OrderGrabReq record)
+	{
+		return getMasterSqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderChildDao.updateGradTwo", record);
+	}
+
+	
+	@Override
+	public OrderChild selectByPrimaryKey(Integer id)
+	{
+		return getMasterSqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderChildDao.selectByPrimaryKey", id);
+	}	  
 	
 	  /**
      * 根据订单信息查询 子订单集合 
@@ -51,13 +107,6 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 	     return result;
 
 	}
-
-	@Override
-	public int insertList(List<OrderChild> record) {
-		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderChildDao.insertList", record);
-	}
-
 	   /**
 	    *  获取任务支付状态（0：未支付 1：部分支付 2：已支付）
 	    *  @author CaoHeYang
@@ -73,24 +122,5 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 		return res;
 	}
 	
-	@Override
-	 public List<Integer>  updateGradOne(OrderGrabReq record)
-	 {
-		return getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderChildDao.updateGradOne", record);
-	 }
-		
-	@Override
-	public	List<Integer>  updateGradTwo(OrderGrabReq record)
-	{
-		return getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderChildDao.updateGradTwo", record);
-	}
 	
-	@Override
-	public OrderChild selectByPrimaryKey(Integer id)
-	{
-		return getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderChildDao.selectByPrimaryKey", id);
-	}
 }

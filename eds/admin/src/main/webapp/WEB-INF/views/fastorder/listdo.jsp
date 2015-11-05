@@ -55,7 +55,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			<td><%=ParseHelper.ShowString(data.get(i).getOrderRegionOneName())+"-"+ParseHelper.ShowString(data.get(i).getOrderRegionTwoName())%></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getActualDoneDate())%></td>
 			<td>数量：<%=data.get(i).getOrderCount()%><br /> 
-				佣金：<%=data.get(i).getOrderCommission()%>
+				佣金：<%=data.get(i).getSingleOrderCommission()%>/份
 			</td>
 			<td>
 			<%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%>

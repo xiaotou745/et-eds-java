@@ -8,46 +8,82 @@
     OrderRegionOneName,OrderRegionTwoId ,OrderRegionTwoName,commissionRate,
     baseCommission,websitesubsidy,adjustment ,distribsubsidy
   </sql>
+    <select id="selectByPrimaryKey" resultType="com.edaisong.entity.OrderGrab" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderGrab
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
   <select id="selectById" resultType="com.edaisong.entity.domain.FastOrderDetail" parameterType="java.lang.Long" >
-   SELECT  o.id ,
-        o.GrabOrderNo ,
-        a.OrderFrom ,
+   SELECT  2 as OrderFrom ,
         b.Name AS businessName ,
         b.PhoneNo AS businessPhoneNo ,
         b.PhoneNo2 AS businessPhoneNo2 ,
-        b.address as businessAddress,
+        b.address AS businessAddress ,
         ISNULL(c.TrueName, '') AS clienterName ,
         ISNULL(c.PhoneNo, '') AS clienterPhoneNo ,
-        o.OrderRegionOneName ,
-        o.OrderRegionTwoName ,
-        o.ActualDoneDate ,
-        o.orderCommission ,
+        o.Id ,
+        o.GrabOrderNo ,
+        o.BusinessId ,
+        o.ClienterId ,
         o.OrderCount ,
         o.Status ,
-        o.distribsubsidy,
-        MIN(m.websitesubsidy) AS singlewebsitesubsidy ,
-        MIN(m.adjustment) AS singleadjustment
-FROM    dbo.[order] a WITH ( NOLOCK )
-        JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
+        o.ActualDoneDate ,
+        o.GrabTime ,
+        o.PickUpTime ,
+        o.PickUpLongitude ,
+        o.PickUpLatitude ,
+        o.GrabLongitude ,
+        o.GrabLatitude ,
+        o.DoneLongitude ,
+        o.DoneLatitude ,
+        o.OrderCommission ,
+        o.SettleMoney ,
+        o.OrderRegionOneId ,
+        o.OrderRegionOneName ,
+        o.OrderRegionTwoId ,
+        o.OrderRegionTwoName ,
+        o.commissionRate ,
+        o.baseCommission ,
+        o.websitesubsidy ,
+        o.adjustment ,
+        o.distribsubsidy
+FROM    OrderGrabChild m WITH ( NOLOCK ) 
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
         JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
         LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId
-WHERE o.id = #{id,jdbcType=INTEGER} and  a.Platform = 2
-GROUP BY o.id ,
-        o.GrabOrderNo ,
-        a.OrderFrom ,
-        b.Name ,
+WHERE   o.id = #{id,jdbcType=INTEGER}
+GROUP BY b.Name ,
         b.PhoneNo ,
         b.PhoneNo2 ,
         b.address ,
         c.TrueName ,
         c.PhoneNo ,
-        o.OrderRegionOneName ,
-        o.OrderRegionTwoName ,
-        o.ActualDoneDate ,
-        o.orderCommission ,
+        o.Id ,
+        o.GrabOrderNo ,
+        o.BusinessId ,
+        o.ClienterId ,
         o.OrderCount ,
-        o.Status,
+        o.Status ,
+        o.ActualDoneDate ,
+        o.GrabTime ,
+        o.PickUpTime ,
+        o.PickUpLongitude ,
+        o.PickUpLatitude ,
+        o.GrabLongitude ,
+        o.GrabLatitude ,
+        o.DoneLongitude ,
+        o.DoneLatitude ,
+        o.OrderCommission ,
+        o.SettleMoney ,
+        o.OrderRegionOneId ,
+        o.OrderRegionOneName ,
+        o.OrderRegionTwoId ,
+        o.OrderRegionTwoName ,
+        o.commissionRate ,
+        o.baseCommission ,
+        o.websitesubsidy ,
+        o.adjustment ,
         o.distribsubsidy
   </select>
   <delete id="deleteById" parameterType="java.lang.Integer" >
@@ -194,7 +230,7 @@ GROUP BY o.id ,
 	<sql id="queryFrom">
 		(SELECT  o.id ,
         o.GrabOrderNo as orderNo ,
-        a.OrderFrom ,
+        2 as OrderFrom ,
         b.Name as businessName,
         b.PhoneNo as businessPhoneNo,
         ISNULL(c.TrueName, '''') AS clienterName ,
@@ -205,16 +241,15 @@ GROUP BY o.id ,
         o.ActualDoneDate ,
         o.OrderCount ,
         o.Status,
-        o.ordercommission
-FROM    dbo.[order] a WITH ( NOLOCK )
-        JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
+        o.ordercommission,
+        min(m.ordercommission) as singleOrderCommission
+FROM    OrderGrabChild m WITH ( NOLOCK )
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
         JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
         LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId 
         where <include refid="queryColumsWhere" />
 GROUP BY o.id ,
         o.GrabOrderNo ,
-        a.OrderFrom ,
         b.Name ,
         b.PhoneNo,
         c.TrueName ,
@@ -229,7 +264,7 @@ GROUP BY o.id ,
 	</sql>
 	 <!-- ???��???? ????��??? add by zhaohl 20151102 -->
 	<sql id="queryColumsWhere">
-		a.Platform = 2
+	1=1 
 		<if test="businessName != null and businessName != ''">
 			and b.Name=''${businessName}''
 		</if>
@@ -299,7 +334,7 @@ GROUP BY o.id ,
 	</select>
 	<!-- 导出快单列表 zhaohl 20151103 -->
 	<sql id="exportOrderWhere">
-		a.Platform = 2
+		1=1 
 		<if test="businessName != null and businessName != ''">
 			and b.Name='${businessName}'
 		</if>
@@ -338,13 +373,14 @@ GROUP BY o.id ,
         o.GrabTime ,
         o.PickUpTime ,
         o.ActualDoneDate ,
-        o.orderCommission ,
         o.OrderCount ,
-        o.distribsubsidy ,
-        o.WebsiteSubsidy,
-        o.Adjustment
-FROM     dbo.[order] a WITH ( NOLOCK )
-        JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
+        o.orderCommission ,
+        o.commissionRate,
+    	o.baseCommission,
+    	o.websitesubsidy,
+    	o.adjustment,
+    	o.distribsubsidy
+FROM    OrderGrabChild m WITH ( NOLOCK ) 
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
         JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
         LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId
@@ -357,11 +393,13 @@ GROUP BY o.GrabOrderNo ,
         o.GrabTime ,
         o.PickUpTime ,
         o.ActualDoneDate ,
-        o.ordercommission ,
         o.OrderCount ,
-        o.distribsubsidy,
-        o.WebsiteSubsidy,
-        o.Adjustment
+        o.orderCommission ,
+        o.commissionRate,
+    	o.baseCommission,
+    	o.websitesubsidy,
+    	o.adjustment,
+    	o.distribsubsidy
   </select>
   
   <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderGrab" >
@@ -385,6 +423,87 @@ GROUP BY o.GrabOrderNo ,
       SettleMoney = #{settlemoney,jdbcType=DOUBLE}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderGrab" >
+    update OrderGrab
+    <set >
+      <if test="businessid != null" >
+        BusinessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="distribsubsidy != null" >
+        DistribSubsidy = #{distribsubsidy,jdbcType=DECIMAL},
+      </if>
+      <if test="graborderno != null" >
+        GrabOrderNo = #{graborderno,jdbcType=VARCHAR},
+      </if>
+      <if test="clienterid != null" >
+        ClienterId = #{clienterid,jdbcType=INTEGER},
+      </if>
+      <if test="ordercount != null" >
+        OrderCount = #{ordercount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="actualdonedate != null" >
+        ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="grabtime != null" >
+        GrabTime = #{grabtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickuptime != null" >
+        PickUpTime = #{pickuptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickuplongitude != null" >
+        PickUpLongitude = #{pickuplongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pickuplatitude != null" >
+        PickUpLatitude = #{pickuplatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablongitude != null" >
+        GrabLongitude = #{grablongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="grablatitude != null" >
+        GrabLatitude = #{grablatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelongitude != null" >
+        DoneLongitude = #{donelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="donelatitude != null" >
+        DoneLatitude = #{donelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="orderRegionOneId != null" >
+        OrderRegionOneId = #{orderRegionOneId,jdbcType=INTEGER},
+      </if>
+      <if test="orderRegionOneName != null" >
+        OrderRegionOneName = #{orderRegionOneName,jdbcType=NVARCHAR},
+      </if>
+      <if test="orderRegionTwoId != null" >
+        OrderRegionTwoId = #{orderRegionTwoId,jdbcType=INTEGER},
+      </if>
+      <if test="orderRegionTwoName != null" >
+        OrderRegionTwoName = #{orderRegionTwoName,jdbcType=NVARCHAR},
+      </if>
+      <if test="ordercommission != null" >
+        OrderCommission = #{ordercommission,jdbcType=DOUBLE},
+      </if>
+      <if test="settlemoney != null" >
+        SettleMoney = #{settlemoney,jdbcType=DOUBLE},
+      </if>
+      <if test="commissionrate != null" >
+        CommissionRate = #{commissionrate,jdbcType=DOUBLE},
+      </if>
+      <if test="basecommission != null" >
+        BaseCommission = #{basecommission,jdbcType=DOUBLE},
+      </if>
+      <if test="websitesubsidy != null" >
+        WebsiteSubsidy = #{websitesubsidy,jdbcType=DOUBLE},
+      </if>
+      <if test="adjustment != null" >
+        Adjustment = #{adjustment,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
   <!-- 获取我的任务详情 wangchao -->
   <select id="getMyOrderGrabDetailC" resultType="com.edaisong.entity.resp.MyOrderGrabDetailCResp" parameterType="com.edaisong.entity.req.OrderGrabDetailCReq" >
     select 	b.Name BusinessName ,
@@ -395,9 +514,9 @@ GROUP BY o.GrabOrderNo ,
             og.OrderCount ,
             og.Id GrabOrderId ,
             og.GrabOrderNo , 
-            isnull(og.GrabTime, '') GrabTime ,
-            isnull(og.PickUpTime, '') PickUpTime ,
-            isnull(og.ActualDoneDate, '') ActualDoneDate ,
+            og.GrabTime,
+            og.PickUpTime ,
+            og.ActualDoneDate ,
             og.[Status] ,
             ( select    sum(a.OrderCommission)
               from      dbo.OrderGrabChild a ( nolock )
@@ -418,17 +537,17 @@ GROUP BY o.GrabOrderNo ,
 select b.Name BusinessName ,
         b.PhoneNo BusinessPhoneNo ,
         b.[Address] BusinessAddress ,
-        isnull(og.GrabTime,'') GrabTime,
+        og.GrabTime,
         og.OrderRegionOneName ,
         og.OrderRegionTwoName ,
         og.OrderCount ,
         og.Id GrabOrderId,
         og.GrabOrderNo 
-      <!-- <if test="status == 2">
+       <if test="status == 2">
 		 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(#{clienterLatitude,jdbcType=DOUBLE},#{clienterLongitude,jdbcType=DOUBLE},4326)),0) as DistanceToBusiness  
-	  </if> -->
+	  </if>
 	   <if test="status != 2">
-		,0 DistanceToBusiness 
+		,'--' DistanceToBusiness 
 	  </if> 
  from   dbo.OrderGrab og ( nolock )
         join dbo.business b ( nolock ) on og.BusinessId = b.Id

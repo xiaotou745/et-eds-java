@@ -4,12 +4,29 @@ import java.util.List;
 
 import com.edaisong.entity.CommissionType;
 import com.edaisong.entity.OrderChild;
+import com.edaisong.entity.OrderGrabChild;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.req.OrderGrabReq;
 
 public interface IOrderChildDao {
     int insert(OrderChild record);
     int insertList(List<OrderChild> record);
+    
+    int updateByPrimaryKeySelective(OrderChild record);
+	int updateList(List<OrderChild> record);	
+    /**
+     * 取消订单 （取消前一天快单发单且未被抢单的子订单时）
+     * @param 日期
+     * @author 胡灵波
+     * @Date 2015年11月5日 11:40:37
+     * @return
+     */
+	List<Integer> updateCancel(OrderChild record);
+	
+	
+    List<Integer>   updateGradOne(OrderGrabReq record);  	
+
+    List<Integer>   updateGradTwo(OrderGrabReq record) ;
     /**
      * 根据订单信息查询 子订单集合 
      * @param orderNo 订单号
@@ -28,13 +45,8 @@ public interface IOrderChildDao {
     * @date  20150831
     * @return
     */
-    int   getOrderTaskPayStatus(int orderId);
-    
-    List<Integer>   updateGradOne(OrderGrabReq record);  
-	
+    int   getOrderTaskPayStatus(int orderId); 
 
-    List<Integer>   updateGradTwo(OrderGrabReq record) ;
-    
-    
+   
     OrderChild selectByPrimaryKey(Integer id);
 }

@@ -318,6 +318,33 @@
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
+	  <!-- 获取商户端 取货中 配送中 已完成 任务  wangchao-->
+	<select id="getMyOrdeB" resultType="com.edaisong.entity.domain.OrderRespModel" parameterType="com.edaisong.entity.req.MyOrderBReq" statementType="CALLABLE">	
+	{call Sp_CustomPage2015_V1(
+		' og.GrabTime asc ',
+		'
+		    c.TrueName ClienterName, 
+			og.ClienterId,
+			c.PhoneNo ClienterPhoneNo, 
+			og.GrabTime,
+			og.PickUpTime,
+			og.ActualDoneDate,
+			og.OrderRegionOneName,
+			og.OrderRegionTwoName,
+			og.[Status],
+			c.HeadPhoto ClienterHeadPhoto, 
+			og.OrderCount,
+			og.Id GrabOrderId
+		',
+		'dbo.OrderGrab og ( nolock ) join dbo.clienter c ( nolock ) on og.ClienterId = c.Id ',
+		'<include refid="getMyOrdeBListWhere" />',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+  </select>
 	<select id="getOpLogByBusinessID" resultType="com.edaisong.entity.BusinessOptionLog"
 		parameterType="java.lang.Long">
 		SELECT optname ,
@@ -529,4 +556,65 @@ order by c.WaitingCounts desc
 		SELECT count(1) FROM dbo.BusinessClienterRelation (nolock)
 where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,jdbcType=INTEGER} and IsBind =1  and IsEnable = 1
 	</select>
+	
+   <sql id="getMyOrdeBListWhere">
+  		1=1 and og.BusinessId = ${businessId}  and og.[Status] = ${status}
+  </sql>
+     <sql id="getMyOrdeBListColumns">
+  		 c.TrueName ClienterName, 
+			og.ClienterId,
+			c.PhoneNo ClienterPhoneNo, 
+			og.GrabTime,
+			og.PickUpTime,
+			og.ActualDoneDate,
+			og.OrderRegionOneName,
+			og.OrderRegionTwoName,
+			og.Status,
+			c.HeadPhoto ClienterHeadPhoto, 
+			og.OrderCount,
+			og.Id GrabOrderId 
+  </sql>
+   <sql id="getMyOrdeBListFrom">
+  		  dbo.OrderGrab og ( nolock ) join dbo.clienter c ( nolock ) on og.ClienterId = c.Id
+  </sql>
+  <!-- 获取商户端 取货中 配送中 已完成 任务  wangchao-->
+	<select id="getMyOrdeB" resultType="com.edaisong.entity.domain.OrderRespModel" parameterType="com.edaisong.entity.req.MyOrderBReq" statementType="CALLABLE">	
+	{call Sp_CustomPage2015_V1(
+		'og.GrabTime asc',
+		'<include refid="getMyOrdeBListColumns" />',
+		'<include refid="getMyOrdeBListFrom" />',
+		'<include refid="getMyOrdeBListWhere" />', 
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+  </select>
+  <select id="getOrderCountTotal" resultType="com.edaisong.entity.resp.MyOrderBResp"
+		parameterType="com.edaisong.entity.req.MyOrderBReq">
+		SELECT  
+			sum(case when og.Status =  0 then og.OrderCount else 0 end) quHuoOrderCountTotal,
+			sum(case when og.Status =  2 then og.OrderCount else 0 end) peiSongOrderCountTotal,
+			sum(case when og.Status =  1 then og.OrderCount else 0 end) yiWanChenOrderCountTotal
+			from 
+			dbo.OrderGrab og(nolock)
+          where og.BusinessId = #{businessId,jdbcType=INTEGER}
+	</select> 
+	<select id="getMyOrderDetailB" resultType="com.edaisong.entity.resp.MyOrderDetailBResp"
+		parameterType="com.edaisong.entity.req.OrderDetailBReq">
+	select  c.TrueName ClienterName ,
+        og.ClienterId ,
+        c.PhoneNo ClienterPhoneNo , 
+        og.GrabTime, 
+        og.PickUpTime ,
+        og.ActualDoneDate ,
+        og.OrderRegionOneName ,
+        og.OrderRegionTwoName ,
+        og.[Status] , 
+        og.OrderCount,og.Id GrabOrderId
+from    dbo.OrderGrab og ( nolock )
+        join dbo.clienter c ( nolock ) on og.ClienterId = c.Id
+where   og.Id = #{grabOrderId,jdbcType=INTEGER} 
+	</select> 
 </mapper>

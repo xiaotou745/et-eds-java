@@ -14,6 +14,7 @@
 <%
 	String basePath =PropertyUtils.getProperty("java.admin.url");
 FastOrderDetail detailModel=	(FastOrderDetail)request.getAttribute("detailModel");
+List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
 	List<OrderSubsidiesLog> orderSubsidiesLogs=	(List<OrderSubsidiesLog>)request.getAttribute("orderSubsidiesLogs");
 %>
 <style type="text/css">
@@ -44,17 +45,22 @@ FastOrderDetail detailModel=	(FastOrderDetail)request.getAttribute("detailModel"
 		<table class="tbstyle222" border="0"
 			style="font-size: 13px; font-weight: bold; line-height: 300%; width: 1000px;">
 			<tr class="trclass">
-				<td>任务单号：<%=detailModel.getGrabOrderNo()%></td>
+				<td>任务单号：<%=detailModel.getGraborderno()%></td>
 				<td>是否已付款:顾客已付款</td>
 				<td>订单状态：<%=OrderStatus.getEnum(detailModel.getStatus()).desc()%></td>
 				<td>订单来源：<%=OrderFrom.getEnum(detailModel.getOrderFrom()).desc()%></td>
 			</tr>
 			<tr class="trclass">
-				<td>订单数量：<%=detailModel.getOrderCount()%></td>
-				<td>订单佣金： <%=ParseHelper.ShowString(detailModel.getOrderCommission())%></td>
-				<td>外送费：<%=ParseHelper.ShowString(detailModel.getDistribsubsidy())%></td>
-				<td>网站补贴： <%=ParseHelper.ShowString(detailModel.getSingleWebsitesubsidy())%></td>
-				<td>任务补贴： <%=ParseHelper.ShowString(detailModel.getSingleAdjustment())%></td>
+				<td>订单数量：<%=detailModel.getOrdercount()%></td>
+				<td>订单总佣金： <%=ParseHelper.ShowString(detailModel.getOrderCommission())%></td>
+				<td>配送费：<%=ParseHelper.ShowString(orderChildList.get(0).getDistribsubsidy())%>/单</td>
+				<td>网站补贴： <%=ParseHelper.ShowString(orderChildList.get(0).getWebsiteSubsidy())%>/单</td>
+			</tr>
+			<tr class="trclass">
+				<td>订单是否需要审核：否</td>
+				<td></td>
+				<td></td>
+				<td></td>
 			</tr>
 		</table>
 	</fieldset>
@@ -102,7 +108,7 @@ FastOrderDetail detailModel=	(FastOrderDetail)request.getAttribute("detailModel"
 		<legend>订单列表</legend>
 		<div style="float: left; width: 1000px;">
 
-			<table border="0" cellspacing="0" cellpadding="0" class="tbstyle"
+			<table id="tborderchild" border="0" cellspacing="0" cellpadding="0" class="tbstyle"
 				width="1000">
 				<thead>
 					<tr class="tdbg">
@@ -114,15 +120,14 @@ FastOrderDetail detailModel=	(FastOrderDetail)request.getAttribute("detailModel"
 				</thead>
 				<tbody>
 					<%
-						List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
 						for (OrderGrabChild curOrderChild : orderChildList) {
 					%>
 					<tr>
 						<td><%=ParseHelper.ShowString(curOrderChild.getChildid())%></td>
-						<td><%=ParseHelper.ShowString(OrderStatus.getEnum(
-						curOrderChild.getStatus()).desc())%></td>
-						<td><%=ParseHelper.ToDateString(curOrderChild.getActualdonedate())%></td>
-						<td><%=curOrderChild.getDonelatitude() + "_"+ curOrderChild.getDonelatitude()%></td>
+						<td><%=ParseHelper.ShowString(OrderStatus.getEnum(curOrderChild.getStatus()).desc())%></td>
+						<td><%=curOrderChild.getActualdonedate()==null?"--":ParseHelper.ToDateString(curOrderChild.getActualdonedate())%></td>
+						<td>--</td>
+						<td style="display:none"><%=curOrderChild.getDonelatitude() + ";"+ curOrderChild.getDonelongitude()%></td>
 					</tr>
 					<%
 						}
@@ -151,12 +156,11 @@ FastOrderDetail detailModel=	(FastOrderDetail)request.getAttribute("detailModel"
 						for (OrderSubsidiesLog item : orderSubsidiesLogs) {
 					%>
 					<tr id="<%=item.getId()%>">
-						<td><%=ParseHelper.ShowString(OrderStatus.getEnum(
-						item.getOrderstatus()).desc())%></td>
+						<td><%=ParseHelper.ShowString(OrderStatus.getEnum(item.getOrderstatus()).desc())%></td>
 						<td><%=ParseHelper.ShowString(item.getOptname())%></td>
 						<td><%=ParseHelper.ToDateString(item.getInserttime())%></td>
 						<td><%=ParseHelper.ShowString(item.getRemark())%></td>
-						<td><%=OrderPlatform.getEnum(item.getPlatform()).desc()%></td>
+						<td><%=OrderPlatform.FastClienter.desc()%></td>
 					</tr>
 					<%
 						}
@@ -166,3 +170,39 @@ FastOrderDetail detailModel=	(FastOrderDetail)request.getAttribute("detailModel"
 		</div>
 	</fieldset>
 </div>
+<script>
+ $(function(){
+	 var trs=$("#tborderchild tr");
+			 for(var i=1;i<trs.length;i++){ 
+			     var tr=$(trs[i]);
+			     var td=tr.children('td').eq(4);
+			     var param=$(td).html();
+			     var ab=param.split(";");
+			     var addressTd=tr.children('td').eq(3);
+			     getAddress($(addressTd),ab[0],ab[1]);
+			 }
+ });
+ function getAddress(addressTd,lat,lng){
+	if(parseFloat(lat)==0||parseFloat(lng)==0){
+		return;
+	} 
+	var url = "http://api.map.baidu.com/geocoder/v2/?ak=dAeaG6HwIFGlkbqtyKkyFGEC&callback=renderReverse&location="+lat+","+lng+"&output=json&pois=1";
+     $.ajax({
+         type: 'POST',
+         global: false,
+         url: url,
+         data: {},
+         dataType: 'jsonp',
+  	   	 jsonp: 'callback',
+  	   	 jsonpCallback:"jsonpCallback",
+         success: function (data) {
+        	 if(data.result.formatted_address!=""){
+        		 addressTd.html(data.result.formatted_address);
+        	 }
+         },error:function(data){
+        	
+         }
+     });
+	}
+ </script>
+	

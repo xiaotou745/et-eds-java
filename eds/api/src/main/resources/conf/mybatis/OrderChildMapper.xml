@@ -85,25 +85,133 @@
 			);
 		</foreach>
 	</update>
-    <update id="updateGradOne" parameterType="com.edaisong.entity.req.OrderGrabReq" >
+	<update id="updateList" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" >
+		update OrderChild set Status=#{item.status,jdbcType=SMALLINT},
+		UpdateBy=#{item.updateby,jdbcType=NVARCHAR},
+		UpdateTime=getdate()
+		where id=#{item.id,jdbcType=INTEGER}			
+		</foreach>
+	</update>
+	 <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderChild" >
+    update OrderChild
+    <set >
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="businessid != null" >
+        businessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="childid != null" >
+        ChildId = #{childid,jdbcType=INTEGER},
+      </if>
+      <if test="totalprice != null" >
+        TotalPrice = #{totalprice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodprice != null" >
+        GoodPrice = #{goodprice,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryprice != null" >
+        DeliveryPrice = #{deliveryprice,jdbcType=DECIMAL},
+      </if>
+      <if test="paystyle != null" >
+        PayStyle = #{paystyle,jdbcType=SMALLINT},
+      </if>
+      <if test="paytype != null" >
+        PayType = #{paytype,jdbcType=SMALLINT},
+      </if>
+      <if test="paystatus != null" >
+        PayStatus = #{paystatus,jdbcType=SMALLINT},
+      </if>
+      <if test="payby != null" >
+        PayBy = #{payby,jdbcType=NVARCHAR},
+      </if>
+      <if test="paytime != null" >
+        PayTime = #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payprice != null" >
+        PayPrice = #{payprice,jdbcType=DECIMAL},
+      </if>
+      <if test="hasuploadticket != null" >
+        HasUploadTicket = #{hasuploadticket,jdbcType=BIT},
+      </if>
+      <if test="ticketurl != null" >
+        TicketUrl = #{ticketurl,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null" >
+        CreateBy = #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="originalorderno != null" >
+        OriginalOrderNo = #{originalorderno,jdbcType=VARCHAR},
+      </if>
+      <if test="wxcodeurl != null" >
+        WxCodeUrl = #{wxcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdpaystatus != null" >
+        ThirdPayStatus = #{thirdpaystatus,jdbcType=SMALLINT},
+      </if>
+      <if test="orderCommission != null" >
+        OrderCommission = #{orderCommission,jdbcType=DECIMAL},
+      </if>
+      <if test="settleMoney != null" >
+        SettleMoney = #{settleMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="orderRegionOneId != null" >
+        OrderRegionOneId = #{orderRegionOneId,jdbcType=INTEGER},
+      </if>
+      <if test="orderRegionTwoId != null" >
+        OrderRegionTwoId = #{orderRegionTwoId,jdbcType=INTEGER},
+      </if>
+      <if test="commissionRate != null" >
+        CommissionRate = #{commissionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="baseCommission != null" >
+        BaseCommission = #{baseCommission,jdbcType=DECIMAL},
+      </if>
+      <if test="websiteSubsidy != null" >
+        WebsiteSubsidy = #{websiteSubsidy,jdbcType=DECIMAL},
+      </if>
+      <if test="adjustment != null" >
+        Adjustment = #{adjustment,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="updateGradOne" resultType="java.lang.Integer" parameterType="com.edaisong.entity.req.OrderGrabReq" >
 update dbo.OrderChild set status=1 output inserted.Id where status=0 and  id in(
 select top ${orderCount} id from dbo.OrderChild 
 where businessid= ${businessId}
  and orderRegionOneId=#{orderRegionOneId})
-  </update>
-    <select id="selectByPrimaryKey" resultType="com.edaisong.entity.OrderChild" parameterType="java.lang.Long" >
+  </select>  
+  <select id="updateGradTwo" resultType="java.lang.Integer" parameterType="com.edaisong.entity.req.OrderGrabReq" >
+update dbo.OrderChild set status=1 output inserted.Id where status=0 and  id in(
+select top ${orderCount} id from dbo.OrderChild 
+where businessid= ${businessId}
+and orderRegionTwoId=${orderRegionTwoId})
+  </select>  
+      <select id="updateCancel" resultType="java.lang.Integer" parameterType="com.edaisong.entity.OrderChild" >
+update dbo.OrderChild set status=3 output inserted.Id 
+   where Platform=2 and status=0 and createTime>= #{createtime,jdbcType=TIMESTAMP} and  #{createtime,jdbcType=TIMESTAMP}>=createTime
+  </select>  
+  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.OrderChild" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from OrderChild
     where Id = #{id,jdbcType=BIGINT}
   </select>
   
-  <select id="updateGradTwo" resultType="java.lang.Integer" parameterType="com.edaisong.entity.req.OrderGrabReq" >
-update dbo.OrderChild set status=1 output inserted.Id where status=0 and  id in(
-select top ${orderCount} id from dbo.OrderChild 
-where businessid= ${businessId}
-and orderRegionTwoId=${orderRegionTwoId})
-  </select>
 	<!-- 根据订单号 骑士id 查询子订单详情集合 add by caoheyang 20150804 -->
 	<select id="getOrderChildByOrderInfo" parameterType="java.util.Map"
 		resultType="com.edaisong.entity.OrderChild">

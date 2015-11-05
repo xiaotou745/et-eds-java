@@ -4,7 +4,8 @@ public enum TaskStatus {
 	PublishOrder(0, "任务已发布"),
 	OrderHadRush(1, "任务已被抢"),
 	OrderFinish(2, "任务已完成"),
-	CancelOrder(3, "取消任务");
+	CancelOrder(3, "取消任务"),
+	Taking(4, "任务已取货");
 	private int value = 0;
 	private String desc;
 	private TaskStatus(int value, String desc) { // 必须是private的，否则编译错误
