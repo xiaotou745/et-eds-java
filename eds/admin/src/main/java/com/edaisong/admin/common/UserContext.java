@@ -5,20 +5,28 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.edaisong.api.service.inter.IAccountService;
 import com.edaisong.api.service.inter.IAuthorityMenuClassService;
+import com.edaisong.core.security.AES;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.SpringBeanHelper;
+import com.edaisong.entity.Account;
 import com.edaisong.entity.domain.SimpleUserInfoModel;
 
 public class UserContext {
 	private SimpleUserInfoModel account;
 	private String host="";
 	private final static IAuthorityMenuClassService authorityMenuClassService;
+	private final static IAccountService accountService;
 	static {
 		authorityMenuClassService = SpringBeanHelper
 				.getCustomBeanByType(IAuthorityMenuClassService.class);
+		accountService = SpringBeanHelper
+				.getCustomBeanByType(IAccountService.class);
 	}
 
 	private UserContext(SimpleUserInfoModel account,String host) {
@@ -53,14 +61,24 @@ public class UserContext {
 		return account.getUserName();
 	}
 	public static  UserContext getCurrentContext(HttpServletRequest request) {
-		final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
-		String cookieValue = CookieUtils.getCookie(request, cookieKey);
-		if (cookieValue != null&&!cookieValue.isEmpty()) {
-			SimpleUserInfoModel account = JsonUtil.str2obj(cookieValue,SimpleUserInfoModel.class);
-			if (account != null) {
-				return new UserContext(account,request.getHeader("host"));
+		try {
+			final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
+			String cookieValue = CookieUtils.getCookie(request, cookieKey);
+			if (cookieValue != null&&!cookieValue.isEmpty()) {
+				String edcrCookie=AES.aesDecrypt(cookieValue);
+				SimpleUserInfoModel account = JsonUtil.str2obj(edcrCookie,SimpleUserInfoModel.class);
+				if (account != null&&
+					account.getUserName()!=null&&
+					!account.getUserName().isEmpty()&&
+					account.getLoginName()!=null&&
+					!account.getLoginName().isEmpty()) {
+					return new UserContext(account,request.getHeader("host"));
+				}
 			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
+
 		return null;
 	}
 	/**

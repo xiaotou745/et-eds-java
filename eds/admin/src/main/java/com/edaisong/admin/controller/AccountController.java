@@ -27,11 +27,13 @@ import com.edaisong.api.service.inter.IAuthorityRoleService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.consts.GlobalSettings;
+import com.edaisong.core.security.AES;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.IPUtil;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
+import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.AccountLog;
 import com.edaisong.entity.AuthorityRole;
@@ -153,7 +155,9 @@ public class AccountController {
 		loginUser.setPassword("");
 		loginUser.setRoleId(account.getRoleid());
 		loginUser.setUserName(account.getUsername());
-		CookieUtils.setCookie(request,response,"admin", LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
+		String encyCookie=AES.aesEncrypt(JsonUtil.obj2string(loginUser));
+		 
+		CookieUtils.setCookie(request,response,"admin", LoginUtil.LOGIN_COOKIE_NAME, encyCookie, cookieMaxAge,
 				true);
 		response.sendRedirect(basePath+"/order/list");
 	}

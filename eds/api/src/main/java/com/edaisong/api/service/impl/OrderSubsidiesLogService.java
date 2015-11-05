@@ -21,7 +21,10 @@ public class OrderSubsidiesLogService implements IOrderSubsidiesLogService {
      */
 	@Override
 	public List<OrderSubsidiesLog> GetOrderOptionLog(Long orderId) {
-		// TODO Auto-generated method stub
 		return orderSubsidiesLogDao.GetOrderOptionLog(orderId);
+	}
+	@Override
+	public List<OrderSubsidiesLog> GetFastOrderOptionLog(Long orderId) {
+		return orderSubsidiesLogDao.GetFastOrderOptionLog(orderId);
 	}
 }

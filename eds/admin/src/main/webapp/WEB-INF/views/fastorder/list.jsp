@@ -213,8 +213,7 @@ width: 100%;
 	        window.location.href = url+"?"+formdata;
 	        return true;
 	});
-	
-	
+
 	 function showMapData(orderid) {
 	        //弹出地图时，禁用滚动条
 	        document.documentElement.style.overflow = "hidden";
