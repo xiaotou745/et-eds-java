@@ -15,7 +15,7 @@
     where Id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectById" resultType="com.edaisong.entity.domain.FastOrderDetail" parameterType="java.lang.Long" >
-   SELECT  a.OrderFrom ,
+   SELECT  2 as OrderFrom ,
         b.Name AS businessName ,
         b.PhoneNo AS businessPhoneNo ,
         b.PhoneNo2 AS businessPhoneNo2 ,
@@ -48,15 +48,12 @@
         o.websitesubsidy ,
         o.adjustment ,
         o.distribsubsidy
-FROM    dbo.[order] a WITH ( NOLOCK )
-        JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
+FROM    OrderGrabChild m WITH ( NOLOCK ) 
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
         JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
         LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId
 WHERE   o.id = #{id,jdbcType=INTEGER}
-        AND a.Platform = 2
-GROUP BY a.OrderFrom ,
-        b.Name ,
+GROUP BY b.Name ,
         b.PhoneNo ,
         b.PhoneNo2 ,
         b.address ,
@@ -233,7 +230,7 @@ GROUP BY a.OrderFrom ,
 	<sql id="queryFrom">
 		(SELECT  o.id ,
         o.GrabOrderNo as orderNo ,
-        a.OrderFrom ,
+        2 as OrderFrom ,
         b.Name as businessName,
         b.PhoneNo as businessPhoneNo,
         ISNULL(c.TrueName, '''') AS clienterName ,
@@ -246,15 +243,13 @@ GROUP BY a.OrderFrom ,
         o.Status,
         o.ordercommission,
         min(m.ordercommission) as singleOrderCommission
-FROM    dbo.[order] a WITH ( NOLOCK )
-        JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
+FROM    OrderGrabChild m WITH ( NOLOCK )
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
         JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
         LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId 
         where <include refid="queryColumsWhere" />
 GROUP BY o.id ,
         o.GrabOrderNo ,
-        a.OrderFrom ,
         b.Name ,
         b.PhoneNo,
         c.TrueName ,
@@ -269,7 +264,7 @@ GROUP BY o.id ,
 	</sql>
 	 <!-- ???��???? ????��??? add by zhaohl 20151102 -->
 	<sql id="queryColumsWhere">
-		a.Platform = 2
+	1=1 
 		<if test="businessName != null and businessName != ''">
 			and b.Name=''${businessName}''
 		</if>
@@ -339,7 +334,7 @@ GROUP BY o.id ,
 	</select>
 	<!-- 导出快单列表 zhaohl 20151103 -->
 	<sql id="exportOrderWhere">
-		a.Platform = 2
+		1=1 
 		<if test="businessName != null and businessName != ''">
 			and b.Name='${businessName}'
 		</if>
@@ -385,8 +380,7 @@ GROUP BY o.id ,
     	o.websitesubsidy,
     	o.adjustment,
     	o.distribsubsidy
-FROM     dbo.[order] a WITH ( NOLOCK )
-        JOIN OrderGrabChild m WITH ( NOLOCK ) ON a.Id = m.orderid
+FROM    OrderGrabChild m WITH ( NOLOCK ) 
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
         JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
         LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId

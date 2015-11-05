@@ -318,6 +318,33 @@
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
+	  <!-- 获取商户端 取货中 配送中 已完成 任务  wangchao-->
+	<select id="getMyOrdeB" resultType="com.edaisong.entity.domain.OrderRespModel" parameterType="com.edaisong.entity.req.MyOrderBReq" statementType="CALLABLE">	
+	{call Sp_CustomPage2015_V1(
+		' og.GrabTime asc ',
+		'
+		    c.TrueName ClienterName, 
+			og.ClienterId,
+			c.PhoneNo ClienterPhoneNo, 
+			og.GrabTime,
+			og.PickUpTime,
+			og.ActualDoneDate,
+			og.OrderRegionOneName,
+			og.OrderRegionTwoName,
+			og.[Status],
+			c.HeadPhoto ClienterHeadPhoto, 
+			og.OrderCount,
+			og.Id GrabOrderId
+		',
+		'dbo.OrderGrab og ( nolock ) join dbo.clienter c ( nolock ) on og.ClienterId = c.Id ',
+		'<include refid="getMyOrdeBListWhere" />',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+  </select>
 	<select id="getOpLogByBusinessID" resultType="com.edaisong.entity.BusinessOptionLog"
 		parameterType="java.lang.Long">
 		SELECT optname ,
