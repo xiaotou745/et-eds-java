@@ -6,6 +6,7 @@ public class OrderGrabDetailCReq {
 	
 	private Integer grabOrderId;
 	 
+	private Integer status;
 	
 	private String grabOrderNo; 
 	
@@ -52,5 +53,13 @@ public class OrderGrabDetailCReq {
 
 	public void setClienterLatitude(double clienterLatitude) {
 		this.clienterLatitude = clienterLatitude;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	} 
 }

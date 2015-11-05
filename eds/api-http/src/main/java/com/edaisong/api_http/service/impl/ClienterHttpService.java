@@ -29,7 +29,12 @@ public class ClienterHttpService implements IClienterHttpService {
 	public HttpResultModel<MyBusinessResp> getMyBusiness(
 			MyBusinessReq myBusinessReq) {
 		HttpResultModel<MyBusinessResp> result = new HttpResultModel<MyBusinessResp>();
-		 
+		
+		if(myBusinessReq.getClienterId()<=0){
+			result.setStatus(RemoveRelationReturnEnum.ClienterIdError.value());
+			result.setMessage(RemoveRelationReturnEnum.ClienterIdError.desc());
+			return result;
+		}
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
 		MyBusinessResp listMyBusinessResp = new MyBusinessResp();

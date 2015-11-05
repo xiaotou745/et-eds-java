@@ -13,6 +13,7 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel;  
+import com.edaisong.entity.domain.MyOrderGrabCModel;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.MyOrderGrabCReq; 
 import com.edaisong.entity.req.MyOrderGrabCReq;import com.edaisong.entity.req.OrderGrabCompleteReq;
@@ -22,6 +23,7 @@ import com.edaisong.entity.req.PagedFastOrderSearchReq;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
  
+
 
 
 
@@ -348,9 +350,18 @@ public class OrderGrabService implements IOrderGrabService {
 	}
 	
 	@Override
-	public List<MyOrderGrabCResp> getMyOrderGrabC(
-			MyOrderGrabCReq myOrderGrabCReq) { 
-		return orderGrabDao.getMyOrderGrabC(myOrderGrabCReq);
+	public MyOrderGrabCResp getMyOrderGrabC(
+			MyOrderGrabCReq myOrderGrabCReq) {
+		MyOrderGrabCResp myOrderGrabCResp = new MyOrderGrabCResp();
+		List<MyOrderGrabCModel> myOrderGrabCModel = orderGrabDao.getMyOrderGrabC(myOrderGrabCReq);
+		myOrderGrabCResp.setMyOrderGrabCModelList(myOrderGrabCModel);
+		
+		MyOrderGrabCResp myOrderGrabCTotal = new MyOrderGrabCResp();
+		myOrderGrabCTotal = orderGrabDao.getMyOrderGrabCTotalInfo(myOrderGrabCReq);
+		myOrderGrabCResp.setPeiSongZhongTotal(myOrderGrabCTotal.getPeiSongZhongTotal());
+		myOrderGrabCResp.setQuHuoZhongTotal(myOrderGrabCTotal.getQuHuoZhongTotal());
+		
+		return myOrderGrabCResp;
 	}
 
 	@Override

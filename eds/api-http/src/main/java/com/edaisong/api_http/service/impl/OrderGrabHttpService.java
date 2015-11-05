@@ -75,15 +75,19 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	 * wangchao
 	 */
 	@Override
-	public HttpResultModel<List<MyOrderGrabCResp>> getMyOrderGrabC(
+	public HttpResultModel<MyOrderGrabCResp> getMyOrderGrabC(
 			MyOrderGrabCReq myOrderGrabCReq) { 
-		HttpResultModel<List<MyOrderGrabCResp>> result=new HttpResultModel<List<MyOrderGrabCResp>>();
+		HttpResultModel<MyOrderGrabCResp> result=new HttpResultModel<MyOrderGrabCResp>();
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
-		List<MyOrderGrabCResp>  myOrderGrabCList= orderGrabService.getMyOrderGrabC(myOrderGrabCReq);
-		result.setResult(myOrderGrabCList); 
+		MyOrderGrabCResp  myOrderGrabCResp= orderGrabService.getMyOrderGrabC(myOrderGrabCReq);
+		result.setResult(myOrderGrabCResp); 
 		return  result;
 	}
+	/*
+	 * 获取任务详情
+	 * wangchao
+	 */
 	@Override
 	public HttpResultModel<MyOrderGrabDetailCResp> getMyOrderGrabDetailC(
 			OrderGrabDetailCReq orderGrabDetailCReq) {  

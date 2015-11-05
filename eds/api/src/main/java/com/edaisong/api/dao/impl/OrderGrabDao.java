@@ -12,6 +12,7 @@ import com.edaisong.entity.domain.FastOrderDetail;
 import com.edaisong.entity.domain.FastOrderExportModel;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel; 
+import com.edaisong.entity.domain.MyOrderGrabCModel;
 import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
@@ -69,7 +70,7 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 	 * wangchao
 	 */
 	@Override
-	public List<MyOrderGrabCResp> getMyOrderGrabC(
+	public List<MyOrderGrabCModel> getMyOrderGrabC(
 			MyOrderGrabCReq myOrderGrabCReq) {
 		return getReadOnlySqlSessionUtil().selectList(
 				"com.edaisong.api.dao.inter.IOrderGrabDao.getMyOrderGrabC", myOrderGrabCReq);
@@ -94,5 +95,10 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 	@Override
 	public List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req) {
 		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IOrderGrabDao.exportOrder", req);
+	}
+	@Override
+	public MyOrderGrabCResp getMyOrderGrabCTotalInfo(
+			MyOrderGrabCReq myOrderGrabCReq) {
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderGrabDao.getMyOrderGrabCTotalInfo", myOrderGrabCReq);
 	} 
 }

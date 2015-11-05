@@ -518,7 +518,7 @@ GROUP BY o.GrabOrderNo ,
             og.PickUpTime ,
             og.ActualDoneDate ,
             og.[Status] ,
-            ( select    sum(a.OrderCommission)
+            ( select    ISNULL(sum(a.OrderCommission),0)
               from      dbo.OrderGrabChild a ( nolock )
               where     a.GrabOrderId = #{grabOrderId,jdbcType=INTEGER}
             ) OrderCommission ,
@@ -527,13 +527,15 @@ GROUP BY o.GrabOrderNo ,
               where     b.GrabOrderId = #{grabOrderId,jdbcType=INTEGER}
                         and b.[Status] = 1
             ) HadCompleteOrderGrab
+            <if test="status == 2">
+		 		,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${clienterLatitude},${clienterLongitude},4326)),0) as DistanceToBusiness  
+	  		</if>
      from   dbo.OrderGrab og ( nolock ) 
             join dbo.business b ( nolock ) on og.BusinessId = b.Id
-     where  og.ClienterId = #{clienterId,jdbcType=INTEGER}
-            and og.Id = #{grabOrderId,jdbcType=INTEGER}
+     where og.Id = #{grabOrderId,jdbcType=INTEGER}
   </select>
   <!-- 获取我的任务wangchao -->
-  <select id="getMyOrderGrabC" resultType="com.edaisong.entity.resp.MyOrderGrabCResp" parameterType="com.edaisong.entity.req.MyOrderGrabCReq" >
+  <select id="getMyOrderGrabC" resultType="com.edaisong.entity.domain.MyOrderGrabCModel" parameterType="com.edaisong.entity.req.MyOrderGrabCReq" >
 select b.Name BusinessName ,
         b.PhoneNo BusinessPhoneNo ,
         b.[Address] BusinessAddress ,
@@ -544,14 +546,20 @@ select b.Name BusinessName ,
         og.Id GrabOrderId,
         og.GrabOrderNo 
        <if test="status == 2">
-		 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(#{clienterLatitude,jdbcType=DOUBLE},#{clienterLongitude,jdbcType=DOUBLE},4326)),0) as DistanceToBusiness  
-	  </if>
-	   <if test="status != 2">
-		,'--' DistanceToBusiness 
+		 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${clienterLatitude},${clienterLongitude},4326)),0) as DistanceToBusiness  
 	  </if> 
  from   dbo.OrderGrab og ( nolock )
         join dbo.business b ( nolock ) on og.BusinessId = b.Id
  where  og.ClienterId = #{clienterId,jdbcType=INTEGER}
         and og.[Status] = #{status,jdbcType=INTEGER}
   </select>
+  <!-- 骑士获取我的任务 配送中和取货中的数量 -->
+   <select id="getMyOrderGrabCTotalInfo" resultType="com.edaisong.entity.resp.MyOrderGrabCResp" parameterType="com.edaisong.entity.req.MyOrderGrabCReq" >
+ 		 select  
+ isnull(sum(case when og.Status =  2 then og.OrderCount else 0 end),0) quHuoZhongTotal,
+ isnull(sum(case when og.Status =  4 then og.OrderCount else 0 end),0) peiSongZhongTotal
+ from   dbo.OrderGrab og ( nolock ) 
+ where  og.ClienterId = #{clienterId,jdbcType=INTEGER}
+  </select>
+  
 </mapper>
