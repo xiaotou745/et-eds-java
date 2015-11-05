@@ -11,11 +11,12 @@
 <%@page import="com.edaisong.core.consts.AuthCode"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.admin.url");
-boolean business_AuditPass=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_AuditPass);
-boolean business_Modify=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_Modify);
-boolean business_Recharge=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_Recharge);
-boolean business_ClienterBind=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_ClienterBind);
-boolean business_WithDraw=UserContext.getCurrentContext(request).isHasAuth(AuthCode.Business_WithDraw);
+UserContext context=UserContext.getCurrentContext(request);
+boolean business_AuditPass=context.isHasAuth(AuthCode.Business_AuditPass);
+boolean business_Modify=context.isHasAuth(AuthCode.Business_Modify);
+boolean business_Recharge=context.isHasAuth(AuthCode.Business_Recharge);
+boolean business_ClienterBind=context.isHasAuth(AuthCode.Business_ClienterBind);
+boolean business_WithDraw=context.isHasAuth(AuthCode.Business_WithDraw);
 %>
 
 <table

@@ -9,9 +9,13 @@
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%> 
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="com.edaisong.core.consts.AuthCode"%>
 
 <%
 String basePath =PropertyUtils.getProperty("java.admin.url");
+UserContext context=UserContext.getCurrentContext(request);
+boolean clienter_Forzen=context.isHasAuth(AuthCode.Clienter_Forzen);
+boolean business_GroupManage=context.isHasAuth(AuthCode.Business_GroupManage);
  %> 
 		<table class="table table-striped table-bordered table-hover dataTables-example">
 			<thead>
@@ -70,7 +74,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 				  			
 				<td>
 					<%if (list.get(i).getStatus()== 1 && list.get(i).getAccountBalance()>=1 && list.get(i).getAllowWithdrawPrice()>=1){%>
-						<%if(UserContext.getCurrentContext(request).isHasAuth(91) || UserContext.getCurrentContext(request).isHasAuth(94)) {%>
+						<%if(clienter_Forzen || business_GroupManage) {%>
 							<a href="javascript:void(0)"  onclick="showForzenClienterBalance(<%=list.get(i).getId() %>,'<%=list.get(i).getPhoneNo() %>','<%=list.get(i).getTrueName()%>',<%=list.get(i).getAccountBalance() %>,<%=list.get(i).getAllowWithdrawPrice() %>)" >余额冻结</a>
 						<%}else{%> <%}}%>
 				</td> 

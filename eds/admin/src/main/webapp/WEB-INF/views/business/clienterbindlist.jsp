@@ -41,7 +41,31 @@
 		</div>
 	</div>
 </div>
-
+<div tabindex="-1" class="modal inmodal" id="bindrecorddiv"
+	role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">商户骑士绑定操作记录</h4>
+			</div>
+			<small class="font-bold">
+					<div style="height: 500px; overflow: auto; margin-top: 10px; border-bottom: solid 1px #dcdcdc;">
+				<div class="modal-body" id="bindrecordcontent">
+					
+				</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>
+</div>
 <script>
 	var jss = {
 		search : function(currentPage) {
@@ -96,6 +120,19 @@
                 } else {
                     alert("操作失败");
                 }
+            }
+        });
+	}
+	function bindRecord(businessId,clienterId){
+		var paramaters = { "businessId": businessId,"clienterId": clienterId};
+        var url = "<%=basePath%>/business/getbindlist";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: paramaters,
+            success: function (result) {
+				$("#bindrecordcontent").html(result);
+				$("#bindrecorddiv").modal('show');
             }
         });
 	}

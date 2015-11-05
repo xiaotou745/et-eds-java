@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javassist.compiler.ast.NewExpr;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,6 +28,7 @@ import com.edaisong.api.service.inter.IBusinessFinanceAccountService;
 import com.edaisong.api.service.inter.IBusinessGroupService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IBusinessThirdRelationService;
+import com.edaisong.api.service.inter.IClienterBindOptionLogService;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IGlobalConfigService;
@@ -43,6 +46,7 @@ import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessFinanceAccount;
 import com.edaisong.entity.BusinessGroup;
 import com.edaisong.entity.BusinessOptionLog;
+import com.edaisong.entity.ClienterBindOptionLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
@@ -110,6 +114,9 @@ public class BusinessController {
 
 	@Autowired
 	private IClienterService clienterService;
+	@Autowired
+	private IClienterBindOptionLogService clienterBindOptionLogService;
+	
 
 	@RequestMapping("list")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse res) {
@@ -409,13 +416,9 @@ public class BusinessController {
 	}
 
 	@RequestMapping("addclienterbindlistdo")
-	public ModelAndView addclienterbindlistdo(int businessId, String clienterName, String clienterPhone, int currentPage)
-			throws Exception {
+	public ModelAndView addclienterbindlistdo(PagedClienterSearchReq req)throws Exception {
 		ModelAndView model = new ModelAndView("business/addclienterbindlistdo");
-		PagedClienterSearchReq req = new PagedClienterSearchReq();
-		req.setClienterName(clienterName);
-		req.setClienterPhone(clienterPhone);
-		req.setCurrentPage(currentPage);
+		req.setStatus(0);
 		PagedResponse<ClienterBindInfoModel> resp = clienterService.getClienterList(req);
 		model.addObject("listData", resp);
 		return model;
@@ -528,25 +531,30 @@ public class BusinessController {
 	 */
 	@RequestMapping("clienterimport")
 	@ResponseBody
-	public ResponseBase clienterImport(@RequestParam(value = "businessId", required = false) Integer businessId,
+	public String clienterImport(@RequestParam(value = "businessId", required = false) Integer businessId,
 			@RequestParam(value = "file1", required = true) MultipartFile files[], HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		ResponseBase resp = new ResponseBase();
 		if (files.length <= 0) {
-			resp.setMessage("上传文件不能为空");
+			return "上传文件不能为空";
 		} else {
 			// 读取文件记录
 			MultipartFile file = files[0];
 			byte[] buffers = file.getBytes();
 			if (buffers.length <= 0) {
-				resp.setMessage("上传文件不能为空");
+				return "上传文件不能为空";
 			} else {
-				List<ImportClienterInfo> infos = ExcelUtils.readExcel(buffers, 0, 50, ImportClienterInfo.class);
-				resp.setMessage(JsonUtil.obj2string(checkClienterImport(infos)));
-				resp.setResponseCode(1);
+				if (file.getContentType().indexOf("excel")<0) {
+					return "上传的文件必须为excel";
+				}
+				try {
+					List<ImportClienterInfo> infos = ExcelUtils.readExcel(buffers, 0, 50, ImportClienterInfo.class);
+					return JsonUtil.obj2string(checkClienterImport(infos));
+				} catch (Exception e) {
+					return "上传的excel有误";
+				}
+
 			}
 		}
-		return resp;
 	}
 
 	@RequestMapping("clienterbatchsave")
@@ -626,18 +634,18 @@ public class BusinessController {
 			bind.setClienterName(info.getName());
 			bind.setClienterPhoneNo(info.getPhoneNo());
 			if (StringUtils.isEmpty(info.getPhoneNo())) {// 手机号为空
-				bind.setClienterRemarks("骑士手机错误");
+				bind.setClienterRemarks("骑士手机号错误");
 				binds.add(bind);
 				continue;
 			}
 			if (!Pattern.matches("^1\\d{10}$", info.getPhoneNo())) {// 验证收货人手机号
-				bind.setClienterRemarks("骑士手机错误");
+				bind.setClienterRemarks("骑士手机号错误");
 				binds.add(bind);
 				continue;
 			}
 			String trueName = clienterService.getNameByPhone(info.getPhoneNo());
 			if (StringUtils.isEmpty(trueName)) {
-				bind.setClienterRemarks("骑士手机不存在");
+				bind.setClienterRemarks("骑士手机号不存在");
 				binds.add(bind);
 				continue;
 			}
@@ -652,5 +660,12 @@ public class BusinessController {
 			binds.add(bind);
 		}
 		return binds;
+	}
+	@RequestMapping("getbindlist")
+	public ModelAndView getBindList(Long businessId, Long clienterId) {
+		ModelAndView result=new ModelAndView("business/bindrecord");
+		 List<ClienterBindOptionLog> data= clienterBindOptionLogService.selectList(businessId, clienterId);
+		 result.addObject("listData", data);
+		 return result;
 	}
 }
