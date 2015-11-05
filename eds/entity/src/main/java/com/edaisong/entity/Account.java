@@ -3,7 +3,8 @@ package com.edaisong.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public class Account implements Serializable{
 	@JsonProperty("Id")

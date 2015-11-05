@@ -1,8 +1,7 @@
 package com.edaisong.entity.domain;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * B端任务统计接口 日服务骑士信息

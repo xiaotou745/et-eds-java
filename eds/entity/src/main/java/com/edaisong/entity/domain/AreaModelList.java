@@ -2,7 +2,9 @@ package com.edaisong.entity.domain;
 
 import java.util.List;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+
 
 @JsonSerialize
 public class AreaModelList {
