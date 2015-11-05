@@ -10,14 +10,19 @@
 <%@page import="com.edaisong.entity.domain.BusinessClienterRelationModel"%>
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.edaisong.core.consts.AuthCode"%>
 <%@page import="java.util.List"%>
 <%
 PagedResponse<BusinessClienterRelationModel> responsePageList=	(PagedResponse<BusinessClienterRelationModel>)request.getAttribute("listData");
 List<BusinessClienterRelationModel> data = responsePageList.getResultList();
 String basePath =PropertyUtils.getProperty("java.admin.url");
+UserContext context=UserContext.getCurrentContext(request);
+boolean business_setSettleMoneyRate=context.isHasAuth(AuthCode.Business_SetSettleMoneyRate);
+boolean business_Recharge=context.isHasAuth(AuthCode.Business_Recharge);
 if(data == null){
 	data = new ArrayList<BusinessClienterRelationModel>();
 }%>
+
 <table
 						class="table table-striped table-bordered table-hover dataTables-example">
 						<thead>
@@ -41,7 +46,7 @@ if(data == null){
 		                        <td><%=data.get(i).getIsbind()==(short)0? "未绑定":"已绑定"%></td>
 		                        <td><%=data.get(i).getUpdateby() %></td>
 		                        <td>
-		                        <%if(UserContext.getCurrentContext(request).isHasAuth(24)){
+		                        <%if(business_setSettleMoneyRate){
 	                        		if(data.get(i).getIsbind() == 0){
 	                        		%>
 	                        		<a href="javascript:funModifyClienterBind(<%=data.get(i).getBusinessid() %>,<%=data.get(i).getClienterid() %>,1,'是否绑定？')">绑定</a>
@@ -49,7 +54,8 @@ if(data == null){
 	                        		%>
 	                        		<a href="javascript:funModifyClienterBind(<%=data.get(i).getBusinessid() %>,<%=data.get(i).getClienterid() %>,0,'是否解除绑定？')">解除绑定</a>
 	                        		<%}
-	                        	}else if(UserContext.getCurrentContext(request).isHasAuth(52)){
+	                        	}
+								if(business_Recharge){
 									if(data.get(i).getIsbind() == 0){%>
 	                        			<a href="javascript:void(0)" style="color:gray">删除</a>
 	                        		<%}else{%>
@@ -57,6 +63,7 @@ if(data == null){
 	                        		<%}
 	                        	}
 		                        %>
+		                        <a href="javascript:bindRecord('<%=data.get(i).getBusinessid() %>','<%=data.get(i).getClienterid() %>')">操作记录</a>
 		                        </td>
 							</tr>
 							<%

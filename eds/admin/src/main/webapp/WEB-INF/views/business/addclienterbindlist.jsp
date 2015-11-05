@@ -11,40 +11,69 @@
 	BusinessDetailModel detail = (BusinessDetailModel) request
 			.getAttribute("detail");
 %>
-
-<div class="SearchMd">
-	<form method="POST" action="#" class="form-horizontal" id="searchForm">
-	<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
-	<input type="hidden" name="businessId" id="businessId" value="<%=detail.getId()%>"/>
-	<table border="0" cellspacing="0" cellpadding="0">
-		<tr>
-			<td>商户名称:<%=ParseHelper.ShowString(detail.getName())%></td>
-		</tr>
-		<tr>
-			<td>
-				<button type="button" class="btn btn-default btn-lg" onclick="window.location.href='<%=basePath%>/business/addclienterbindlist?businessId=<%=detail.getId()%>'">手动绑定</button>
-				<button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='<%=basePath%>/business/clienterbatchbind?businessId=<%=detail.getId()%>'">批量绑定</button>
-			</td>
-		</tr>
-		<tr>
-			<td><span class="">骑士姓名: </span> <input id="clienterName"
-				type="text" name="clienterName" />
-				<span class="">骑士电话: </span> <input id="clienterPhone"
-				type="text" name="clienterPhone" /> <input type="button"
-				value="查询" class="searchBtn" id="btnSearch" /> </td>
-		</tr>
-	</table>
-</form>
-</div>
-
-
 <div class="wrapper wrapper-content animated fadeInRight">
+
+	<div class="row">
+		<div class="col-lg-12">
+			<form method="POST" action="#" class="form-horizontal"
+				id="searchForm">
+				<input type="hidden" name="currentPage" id="_hiddenCurrentPage"
+					value="1" /> <input type="hidden" name="businessId"
+					id="businessId" value="<%=detail.getId()%>" />
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">商户名称:</label>
+							<label class="col-sm-4 control-label">
+								<%=ParseHelper.ShowString(detail.getName())%>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">骑士姓名:</label>
+							<div class="col-sm-8">
+								<input id="clienterName" class="form-control" type="text"
+									name="clienterName" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">骑士电话:</label>
+							<div class="col-sm-8">
+								<input id="clienterPhone" class="form-control" type="text"
+									name="clienterPhone" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<button type="button" class="btn btn-w-m btn-primary"
+							id="btnSearch" style="margin-left: 3px; height: 30px;">查询</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<div class="col-sm-8">
+								<a onclick="window.location.href='<%=basePath%>/business/addclienterbindlist?businessId=<%=detail.getId()%>'">手动绑定</a>
+								<a  onclick="window.location.href='<%=basePath%>/business/clienterbatchbind?businessId=<%=detail.getId()%>'">批量绑定</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox-content" id="content"></div>
 		</div>
 	</div>
 </div>
+
 
 <script>
 	var jss = {

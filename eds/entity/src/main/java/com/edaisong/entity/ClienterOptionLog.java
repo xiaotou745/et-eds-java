@@ -13,7 +13,7 @@ public class ClienterOptionLog {
 
     private Date inserttime;
 
-    private Integer platform;
+    private Integer businessid;
 
     private String remark;
 
@@ -57,13 +57,6 @@ public class ClienterOptionLog {
         this.inserttime = inserttime;
     }
 
-    public Integer getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(Integer platform) {
-        this.platform = platform;
-    }
 
     public String getRemark() {
         return remark;
@@ -72,4 +65,12 @@ public class ClienterOptionLog {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	public Integer getBusinessid() {
+		return businessid;
+	}
+
+	public void setBusinessid(Integer businessid) {
+		this.businessid = businessid;
+	}
 }
