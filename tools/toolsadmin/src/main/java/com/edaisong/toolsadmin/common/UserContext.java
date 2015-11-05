@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
+import com.edaisong.toolscore.security.AES;
 import com.edaisong.toolscore.util.CookieUtils;
 import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.PropertyUtils;
@@ -56,8 +57,13 @@ public class UserContext {
 		final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
 		if (cookieValue != null&&!cookieValue.isEmpty()) {
-			SimpleUserInfoModel account = JsonUtil.str2obj(cookieValue,SimpleUserInfoModel.class);
-			if (account != null) {
+			String edcrCookie=AES.aesDecrypt(cookieValue);
+			SimpleUserInfoModel account = JsonUtil.str2obj(edcrCookie,SimpleUserInfoModel.class);
+			if (account != null&&
+				account.getUserName()!=null&&
+				!account.getUserName().isEmpty()&&
+				account.getLoginName()!=null&&
+				!account.getLoginName().isEmpty()) {
 				return new UserContext(account,request.getHeader("host"));
 			}
 		}
