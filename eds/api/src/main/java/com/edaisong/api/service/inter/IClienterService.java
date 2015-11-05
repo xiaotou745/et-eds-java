@@ -106,5 +106,5 @@ public interface IClienterService {
 	 * 获取我的商户
 	 * wangchao
 	 */
-	List<MyBusinessResp> getMyBusiness(MyBusinessReq myBusinessReq);
+	MyBusinessResp getMyBusiness(MyBusinessReq myBusinessReq);
 }

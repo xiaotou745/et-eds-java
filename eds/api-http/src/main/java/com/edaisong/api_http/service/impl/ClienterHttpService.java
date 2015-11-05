@@ -26,12 +26,13 @@ public class ClienterHttpService implements IClienterHttpService {
 	 * wangchao
 	 */
 	@Override
-	public HttpResultModel<List<MyBusinessResp>> getMyBusiness(
+	public HttpResultModel<MyBusinessResp> getMyBusiness(
 			MyBusinessReq myBusinessReq) {
-		HttpResultModel<List<MyBusinessResp>> result = new HttpResultModel<List<MyBusinessResp>>();
+		HttpResultModel<MyBusinessResp> result = new HttpResultModel<MyBusinessResp>();
+		 
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
-		List<MyBusinessResp> listMyBusinessResp = new ArrayList<MyBusinessResp>();
+		MyBusinessResp listMyBusinessResp = new MyBusinessResp();
 		listMyBusinessResp = iClienterService.getMyBusiness(myBusinessReq);
 		result.setResult(listMyBusinessResp);
 		return result;

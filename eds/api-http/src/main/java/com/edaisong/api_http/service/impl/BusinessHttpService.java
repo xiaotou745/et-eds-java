@@ -13,6 +13,7 @@ import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api_http.service.inter.IBusinessHttpService; 
 import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
+import com.edaisong.core.enums.BusinessOrderEnum;
 import com.edaisong.core.enums.ClienterBindBusinessEnum;
 import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
@@ -90,10 +91,24 @@ public class BusinessHttpService implements IBusinessHttpService {
 		result.setResult(businessClienterRelationService.getMyServiceClienters(req));
 		return result;
 	}
-
+	/*
+	 * 骑士绑定商户
+	 * wangchao
+	 */
 	@Override
 	public HttpResultModel<Object> bindClienterBusiness(BindClienterBusiness bindClienterBusiness) {
 		HttpResultModel<Object> result = new HttpResultModel<Object>();
+		if(bindClienterBusiness.getBusinessId() <=0 || bindClienterBusiness.getBusinessName() == null || bindClienterBusiness.getBusinessName().trim() == ""){
+			result.setStatus(ClienterBindBusinessEnum.BusinessNameEmpty.value());
+			result.setMessage(ClienterBindBusinessEnum.BusinessNameEmpty.desc()); 
+			return result;
+		}
+		if(bindClienterBusiness.getClienterId() <=0 || bindClienterBusiness.getClienterName() == null || bindClienterBusiness.getClienterName().trim() == ""){
+			result.setStatus(ClienterBindBusinessEnum.ClienterNameEmpty.value());
+			result.setMessage(ClienterBindBusinessEnum.ClienterNameEmpty.desc()); 
+			return result;
+		} 
+		
 		result.setStatus(ClienterBindBusinessEnum.Success.value());
 		result.setMessage(ClienterBindBusinessEnum.Success.desc()); 
 		boolean b = businessService.getClienterBind(bindClienterBusiness);
@@ -163,11 +178,19 @@ public class BusinessHttpService implements IBusinessHttpService {
 	     businessClienterRelationService.modifyClienterBind(req);
 	     return res;
 	 }
-
+	/*
+	 * 商户获取 待取货 配送中 已完成 任务
+	 * wangchao
+	 */
 	@Override
 	public HttpResultModel<MyOrderBResp> getMyOrdeB(
 			MyOrderBReq myOrderBReq) {
 		HttpResultModel<MyOrderBResp> result = new HttpResultModel<MyOrderBResp>();
+		if(myOrderBReq.getBusinessId() <=0){
+			result.setStatus(BusinessOrderEnum.BusinessIdEmpty.value());
+			result.setMessage(BusinessOrderEnum.BusinessIdEmpty.desc());
+			return result;
+		} 
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
 		MyOrderBResp orderBResps = businessService.getMyOrdeB(myOrderBReq);
@@ -175,11 +198,19 @@ public class BusinessHttpService implements IBusinessHttpService {
 		result.setResult(orderBResps);
 		return result;
 	}
-
+	/*
+	 * 获取商户 任务详情
+	 * wangchao
+	 */
 	@Override
 	public HttpResultModel<MyOrderDetailBResp> getMyOrderDetailB(
 			OrderDetailBReq orderGrabBReq) {
 		HttpResultModel<MyOrderDetailBResp> result = new HttpResultModel<MyOrderDetailBResp>();
+		if(orderGrabBReq.getGrabOrderId() <=0){
+			result.setStatus(BusinessOrderEnum.GrabOrderIdEmpty.value());
+			result.setMessage(BusinessOrderEnum.GrabOrderIdEmpty.desc());
+			return result;
+		} 
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
 		MyOrderDetailBResp orderDetailBResp = businessService.getMyOrderDetailB(orderGrabBReq);

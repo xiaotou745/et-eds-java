@@ -10,6 +10,7 @@ import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
+import com.edaisong.entity.domain.MyBusinessModel;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.PagedClienterReq;
@@ -112,5 +113,7 @@ public interface IClienterDao {
 	 */
 	ClienterStatus getUserStatus(int userid);
 
-	List<MyBusinessResp> getMyBusiness(MyBusinessReq myBusinessReq);
+	List<MyBusinessModel> getMyBusiness(MyBusinessReq myBusinessReq);
+
+	MyBusinessResp getServiceBusinessTotal(MyBusinessReq myBusinessReq);
 }
