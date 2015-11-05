@@ -12,6 +12,7 @@ import com.edaisong.entity.domain.FastOrderDetail;
 import com.edaisong.entity.domain.FastOrderExportModel;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel;
+import com.edaisong.entity.domain.MyOrderGrabCModel;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
@@ -28,7 +29,8 @@ public interface IOrderGrabDao {
     List<FastOrderMapDetail> getMapDetailById(Long id);
     PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req);
     List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req);
-	List<MyOrderGrabCResp> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
+    List<MyOrderGrabCModel> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
 	MyOrderGrabDetailCResp getMyOrderGrabDetailC(OrderGrabDetailCReq orderGrabDetailCReq);
+	MyOrderGrabCResp getMyOrderGrabCTotalInfo(MyOrderGrabCReq myOrderGrabCReq);
 	 
 }

@@ -66,7 +66,7 @@ public interface IOrderGrabHttpService {
 	 */
 	@POST
 	@Path("/getmyordergrabc")
-	HttpResultModel<List<MyOrderGrabCResp>> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
+	HttpResultModel<MyOrderGrabCResp> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
 	
 	/*
 	 * 获取我的任务详情C

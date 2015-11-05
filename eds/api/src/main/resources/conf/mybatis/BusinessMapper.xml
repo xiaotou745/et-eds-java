@@ -567,9 +567,9 @@ where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,
   <select id="getOrderCountTotal" resultType="com.edaisong.entity.resp.MyOrderBResp"
 		parameterType="com.edaisong.entity.req.MyOrderBReq">
 		SELECT  
-			sum(case when og.Status =  0 then og.OrderCount else 0 end) quHuoOrderCountTotal,
-			sum(case when og.Status =  2 then og.OrderCount else 0 end) peiSongOrderCountTotal,
-			sum(case when og.Status =  1 then og.OrderCount else 0 end) yiWanChenOrderCountTotal
+			isnull(sum(case when og.Status =  2 then og.OrderCount else 0 end),0) quHuoOrderCountTotal,
+			isnull(sum(case when og.Status =  4 then og.OrderCount else 0 end),0) peiSongOrderCountTotal,
+			isnull(sum(case when og.Status =  1 then og.OrderCount else 0 end),0) yiWanChenOrderCountTotal
 			from 
 			dbo.OrderGrab og(nolock)
           where og.BusinessId = #{businessId,jdbcType=INTEGER}

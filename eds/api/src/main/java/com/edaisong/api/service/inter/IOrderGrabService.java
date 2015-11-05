@@ -65,7 +65,7 @@ public interface IOrderGrabService {
 	HttpResultModel<Integer> Complete(OrderGrabCompleteReq req);
 	
 	
-	List<MyOrderGrabCResp> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
+	MyOrderGrabCResp getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
 	MyOrderGrabDetailCResp getMyOrderGrabDetailC(
 			OrderGrabDetailCReq orderGrabDetailCReq); 
 }
