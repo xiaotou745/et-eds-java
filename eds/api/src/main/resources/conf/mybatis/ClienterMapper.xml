@@ -741,7 +741,7 @@
 		where c.Id= #{userid,jdbcType=INTEGER}
 	</select>
 	<!-- 获取我的商户 add by wangchao -->
-	<select id="getMyBusiness" resultType="com.edaisong.entity.resp.MyBusinessResp"
+	<select id="getMyBusiness" resultType="com.edaisong.entity.domain.MyBusinessModel"
 		parameterType="com.edaisong.entity.req.MyBusinessReq">
 	select  
 		bcr.Id BindId,
@@ -756,4 +756,21 @@ from    dbo.BusinessClienterRelation bcr ( nolock )
         join dbo.business b ( nolock ) on bcr.BusinessId = b.Id
 where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{auditStatus,jdbcType=INTEGER} and bcr.IsBind = 1 and bcr.IsEnable = 1 
 	</select> 
+	
+	   <select id="getServiceBusinessTotal" resultType="com.edaisong.entity.resp.MyBusinessResp" 
+    parameterType="com.edaisong.entity.req.MyBusinessReq" >
+   select ISNULL(SUM(CASE AuditStatus
+              when 0 then 1
+              else 0
+            end),0) as shenQingZhongTotal,
+        ISNULL(SUM(CASE AuditStatus
+              when 1 then 1
+              else 0
+            end),0) as fuWuZhongTotal
+ from   dbo.BusinessClienterRelation    a(nolock)
+ where   	a.IsEnable=1 and a.IsBind=1
+ 	<if test="businessId != 0" >
+  		AND a.[ClienterId]=${clienterId}
+  	</if>
+  </select>
 </mapper>

@@ -19,6 +19,7 @@ import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
+import com.edaisong.entity.domain.MyBusinessModel;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.MyBusinessReq;
@@ -188,9 +189,20 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	  public ClienterStatus getUserStatus(int userid){
 		  return clienterDao.getUserStatus(userid);
 	  }
-
+	  
+	  /*
+	   * 骑士端 获取我的商户
+	   * wangchao
+	   */
 	@Override
-	public List<MyBusinessResp> getMyBusiness(MyBusinessReq myBusinessReq) { 
-		return clienterDao.getMyBusiness(myBusinessReq);
+	public MyBusinessResp getMyBusiness(MyBusinessReq myBusinessReq) {  
+		MyBusinessResp myBusinessResp = new MyBusinessResp();
+		List<MyBusinessModel> myBusinessModelList =clienterDao.getMyBusiness(myBusinessReq);
+		myBusinessResp.setMyBusinessModelList(myBusinessModelList); 
+		MyBusinessResp myBusinessRespTotal = clienterDao.getServiceBusinessTotal(myBusinessReq);
+		myBusinessResp.setFuWuZhongTotal(myBusinessRespTotal.getFuWuZhongTotal());
+		myBusinessResp.setShenQingZhongTotal(myBusinessRespTotal.getShenQingZhongTotal());	
+		
+		return myBusinessResp;
 	}
 }

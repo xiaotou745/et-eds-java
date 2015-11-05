@@ -317,7 +317,7 @@
 		#{totalRecord,mode=OUT,jdbcType=INTEGER},
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
-	</select>
+	</select> 
 	<select id="getOpLogByBusinessID" resultType="com.edaisong.entity.BusinessOptionLog"
 		parameterType="java.lang.Long">
 		SELECT optname ,

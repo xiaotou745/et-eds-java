@@ -152,6 +152,7 @@ from    OrderRegion a (nolock)
                from     BusinessClienterRelation temp (nolock)
                where    temp.IsEnable = 1
                         and temp.IsBind = 1
+                         and temp.AuditStatus=1
                         and  temp.ClienterId=#{clienterId,jdbcType=INTEGER} 
              ) as b on a.BusinessId = b.BusinessId  
         join ( select   ISNULL(SUM(WaitingCount), 0) as WaitingCounts ,

@@ -25,7 +25,7 @@ import com.edaisong.entity.resp.OrderGrabResp;
 @Produces("application/json; charset=utf-8")//当前类的所有方法都返回json格式的数据
 public interface IOrderGrabHttpService {
 	/**
-	 * 发布订单
+	 * 抢单
 	 * @author 胡灵波
 	 * @date 2015年11月2日 15:44:40
 	 * @version 1.0

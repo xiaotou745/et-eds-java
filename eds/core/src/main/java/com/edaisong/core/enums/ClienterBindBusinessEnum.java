@@ -10,7 +10,11 @@ public enum ClienterBindBusinessEnum {
 	
 	Fail(0,"申请失败"),
 	
-	HadBind(2,"已经申请绑定");
+	HadBind(2,"已经申请绑定"),
+	
+	ClienterNameEmpty(3,"骑士名称和Id不能为空"),
+	
+	BusinessNameEmpty(4,"商户名称和Id不能为空");
 	
 	
 	private int value = 0;

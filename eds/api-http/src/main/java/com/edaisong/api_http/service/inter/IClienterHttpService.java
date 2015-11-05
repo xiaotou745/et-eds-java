@@ -1,11 +1,10 @@
 package com.edaisong.api_http.service.inter;
 
-import java.util.List;
-
-import javax.ws.rs.Consumes;
+import javax.ws.rs.Consumes;  
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces; 
+
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.MyBusinessReq;
@@ -21,7 +20,7 @@ public interface IClienterHttpService {
 	 */
 	@POST
 	@Path("/getmybusiness")
-	public HttpResultModel<List<MyBusinessResp>> getMyBusiness(MyBusinessReq myBusinessReq);
+	public HttpResultModel<MyBusinessResp> getMyBusiness(MyBusinessReq myBusinessReq);
 	
 	/*
 	 * 解除绑定我的商户

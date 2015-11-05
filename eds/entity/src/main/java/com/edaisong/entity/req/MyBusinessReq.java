@@ -1,6 +1,8 @@
 package com.edaisong.entity.req;
 
-public class MyBusinessReq {
+import com.edaisong.entity.common.PagedRequestBase;
+
+public class MyBusinessReq extends PagedRequestBase{
 	/*
 	 * 骑士Id
 	 */

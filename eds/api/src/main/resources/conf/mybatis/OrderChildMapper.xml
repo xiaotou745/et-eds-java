@@ -201,6 +201,10 @@ select top ${orderCount} id from dbo.OrderChild
 where businessid= ${businessId}
 and orderRegionTwoId=${orderRegionTwoId})
   </select>  
+      <select id="updateCancel" resultType="java.lang.Integer" parameterType="com.edaisong.entity.OrderChild" >
+update dbo.OrderChild set status=3 output inserted.Id 
+   where Platform=2 and status=0 and createTime>= #{createtime,jdbcType=TIMESTAMP} and  #{createtime,jdbcType=TIMESTAMP}>=createTime
+  </select>  
   <select id="selectByPrimaryKey" resultType="com.edaisong.entity.OrderChild" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

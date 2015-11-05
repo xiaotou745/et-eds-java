@@ -19,6 +19,7 @@ import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
+import com.edaisong.entity.domain.MyBusinessModel;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.PagedClienterReq;
@@ -202,9 +203,14 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	}
 
 	@Override
-	public List<MyBusinessResp> getMyBusiness(MyBusinessReq myBusinessReq) {
-		 
+	public List<MyBusinessModel> getMyBusiness(MyBusinessReq myBusinessReq) { 
 		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IClienterDao.getMyBusiness",myBusinessReq);
+	}
+
+	@Override
+	public MyBusinessResp getServiceBusinessTotal(MyBusinessReq myBusinessReq) {
+		return	getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.getServiceBusinessTotal",myBusinessReq);
+		 
 	}
 	
 }
