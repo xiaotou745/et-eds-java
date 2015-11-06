@@ -225,6 +225,10 @@ public class BusinessHttpService implements IBusinessHttpService {
 	public HttpResultModel<BusinessBasicInfoModel> getBusinessInfo(
 			BusinessReq businessReq) {
 		HttpResultModel<BusinessBasicInfoModel> result = new HttpResultModel<BusinessBasicInfoModel>();
+		if(businessReq.getBusinessId() <=0){
+			result.setStatus(BusinessOrderEnum.BusinessIdEmpty.value());
+			result.setMessage(BusinessOrderEnum.BusinessIdEmpty.desc());
+		}
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
 		BusinessBasicInfoModel businessBasicInfoModel = businessService.getBusinessInfo(businessReq);

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api_http.service.inter.IOrderGrabHttpService;
+import com.edaisong.core.enums.ClienterBindBusinessEnum;
+import com.edaisong.core.enums.OrderGrabEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.MyOrderGrabCReq; 
@@ -78,6 +80,12 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	public HttpResultModel<MyOrderGrabCResp> getMyOrderGrabC(
 			MyOrderGrabCReq myOrderGrabCReq) { 
 		HttpResultModel<MyOrderGrabCResp> result=new HttpResultModel<MyOrderGrabCResp>();
+		if(myOrderGrabCReq.getClienterId()<=0){
+			result.setStatus(OrderGrabEnum.ClienterIdEmpty.value());
+			result.setMessage(OrderGrabEnum.ClienterIdEmpty.desc());
+			return result;
+		}	 
+		
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
 		MyOrderGrabCResp  myOrderGrabCResp= orderGrabService.getMyOrderGrabC(myOrderGrabCReq);
@@ -92,6 +100,11 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	public HttpResultModel<MyOrderGrabDetailCResp> getMyOrderGrabDetailC(
 			OrderGrabDetailCReq orderGrabDetailCReq) {  
 		HttpResultModel<MyOrderGrabDetailCResp> result =new HttpResultModel<MyOrderGrabDetailCResp>();
+		if(orderGrabDetailCReq.getGrabOrderId()<=0){
+			result.setStatus(OrderGrabEnum.GrabOrderIdEmpty.value());
+			result.setMessage(OrderGrabEnum.GrabOrderIdEmpty.desc());
+			return result;
+		}	
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
 		MyOrderGrabDetailCResp orderGrabDetailModel= orderGrabService.getMyOrderGrabDetailC(orderGrabDetailCReq); 
