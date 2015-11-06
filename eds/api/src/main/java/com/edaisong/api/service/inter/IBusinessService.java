@@ -2,6 +2,7 @@ package com.edaisong.api.service.inter;
 
 import java.util.Date;
 import java.util.List;
+ 
 
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
@@ -10,9 +11,11 @@ import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BindClienterBusiness;
+import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.req.BusinessMoney;
+import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
 import com.edaisong.entity.req.OrderDetailBReq;
@@ -134,5 +137,7 @@ public interface IBusinessService {
 	
 	MyOrderBResp getMyOrdeB(MyOrderBReq myOrderBReq);
 	MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq);
+	BusinessBasicInfoModel getBusinessInfo(BusinessReq businessReq);
+  
     
 }

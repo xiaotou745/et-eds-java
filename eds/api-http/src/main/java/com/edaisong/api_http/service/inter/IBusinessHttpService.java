@@ -8,10 +8,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.edaisong.entity.AccountBillResultModel;
+import com.edaisong.entity.Business;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.MyOrderBReq;
 import com.edaisong.entity.req.MyOrderGrabCReq;
@@ -106,4 +109,14 @@ public interface IBusinessHttpService {
 	@POST
 	@Path("/getmyorderdetailb")
 	public HttpResultModel<MyOrderDetailBResp> getMyOrderDetailB(OrderDetailBReq orderGrabBReq); 
+	
+	/*
+	 * 获取商户基础信息
+	 * wangchao
+	 */
+	@POST
+	@Path("/getbusinessinfo")
+	public HttpResultModel<BusinessBasicInfoModel> getBusinessInfo(BusinessReq businessReq); 
+	
+	
 }

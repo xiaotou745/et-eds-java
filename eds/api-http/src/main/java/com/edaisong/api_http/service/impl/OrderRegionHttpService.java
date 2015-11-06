@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.inter.IOrderRegionService;
 import com.edaisong.api_http.service.inter.IOrderRegionHttpService;
+import com.edaisong.core.enums.BusinessOrderEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.common.HttpResultModel;
@@ -27,6 +28,12 @@ public class OrderRegionHttpService implements IOrderRegionHttpService {
 	public HttpResultModel<List<OrderRegionResp>> getOrderRegion(
 			OrderRegionReq orderRegionReq) { 
 		HttpResultModel<List<OrderRegionResp>> result=new HttpResultModel<List<OrderRegionResp>>();
+		if(orderRegionReq.getBusinessId() <=0){
+			result.setStatus(BusinessOrderEnum.BusinessIdEmpty.value());
+			result.setMessage(BusinessOrderEnum.BusinessIdEmpty.desc());
+			return result;
+		}
+		
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
 		List<OrderRegionResp> orderRegionRespList =  new ArrayList<OrderRegionResp>();

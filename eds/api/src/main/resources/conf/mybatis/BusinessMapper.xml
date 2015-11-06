@@ -590,4 +590,11 @@ from    dbo.OrderGrab og ( nolock )
         join dbo.clienter c ( nolock ) on og.ClienterId = c.Id
 where   og.Id = #{grabOrderId,jdbcType=INTEGER} 
 	</select> 
+	
+	<!-- 获取商户基础信息 wangchao 扫一扫时候调用 -->
+	<select id="getBusinessInfo" resultType="com.edaisong.entity.domain.BusinessBasicInfoModel"
+		parameterType="com.edaisong.entity.req.BusinessReq">
+	 	select Id BusinessId,Name BusinessName,PhoneNo BusinessPhoneNo,Address BusinessAddress FROM dbo.business(nolock)
+where Id = #{businessId,jdbcType=INTEGER}
+	</select> 
 </mapper>
