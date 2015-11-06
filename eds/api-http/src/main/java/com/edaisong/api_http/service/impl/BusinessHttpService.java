@@ -22,7 +22,9 @@ import com.edaisong.core.enums.returnenums.OptBindClienterReturnEnum;
 import com.edaisong.core.enums.returnenums.RemoveRelationReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
+import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.MyOrderBReq;
 import com.edaisong.entity.req.OptBindClienterReq;
@@ -216,6 +218,22 @@ public class BusinessHttpService implements IBusinessHttpService {
 		MyOrderDetailBResp orderDetailBResp = businessService.getMyOrderDetailB(orderGrabBReq);
 		
 		result.setResult(orderDetailBResp);
+		return result;
+	}
+
+	@Override
+	public HttpResultModel<BusinessBasicInfoModel> getBusinessInfo(
+			BusinessReq businessReq) {
+		HttpResultModel<BusinessBasicInfoModel> result = new HttpResultModel<BusinessBasicInfoModel>();
+		if(businessReq.getBusinessId() <=0){
+			result.setStatus(BusinessOrderEnum.BusinessIdEmpty.value());
+			result.setMessage(BusinessOrderEnum.BusinessIdEmpty.desc());
+		}
+		result.setStatus(HttpReturnRnums.Success.value());
+		result.setMessage(HttpReturnRnums.Success.desc());
+		BusinessBasicInfoModel businessBasicInfoModel = businessService.getBusinessInfo(businessReq);
+		
+		result.setResult(businessBasicInfoModel);
 		return result;
 	}
 }

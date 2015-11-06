@@ -11,6 +11,7 @@ import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BindClienterBusiness;
+import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
@@ -18,6 +19,7 @@ import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderRespModel;
+import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
@@ -152,6 +154,7 @@ public interface IBusinessDao {
 		List<OrderRespModel> getMyOrdeB(MyOrderBReq myOrderBReq);
 		MyOrderBResp getOrderCountTotal(MyOrderBReq myOrderBReq);
 		MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq);
+		BusinessBasicInfoModel getBusinessInfo(BusinessReq businessReq);
 	    
 	    
 }

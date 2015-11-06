@@ -10,9 +10,7 @@ public class MyOrderBResp {
 	private List<OrderRespModel> orderRespModel;
 	private Integer quHuoOrderCountTotal;
 	private Integer peiSongOrderCountTotal;
-	private Integer yiWanChenOrderCountTotal;
-	
-	
+	private Integer yiWanChenOrderCountTotal; 
 
 	public List<OrderRespModel> getOrderRespModel() {
 		return orderRespModel;
