@@ -2,7 +2,6 @@ package com.edaisong.toolsentity.domain;
 
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * B端任务统计接口 商户日订单信息统计概述
@@ -14,7 +13,6 @@ public class DaySatisticsB {
 	private int orderCount;
 	private int serviceClienterCount;
 	private String dateInfo;
-	@JsonIgnore
 	private String monthDate;
 	private List<ServiceClienter> serviceClienters;
 

@@ -2,7 +2,8 @@ package com.edaisong.entity.domain;
 
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * B端任务统计接口 商户日订单信息统计概述

@@ -2,7 +2,6 @@ package com.edaisong.toolsentity.domain;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * 登录后存储用户登录信息实体类
@@ -12,25 +11,18 @@ import org.codehaus.jackson.annotate.JsonProperty;
  *
  */
 public class SimpleUserInfoModel implements Serializable {
-	@JsonProperty("Id")
 	private int id;
 	
-	@JsonProperty("Password")
 	private String password;
 	
-	@JsonProperty("UserName")
 	private String userName;
 	
-	@JsonProperty("LoginName")
 	private String loginName;
 	
-	@JsonProperty("GroupId")
 	private int groupId;
 	
-	@JsonProperty("RoleId")
 	private int roleId;
 	
-	@JsonProperty("AccountType")
 	private int accountType;
 
 	public int getId() {

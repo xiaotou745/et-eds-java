@@ -3,43 +3,30 @@ package com.edaisong.toolsentity;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Account implements Serializable{
-	@JsonProperty("Id")
     private Integer id;
 	
-	@JsonProperty("Password")
     private String password;
 	
-	@JsonProperty("UserName")
     private String username;
 	
-	@JsonProperty("LoginName")
     private String loginname;
 	
-	@JsonProperty("Status")
     private Integer status;
 	
-	@JsonProperty("AccountType")
     private Integer accounttype;
 	
-	@JsonProperty("FadateTime")
     private Date fadatetime;
 	
-	@JsonProperty("Fauser")
     private String fauser;
 	
-	@JsonProperty("LcDatetime")
     private Date lcdatetime;
 	
-	@JsonProperty("LcUser")
     private String lcuser;
 	
-	@JsonProperty("GroupId")
     private Integer groupid;
 	
-	@JsonProperty("RoleId")
     private Integer roleid;
 	
     public Integer getId() {

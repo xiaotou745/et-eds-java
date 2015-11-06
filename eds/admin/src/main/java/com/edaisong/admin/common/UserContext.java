@@ -61,22 +61,21 @@ public class UserContext {
 		return account.getUserName();
 	}
 	public static  UserContext getCurrentContext(HttpServletRequest request) {
-		try {
-			final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
-			String cookieValue = CookieUtils.getCookie(request, cookieKey);
-			if (cookieValue != null&&!cookieValue.isEmpty()) {
-				String edcrCookie=AES.aesDecrypt(cookieValue);
-				SimpleUserInfoModel account = JsonUtil.str2obj(edcrCookie,SimpleUserInfoModel.class);
-				if (account != null&&
-					account.getUserName()!=null&&
-					!account.getUserName().isEmpty()&&
-					account.getLoginName()!=null&&
-					!account.getLoginName().isEmpty()) {
-					return new UserContext(account,request.getHeader("host"));
-				}
+		final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
+		String cookieValue = CookieUtils.getCookie(request, cookieKey);
+		if (cookieValue != null&&!cookieValue.isEmpty()) {
+			String edcrCookie=cookieValue;
+			if(cookieValue.indexOf("LoginName")<0){//加密的cookie
+			    edcrCookie=AES.aesDecrypt(cookieValue);
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
+			SimpleUserInfoModel account = JsonUtil.str2obj(edcrCookie,SimpleUserInfoModel.class);
+			if (account != null&&
+				account.getUserName()!=null&&
+				!account.getUserName().isEmpty()&&
+				account.getLoginName()!=null&&
+				!account.getLoginName().isEmpty()) {
+				return new UserContext(account,request.getHeader("host"));
+			}
 		}
 
 		return null;

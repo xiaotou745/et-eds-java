@@ -2,7 +2,8 @@ package com.edaisong.entity.domain;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 /**
  * 登录后存储用户登录信息实体类

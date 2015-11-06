@@ -2,7 +2,6 @@ package com.edaisong.entity.domain;
 
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.edaisong.entity.common.Location;
 
