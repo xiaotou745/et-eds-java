@@ -16,6 +16,7 @@ import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BindClienterBusiness;
+import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
@@ -24,6 +25,7 @@ import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
@@ -228,5 +230,10 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	@Override
 	public MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq) {
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getMyOrderDetailB",orderGrabBReq);
+	}
+
+	@Override
+	public BusinessBasicInfoModel getBusinessInfo(BusinessReq businessReq) {
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getBusinessInfo",businessReq);
 	}
 }

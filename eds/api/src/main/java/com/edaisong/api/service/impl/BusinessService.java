@@ -12,7 +12,7 @@ import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.redis.RedisService;
-import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.api.service.inter.IBusinessService; 
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.enums.BusinessStatusEnum;
@@ -29,12 +29,14 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BindClienterBusiness;
+import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.req.BusinessMoney;
+import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
 import com.edaisong.entity.req.OrderDetailBReq;
@@ -403,5 +405,10 @@ public class BusinessService implements IBusinessService {
 	@Override
 	public MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq) { 
 		return iBusinessDao.getMyOrderDetailB(orderGrabBReq);
+	}
+
+	@Override
+	public BusinessBasicInfoModel getBusinessInfo(BusinessReq businessReq) { 
+		return iBusinessDao.getBusinessInfo(businessReq);
 	}
 }
