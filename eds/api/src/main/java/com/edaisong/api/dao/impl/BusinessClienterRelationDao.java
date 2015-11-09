@@ -173,7 +173,7 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	 * @return
 	 */
 	public	int optBindClienter(OptBindClienterReq req){
-		return getReadOnlySqlSessionUtil().update(
+		return getMasterSqlSessionUtil().update(
 				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.optBindClienter", req);
 	}
 }
