@@ -1,0 +1,1 @@
+wsdl2java -p com.kuaiyoujia.mobile.picservice.client -frontend jaxws21 -client -d d:\test http://getpicturewebservice.yorhome.com/GetRentHousePicture.asmx?WSDL
