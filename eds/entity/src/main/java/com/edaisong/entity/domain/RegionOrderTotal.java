@@ -4,6 +4,7 @@ public class RegionOrderTotal {
 	private String id;
 	private Long parentId;
 	private String name;
+	private Long num;
 	public String getId() {
 		return id;
 	}
@@ -28,5 +29,4 @@ public class RegionOrderTotal {
 	public void setNum(Long num) {
 		this.num = num;
 	}
-	private Long num;
 }

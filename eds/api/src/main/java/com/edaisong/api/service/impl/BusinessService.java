@@ -328,7 +328,7 @@ public class BusinessService implements IBusinessService {
 	 * @Date 2015年8月11日 17:48:47
 	 */
 	@Override
-	public BusinessModel getBusiness(int id) {
+	public BusinessModel getBusiness(Long id) {
 		return iBusinessDao.getBusiness(id);
 	}
 
