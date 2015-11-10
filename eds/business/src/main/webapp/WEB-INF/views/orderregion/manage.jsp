@@ -87,7 +87,7 @@ String regionjson = (String) request.getAttribute("regionjson");
 		var li ='<span class="edit-box item_edit">'+
 		'<a id="regiontitle'+overlayId+'_'+parId+'" href="javascript:void(0)" onclick="showregion('+overlayId+')">'+
 		'</a><input type="text" id="region'+overlayId+'"></span>'+
-		'<a   class="regiona change editing"   href="javascript:void(0)">保存</a>'+
+		'<a   class="regiona change editing"   href="javascript:void(0)">确定</a>'+
 		'<a  class="regiona"   href="javascript:void(0)" onclick="deleteregion('+overlayId+')">删除</a>'
 		if (parentId>0) {//当前绘制的是子区域
 			var parentul = $('#parent'+parentId);
@@ -218,7 +218,7 @@ String regionjson = (String) request.getAttribute("regionjson");
     			self.addClass('editing');
     			eidtBox.addClass('item_edit');
     			eidtBox.find('input').val(eidtBox.find('a').html());
-    			self.html('保存');	
+    			self.html('确定');	
 			}
 			else{
 				var url = "<%=basePath%>/orderregion/checkorder";
@@ -234,7 +234,7 @@ String regionjson = (String) request.getAttribute("regionjson");
 		        			self.addClass('editing');
 		        			eidtBox.addClass('item_edit');
 		        			eidtBox.find('input').val(eidtBox.find('a').html());
-		        			self.html('保存');
+		        			self.html('确定');
 		            	}
 		            }
 		        });
@@ -242,7 +242,7 @@ String regionjson = (String) request.getAttribute("regionjson");
 		}
 	})
 	function showregion(regionid){
-		alert(regionid);
+		//alert(regionid);
 	}
 
 	function deleteregion(regionid){
