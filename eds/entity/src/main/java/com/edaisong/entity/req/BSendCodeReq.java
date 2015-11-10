@@ -7,17 +7,18 @@ package com.edaisong.entity.req;
  */
 public class BSendCodeReq {
 	private String phoneNo;//账号
-	private int sType;
+	private int type;
 	public String getPhoneNo() {
 		return phoneNo;
 	}
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
-	public int getsType() {
-		return sType;
+	public int getType() {
+		return type;
 	}
-	public void setsType(int sType) {
-		this.sType = sType;
+	public void setType(int type) {
+		this.type = type;
 	}
+	
 }

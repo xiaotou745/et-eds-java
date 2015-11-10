@@ -603,7 +603,7 @@ where Id = #{businessId,jdbcType=INTEGER}
 		parameterType="java.lang.String">
 select  count(1) 
 from  dbo.[business]  
-where   phoneNo= #{phone} 
+where   phoneNo= #{phone}  and GroupId=0
 	</select> 
 	
 </mapper>
