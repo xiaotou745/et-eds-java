@@ -597,4 +597,12 @@ where   og.Id = #{grabOrderId,jdbcType=INTEGER}
 	 	select Id BusinessId,Name BusinessName,PhoneNo BusinessPhoneNo,Address BusinessAddress FROM dbo.business(nolock)
 where Id = #{businessId,jdbcType=INTEGER}
 	</select> 
+	<!-- 商户是否已注册 add by caoheyang 20151110 -->
+   <select id="isExist" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+select  count(1) 
+from  dbo.[business]  
+where   phoneNo= #{phone} 
+	</select> 
+	
 </mapper>

@@ -14,6 +14,7 @@ import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.BCheckCodeReq;
 import com.edaisong.entity.req.BSendCodeReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
@@ -128,4 +129,25 @@ public interface IBusinessHttpService {
 	@POST
 	@Path("/sendcode")
 	public HttpResultModel<Object> sendCode(BSendCodeReq req);
+    
+	/**
+	 * 商家端修改绑定手机号第一步验证当前手机号
+	 * @author CaoHeYang
+	 * @date 201551110
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/businessmodiyphonestep1")
+	public HttpResultModel<Object> businessModiyPhoneStep1(BCheckCodeReq req);
+	/**
+	 * 商家端修改绑定手机号第二步验证新手机号
+	 * @author CaoHeYang
+	 * @date 201551110
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/businessmodiyphonestep2")
+	public HttpResultModel<Object> businessModiyPhoneStep2(BCheckCodeReq req);
 }
