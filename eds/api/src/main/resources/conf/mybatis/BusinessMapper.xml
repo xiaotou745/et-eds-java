@@ -605,5 +605,26 @@ select  count(1)
 from  dbo.[business]  
 where   phoneNo= #{phone}  and GroupId=0
 	</select> 
+	<!-- 门店修改绑定手机号 addby caoheyang 20151110 -->
+	<update id="businessModiyPhone" parameterType="com.edaisong.entity.req.BCheckCodeReq">
+	 declare @oldPhone VARCHAR(20);
+     select @oldPhone=PhoneNo from dbo.business where Id=#{businessId,jdbcType=BIGINT};
+		update business SET PhoneNo=#{phoneNo,jdbcType=NVARCHAR}
+		OUTPUT
+		Inserted.Id,
+		Inserted.Id,
+		Inserted.Name,
+		GETDATE(),
+		0,
+		'商家将手机账号由'+@oldPhone+'改为'+'${phoneNo}'
+		INTO BusinessOptionLog
+		(BusinessId,
+		OptId,
+		OptName,
+		InsertTime,
+		Platform,
+		Remark)
+		where Id = #{businessId,jdbcType=BIGINT}
+	</update>
 	
 </mapper>
