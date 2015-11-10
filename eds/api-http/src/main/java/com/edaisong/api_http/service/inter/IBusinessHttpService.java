@@ -14,6 +14,7 @@ import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.req.AccountBillBReq;
+import com.edaisong.entity.req.BSendCodeReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.MyOrderBReq;
@@ -117,6 +118,14 @@ public interface IBusinessHttpService {
 	@POST
 	@Path("/getbusinessinfo")
 	public HttpResultModel<BusinessBasicInfoModel> getBusinessInfo(BusinessReq businessReq); 
-	
-	
+	/**
+	 *  B端发送短信验证码
+	 * @author CaoHeYang
+	 * @date 201551110
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/sendcode")
+	public HttpResultModel<Object> sendCode(BSendCodeReq req);
 }

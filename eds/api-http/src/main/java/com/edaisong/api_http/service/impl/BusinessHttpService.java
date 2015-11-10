@@ -1,5 +1,7 @@
 package com.edaisong.api_http.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 
@@ -9,21 +11,28 @@ import javax.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api_http.service.inter.IBusinessHttpService; 
+import com.edaisong.core.consts.RedissCacheKey;
+import com.edaisong.core.enums.BSendCodeType;
 import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.enums.BusinessOrderEnum;
 import com.edaisong.core.enums.ClienterBindBusinessEnum;
+import com.edaisong.core.enums.SendSmsType;
 import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.enums.returnenums.GetPushOrderTypeReturnEnum;
 import com.edaisong.core.enums.returnenums.OptBindClienterReturnEnum;
 import com.edaisong.core.enums.returnenums.RemoveRelationReturnEnum;
+import com.edaisong.core.util.RandomCodeStrGenerator;
+import com.edaisong.core.util.SmsUtils;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.BSendCodeReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.MyOrderBReq;
@@ -51,6 +60,8 @@ public class BusinessHttpService implements IBusinessHttpService {
 
 	@Autowired
 	private IBusinessClienterRelationService businessClienterRelationService;
+	@Autowired
+	RedisService redisService;
 
 	/**
 	 * 获取门店发单模式：0 普通模式（默认），1 快单模式   默认0
@@ -235,5 +246,46 @@ public class BusinessHttpService implements IBusinessHttpService {
 		
 		result.setResult(businessBasicInfoModel);
 		return result;
+	}
+	
+	/**
+	 *  B端发送短信验证码
+	 * @author CaoHeYang
+	 * @date 201551110
+	 * @param req
+	 * @return
+	 */
+	public HttpResultModel<Object> sendCode(BSendCodeReq req){
+		try {
+			String key = "";
+			String phoneNo = req.getPhoneNo();
+			String Content = "";// "欢迎您的使用，验证码：#验证码#，请妥善保管相关信息。若非您本人操作，请忽略。";
+			HttpResultModel<Object> res = new HttpResultModel<Object>();
+			// 修改绑定手机号验证当前手机号
+			if (req.getsType() == BSendCodeType.ModifyPhone.value()) {
+				key = String.format(RedissCacheKey.Business_SendCode_ModifyPhone, phoneNo);
+				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
+			} else if (req.getsType() == BSendCodeType.ModifyPhoneNewPhone.value()) {
+
+			}
+			if (key == "") {
+				return res.setStatus(SendSmsType.Fail.value()).setMessage(SendSmsType.Fail.desc());// 发送失败
+			}
+			String code = RandomCodeStrGenerator.generateCodeNum(6);// 获取随机数
+			Content = Content.replace("#验证码#", code);
+			redisService.set(key, code, 60 * 5);
+			long resultValue = SmsUtils.sendSMS(phoneNo, Content);
+			if (resultValue <= 0) {
+				return res.setStatus(SendSmsType.Fail.value()).setMessage(SendSmsType.Fail.desc());// 发送失败
+			}
+			return res.setStatus(SendSmsType.Success.value()).setMessage(SendSmsType.Success.desc());// 设置成功
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
