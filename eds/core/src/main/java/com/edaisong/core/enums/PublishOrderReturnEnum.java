@@ -4,6 +4,7 @@ package com.edaisong.core.enums;
  * 商户发单返回值枚举
  * @author CaoHeYang
  * @Date 20150818
+ * 
  */
 public enum PublishOrderReturnEnum {
 	/**
@@ -61,7 +62,19 @@ public enum PublishOrderReturnEnum {
 	 */
 	GroupBalancePriceLack(-11, "您的余额和集团的余额都不足，请及时充值!"),
 	
-	StrategyErr(-12, "策略错误");
+	/**
+	 * 策略错误
+	 */
+	StrategyErr(-12, "策略错误"),
+	/**
+	 * "区域不能为空
+	 */
+	OrderRegionNull(-13, "区域不能为空"),
+	/**
+	 * 发单模式错误
+	 */
+	PushOrderTypeErr(-14, "发单模式错误");
+	
 
 	private int value = 0;
 	private String desc;

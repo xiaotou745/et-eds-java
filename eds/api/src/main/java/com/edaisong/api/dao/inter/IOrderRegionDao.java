@@ -9,6 +9,7 @@ import com.edaisong.entity.req.OrderRegionReq;
 
 public interface IOrderRegionDao {
 	OrderRegion getById(Integer id);
+	OrderRegion getByIdWrite(Integer id);
 	List<OrderRegion> getByParentId(Integer parentId);
     int deleteByIds(List<Integer> idList);
     int updateHasNoChild(Integer id);

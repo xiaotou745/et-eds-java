@@ -146,6 +146,20 @@
 		<if test="status != null">
 			and status= #{status,jdbcType=INTEGER}
 		</if>
+	</select>	
+		
+	<select id="selectIsExistByBusinessId" resultMap="BaseResultMap"
+		parameterType="com.edaisong.entity.req.OrderReq">
+		select
+		<include refid="Base_Column_List" />
+		from [order]
+		where 1=1	
+		<if test="businessid != null">
+			and businessid= #{businessid,jdbcType=INTEGER}
+		</if>
+		<if test="timeSpan != null">
+			and timeSpan= #{timeSpan,jdbcType=NVARCHAR}
+		</if>
 	</select>
 
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

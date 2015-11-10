@@ -22,6 +22,7 @@ import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
+import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedBusTaskListReq;
@@ -36,6 +37,17 @@ import com.edaisong.entity.resp.QueryOrderCResp;
 public interface IOrderDao {
 
 	int insert(Order record);
+	
+	/**
+	 * 查询订单是否存在
+	 * 
+	 * @author 胡灵波
+	 * @Date 2015年11月9日 14:55:29
+	 * @param 商户Id,时间戳
+	 *            查询条件实体
+	 * @return
+	 */
+	Order selectIsExistByBusinessId(OrderReq req) ;
 	/**
 	 * 后台订单列表页面
 	 * 

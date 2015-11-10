@@ -38,6 +38,12 @@ public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
 		return getReadOnlySqlSessionUtil().selectOne(
 				"com.edaisong.api.dao.inter.IOrderRegionDao.getById", id);
 	}
+	
+	@Override
+	public OrderRegion getByIdWrite(Integer id) {
+		return getMasterSqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderRegionDao.getByIdWirte", id);
+	}
 
 	@Override
 	public List<OrderRegion> getByParentId(Integer parentId) {

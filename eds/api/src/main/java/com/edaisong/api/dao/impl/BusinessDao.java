@@ -55,7 +55,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	 */
 	@Override
 	public BusinessModel getBusiness(int id) {
-		BusinessModel model = getMasterSqlSessionUtil()
+		BusinessModel model = getReadOnlySqlSessionUtil()
 				.selectOne(
 						"com.edaisong.api.dao.inter.IBusinessDao.getBusiness",
 						id);
