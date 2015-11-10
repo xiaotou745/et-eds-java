@@ -156,5 +156,10 @@ public interface IBusinessDao {
 		MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq);
 		BusinessBasicInfoModel getBusinessInfo(BusinessReq businessReq);
 	    
-	    
+		  /**
+		   * 商户是否已注册
+		   * @param phone
+		   * @return
+		   */
+		  boolean isExist(String phone);
 }

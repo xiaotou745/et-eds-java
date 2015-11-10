@@ -236,4 +236,16 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public BusinessBasicInfoModel getBusinessInfo(BusinessReq businessReq) {
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getBusinessInfo",businessReq);
 	}
+	
+	  /**
+	   * 商户是否已注册
+	   * @param phone
+	   * @return
+	   */
+	@Override
+	public	boolean isExist(String phone){
+		int count= getReadOnlySqlSessionUtil().
+				selectOne("com.edaisong.api.dao.inter.IBusinessDao.isExist",phone);
+		return count>0;
+	}
 }

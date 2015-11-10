@@ -411,4 +411,13 @@ public class BusinessService implements IBusinessService {
 	public BusinessBasicInfoModel getBusinessInfo(BusinessReq businessReq) { 
 		return iBusinessDao.getBusinessInfo(businessReq);
 	}
+	  /**
+	   * 商户是否已注册
+	   * @param phone
+	   * @return
+	   */
+	@Override
+	  public boolean isExist(String phone){
+		return iBusinessDao.isExist(phone);
+	}
 }
