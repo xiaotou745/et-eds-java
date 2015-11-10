@@ -257,10 +257,10 @@ public class BusinessHttpService implements IBusinessHttpService {
 			return res.setStatus(SendSmsReturnType.PhoneError.value()).setMessage(SendSmsReturnType.PhoneError.desc());
 		}
 		try {
-			if (req.getsType() == BSendCodeType.ModifyPhone.value()) {	// 修改绑定手机号验证当前手机号
+			if (req.getType() == BSendCodeType.ModifyPhone.value()) {	// 修改绑定手机号验证当前手机号
 				key = String.format(RedissCacheKey.Business_SendCode_ModifyPhone, phoneNo);
 				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
-			} else if (req.getsType() == BSendCodeType.ModifyPhoneNewPhone.value()) {  //修改绑定手机号验证新手机号
+			} else if (req.getType() == BSendCodeType.ModifyPhoneNewPhone.value()) {  //修改绑定手机号验证新手机号
 				key = String.format(RedissCacheKey.Business_SendCode_ModifyPhoneNewPhone, phoneNo);
 				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
 			}
@@ -303,7 +303,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 		if (req.getCode()==null||req.getCode().isEmpty()) {
 			return res.setStatus(SendSmsReturnType.VerCodeNull.value()).setMessage(SendSmsReturnType.VerCodeNull.desc());// 验证码不不能为空
 		}
-		if (redisService.get(String.format(RedissCacheKey.Business_SendCode_ModifyPhone, phoneNo),String.class) !=req.getCode()) {
+		if (!redisService.get(String.format(RedissCacheKey.Business_SendCode_ModifyPhone, phoneNo),String.class).equals(req.getCode())) {
 			return res.setStatus(SendSmsReturnType.CodeError.value()).setMessage(SendSmsReturnType.CodeError.desc());// 发送失败
 		}
 		return res;
