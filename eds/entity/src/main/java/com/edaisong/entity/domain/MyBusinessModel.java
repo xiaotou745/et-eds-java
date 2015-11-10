@@ -7,6 +7,7 @@ public class MyBusinessModel {
 	
 	private String businessName;
 	
+	private String businessAddress;
 	private String businessPhoneNo;
 	
 	private Integer isBind;
@@ -77,5 +78,13 @@ public class MyBusinessModel {
 
 	public void setBindId(Integer bindId) {
 		this.bindId = bindId;
+	}
+
+	public String getBusinessAddress() {
+		return businessAddress;
+	}
+
+	public void setBusinessAddress(String businessAddress) {
+		this.businessAddress = businessAddress;
 	}
 }
