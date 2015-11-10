@@ -56,7 +56,16 @@ public enum OrderGrabReturnEnum {
 	 */
 	GroupBalancePriceLack(-11, "您的余额和集团的余额都不足，请及时充值!"),
 	
-	StrategyErr(-12, "策略错误");
+	StrategyErr(-12, "策略错误"),
+	
+	/**
+	 * 获取骑士信息失败
+	 */
+	ClienterEmpty(-13, "获取骑士信息失败"),
+	/**
+	 *获取抢单信息失败
+	 */
+	OrderGrabEmpty(-14, "获取抢单信息失败");
 
 	private int value = 0;
 	private String desc;

@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<!-- <parent> -->
-	<!-- <groupId>edaisong</groupId> -->
-	<!-- <artifactId>edsproject</artifactId> -->
-	<!-- <version>0.0.1-SNAPSHOT</version> -->
-	<!-- <relativePath>..</relativePath> -->
-	<!-- </parent> -->
+	<parent>
+		<groupId>edaisong</groupId>
+		<artifactId>edsproject</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
 
 	<groupId>edaisong</groupId>
 	<artifactId>web</artifactId>
@@ -24,7 +24,77 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>web</finalName>
-		<defaultGoal>compile</defaultGoal>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/</directory>
+							<includes>
+								<include>**/*.tmp</include>
+								<include>**/*.log</include>
+							</includes>
+						</fileset>
+						<fileset>
+							<directory>${basedir}/temp</directory>
+						</fileset>
+						<fileset>
+							<directory>${basedir}/cache</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>bundle</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/resources/assemblies/bundle.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>com.edaisong.edsservice.Main</mainClass>
+							<classpathLayoutType>custom</classpathLayoutType>
+							<customClasspathLayout>$${artifact.artifactId}.$${artifact.extension}</customClasspathLayout>
+							<packageName />
+						</manifest>
+						<manifestEntries>
+							<Class-Path>../etc/</Class-Path>
+						</manifestEntries>
+					</archive>
+					<excludes>
+						<exclude>log4j.properties</exclude>
+						<exclude>applicationContext.xml</exclude>
+						<exclude>assemblies/*</exclude>
+						<exclude>**/*Test.java</exclude>
+					</excludes>
+					<!-- <include>**/*Tests.java</include> -->
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 </project>

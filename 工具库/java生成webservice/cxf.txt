@@ -1,0 +1,13 @@
+1、解压，把bin目录配置环境变量
+2、在cmd下执行下面命令
+3、http://blog.sina.com.cn/s/blog_8a9575ec0101g9ti.html
+
+wsdl2java -p com.renrentui.sms.saltlight -frontend jaxws21 -client -encoding utf-8 -d F:\工具\java\java生成webservice\webservice http://sms.saltlight.cn/Sms.asmx?wsdl
+
+
+
+
+wsdl2java -p com.renrentui.sms -frontend jaxws21 -client -encoding utf-8 -d F:\工具\java\java生成webservice\webservice http://service.etaoshi.com/sms.asmx?wsdl
+
+
+http://sms.saltlight.cn/Sms.asmx?wsdl

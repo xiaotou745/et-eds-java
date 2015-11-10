@@ -60,8 +60,18 @@ public class OrderChild implements Serializable {
     private Short status;
     private Double orderCommission;
     private Double settleMoney;
-    private Integer orderRegionOneId;
+    private Double distribSubsidy;   
+
+	private Integer orderRegionOneId;
     private Integer orderRegionTwoId;
+    
+    public Double getDistribSubsidy() {
+		return distribSubsidy;
+	}
+
+	public void setDistribSubsidy(Double distribSubsidy) {
+		this.distribSubsidy = distribSubsidy;
+	}
     public Double getCommissionRate() {
 		return commissionRate;
 	}

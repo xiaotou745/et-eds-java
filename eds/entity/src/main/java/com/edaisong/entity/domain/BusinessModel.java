@@ -7,6 +7,8 @@ private String groupname;
 private String businessgroupName;
 private int strategyId;
 private int groupBusinessID;
+private int pushOrderType;
+
 public String getBusinessgroupName() {
 	return businessgroupName;
 }
@@ -31,5 +33,10 @@ public int getGroupBusinessID() {
 public void setGroupBusinessID(int groupBusinessID) {
 	this.groupBusinessID = groupBusinessID;
 }
-
+public int getPushOrderType() {
+	return pushOrderType;
+}
+public void setPushOrderType(int pushOrderType) {
+	this.pushOrderType = pushOrderType;
+}
 }

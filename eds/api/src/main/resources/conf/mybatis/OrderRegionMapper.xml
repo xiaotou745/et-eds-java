@@ -107,6 +107,12 @@
     from OrderRegion (nolock)
     where id = #{id,jdbcType=INTEGER}
   </select>
+  	<select id="getByIdWirte" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderRegion 
+    where id = #{id,jdbcType=INTEGER}
+  </select>
   	<select id="getByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

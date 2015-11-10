@@ -2,13 +2,15 @@ package com.edaisong.entity.resp;
 
 import java.util.Date;
 
+import com.edaisong.core.util.DistanceConvert;
+
 public class MyOrderGrabDetailCResp {
 	private String orderRegionOneName;
 	private String orderRegionTwoName;
 	private Integer orderCount;
 	private Integer grabOrderId;
 	private String grabOrderNo; 
-	private double distanceToBusiness; 
+	private String distanceToBusiness; 
 	private Integer hadCompleteOrderGrab; 
 
     private Integer businessId;
@@ -68,11 +70,11 @@ public class MyOrderGrabDetailCResp {
 		this.grabOrderNo = grabOrderNo;
 	}
 
-	public double getDistanceToBusiness() {
-		return distanceToBusiness;
+	public String getDistanceToBusiness() {
+		return DistanceConvert.ToString(distanceToBusiness,"");
 	}
 
-	public void setDistanceToBusiness(double distanceToBusiness) {
+	public void setDistanceToBusiness(String distanceToBusiness) {
 		this.distanceToBusiness = distanceToBusiness;
 	}
 

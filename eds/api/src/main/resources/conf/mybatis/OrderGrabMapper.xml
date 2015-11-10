@@ -122,7 +122,7 @@ GROUP BY b.Name ,
       <if test="clienterid != null" >
         ClienterId,
       </if>
-      <if test="orderCount != null" >
+      <if test="ordercount != null" >
         orderCount,
       </if>
       <if test="status != null" >
@@ -178,8 +178,8 @@ GROUP BY b.Name ,
       <if test="clienterid != null" >
         #{clienterid,jdbcType=INTEGER},
       </if>
-      <if test="orderCount != null" >
-        #{orderCount,jdbcType=INTEGER},
+      <if test="ordercount != null" >
+        #{ordercount,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
@@ -428,10 +428,7 @@ GROUP BY o.GrabOrderNo ,
     <set >
       <if test="businessid != null" >
         BusinessId = #{businessid,jdbcType=INTEGER},
-      </if>
-      <if test="distribsubsidy != null" >
-        DistribSubsidy = #{distribsubsidy,jdbcType=DECIMAL},
-      </if>
+      </if>     
       <if test="graborderno != null" >
         GrabOrderNo = #{graborderno,jdbcType=VARCHAR},
       </if>
@@ -483,23 +480,26 @@ GROUP BY o.GrabOrderNo ,
       <if test="orderRegionTwoName != null" >
         OrderRegionTwoName = #{orderRegionTwoName,jdbcType=NVARCHAR},
       </if>
-      <if test="ordercommission != null" >
-        OrderCommission = #{ordercommission,jdbcType=DOUBLE},
+      <if test="orderCommission != null" >
+        OrderCommission = #{orderCommission,jdbcType=DOUBLE},
       </if>
-      <if test="settlemoney != null" >
-        SettleMoney = #{settlemoney,jdbcType=DOUBLE},
+      <if test="settleMoney != null" >
+        SettleMoney = #{settleMoney,jdbcType=DOUBLE},
       </if>
-      <if test="commissionrate != null" >
-        CommissionRate = #{commissionrate,jdbcType=DOUBLE},
+      <if test="commissionRate != null" >
+        CommissionRate = #{commissionRate,jdbcType=DOUBLE},
       </if>
-      <if test="basecommission != null" >
-        BaseCommission = #{basecommission,jdbcType=DOUBLE},
+      <if test="baseCommission != null" >
+        BaseCommission = #{baseCommission,jdbcType=DOUBLE},
       </if>
       <if test="websitesubsidy != null" >
         WebsiteSubsidy = #{websitesubsidy,jdbcType=DOUBLE},
       </if>
       <if test="adjustment != null" >
         Adjustment = #{adjustment,jdbcType=DECIMAL},
+      </if>
+         <if test="distribsubsidy != null" >
+        distribsubsidy = #{distribsubsidy,jdbcType=DECIMAL},
       </if>
     </set>
     where Id = #{id,jdbcType=INTEGER}

@@ -749,6 +749,7 @@
         bcr.BusinessId ,
         b.Name BusinessName ,
         b.PhoneNo BusinessPhoneNo ,
+        b.Address BusinessAddress,
         bcr.IsBind ,
         bcr.AuditStatus,
         bcr.CreateTime

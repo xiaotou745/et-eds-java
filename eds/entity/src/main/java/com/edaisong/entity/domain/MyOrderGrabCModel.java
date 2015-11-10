@@ -1,5 +1,7 @@
 package com.edaisong.entity.domain;
 
+import com.edaisong.core.util.DistanceConvert;
+
 public class MyOrderGrabCModel {
 
 	private String businessName; 
@@ -78,8 +80,8 @@ public class MyOrderGrabCModel {
 	}
  
 
-	public String getDistanceToBusiness() {
-		return distanceToBusiness;
+	public String getDistanceToBusiness() { 
+		return DistanceConvert.ToString(distanceToBusiness,"");
 	}
 
 	public void setDistanceToBusiness(String distanceToBusiness) {
