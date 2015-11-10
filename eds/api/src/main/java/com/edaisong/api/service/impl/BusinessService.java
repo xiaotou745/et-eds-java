@@ -104,7 +104,11 @@ public class BusinessService implements IBusinessService {
 	public List<BusinessOptionLog> getOpLogByBusinessID(int businessID) {
 		return iBusinessDao.getOpLogByBusinessID(businessID);
 	}
-
+	/**
+	 * 修改商户基本信息
+	 * 2015年11月9日16:48:53
+	 * 茹化肖修改
+	 */
 	@Override
 	public int modifyBusiness(BusinessModifyModel detailModel) {
 		BusinessDetailModel oldModel = iBusinessDao
@@ -120,104 +124,122 @@ public class BusinessService implements IBusinessService {
 	private String GetRemark(BusinessDetailModel brm, BusinessModifyModel model) {
 		StringBuffer remark = new StringBuffer();
 		if (brm != null && brm.getId() > 0) {
-			if (brm.getAddress() == null
-					|| !brm.getAddress().equals(model.getAddress())) {
+			if (model.getAddress()!=null&&(brm.getAddress() == null
+					|| !brm.getAddress().equals(model.getAddress()))) {
 				remark.append(String.format("商户地址原值:%s,修改为%s;",
 						brm.getAddress(), model.getAddress()));
 			}
-			if (brm.getGroupid() != model.getGroupid()) {
+			if (model.getRecommendphone()!=null&&(brm.getRecommendphone() == null
+					|| !brm.getRecommendphone().equals(model.getRecommendphone()))) {
+				remark.append(String.format("推荐人手机号原值:%s,修改为%s;",
+						brm.getRecommendphone(), model.getRecommendphone()));
+			}
+			if (model.getGroupid()!=null&&brm.getGroupid() != model.getGroupid()) {
 				remark.append(String.format("第三方id原值:%s,修改为%s;",
 						brm.getGroupid(), model.getGroupid()));
 			}
-			if (brm.getName() == null || !brm.getName().equals(model.getName())) {
+			if (model.getName()!=null&&(brm.getName() == null || !brm.getName().equals(model.getName()))) {
 				remark.append(String.format("商户名原值:%s,修改为%s;", brm.getName(),
 						model.getName()));
 			}
-			if (brm.getPhoneno2() == null
-					|| !brm.getPhoneno2().equals(model.getPhoneno2())) {
+			if (model.getPhoneno2()!=null&&(brm.getPhoneno2() == null
+					|| !brm.getPhoneno2().equals(model.getPhoneno2()))) {
 				remark.append(String.format("联系电话原值:%s,修改为%s;",
 						brm.getPhoneno2(), model.getPhoneno2()));
 			}
 			// 座机
-			if (brm.getLandline() == null
-					|| !brm.getLandline().equals(model.getLandline())) {
+			if (model.getLandline()!=null&&(brm.getLandline() == null
+					|| !brm.getLandline().equals(model.getLandline()))) {
 				remark.append(String.format("联系座机原值:%s,修改为%s;",
 						brm.getLandline(), model.getLandline()));
 			}
-			if (brm.getDistribsubsidy().compareTo(model.getDistribsubsidy()) != 0) {
+			if (model.getDistribsubsidy()!=null&&(brm.getDistribsubsidy().compareTo(model.getDistribsubsidy()) != 0)) {
 				remark.append(String.format("代收客配原值:%s,修改为%s;",
 						brm.getDistribsubsidy(), model.getDistribsubsidy()));
 			}
-			if (brm.getCity() == null || !brm.getCity().equals(model.getCity())) {
+			if (model.getCity()!=null&&(brm.getCity() == null || !brm.getCity().equals(model.getCity()))) {
 				remark.append(String.format("城市原值:%s,修改为%s;", brm.getCity(),
 						model.getCity()));
 			}
-			if (brm.getDistrict() == null
-					|| !brm.getDistrict().equals(model.getDistrict())) {
+			if (model.getDistrict()!=null&&(brm.getDistrict() == null
+					|| !brm.getDistrict().equals(model.getDistrict()))) {
 				remark.append(String.format("区域原值:%s,修改为%s;",
 						brm.getDistrict(), model.getDistrict()));
 			}
-			if (brm.getLongitude().compareTo(model.getLongitude()) != 0) {
+			if (model.getLongitude()!=null&&(brm.getLongitude().compareTo(model.getLongitude()) != 0)) {
 				remark.append(String.format("经度原值:%s,修改为%s;",
 						brm.getLongitude(), model.getLongitude()));
 			}
-			if (brm.getLatitude().compareTo(model.getLatitude()) != 0) {
+			if (model.getLatitude()!=null&&(brm.getLatitude().compareTo(model.getLatitude()) != 0)) {
 				remark.append(String.format("纬度原值:%s,修改为%s;",
 						brm.getLatitude(), model.getLatitude()));
 			}
 
-			if (brm.getBusinesscommission().compareTo(
-					model.getBusinesscommission()) != 0) {
+			if (model.getBusinesscommission()!=null&&(brm.getBusinesscommission().compareTo(
+					model.getBusinesscommission()) != 0)) {
 				remark.append(String.format("商配比例原值:%s,修改为%s;",
 						brm.getBusinesscommission(),
 						model.getBusinesscommission()));
 			}
-			if (brm.getCommissionfixvalue().compareTo(
-					model.getCommissionfixvalue()) != 0) {
+			if (model.getCommissionfixvalue()!=null&&(brm.getCommissionfixvalue().compareTo(
+					model.getCommissionfixvalue()) != 0)) {
 				remark.append(String.format("商配定额原值:%s,修改为%s;",
 						brm.getCommissionfixvalue(),
 						model.getCommissionfixvalue()));
 			}
 
 			// 补贴策略 BusinessGroupId
-			if (brm.getBusinessgroupid() != model.getBusinessgroupid()) {
+			if (model.getBusinessgroupid()!=null&&(brm.getBusinessgroupid() != model.getBusinessgroupid())) {
 				remark.append(String.format("补贴策略原值:%s,修改为%s;",
-						brm.getBusinessgroupid(), model.getBusinessgroupid()));
+						model.getOldbusinessgroupidname(),
+						model.getBusinessgroupidname()));
 			}
 			// 餐费结算方式
-			if (brm.getMealssettlemode() != model.getMealssettlemode()) {
+			if (model.getMealssettlemode()!=null&&brm.getMealssettlemode() != model.getMealssettlemode()) {
 				remark.append(String.format("餐费结算方式原值:%s,修改为%s;",
 						brm.getMealssettlemode() == 0 ? "线下" : "线上",
 						model.getMealssettlemode() == 0 ? "线下" : "线上"));
 			}
 			// 一键发单
-			if (brm.getOnekeypuborder() != model.getOnekeypuborder()) {
+			if (model.getOnekeypuborder()!=null&&brm.getOnekeypuborder() != model.getOnekeypuborder()) {
 				remark.append(String.format("一键发单原值:%s,修改为%s;",
 						brm.getOnekeypuborder() == 1 ? "是" : "否",
 						model.getOnekeypuborder() == 1 ? "是" : "否"));
 			}
 			// 余额可以透支
-			if (brm.getIsallowoverdraft() != model.getIsallowoverdraft()) {
+			if (model.getIsallowoverdraft()!=null&&brm.getIsallowoverdraft() != model.getIsallowoverdraft()) {
 				remark.append(String.format("余额透支原值:%s,修改为%s;",
 						brm.getIsallowoverdraft() == 1 ? "是" : "否",
 						model.getIsallowoverdraft() == 1 ? "是" : "否"));
 			}
 			// 雇主任务时间限制
-			if (brm.getIsemployertask() != model.getIsemployertask()) {
+			if (model.getIsemployertask()!=null&&brm.getIsemployertask() != model.getIsemployertask()) {
 				remark.append(String.format("雇主任务时间限制原值:%s,修改为%s;",
 						brm.getIsemployertask() == 1 ? "是" : "否",
 						model.getIsemployertask() == 1 ? "是" : "否"));
 			}
 			// 第三方Id
-			if (brm.getOriginalbusiid() != model.getOriginalbusiid()) {
+			if (model.getOriginalbusiid()!=null&&brm.getOriginalbusiid() != model.getOriginalbusiid()) {
 				remark.append(String.format("第三方ID原值:%s,修改为%s;",
 						brm.getOriginalbusiid(), model.getOriginalbusiid()));
 			}
 			// 是否需要审核
-			if (brm.getIsOrderChecked() != model.getIsOrderChecked()) {
+			if (model.getIsOrderChecked()!=null&&brm.getIsOrderChecked() != model.getIsOrderChecked()) {
 				remark.append(String.format("订单是否需要审核原值:%s,修改为%s;",
 						brm.getIsOrderChecked() == 1 ? "是" : "否",
 						model.getIsOrderChecked() == 1 ? "是" : "否"));
+			}
+			//发单模式
+			if (model.getPushOrderType()!=null&&brm.getPushOrderType() != model.getPushOrderType()) {
+				remark.append(String.format("发单模式原值:%s,修改为%s;",
+						brm.getPushOrderType() == 1 ? "快单模式" : "普通模式",
+						model.getPushOrderType() == 1 ? "快单模式" : "普通模式"));
+			}
+			//现金支付
+			if (model.getIsAllowCashPay()!=null&&brm.getIsAllowCashPay() != model.getIsAllowCashPay()) {
+				remark.append(String.format("是否可以现金支付原值:%s,修改为%s;",
+						brm.getIsAllowCashPay() == 1 ? "是" : "否",
+						model.getIsAllowCashPay() == 1 ? "是" : "否"));
 			}
 		}
 		if (remark.length() > 0) {

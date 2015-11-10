@@ -50,7 +50,8 @@
 		b.isallowoverdraft ,
 		b.isemployertask ,
 		ISNULL(b.RecommendPhone, '') AS
-		recommendphone
+		recommendphone,
+		b.PushOrderType
 		FROM business b WITH ( NOLOCK )
 		LEFT JOIN
 		BusinessFinanceAccount bfa WITH ( NOLOCK ) ON b.Id =
@@ -116,6 +117,12 @@
 		<set>
 			<if test="name != null">
 				name = #{name,jdbcType=NVARCHAR},
+			</if>
+			<if test="recommendphone != null">
+				recommendphone = #{recommendphone,jdbcType=NVARCHAR},
+			</if>
+			<if test="pushOrderType != null">
+				PushOrderType = #{pushOrderType,jdbcType=INTEGER},
 			</if>
 			<if test="landline != null">
 				landline = #{landline,jdbcType=NVARCHAR},

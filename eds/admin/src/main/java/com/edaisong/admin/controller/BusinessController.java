@@ -158,10 +158,10 @@ public class BusinessController {
 				"IsStartOverStoreSubsidies");
 
 		String subsidyConfig = "";
-		if (isStartOverStoreSubsidies == "1") {
+		if (isStartOverStoreSubsidies.equals("1")) {
 			subsidyConfig = "全局补贴：跨店抢单奖励";
 		}
-		if (isStarTimeSubsidies == "1") {
+		if (isStarTimeSubsidies.equals("1")) {
 			subsidyConfig = subsidyConfig.isEmpty() ? "全局补贴：动态时间奖励" : "全局补贴：跨店抢单奖励和动态时间奖励";
 		}
 		// 从常量配置中获取
@@ -243,7 +243,11 @@ public class BusinessController {
 		List<BusinessExpressRelation> result = businessExpressRelationService.selectByBusinessID(businessID);
 		return result;
 	}
-
+	/**
+	 * 修改商户的基本信息
+	 * @param detail
+	 * @return
+	 */
 	@RequestMapping("modifybusiness")
 	@ResponseBody
 	public int modifyBusiness(BusinessModifyModel detail) {
@@ -266,7 +270,6 @@ public class BusinessController {
 		}
 		List<BusinessExpressRelation> listData = new ArrayList<>();
 		String[] expressList = deliveryCompanyList.split(";");
-		expressList=null;
 		for (String express : expressList) {
 			if (!express.isEmpty()) {
 				String[] itemsStrings = express.split(",");
