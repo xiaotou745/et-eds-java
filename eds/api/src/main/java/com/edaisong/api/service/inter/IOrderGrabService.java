@@ -7,12 +7,15 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel;
+import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.HadFinishOrderReq;
 import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
+import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.HadFinishOrderResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
-
 import com.edaisong.entity.domain.FastOrderDetail;
 import com.edaisong.entity.domain.FastOrderExportModel;
 import com.edaisong.entity.req.OrderGrabCompleteReq;
@@ -67,5 +70,7 @@ public interface IOrderGrabService {
 	
 	MyOrderGrabCResp getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
 	MyOrderGrabDetailCResp getMyOrderGrabDetailC(
-			OrderGrabDetailCReq orderGrabDetailCReq); 
+			OrderGrabDetailCReq orderGrabDetailCReq);
+
+	HadFinishOrderResp getHadFinishOrderC(HadFinishOrderReq para); 
 }

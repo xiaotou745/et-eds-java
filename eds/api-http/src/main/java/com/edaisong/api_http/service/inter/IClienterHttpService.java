@@ -29,5 +29,5 @@ public interface IClienterHttpService {
 	@POST
 	@Path("/unbindmybusiness")
 	public HttpResultModel<Object> unbindMyBusiness(ClienterBindOptionReq clienterBindOptionReq);
-	  
+	
 }

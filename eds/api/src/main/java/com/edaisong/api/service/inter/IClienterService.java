@@ -9,12 +9,15 @@ import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
+import com.edaisong.entity.domain.MyOrderHadFinishCModel;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
+import com.edaisong.entity.req.HadFinishOrderReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
+import com.edaisong.entity.resp.HadFinishOrderResp;
 import com.edaisong.entity.resp.MyBusinessResp;
 
 public interface IClienterService {
@@ -107,4 +110,5 @@ public interface IClienterService {
 	 * wangchao
 	 */
 	MyBusinessResp getMyBusiness(MyBusinessReq myBusinessReq);
+ 
 }

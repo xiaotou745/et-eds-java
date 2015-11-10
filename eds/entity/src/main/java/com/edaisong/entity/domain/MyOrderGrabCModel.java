@@ -14,6 +14,7 @@ public class MyOrderGrabCModel {
 	private Integer grabOrderId;
 	private String grabOrderNo; 
 	private String distanceToBusiness;
+	private String actualDoneDate;
 	public String getBusinessName() {
 		return businessName;
 	}
@@ -94,5 +95,14 @@ public class MyOrderGrabCModel {
 
 	public void setBusinessPhoneNo(String businessPhoneNo) {
 		this.businessPhoneNo = businessPhoneNo;
+	}
+
+	public String getActualDoneDate() {
+		if(actualDoneDate == null){actualDoneDate = "";}
+		return actualDoneDate;
+	}
+
+	public void setActualDoneDate(String actualDoneDate) {
+		this.actualDoneDate = actualDoneDate;
 	}
 }

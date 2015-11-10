@@ -14,12 +14,16 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel;  
 import com.edaisong.entity.domain.MyOrderGrabCModel;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.ClienterMoney;
+import com.edaisong.entity.req.HadFinishOrderReq;
 import com.edaisong.entity.req.MyOrderGrabCReq; 
 import com.edaisong.entity.req.MyOrderGrabCReq;import com.edaisong.entity.req.OrderGrabCompleteReq;
 import com.edaisong.entity.req.OrderGrabConfirmTakeReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
+import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.HadFinishOrderResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
  
@@ -32,19 +36,28 @@ import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 
 
 
+
+
+
+
+
 import java.util.ArrayList;
 import java.util.Date; 
 
+import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao; 
 import com.edaisong.api.dao.inter.IOrderGrabChildDao; 
 import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao; 
+import com.edaisong.core.enums.BusinessStatusEnum;
 import com.edaisong.core.enums.ClienterBalanceRecordRecordType;
 import com.edaisong.core.enums.ClienterBalanceRecordStatus;
+import com.edaisong.core.enums.ClienterStatusEnum;
 import com.edaisong.core.enums.OrderGrabReturnEnum; 
 import com.edaisong.core.enums.OrderStatus; 
 import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus; 
+import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
 import com.edaisong.core.util.OrderNoHelper; 
 import com.edaisong.entity.OrderChild; 
 import com.edaisong.entity.OrderGrabChild; 
@@ -66,7 +79,8 @@ public class OrderGrabService implements IOrderGrabService {
 	private IOrderGrabChildDao orderGrabChildDao;
 	@Autowired
 	private IOrderSubsidiesLogDao orderSubsidiesLogDao;
-	
+	@Autowired
+	private IBusinessDao businessDao;
 	@Autowired
 	private IOrderRegionDao orderRegionDao;
 	
@@ -416,4 +430,17 @@ public class OrderGrabService implements IOrderGrabService {
 		return listOrderGrabChild;
 	}
  
+
+	@Override
+	public HadFinishOrderResp getHadFinishOrderC(HadFinishOrderReq para) {
+		HadFinishOrderResp myOrderGrabCResp = new HadFinishOrderResp();
+		List<MyOrderGrabCModel> myOrderGrabCModel = orderGrabDao.getHadFinishOrderC(para);
+		myOrderGrabCResp.setMyOrderGrabCModelList(myOrderGrabCModel);
+		
+		HadFinishOrderResp myOrderGrabCTotal = new HadFinishOrderResp();
+		myOrderGrabCTotal = orderGrabDao.getHadFinishOrderCTotalInfo(para);
+		myOrderGrabCResp.setYiWanChengTotal(myOrderGrabCTotal.getYiWanChengTotal());
+		
+		return myOrderGrabCResp;
+	} 
 }

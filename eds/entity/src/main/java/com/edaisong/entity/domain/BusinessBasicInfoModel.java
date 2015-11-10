@@ -7,6 +7,9 @@ public class BusinessBasicInfoModel {
 	private String businessPhoneNo;
 	
 	private String businessAddress;
+	
+	private Integer isBind;
+	private Integer auditStatus;
 	public Integer getBusinessId() {
 		return businessId;
 	}
@@ -37,6 +40,22 @@ public class BusinessBasicInfoModel {
 
 	public void setBusinessAddress(String businessAddress) {
 		this.businessAddress = businessAddress;
+	}
+
+	public Integer getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(Integer auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+	public Integer getIsBind() {
+		return isBind;
+	}
+
+	public void setIsBind(Integer isBind) {
+		this.isBind = isBind;
 	}
 
 	

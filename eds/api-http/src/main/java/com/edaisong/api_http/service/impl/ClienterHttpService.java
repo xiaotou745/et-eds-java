@@ -3,17 +3,25 @@ package com.edaisong.api_http.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List; 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service; 
+
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api_http.service.inter.IClienterHttpService;
+import com.edaisong.core.enums.OrderGrabEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.enums.returnenums.RemoveRelationReturnEnum;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.MyOrderHadFinishCModel;
+import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.ClienterBindOptionReq;
+import com.edaisong.entity.req.HadFinishOrderReq;
 import com.edaisong.entity.req.MyBusinessReq;
+import com.edaisong.entity.resp.HadFinishOrderResp;
 import com.edaisong.entity.resp.MyBusinessResp;
+import com.edaisong.entity.resp.MyOrderGrabCResp;
 @Service
 public class ClienterHttpService implements IClienterHttpService {
 
@@ -73,6 +81,5 @@ public class ClienterHttpService implements IClienterHttpService {
     		res.setMessage(HttpReturnRnums.Fail.desc());
         }
 	    return res; 
-	}
-	 
+	} 
 }
