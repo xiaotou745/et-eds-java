@@ -30,6 +30,7 @@ import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
+import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.PagedBusTaskListReq;
@@ -49,6 +50,15 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	{
 		return getMasterSqlSessionUtil().insert(
 				"com.edaisong.api.dao.inter.IOrderDao.insertSelective", record);
+	}
+	
+	@Override
+	public Order selectIsExistByBusinessId(OrderReq req)
+	{
+		Order result = getMasterSqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderDao.selectIsExistByBusinessId",
+				req);
+		return result;
 	}
 	
 	/**
