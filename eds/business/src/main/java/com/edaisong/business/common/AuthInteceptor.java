@@ -54,7 +54,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 					}
 				} else {
 					if (request.getServletPath().equals("/index")||
-						 request.getServletPath().equals("/orderregion/list")||
+						 request.getServletPath().equals("/orderregion/regionmanage")||
+						 request.getServletPath().equals("/orderregion/loglist")||
 						 request.getServletPath().equals("/order/todaylist")||
 					    request.getServletPath().equals("/order/publish")||
 					    request.getServletPath().equals("/order/detail")||

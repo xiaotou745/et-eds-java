@@ -1,7 +1,11 @@
 package com.edaisong.api.dao.impl;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Repository; 
+
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.entity.OrderRegion;
@@ -29,8 +33,8 @@ public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
 	}
 
 	@Override
-	public Integer insertRegionList(List<OrderRegion> regionList) {
-		return getReadOnlySqlSessionUtil().insert("com.edaisong.api.dao.inter.IOrderRegionDao.insertRegionList", regionList);
+	public Integer insert(OrderRegion region) {
+		return getReadOnlySqlSessionUtil().insert("com.edaisong.api.dao.inter.IOrderRegionDao.insert", region);
 	}
 
 	@Override
@@ -52,9 +56,15 @@ public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
 	}
 
 	@Override
-	public int updateHasNoChild(Integer id) {
+	public int updateHasChildByIds(Integer hasChilds,List<Integer> idList) {
+		if (idList==null||idList.size()==0) {
+			return 0;
+		}
+		Map<String, Object> paramMap = new HashedMap();
+		paramMap.put("hasChilds", hasChilds);
+		paramMap.put("idList", idList);
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderRegionDao.updateHasNoChild", id);
+				"com.edaisong.api.dao.inter.IOrderRegionDao.updateHasChildByIds", paramMap);
 	}
 
 	

@@ -18,7 +18,7 @@
 				<a href="<%=basePath%>/order/publish">发布任务</a>
 				<span <%=viewPath=="index"?"class='on'":""%>><a class="one" href="<%=basePath%>/index">商户主页</a></span>
 				<span <%=viewPath=="order/list"?"class='on'":""%>><a class="two" href="<%=basePath%>/order/list">全部订单</a></span>
-				<span <%=viewPath=="orderregion/list"?"class='on'":""%>><a class="two" href="<%=basePath%>/orderregion/list">区域管理</a></span>
+				<span <%=viewPath=="orderregion/list"?"class='on'":""%>><a class="two" href="<%=basePath%>/orderregion/regionmanage">区域管理</a></span>
 				<span <%=viewPath=="order/todaylist"?"class='on'":""%>><a class="two" href="<%=basePath%>/order/todaylist">今日订单</a></span>
 		<!-- 	<span <%=viewPath==""?"class='on'":""%>><a class="three" href="javascript:;">订单统计</a></span> -->
 				<span <%=viewPath=="transdetail/list"?"class='on'":""%>><a class="four" href="<%=basePath%>/transdetail/list">交易明细</a></span>

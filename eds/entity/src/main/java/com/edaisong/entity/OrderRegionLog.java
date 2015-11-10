@@ -9,13 +9,7 @@ public class OrderRegionLog {
 
     private Integer businessid;
 
-    private String name;
-
-    private String coordinate;
-
-    private Integer parentid;
-
-    private Byte status;
+    private String remark;
 
     private Integer opttype;
 
@@ -47,38 +41,6 @@ public class OrderRegionLog {
         this.businessid = businessid;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getCoordinate() {
-        return coordinate;
-    }
-
-    public void setCoordinate(String coordinate) {
-        this.coordinate = coordinate == null ? null : coordinate.trim();
-    }
-
-    public Integer getParentid() {
-        return parentid;
-    }
-
-    public void setParentid(Integer parentid) {
-        this.parentid = parentid;
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
     public Integer getOpttype() {
         return opttype;
     }
@@ -102,4 +64,12 @@ public class OrderRegionLog {
     public void setOptname(String optname) {
         this.optname = optname == null ? null : optname.trim();
     }
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 }
