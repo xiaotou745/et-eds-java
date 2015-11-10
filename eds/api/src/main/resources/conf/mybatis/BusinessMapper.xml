@@ -104,7 +104,8 @@
 		        ISNULL(b.RecommendPhone, '') AS recommendphone ,
 		        bg.StrategyId AS StrategyId ,
 		        b.IsOrderChecked ,
-		        ISNULL(g.groupid, 0) AS groupBusinessID
+		        ISNULL(g.groupid, 0) AS groupBusinessID,
+		        b.pushOrderType
 		FROM    business b WITH ( NOLOCK )
 		        LEFT JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON b.BusinessGroupId = bg.Id
 		        LEFT JOIN GroupBusinessRelation g WITH ( NOLOCK ) ON b.id = g.businessid AND g.IsBind=1 AND g.IsEnable=1
@@ -611,4 +612,33 @@ where   og.Id = #{grabOrderId,jdbcType=INTEGER}
 where b.Id = #{businessId,jdbcType=INTEGER} and bcr.ClienterId = #{clienterId,jdbcType=INTEGER}) or (b.id = #{businessId,jdbcType=INTEGER})
 order by bcr.Id desc
 	</select> 
+	<!-- 商户是否已注册 add by caoheyang 20151110 -->
+   <select id="isExist" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+select  count(1) 
+from  dbo.[business]  
+where   phoneNo= #{phone}  and GroupId=0
+	</select> 
+	<!-- 门店修改绑定手机号 addby caoheyang 20151110 -->
+	<update id="businessModiyPhone" parameterType="com.edaisong.entity.req.BCheckCodeReq">
+	 declare @oldPhone VARCHAR(20);
+     select @oldPhone=PhoneNo from dbo.business where Id=#{businessId,jdbcType=BIGINT};
+		update business SET PhoneNo=#{phoneNo,jdbcType=NVARCHAR}
+		OUTPUT
+		Inserted.Id,
+		Inserted.Id,
+		Inserted.Name,
+		GETDATE(),
+		0,
+		'商家将手机账号由'+@oldPhone+'改为'+'${phoneNo}'
+		INTO BusinessOptionLog
+		(BusinessId,
+		OptId,
+		OptName,
+		InsertTime,
+		Platform,
+		Remark)
+		where Id = #{businessId,jdbcType=BIGINT}
+	</update>
+	
 </mapper>

@@ -29,67 +29,45 @@
 			#{item}
 			</foreach>
   </update>
-    <update id="updateHasNoChild" parameterType="java.lang.Boolean" >
-    update  OrderRegion set HasChild=0
-    where Id = #{id,jdbcType=INTEGER}
+    <update id="updateHasNoChildByIds" parameterType="java.util.List" >
+    update  OrderRegion set HasChild=#{hasChilds,jdbcType=INTEGER}
+    where Id in
+		    <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+			#{item}
+			</foreach>
   </update>
   <insert id="insert" parameterType="com.edaisong.entity.OrderRegion" >
-    insert into OrderRegion (BusinessId, Name, 
-      Coordinate, ParentId,HasChild, Status, 
-      WaitingCount, Distributioning, DoneCount, 
-      CreateTime, CreateName, OptTime, 
-      OptName)
-    values (#{businessid,jdbcType=INTEGER}, #{name,jdbcType=NVARCHAR}, 
-      #{coordinate,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, #{haschild,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
-      #{waitingcount,jdbcType=INTEGER}, #{distributioning,jdbcType=INTEGER}, #{donecount,jdbcType=INTEGER}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=NVARCHAR}, #{opttime,jdbcType=TIMESTAMP}, 
-      #{optname,jdbcType=NVARCHAR})
+  <selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			select @@IDENTITY as id
+		</selectKey>
+   insert into OrderRegion (BusinessId, Name, 
+		      Coordinate, ParentId,HasChild, Status, 
+		      WaitingCount, Distributioning, DoneCount, 
+		      CreateTime, CreateName, OptTime, 
+		      OptName)
+		    values (#{businessid,jdbcType=INTEGER}, 
+				      #{name,jdbcType=NVARCHAR}, 
+				      #{coordinate,jdbcType=VARCHAR}, 
+				      #{parentid,jdbcType=INTEGER}, 
+				      #{haschild,jdbcType=INTEGER}, 
+				     1, 
+				      0, 
+				      0, 
+				      0, 
+				      getdate(), 
+				      #{createname,jdbcType=NVARCHAR}, 
+				      getdate(), 
+				      #{optname,jdbcType=NVARCHAR});
   </insert>
   
-   <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderRegion" >
-    update dbo.[OrderRegion]
-    <set >
-      <if test="haschild != null" >
-        haschild = #{haschild,jdbcType=BIT},
-      </if>
-      <if test="waitingcount != null" >
-        waitingcount += #{waitingcount,jdbcType=INTEGER},
-      </if>
-       <if test="grabcount != null" >
-        grabcount += #{grabcount,jdbcType=INTEGER},
-      </if>
-      <if test="distributioning != null" >
-        distributioning += #{distributioning,jdbcType=INTEGER},
-      </if>
-      <if test="donecount != null" >
-        donecount += #{donecount,jdbcType=INTEGER},
-      </if>     
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderRegion" >
-    update OrderRegion
-    set BusinessId = #{businessid,jdbcType=INTEGER},
-      Name = #{name,jdbcType=NVARCHAR},
-      Coordinate = #{coordinate,jdbcType=VARCHAR},
-      ParentId = #{parentid,jdbcType=INTEGER},
-      Status = #{status,jdbcType=TINYINT},
-      WaitingCount = #{waitingcount,jdbcType=INTEGER},
-      Distributioning = #{distributioning,jdbcType=INTEGER},
-      DoneCount = #{donecount,jdbcType=INTEGER},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      CreateName = #{createname,jdbcType=NVARCHAR},
-      OptTime = #{opttime,jdbcType=TIMESTAMP},
-      OptName = #{optname,jdbcType=NVARCHAR}
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
   <!-- 获取商户区域信息 wangchao --> 
   <select id="getOrderRegion" resultMap="BaseResultMap" parameterType="com.edaisong.entity.req.OrderRegionReq" >
     select 
     <include refid="Base_Column_List" />
     from OrderRegion (nolock)
     where BusinessId = #{businessId,jdbcType=INTEGER} and Status = #{status,jdbcType=INTEGER}
+    order by ParentId
   </select>
   <insert id="insertRegionList" parameterType="java.util.List">
 		<foreach collection="list" item="item" index="index" >
@@ -118,7 +96,6 @@
 		update OrderRegion
 		    set 
 		      Name = #{item.name,jdbcType=NVARCHAR},
-		      Coordinate = #{item.coordinate,jdbcType=VARCHAR},
 		      OptTime = getdate(), 
 		      OptName = #{item.optname,jdbcType=NVARCHAR}
 		    where Id = #{item.id,jdbcType=INTEGER};
@@ -128,6 +105,12 @@
     select 
     <include refid="Base_Column_List" />
     from OrderRegion (nolock)
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  	<select id="getByIdWirte" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderRegion 
     where id = #{id,jdbcType=INTEGER}
   </select>
   	<select id="getByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

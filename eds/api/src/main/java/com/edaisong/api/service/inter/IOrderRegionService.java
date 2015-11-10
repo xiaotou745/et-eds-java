@@ -7,7 +7,7 @@ import com.edaisong.entity.req.OrderRegionReq;
  
 public interface IOrderRegionService {
 	List<OrderRegion> getOrderRegion(OrderRegionReq orderRegionReq );
-    int deleteById(Integer id);
-	Integer updateRegionList(List<OrderRegion> regionList);
-	Integer insertRegionList(List<OrderRegion> regionList);
+	List<String> deleteRegionList(List<Integer> regionList,List<OrderRegion> oldList);
+	Integer updateRegionList(List<OrderRegion> regionList,List<OrderRegion> oldList);
+	Integer insertRegionList(List<OrderRegion> regionList,List<OrderRegion> oldList);
 }

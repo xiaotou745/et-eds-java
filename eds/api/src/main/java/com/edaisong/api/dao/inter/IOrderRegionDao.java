@@ -9,11 +9,12 @@ import com.edaisong.entity.req.OrderRegionReq;
 
 public interface IOrderRegionDao {
 	OrderRegion getById(Integer id);
+	OrderRegion getByIdWrite(Integer id);
 	List<OrderRegion> getByParentId(Integer parentId);
     int deleteByIds(List<Integer> idList);
-    int updateHasNoChild(Integer id);
+    int updateHasChildByIds(Integer hasChilds,List<Integer> idList);
 	Integer updateRegionList(List<OrderRegion> regionList);
-	Integer insertRegionList(List<OrderRegion> regionList);
+	Integer insert(OrderRegion region);
     
     /*
      * 获取商户区域信息

@@ -17,6 +17,14 @@
 /* 	position: absolute; */
 	z-index: 5
 }
+.map_title{
+	line-height: 46px;
+	color:#000;
+	font-size: 14px;
+	background-color:#dce0ec;
+	border:1px solid #c8cddc;
+	border-radius:3px;
+}
 .map_top span{
 	height: 38px;
 	line-height: 35px;
@@ -65,7 +73,7 @@
 	z-index: 9
 }
 .map_popup{
-	width: 420px;
+	width: 450px;
 	height: 530px;
 	position: absolute;
 	top:15px;

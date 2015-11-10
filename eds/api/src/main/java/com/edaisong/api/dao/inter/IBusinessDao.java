@@ -19,6 +19,7 @@ import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderRespModel;
+import com.edaisong.entity.req.BCheckCodeReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
@@ -156,5 +157,18 @@ public interface IBusinessDao {
 		MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq);
 		BusinessBasicInfoModel getBusinessInfo(BusinessReq businessReq);
 	    
-	    
+		  /**
+		   * 商户是否已注册
+		   * @param phone
+		   * @return
+		   */
+		  boolean isExist(String phone);
+			/**
+			 * 门店修改绑定手机号
+			 * @author CaoHeYang
+			 * @date 20151110
+			 * @param model
+			 * @return
+			 */
+			 boolean businessModiyPhone(BCheckCodeReq model);
 }

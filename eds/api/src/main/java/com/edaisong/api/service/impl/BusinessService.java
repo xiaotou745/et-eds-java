@@ -35,6 +35,7 @@ import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.domain.OrderRespModel;
+import com.edaisong.entity.req.BCheckCodeReq;
 import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
@@ -410,5 +411,26 @@ public class BusinessService implements IBusinessService {
 	@Override
 	public BusinessBasicInfoModel getBusinessInfo(BusinessReq businessReq) { 
 		return iBusinessDao.getBusinessInfo(businessReq);
+	}
+	  /**
+	   * 商户是否已注册
+	   * @param phone
+	   * @return
+	   */
+	@Override
+	  public boolean isExist(String phone){
+		return iBusinessDao.isExist(phone);
+	}
+	
+	/**
+	 * 门店修改绑定手机号
+	 * @author CaoHeYang
+	 * @date 20151110
+	 * @param model
+	 * @return
+	 */
+	@Override
+	public boolean businessModiyPhone(BCheckCodeReq req){
+	      return iBusinessDao.businessModiyPhone(req);
 	}
 }

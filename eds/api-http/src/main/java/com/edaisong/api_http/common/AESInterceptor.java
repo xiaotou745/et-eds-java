@@ -1,6 +1,7 @@
 package com.edaisong.api_http.common;
 
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 		String decryptMsg = "";
 		try {
 			InputStream inputStream = message.getContent(InputStream.class);
-			String inputMsg = StreamUtils.copyToStringNoclose(inputStream);
+			String inputMsg = StreamUtils.copyToString(inputStream, Charset.forName("utf-8"));
 			String interceptSwith = PropertyUtils.getProperty("InterceptSwith");// "1"// 开启加密										
 			if (interceptSwith.equals("1")) {
 				System.out.println("已开启AES解密拦截器");
