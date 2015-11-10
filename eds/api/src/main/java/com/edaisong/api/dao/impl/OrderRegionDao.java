@@ -29,12 +29,12 @@ public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
 	
 	@Override
 	public Integer updateRegionList(List<OrderRegion> regionList) {
-		return getReadOnlySqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderRegionDao.updateRegionList", regionList);
+		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderRegionDao.updateRegionList", regionList);
 	}
 
 	@Override
 	public Integer insert(OrderRegion region) {
-		return getReadOnlySqlSessionUtil().insert("com.edaisong.api.dao.inter.IOrderRegionDao.insert", region);
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IOrderRegionDao.insert", region);
 	}
 
 	@Override
