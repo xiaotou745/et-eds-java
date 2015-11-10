@@ -12,23 +12,7 @@ public enum SendSmsReturnType {
 	/**
 	 * 发送失败
 	 */
-	Fail(1002,"发送失败"),
-	/**
-	 * 该账号已经存在
-	 */
-	PhoneExists(1003,"该账号已经存在"),
-	/**
-	 * 该账号不存在
-	 */
-	PhoneNotExists(1004,"该账号不存在"),
-	/**
-	 * 验证码错误
-	 */
-	CodeError(1005,"验证码错误"),
-	/**
-	 * 验证码不能为空
-	 */
-	VerCodeNull(1006, "验证码不能为空");
+	Fail(1002,"发送失败");
 	
 	private int value = 0;
 	private String desc;

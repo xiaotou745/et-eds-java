@@ -13,9 +13,12 @@ import com.edaisong.entity.domain.FastOrderExportModel;
 import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel; 
 import com.edaisong.entity.domain.MyOrderGrabCModel;
+import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.HadFinishOrderReq;
 import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
+import com.edaisong.entity.resp.HadFinishOrderResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp; 
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 @Repository
@@ -100,5 +103,14 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 	public MyOrderGrabCResp getMyOrderGrabCTotalInfo(
 			MyOrderGrabCReq myOrderGrabCReq) {
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderGrabDao.getMyOrderGrabCTotalInfo", myOrderGrabCReq);
+	}
+	@Override
+	public List<MyOrderGrabCModel> getHadFinishOrderC(HadFinishOrderReq para) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderGrabDao.getHadFinishOrderC", para);
+	}
+	@Override
+	public HadFinishOrderResp getHadFinishOrderCTotalInfo(HadFinishOrderReq para) {
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderGrabDao.getHadFinishOrderCTotalInfo", para);
 	} 
 }

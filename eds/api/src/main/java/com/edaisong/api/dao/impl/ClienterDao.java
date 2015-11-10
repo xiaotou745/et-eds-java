@@ -20,11 +20,14 @@ import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.domain.MyBusinessModel;
+import com.edaisong.entity.domain.MyOrderHadFinishCModel;
 import com.edaisong.entity.req.ClienterOptionReq;
+import com.edaisong.entity.req.HadFinishOrderReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
+import com.edaisong.entity.resp.HadFinishOrderResp;
 import com.edaisong.entity.resp.MyBusinessResp;
 
 
@@ -211,6 +214,5 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	public MyBusinessResp getServiceBusinessTotal(MyBusinessReq myBusinessReq) {
 		return	getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.getServiceBusinessTotal",myBusinessReq);
 		 
-	}
-	
+	} 
 }

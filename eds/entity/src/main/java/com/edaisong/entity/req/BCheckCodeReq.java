@@ -1,13 +1,15 @@
 package com.edaisong.entity.req;
 
 /**
- *  B端验证验证码是否录入正确 
+ *  B端验证验证码是否录入正确     
+ *  B端更新商家手机号用到
  * @author CaoHeYang
  * @date  20151110
  */
 public class BCheckCodeReq {
 	private String phoneNo;//账号
 	private String code;
+	private Integer businessId;
 	/**
 	 * 手机号
 	 * @return
@@ -36,5 +38,10 @@ public class BCheckCodeReq {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
+	public Integer getBusinessId() {
+		return businessId;
+	}
+	public void setBusinessId(Integer businessId) {
+		this.businessId = businessId;
+	}
 }

@@ -25,6 +25,7 @@ import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.BCheckCodeReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
@@ -244,8 +245,21 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	   */
 	@Override
 	public	boolean isExist(String phone){
-		int count= getReadOnlySqlSessionUtil().
-				selectOne("com.edaisong.api.dao.inter.IBusinessDao.isExist",phone);
+		Integer count= getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.isExist",phone);
 		return count>0;
 	}
+	/**
+	 * 门店修改绑定手机号
+	 * @author CaoHeYang
+	 * @date 20151110
+	 * @param model
+	 * @return
+	 */
+	@Override
+	public boolean businessModiyPhone(BCheckCodeReq model) {
+		return getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IBusinessDao.businessModiyPhone",model) > 0;
+	}
+
+	
 }

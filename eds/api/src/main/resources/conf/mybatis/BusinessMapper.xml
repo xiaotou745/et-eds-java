@@ -533,6 +533,12 @@ where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,
 	
    <sql id="getMyOrdeBListWhere">
   		1=1 and og.BusinessId = ${businessId}  and og.[Status] = ${status}
+  		<if test="orderRegionTwoId !=0">
+			 and og.OrderRegionTwoId=${orderRegionTwoId}
+		</if>		 
+		<if test="orderRegionOneId != 0 and orderRegionTwoId == 0">
+			and og.OrderRegionOneId=${orderRegionOneId} 
+		</if>		
   </sql>
      <sql id="getMyOrdeBListColumns">
   		 c.TrueName ClienterName, 
@@ -573,7 +579,13 @@ where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,
 			isnull(sum(case when og.Status =  1 then og.OrderCount else 0 end),0) yiWanChenOrderCountTotal
 			from 
 			dbo.OrderGrab og(nolock)
-          where og.BusinessId = #{businessId,jdbcType=INTEGER}
+          where og.BusinessId = #{businessId,jdbcType=INTEGER} 
+          <if test="orderRegionTwoId !=0">
+			 and og.OrderRegionTwoId=${orderRegionTwoId} 
+		</if>
+		<if test="orderRegionOneId != 0 and orderRegionTwoId == 0">
+			and og.OrderRegionOneId=${orderRegionOneId} 
+		</if>		
 	</select> 
 	<select id="getMyOrderDetailB" resultType="com.edaisong.entity.resp.MyOrderDetailBResp"
 		parameterType="com.edaisong.entity.req.OrderDetailBReq">
@@ -595,8 +607,10 @@ where   og.Id = #{grabOrderId,jdbcType=INTEGER}
 	<!-- 获取商户基础信息 wangchao 扫一扫时候调用 -->
 	<select id="getBusinessInfo" resultType="com.edaisong.entity.domain.BusinessBasicInfoModel"
 		parameterType="com.edaisong.entity.req.BusinessReq">
-	 	select Id BusinessId,Name BusinessName,PhoneNo BusinessPhoneNo,Address BusinessAddress FROM dbo.business(nolock)
-where Id = #{businessId,jdbcType=INTEGER}
+	 	select b.Id BusinessId,b.Name BusinessName,b.PhoneNo BusinessPhoneNo,b.Address BusinessAddress,ISNULL(bcr.IsBind,999) IsBind,ISNULL(bcr.AuditStatus,0) AuditStatus FROM dbo.business b(nolock)
+	 	left join dbo.BusinessClienterRelation bcr (nolock) on b.Id = bcr.BusinessId
+where b.Id = #{businessId,jdbcType=INTEGER} and bcr.ClienterId = #{clienterId,jdbcType=INTEGER}) or (b.id = #{businessId,jdbcType=INTEGER})
+order by bcr.Id desc
 	</select> 
 	<!-- 商户是否已注册 add by caoheyang 20151110 -->
    <select id="isExist" resultType="java.lang.Integer"
@@ -605,5 +619,26 @@ select  count(1)
 from  dbo.[business]  
 where   phoneNo= #{phone}  and GroupId=0
 	</select> 
+	<!-- 门店修改绑定手机号 addby caoheyang 20151110 -->
+	<update id="businessModiyPhone" parameterType="com.edaisong.entity.req.BCheckCodeReq">
+	 declare @oldPhone VARCHAR(20);
+     select @oldPhone=PhoneNo from dbo.business where Id=#{businessId,jdbcType=BIGINT};
+		update business SET PhoneNo=#{phoneNo,jdbcType=NVARCHAR}
+		OUTPUT
+		Inserted.Id,
+		Inserted.Id,
+		Inserted.Name,
+		GETDATE(),
+		0,
+		'商家将手机账号由'+@oldPhone+'改为'+'${phoneNo}'
+		INTO BusinessOptionLog
+		(BusinessId,
+		OptId,
+		OptName,
+		InsertTime,
+		Platform,
+		Remark)
+		where Id = #{businessId,jdbcType=BIGINT}
+	</update>
 	
 </mapper>

@@ -3,8 +3,10 @@ package com.edaisong.api_http.service.impl;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessService;
@@ -14,6 +16,7 @@ import com.edaisong.core.enums.BSendCodeType;
 import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.enums.BusinessOrderEnum;
 import com.edaisong.core.enums.ClienterBindBusinessEnum;
+import com.edaisong.core.enums.returnenums.BusinessModiyPhoneReturnEnum;
 import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.enums.returnenums.GetPushOrderTypeReturnEnum;
@@ -298,13 +301,19 @@ public class BusinessHttpService implements IBusinessHttpService {
 		HttpResultModel<Object> res = new HttpResultModel<Object>();
 		String phoneNo = req.getPhoneNo();
 		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()) {
-			return res.setStatus(SendSmsReturnType.PhoneError.value()).setMessage(SendSmsReturnType.PhoneError.desc());
+			return res.setStatus(BusinessModiyPhoneReturnEnum.PhoneError.value()).setMessage
+					(BusinessModiyPhoneReturnEnum.PhoneError.desc());
 		}
 		if (req.getCode()==null||req.getCode().isEmpty()) {
-			return res.setStatus(SendSmsReturnType.VerCodeNull.value()).setMessage(SendSmsReturnType.VerCodeNull.desc());// 验证码不不能为空
+			return res.setStatus(BusinessModiyPhoneReturnEnum.VerCodeNull.value())
+					.setMessage(BusinessModiyPhoneReturnEnum.VerCodeNull.desc());
+		}
+		if (redisService.get(String.format(RedissCacheKey.Business_SendCode_ModifyPhone, phoneNo),String.class)==null) {
+			return res.setStatus(BusinessModiyPhoneReturnEnum.CodeTimeOut.value())
+					.setMessage(BusinessModiyPhoneReturnEnum.CodeTimeOut.desc());// 验证码不不能为空
 		}
 		if (!redisService.get(String.format(RedissCacheKey.Business_SendCode_ModifyPhone, phoneNo),String.class).equals(req.getCode())) {
-			return res.setStatus(SendSmsReturnType.CodeError.value()).setMessage(SendSmsReturnType.CodeError.desc());// 发送失败
+			return res.setStatus(BusinessModiyPhoneReturnEnum.CodeError.value()).setMessage(BusinessModiyPhoneReturnEnum.CodeError.desc());// 发送失败
 		}
 		return res;
 	}
@@ -320,15 +329,34 @@ public class BusinessHttpService implements IBusinessHttpService {
 	@Override
 	public HttpResultModel<Object> businessModiyPhoneStep2(BCheckCodeReq req) {
 		HttpResultModel<Object> res = new HttpResultModel<Object>();
+		if (req.getBusinessId()==null||req.getBusinessId()==0) {
+			return res.setStatus(BusinessModiyPhoneReturnEnum.BusinessId.value()).
+					setMessage(BusinessModiyPhoneReturnEnum.BusinessId.desc());
+		}
 		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()) {
-			return res.setStatus(SendSmsReturnType.PhoneError.value()).setMessage(SendSmsReturnType.PhoneError.desc());
+			return res.setStatus(BusinessModiyPhoneReturnEnum.PhoneError.value()).
+					setMessage(BusinessModiyPhoneReturnEnum.PhoneError.desc());
 		}
 		if (req.getCode()==null||req.getCode().isEmpty()) {
-			return res.setStatus(SendSmsReturnType.VerCodeNull.value()).setMessage(SendSmsReturnType.VerCodeNull.desc());
+			return res.setStatus(BusinessModiyPhoneReturnEnum.VerCodeNull.value()).
+					setMessage(BusinessModiyPhoneReturnEnum.VerCodeNull.desc());
+		}
+		String phoneNo = req.getPhoneNo();
+		
+		System.out.println(String.format(RedissCacheKey.Business_SendCode_ModifyPhoneNewPhone, phoneNo));
+		if (redisService.get(String.format(RedissCacheKey.Business_SendCode_ModifyPhoneNewPhone, phoneNo),String.class)==null) {
+			return res.setStatus(BusinessModiyPhoneReturnEnum.CodeTimeOut.value())
+					.setMessage(BusinessModiyPhoneReturnEnum.CodeTimeOut.desc());
+		}
+		if (!redisService.get(String.format(RedissCacheKey.Business_SendCode_ModifyPhoneNewPhone, phoneNo),String.class).equals(req.getCode())) {
+			return res.setStatus(BusinessModiyPhoneReturnEnum.CodeError.value()).
+					setMessage(BusinessModiyPhoneReturnEnum.CodeError.desc());
 		}
 		if (businessService.isExist(req.getPhoneNo())) {
-			return res.setStatus(SendSmsReturnType.PhoneExists.value()).setMessage(SendSmsReturnType.PhoneExists.desc());
+			return res.setStatus(BusinessModiyPhoneReturnEnum.PhoneExists.value()).
+					setMessage(BusinessModiyPhoneReturnEnum.PhoneExists.desc());
 		}
-		return res;
+		return businessService.businessModiyPhone(req)?res:res.setStatus(BusinessModiyPhoneReturnEnum.ModifyError.value()).
+				setMessage(BusinessModiyPhoneReturnEnum.ModifyError.desc());
 	}
 }
