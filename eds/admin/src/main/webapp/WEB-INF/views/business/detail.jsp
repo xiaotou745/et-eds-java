@@ -170,8 +170,11 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 				</div>
 				<div class="control-group">
 	                    <label style="margin-left: 20px;width:150px;">应收门店：</label>
-	                    <label title="应收商家配送费比例">商配比例</label><input id="busCommissionText" name="busCommissionText" style="width:100px" type="text" value="<%=detail.getBusinesscommission()%>" />
-	                    %&nbsp;+&nbsp;<label title="应收商家配送费定额">商配定额</label><input id="CommissionFixValue" name="CommissionFixValue" style="width:100px" value="<%=detail.getCommissionfixvalue()%>" />&nbsp;+&nbsp;
+	                    <label title="应收商家配送费比例">商配比例</label>
+	                    <input id="busCommissionText" name="busCommissionText" style="width:100px" type="text" value="<%=detail.getBusinesscommission()%>" <%=detail.getPushOrderType()==1?"disabled='disabled'" : ""%>/>
+	                    %&nbsp;+&nbsp;
+	                    <label title="应收商家配送费定额">商配定额</label><input id="CommissionFixValue" name="CommissionFixValue" style="width:100px" value="<%=detail.getCommissionfixvalue()%>" />
+	                    &nbsp;+&nbsp;
 	                    <label title="代收客户配送费">代收客配</label><input id="busiWaisong" id="busiWaisong" style="width:100px" value="<%=detail.getDistribsubsidy()%>" />
 	            </div>
 	            <div class="control-group" style="margin-left: 27px">
@@ -186,7 +189,7 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 				</div>
 				<div class="control-group" style="margin-left: 2px">
 					<label style="margin-left: 20px;width:150px;">餐费结算方式：</label> 
-					<div style="float: right;margin-right: 80%;width: 160px;margin-top:-2%;">
+					<div style="float: right;margin-right: 80%;width: 160px;">
 					<select name="busiMealsSettleMode"  class="form-control m-b" id="busiMealsSettleMode" >
 						<option <%=detail.getMealssettlemode()==0?"selected":""%> value="0">线下结算</option>
 						<option <%=detail.getMealssettlemode()==1?"selected":""%> value="1">线上结算</option>
@@ -428,7 +431,16 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 			}
 		});
 	};
-
+	 //更新 设置 发单模式功能 add by caoheyang 20151104
+    $("input[name='rPushOrderType']").change(function () {
+        if ($("input[name='rPushOrderType']:checked").val() == 0) {
+            $("#busCommissionText").val('0.00');
+            $("#busCommissionText").removeAttr("disabled");
+        } else if ($("input[name='rPushOrderType']:checked").val() == 1) {
+            $("#busCommissionText").val('0.00');
+            $("#busCommissionText").attr("disabled", "disabled");
+        }
+    });
 
 	//百度地图
 	$("#postion").click(function() {
@@ -654,8 +666,12 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 						window.location.href = "<%=basePath%>/business/detail?businessID=<%=detail.getId()%>";
 					} else if (result == 0) {
 						alert("修改商户信息失败");
-					} else {
+					} else if(result==-1){
 						alert("没有需要更新的信息");
+					} else if(result==-2){
+						alert("选择快单模式时补贴策略只能选择基本佣金+网站补贴类型的策略！");
+					}else if(result==-3){
+						alert("当前商家有待接单订单尚未处理，不能修改商户结算（应收）和补贴设置（应付）");
 					}
 				}
 			});

@@ -114,4 +114,16 @@ public interface IBusinessDao {
 	 * @return
 	 */
 	BusinessStatus getUserStatus(int userid);
+	/**
+	 * 获取当前商家下所有区域中是否存在未接单的订单数量
+	 * @param businessId
+	 * @return
+	 */
+	int getOrderCountInfoByBusinessId(int businessId);
+	/**
+	 * 通过分组ID获取商家策略ID
+	 * @param groupId
+	 * @return
+	 */
+	int getStrategyIdByGroupId(int groupId);
 }

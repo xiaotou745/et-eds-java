@@ -116,8 +116,22 @@ public class BusinessService implements IBusinessService {
 	 */
 	@Override
 	public int modifyBusiness(BusinessModifyModel detailModel) {
-		BusinessDetailModel oldModel = iBusinessDao
-				.getBusinessDetailByID(detailModel.getId());
+		BusinessDetailModel oldModel = iBusinessDao.getBusinessDetailByID(detailModel.getId());
+		Boolean boolean1=detailModel.getBusinesscommission()!=null;//其他设置页签
+		Boolean boolean2=(oldModel.getBusinesscommission()!=detailModel.getBusinesscommission()//商家比例
+							||oldModel.getCommissionfixvalue()!=detailModel.getCommissionfixvalue()//商家定额
+							||oldModel.getDistribsubsidy()!=detailModel.getDistribsubsidy())//代收金额
+							&&(iBusinessDao.getOrderCountInfoByBusinessId(detailModel.getId()))>0;//有未完成的单子
+		if(boolean1&&boolean2)
+		{
+			return -3;//当前商家有待接单订单尚未处理，不能修改商户结算（应收）和补贴设置（应付）
+		}
+		if(detailModel.getPushOrderType()!=null&&detailModel.getPushOrderType()==1)
+		{
+			int StrategyId = iBusinessDao.getStrategyIdByGroupId(detailModel.getBusinessgroupid());
+			if(StrategyId!=4)
+				return -2;//选择快单模式时补贴策略只能选择基本佣金+网站补贴类型的策略！
+		}
 		String remark = GetRemark(oldModel, detailModel);
 		if (remark.isEmpty()) {
 			return -1;

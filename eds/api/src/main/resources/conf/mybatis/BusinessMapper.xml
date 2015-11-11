@@ -482,5 +482,10 @@
 		status,OneKeyPubOrder,IsAllowOverdraft,BalancePrice,IsAllowCashPay
 		from dbo.business with(nolock) WHERE id=#{userid,jdbcType=INTEGER}
 	</select>
-
+	<select id="getOrderCountInfoByBusinessId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	SELECT ISNULL(Sum(WaitingCount),0) FROM dbo.OrderRegion where Status=1 and BusinessId=#{businessId,jdbcType=INTEGER}
+	</select>
+	<select id="getStrategyIdByGroupId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	SELECT StrategyId FROM BusinessGroup nolock WHERE id=#{groupId,jdbcType=INTEGER}
+	</select>
 </mapper>
