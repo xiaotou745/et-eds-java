@@ -259,13 +259,16 @@ public class BusinessHttpService implements IBusinessHttpService {
 		if (phoneNo==null||phoneNo.isEmpty()) {
 			return res.setStatus(SendSmsReturnType.PhoneError.value()).setMessage(SendSmsReturnType.PhoneError.desc());
 		}
+		else if (req.getMessageType() !=0&&req.getMessageType() !=1) {  //修改绑定手机号验证新手机号
+			return res.setStatus(SendSmsReturnType.MessageTypeError.value()).setMessage(SendSmsReturnType.MessageTypeError.desc());
+		}
 		try {
 			if (req.getType() == BSendCodeType.ModifyPhone.value()) {	// 修改绑定手机号验证当前手机号
 				key = String.format(RedissCacheKey.Business_SendCode_ModifyPhone, phoneNo);
-				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
+				Content = "短信验证码：#验证码#(E代送商家版手机动态码，请完成验证)，此验证码5分钟内有效，如非本人操作，请忽略本短信。";
 			} else if (req.getType() == BSendCodeType.ModifyPhoneNewPhone.value()) {  //修改绑定手机号验证新手机号
 				key = String.format(RedissCacheKey.Business_SendCode_ModifyPhoneNewPhone, phoneNo);
-				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
+				Content = "短信验证码：#验证码#(E代送商家版手机动态码，请完成新账号验证)，此验证码5分钟内有效，如非本人操作，请忽略本短信。";
 			}
 			if (key == "") {
 				return res.setStatus(SendSmsReturnType.Fail.value()).setMessage(SendSmsReturnType.Fail.desc());// 发送失败
@@ -273,7 +276,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 			String code = RandomCodeStrGenerator.generateCodeNum(6);// 获取随机数
 			Content = Content.replace("#验证码#", code);
 			redisService.set(key, code, 60 * 5);
-			long resultValue = SmsUtils.sendSMS(phoneNo, Content);
+			long resultValue = req.getMessageType()==0?SmsUtils.sendSMS(phoneNo, Content) : SmsUtils.sendVoiceSMS(phoneNo, Content);
 			if (resultValue <= 0) {
 				return res.setStatus(SendSmsReturnType.Fail.value()).setMessage(SendSmsReturnType.Fail.desc());// 发送失败
 			}

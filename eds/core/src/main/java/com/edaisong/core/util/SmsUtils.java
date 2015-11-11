@@ -17,9 +17,22 @@ public class SmsUtils {
 	 * **/
 	public static long sendSMS(String Mobile, String Content)
 			throws MalformedURLException, UnsupportedEncodingException {
-		SmsAPI.SendSms(Mobile, Content);//易淘通道
+		SmsAPI.sendSmsSaveLogB2B(Mobile, Content);//易淘通道
 //		SaltLightSmsAPI.SendSaliLightSms(Mobile, Content);//盐光通道
 		return 1;
 	}
-
+	/**
+	 * 发送语音短信 2015年11月11日 
+	 * 
+	 * @author CaoHeYang
+	 * @param Mobile
+	 *            手机号码，多个号码‘,’号隔开
+	 * @param Content
+	 *            发送内容
+	 * **/
+	public static long sendVoiceSMS(String Mobile, String Content)
+			throws MalformedURLException, UnsupportedEncodingException {
+		SmsAPI.sendSmsSaveLogNew(Mobile, Content);//易淘通道
+		return 1;
+	}
 }
