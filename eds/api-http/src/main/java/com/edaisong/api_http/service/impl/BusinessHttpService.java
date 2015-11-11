@@ -7,6 +7,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.redis.NetRedisService;
 import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessService;
@@ -23,8 +24,10 @@ import com.edaisong.core.enums.returnenums.GetPushOrderTypeReturnEnum;
 import com.edaisong.core.enums.returnenums.OptBindClienterReturnEnum;
 import com.edaisong.core.enums.returnenums.RemoveRelationReturnEnum;
 import com.edaisong.core.enums.returnenums.SendSmsReturnType;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.RandomCodeStrGenerator;
 import com.edaisong.core.util.SmsUtils;
+import com.edaisong.core.validator.CommonValidator;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessBasicInfoModel;
@@ -59,7 +62,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 	@Autowired
 	private IBusinessClienterRelationService businessClienterRelationService;
 	@Autowired
-	RedisService redisService;
+	NetRedisService redisService;
 
 	/**
 	 * 获取门店发单模式：0 普通模式（默认），1 快单模式 默认0
@@ -256,24 +259,52 @@ public class BusinessHttpService implements IBusinessHttpService {
 		String phoneNo = req.getPhoneNo();
 		String Content = "";
 		HttpResultModel<Object> res = new HttpResultModel<Object>();
-		if (phoneNo==null||phoneNo.isEmpty()) {
+		if (phoneNo==null||phoneNo.isEmpty()||CommonValidator.validPhoneNumber( phoneNo)) {
 			return res.setStatus(SendSmsReturnType.PhoneError.value()).setMessage(SendSmsReturnType.PhoneError.desc());
 		}
+		else if (req.getMessageType() !=0&&req.getMessageType() !=1) {  //修改绑定手机号验证新手机号
+			return res.setStatus(SendSmsReturnType.MessageTypeError.value()).setMessage(SendSmsReturnType.MessageTypeError.desc());
+		}
 		try {
-			if (req.getType() == BSendCodeType.ModifyPhone.value()) {	// 修改绑定手机号验证当前手机号
+			if (req.getType() == BSendCodeType.Register.value()) {	
+				key = String.format(RedissCacheKey.PostRegisterInfo_B, phoneNo);
+				Content = "短信验证码：#验证码#（E代送商家版手机动态码，请完成注册），如非本人操作，请忽略本短信。";
+			} else if (req.getType() == BSendCodeType.ForgetPwd.value()||req.getType() == BSendCodeType.ModifyPwd.value()) {	
+				key = String.format(RedissCacheKey.CheckCodeFindPwd_B, phoneNo);
+				Content = "短信验证码：#验证码#（E代送商家版手机动态码，请完成修改密码），如非本人操作，请忽略本短信。";
+			} 
+			else if (req.getType() == BSendCodeType.ModifyPhone.value()) {	// 修改绑定手机号验证当前手机号
 				key = String.format(RedissCacheKey.Business_SendCode_ModifyPhone, phoneNo);
-				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
+				Content = "短信验证码：#验证码#(E代送商家版手机动态码，请完成验证)，此验证码5分钟内有效，如非本人操作，请忽略本短信。";
 			} else if (req.getType() == BSendCodeType.ModifyPhoneNewPhone.value()) {  //修改绑定手机号验证新手机号
 				key = String.format(RedissCacheKey.Business_SendCode_ModifyPhoneNewPhone, phoneNo);
-				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
+				Content = "短信验证码：#验证码#(E代送商家版手机动态码，请完成新账号验证)，此验证码5分钟内有效，如非本人操作，请忽略本短信。";
 			}
 			if (key == "") {
 				return res.setStatus(SendSmsReturnType.Fail.value()).setMessage(SendSmsReturnType.Fail.desc());// 发送失败
 			}
-			String code = RandomCodeStrGenerator.generateCodeNum(6);// 获取随机数
+			String code;// 获取随机数
+			if (req.getMessageType()==1) {  //语音验证码
+				 Content = "您的验证码是：#验证码#";
+				 String obj = redisService.get(key,String.class);
+				 if (obj==null||obj.isEmpty()) {
+					 return res.setStatus(SendSmsReturnType.CodeNotExists.value()).setMessage
+							 (SendSmsReturnType.CodeNotExists.desc());
+				}
+			    	String keycheck = key + "_voice";
+		            if (ParseHelper.ToInt(redisService.get(keycheck,String.class)) == 1)
+		            {
+		            	 return res.setStatus(SendSmsReturnType.Sending.value()).setMessage
+								 (SendSmsReturnType.Sending.desc());
+		            }
+					redisService.set(keycheck, 1, 60 * 5);
+					code=obj;
+			}else {
+				code= RandomCodeStrGenerator.generateCodeNum(6);
+				redisService.set(key, code, 60 * 5*8000);
+			}
 			Content = Content.replace("#验证码#", code);
-			redisService.set(key, code, 60 * 5);
-			long resultValue = SmsUtils.sendSMS(phoneNo, Content);
+			long resultValue = req.getMessageType()==0?SmsUtils.sendSMS(phoneNo, Content) : SmsUtils.sendVoiceSMS(phoneNo, Content);
 			if (resultValue <= 0) {
 				return res.setStatus(SendSmsReturnType.Fail.value()).setMessage(SendSmsReturnType.Fail.desc());// 发送失败
 			}
@@ -300,7 +331,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 	public HttpResultModel<Object> businessModiyPhoneStep1(BCheckCodeReq req) {
 		HttpResultModel<Object> res = new HttpResultModel<Object>();
 		String phoneNo = req.getPhoneNo();
-		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()) {
+		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()||CommonValidator.validPhoneNumber(phoneNo)) {
 			return res.setStatus(BusinessModiyPhoneReturnEnum.PhoneError.value()).setMessage
 					(BusinessModiyPhoneReturnEnum.PhoneError.desc());
 		}
@@ -333,7 +364,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 			return res.setStatus(BusinessModiyPhoneReturnEnum.BusinessId.value()).
 					setMessage(BusinessModiyPhoneReturnEnum.BusinessId.desc());
 		}
-		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()) {
+		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()||CommonValidator.validPhoneNumber(req.getPhoneNo())) {
 			return res.setStatus(BusinessModiyPhoneReturnEnum.PhoneError.value()).
 					setMessage(BusinessModiyPhoneReturnEnum.PhoneError.desc());
 		}
