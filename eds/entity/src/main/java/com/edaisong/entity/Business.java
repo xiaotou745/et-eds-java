@@ -90,8 +90,17 @@ public class Business implements Serializable{
     private Integer isOrderChecked;
     
     private Integer isAllowCashPay;
+    private Integer pushOrderType;
+  
+	public Integer getPushOrderType() {
+		return pushOrderType;
+	}
 
-    public Integer getId() {
+	public void setPushOrderType(Integer pushOrderType) {
+		this.pushOrderType = pushOrderType;
+	}
+
+	public Integer getId() {
         return id;
     }
 

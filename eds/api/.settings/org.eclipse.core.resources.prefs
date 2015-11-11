@@ -5,4 +5,5 @@ encoding//src/main/resources=UTF-8
 encoding//src/main/resources/conf/core=UTF-8
 encoding//src/main/resources/conf/mybatis/BusinessMapper.xml=UTF-8
 encoding//src/main/resources/conf/mybatis/OrderGrabMapper.xml=UTF-8
+encoding//src/test/java=UTF-8
 encoding/<project>=UTF-8

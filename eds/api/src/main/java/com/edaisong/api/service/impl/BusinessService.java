@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.omg.CORBA.Request;
+import org.fusesource.hawtbuf.codec.VariableCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IGroupBusinessDao;
+import com.edaisong.api.dao.inter.IMarkDao;
 import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService; 
 import com.edaisong.core.consts.GlobalSettings;
@@ -34,9 +36,12 @@ import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
+import com.edaisong.entity.domain.TagRelationModel;
 import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.req.BCheckCodeReq;
 import com.edaisong.entity.req.BusinessMoney;
+import com.edaisong.entity.req.ModifyTagReq;
+
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
@@ -57,7 +62,8 @@ public class BusinessService implements IBusinessService {
 	private RedisService redisService;
 	@Autowired
 	private IGroupBusinessDao groupBusinessDao;
-
+	@Autowired
+	private IMarkDao markDao;
 	private static final int MAX_LOING_COUNT = 5;
 
 	@Override
@@ -116,11 +122,29 @@ public class BusinessService implements IBusinessService {
 	public List<BusinessOptionLog> getOpLogByBusinessID(int businessID) {
 		return iBusinessDao.getOpLogByBusinessID(businessID);
 	}
-
+	/**
+	 * 修改商户基本信息
+	 * 2015年11月9日16:48:53
+	 * 茹化肖修改
+	 */
 	@Override
 	public int modifyBusiness(BusinessModifyModel detailModel) {
-		BusinessDetailModel oldModel = iBusinessDao
-				.getBusinessDetailByID(detailModel.getId());
+		BusinessDetailModel oldModel = iBusinessDao.getBusinessDetailByID(detailModel.getId());
+		Boolean boolean1=detailModel.getBusinesscommission()!=null;//其他设置页签
+		Boolean boolean2=(oldModel.getBusinesscommission()!=detailModel.getBusinesscommission()//商家比例
+							||oldModel.getCommissionfixvalue()!=detailModel.getCommissionfixvalue()//商家定额
+							||oldModel.getDistribsubsidy()!=detailModel.getDistribsubsidy())//代收金额
+							&&(iBusinessDao.getOrderCountInfoByBusinessId(detailModel.getId()))>0;//有未完成的单子
+		if(boolean1&&boolean2)
+		{
+			return -3;//当前商家有待接单订单尚未处理，不能修改商户结算（应收）和补贴设置（应付）
+		}
+		if(detailModel.getPushOrderType()!=null&&detailModel.getPushOrderType()==1)
+		{
+			int StrategyId = iBusinessDao.getStrategyIdByGroupId(detailModel.getBusinessgroupid());
+			if(StrategyId!=4)
+				return -2;//选择快单模式时补贴策略只能选择基本佣金+网站补贴类型的策略！
+		}
 		String remark = GetRemark(oldModel, detailModel);
 		if (remark.isEmpty()) {
 			return -1;
@@ -132,104 +156,122 @@ public class BusinessService implements IBusinessService {
 	private String GetRemark(BusinessDetailModel brm, BusinessModifyModel model) {
 		StringBuffer remark = new StringBuffer();
 		if (brm != null && brm.getId() > 0) {
-			if (brm.getAddress() == null
-					|| !brm.getAddress().equals(model.getAddress())) {
+			if (model.getAddress()!=null&&(brm.getAddress() == null
+					|| !brm.getAddress().equals(model.getAddress()))) {
 				remark.append(String.format("商户地址原值:%s,修改为%s;",
 						brm.getAddress(), model.getAddress()));
 			}
-			if (brm.getGroupid() != model.getGroupid()) {
+			if (model.getRecommendphone()!=null&&(brm.getRecommendphone() == null
+					|| !brm.getRecommendphone().equals(model.getRecommendphone()))) {
+				remark.append(String.format("推荐人手机号原值:%s,修改为%s;",
+						brm.getRecommendphone(), model.getRecommendphone()));
+			}
+			if (model.getGroupid()!=null&&brm.getGroupid() != model.getGroupid()) {
 				remark.append(String.format("第三方id原值:%s,修改为%s;",
 						brm.getGroupid(), model.getGroupid()));
 			}
-			if (brm.getName() == null || !brm.getName().equals(model.getName())) {
+			if (model.getName()!=null&&(brm.getName() == null || !brm.getName().equals(model.getName()))) {
 				remark.append(String.format("商户名原值:%s,修改为%s;", brm.getName(),
 						model.getName()));
 			}
-			if (brm.getPhoneno2() == null
-					|| !brm.getPhoneno2().equals(model.getPhoneno2())) {
+			if (model.getPhoneno2()!=null&&(brm.getPhoneno2() == null
+					|| !brm.getPhoneno2().equals(model.getPhoneno2()))) {
 				remark.append(String.format("联系电话原值:%s,修改为%s;",
 						brm.getPhoneno2(), model.getPhoneno2()));
 			}
 			// 座机
-			if (brm.getLandline() == null
-					|| !brm.getLandline().equals(model.getLandline())) {
+			if (model.getLandline()!=null&&(brm.getLandline() == null
+					|| !brm.getLandline().equals(model.getLandline()))) {
 				remark.append(String.format("联系座机原值:%s,修改为%s;",
 						brm.getLandline(), model.getLandline()));
 			}
-			if (brm.getDistribsubsidy().compareTo(model.getDistribsubsidy()) != 0) {
+			if (model.getDistribsubsidy()!=null&&(brm.getDistribsubsidy().compareTo(model.getDistribsubsidy()) != 0)) {
 				remark.append(String.format("代收客配原值:%s,修改为%s;",
 						brm.getDistribsubsidy(), model.getDistribsubsidy()));
 			}
-			if (brm.getCity() == null || !brm.getCity().equals(model.getCity())) {
+			if (model.getCity()!=null&&(brm.getCity() == null || !brm.getCity().equals(model.getCity()))) {
 				remark.append(String.format("城市原值:%s,修改为%s;", brm.getCity(),
 						model.getCity()));
 			}
-			if (brm.getDistrict() == null
-					|| !brm.getDistrict().equals(model.getDistrict())) {
+			if (model.getDistrict()!=null&&(brm.getDistrict() == null
+					|| !brm.getDistrict().equals(model.getDistrict()))) {
 				remark.append(String.format("区域原值:%s,修改为%s;",
 						brm.getDistrict(), model.getDistrict()));
 			}
-			if (brm.getLongitude().compareTo(model.getLongitude()) != 0) {
+			if (model.getLongitude()!=null&&(brm.getLongitude().compareTo(model.getLongitude()) != 0)) {
 				remark.append(String.format("经度原值:%s,修改为%s;",
 						brm.getLongitude(), model.getLongitude()));
 			}
-			if (brm.getLatitude().compareTo(model.getLatitude()) != 0) {
+			if (model.getLatitude()!=null&&(brm.getLatitude().compareTo(model.getLatitude()) != 0)) {
 				remark.append(String.format("纬度原值:%s,修改为%s;",
 						brm.getLatitude(), model.getLatitude()));
 			}
 
-			if (brm.getBusinesscommission().compareTo(
-					model.getBusinesscommission()) != 0) {
+			if (model.getBusinesscommission()!=null&&(brm.getBusinesscommission().compareTo(
+					model.getBusinesscommission()) != 0)) {
 				remark.append(String.format("商配比例原值:%s,修改为%s;",
 						brm.getBusinesscommission(),
 						model.getBusinesscommission()));
 			}
-			if (brm.getCommissionfixvalue().compareTo(
-					model.getCommissionfixvalue()) != 0) {
+			if (model.getCommissionfixvalue()!=null&&(brm.getCommissionfixvalue().compareTo(
+					model.getCommissionfixvalue()) != 0)) {
 				remark.append(String.format("商配定额原值:%s,修改为%s;",
 						brm.getCommissionfixvalue(),
 						model.getCommissionfixvalue()));
 			}
 
 			// 补贴策略 BusinessGroupId
-			if (brm.getBusinessgroupid() != model.getBusinessgroupid()) {
+			if (model.getBusinessgroupid()!=null&&(brm.getBusinessgroupid() != model.getBusinessgroupid())) {
 				remark.append(String.format("补贴策略原值:%s,修改为%s;",
-						brm.getBusinessgroupid(), model.getBusinessgroupid()));
+						model.getOldbusinessgroupidname(),
+						model.getBusinessgroupidname()));
 			}
 			// 餐费结算方式
-			if (brm.getMealssettlemode() != model.getMealssettlemode()) {
+			if (model.getMealssettlemode()!=null&&brm.getMealssettlemode() != model.getMealssettlemode()) {
 				remark.append(String.format("餐费结算方式原值:%s,修改为%s;",
 						brm.getMealssettlemode() == 0 ? "线下" : "线上",
 						model.getMealssettlemode() == 0 ? "线下" : "线上"));
 			}
 			// 一键发单
-			if (brm.getOnekeypuborder() != model.getOnekeypuborder()) {
+			if (model.getOnekeypuborder()!=null&&brm.getOnekeypuborder() != model.getOnekeypuborder()) {
 				remark.append(String.format("一键发单原值:%s,修改为%s;",
 						brm.getOnekeypuborder() == 1 ? "是" : "否",
 						model.getOnekeypuborder() == 1 ? "是" : "否"));
 			}
 			// 余额可以透支
-			if (brm.getIsallowoverdraft() != model.getIsallowoverdraft()) {
+			if (model.getIsallowoverdraft()!=null&&brm.getIsallowoverdraft() != model.getIsallowoverdraft()) {
 				remark.append(String.format("余额透支原值:%s,修改为%s;",
 						brm.getIsallowoverdraft() == 1 ? "是" : "否",
 						model.getIsallowoverdraft() == 1 ? "是" : "否"));
 			}
 			// 雇主任务时间限制
-			if (brm.getIsemployertask() != model.getIsemployertask()) {
+			if (model.getIsemployertask()!=null&&brm.getIsemployertask() != model.getIsemployertask()) {
 				remark.append(String.format("雇主任务时间限制原值:%s,修改为%s;",
 						brm.getIsemployertask() == 1 ? "是" : "否",
 						model.getIsemployertask() == 1 ? "是" : "否"));
 			}
 			// 第三方Id
-			if (brm.getOriginalbusiid() != model.getOriginalbusiid()) {
+			if (model.getOriginalbusiid()!=null&&brm.getOriginalbusiid() != model.getOriginalbusiid()) {
 				remark.append(String.format("第三方ID原值:%s,修改为%s;",
 						brm.getOriginalbusiid(), model.getOriginalbusiid()));
 			}
 			// 是否需要审核
-			if (brm.getIsOrderChecked() != model.getIsOrderChecked()) {
+			if (model.getIsOrderChecked()!=null&&brm.getIsOrderChecked() != model.getIsOrderChecked()) {
 				remark.append(String.format("订单是否需要审核原值:%s,修改为%s;",
 						brm.getIsOrderChecked() == 1 ? "是" : "否",
 						model.getIsOrderChecked() == 1 ? "是" : "否"));
+			}
+			//发单模式
+			if (model.getPushOrderType()!=null&&brm.getPushOrderType() != model.getPushOrderType()) {
+				remark.append(String.format("发单模式原值:%s,修改为%s;",
+						brm.getPushOrderType() == 1 ? "快单模式" : "普通模式",
+						model.getPushOrderType() == 1 ? "快单模式" : "普通模式"));
+			}
+			//现金支付
+			if (model.getIsAllowCashPay()!=null&&brm.getIsAllowCashPay() != model.getIsAllowCashPay()) {
+				remark.append(String.format("是否可以现金支付原值:%s,修改为%s;",
+						brm.getIsAllowCashPay() == 1 ? "是" : "否",
+						model.getIsAllowCashPay() == 1 ? "是" : "否"));
 			}
 		}
 		if (remark.length() > 0) {
@@ -362,6 +404,33 @@ public class BusinessService implements IBusinessService {
 		businessBalanceRecord.setRelationno(businessMoney.getRelationNo()); // 关联单号
 		businessBalanceRecord.setRemark(businessMoney.getRemark()); // 注释
 		businessBalanceRecordDao.insert(businessBalanceRecord);
+	}
+	/***
+	 * 修改商户绑定标签
+	 * 茹化肖
+	 * 2015年11月11日11:05:24
+	 * 
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public int modifyBusinessTags(ModifyTagReq req) {
+		String [] tagArr=req.getTags().split(";");
+		int log=0;
+		for (int i = 0; i < tagArr.length; i++) {
+			TagRelationModel model=new TagRelationModel();
+			model.setOptName(req.getOptName());
+			model.setUserType(0);//商家
+			model.setUserId(req.getUserId());
+			String [] temp=tagArr[i].split(",");
+			model.setTagId(Integer.valueOf(temp[0]));
+			model.setIsEnable(Integer.valueOf(temp[1]));
+			log+= markDao.modifyBusinessTags(model);
+		}
+		if(log>0)
+			return 1;
+		else {
+			return 0;
+		}
 	}
 
 	/**

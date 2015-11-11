@@ -261,5 +261,22 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 				"com.edaisong.api.dao.inter.IBusinessDao.businessModiyPhone",model) > 0;
 	}
 
-	
+	/**
+	 * 获取当前商家下所有区域中是否存在未接单的订单数量
+	 * @param businessId
+	 * @return
+	 */
+	@Override
+	public int getOrderCountInfoByBusinessId(int businessId) {
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getOrderCountInfoByBusinessId", businessId);
+	}
+	/**
+	 * 通过分组ID获取商家策略ID
+	 * 茹化肖
+	 * 2015年11月11日14:48:11
+	 */
+	@Override
+	public int getStrategyIdByGroupId(int groupId) {
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getStrategyIdByGroupId", groupId);
+	}
 }
