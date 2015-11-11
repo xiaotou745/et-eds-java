@@ -27,6 +27,7 @@ import com.edaisong.core.enums.returnenums.SendSmsReturnType;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.RandomCodeStrGenerator;
 import com.edaisong.core.util.SmsUtils;
+import com.edaisong.core.validator.CommonValidator;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessBasicInfoModel;
@@ -258,7 +259,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 		String phoneNo = req.getPhoneNo();
 		String Content = "";
 		HttpResultModel<Object> res = new HttpResultModel<Object>();
-		if (phoneNo==null||phoneNo.isEmpty()) {
+		if (phoneNo==null||phoneNo.isEmpty()||CommonValidator.validPhoneNumber( phoneNo)) {
 			return res.setStatus(SendSmsReturnType.PhoneError.value()).setMessage(SendSmsReturnType.PhoneError.desc());
 		}
 		else if (req.getMessageType() !=0&&req.getMessageType() !=1) {  //修改绑定手机号验证新手机号
@@ -330,7 +331,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 	public HttpResultModel<Object> businessModiyPhoneStep1(BCheckCodeReq req) {
 		HttpResultModel<Object> res = new HttpResultModel<Object>();
 		String phoneNo = req.getPhoneNo();
-		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()) {
+		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()||CommonValidator.validPhoneNumber(phoneNo)) {
 			return res.setStatus(BusinessModiyPhoneReturnEnum.PhoneError.value()).setMessage
 					(BusinessModiyPhoneReturnEnum.PhoneError.desc());
 		}
@@ -363,7 +364,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 			return res.setStatus(BusinessModiyPhoneReturnEnum.BusinessId.value()).
 					setMessage(BusinessModiyPhoneReturnEnum.BusinessId.desc());
 		}
-		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()) {
+		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()||CommonValidator.validPhoneNumber(req.getPhoneNo())) {
 			return res.setStatus(BusinessModiyPhoneReturnEnum.PhoneError.value()).
 					setMessage(BusinessModiyPhoneReturnEnum.PhoneError.desc());
 		}
