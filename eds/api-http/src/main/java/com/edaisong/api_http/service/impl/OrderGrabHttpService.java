@@ -11,12 +11,16 @@ import com.edaisong.core.enums.ClienterBindBusinessEnum;
 import com.edaisong.core.enums.OrderGrabEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.req.HadFinishOrderReq;
 import com.edaisong.entity.req.MyOrderGrabCReq; 
 import com.edaisong.entity.req.OrderGrabCompleteReq;
 import com.edaisong.entity.req.OrderGrabConfirmTakeReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
  
 import com.edaisong.entity.req.OrderGrabReq;
+import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.resp.HadFinishOrderResp;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.OrderGrabResp;
@@ -109,6 +113,23 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 		result.setMessage(HttpReturnRnums.Success.desc());
 		MyOrderGrabDetailCResp orderGrabDetailModel= orderGrabService.getMyOrderGrabDetailC(orderGrabDetailCReq); 
 		result.setResult(orderGrabDetailModel);		
+		return result;
+	}
+ 
+	@Override
+	public HttpResultModel<HadFinishOrderResp> getHadFinishOrderC(
+			HadFinishOrderReq para) {
+		para.setPageSize(1000); 
+		HttpResultModel<HadFinishOrderResp> result=new HttpResultModel<HadFinishOrderResp>();
+		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getClienterId() == null || para.getClienterId() == 0) {
+			result.setStatus(HttpReturnRnums.ParaError.value());
+			result.setMessage(HttpReturnRnums.ParaError.desc());
+			return result; 
+		}
+		result.setStatus(HttpReturnRnums.Success.value());
+		result.setMessage(HttpReturnRnums.Success.desc());
+		HadFinishOrderResp hadFinishOrderResp  =orderGrabService.getHadFinishOrderC(para);
+		result.setResult(hadFinishOrderResp);
 		return result;
 	}
 }

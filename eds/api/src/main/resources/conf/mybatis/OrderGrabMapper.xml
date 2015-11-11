@@ -561,5 +561,35 @@ select b.Name BusinessName ,
  from   dbo.OrderGrab og ( nolock ) 
  where  og.ClienterId = #{clienterId,jdbcType=INTEGER}
   </select>
-  
+   <select id="getHadFinishOrderC" resultType="com.edaisong.entity.domain.MyOrderGrabCModel" parameterType="com.edaisong.entity.req.HadFinishOrderReq" >
+         select b.Name BusinessName ,
+        	b.PhoneNo BusinessPhoneNo ,
+        	b.[Address] BusinessAddress ,
+            og.OrderRegionOneName ,
+            og.OrderRegionTwoName ,
+            og.OrderCount ,
+            og.Id GrabOrderId ,
+            og.GrabOrderNo , 
+            og.GrabTime,
+            og.PickUpTime ,
+            og.ActualDoneDate ,
+            og.[Status] ,
+            og.OrderCommission 
+     from   dbo.OrderGrab og ( nolock ) 
+            join dbo.business b ( nolock ) on og.BusinessId = b.Id
+     where og.[Status] = 1 
+        <if test="dateInfo != null">
+			and  CONVERT(VARCHAR(100), og.GrabTime, 23)='${dateInfo}'
+		</if> 
+  </select>
+   <select id="getHadFinishOrderCTotalInfo" resultType="com.edaisong.entity.resp.HadFinishOrderResp" parameterType="com.edaisong.entity.req.HadFinishOrderReq" >
+ 		 select  
+ isnull(sum(og.OrderCount),0) yiWanChengTotal
+ from   dbo.OrderGrab og ( nolock ) 
+ where  og.ClienterId = #{clienterId,jdbcType=INTEGER} and og.[Status] = 1  
+ 		<if test="dateInfo != null">
+			and  CONVERT(VARCHAR(100), og.GrabTime, 23)='${dateInfo}'
+		</if> 
+ 
+  </select> 
 </mapper>

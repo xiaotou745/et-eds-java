@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IOrderRegionLogService;
 import com.edaisong.api.service.inter.IOrderRegionService;
 import com.edaisong.api.service.inter.IOrderService;
@@ -23,8 +24,11 @@ import com.edaisong.entity.BusinessMessage;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderRegionLog;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.LatAndLng;
 import com.edaisong.entity.domain.OrderRegionModel;
+import com.edaisong.entity.domain.RegionOrderDetail;
+import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.req.OrderRegionReq;
 import com.edaisong.entity.req.PagedBusinessMessageReq;
 
@@ -38,6 +42,8 @@ public class OrderRegionController {
 	IOrderRegionLogService orderRegionLogService;
 	@Autowired
 	private IOrderService orderService;
+	@Autowired
+	private IBusinessService businessService;
 	/**
 	 * 区域列表页面
 	 * 
@@ -51,6 +57,9 @@ public class OrderRegionController {
 		view.addObject("subtitle", "区域管理");
 		view.addObject("currenttitle", "区域列表");
 		view.addObject("viewPath", "orderregion/manage");
+		BusinessModel bus=businessService.getBusiness((long)UserContext.getCurrentContext(request).getBusinessID());
+		String businessLat=bus.getLatitude()+";"+bus.getLongitude();
+		view.addObject("businessLat", businessLat);
 		String json=JsonUtil.obj2string(getRegionSettings(request));
 		view.addObject("regionjson", json);
 		 return view;
@@ -189,4 +198,54 @@ public class OrderRegionController {
 	public Long checkOrder(Long regionId,HttpServletRequest request) {
 		return orderService.queryIngOrderByRegionId(regionId);
 	}
+	/**
+	 * e代送新流程中的h5今日订单页面区域统计(给手机app用，当前站点不显示)
+	 * 根据区域查询订单数量
+	 * @author zhaohailong
+	 * @Date 20151029
+	 * @return
+	 */
+	@RequestMapping("todayone")
+	public ModelAndView todayList(Long businessid,HttpServletRequest request) {	
+		ModelAndView model = new ModelAndView("orderregion/todayone");
+		String json=JsonUtil.obj2string(getRegionSettings(request));
+		model.addObject("regionjson", json);
+		List<RegionOrderTotal> totalData=orderService.queryTodayOrderTotal(businessid);
+		List<RegionOrderDetail> detailData=orderService.queryTodayOrderDetail(businessid);
+		String totalJson=JsonUtil.obj2string(totalData);
+		String detailJson=JsonUtil.obj2string(detailData);
+		model.addObject("totalJson", totalJson);
+		model.addObject("detailJson", detailJson);
+		BusinessModel bus=businessService.getBusiness(businessid);
+		String businessLat=bus.getLatitude()+";"+bus.getLongitude();
+		model.addObject("businessLat", businessLat);
+		model.addObject("businessid", businessid);
+		return model;
+	}
+//	/**
+//	 * e代送新流程中的h5今日订单页面区域统计(给手机app用，当前站点不显示)
+//	 * 根据区域查询订单数量
+//	 * @author zhaohailong
+//	 * @Date 20151029
+//	 * @return
+//	 */
+//	@RequestMapping(value = "todaytotal", produces= "application/json; charset=utf-8")
+//	@ResponseBody
+//	public List<RegionOrderTotal> todayTotal(HttpServletRequest request) {
+//		UserContext context = UserContext.getCurrentContext(request);
+//		return orderService.queryTodayOrderTotal((long)context.getBusinessID());
+//	}
+//	/**
+//	 * e代送新流程中的h5今日订单页面区域详情
+//	 * 根据区域查询订单数量
+//	 * @author zhaohailong
+//	 * @Date 20151029
+//	 * @return
+//	 */
+//	@RequestMapping(value = "todaydetail", produces= "application/json; charset=utf-8")
+//	@ResponseBody
+//	public List<RegionOrderDetail> todayDetail(HttpServletRequest request) {
+//		UserContext context = UserContext.getCurrentContext(request);
+//		return orderService.queryTodayOrderDetail((long)context.getBusinessID());
+//	}
 }

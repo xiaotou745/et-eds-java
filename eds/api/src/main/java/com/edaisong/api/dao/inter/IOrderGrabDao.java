@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.edaisong.entity.Group;
 import com.edaisong.entity.OrderGrab;
+import com.edaisong.entity.req.HadFinishOrderReq;
 import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.common.PagedResponse;
@@ -14,6 +15,7 @@ import com.edaisong.entity.domain.FastOrderMapDetail;
 import com.edaisong.entity.domain.FastOrderModel;
 import com.edaisong.entity.domain.MyOrderGrabCModel;
 import com.edaisong.entity.req.PagedFastOrderSearchReq;
+import com.edaisong.entity.resp.HadFinishOrderResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 
@@ -32,5 +34,8 @@ public interface IOrderGrabDao {
     List<MyOrderGrabCModel> getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
 	MyOrderGrabDetailCResp getMyOrderGrabDetailC(OrderGrabDetailCReq orderGrabDetailCReq);
 	MyOrderGrabCResp getMyOrderGrabCTotalInfo(MyOrderGrabCReq myOrderGrabCReq);
+	 
+	List<MyOrderGrabCModel> getHadFinishOrderC(HadFinishOrderReq para);
+	HadFinishOrderResp getHadFinishOrderCTotalInfo(HadFinishOrderReq para);
 	 
 }

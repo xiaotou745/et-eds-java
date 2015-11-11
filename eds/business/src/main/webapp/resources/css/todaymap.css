@@ -1,0 +1,67 @@
+@charset "utf-8";
+body{
+  background: #fff;
+}
+.map_main{
+  background: #fff;
+}
+.map_top{
+  width: 100%;
+  height: 200px;
+}
+.map_bottom p{
+  height: 30px;
+  line-height: 30px;
+  background: #fff;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+.map_bottom p a{
+  display: block;
+  padding-left: 10px;
+  font-size: 12px;
+  color: #666;
+}
+.map_bottom span{
+  height: 35px;
+  line-height: 35px;
+  padding-left: 10px;
+  color: #333;
+  display: block;
+  background: #f4f4f4;
+  border-bottom: 1px solid #ccc;
+  font-size: 15px;
+}
+.map_bottom li{
+  height: 75px;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+.map_bottom dl{
+  height: 50px;
+  padding: 22px 0 0 70px;
+  background: url(../images/jied.png) no-repeat 15px 20px;
+  background-size:36px 38.5px; 
+}
+.map_bottom dl.quh{
+  background: url(../images/quh.png) no-repeat 15px 20px;
+  background-size:36px 38.5px; 
+}
+.map_bottom dl.peis{
+  background: url(../images/peis.png) no-repeat 15px 20px;
+  background-size:36px 38.5px; 
+}
+.map_bottom dl.wanc{
+  background: url(../images/wanc.png) no-repeat 15px 20px;
+  background-size:36px 38.5px; 
+}
+.map_bottom dl dt{
+  width: 65px;
+  font-size: 15px;
+  color: #333;
+}
+.map_bottom dl dd{
+  padding-top: 5px;
+  font-size: 12px;
+  color: #999
+}

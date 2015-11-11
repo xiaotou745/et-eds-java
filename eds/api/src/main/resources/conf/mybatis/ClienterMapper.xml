@@ -757,7 +757,7 @@ from    dbo.BusinessClienterRelation bcr ( nolock )
         join dbo.business b ( nolock ) on bcr.BusinessId = b.Id
 where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{auditStatus,jdbcType=INTEGER} and bcr.IsBind = 1 and bcr.IsEnable = 1 
 	</select> 
-	
+	<!-- 获取服务中的商户数量 wangchao -->
 	   <select id="getServiceBusinessTotal" resultType="com.edaisong.entity.resp.MyBusinessResp" 
     parameterType="com.edaisong.entity.req.MyBusinessReq" >
    select ISNULL(SUM(CASE AuditStatus
@@ -774,4 +774,5 @@ where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{
   		AND a.[ClienterId]=${clienterId}
   	</if>
   </select>
+  
 </mapper>
