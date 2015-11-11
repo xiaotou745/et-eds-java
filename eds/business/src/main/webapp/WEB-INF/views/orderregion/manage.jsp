@@ -4,11 +4,13 @@
 <%	
 String basePath =PropertyUtils.getProperty("java.business.url");
 String regionjson = (String) request.getAttribute("regionjson");
+String businessLat = (String) request.getAttribute("businessLat");
 %>
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/map.css">
 <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
 <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=286c3ec71cae58cacfa75d49145ff545"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
 <div class="top cb">
 	<h3 class="cb">配送区域管理</h3>
 	<div class="map_title">
@@ -60,8 +62,19 @@ String regionjson = (String) request.getAttribute("regionjson");
 	
 	//地图操作
 	//
+	
 	var map = new BMap.Map('map');
-	var poi = new BMap.Point(116.307852, 40.057031);
+
+    var centerLongitude = 116.3972282409668;
+    var centerLatitude = 39.90960456049752;
+	var businessLat="<%=businessLat%>";
+	var busdata=businessLat.split(";");
+    //没有商家经纬度时，地图中心点设置为天安门
+//     if(parseFloat(busdata[0])>0&&parseFloat(busdata[1])>0){
+//          centerLongitude = busdata[1];
+//          centerLatitude = busdata[0];
+//     }
+	var poi = new BMap.Point(centerLongitude, centerLatitude);
 	var selectOverlay;
 	var NORMAL_OPACITY = 0.5, SELECT_OPACITY = 0.3;
 	map.centerAndZoom(poi, 16);
@@ -73,6 +86,9 @@ String regionjson = (String) request.getAttribute("regionjson");
 	var parentId=-1;
 	//区域绘制完成事件
 	var overlaycomplete = function(e) {
+		//map.getBounds().containsPoint(point);
+		map.getBounds();
+		clearBounds();
 		var overlayId=0;
 		for (var key in overlayArray){
 			if(overlayId<parseInt(key)){
@@ -388,10 +404,27 @@ String regionjson = (String) request.getAttribute("regionjson");
 	function addchild(parId){
 		var childLength = $('#parent'+parId+' li[id^="child"]').length;
 		if(childLength<9){
+			setBounds(parId);
 			parentId=parId;
 			beginDraw();
 		}else{
 			alert("二级区域最多只能有9个");
+		}
+	}
+	function setBounds(parId){
+		var b = new BMap.Bounds(overlayPointArray[parId]);
+		try {	
+			BMapLib.AreaRestriction.setBounds(map, b);
+		} catch (e) {
+			alert(e);
+		}
+	}
+	function clearBounds(){
+		try {
+			var b = new BMap.Bounds(new BMap.Point(116.027143, 39.772348),new BMap.Point(116.832025, 40.126349));
+			BMapLib.AreaRestriction.setBounds(map, b);
+		} catch (e) {
+			alert(e);
 		}
 	}
 	//关闭弹层

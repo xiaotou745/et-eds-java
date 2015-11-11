@@ -366,7 +366,7 @@ public class OrderService implements IOrderService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public OrderResp AddOrder(OrderReq req) {
 		OrderResp resp = new OrderResp();
-		BusinessModel businessModel = businessDao.getBusiness(req
+		BusinessModel businessModel = businessDao.getBusiness((long)req
 				.getBusinessid());
 		// 校验是否可以正常发单
 		PublishOrderReturnEnum returnEnum = verificationAddOrder(req,
@@ -479,7 +479,7 @@ public class OrderService implements IOrderService {
 		}				
 		
 		//获取商户信息讯(读串)
-		BusinessModel businessModel = businessDao.getBusiness(req
+		BusinessModel businessModel = businessDao.getBusiness((long)req
 				.getBusinessid());
 		PublishOrderReturnEnum returnEnum = verificationPushOrder(req,
 				businessModel);
@@ -664,7 +664,7 @@ public class OrderService implements IOrderService {
 	public BusinessBalanceInfoResp getBalanceInfo(OrderReq req) {
 		BusinessBalanceInfoResp resp = new BusinessBalanceInfoResp();
 		req.setOrderfrom(OrderFrom.BusinessWeb.value()); // 订单来源 商家版后台
-		BusinessModel businessModel = businessDao.getBusiness(req
+		BusinessModel businessModel = businessDao.getBusiness((long)req
 				.getBusinessid());
 		if (businessModel == null) {
 			resp.setResponseCode(PublishOrderReturnEnum.BusinessEmpty.value());

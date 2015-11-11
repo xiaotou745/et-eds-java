@@ -12,7 +12,11 @@ public enum SendSmsReturnType {
 	/**
 	 * 发送失败
 	 */
-	Fail(1002,"发送失败");
+	Fail(1002,"发送失败"),
+	/**
+	 * 验证码获取类型错误
+	 */
+	MessageTypeError(1003,"验证码获取类型错误");
 	
 	private int value = 0;
 	private String desc;

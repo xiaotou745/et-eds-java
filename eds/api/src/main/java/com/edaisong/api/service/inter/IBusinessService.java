@@ -107,7 +107,7 @@ public interface IBusinessService {
 	 * @author 胡灵波
 	 * @Date 2015年8月11日 17:48:47
 	 */
-	BusinessModel getBusiness(int id);
+	BusinessModel getBusiness(Long id);
 	
 	BusinessRechargeDetailModel getRechargeDetail(String orderNo);
 	/**
