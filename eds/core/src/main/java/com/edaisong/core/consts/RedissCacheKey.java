@@ -37,6 +37,15 @@ public class RedissCacheKey {
 //    public static final String GlobalConfig_GrabToCompleteDistance = "GlobalConfig_GrabToCompleteDistance_{0}";
 //    public static final String GlobalConfig_AlipayWithdrawCommission = "GlobalConfig_AlipayWithdrawCommission_{0}";
 //    public static final String GlobalConfig_AlipayPassword = "GlobalConfig_AlipayPassword_{0}";
+    
+    /**
+     *  商家端找回密码缓存KEY
+     */
+    public static final String  CheckCodeFindPwd_B = "CheckCodeFindPwd_B_%s";
+    /**
+     * 商家注册缓存key
+     */
+    public static final String PostRegisterInfo_B ="PostRegisterInfo_B_%s";
     /**
      * B端修改绑定手机号验证当前手机号
      */

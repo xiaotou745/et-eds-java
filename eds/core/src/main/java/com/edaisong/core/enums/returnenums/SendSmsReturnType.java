@@ -16,7 +16,16 @@ public enum SendSmsReturnType {
 	/**
 	 * 验证码获取类型错误
 	 */
-	MessageTypeError(1003,"验证码获取类型错误");
+	MessageTypeError(1003,"验证码获取类型错误"),
+		/**
+	 * 验证码不存在
+	 */
+	CodeNotExists(1004,"验证码不存在"),
+	/**
+ * 正在发送
+ */
+	Sending(1005,"正在发送"),;
+	
 	
 	private int value = 0;
 	private String desc;
