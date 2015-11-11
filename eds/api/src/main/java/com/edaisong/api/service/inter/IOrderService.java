@@ -287,4 +287,6 @@ public interface IOrderService {
 	 * @return
 	 */
 	Long queryIngOrderByRegionId(Long regionId) ; 
+	
+	
 }
