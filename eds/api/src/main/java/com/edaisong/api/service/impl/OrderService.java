@@ -366,7 +366,7 @@ public class OrderService implements IOrderService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public OrderResp AddOrder(OrderReq req) {
 		OrderResp resp = new OrderResp();
-		BusinessModel businessModel = businessDao.getBusiness((long)req
+		BusinessModel businessModel = businessDao.getBusiness((long) req
 				.getBusinessid());
 		// 校验是否可以正常发单
 		PublishOrderReturnEnum returnEnum = verificationAddOrder(req,
@@ -455,6 +455,7 @@ public class OrderService implements IOrderService {
 		resetOrderHasExist(req.getBusinessid());
 		return resp;
 	}
+
 	/**
 	 * 发布订单功能 api调用
 	 * 
@@ -465,21 +466,21 @@ public class OrderService implements IOrderService {
 	 */
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public HttpResultModel<OrderResp> PushOrder(OrderReq req) {
-		
-		HttpResultModel<OrderResp> resp=new HttpResultModel<OrderResp>();
-		
-		//字符串转化为列表
-		List<OrderRegionReq> list=converAnswerFormString(req.getListOrderRegionStr());
-		req.setListOrderRegion(list);		
-		if(list==null ||list.size()<1)
-		{				
+
+		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
+
+		// 字符串转化为列表
+		List<OrderRegionReq> list = converAnswerFormString(req
+				.getListOrderRegionStr());
+		req.setListOrderRegion(list);
+		if (list == null || list.size() < 1) {
 			resp.setStatus(PublishOrderReturnEnum.OrderRegionNull.value());
-			resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());				
+			resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());
 			return resp;
-		}				
-		
-		//获取商户信息讯(读串)
-		BusinessModel businessModel = businessDao.getBusiness((long)req
+		}
+
+		// 获取商户信息讯(读串)
+		BusinessModel businessModel = businessDao.getBusiness((long) req
 				.getBusinessid());
 		PublishOrderReturnEnum returnEnum = verificationPushOrder(req,
 				businessModel);
@@ -488,16 +489,14 @@ public class OrderService implements IOrderService {
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
-		//时间戳
-		if(req.getTimeSpan()!=null && !req.getTimeSpan().equals(""))
-		{
-			if(isExistByBusinessId(req))
-			{
-				 resp.setStatus(PublishOrderReturnEnum.OrderHasExist.value());
-				 resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc()); 
-				 return	resp;
+		// 时间戳
+		if (req.getTimeSpan() != null && !req.getTimeSpan().equals("")) {
+			if (isExistByBusinessId(req)) {
+				resp.setStatus(PublishOrderReturnEnum.OrderHasExist.value());
+				resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc());
+				return resp;
 			}
-		}	
+		}
 
 		// 订单主表
 		req.setPlatform(2);
@@ -508,22 +507,23 @@ public class OrderService implements IOrderService {
 		}
 
 		// 写入订单Other表
-		OrderOther orderOther=fillOrderOther(req,order,businessModel);
+		OrderOther orderOther = fillOrderOther(req, order, businessModel);
 		int orderOtherId = orderOtherDao.insert(orderOther);
 		if (orderOtherId <= 0) {
 			throw new TransactionalRuntimeException("保存订单其它出错");
 		}
 		// 写入订单明细表
-		List<OrderChild> listOrderChild = fillOrderChildApi(req, businessModel, order);
+		List<OrderChild> listOrderChild = fillOrderChildApi(req, businessModel,
+				order);
 		int orderChildID = orderChildDao.insertList(listOrderChild);
 		if (orderChildID <= 0) {
 			throw new TransactionalRuntimeException("保存订单明细出错");
 		}
-		
-		//更新区域
-		List<OrderRegionReq> listOrderRegion = req.getListOrderRegion();	
+
+		// 更新区域
+		List<OrderRegionReq> listOrderRegion = req.getListOrderRegion();
 		for (int i = 0; i < listOrderRegion.size(); i++) {
-			
+
 			int OneId = listOrderRegion.get(i).getOrderRegionOneId();
 			int TwoId = listOrderRegion.get(i).getOrderRegionTwoId();
 			int orderCount = listOrderRegion.get(i).getOrderCount();
@@ -537,8 +537,8 @@ public class OrderService implements IOrderService {
 				if (orderRegionTwoId <= 0) {
 					throw new TransactionalRuntimeException("更新二级区域错误");
 				}
-				
-				OrderRegion orModelOne=new OrderRegion();
+
+				OrderRegion orModelOne = new OrderRegion();
 				orModelOne.setId(OneId);
 				orModelOne.setWaitingcount(orderCount);
 				orModelOne.setHaschild(true);
@@ -548,7 +548,7 @@ public class OrderService implements IOrderService {
 					throw new TransactionalRuntimeException("更新一级区域错误");
 				}
 			} else {
-				OrderRegion orModelOne=new OrderRegion();
+				OrderRegion orModelOne = new OrderRegion();
 				orModelOne.setId(OneId);
 				orModelOne.setWaitingcount(orderCount);
 				int orderRegionOneId = orderRegionDao
@@ -557,7 +557,7 @@ public class OrderService implements IOrderService {
 					throw new TransactionalRuntimeException("更新一级区域错误");
 				}
 			}
-		}		
+		}
 
 		// 扣除商家结算费
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
@@ -664,7 +664,7 @@ public class OrderService implements IOrderService {
 	public BusinessBalanceInfoResp getBalanceInfo(OrderReq req) {
 		BusinessBalanceInfoResp resp = new BusinessBalanceInfoResp();
 		req.setOrderfrom(OrderFrom.BusinessWeb.value()); // 订单来源 商家版后台
-		BusinessModel businessModel = businessDao.getBusiness((long)req
+		BusinessModel businessModel = businessDao.getBusiness((long) req
 				.getBusinessid());
 		if (businessModel == null) {
 			resp.setResponseCode(PublishOrderReturnEnum.BusinessEmpty.value());
@@ -1409,7 +1409,7 @@ public class OrderService implements IOrderService {
 
 		return PublishOrderReturnEnum.VerificationSuccess;
 	}
-	
+
 	/**
 	 * api发单数据验证
 	 * 
@@ -1424,16 +1424,16 @@ public class OrderService implements IOrderService {
 		if (businessModel == null) {
 			return PublishOrderReturnEnum.BusinessEmpty;
 		}
-		if (businessModel.getStatus() != BusinessStatusEnum.AuditPass.value())																		
-		{
+		if (businessModel.getStatus() != BusinessStatusEnum.AuditPass.value()) {
 			return PublishOrderReturnEnum.HadCancelQualification;
 		}
 		if (businessModel.getStrategyId() != Strategy.Strategy4.value()) {
 			return PublishOrderReturnEnum.StrategyErr;
 		}
-		if (businessModel.getPushOrderType() != BusinessPushOrderType.Quick.value()) {
+		if (businessModel.getPushOrderType() != BusinessPushOrderType.Quick
+				.value()) {
 			return PublishOrderReturnEnum.PushOrderTypeErr;
-		}	
+		}
 
 		Double settleMoney = OrderSettleMoneyHelper.GetSettleMoney(
 				req.getAmount(), businessModel.getBusinesscommission(),
@@ -1455,8 +1455,8 @@ public class OrderService implements IOrderService {
 		}
 
 		return PublishOrderReturnEnum.VerificationSuccess;
-	}	
-	
+	}
+
 	/**
 	 * 发布订单根据请求参数，商家信息装配订单信息(后台，api)
 	 * 
@@ -1489,10 +1489,10 @@ public class OrderService implements IOrderService {
 		order.setPubdate(new Date());
 		order.setBusinessid(req.getBusinessid());
 		order.setPickupaddress(businessModel.getAddress());
-		order.setRecevicelongitude(0d); 
+		order.setRecevicelongitude(0d);
 		order.setRecevicelatitude(0d);
 		order.setTimespan(req.getTimeSpan());
-		order.setRecevicecity(businessModel.getCity()); 
+		order.setRecevicecity(businessModel.getCity());
 
 		order.setCommissionformulamode(businessModel.getStrategyId());
 		order.setBusinesscommission(businessModel.getBusinesscommission());
@@ -1551,7 +1551,7 @@ public class OrderService implements IOrderService {
 
 		return order;
 	}
-    
+
 	/**
 	 * 商家发单 插入子订单(后台)
 	 * 
@@ -1588,43 +1588,43 @@ public class OrderService implements IOrderService {
 			}
 		}
 	}
-	
+
 	/**
 	 * 商家发单 插入子订单(api)
 	 * 
 	 * @param req
-	 * @param 
+	 * @param
 	 * @param order
 	 */
-	private List<OrderChild> fillOrderChildApi(OrderReq req, BusinessModel businessModel,Order order) 
-	{			
-		 //写入订单明细表
+	private List<OrderChild> fillOrderChildApi(OrderReq req,
+			BusinessModel businessModel, Order order) {
+		// 写入订单明细表
 		double goodPrice = order.getAmount() / order.getOrdercount();// 单价
 		List<OrderChild> listOrderChild = new ArrayList<OrderChild>();
 		List<OrderRegionReq> listOrderRegion = req.getListOrderRegion();
-		int num=0;
+		int num = 0;
 		for (int i = 0; i < listOrderRegion.size(); i++) {
 
 			for (int j = 0; j < ((OrderRegionReq) listOrderRegion.get(i))
 					.getOrderCount(); j++) {
-				OrderChild child = new OrderChild();				
-				num=num+1;
+				OrderChild child = new OrderChild();
+				num = num + 1;
 				child.setChildid(num);
 				child.setBusinessid(req.getBusinessid());
 				child.setCreateby(businessModel.getName());
 				child.setUpdateby(businessModel.getName());
 				child.setDeliveryprice(order.getDistribsubsidy());
-				child.setOrderid(order.getId());			
+				child.setOrderid(order.getId());
 				child.setTotalprice(goodPrice + order.getDistribsubsidy());
 				child.setGoodprice(goodPrice);
-				
+
 				short payStatus = 0;
 				if (req.getIspay()
 						|| (!req.getIspay() && businessModel
 								.getMealssettlemode() == MealsSettleMode.LineOff
 								.value())) {
 					payStatus = 1;
-				}			
+				}
 				child.setPaystatus(payStatus);
 				child.setOriginalorderno("");
 				child.setWxcodeurl("");
@@ -1674,9 +1674,10 @@ public class OrderService implements IOrderService {
 				listOrderChild.add(child);
 			}
 		}
-		
+
 		return listOrderChild;
 	}
+
 	/**
 	 * api发布订单组织OrderOther对象
 	 * 
@@ -1685,8 +1686,8 @@ public class OrderService implements IOrderService {
 	 * @param
 	 * @return
 	 */
-	private OrderOther fillOrderOther(OrderReq req,Order order,BusinessModel businessModel)
-	{
+	private OrderOther fillOrderOther(OrderReq req, Order order,
+			BusinessModel businessModel) {
 		OrderOther orderOther = new OrderOther();
 		orderOther.setOrderid(order.getId());
 		orderOther.setNeeduploadcount(req.getOrdercount());
@@ -1696,12 +1697,13 @@ public class OrderService implements IOrderService {
 		orderOther.setOnekeypuborder(businessModel.getOnekeypuborder());
 		orderOther.setIsorderchecked(businessModel.getIsOrderChecked());
 		orderOther.setIsAllowCashPay(businessModel.getIsAllowCashPay());
-		
+
 		return orderOther;
 	}
+
 	/**
-	 * json转化为列表
-	 * "listOrderRegionStr": "[{\"orderCount\":5,\"orderRegionTwoId\":4,\"orderRegionOneId\":1},{\"orderCount\":5,\"orderRegionTwoId\":5,\"orderRegionOneId\":2}]"
+	 * json转化为列表 "listOrderRegionStr":
+	 * "[{\"orderCount\":5,\"orderRegionTwoId\":4,\"orderRegionOneId\":1},{\"orderCount\":5,\"orderRegionTwoId\":5,\"orderRegionOneId\":2}]"
 	 * 
 	 * @author 胡灵波
 	 * @param req
@@ -1711,20 +1713,22 @@ public class OrderService implements IOrderService {
 	private List<OrderRegionReq> converAnswerFormString(String answer) {
 		if (answer == null || answer.equals(""))
 			return new ArrayList();
-		
-		List<OrderRegionReq> list=new ArrayList<OrderRegionReq> () ;
+
+		List<OrderRegionReq> list = new ArrayList<OrderRegionReq>();
 		JSONArray jsonArray;
 		try {
 			jsonArray = new JSONArray(answer);
-			for (int i = 0; i < jsonArray.length(); i++) 
-			{
-				OrderRegionReq model=new OrderRegionReq();
-				model.setOrderRegionOneId(jsonArray.getJSONObject(i).getInt("orderRegionOneId"));
-				model.setOrderRegionTwoId(jsonArray.getJSONObject(i).getInt("orderRegionTwoId"));
-				model.setOrderCount(jsonArray.getJSONObject(i).getInt("orderCount"));
+			for (int i = 0; i < jsonArray.length(); i++) {
+				OrderRegionReq model = new OrderRegionReq();
+				model.setOrderRegionOneId(jsonArray.getJSONObject(i).getInt(
+						"orderRegionOneId"));
+				model.setOrderRegionTwoId(jsonArray.getJSONObject(i).getInt(
+						"orderRegionTwoId"));
+				model.setOrderCount(jsonArray.getJSONObject(i).getInt(
+						"orderCount"));
 				list.add(model);
-			}			
-			 
+			}
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1732,7 +1736,7 @@ public class OrderService implements IOrderService {
 
 		return list;
 	}
-	
+
 	/**
 	 * 判断订单是否存在
 	 * 
@@ -1741,11 +1745,13 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	private boolean isExistByBusinessId(OrderReq req) {
-		Order order=orderDao.selectIsExistByBusinessId(req);
+		Order order = orderDao.selectIsExistByBusinessId(req);
 		if (order == null) {
 			return false;
 		} else {
 			return true;
 		}
 	}
+
+
 }
