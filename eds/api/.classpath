@@ -28,6 +28,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/eds/jar/taobao-sdk-java-auto_1447039783018-20151111.jar" sourcepath="G:/project/e代送众包版/eds.java/eds/jar/taobao-sdk-java-auto_1447039783018-20151111-source.jar"/>
+	<classpathentry kind="lib" path="lib/taobao-sdk-java-auto_1447039783018-20151111.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
