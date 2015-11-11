@@ -301,7 +301,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 					code=obj;
 			}else {
 				code= RandomCodeStrGenerator.generateCodeNum(6);
-				redisService.set(key, code, 60 * 5*8000);
+				redisService.set(key, code, 60 * 5);
 			}
 			Content = Content.replace("#验证码#", code);
 			long resultValue = req.getMessageType()==0?SmsUtils.sendSMS(phoneNo, Content) : SmsUtils.sendVoiceSMS(phoneNo, Content);

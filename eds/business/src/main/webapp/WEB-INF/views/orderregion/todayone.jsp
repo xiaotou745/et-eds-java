@@ -69,18 +69,22 @@ String businessid=request.getAttribute("businessid").toString();
 	<script>
 	$(function(){
 		var map = new BMap.Map('map');
-		 var centerLongitude = 116.3972282409668;
-		 var centerLatitude = 39.90960456049752;
+		var centerLongitude = 116.3972282409668;
+		var centerLatitude = 39.90960456049752;
 		var businessLat="<%=businessLat%>";
 		var busdata=businessLat.split(";");
-		    //没有商家经纬度时，地图中心点设置为天安门
-//		     if(parseFloat(busdata[0])>0&&parseFloat(busdata[1])>0){
-//		          centerLongitude = busdata[1];
-//		          centerLatitude = busdata[0];
-//		     }
+		var tempLat=parseFloat(busdata[0]);
+		var templng=parseFloat(busdata[1]);
+		if(tempLat>0&&templng>0){
+		    if(18.286316<=tempLat&&tempLat<=53.571364&&
+		       73.502922<=templng&&templng<=135.070626){
+		        centerLongitude = templng;
+		        centerLatitude = tempLat;
+		   }
+		}
 		var poi = new BMap.Point(centerLongitude, centerLatitude);
 		var selectOverlay;
-		var NORMAL_OPACITY = 0.5,SELECT_OPACITY = 0.3;
+		var NORMAL_OPACITY = 0.3,SELECT_OPACITY = 0.7;
 		map.centerAndZoom(poi, 16);
 		//未选中颜色
 		var styleOptions = {
@@ -98,8 +102,9 @@ String businessid=request.getAttribute("businessid").toString();
 		//绘制一个多边形
 		function drawOverlay(object){
 			var tempPolygon = new BMap.Polygon(object.overlayPointList,styleOptions);
+			var overlayId=object.overlayId;
 			tempPolygon.addEventListener('click',function(e){
-				overlayClick(object.overlayId, this);
+				overlayClick(overlayId, this);
 			});
 			map.addOverlay(tempPolygon);
 		}
