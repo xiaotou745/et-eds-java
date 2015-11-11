@@ -149,12 +149,12 @@ var overlaycomplete = function(e) {
 		}else{
 			parentul.find('ul').append('<li id="child'+overlayId+'">'+li+'</li>');
 		}
-		setParentNum(1,true);
 	}else{
 		var ul = $('#regionlistul');
 		li = '<li id="parent'+overlayId+'">'+li+
 			'<a   class="regiona"   href="javascript:void(0)" onclick="addchild('+overlayId+')">绘制二级</a></li>';
 		ul.append(li);
+		setParentNum(1,true);
 	}
 	$("#region"+overlayId).focus();
 	
@@ -199,9 +199,9 @@ function drawOverlay(object) {
 			overlayClick(tempid, this);
 		});
 		map.addOverlay(childPolygon);
-		addlable(tempid,object.subLists[i].overlayName);
 		overlayArray[tempid]=childPolygon;
 		overlayPointArray[tempid]=childPolygon.getPath();
+		addlable(tempid,object.subLists[i].overlayName);
 	}
 }
 function addlable(overlayId,title){
