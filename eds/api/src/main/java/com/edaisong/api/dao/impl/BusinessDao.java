@@ -278,5 +278,5 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	@Override
 	public int getStrategyIdByGroupId(int groupId) {
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getStrategyIdByGroupId", groupId);
-	
+	}
 }

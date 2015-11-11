@@ -431,6 +431,7 @@ public class BusinessService implements IBusinessService {
 		else {
 			return 0;
 		}
+	}
 
 	/**
 	 * 获取门店发单模式：0 普通模式（默认），1 快单模式   默认0
