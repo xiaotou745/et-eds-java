@@ -32,7 +32,7 @@ String businessid=request.getAttribute("businessid").toString();
 	<div class="map_main">
 		<div class="map_top" id="map"></div>
 		<div class="map_bottom">
-			<p><a href="#">请点击区域查看订单</a></p>
+			<p class="todaya">请点击区域查看订单</p>
 			<span id="regiontitle">尚8一级>尚8二级（50单）</span>
 			<ul class="m-bx m-bx-l">
 				<li class="m-fx-1">
@@ -68,6 +68,37 @@ String businessid=request.getAttribute("businessid").toString();
 	
 	<script>
 	$(function(){
+		function initMap(){
+			var centerLongitude = 116.3972282409668;
+			var centerLatitude = 39.90960456049752;
+			//如果商家有区域，则定位到订单数量最多的一个一级区域
+			var maxid=getmaxParentid();
+			if(maxid>=0){
+				for(var i=0;i<tempArray.length;i++){
+					if(tempArray[i].overlayId==maxid){
+						centerLatitude =tempArray[i].overlayPointList[0].lat;
+						centerLongitude =tempArray[i].overlayPointList[0].lng;
+						break;
+					}
+				}
+			}else{
+				var businessLat="<%=businessLat%>";
+				//businessLat="0;0";
+				var busdata=businessLat.split(";");
+				var tempLat=parseFloat(busdata[0]);
+				var templng=parseFloat(busdata[1]);
+				if(tempLat>0&&templng>0){
+				    if(18.286316<=tempLat&&tempLat<=53.571364&&
+				       73.502922<=templng&&templng<=135.070626){
+				        centerLongitude = templng;
+				        centerLatitude = tempLat;
+				   }
+				}
+			}
+
+			var poi = new BMap.Point(centerLongitude, centerLatitude);
+			map.centerAndZoom(poi, 14);
+		}
 		//绘制一个多边形
 		function drawOverlay(object){
 			var tempPolygon = new BMap.Polygon(object.overlayPointList,styleOptions);
@@ -77,8 +108,21 @@ String businessid=request.getAttribute("businessid").toString();
 			});
 			overlayArray[overlayId]=tempPolygon;
 			map.addOverlay(tempPolygon);
+			var tempid=0;
+			for(var i=0;i<object.subLists.length;i++){
+				tempid=object.subLists[i].overlayId;
+			    var childPolygon = new BMap.Polygon(object.subLists[i].overlayPointList,styleOptions);
+			    childPolygon.addEventListener('click', function(e) {
+					overlayClick(tempid);
+				});
+				map.addOverlay(childPolygon);
+				overlayArray[tempid]=childPolygon;
+			}
 		}
 		function overlayClick(id){
+			if(id<0){
+				return;
+			}
 			var region;
 			for(var i=0;i<totalJson.length;i++){
 				if(totalJson[i].id==id){
@@ -141,23 +185,14 @@ String businessid=request.getAttribute("businessid").toString();
 				}
 			}
 		}
-
-	});
 		//页面第一次打开时，显示一级区域中订单数量最多的区域的详情
 		function init(){
+			initMap();
 			for(var i=0;i<tempArray.length;i++){
 				drawOverlay(tempArray[i]);
 			}
-			var maxparentid;
-			var maxnum;
-			for(var i=0;i<totalJson.length;i++){
-				if(totalJson[i].parentId==0){
-					if(maxnum<totalJson[i].num){
-						maxparentid=totalJson[i].id;
-					}
-				}
-			}
-			overlayClick(maxparentid);
+
+			overlayClick(getmaxParentid());
 		}
 		function getdetail(status,target){
 			var regionid=$(target).attr('regionid'); 
@@ -165,24 +200,26 @@ String businessid=request.getAttribute("businessid").toString();
 			alert(regionid);
 			alert(status);
 		}
-		var map = new BMap.Map('map');
-		var centerLongitude = 116.3972282409668;
-		var centerLatitude = 39.90960456049752;
-		var businessLat="<%=businessLat%>";
-		var busdata=businessLat.split(";");
-		var tempLat=parseFloat(busdata[0]);
-		var templng=parseFloat(busdata[1]);
-		if(tempLat>0&&templng>0){
-		    if(18.286316<=tempLat&&tempLat<=53.571364&&
-		       73.502922<=templng&&templng<=135.070626){
-		        centerLongitude = templng;
-		        centerLatitude = tempLat;
-		   }
+		function getmaxParentid(){
+			var maxparentid=-1;
+			var maxnum=0;
+			for(var i=0;i<totalJson.length;i++){
+				if(totalJson[i].parentId==0){
+					if(maxnum<=totalJson[i].num){
+						maxparentid=totalJson[i].id;
+					}
+				}
+			}
+			return maxparentid;
 		}
-		var poi = new BMap.Point(centerLongitude, centerLatitude);
+		
+		var businessid='<%=businessid%>';
+		var tempArray=eval('<%=regionjson%>');
+		var detailJson=eval('<%=detailJson%>');
+		var totalJson=eval('<%=totalJson%>');
 		var overlayArray = {};//区域数组
 		var NORMAL_OPACITY = 0.3,SELECT_OPACITY = 0.7;
-		map.centerAndZoom(poi, 16);
+
 		//未选中颜色
 		var styleOptions = {
 		    strokeColor:"red",    //边线颜色。
@@ -192,11 +229,12 @@ String businessid=request.getAttribute("businessid").toString();
 		    fillOpacity: NORMAL_OPACITY,      //填充的透明度，取值范围0 - 1。
 		    strokeStyle: 'solid' //边线的样式，solid或dashed。
 		}
-		var businessid='<%=businessid%>';
-		var tempArray=eval('<%=regionjson%>');
-		var detailJson=eval('<%=detailJson%>');
-		var totalJson=eval('<%=totalJson%>');
+		var map = new BMap.Map('map');
 		init();
+		var t=setTimeout(function(){
+			var divs=$("#map a").hide();
+		},1000);
+	});
 	</script>
 </body>
 </html>
