@@ -68,53 +68,37 @@ String businessid=request.getAttribute("businessid").toString();
 	
 	<script>
 	$(function(){
-		var map = new BMap.Map('map');
-		var centerLongitude = 116.3972282409668;
-		var centerLatitude = 39.90960456049752;
-		var businessLat="<%=businessLat%>";
-		var busdata=businessLat.split(";");
-		var tempLat=parseFloat(busdata[0]);
-		var templng=parseFloat(busdata[1]);
-		if(tempLat>0&&templng>0){
-		    if(18.286316<=tempLat&&tempLat<=53.571364&&
-		       73.502922<=templng&&templng<=135.070626){
-		        centerLongitude = templng;
-		        centerLatitude = tempLat;
-		   }
-		}
-		var poi = new BMap.Point(centerLongitude, centerLatitude);
-		var selectOverlay;
-		var NORMAL_OPACITY = 0.3,SELECT_OPACITY = 0.7;
-		map.centerAndZoom(poi, 16);
-		//未选中颜色
-		var styleOptions = {
-		    strokeColor:"red",    //边线颜色。
-		    fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
-		    strokeWeight: 3,       //边线的宽度，以像素为单位。
-		    strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
-		    fillOpacity: NORMAL_OPACITY,      //填充的透明度，取值范围0 - 1。
-		    strokeStyle: 'solid' //边线的样式，solid或dashed。
-		}
-		var tempArray=eval('<%=regionjson%>');
-		var detailJson=eval('<%=detailJson%>');
-		var totalJson=eval('<%=totalJson%>');
-		drawOverlays(tempArray);
 		//绘制一个多边形
 		function drawOverlay(object){
 			var tempPolygon = new BMap.Polygon(object.overlayPointList,styleOptions);
 			var overlayId=object.overlayId;
 			tempPolygon.addEventListener('click',function(e){
-				overlayClick(overlayId, this);
+				overlayClick(overlayId);
 			});
+			overlayArray[overlayId]=tempPolygon;
 			map.addOverlay(tempPolygon);
 		}
-		function overlayClick(id,overlay){
+		function overlayClick(id){
+			var region;
 			for(var i=0;i<totalJson.length;i++){
 				if(totalJson[i].id==id){
-					$("#regiontitle").html(totalJson[i].name+"("+totalJson[i].num+"单)");
+					region=totalJson[i];
 					break;
 				}
 			}
+			if(region.parentId>0){
+				var parentregion;
+				for(var i=0;i<totalJson.length;i++){
+					if(totalJson[i].id==region.parentId){
+						parentregion=totalJson[i];
+						break;
+					}
+				}
+				$("#regiontitle").html(parentregion.name+">"+region.name+"("+region.num+"单)");
+			}else{
+				$("#regiontitle").html(region.name+"("+region.num+"单)");
+			}
+
 			$("#waiting").attr("regionid",id);
 			$("#picking").attr("regionid",id);
 			$("#sending").attr("regionid",id);
@@ -126,9 +110,13 @@ String businessid=request.getAttribute("businessid").toString();
 				$("#done").html("0单已完成");
 			}else{
 				for(var i=0;i<detailJson.length;i++){
-					if(detailJson[i].orderRegionOneId==id||
-					   detailJson[i].orderRegionTwoId==id){
-						switch(detailJson[i].status){
+					if((region.parentId==0&&
+						detailJson[i].orderRegionOneId==id&&
+						detailJson[i].orderRegionTwoId==0)||
+						(region.parentId>0&&
+						 detailJson[i].orderRegionOneId==region.parentId&&
+						 detailJson[i].orderRegionTwoId==id)){
+							switch(detailJson[i].status){
 							case 0:
 								$("#waiting").html(detailJson[i].num+"单接待");
 								break;
@@ -145,30 +133,70 @@ String businessid=request.getAttribute("businessid").toString();
 					}
 				}
 			}
-			
-			//获取点击的覆盖物信息，ajax请求此区域信息
-			console.log(id);
-			//拿到子区域json数据，绘制子区域，并放大当前区域，修改当前区域透明度
-			//infoPaint(tempSubArray,false);
-			if(selectOverlay){
-				selectOverlay.setFillOpacity(NORMAL_OPACITY);
+			for (var key in overlayArray){
+				if(id==parseInt(key)){
+					overlayArray[key].setFillOpacity(SELECT_OPACITY);
+				}else{
+					overlayArray[key].setFillOpacity(NORMAL_OPACITY);
+				}
 			}
-			overlay.setFillOpacity(SELECT_OPACITY);
-			selectOverlay = overlay;
 		}
-		//绘制多个多边形
 
-		function drawOverlays(objects){
-			for(var i=0;i<objects.length;i++){
-				drawOverlay(objects[i]);
-			}
-		}
 	});
-	var businessid='<%=businessid%>';
-	function getdetail(status,target){
-		var regionid=$(target).attr('regionid'); 
-		alert(regionid);
-	}
+		//页面第一次打开时，显示一级区域中订单数量最多的区域的详情
+		function init(){
+			for(var i=0;i<tempArray.length;i++){
+				drawOverlay(tempArray[i]);
+			}
+			var maxparentid;
+			var maxnum;
+			for(var i=0;i<totalJson.length;i++){
+				if(totalJson[i].parentId==0){
+					if(maxnum<totalJson[i].num){
+						maxparentid=totalJson[i].id;
+					}
+				}
+			}
+			overlayClick(maxparentid);
+		}
+		function getdetail(status,target){
+			var regionid=$(target).attr('regionid'); 
+			alert(businessid);
+			alert(regionid);
+			alert(status);
+		}
+		var map = new BMap.Map('map');
+		var centerLongitude = 116.3972282409668;
+		var centerLatitude = 39.90960456049752;
+		var businessLat="<%=businessLat%>";
+		var busdata=businessLat.split(";");
+		var tempLat=parseFloat(busdata[0]);
+		var templng=parseFloat(busdata[1]);
+		if(tempLat>0&&templng>0){
+		    if(18.286316<=tempLat&&tempLat<=53.571364&&
+		       73.502922<=templng&&templng<=135.070626){
+		        centerLongitude = templng;
+		        centerLatitude = tempLat;
+		   }
+		}
+		var poi = new BMap.Point(centerLongitude, centerLatitude);
+		var overlayArray = {};//区域数组
+		var NORMAL_OPACITY = 0.3,SELECT_OPACITY = 0.7;
+		map.centerAndZoom(poi, 16);
+		//未选中颜色
+		var styleOptions = {
+		    strokeColor:"red",    //边线颜色。
+		    fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+		    strokeWeight: 3,       //边线的宽度，以像素为单位。
+		    strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+		    fillOpacity: NORMAL_OPACITY,      //填充的透明度，取值范围0 - 1。
+		    strokeStyle: 'solid' //边线的样式，solid或dashed。
+		}
+		var businessid='<%=businessid%>';
+		var tempArray=eval('<%=regionjson%>');
+		var detailJson=eval('<%=detailJson%>');
+		var totalJson=eval('<%=totalJson%>');
+		init();
 	</script>
 </body>
 </html>
