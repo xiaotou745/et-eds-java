@@ -6,6 +6,23 @@ public class BusinessModifyModel extends Business {
 	private String optId;
 	private String optName;
 	private String remark;
+	private String oldbusinessgroupidname;
+	private String businessgroupidname;
+	public String getOldbusinessgroupidname() {
+		return oldbusinessgroupidname;
+	}
+
+	public void setOldbusinessgroupidname(String oldbusinessgroupidname) {
+		this.oldbusinessgroupidname = oldbusinessgroupidname;
+	}
+
+	public String getBusinessgroupidname() {
+		return businessgroupidname;
+	}
+
+	public void setBusinessgroupidname(String businessgroupidname) {
+		this.businessgroupidname = businessgroupidname;
+	}
 
 	public String getOptId() {
 		return optId;

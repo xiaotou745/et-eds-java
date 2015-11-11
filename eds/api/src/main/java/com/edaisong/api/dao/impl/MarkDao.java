@@ -1,6 +1,7 @@
 package com.edaisong.api.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +9,7 @@ import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IMarkDao;
 import com.edaisong.entity.Mark;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.TagRelationModel;
 import com.edaisong.entity.req.MarkEditReq;
 import com.edaisong.entity.req.MarkReq;
 @Repository
@@ -62,6 +64,24 @@ public class MarkDao extends DaoBase implements IMarkDao {
 		map.put("operator", markEditReq.getOperator());
 		int result = getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.modifyMarkStatus", markEditReq);
 		return result>0 ?true:false;
+	}
+	/**
+	 * 获取所有的商家标签
+	 * 茹化肖
+	 * 2015年11月10日16:30:59
+	 */
+	@Override
+	public List<Mark> getBusMarksList(int userId) {
+		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IMarkDao.getBusMarksList",userId);
+	}
+	/***
+	 * 编辑商户标签
+	 * 茹化肖
+	 * 2015年11月11日11:20:14
+	 */
+	@Override
+	public int modifyBusinessTags(TagRelationModel model) {
+		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.modifyBusinessTags", model);
 	}
 
 }
