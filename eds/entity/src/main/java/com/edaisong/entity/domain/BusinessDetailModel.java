@@ -11,6 +11,14 @@ public class BusinessDetailModel extends Business {
 	private String openSubBank;
 	private String groupName;
 	private int isModifyBind;
+	private String businessgroupidname;
+	public String getBusinessgroupidname() {
+		return businessgroupidname;
+	}
+
+	public void setBusinessgroupidname(String businessgroupidname) {
+		this.businessgroupidname = businessgroupidname;
+	}
 
 	public String getTrueName() {
 		return trueName;
