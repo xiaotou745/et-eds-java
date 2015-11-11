@@ -57,36 +57,42 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 	  	<div id="left" style="float: left; width: 750px; height: auto; border-right: 1px #dcdcdc solid; margin-top: -10px;">
 	  	  <div style="width: 750px; height: auto; border-bottom: solid 0px #dcdcdc; padding-left: 10px;">
 			<div class="control-group" style="margin-top: 10px">
-				<label>门店账号：</label> <label><%=detail.getPhoneno()%></label>
+				<label style="margin-left: 20px;width:100px;">门店账号：</label> <label><%=detail.getPhoneno()%></label>
 			</div>
 			<div class="control-group">
-				<label>商铺名称：</label> <input name="busiName" id="busiName"
-					type="text" value="<%=detail.getName()%>"> <input
-					name="busiId" id="busiId" type="hidden" value="<%=detail.getId()%>">
+				<label style="margin-left: 20px;width:100px;">商铺名称：</label> 
+					<input name="busiName" id="busiName"type="text" value="<%=detail.getName()%>">
+					<input name="busiId" id="busiId" type="hidden" value="<%=detail.getId()%>">
 			</div>
-			<div class="control-group" style="margin-top: 10px">
-                    <label>推荐人账号：</label>
+			<div class="control-group">
+                    <label style="margin-left: 20px;width:100px;">推荐人账号：</label>
                     <input name="RecommendPhone" id="recomPhone" type="text" value="<%=detail.getRecommendphone()%>" />
             </div>
 			<div class="control-group">
-				<label>联系电话：</label> <input name="busiPhoneNo2" id="busiPhoneNo2" type="text" value="<%=detail.getPhoneno2()%>">
+				<label style="margin-left: 20px;width:100px;">联系电话：</label> <input name="busiPhoneNo2" id="busiPhoneNo2" type="text" value="<%=detail.getPhoneno2()%>">
 			</div>
 			<div class="control-group">
-				<label>联系座机：</label> <input name="busiLandline" id="busiLandline" type="text" value="<%=detail.getLandline()==null?"":detail.getLandline()%>">
+				<label style="margin-left: 20px;width:100px;">联系座机：</label> <input name="busiLandline" id="busiLandline" type="text" value="<%=detail.getLandline()==null?"":detail.getLandline()%>">
 			</div>
 			<div class="control-group">
-				<label style="margin-left: 20px">城 市：</label>
+				<label   style="margin-left: 20px;width:100px;margin-top: 7px;">城 市：</label>
+				<div style="float: right;margin-right: 457px;width: 160px;">
 				<%=HtmlHelper.getSelect("busiCity", openCityList, "name", "code",detail.getCityid(),"","-请选择-")%>
-				<label>区 域：</label>
+				</div>
+				<div style="clear:both"></div>
+				<label  style="margin-left: 20px;width:100px;margin-top: 7px;">区 域：</label>
+				<div style="float: right;margin-right: 457px;width: 160px;">
 				<%=HtmlHelper.getSelect("busiDistrict", openAreaList, "name", "code",detail.getDistrictid(),"","-请选择-")%>
+				</div>
+				<div style="clear:both"></div>
 			</div>
 			<div class="control-group">
-				<label style="margin-left: 20px">地 址：</label> <input name="busiAddr"
+				<label  style="margin-left: 20px;width:100px;">地 址：</label> <input name="busiAddr"
 					id="busiAddr" style="width: 200px;" type="text"
 					value="<%=detail.getAddress()%>">
 			</div>
 			<div class="control-group" style="margin-bottom: 10px">
-				<label style="margin-left: 5px">经 纬 度：</label> <input
+				<label  style="margin-left: 20px;width:100px;">经 纬 度：</label> <input
 					name="busiLongitude" id="busiLongitude" style="width: 120px;"
 					type="text" value="<%=detail.getLongitude()%>" disabled="disabled">
 				<input name="busiLatitude" id="busiLatitude" style="width: 120px;"
@@ -156,14 +162,14 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
       <!-- 其他设置开始 -->
 	      <form action="" id="formqtsz">
 	      		<div class="control-group">
-					<label style="margin-left: 73px">发单模式：</label> 
-					<input id="rPushOrderTypeN" name="rPushOrderType" type="radio" value="0" style="margin-left: 30px" <%=detail.getPushOrderType()==0?"checked" : ""%>> 
+					<label style="margin-left: 20px;width:150px;">发单模式：</label> 
+					<input id="rPushOrderTypeN" name="rPushOrderType" type="radio" value="0"  <%=detail.getPushOrderType()==0?"checked" : ""%>> 
 					<label>普通模式</label>
 					<input id="rPushOrderTypeY" name="rPushOrderType" type="radio" value="1" <%=detail.getPushOrderType()==1?"checked" : ""%>> 
 					<label>快单模式</label>
 				</div>
 				<div class="control-group">
-	                    <label style="margin-left: 73px">应收门店：</label>
+	                    <label style="margin-left: 20px;width:150px;">应收门店：</label>
 	                    <label title="应收商家配送费比例">商配比例</label><input id="busCommissionText" name="busCommissionText" style="width:100px" type="text" value="<%=detail.getBusinesscommission()%>" />
 	                    %&nbsp;+&nbsp;<label title="应收商家配送费定额">商配定额</label><input id="CommissionFixValue" name="CommissionFixValue" style="width:100px" value="<%=detail.getCommissionfixvalue()%>" />&nbsp;+&nbsp;
 	                    <label title="代收客户配送费">代收客配</label><input id="busiWaisong" id="busiWaisong" style="width:100px" value="<%=detail.getDistribsubsidy()%>" />
@@ -172,39 +178,45 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 					<label id="labGlobalConfig" style="margin-left: 48px"><%=subsidyConfig%></label><!-- 全局补贴 -->
 				</div>
 				<div class="control-group">
-					<label style="margin-left: 74px">补贴策略：</label>
+					<label style="margin-left: 20px;width:150px;">补贴策略：</label>
+					<div style="float: right;margin-right: 80%;width: 160px;margin-top:-7px;">
 					<%=HtmlHelper.getSelect("businessGroupID", businessGroupListData, "name", "id",detail.getBusinessgroupid(),null,"")%>
+					</div>
+					<div style="clear:both"></div>
 				</div>
 				<div class="control-group" style="margin-left: 2px">
-					<label style="margin-left: 48px">餐费结算方式：</label> 
+					<label style="margin-left: 20px;width:150px;">餐费结算方式：</label> 
+					<div style="float: right;margin-right: 80%;width: 160px;margin-top:-2%;">
 					<select name="busiMealsSettleMode"  class="form-control m-b" id="busiMealsSettleMode" >
 						<option <%=detail.getMealssettlemode()==0?"selected":""%> value="0">线下结算</option>
 						<option <%=detail.getMealssettlemode()==1?"selected":""%> value="1">线上结算</option>
 					</select>
+					</div>
+					<div style="clear:both"></div>
 				</div>
 	      		<div class="control-group">
-					<label style="margin-left: 73px">一键发单：</label> 
+					<label style="margin-left: 20px;width:150px;" >一键发单：</label> 
 					<input id="rOneKeyPubOrderY" name="rOneKeyPubOrder" type="radio" value="1" <%=detail.getOnekeypuborder()==1?"checked" : ""%>>
 					<label>是</label>
 					<input id="rOneKeyPubOrderN" name="rOneKeyPubOrder" type="radio" value="0" style="margin-left: 30px" <%=detail.getOnekeypuborder()==0?"checked" : ""%>> 
 					<label>否</label>
 				</div>
 				<div class="control-group">
-					<label style="margin-left: 48px">余额可以透支：</label> 
+					<label style="margin-left: 20px;width:150px;">余额可以透支：</label> 
 					<input id="rBbalanceAllowOverDraftY" name="rBalanceAllowOverDraft" type="radio" value="1" <%=detail.getIsallowoverdraft()==1?"checked" : ""%>>
 					<label>是</label>
 					<input id="rBbalanceAllowOverDraftN" name="rBalanceAllowOverDraft" type="radio" value="0" style="margin-left: 30px" <%=detail.getIsallowoverdraft()==0?"checked" : ""%>> 
 					<label>否</label>
 				</div>
 				<div class="control-group">
-	                    <label style="margin-left: 48px">是否可以现金支付：</label>
+	                    <label style="margin-left: 20px;width:150px;">是否可以现金支付：</label>
 	                    <input id="rIsAllowCashPayY" name="rIsAllowCashPay" type="radio" value="1" <%=detail.getIsAllowCashPay()==1?"checked" : ""%>>
 	                    <label>是</label>
 	                    <input id="rIsAllowCashPayN" name="rIsAllowCashPay" type="radio" value="0" style="margin-left: 30px" <%=detail.getIsAllowCashPay()==0?"checked" : ""%>>
 	                    <label>否</label>
 	            </div>
 				<div class="control-group">
-					<label>使用雇主任务时间限制：</label> <input id="rIsEmployerTaskY"
+					<label style="margin-left: 20px;width:150px;">使用雇主任务时间限制：</label> <input id="rIsEmployerTaskY"
 						name="rIsEmployerTask" type="radio" value="1"
 						<%=detail.getIsemployertask()==1?"checked" : ""%>> <label>是</label>
 					<input id="rIsEmployerTaskN" name="rIsEmployerTask" type="radio"
@@ -212,7 +224,7 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 						<%=detail.getIsemployertask()==0?"checked" : ""%>> <label>否</label>
 				</div>
 				<div class="control-group" style="margin-bottom: 10px" id="OrderChecked">
-	                <label style="margin-left: 5px">订单是否需要审核：</label>
+	                <label style="margin-left: 20px;width:150px;">订单是否需要审核：</label>
 	                <label><input name="IsCheckOrder" type="radio" value="1" <%=detail.getIsOrderChecked()==1?"checked" : ""%> />是 </label>
 	                <label><input name="IsCheckOrder" type="radio" value="0" <%=detail.getIsOrderChecked()==0?"checked" : ""%> />否 </label> 
 	            </div>	
@@ -319,7 +331,6 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
       <!-- 操作记录开始 -->
       		<div
 			style="width: 750px; height: auto; border-bottom: solid 1px #dcdcdc; padding-left: 10px;">
-			<label style="font-size: 15px; margin-left: 10px">商户操作记录：</label>
 			<table
 				class="table table-striped table-bordered table-hover dataTables-example">
 				<thead>
