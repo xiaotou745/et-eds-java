@@ -1,9 +1,13 @@
 package com.edaisong.api.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.Mark;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.TagRelationModel;
 import com.edaisong.entity.req.MarkEditReq;
 import com.edaisong.entity.req.MarkReq;
+import com.edaisong.entity.req.ModifyTagReq;
 
 public interface IMarkDao {
 	 /**
@@ -34,5 +38,20 @@ public interface IMarkDao {
 		* @Return
 		*/
 		 boolean modifyMarkStatus(MarkEditReq markEditReq);
+		 /**
+		  * 获取所有的商家标签
+		  * 茹化肖
+		  * 2015年11月10日16:30:34
+		  * @return
+		  */
+		 List<Mark> getBusMarksList(int userId);
+		 /***
+		  * 编辑商家标签
+		  * 茹化肖
+		  * 2015年11月11日11:19:33
+		  * @param model
+		  * @return
+		  */
+		 int modifyBusinessTags(TagRelationModel model);
 
 }

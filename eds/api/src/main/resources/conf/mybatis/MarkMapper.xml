@@ -244,4 +244,43 @@
         ModifyTime=getdate()
     where Id = ${id}
   </update>
+  <!-- 获取所有的商家标签 -->
+  <select id="getBusMarksList" resultType="com.edaisong.entity.Mark" parameterType="java.lang.Integer">
+ SELECT tg.Id ,
+        TagName ,
+        CASE WHEN tr.IsEnable=1 THEN 1 ELSE 0 END AS IsEnable
+ FROM   tag AS tg ( NOLOCK )
+        LEFT JOIN dbo.TagRelation AS tr ( NOLOCK ) ON tg.id = tr.TagId AND tr.UserId = #{userId,jdbcType=INTEGER}
+ WHERE  tagType = 0
+        AND tg.IsEnable = 1
+        AND tg.IsDelete = 0
+  </select>
+  <!-- 编辑商户标签  茹化肖 2015年11月11日11:22:21 -->
+  <update id="modifyBusinessTags" parameterType="com.edaisong.entity.domain.TagRelationModel">
+  
+  MERGE INTO TagRelation ber
+	USING(values(${userId},${tagId},${userType})) AS berNew(UserId,TagId,UserType)
+		ON ber.UserId=berNew.UserId AND  ber.TagId=berNew.TagId and
+        ber.UserType=berNew.UserType
+	WHEN MATCHED 
+	THEN UPDATE 
+		 SET ber.IsEnable=${isEnable},
+             ber.UpdateBy='${optName}',
+             ber.UpdateTime=GETDATE()
+	WHEN NOT MATCHED 
+		  THEN INSERT
+					(UserId,
+					 TagId,
+                     UserType,
+                     CreateBy,
+                     UpdateBy,
+                     IsEnable) 
+					VALUES 
+					(${userId},
+					 ${tagId},
+                     ${userType},
+                     '${optName}',
+                     '${optName}',
+                     ${isEnable});
+  </update>
 </mapper>

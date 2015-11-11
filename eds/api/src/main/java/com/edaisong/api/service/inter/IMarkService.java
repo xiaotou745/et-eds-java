@@ -1,5 +1,7 @@
 package com.edaisong.api.service.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.Mark;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
@@ -29,5 +31,11 @@ public interface IMarkService {
 	* @Return
 	*/
 	ResponseBase modifyMarkStatus(MarkEditReq markEditReq);
+	/**
+	 * 获取所有的商家标签
+	 * 茹化肖
+	 * 2015年11月10日16:29:15
+	 */
+	List<Mark> getBusMarksList(int userId);
 
 }

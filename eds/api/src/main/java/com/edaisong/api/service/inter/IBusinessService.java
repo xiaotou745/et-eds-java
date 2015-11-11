@@ -21,6 +21,8 @@ import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
 import com.edaisong.entity.req.OrderDetailBReq;
+import com.edaisong.entity.req.ModifyTagReq;
+
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.PagedBusinessReq;
@@ -117,6 +119,12 @@ public interface IBusinessService {
 	 * @date 20150831
 	 */
     void updateBBalanceAndWithdraw(BusinessMoney businessMoney);
+    /***
+     * 修改商户绑定标签
+     * @param req
+     * @return
+     */
+    int modifyBusinessTags(ModifyTagReq req);
     
 	/**
 	 * 获取门店发单模式：0 普通模式（默认），1 快单模式   默认0

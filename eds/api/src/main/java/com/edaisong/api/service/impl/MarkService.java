@@ -1,5 +1,7 @@
 package com.edaisong.api.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +69,15 @@ public class MarkService implements IMarkService {
 		responseBase.setResponseCode(1);
 		responseBase.setMessage("标签状态更新成功！");
 		return responseBase;
+	}
+	/**
+	 * 获取所有的商家标签
+	 * 茹化肖
+	 * 2015年11月10日16:51:30
+	 */
+	@Override
+	public List<Mark> getBusMarksList(int userId) {
+		return markDao.getBusMarksList( userId);
 	}
 
 }
