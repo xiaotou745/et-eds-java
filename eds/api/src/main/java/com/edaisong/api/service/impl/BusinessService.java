@@ -3,6 +3,7 @@ package com.edaisong.api.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.fusesource.hawtbuf.codec.VariableCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IGroupBusinessDao;
+import com.edaisong.api.dao.inter.IMarkDao;
 import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.core.consts.GlobalSettings;
@@ -30,7 +32,9 @@ import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
+import com.edaisong.entity.domain.TagRelationModel;
 import com.edaisong.entity.req.BusinessMoney;
+import com.edaisong.entity.req.ModifyTagReq;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
 
@@ -45,7 +49,8 @@ public class BusinessService implements IBusinessService {
 	private RedisService redisService;
 	@Autowired
 	private IGroupBusinessDao groupBusinessDao;
-
+	@Autowired
+	private IMarkDao markDao;
 	private static final int MAX_LOING_COUNT = 5;
 
 	@Override
@@ -372,6 +377,34 @@ public class BusinessService implements IBusinessService {
 		businessBalanceRecord.setRelationno(businessMoney.getRelationNo()); // 关联单号
 		businessBalanceRecord.setRemark(businessMoney.getRemark()); // 注释
 		businessBalanceRecordDao.insert(businessBalanceRecord);
+	}
+	/***
+	 * 修改商户绑定标签
+	 * 茹化肖
+	 * 2015年11月11日11:05:24
+	 * 
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public int modifyBusinessTags(ModifyTagReq req) {
+		String [] tagArr=req.getTags().split(";");
+		int log=0;
+		for (int i = 0; i < tagArr.length; i++) {
+			TagRelationModel model=new TagRelationModel();
+			model.setOptName(req.getOptName());
+			model.setUserType(0);//商家
+			model.setUserId(req.getUserId());
+			String [] temp=tagArr[i].split(",");
+			model.setTagId(Integer.valueOf(temp[0]));
+			model.setIsEnable(Integer.valueOf(temp[1]));
+			log+= markDao.modifyBusinessTags(model);
+		}
+		if(log>0)
+			return 1;
+		else {
+			return 0;
+		}
+
 	}
 
 }

@@ -13,6 +13,7 @@ import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.req.BusinessLoginReq;
 import com.edaisong.entity.req.BusinessMoney;
+import com.edaisong.entity.req.ModifyTagReq;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.PagedBusinessReq;
@@ -107,5 +108,11 @@ public interface IBusinessService {
 	 * @date 20150831
 	 */
     void updateBBalanceAndWithdraw(BusinessMoney businessMoney);
+    /***
+     * 修改商户绑定标签
+     * @param req
+     * @return
+     */
+    int modifyBusinessTags(ModifyTagReq req);
     
 }

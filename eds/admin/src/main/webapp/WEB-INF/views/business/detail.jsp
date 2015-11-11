@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.entity.Mark"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -38,13 +39,14 @@ for (GroupModel groupModel : groupListData) {
 	}
 }
 List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttribute("businessGroupListData");
+List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 %>
  <ul class="nav nav-tabs" id="myTab">
       <li class="active"><a href="#tabjbxx">基本信息</a></li>
       <li><a href="#tabqtsz">其他设置</a></li>
       <li><a href="#tabqdgl">渠道管理</a></li>
       <li><a href="#tabwlgs">物流公司</a></li>
-      <li><a href="#tabbq">标签</a></li>
+      <li><a href="#tabbq">标签设置</a></li>
       <li><a href="#tabczjl">操作记录</a></li>
     </ul>
        
@@ -283,7 +285,36 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 		  </form>
 	      <!-- 物流公司结束 -->
       </div>
-      <div class="tab-pane" id="tabbq">标签</div>
+      <div class="tab-pane" id="tabbq">
+      <!-- 标签开始 -->
+      <form action="" id="formbq">
+      		<div id="divTagList" style="float: left; width: 550px">
+                  <%if(tagsData!=null&&tagsData.size()>0) 
+                  {%>                         
+                        <div style="width: 180px;height:25px;float: left">
+                              <input type="checkbox" name="checkAllTags" id="selectAllTags" onclick="sltAllTags()" />
+                            <label>全部</label>
+                        </div>
+                      <%
+                      for(Mark item:tagsData)
+                      {
+                    	  String check = item.getIsenable()==1 ? "checked='checked'" : "";
+                      %>
+                    	  <div style="width: 180px;height:25px;float: left">
+                          <input type="checkbox" name="checkTags" id="tags<%=item.getId()%>" value="<%=item.getId()%>" <%=check%> />
+                          <label><%=item.getTagName()%></label>
+                      </div>
+                      <%}
+                  }%>  
+		         <div class="SearchMd" style="padding: 0px; border-bottom: solid 0px #dcdcdc;">
+						<div >
+							<input type="button" value="保存" class="searchBtn"	id="btnModifyTag" onclick="functionModifyTag()"/>
+						</div>
+				</div>
+            </div>
+         </form>
+      <!--  标签结束-->
+      </div>
       <div class="tab-pane" id="tabczjl">
       <!-- 操作记录开始 -->
       		<div
@@ -322,6 +353,7 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 
 	var formjbxx="";//基本信息表单
 	var formqtsz="";//其他设置表单
+	var formbq="";//标签绑定表单
 	var reg = /^0?1\d{10}$/;//手机号正则
 	var regLandLine = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;//座机正则
 	var decimalFormat = /^[0-9]*(\.[0-9]{1,2})?$/;//金额数字正则
@@ -341,8 +373,8 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 		//初始化各个页签下的表单记录
 	    formjbxx=$("#formjbxx").serialize();
 		formqtsz=$("#formqtsz").serialize();
+		formbq=$("#formbq").serialize();
 		oldbusinessgroupidname=$('#businessGroupID option:selected').text();//保存旧的补贴策略名字
-		console.log(formjbxx);
 	});
     var oldValues= new Array();  
     var businessId = $('#busiId').val();//商户ID
@@ -454,6 +486,13 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 		var checkedOfAll = $("#selectAll").prop("checked");
 		$("input[name='checkMenus']").prop("checked", checkedOfAll);
 	}
+	
+    //标签“全部” 点击
+    function sltAllTags() {
+        var checkedOfAll = $("#selectAllTags").prop("checked");
+        //🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂🍂
+        $("input[name='checkTags']").prop("checked", checkedOfAll);
+    }
 
 	//基本信息保存
 	$("#btnModifyCommit").click(function() {
@@ -593,7 +632,6 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 	 			"businessgroupidname" : businessGroupIdtext,//补贴策略组ID
 	 			"oldbusinessgroupidname":oldbusinessgroupidname//旧的补贴策略名字
 			};
-		console.log(paramaters);
 			var url = "<%=basePath%>/business/modifybusiness";
 			$.ajax({
 				type : 'POST',
@@ -612,7 +650,50 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			});
 		 
 	});//其他保存事件结束
-	
+	//修改绑定标签事件 
+	function functionModifyTag() {
+		 var data=$("#formbq").serialize();
+		 var id = $('#busiId').val();//BID
+		 if(formbq==data){
+			 alert("没有需要更新的信息");
+			 return;
+		 }
+		//获取所有的标签
+		 var tags = "";
+		 var newKeys = new Array();
+	     var newValues = new Array();
+		 $("#formbq input[name='checkTags']").each(
+	                function () {
+	                	 newKeys.push($(this).val());
+	                     if ($(this).is(':checked')) {
+	                         newValues.push(1);
+	                     } else {
+	                         newValues.push(0);
+	                     }
+	                });
+		 for (var i = 0; i < newKeys.length; i++) 
+		 {
+	         tags = tags + newKeys[i]+ "," + newValues[i] + ";";
+	     }
+		 if (!confirm("确定要提交保存吗？")) {
+	            return;
+	     }
+		 var paramaters = { "userId": id, "tags": tags };
+		 var url = "<%=basePath%>/business/modifybusinesstags";
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data : paramaters,
+				success : function(result) {
+					if (result == 1) {
+						alert("修改绑定关系成功");
+						window.location.href = "<%=basePath%>/business/detail?businessID=<%=detail.getId()%>";
+					} else {
+						alert("修改绑定关系失败");
+					} 
+				}
+			});
+	}//修改绑定标签事件结束
 	//保存物流公司配置
 	$("#btnModifyExpress").click(function() {
 		var busiId = $('#busiId').val();
@@ -654,10 +735,10 @@ List<BusinessGroup> businessGroupListData=(List<BusinessGroup>)request.getAttrib
 			data : paramaters,
 			success : function(result) {
 				if (result > 0) {
-					alert("更新成功");
+					alert("物流公司绑定成功");
 					window.location.href = window.location.href;
 				} else {
-					alert("失败");
+					alert("物流公司绑定失败");
 				}
 			}
 		});

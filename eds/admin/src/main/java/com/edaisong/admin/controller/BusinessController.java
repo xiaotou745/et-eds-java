@@ -30,6 +30,7 @@ import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.IGroupService;
+import com.edaisong.api.service.inter.IMarkService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.util.ExcelUtils;
@@ -45,6 +46,7 @@ import com.edaisong.entity.BusinessFinanceAccount;
 import com.edaisong.entity.BusinessGroup;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.DeliveryCompany;
+import com.edaisong.entity.Mark;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
@@ -63,10 +65,12 @@ import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.GroupReq;
+import com.edaisong.entity.req.ModifyTagReq;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.IntData;
 
 /*
  * 商户管理
@@ -111,6 +115,8 @@ public class BusinessController {
 
 	@Autowired
 	private IClienterService clienterService;
+	@Autowired
+	private IMarkService markService;
 
 	@RequestMapping("list")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse res) {
@@ -210,14 +216,16 @@ public class BusinessController {
 				.getOpLogByBusinessID(ParseHelper.ToInt(detail.getId()));
 		List<DeliveryCompany> deliveryCompany = deliveryCompanyService.getDeliveryCompanyList();
 		List<BusinessGroup> businessGroupListData = iBusinessGroupService.getBusinessGroupList();
-
+		//商家全部标签
+		List<Mark> marks=markService.getBusMarksList(businessID);
+		
 		GroupReq groupReq = new GroupReq();
 		groupReq.setIsValid(1);
 		List<GroupModel> groupListData = iGroupService.getGroupList(groupReq);
 
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "商户管理");
-		model.addObject("currenttitle", "修改商铺信息");
+		model.addObject("subtitle", "门店管理");
+		model.addObject("currenttitle", "修改门店信息");
 		model.addObject("subsidyConfig", subsidyConfig);
 
 		model.addObject("finalCheckPicUrl", finalCheckPicUrl);
@@ -233,6 +241,7 @@ public class BusinessController {
 		model.addObject("businessOpLog", businessOpLog);
 		model.addObject("businessGroupListData", businessGroupListData);
 		model.addObject("groupListData", groupListData);
+		model.addObject("tagsData", marks);
 		model.addObject("viewPath", "business/detail");
 		return model;
 	}
@@ -250,10 +259,23 @@ public class BusinessController {
 	 */
 	@RequestMapping("modifybusiness")
 	@ResponseBody
-	public int modifyBusiness(BusinessModifyModel detail) {
-		detail.setOptId("123");
-		detail.setOptName("admin");
+	public int modifyBusiness(BusinessModifyModel detail,HttpServletRequest request) {
+		int id=UserContext.getCurrentContext(request).getId();
+		detail.setOptId(String.valueOf(id));
+		detail.setOptName(UserContext.getCurrentContext(request).getUserName());
 		return iBusinessService.modifyBusiness(detail);
+	}
+	
+	/**
+	 * 修改商户的标签关系
+	 * @param detail
+	 * @return
+	 */
+	@RequestMapping("modifybusinesstags")
+	@ResponseBody
+	public int modifyBusinessTags(ModifyTagReq req,HttpServletRequest request) {
+		req.setOptName(UserContext.getCurrentContext(request).getUserName());
+		return iBusinessService.modifyBusinessTags(req);
 	}
 
 	@RequestMapping("getCityDistrict")
