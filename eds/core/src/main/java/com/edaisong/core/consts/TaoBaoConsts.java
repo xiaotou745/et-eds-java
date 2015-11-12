@@ -7,6 +7,11 @@ package com.edaisong.core.consts;
  */
 public class TaoBaoConsts {
 	/**
+	 * uri
+	 */
+	public final static String Uri = "ws://mc.api.taobao.com/";
+
+	/**
 	 * AppKey
 	 */
 	public final static String AppKey = "23264088";
