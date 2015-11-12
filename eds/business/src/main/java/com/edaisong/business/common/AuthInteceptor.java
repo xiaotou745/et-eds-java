@@ -18,7 +18,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 			if (!isLogin && 
 				!request.getServletPath().equals("/account/login")&& 
 				!request.getServletPath().equals("/account/code")&& 
-				!request.getServletPath().equals("/order/todaylist")&& 
+				!request.getServletPath().equals("/orderregion/todayone")&& 
 				!request.getServletPath().equals("/group/return_url")) {
 				response.sendRedirect(basePath + "/");
 				return false;

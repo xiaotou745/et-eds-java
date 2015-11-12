@@ -29,7 +29,7 @@
 			#{item}
 			</foreach>
   </update>
-    <update id="updateHasNoChildByIds" parameterType="java.util.List" >
+    <update id="updateHasChildByIds" parameterType="java.util.List" >
     update  OrderRegion set HasChild=#{hasChilds,jdbcType=INTEGER}
     where Id in
 		    <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
