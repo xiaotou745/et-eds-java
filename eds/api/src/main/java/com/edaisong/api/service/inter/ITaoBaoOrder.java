@@ -11,4 +11,5 @@ public interface ITaoBaoOrder {
 	 * @throws LinkException 
 	 * */
 	void releaseOrder() throws LinkException;
+	
 }
