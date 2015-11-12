@@ -537,10 +537,19 @@ order by c.WaitingCounts desc
 		        );
 	</insert> 
 	<!-- 查询骑士商户是否已经绑定 wangchao -->
-	<select id="getClienterBind" resultType="java.lang.Integer"
+	<select id="getClienterBind" resultType="com.edaisong.entity.BusinessClienterRelation"
 		parameterType="com.edaisong.entity.domain.BindClienterBusiness">
-		SELECT count(1) FROM dbo.BusinessClienterRelation (nolock)
-where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,jdbcType=INTEGER} and IsBind =1  and IsEnable = 1
+		SELECT Id ,
+       BusinessId ,
+       ClienterId ,
+       IsEnable ,
+       CreateBy ,
+       CreateTime ,
+       UpdateBy ,
+       UpdateTime ,
+       IsBind ,
+       AuditStatus FROM dbo.BusinessClienterRelation (nolock)
+where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,jdbcType=INTEGER}
 	</select>
 	
    <sql id="getMyOrdeBListWhere">

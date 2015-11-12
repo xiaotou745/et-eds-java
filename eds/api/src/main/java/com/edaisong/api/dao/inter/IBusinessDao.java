@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.edaisong.entity.Business;
+import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
@@ -151,7 +152,7 @@ public interface IBusinessDao {
 		 * wangchao
 		 */
 	    int bindClienter(BindClienterBusiness bindClienterBusiness);
-		boolean getClienterBind(BindClienterBusiness bindClienterBusiness);
+	    BusinessClienterRelation getClienterBind(BindClienterBusiness bindClienterBusiness);
 		List<OrderRespModel> getMyOrdeB(MyOrderBReq myOrderBReq);
 		MyOrderBResp getOrderCountTotal(MyOrderBReq myOrderBReq);
 		MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq);

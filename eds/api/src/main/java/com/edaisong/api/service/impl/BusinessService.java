@@ -23,6 +23,7 @@ import com.edaisong.core.util.HttpUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
+import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
@@ -41,7 +42,6 @@ import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.req.BCheckCodeReq;
 import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.ModifyTagReq;
-
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
@@ -443,15 +443,10 @@ public class BusinessService implements IBusinessService {
 	@Override
 	public  Integer getPushOrderType(GetPushOrderTypeReq par){
 	 return iBusinessDao.getPushOrderType(par.getBusinessId());
-	}
+	} 
 
 	@Override
-	public int bindClienter(BindClienterBusiness bindClienterBusiness) { 
-		return iBusinessDao.bindClienter(bindClienterBusiness);
-	}
-
-	@Override
-	public boolean getClienterBind(BindClienterBusiness bindClienterBusiness) {
+	public BusinessClienterRelation getClienterBind(BindClienterBusiness bindClienterBusiness) {
 		return iBusinessDao.getClienterBind(bindClienterBusiness);
 	}
 

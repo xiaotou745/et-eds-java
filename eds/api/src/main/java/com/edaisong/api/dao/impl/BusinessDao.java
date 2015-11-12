@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.entity.Business;
+import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
@@ -211,9 +212,8 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	}
 
 	@Override
-	public boolean getClienterBind(BindClienterBusiness bindClienterBusiness) {
-		int i= getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getClienterBind",bindClienterBusiness);
-		return i>0;
+	public BusinessClienterRelation getClienterBind(BindClienterBusiness bindClienterBusiness) {
+		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getClienterBind",bindClienterBusiness);
 	}
 
 	@Override

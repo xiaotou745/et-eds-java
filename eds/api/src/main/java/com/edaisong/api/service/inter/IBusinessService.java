@@ -5,8 +5,10 @@ import java.util.List;
  
 
 
+
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
+import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.common.HttpResultModel;
@@ -22,7 +24,6 @@ import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
 import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.req.ModifyTagReq;
-
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
 import com.edaisong.entity.req.PagedBusinessReq;
@@ -134,16 +135,12 @@ public interface IBusinessService {
 	 * @return
 	 */
 	Integer getPushOrderType(GetPushOrderTypeReq par);
-	/*
-	 * 绑定骑士 建立关系
-	 * wangchao
-	 */
-	int bindClienter(BindClienterBusiness bindClienterBusiness);
+	 
 	/*
 	 * 判断骑士商户是否绑定
 	 * wangchao
 	 */
-	boolean getClienterBind(BindClienterBusiness bindClienterBusiness);
+	BusinessClienterRelation getClienterBind(BindClienterBusiness bindClienterBusiness);
 	
 	MyOrderBResp getMyOrdeB(MyOrderBReq myOrderBReq);
 	MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq);

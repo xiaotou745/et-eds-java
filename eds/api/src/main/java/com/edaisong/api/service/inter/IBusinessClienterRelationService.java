@@ -5,6 +5,7 @@ import java.util.List;
 import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.ClienterBindOptionReq;
@@ -59,6 +60,8 @@ public interface IBusinessClienterRelationService {
 	 * @param req
 	 * @return
 	 */
-		int optBindClienter(OptBindClienterReq req);
+	int optBindClienter(OptBindClienterReq req);
+
+	boolean updateClienterBindRelation(ClienterBindOptionReq bindClienterBusiness);
 	  
 }
