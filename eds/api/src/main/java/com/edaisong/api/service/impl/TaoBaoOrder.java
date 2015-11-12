@@ -32,5 +32,7 @@ public class TaoBaoOrder implements ITaoBaoOrder {
 		});
 		client.connect();
 	}
+	
+
 
 }

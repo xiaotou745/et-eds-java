@@ -227,7 +227,9 @@
   <!-- 修改骑士绑定  add by pengyi 20150901 -->
   <update id="modifyClienterBind" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
   	update bcr
-	set    bcr.IsBind=#{isBind,jdbcType=INTEGER}
+	set    bcr.IsBind=#{isBind,jdbcType=INTEGER},
+	bcr.UpdateBy=#{optName,jdbcType=NVARCHAR},
+	bcr.UpdateTime=getdate() 
 	<include refid="modifyClienterBindOutput"></include>
 	from BusinessClienterRelation bcr WITH ( ROWLOCK )
 	where bcr.BusinessId=${businessId} AND bcr.ClienterId=${clienterId} 
@@ -243,7 +245,9 @@
     <!-- 移除骑士绑定  add by pengyi 20150901 -->
   <update id="removeclienterbind" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
   	update bcr
-	set    bcr.IsEnable=0
+	set    bcr.IsEnable=0,
+	bcr.UpdateBy=#{optName,jdbcType=NVARCHAR},
+	bcr.UpdateTime=getdate() 
 	<include refid="modifyClienterBindOutput"></include>
 	from BusinessClienterRelation bcr WITH ( ROWLOCK )
 	where bcr.BusinessId=${businessId} AND bcr.ClienterId=${clienterId};
@@ -277,7 +281,7 @@
 	Values(
 		#{businessId,jdbcType=INTEGER},
 		#{clienterId,jdbcType=INTEGER},
-        #{optId,jdbcType=INTEGER},
+        #{optName,jdbcType=NVARCHAR},
         #{optName,jdbcType=NVARCHAR}
 	);
   </insert>
@@ -339,7 +343,7 @@
 	set    bcr.AuditStatus=#{auditStatus},
 	bcr.IsEnable=#{isEnable},
 	bcr.IsBind=#{isBind},
-	UpdateBy=${businessId},
+	UpdateBy=${optName},
     UpdateTime=getdate()
 	
     OUTPUT
