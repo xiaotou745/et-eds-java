@@ -619,7 +619,7 @@ where   og.Id = #{grabOrderId,jdbcType=INTEGER}
 	<!-- 获取商户基础信息 wangchao 扫一扫时候调用 -->
 	<select id="getBusinessInfo" resultType="com.edaisong.entity.domain.BusinessBasicInfoModel"
 		parameterType="com.edaisong.entity.req.BusinessReq">
-	 	select top 1 b.Id BusinessId,b.Name BusinessName,b.PhoneNo BusinessPhoneNo,b.Address BusinessAddress,ISNULL(bcr.IsBind,0) IsBind,ISNULL(bcr.AuditStatus,0) AuditStatus FROM dbo.business b(nolock)
+select top 1 b.Id BusinessId,b.Name BusinessName,b.PhoneNo BusinessPhoneNo,b.Address BusinessAddress,ISNULL(bcr.IsBind,0) IsBind,ISNULL(bcr.AuditStatus,0) AuditStatus FROM dbo.business b(nolock)
 	 	left join dbo.BusinessClienterRelation bcr (nolock) on b.Id = bcr.BusinessId
 where (b.Id = #{businessId,jdbcType=INTEGER} and bcr.ClienterId = #{clienterId,jdbcType=INTEGER}) or (b.id = #{businessId,jdbcType=INTEGER})
 order by bcr.Id desc
