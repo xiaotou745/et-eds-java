@@ -38,8 +38,8 @@ if(data == null){
 						</thead>
 						<tbody>
 							<%for (int i = 0; i < data.size(); i++) { %>
-							<tr class="info">
-								<td><%=data.get(i).getId().toString()%></td>
+							<tr>
+								<td><%=(i+1)%></td>
 								<td><%=ParseHelper.ShowString(data.get(i).getTrueName())%></td>
 								<td><%=data.get(i).getPhoneNo()%></td>
 		                        <td><%=ParseHelper.ToDateString(data.get(i).getUpdatetime()) %></td>
@@ -56,7 +56,7 @@ if(data == null){
 	                        		<%}
 	                        	}
 								if(business_Recharge){
-									if(data.get(i).getIsbind() == 0){%>
+									if(data.get(i).getIsenable() == 0){%>
 	                        			<a href="javascript:void(0)" style="color:gray">删除</a>
 	                        		<%}else{%>
 	                        			<a href="javascript:funRemoveClienterBind(<%=data.get(i).getBusinessid() %>,<%=data.get(i).getClienterid() %>)">删除</a>

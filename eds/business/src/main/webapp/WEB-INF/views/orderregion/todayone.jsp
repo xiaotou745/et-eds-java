@@ -4,6 +4,7 @@
 
 <%	
 String basePath =PropertyUtils.getProperty("java.business.url");
+basePath="http://10.8.7.253:8091/business";
 String regionjson = (String) request.getAttribute("regionjson");
 String totalJson = (String) request.getAttribute("totalJson");
 String detailJson = (String) request.getAttribute("detailJson");
@@ -67,169 +68,211 @@ String businessid=request.getAttribute("businessid").toString();
 	</div>
 	
 	<script>
-	$(function(){
-		function initMap(){
-			var centerLongitude = 116.3972282409668;
-			var centerLatitude = 39.90960456049752;
-			//如果商家有区域，则定位到订单数量最多的一个一级区域
-			var maxid=getmaxParentid();
-			if(maxid>=0){
-				for(var i=0;i<tempArray.length;i++){
-					if(tempArray[i].overlayId==maxid){
-						centerLatitude =tempArray[i].overlayPointList[0].lat;
-						centerLongitude =tempArray[i].overlayPointList[0].lng;
-						break;
-					}
-				}
-			}else{
-				var businessLat="<%=businessLat%>";
-				//businessLat="0;0";
-				var busdata=businessLat.split(";");
-				var tempLat=parseFloat(busdata[0]);
-				var templng=parseFloat(busdata[1]);
-				if(tempLat>0&&templng>0){
-				    if(18.286316<=tempLat&&tempLat<=53.571364&&
-				       73.502922<=templng&&templng<=135.070626){
-				        centerLongitude = templng;
-				        centerLatitude = tempLat;
-				   }
-				}
-			}
+	var businessid='<%=businessid%>';
+	var tempArray=eval('<%=regionjson%>');
+	var detailJson=eval('<%=detailJson%>');
+	var totalJson=eval('<%=totalJson%>');
+	var overlayArray = {};//区域数组
+	var NORMAL_OPACITY = 0.3,SELECT_OPACITY = 0.7;
 
-			var poi = new BMap.Point(centerLongitude, centerLatitude);
-			map.centerAndZoom(poi, 14);
-		}
-		//绘制一个多边形
-		function drawOverlay(object){
-			var tempPolygon = new BMap.Polygon(object.overlayPointList,styleOptions);
-			var overlayId=object.overlayId;
-			tempPolygon.addEventListener('click',function(e){
-				overlayClick(overlayId);
-			});
-			overlayArray[overlayId]=tempPolygon;
-			map.addOverlay(tempPolygon);
-			var tempid=0;
-			for(var i=0;i<object.subLists.length;i++){
-				tempid=object.subLists[i].overlayId;
-			    var childPolygon = new BMap.Polygon(object.subLists[i].overlayPointList,styleOptions);
-			    childPolygon.addEventListener('click', function(e) {
-					overlayClick(tempid);
-				});
-				map.addOverlay(childPolygon);
-				overlayArray[tempid]=childPolygon;
-			}
-		}
-		function overlayClick(id){
-			if(id<0){
-				return;
-			}
-			var region;
-			for(var i=0;i<totalJson.length;i++){
-				if(totalJson[i].id==id){
-					region=totalJson[i];
+	//未选中颜色
+	var styleOptions = {
+	    strokeColor:"red",    //边线颜色。
+	    fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+	    strokeWeight: 3,       //边线的宽度，以像素为单位。
+	    strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+	    fillOpacity: NORMAL_OPACITY,      //填充的透明度，取值范围0 - 1。
+	    strokeStyle: 'solid' //边线的样式，solid或dashed。
+	}
+	var map =new BMap.Map('map', {minZoom :12, maxZoom :16, enableMapClick :false});
+
+	function initMap(){
+		var centerLongitude = 116.3972282409668;
+		var centerLatitude = 39.90960456049752;
+		//如果商家有区域，则定位到订单数量最多的一个一级区域
+		var maxid=getmaxParentid();
+		if(maxid>=0){
+			for(var i=0;i<tempArray.length;i++){
+				if(tempArray[i].overlayId==maxid){
+					centerLatitude =tempArray[i].overlayPointList[0].lat;
+					centerLongitude =tempArray[i].overlayPointList[0].lng;
 					break;
 				}
 			}
-			if(region.parentId>0){
-				var parentregion;
-				for(var i=0;i<totalJson.length;i++){
-					if(totalJson[i].id==region.parentId){
-						parentregion=totalJson[i];
-						break;
-					}
-				}
-				$("#regiontitle").html(parentregion.name+">"+region.name+"("+region.num+"单)");
-			}else{
-				$("#regiontitle").html(region.name+"("+region.num+"单)");
+		}else{
+			var businessLat="<%=businessLat%>";
+			//businessLat="0;0";
+			var busdata=businessLat.split(";");
+			var tempLat=parseFloat(busdata[0]);
+			var templng=parseFloat(busdata[1]);
+			if(tempLat>0&&templng>0){
+			    if(18.286316<=tempLat&&tempLat<=53.571364&&
+			       73.502922<=templng&&templng<=135.070626){
+			        centerLongitude = templng;
+			        centerLatitude = tempLat;
+			   }
 			}
+		}
 
-			$("#waiting").attr("regionid",id);
-			$("#picking").attr("regionid",id);
-			$("#sending").attr("regionid",id);
-			$("#done").attr("regionid",id);
-			if(detailJson.length==0){
-				$("#waiting").html("0单接待");
-				$("#picking").html("0单取货中");
-				$("#sending").html("0单配送中");
-				$("#done").html("0单已完成");
-			}else{
-				for(var i=0;i<detailJson.length;i++){
-					if((region.parentId==0&&
-						detailJson[i].orderRegionOneId==id&&
-						detailJson[i].orderRegionTwoId==0)||
-						(region.parentId>0&&
-						 detailJson[i].orderRegionOneId==region.parentId&&
-						 detailJson[i].orderRegionTwoId==id)){
-							switch(detailJson[i].status){
-							case 0:
-								$("#waiting").html(detailJson[i].num+"单接待");
-								break;
-							case 2:
-								$("#picking").html(detailJson[i].num+"单取货中");
-								break;
-							case 4:
-								$("#sending").html(detailJson[i].num+"单配送中");
-								break;
-							case 1:
-								$("#done").html(detailJson[i].num+"单已完成");
-								break;
-							}
-					}
-				}
-			}
-			for (var key in overlayArray){
-				if(id==parseInt(key)){
-					overlayArray[key].setFillOpacity(SELECT_OPACITY);
-				}else{
-					overlayArray[key].setFillOpacity(NORMAL_OPACITY);
-				}
+		var poi = new BMap.Point(centerLongitude, centerLatitude);
+		map.centerAndZoom(poi, 14);
+	}
+	//绘制一个多边形
+	function drawOverlay(object){
+		var tempPolygon = new BMap.Polygon(object.overlayPointList,styleOptions);
+		var overlayId=object.overlayId;
+		tempPolygon.addEventListener('click',function(e){
+			overlayClick(overlayId);
+		});
+		overlayArray[overlayId]=tempPolygon;
+		map.addOverlay(tempPolygon);
+		addlable(overlayId,object.overlayName);
+		var tempid=0;
+		for(var i=0;i<object.subLists.length;i++){
+			tempid=object.subLists[i].overlayId;
+		    var childPolygon = new BMap.Polygon(object.subLists[i].overlayPointList,styleOptions);
+		    childPolygon.addEventListener('click', function(e) {
+				overlayClick(tempid);
+			});
+			map.addOverlay(childPolygon);
+			overlayArray[tempid]=childPolygon;
+			addlable(tempid,object.subLists[i].overlayName);
+		}
+	}
+	function getcenter(overlayId){
+		var p= overlayArray[overlayId].getPath()[0];
+		return new BMap.Point(p.lng,p.lat);
+	}
+	function addlable(overlayId,title){
+		if(overlayArray[overlayId].getPath().length<3){
+			return;
+		}
+		for(var i=0;i<totalJson.length;i++){
+			if(totalJson[i].id==overlayId){
+				title=title+"("+totalJson[i].num+")";
+				break;
 			}
 		}
-		//页面第一次打开时，显示一级区域中订单数量最多的区域的详情
-		function init(){
-			initMap();
-			for(var i=0;i<tempArray.length;i++){
-				drawOverlay(tempArray[i]);
+		var point = getcenter(overlayId);
+		map.centerAndZoom(point, 15);
+		var label = new BMap.Label(title, {position :point, offset :new BMap.Size(-20, -10)});
+		label.setStyle({color :"blue", fontWeight :'700', fontSize :"12px", fontFamily :"Microsoft Yahei", backgroundColor :'none', border :0, cursor :"pointer"});
+		//map.addOverlay(label);  
+	}
+	function overlayClick(id){
+		if(id<0){
+			return;
+		}
+		var region;
+		for(var i=0;i<totalJson.length;i++){
+			if(totalJson[i].id==id){
+				region=totalJson[i];
+				break;
 			}
-
-			overlayClick(getmaxParentid());
 		}
-		function getdetail(status,target){
-			var regionid=$(target).attr('regionid'); 
-			alert(businessid);
-			alert(regionid);
-			alert(status);
-		}
-		function getmaxParentid(){
-			var maxparentid=-1;
-			var maxnum=0;
+		if(region.parentId>0){
+			var parentregion;
 			for(var i=0;i<totalJson.length;i++){
-				if(totalJson[i].parentId==0){
-					if(maxnum<=totalJson[i].num){
-						maxparentid=totalJson[i].id;
-					}
+				if(totalJson[i].id==region.parentId){
+					parentregion=totalJson[i];
+					break;
 				}
 			}
-			return maxparentid;
+			$("#regiontitle").html(parentregion.name+"("+parentregion.num+"单)"+">"+region.name+"("+region.num+"单)");
+		}else{
+			$("#regiontitle").html(region.name+"("+region.num+"单)");
+		    zoomIn(id);
 		}
-		
-		var businessid='<%=businessid%>';
-		var tempArray=eval('<%=regionjson%>');
-		var detailJson=eval('<%=detailJson%>');
-		var totalJson=eval('<%=totalJson%>');
-		var overlayArray = {};//区域数组
-		var NORMAL_OPACITY = 0.3,SELECT_OPACITY = 0.7;
 
-		//未选中颜色
-		var styleOptions = {
-		    strokeColor:"red",    //边线颜色。
-		    fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
-		    strokeWeight: 3,       //边线的宽度，以像素为单位。
-		    strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
-		    fillOpacity: NORMAL_OPACITY,      //填充的透明度，取值范围0 - 1。
-		    strokeStyle: 'solid' //边线的样式，solid或dashed。
+		$("#waiting").attr("regionid",id);
+		$("#picking").attr("regionid",id);
+		$("#sending").attr("regionid",id);
+		$("#done").attr("regionid",id);
+		
+		//默认都是0单（如果有详情，则显示详情中的数量）
+		$("#waiting").html("0单接待");
+		$("#picking").html("0单取货中");
+		$("#sending").html("0单配送中");
+		$("#done").html("0单已完成");
+		
+		for(var i=0;i<detailJson.length;i++){
+			if((region.parentId==0&&
+				detailJson[i].orderRegionOneId==id&&
+				detailJson[i].orderRegionTwoId==0)||
+				(region.parentId>0&&
+				 detailJson[i].orderRegionOneId==region.parentId&&
+				 detailJson[i].orderRegionTwoId==id)){
+					switch(detailJson[i].status){
+						case 0:
+							$("#waiting").html(detailJson[i].num+"单接待");
+							break;
+						case 2:
+							$("#picking").html(detailJson[i].num+"单取货中");
+							break;
+						case 4:
+							$("#sending").html(detailJson[i].num+"单配送中");
+							break;
+						case 1:
+							$("#done").html(detailJson[i].num+"单已完成");
+							break;
+					}
+			}
 		}
-		var map = new BMap.Map('map');
+
+		for (var key in overlayArray){
+			if(id==parseInt(key)){
+				overlayArray[key].setFillOpacity(SELECT_OPACITY);
+			}else{
+				overlayArray[key].setFillOpacity(NORMAL_OPACITY);
+			}
+		}
+	}
+	//页面第一次打开时，显示一级区域中订单数量最多的区域的详情
+	function init(){
+		initMap();
+		for(var i=0;i<tempArray.length;i++){
+			drawOverlay(tempArray[i]);
+		}
+
+		overlayClick(getmaxParentid());
+	}
+	function getdetail(status,target){
+		var regionid=$(target).attr('regionid'); 
+		if(parseInt(regionid)<0){
+			return;
+		}
+		alert(businessid);
+		alert(regionid);
+		alert(status);
+	}
+	function getmaxParentid(){
+		var maxparentid=-1;
+		var maxnum=0;
+		for(var i=0;i<totalJson.length;i++){
+			if(totalJson[i].parentId==0){
+				if(maxnum<=totalJson[i].num){
+					maxparentid=totalJson[i].id;
+				}
+			}
+		}
+		return maxparentid;
+	}
+	//点击区域放大，地图居中
+	function zoomIn(overlayId) {
+		for(var i=0;i<totalJson.length;i++){
+			if(totalJson[i].id==overlayId){
+				if(totalJson[i].parentId!=0){
+					return;
+				}
+			}
+		}
+		//return;
+	    $(window).scrollTop(200);
+	    map.zoomTo(16);
+		var point = getcenter(overlayId);
+	    map.panTo(point);
+	  }
+	$(function(){
 		init();
 		var t=setTimeout(function(){
 			var divs=$("#map a").hide();

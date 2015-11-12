@@ -1681,14 +1681,14 @@ where   Status = 1
                             		AND b.Platform = 2
                                     AND CONVERT(VARCHAR(10), b.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
                                     AND m.OrderRegionOneId > 0
-                          ) mb ON  a.businessId=#{businessId}
-                          		  AND a.status = 1
-                                  AND ( mb.OrderRegionTwoId = 0
+                          ) mb ON  
+                                  ( mb.OrderRegionTwoId = 0
                                         AND a.Id = mb.OrderRegionOneId
                                       )
                                   OR ( mb.OrderRegionTwoId > 0
                                        AND a.Id = mb.OrderRegionTwoId
                                      )
+        where a.businessId=#{businessId} AND a.status = 1
         GROUP BY a.id ,
                 a.ParentId ,
                 a.name  

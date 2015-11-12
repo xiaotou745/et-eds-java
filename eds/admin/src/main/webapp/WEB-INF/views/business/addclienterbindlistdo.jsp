@@ -31,7 +31,7 @@ if(data == null){
 						<tbody>
 							<%for (int i = 0; i < data.size(); i++) { %>
 							<tr class="info">
-								<td><%=data.get(i).getId() %></td>
+								<td><%=(i+1) %></td>
 								<td><%=ParseHelper.ShowString(data.get(i).getTrueName())%></td>
 								<td><%=data.get(i).getPhoneNo()%></td>
 		                        <td>
