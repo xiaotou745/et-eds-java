@@ -93,8 +93,9 @@ function init(){
 		}
 	}else{
 		var poi = new BMap.Point(centerLongitude, centerLatitude);
-		map = new BMap.Map('map');
-		map.centerAndZoom(poi, 16);
+		//map = new BMap.Map('map');
+		map =new BMap.Map('map', {minZoom :12, maxZoom :16, enableMapClick :false});
+		map.centerAndZoom(poi, 15);
 		map.enableScrollWheelZoom();
 		//实例化鼠标绘制工具
 		drawingManager = new BMapLib.DrawingManager(map, {
@@ -149,6 +150,7 @@ var overlaycomplete = function(e) {
 		}else{
 			parentul.find('ul').append('<li id="child'+overlayId+'">'+li+'</li>');
 		}
+		map.zoomTo(15);
 	}else{
 		var ul = $('#regionlistul');
 		li = '<li id="parent'+overlayId+'">'+li+
@@ -204,29 +206,19 @@ function drawOverlay(object) {
 		addlable(tempid,object.subLists[i].overlayName);
 	}
 }
+function getcenter(overlayId){
+	var p= overlayArray[overlayId].getPath()[0];
+	return new BMap.Point(p.lng,p.lat);
+}
 function addlable(overlayId,title){
 	if(overlayPointArray[overlayId].length<3){
 		return;
 	}
-	var p= overlayPointArray[overlayId][overlayPointArray[overlayId].length-1];
-	var point = new BMap.Point(p.lng,p.lat);
+	var point = getcenter(overlayId);
 	map.centerAndZoom(point, 15);
-	var opts = {
-	  position : point,    // 指定文本标注所在的地理位置
-	  offset   : new BMap.Size(30, -30)    //设置文本偏移量
-	}
-	var label = new BMap.Label(title, opts);  // 创建文本标注对象
-		label.setStyle({
-			 color : "blue",
-			 fontSize : "12px",
-			 height : "20px",
-			 width:"0px",
-			 lineHeight : "20px",
-			 fontFamily:"微软雅黑",
-			 display:"inline-block",
-			 border:"0px",
-		 });
-	//map.addOverlay(label);   
+	var label = new BMap.Label(title, {position :point, offset :new BMap.Size(-20, -10)});
+	label.setStyle({color :"blue", fontWeight :'700', fontSize :"12px", fontFamily :"Microsoft Yahei", backgroundColor :'none', border :0, cursor :"pointer"});
+	//map.addOverlay(label);  
 }
 //多边形的选中时的点击事件，显示右侧弹出层
 function overlayClick(id, overlay) {
@@ -256,8 +248,8 @@ $('#mapPopup').on('click', '.change', function() {
 			malert('区域名称不能为空');
 			return;
 		}
-		if (name.length>5) {
-			malert('区域名称不能超过5个字符');
+		if (name.length<2||name.length>5) {
+			malert('区域名称必须为2到5个字符');
 			return;
 		}
 		 var paramaters=getparam();
@@ -519,6 +511,7 @@ function saveall(){
 		}
 		var childLength = $('#parent'+parId+' li[id^="child"]').length;
 		if(childLength<9){
+		    zoomIn(parId);
 			showregion(parId);
 			parentId=parId;
 			beginDraw();
@@ -526,6 +519,19 @@ function saveall(){
 			alert("二级区域最多只能有9个");
 		}
 	}
+	function zoomIn(overlayId) {
+		return;
+	    $(window).scrollTop(200);
+	    map.zoomTo(16);
+		var point = getcenter(overlayId);
+	    map.panTo(point);
+// 	    for(var key in overlayArray){
+// 	    	overlayArray[key].setFillOpacity('0.6');
+// 	      if(callback && overlayArray[key] == regionInPos)
+// 	        callback(key);
+// 	    }
+// 	    regionInPos.setFillOpacity('0.3');
+	  }
 // 	function setBounds(parId){
 // 		var b = new BMap.Bounds(overlayPointArray[parId]);
 // 		try {	
@@ -566,7 +572,7 @@ function setParentNum(num,add){
 		var ul = $('#regionlistul');
 		var li = '';
 		setParentNum(info.length,false);
-		info.sort(function(a,b){return a.subLists.length-b.subLists.length});
+		//info.sort(function(a,b){return a.subLists.length-b.subLists.length});
 		for (var i = 0; i < info.length; i++) {
 			li = li
 			+ '<li id="parent'+info[i].overlayId+'"><span class="edit-box">'+
