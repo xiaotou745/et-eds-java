@@ -26,7 +26,7 @@ public class ExtandObjectMapper  extends ObjectMapper{
         // 禁用空对象转换json校验
         this.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         this.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        DateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.setDateFormat(df);
         //驼峰命名法转换为小写加下划线
         // this.setPropertyNamingStrategy(new ExtandNameStrategy());

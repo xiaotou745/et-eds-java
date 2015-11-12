@@ -2,6 +2,7 @@ package com.edaisong.business.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,7 +61,8 @@ public class OrderRegionController {
 		BusinessModel bus=businessService.getBusiness((long)UserContext.getCurrentContext(request).getBusinessID());
 		String businessLat=bus.getLatitude()+";"+bus.getLongitude();
 		view.addObject("businessLat", businessLat);
-		String json=JsonUtil.obj2string(getRegionSettings(request));
+		int businessId = UserContext.getCurrentContext(request).getBusinessID();
+		String json=JsonUtil.obj2string(getRegionSettings(businessId));
 		view.addObject("regionjson", json);
 		 return view;
 	}
@@ -88,17 +90,17 @@ public class OrderRegionController {
 		view.addObject("listData", resp);
 		return view;
 	}
-	private List<OrderRegionModel> getRegionSettings(HttpServletRequest request){
+	private List<OrderRegionModel> getRegionSettings(int businessid){
 		List<OrderRegionModel> result=new ArrayList<OrderRegionModel>();	
-		UserContext context=UserContext.getCurrentContext(request);
 		OrderRegionReq orderRegionReq=new OrderRegionReq();
-		orderRegionReq.setBusinessId(context.getBusinessID());
+		orderRegionReq.setBusinessId(businessid);
 		orderRegionReq.setStatus(1);
 		List<OrderRegion> listData=orderRegionService.getOrderRegion(orderRegionReq);
 		for (OrderRegion orderRegion : listData) {
 			OrderRegionModel tempItem=new OrderRegionModel();
 			tempItem.setOverlayId(orderRegion.getId());
 			tempItem.setOverlayName(orderRegion.getName());
+			tempItem.setOpttime(orderRegion.getOpttime());
 			tempItem.setOverlayPointList(createList(orderRegion.getCoordinate()));
 			tempItem.setSubLists(new ArrayList<OrderRegionModel>());
 			if (orderRegion.getParentid()==0) {
@@ -112,6 +114,7 @@ public class OrderRegionController {
 					OrderRegionModel tempParent=new OrderRegionModel();
 					tempParent.setOverlayId(tempOldParent.getId());
 					tempParent.setOverlayName(tempOldParent.getName());
+					tempItem.setOpttime(tempOldParent.getOpttime());
 					tempParent.setOverlayPointList(createList(tempOldParent.getCoordinate()));
 					tempParent.setSubLists(new ArrayList<OrderRegionModel>());
 					tempParent.getSubLists().add(tempItem);
@@ -119,7 +122,20 @@ public class OrderRegionController {
 				}
 			}
 		}
+		sort(result);
 		return result;
+	}
+	private void sort(List<OrderRegionModel> listdata){
+		//先按照二级区域个数排序，在按照操作时间升序
+		Comparator<OrderRegionModel> c = (a, b) -> {return a.getSubLists().size() - b.getSubLists().size();};
+		c = c.thenComparing((p, m) -> {return (int) (p.getOpttime().getTime() - m.getOpttime().getTime());});
+		listdata.sort(c);
+		// 二级区域按照操作时间排序
+		for (OrderRegionModel orderRegionModel : listdata) {
+			orderRegionModel.getSubLists().stream().sorted((a, b) -> {
+				return (int) (a.getOpttime().getTime() - b.getOpttime().getTime());
+			});
+		}
 	}
 	private List<LatAndLng> createList(String coordinate){
 		List<LatAndLng> result=new ArrayList<LatAndLng>();
@@ -206,9 +222,9 @@ public class OrderRegionController {
 	 * @return
 	 */
 	@RequestMapping("todayone")
-	public ModelAndView todayList(Long businessid,HttpServletRequest request) {	
+	public ModelAndView todayList(Long businessid) {	
 		ModelAndView model = new ModelAndView("orderregion/todayone");
-		String json=JsonUtil.obj2string(getRegionSettings(request));
+		String json=JsonUtil.obj2string(getRegionSettings(businessid.intValue()));
 		model.addObject("regionjson", json);
 		List<RegionOrderTotal> totalData=orderService.queryTodayOrderTotal(businessid);
 		List<RegionOrderDetail> detailData=orderService.queryTodayOrderDetail(businessid);

@@ -108,6 +108,7 @@ String businessid=request.getAttribute("businessid").toString();
 			});
 			overlayArray[overlayId]=tempPolygon;
 			map.addOverlay(tempPolygon);
+			addlable(overlayId,object.overlayName);
 			var tempid=0;
 			for(var i=0;i<object.subLists.length;i++){
 				tempid=object.subLists[i].overlayId;
@@ -117,7 +118,28 @@ String businessid=request.getAttribute("businessid").toString();
 				});
 				map.addOverlay(childPolygon);
 				overlayArray[tempid]=childPolygon;
+				addlable(tempid,object.subLists[i].overlayName);
 			}
+		}
+		function getcenter(overlayId){
+			var p= overlayArray[overlayId].getPath()[0];
+			return new BMap.Point(p.lng,p.lat);
+		}
+		function addlable(overlayId,title){
+			if(overlayArray[overlayId].getPath().length<3){
+				return;
+			}
+			for(var i=0;i<totalJson.length;i++){
+				if(totalJson[i].id==overlayId){
+					title=title+"("+totalJson[i].num+")";
+					break;
+				}
+			}
+			var point = getcenter(overlayId);
+			map.centerAndZoom(point, 15);
+			var label = new BMap.Label(title, {position :point, offset :new BMap.Size(-20, -10)});
+			label.setStyle({color :"blue", fontWeight :'700', fontSize :"12px", fontFamily :"Microsoft Yahei", backgroundColor :'none', border :0, cursor :"pointer"});
+			//map.addOverlay(label);  
 		}
 		function overlayClick(id){
 			if(id<0){
@@ -138,29 +160,31 @@ String businessid=request.getAttribute("businessid").toString();
 						break;
 					}
 				}
-				$("#regiontitle").html(parentregion.name+">"+region.name+"("+region.num+"单)");
+				$("#regiontitle").html(parentregion.name+"("+parentregion.num+"单)"+">"+region.name+"("+region.num+"单)");
 			}else{
 				$("#regiontitle").html(region.name+"("+region.num+"单)");
+			    zoomIn(id);
 			}
 
 			$("#waiting").attr("regionid",id);
 			$("#picking").attr("regionid",id);
 			$("#sending").attr("regionid",id);
 			$("#done").attr("regionid",id);
-			if(detailJson.length==0){
-				$("#waiting").html("0单接待");
-				$("#picking").html("0单取货中");
-				$("#sending").html("0单配送中");
-				$("#done").html("0单已完成");
-			}else{
-				for(var i=0;i<detailJson.length;i++){
-					if((region.parentId==0&&
-						detailJson[i].orderRegionOneId==id&&
-						detailJson[i].orderRegionTwoId==0)||
-						(region.parentId>0&&
-						 detailJson[i].orderRegionOneId==region.parentId&&
-						 detailJson[i].orderRegionTwoId==id)){
-							switch(detailJson[i].status){
+			
+			//默认都是0单（如果有详情，则显示详情中的数量）
+			$("#waiting").html("0单接待");
+			$("#picking").html("0单取货中");
+			$("#sending").html("0单配送中");
+			$("#done").html("0单已完成");
+			
+			for(var i=0;i<detailJson.length;i++){
+				if((region.parentId==0&&
+					detailJson[i].orderRegionOneId==id&&
+					detailJson[i].orderRegionTwoId==0)||
+					(region.parentId>0&&
+					 detailJson[i].orderRegionOneId==region.parentId&&
+					 detailJson[i].orderRegionTwoId==id)){
+						switch(detailJson[i].status){
 							case 0:
 								$("#waiting").html(detailJson[i].num+"单接待");
 								break;
@@ -173,10 +197,10 @@ String businessid=request.getAttribute("businessid").toString();
 							case 1:
 								$("#done").html(detailJson[i].num+"单已完成");
 								break;
-							}
-					}
+						}
 				}
 			}
+
 			for (var key in overlayArray){
 				if(id==parseInt(key)){
 					overlayArray[key].setFillOpacity(SELECT_OPACITY);
@@ -196,6 +220,9 @@ String businessid=request.getAttribute("businessid").toString();
 		}
 		function getdetail(status,target){
 			var regionid=$(target).attr('regionid'); 
+			if(parseInt(regionid)<0){
+				return;
+			}
 			alert(businessid);
 			alert(regionid);
 			alert(status);
@@ -212,7 +239,21 @@ String businessid=request.getAttribute("businessid").toString();
 			}
 			return maxparentid;
 		}
-		
+		//点击区域放大，地图居中
+		function zoomIn(overlayId) {
+			for(var i=0;i<totalJson.length;i++){
+				if(totalJson[i].id==overlayId){
+					if(totalJson[i].parentId!=0){
+						return;
+					}
+				}
+			}
+			//return;
+		    $(window).scrollTop(200);
+		    map.zoomTo(16);
+			var point = getcenter(overlayId);
+		    map.panTo(point);
+		  }
 		var businessid='<%=businessid%>';
 		var tempArray=eval('<%=regionjson%>');
 		var detailJson=eval('<%=detailJson%>');
@@ -229,7 +270,8 @@ String businessid=request.getAttribute("businessid").toString();
 		    fillOpacity: NORMAL_OPACITY,      //填充的透明度，取值范围0 - 1。
 		    strokeStyle: 'solid' //边线的样式，solid或dashed。
 		}
-		var map = new BMap.Map('map');
+		var map =new BMap.Map('map', {minZoom :12, maxZoom :16, enableMapClick :false});
+		//var map = new BMap.Map('map');
 		init();
 		var t=setTimeout(function(){
 			var divs=$("#map a").hide();
