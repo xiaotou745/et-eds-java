@@ -18,7 +18,7 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 <script>
 var jss = {
 		search : function(currentPage) {
-			 var data={};
+			 var data={"currentPage":currentPage};
 				$.post("<%=basePath%>/orderregion/listdo",data, function(d) {
 					$("#content").html(d);
 				});
