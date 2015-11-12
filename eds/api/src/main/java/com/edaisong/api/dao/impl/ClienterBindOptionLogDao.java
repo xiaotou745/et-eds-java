@@ -14,8 +14,7 @@ public class ClienterBindOptionLogDao extends DaoBase implements IClienterBindOp
 
 	@Override
 	public int insert(ClienterBindOptionLog record) {
-		// TODO Auto-generated method stub
-		return 0;
+return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterBindOptionLogDao.selectList", record);
 	}
 
 	@Override
