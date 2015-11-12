@@ -41,6 +41,11 @@ public class OrderRegionHttpService implements IOrderRegionHttpService {
 		List<OrderRegion> orderRegionList = iOrderRegionService.getOrderRegion(orderRegionReq);
 		
 		if(orderRegionList!=null && orderRegionList.size()>0){
+			if(orderRegionList.size() !=9){
+				result.setStatus(HttpReturnRnums.NoData.value());
+				result.setMessage(HttpReturnRnums.NoData.desc());
+				return result;
+			}
 			//获取一级区域信息
 			List<OrderRegion> firstOrderRegionList=	orderRegionList.stream().filter(k->k.getParentid()==0).collect(Collectors.toList());
 			
