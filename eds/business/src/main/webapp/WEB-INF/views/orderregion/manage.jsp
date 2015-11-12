@@ -16,7 +16,7 @@ String businessLat = (String) request.getAttribute("businessLat");
 	<h3 class="cb">配送区域管理</h3>
 	<div class="map_title">
 		<span>画图文字说明<br/>
-1、绘图说明：点击右下角“绘制一级”→在地图中单击鼠标左键定点→移动+单击鼠标左键绘制点线面→双击鼠标结束画图<br/>
+1、绘图说明：点击“画多边形”→在地图中单击鼠标左键定点→移动+单击鼠标左键绘制点线面→双击鼠标结束画图<br/>
 2、一级区域必须设定9个方可生效；每个一级区域里最多可设定9个二级区域</span>
 <a href="<%=basePath%>/orderregion/loglist">查看操作记录</a>
 	</div>
@@ -130,10 +130,12 @@ var overlaycomplete = function(e) {
 	}
 	overlayId=overlayId+1;
 	var parId=0;
+	var parclass="";
 	if(parentId>0){
 		parId=parentId;
+		parclass='style="width:127px;"';
 	}
-	var li ='<span class="edit-box item_edit">'+
+	var li ='<span '+parclass+' class="edit-box item_edit">'+
 	'<a id="regiontitle'+overlayId+'_'+parId+'" href="javascript:void(0)" onclick="showregion('+overlayId+')">'+
 	'</a><input type="text" id="region'+overlayId+'"></span>'+
 	'<a   class="regiona change editing"   href="javascript:void(0)">保存</a>'+
@@ -147,12 +149,12 @@ var overlaycomplete = function(e) {
 		}else{
 			parentul.find('ul').append('<li id="child'+overlayId+'">'+li+'</li>');
 		}
-		setParentNum(1,true);
 	}else{
 		var ul = $('#regionlistul');
 		li = '<li id="parent'+overlayId+'">'+li+
 			'<a   class="regiona"   href="javascript:void(0)" onclick="addchild('+overlayId+')">绘制二级</a></li>';
 		ul.append(li);
+		setParentNum(1,true);
 	}
 	$("#region"+overlayId).focus();
 	
@@ -199,6 +201,7 @@ function drawOverlay(object) {
 		map.addOverlay(childPolygon);
 		overlayArray[tempid]=childPolygon;
 		overlayPointArray[tempid]=childPolygon.getPath();
+		addlable(tempid,object.subLists[i].overlayName);
 	}
 }
 function addlable(overlayId,title){
@@ -214,14 +217,16 @@ function addlable(overlayId,title){
 	}
 	var label = new BMap.Label(title, opts);  // 创建文本标注对象
 		label.setStyle({
-			 color : "red",
+			 color : "blue",
 			 fontSize : "12px",
 			 height : "20px",
-			 width:"5000px",
+			 width:"0px",
 			 lineHeight : "20px",
-			 fontFamily:"微软雅黑"
+			 fontFamily:"微软雅黑",
+			 display:"inline-block",
+			 border:"0px",
 		 });
-	map.addOverlay(label);   
+	//map.addOverlay(label);   
 }
 //多边形的选中时的点击事件，显示右侧弹出层
 function overlayClick(id, overlay) {
@@ -574,7 +579,7 @@ function setParentNum(num,add){
 				li = li+'<ul style="margin-left: 20px;">';
 				for (var j = 0; j < info[i].subLists.length; j++) {
 					li = li
-					+ '<li id="child'+info[i].subLists[j].overlayId+'"><span class="edit-box">'+
+					+ '<li id="child'+info[i].subLists[j].overlayId+'"><span style="width:127px;" class="edit-box">'+
 					'<a id="regiontitle'+info[i].subLists[j].overlayId+'_'+info[i].overlayId+'" href="javascript:void(0)" onclick="showregion('+info[i].subLists[j].overlayId+')">'+
 					info[i].subLists[j].overlayName+'</a><input type="text" id="region'+info[i].subLists[j].overlayId+'"></span>'+
 					'<a   class="regiona change"   href="javascript:void(0)">修改</a>'+
