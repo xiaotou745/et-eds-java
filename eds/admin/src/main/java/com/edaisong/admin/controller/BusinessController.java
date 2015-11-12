@@ -409,6 +409,12 @@ public class BusinessController {
 	public int modifyClienterBind(ClienterBindOptionReq req, HttpServletRequest request) {
 		req.setOptId(UserContext.getCurrentContext(request).getId());
 		req.setOptName(UserContext.getCurrentContext(request).getLoginName());
+		if (req.getIsBind()==0) {
+			req.setRemark("解除绑定");
+		}else {
+			req.setRemark("添加绑定");
+		}
+
 		if (businessClienterRelationService.modifyClienterBind(req)) {
 			return 1;
 		}
@@ -420,6 +426,7 @@ public class BusinessController {
 	public int removeclienterbind(ClienterBindOptionReq req, HttpServletRequest request) {
 		req.setOptId(UserContext.getCurrentContext(request).getId());
 		req.setOptName(UserContext.getCurrentContext(request).getLoginName());
+		req.setRemark("删除绑定");
 		if (businessClienterRelationService.removeclienterbind(req)) {
 			return 1;
 		}
@@ -443,7 +450,6 @@ public class BusinessController {
 	@RequestMapping("addclienterbindlistdo")
 	public ModelAndView addclienterbindlistdo(PagedClienterSearchReq req)throws Exception {
 		ModelAndView model = new ModelAndView("business/addclienterbindlistdo");
-		req.setStatus(0);
 		PagedResponse<ClienterBindInfoModel> resp = clienterService.getClienterList(req);
 		model.addObject("listData", resp);
 		return model;

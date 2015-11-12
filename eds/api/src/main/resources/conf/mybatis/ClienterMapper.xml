@@ -649,24 +649,27 @@
 
 
 	<sql id="getClienterListWhere">
-		bcr.IsEnable=1
+		1=1
 		<if test="clienterName != null and clienterName!=''">
 			AND C.TrueName LIKE ''%${clienterName}%''
 		</if>
 		<if test="clienterPhone != null and clienterPhone!=''">
 			AND C.PhoneNo LIKE ''%${clienterPhone}%''
 		</if>
-		<if test="businessId!=null and businessId!=0">
-			and bcr.BusinessId=${businessId}
-		</if>
-		<if test="status!=null and status>-1">
-			and bcr.IsBind=${status}
-		</if>
+<!-- 		<if test="businessId!=null and businessId!=0"> -->
+<!-- 			and bcr.BusinessId=${businessId} -->
+<!-- 		</if> -->
+<!-- 		<if test="status!=null and status>-1"> -->
+<!-- 			and bcr.IsBind=${status} -->
+<!-- 		</if> -->
 	</sql>
 
 	<sql id="getClienterBindInfoListTables">
 		clienter C WITH (NOLOCK) left JOIN BusinessClienterRelation bcr
-		with(nolock) on C.Id=bcr.ClienterId
+		with(nolock) on C.Id=bcr.ClienterId 
+		and bcr.BusinessId=${businessId}
+		and bcr.IsBind=1
+		and bcr.IsEnable=1
 	</sql>
 	<!-- 获得骑士和绑定信息列表 ,不包含骑士已接单的数量 add by pengyi 20150901 -->
 	<select id="getClienterBindInfoList" resultType="com.edaisong.entity.domain.ClienterBindInfoModel"

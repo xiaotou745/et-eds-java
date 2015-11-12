@@ -15,11 +15,11 @@
   </sql>
  
   <insert id="insert" parameterType="com.edaisong.entity.ClienterBindOptionLog" >
-    insert into ClienterBindOptionLog (Id, BusinessId, ClienterId, 
+    insert into ClienterBindOptionLog (BusinessId, ClienterId, 
       OptId, OptName, InsertTime, 
       Remark)
-    values (#{id,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, #{clienterid,jdbcType=INTEGER}, 
-      #{optid,jdbcType=INTEGER}, #{optname,jdbcType=VARCHAR}, #{inserttime,jdbcType=TIMESTAMP}, 
+    values (#{businessid,jdbcType=INTEGER}, #{clienterid,jdbcType=INTEGER}, 
+      #{optid,jdbcType=INTEGER}, #{optname,jdbcType=VARCHAR}, getdate(), 
       #{remark,jdbcType=NVARCHAR})
   </insert>
   <select id="selectList" parameterType="java.util.HashMap" 

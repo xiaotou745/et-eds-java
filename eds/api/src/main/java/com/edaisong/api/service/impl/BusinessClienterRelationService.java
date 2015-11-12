@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.dao.inter.IBusinessClienterRelationDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
+import com.edaisong.api.dao.inter.IClienterBindOptionLogDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.BusinessClienterRelation;
+import com.edaisong.entity.ClienterBindOptionLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.ServiceClienters;
@@ -42,7 +44,6 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	public PagedResponse<BusinessClienterRelationModel> getBusinessClienterRelationList(PagedCustomerSearchReq req) {
 		return businessClienterRelationDao.getBusinessClienterRelationList(req);
 	}
-
 	/**
 	 * 修改骑士绑定
 	 * 
@@ -116,7 +117,7 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 			}
 		}
 		if (!flag) {
-			throw new TransactionalRuntimeException("修改骑士绑定失败");
+			throw new TransactionalRuntimeException("删除骑士绑定失败");
 		}
 		return flag;
 	}
