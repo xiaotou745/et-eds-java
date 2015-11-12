@@ -12,6 +12,4 @@ public interface ITaoBaoOrder {
 	 * */
 	void releaseOrder() throws LinkException;
 	
-	
-	
 }
