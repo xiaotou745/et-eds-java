@@ -343,7 +343,7 @@
 	set    bcr.AuditStatus=#{auditStatus},
 	bcr.IsEnable=#{isEnable},
 	bcr.IsBind=#{isBind},
-	UpdateBy=${optName},
+	UpdateBy= '${optName}' ,
     UpdateTime=getdate()
     OUTPUT
 	  Inserted.BusinessId,
