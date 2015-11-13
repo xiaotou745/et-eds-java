@@ -36,6 +36,7 @@ import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IMarkService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.consts.GlobalSettings;
+import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.util.ExcelUtils;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
@@ -411,8 +412,10 @@ public class BusinessController {
 		req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 		if (req.getIsBind()==0) {
 			req.setRemark("解除绑定");
+			req.setAuditStatus(BusinessClienterRelationAuditStatus.Refuse.value());
 		}else {
 			req.setRemark("添加绑定");
+			req.setAuditStatus(BusinessClienterRelationAuditStatus.Pass.value());
 		}
 
 		if (businessClienterRelationService.modifyClienterBind(req)) {
@@ -467,6 +470,8 @@ public class BusinessController {
 			req.setOptId(UserContext.getCurrentContext(request).getId());
 			req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 			req.setRemark("添加绑定");
+			req.setIsBind(1);
+			req.setAuditStatus(BusinessClienterRelationAuditStatus.Pass.value());
 			if (!businessClienterRelationService.addClienterBind(req)) {
 				response.setMessage("绑定关系失败！");
 			} else {
@@ -613,11 +618,14 @@ public class BusinessController {
 					req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 					if (model == null) {// 插入
 						req.setRemark("添加绑定");
+						req.setIsBind(1);
+						req.setAuditStatus(BusinessClienterRelationAuditStatus.Pass.value());
 						businessClienterRelationService.addClienterBind(req);
 					} else if (model != null && model.getIsbind() == 0)// 更新
 					{
 						req.setRemark("修改绑定");
 						req.setIsBind(1);
+						req.setAuditStatus(BusinessClienterRelationAuditStatus.Pass.value());
 						businessClienterRelationService.modifyClienterBind(req);
 					}
 					successCount++;
