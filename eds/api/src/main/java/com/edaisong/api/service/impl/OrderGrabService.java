@@ -260,8 +260,11 @@ public class OrderGrabService implements IOrderGrabService {
 			throw new TransactionalRuntimeException("记录订单日志错误");
 		}
 
-						resp.setStatus(OrderGrabReturnEnum.Success.value());
-						resp.setMessage(OrderGrabReturnEnum.Success.desc());
+		resp.setStatus(OrderGrabReturnEnum.Success.value());
+		resp.setMessage(OrderGrabReturnEnum.Success.desc());
+		OrderGrabResp returnModel=new OrderGrabResp();		
+		returnModel.setId(orderGrab.getId());
+		resp.setResult(returnModel);
 		return resp;			
 	}
 	
@@ -274,9 +277,9 @@ public class OrderGrabService implements IOrderGrabService {
 	 */	
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	@Override
-	public HttpResultModel<Integer> ConfirmTake(OrderGrabConfirmTakeReq req)
+	public HttpResultModel<OrderGrabResp> ConfirmTake(OrderGrabConfirmTakeReq req)
 	{
-		HttpResultModel<Integer> resp=new HttpResultModel<Integer>();
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
 
 		if (req.getGrabOrderId() == null) {
 			resp.setStatus(OrderGrabReturnEnum.OrderGrabEmpty.value());
@@ -292,18 +295,27 @@ public class OrderGrabService implements IOrderGrabService {
 		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(req.getGrabOrderId());
 		if(currOgModel==null)
 		{
-			throw new TransactionalRuntimeException("抢单信息不存在");
+			throw new TransactionalRuntimeException("取货信息不存在");
 		}
 		if(!currOgModel.getClienterid().equals(req.getClienterId()))
 		{
 			throw new TransactionalRuntimeException("抢单与取货骑士不符");
 		}
-		//更新抢单主表	
+		if(currOgModel.getStatus().equals(OrderStatus.Delivery.value()))
+		{			
+		}
+		else
+		{
+			throw new TransactionalRuntimeException("订单不处于待接单状态");
+		}
+		
+		//更新取货主表	
 		OrderGrab ogModel=new OrderGrab ();		
 		ogModel.setId(req.getGrabOrderId());
 		ogModel.setPickuplongitude(req.getPickUpLongitude());
 		ogModel.setPickuplatitude(req.getPickUpLatitude());
 		ogModel.setStatus((byte)OrderStatus.Taking.value());
+		ogModel.setPickuptime(new Date());
 		int ogId=orderGrabDao.updateByPrimaryKeySelective(ogModel);
 		if (ogId <= 0) {
 			throw new TransactionalRuntimeException("取货主表错误");
@@ -383,6 +395,13 @@ public class OrderGrabService implements IOrderGrabService {
 		if (ordersubsidiesId <= 0) {
 			throw new TransactionalRuntimeException("记录订单日志错误");
 		}
+		
+		resp.setStatus(OrderGrabReturnEnum.Success.value());
+		resp.setMessage(OrderGrabReturnEnum.Success.desc());
+		OrderGrabResp returnModel=new OrderGrabResp();		
+		returnModel.setStatus((short)OrderStatus.Taking.value());
+		returnModel.setPickupTime(ogModel.getPickuptime());		
+		resp.setResult(returnModel);
 		return resp;
 	}
 	
@@ -395,9 +414,9 @@ public class OrderGrabService implements IOrderGrabService {
 	 */	
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	@Override
-	public  HttpResultModel<Integer> Complete(OrderGrabCompleteReq req)
+	public  HttpResultModel<OrderGrabResp> Complete(OrderGrabCompleteReq req)
 	{
-		HttpResultModel<Integer> resp=new HttpResultModel<Integer>();		
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();		
 
 		if (req.getOrderGrabId() == null) {
 			resp.setStatus(OrderGrabReturnEnum.OrderGrabEmpty.value());
@@ -408,10 +427,27 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setStatus(OrderGrabReturnEnum.ClienterEmpty.value());
 			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
 			return resp;			
+		}		
+		
+		//获取取货主表
+		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(req.getOrderGrabId());
+		if(currOgModel==null)
+		{
+			throw new TransactionalRuntimeException("完成信息不存在");
+		}
+		if(!currOgModel.getClienterid().equals(req.getClienterId()))
+		{
+			throw new TransactionalRuntimeException("取货与完成骑士不符");
+		}
+		if(currOgModel.getStatus().equals(OrderStatus.Taking.value()))
+		{			
+		}
+		else
+		{
+			throw new TransactionalRuntimeException("订单不处于取货状态");
 		}
 		
-		//getOrderGrabChildId		
-		//更新骑士余额		
+		//更新骑士余额	获取第一条子订单	
 		OrderGrabChild currOgcModel=  orderGrabChildDao.selectTop1ByGrabOrderId((long)req.getOrderGrabId());
 		if(currOgcModel==null)
 		{
@@ -433,7 +469,7 @@ public class OrderGrabService implements IOrderGrabService {
 		clienterMoney.setRemark("佣金"+currOgcModel.getOrderCommission());
 		clienterService.updateCBalanceAndWithdraw(clienterMoney);		
 		
-		//更新子订单
+		//更新完成子订单
 		OrderGrabChild ogcModel=new OrderGrabChild();
 		ogcModel.setId(currOgcModel.getId());
 		ogcModel.setStatus((byte)OrderStatus.Complite.value());
@@ -454,8 +490,7 @@ public class OrderGrabService implements IOrderGrabService {
 			throw new TransactionalRuntimeException("完成订单子表错误");
 		}
 		
-		//更新区域表			
-		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(currOgcModel.getGraborderid());
+		//更新区域表	
 		int OneId = currOgModel.getOrderRegionOneId();
 		int TwoId =currOgModel.getOrderRegionTwoId();
 		int orderCount = 1;
@@ -478,7 +513,7 @@ public class OrderGrabService implements IOrderGrabService {
 			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
-		}
+			}
 		}
 		else
 		{
@@ -489,7 +524,7 @@ public class OrderGrabService implements IOrderGrabService {
 			int orderRegionOneId= orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
-		}
+			}
 		}
 		
 		// 记录取货日志
@@ -504,7 +539,30 @@ public class OrderGrabService implements IOrderGrabService {
 		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);		
 		if (ordersubsidiesId <= 0) {
 			throw new TransactionalRuntimeException("记录订单日志错误");
+		}		
+		
+		//如果全部完成，更新完成状态		
+		List<OrderGrabChild>  listOrderGrabChild= orderGrabChildDao.selectCompletedOrderByGrabOrderId((long)req.getOrderGrabId());
+		OrderGrab updateOGCModel=new OrderGrab();
+		if(currOgModel.getOrdercount().equals(listOrderGrabChild.size()))
+		{			
+			updateOGCModel.setId(req.getOrderGrabId());
+			updateOGCModel.setActualdonedate(new Date());			
+			updateOGCModel.setStatus((byte)OrderStatus.Complite.value());
+			int updateOrderGrabId= orderGrabDao.updateByPrimaryKeySelective(updateOGCModel);
+			if (updateOrderGrabId <= 0) {				
+				throw new TransactionalRuntimeException("更新抢单主表金额错误");
+			}		
 		}
+		
+		resp.setStatus(OrderGrabReturnEnum.Success.value());
+		resp.setMessage(OrderGrabReturnEnum.Success.desc());		
+		OrderGrabResp reReturnModel=new OrderGrabResp();
+		reReturnModel.setOrderCount(currOgModel.getOrdercount());		
+		reReturnModel.setStatus((short)OrderStatus.Complite.value());		
+		reReturnModel.setActualdoneCount(listOrderGrabChild.size());;
+		reReturnModel.setActualdoneDate(updateOGCModel.getActualdonedate());
+		resp.setResult(reReturnModel);
 		return resp;
 	}
 	
@@ -597,7 +655,7 @@ public class OrderGrabService implements IOrderGrabService {
 			OrderGrabChild model=new OrderGrabChild();
 			int childid=list.get(i);
 			model.setOrderchildid(childid);			
-			model.setGraborderid(orderGrab.getId());//产表Id							
+			model.setGraborderid(orderGrab.getId());//主表Id							
 			model.setChildid(i + 1);
 			model.setBusinessid(req.getBusinessId());
 			model.setStatus((byte)OrderStatus.Delivery.value());			
