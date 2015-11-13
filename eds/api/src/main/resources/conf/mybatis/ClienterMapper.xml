@@ -773,7 +773,7 @@ where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{
             end),0) as fuWuZhongTotal
  from   dbo.BusinessClienterRelation    a(nolock)
  where   	a.IsEnable=1 and a.IsBind=1
- 	<if test="businessId != 0" >
+ 	<if test="clienterId != 0" >
   		AND a.[ClienterId]=${clienterId}
   	</if>
   </select>
