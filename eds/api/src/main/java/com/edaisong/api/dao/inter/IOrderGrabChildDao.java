@@ -15,6 +15,8 @@ public interface IOrderGrabChildDao {
     int insert(OrderGrabChild record);
 
     int insertSelective(OrderGrabChild record);
+    
+    List<OrderGrabChild>  selectCompletedOrderByGrabOrderId(Long grabOrderId);
 
     OrderGrabChild selectByPrimaryKey(Integer id);
 

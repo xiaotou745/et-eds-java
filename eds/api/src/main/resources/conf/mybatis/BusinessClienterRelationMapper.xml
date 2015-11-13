@@ -156,22 +156,22 @@
   		AND a.[BusinessId]=${businessId}
   	</if>
   	<if test="auditStatus != null ">
-	  and a.auditStatus= ${auditStatus}
-		</if>
+	  and a.auditStatus= ${auditStatus} 
+		</if> 
   </sql>
       <!-- 商戶端 查詢  我的骑士数量信息  add by caoheyang 20151103 -->
    <select id="getMyServiceClientersCountInfo" resultType="com.edaisong.entity.resp.GetMyServiceClientersResp" 
     parameterType="com.edaisong.entity.req.PagedGetMyServiceClientersReq" >
-   select ISNULL(SUM(CASE AuditStatus
-              when 0 then 1
+   select ISNULL(SUM(CASE 
+             when AuditStatus=0 and IsBind=0 then 1
               else 0
             end),0) as WaitAduitCount,
-        ISNULL(SUM(CASE AuditStatus
-              when 1 then 1
+        ISNULL(SUM(CASE 
+              when AuditStatus=1 and IsBind=1 then 1
               else 0
             end),0) as ServiceCount
  from   dbo.BusinessClienterRelation    a(nolock)
- where   	a.IsEnable=1 
+ where  a.IsEnable=1 
  	<if test="businessId != 0" >
   		AND a.[BusinessId]=${businessId}
   	</if>
