@@ -555,12 +555,7 @@ order by Id desc
 	
    <sql id="getMyOrdeBListWhere">
   		1=1 and og.BusinessId = ${businessId}  and og.[Status] = ${status}
-  		<if test="orderRegionTwoId !=0">
-			 and og.OrderRegionTwoId=${orderRegionTwoId}
-		</if>		 
-		<if test="orderRegionOneId != 0 and orderRegionTwoId == 0">
-			and og.OrderRegionOneId=${orderRegionOneId} 
-		</if>		
+  		and (og.OrderRegionTwoId=${orderRegionTwoId} or  og.OrderRegionOneId=${orderRegionOneId} )
   </sql>
      <sql id="getMyOrdeBListColumns">
   		 c.TrueName ClienterName, 
@@ -601,13 +596,9 @@ order by Id desc
 			isnull(sum(case when og.Status =  1 then og.OrderCount else 0 end),0) yiWanChenOrderCountTotal
 			from 
 			dbo.OrderGrab og(nolock)
-          where og.BusinessId = #{businessId,jdbcType=INTEGER} 
-          <if test="orderRegionTwoId !=0">
-			 and og.OrderRegionTwoId=${orderRegionTwoId} 
-		</if>
-		<if test="orderRegionOneId != 0 and orderRegionTwoId == 0">
-			and og.OrderRegionOneId=${orderRegionOneId} 
-		</if>		
+          where og.BusinessId = #{businessId,jdbcType=INTEGER}
+          and  og.OrderRegionTwoId=${orderRegionTwoId} 
+          and (og.OrderRegionTwoId=${orderRegionTwoId} or og.OrderRegionOneId=${orderRegionOneId} )
 	</select> 
 	<select id="getMyOrderDetailB" resultType="com.edaisong.entity.resp.MyOrderDetailBResp"
 		parameterType="com.edaisong.entity.req.OrderDetailBReq">
