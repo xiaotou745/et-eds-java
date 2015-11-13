@@ -128,7 +128,11 @@
  from   dbo.[BusinessClienterRelation] (nolock ) 
  where IsEnable=1 and  BusinessId=#{businessId,jdbcType=INTEGER}  and ClienterId=#{ClienterId,jdbcType=INTEGER}
   </select>
-  
+    <select id="getByRelationId" resultType="com.edaisong.entity.BusinessClienterRelation" parameterType="java.lang.Long">
+  	select id,businessid,clienterid,isenable,createby,createtime,updateby,updatetime,isbind
+ from   dbo.[BusinessClienterRelation] (nolock ) 
+ where id=#{businessId,jdbcType=INTEGER} 
+  </select>
   
     <!-- 商戶端 查詢  我的骑士  add by caoheyang 20151103 -->
     <select id="getMyServiceClienters" resultType="com.edaisong.entity.domain.ServiceClienters" 
