@@ -229,7 +229,8 @@
   	update bcr
 	set    bcr.IsBind=#{isBind,jdbcType=INTEGER},
 	bcr.UpdateBy=#{optName,jdbcType=NVARCHAR},
-	bcr.UpdateTime=getdate() 
+	bcr.UpdateTime=getdate() ,
+	bcr.IsEnable=1 
 	<include refid="modifyClienterBindOutput"></include>
 	from BusinessClienterRelation bcr WITH ( ROWLOCK )
 	where bcr.BusinessId=${businessId} AND bcr.ClienterId=${clienterId} 
@@ -255,10 +256,12 @@
   
   <select id="checkHaveBind" resultType="int" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
   	SELECT COUNT(1) FROM BusinessClienterRelation bcr WITH(NOLOCK) 
-  	WHERE  bcr.IsEnable=1 AND BusinessId=#{businessId,jdbcType=INTEGER} AND ClienterId=#{clienterId,jdbcType=INTEGER};
+  	WHERE  bcr.isBind=1 AND BusinessId=#{businessId,jdbcType=INTEGER} AND ClienterId=#{clienterId,jdbcType=INTEGER};
   </select>
   
   <insert id="addClienterBind" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
+  	delete BusinessClienterRelation where BusinessId=#{businessId,jdbcType=INTEGER}
+  	and ClienterId=#{clienterId,jdbcType=INTEGER} 
   	INSERT INTO [BusinessClienterRelation]
            ([BusinessId]
            ,[ClienterId]
