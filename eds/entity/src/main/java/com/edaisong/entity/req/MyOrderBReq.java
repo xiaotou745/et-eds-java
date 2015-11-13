@@ -7,6 +7,7 @@ public class MyOrderBReq extends PagedRequestBase{
 	private Integer businessId;
 	private Integer orderRegionOneId;
 	private Integer orderRegionTwoId; 
+	private Integer regionId;
 	/*
 	 * 任务状态  取货中    配送中    已完成
 	 */
@@ -34,5 +35,11 @@ public class MyOrderBReq extends PagedRequestBase{
 	}
 	public void setOrderRegionTwoId(Integer orderRegionTwoId) {
 		this.orderRegionTwoId = orderRegionTwoId;
+	}
+	public Integer getRegionId() {
+		return regionId;
+	}
+	public void setRegionId(Integer regionId) {
+		this.regionId = regionId;
 	}
 }
