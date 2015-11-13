@@ -758,17 +758,17 @@
         bcr.CreateTime
 from    dbo.BusinessClienterRelation bcr ( nolock )
         join dbo.business b ( nolock ) on bcr.BusinessId = b.Id
-where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{auditStatus,jdbcType=INTEGER} and bcr.IsBind = 1 and bcr.IsEnable = 1 
+where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{auditStatus,jdbcType=INTEGER} and bcr.IsEnable = 1 
 	</select> 
 	<!-- 获取服务中的商户数量 wangchao -->
 	   <select id="getServiceBusinessTotal" resultType="com.edaisong.entity.resp.MyBusinessResp" 
     parameterType="com.edaisong.entity.req.MyBusinessReq" >
-   select ISNULL(SUM(CASE AuditStatus
-              when 0 then 1
+   select ISNULL(SUM(CASE 
+              when AuditStatus=0 and IsBind=0 then 1
               else 0
             end),0) as shenQingZhongTotal,
-        ISNULL(SUM(CASE AuditStatus
-              when 1 then 1
+        ISNULL(SUM(CASE 
+              when AuditStatus=1 and IsBind=1 then 1 
               else 0
             end),0) as fuWuZhongTotal
  from   dbo.BusinessClienterRelation    a(nolock)

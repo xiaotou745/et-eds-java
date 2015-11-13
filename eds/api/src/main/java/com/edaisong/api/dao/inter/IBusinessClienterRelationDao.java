@@ -14,17 +14,7 @@ import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.resp.GetMyServiceClientersResp;
 
 public interface IBusinessClienterRelationDao {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(BusinessClienterRelation record);
-
-    int insertSelective(BusinessClienterRelation record);
-
-    BusinessClienterRelation selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(BusinessClienterRelation record);
-
-    int updateByPrimaryKey(BusinessClienterRelation record);
+    BusinessClienterRelation getByRelationId(Integer id);
     
     int getBusinessBindClienterQty(int businessId);
     
