@@ -56,7 +56,7 @@ if(data == null){
 	                        		<%}
 	                        	}
 								if(business_Recharge){
-									if(data.get(i).getIsenable() == 0){%>
+									if(data.get(i).getIsbind()> 0){%>
 	                        			<a href="javascript:void(0)" style="color:gray">删除</a>
 	                        		<%}else{%>
 	                        			<a href="javascript:funRemoveClienterBind(<%=data.get(i).getBusinessid() %>,<%=data.get(i).getClienterid() %>)">删除</a>
