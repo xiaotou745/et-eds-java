@@ -38,8 +38,8 @@ String businessid=request.getAttribute("businessid").toString();
 			<ul class="m-bx m-bx-l">
 				<li class="m-fx-1">
 					<dl>
-						<dt>待接待</dt>
-						<dd><a id="waiting" href="#" regionid="-1" onclick="getdetail(0,this)">0单接待</a></dd>
+						<dt>待接单</dt>
+						<dd><a id="waiting" href="#" regionid="-1" onclick="getdetail(0,this)">0单接单</a></dd>
 					</dl>
 				</li>
 				<li class="m-fx-1">
@@ -85,7 +85,8 @@ String businessid=request.getAttribute("businessid").toString();
 	    strokeStyle: 'solid' //边线的样式，solid或dashed。
 	}
 	var map =new BMap.Map('map', {minZoom :12, maxZoom :16, enableMapClick :false});
-
+	tmpfun = map.onclick;
+	map.onclick = null;
 	function initMap(){
 		var centerLongitude = 116.3972282409668;
 		var centerLatitude = 39.90960456049752;
@@ -117,13 +118,22 @@ String businessid=request.getAttribute("businessid").toString();
 		var poi = new BMap.Point(centerLongitude, centerLatitude);
 		map.centerAndZoom(poi, 14);
 	}
+	function addevent(tempPolygon,overlayId){
+		tempPolygon.addEventListener('click',function(e){
+			overlayClick(overlayId);
+		});
+		//app上触摸，不会触发click事件，网上给的解决方法如下：
+		//地址：http://www.lofter.com/postentry?from=search&permalink=1ce8cc_7dc4e1
+		tempPolygon.addEventListener('touchstart',function(e){
+			map.onclick = tmpfun;
+			overlayClick(overlayId);
+		});
+	}
 	//绘制一个多边形
 	function drawOverlay(object){
 		var tempPolygon = new BMap.Polygon(object.overlayPointList,styleOptions);
 		var overlayId=object.overlayId;
-		tempPolygon.addEventListener('click',function(e){
-			overlayClick(overlayId);
-		});
+		addevent(tempPolygon,overlayId);
 		overlayArray[overlayId]=tempPolygon;
 		map.addOverlay(tempPolygon);
 		addlable(overlayId,object.overlayName);
@@ -131,9 +141,7 @@ String businessid=request.getAttribute("businessid").toString();
 		for(var i=0;i<object.subLists.length;i++){
 			tempid=object.subLists[i].overlayId;
 		    var childPolygon = new BMap.Polygon(object.subLists[i].overlayPointList,styleOptions);
-		    childPolygon.addEventListener('click', function(e) {
-				overlayClick(tempid);
-			});
+		    addevent(childPolygon,tempid);
 			map.addOverlay(childPolygon);
 			overlayArray[tempid]=childPolygon;
 			addlable(tempid,object.subLists[i].overlayName);
@@ -238,12 +246,23 @@ String businessid=request.getAttribute("businessid").toString();
 	}
 	function getdetail(status,target){
 		try{
+			if(status==0){
+				return;
+			}
 			var regionid=$(target).attr('regionid'); 
 			if(parseInt(regionid)<0){
 				return;
 			}
+			var regionName="";
+			for(var i=0;i<totalJson.length;i++){
+				if(totalJson[i].id==regionid){
+					regionName=totalJson[i].name;
+					break;
+				}
+			}
 			//和app交互
-			window.todayOrder.orderList(businessid,regionid,status);
+			orderList(businessid,regionid,status,regionName);
+			window.todayOrder.orderList(businessid,regionid,status,regionName);
 		}catch(e){
 		}
 	}
@@ -261,16 +280,19 @@ String businessid=request.getAttribute("businessid").toString();
 	}
 	//点击区域放大，地图居中
 	function zoomIn(overlayId) {
+		var isparent=true;
 		for(var i=0;i<totalJson.length;i++){
 			if(totalJson[i].id==overlayId){
-				if(totalJson[i].parentId!=0){
-					return;
+				if(totalJson[i].parentId>=0){
+					isparent=false;
+					break;
 				}
 			}
 		}
-		return;
-	    $(window).scrollTop(200);
-	    map.zoomTo(16);
+	    //$(window).scrollTop(200);
+	    if(isparent){
+		    map.zoomTo(16);
+	    }
 		var point = getcenter(overlayId);
 	    map.panTo(point);
 	  }
