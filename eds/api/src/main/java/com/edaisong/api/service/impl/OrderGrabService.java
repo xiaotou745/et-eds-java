@@ -262,6 +262,9 @@ public class OrderGrabService implements IOrderGrabService {
 
 		resp.setStatus(OrderGrabReturnEnum.Success.value());
 		resp.setMessage(OrderGrabReturnEnum.Success.desc());
+		OrderGrabResp returnModel=new OrderGrabResp();		
+		returnModel.setId(orderGrab.getId());
+		resp.setResult(returnModel);
 		return resp;			
 	}
 	
@@ -297,6 +300,13 @@ public class OrderGrabService implements IOrderGrabService {
 		if(!currOgModel.getClienterid().equals(req.getClienterId()))
 		{
 			throw new TransactionalRuntimeException("抢单与取货骑士不符");
+		}
+		if(currOgModel.getStatus().equals(OrderStatus.Delivery.value()))
+		{			
+		}
+		else
+		{
+			throw new TransactionalRuntimeException("订单不处于待接单状态");
 		}
 		
 		//更新取货主表	
@@ -388,10 +398,10 @@ public class OrderGrabService implements IOrderGrabService {
 		
 		resp.setStatus(OrderGrabReturnEnum.Success.value());
 		resp.setMessage(OrderGrabReturnEnum.Success.desc());
-		OrderGrabResp reReturnModel=new OrderGrabResp();		
-		reReturnModel.setStatus((short)OrderStatus.Taking.value());
-		reReturnModel.setPickupTime(ogModel.getPickuptime());		
-		resp.setResult(reReturnModel);
+		OrderGrabResp returnModel=new OrderGrabResp();		
+		returnModel.setStatus((short)OrderStatus.Taking.value());
+		returnModel.setPickupTime(ogModel.getPickuptime());		
+		resp.setResult(returnModel);
 		return resp;
 	}
 	
@@ -428,6 +438,13 @@ public class OrderGrabService implements IOrderGrabService {
 		if(!currOgModel.getClienterid().equals(req.getClienterId()))
 		{
 			throw new TransactionalRuntimeException("取货与完成骑士不符");
+		}
+		if(currOgModel.getStatus().equals(OrderStatus.Taking.value()))
+		{			
+		}
+		else
+		{
+			throw new TransactionalRuntimeException("订单不处于取货状态");
 		}
 		
 		//更新骑士余额	获取第一条子订单	
@@ -638,7 +655,7 @@ public class OrderGrabService implements IOrderGrabService {
 			OrderGrabChild model=new OrderGrabChild();
 			int childid=list.get(i);
 			model.setOrderchildid(childid);			
-			model.setGraborderid(orderGrab.getId());//产表Id							
+			model.setGraborderid(orderGrab.getId());//主表Id							
 			model.setChildid(i + 1);
 			model.setBusinessid(req.getBusinessId());
 			model.setStatus((byte)OrderStatus.Delivery.value());			
