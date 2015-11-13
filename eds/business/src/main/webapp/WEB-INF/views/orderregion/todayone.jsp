@@ -245,24 +245,28 @@ String businessid=request.getAttribute("businessid").toString();
 		overlayClick(getmaxParentid());
 	}
 	function getdetail(status,target){
+		if(status==0){
+			return;
+		}
+		var regionid=$(target).attr('regionid'); 
+		if(parseInt(regionid)<0){
+			return;
+		}
+		var regionName="";
+		for(var i=0;i<totalJson.length;i++){
+			if(totalJson[i].id==regionid){
+				regionName=totalJson[i].name;
+				break;
+			}
+		}
 		try{
-			if(status==0){
-				return;
-			}
-			var regionid=$(target).attr('regionid'); 
-			if(parseInt(regionid)<0){
-				return;
-			}
-			var regionName="";
-			for(var i=0;i<totalJson.length;i++){
-				if(totalJson[i].id==regionid){
-					regionName=totalJson[i].name;
-					break;
-				}
-			}
+		//和app交互
+		    window.todayOrder.orderList(businessid,regionid,status,regionName);
+		}catch(e){
+		}
+		try{
 			//和app交互
 			orderList(businessid,regionid,status,regionName);
-			window.todayOrder.orderList(businessid,regionid,status,regionName);
 		}catch(e){
 		}
 	}
