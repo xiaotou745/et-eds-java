@@ -31,10 +31,10 @@ String businessLat = (String) request.getAttribute("businessLat");
 				<div class="map_popup" id="mapPopup">
 					<p>
 						区域列表
-<!-- 						<a href="javascript:;" id="closePaint"></a> -->
+					<a href="javascript:;" id="closePaint"></a> 
 					</p>
 
-					<div class="map_list" style="overflow: auto; margin-top: 10px;">
+					<div class="map_list" style="height:350px;overflow: auto; margin-top: 10px;">
 						<ul id="regionlistul">
 						</ul>
 					</div>	
@@ -122,6 +122,11 @@ function init(){
 }
 //区域绘制完成事件
 var overlaycomplete = function(e) {
+	if(e.overlay.getPath().length<3){
+		alert("请绘制一个有效的区域");
+		map.removeOverlay(e.overlay);
+		return;
+	}
 	checksame(e.overlay);
 	var overlayId=0;
 	for (var key in overlayArray){
@@ -313,6 +318,13 @@ function showregion(regionid){
 		}
 	}
 	$('#regionlistul a[id^="regiontitle'+regionid+'_"]').addClass("selected_a");
+	showPanel();
+	zoomIn(regionid,false);
+}
+function showPanel(){
+	$('#mapPopup').animate({
+		right : "0px"
+	});
 }
 function da(po){
 	var pts = [];
@@ -511,7 +523,7 @@ function saveall(){
 		}
 		var childLength = $('#parent'+parId+' li[id^="child"]').length;
 		if(childLength<9){
-		    zoomIn(parId);
+		    zoomIn(parId,true);
 			showregion(parId);
 			parentId=parId;
 			beginDraw();
@@ -519,18 +531,13 @@ function saveall(){
 			alert("二级区域最多只能有9个");
 		}
 	}
-	function zoomIn(overlayId) {
-		return;
-	    $(window).scrollTop(200);
-	    map.zoomTo(16);
+	function zoomIn(overlayId,isparent) {
+	    //$(window).scrollTop(200);
+	    if(isparent){
+		    map.zoomTo(16);	
+	    }
 		var point = getcenter(overlayId);
 	    map.panTo(point);
-// 	    for(var key in overlayArray){
-// 	    	overlayArray[key].setFillOpacity('0.6');
-// 	      if(callback && overlayArray[key] == regionInPos)
-// 	        callback(key);
-// 	    }
-// 	    regionInPos.setFillOpacity('0.3');
 	  }
 // 	function setBounds(parId){
 // 		var b = new BMap.Bounds(overlayPointArray[parId]);
@@ -556,7 +563,7 @@ function saveall(){
 
 	function popupClose() {
 		$('#mapPopup').animate({
-			right : "-420px"
+			right : "-450px"
 		});
 	}
 function setParentNum(num,add){
@@ -596,9 +603,7 @@ function setParentNum(num,add){
 			li = li+'</li>';
 		}
 		ul.html(li);
-		$('#mapPopup').animate({
-			right : "0px"
-		});
+		showPanel();
 	}
 
 	//弹出框
