@@ -3,12 +3,13 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
-import com.edaisong.entity.taobao.req.TaoBaoAsk;
-import com.edaisong.entity.taobao.req.TaoBaoConfirm;
-import com.edaisong.entity.taobao.req.TaoBaoLocationUpdate;
-import com.edaisong.entity.taobao.req.TaoBaoPickUp;
-import com.edaisong.entity.taobao.req.TaoBaoUpdate;
+import com.taobao.api.request.WaimaiDeliveryConfirmRequest;
+import com.taobao.api.request.WaimaiDeliveryLocationUpdateRequest;
+import com.taobao.api.request.WaimaiDeliveryPickupRequest;
+import com.taobao.api.request.WaimaiDeliveryUpdateRequest;
+import com.taobao.api.request.WaimaiOrderAckRequest;
 
 /**
  * 淘宝订单
@@ -16,59 +17,57 @@ import com.edaisong.entity.taobao.req.TaoBaoUpdate;
  * @author CaoHeYang
  * @date 20151113
  */
-@Path("/order")
+@Path("/taobaoorder")
 @Consumes("application/json")
-// 当前方法接收的参数类型
 @Produces("application/json; charset=utf-8")
-// 当前类的所有方法都返回json格式的数据
 public interface ITaoBaoOrderHttpService {
 	/**
 	 * 确认接单接口(API)
-	 * 
+	 * @author CaoHeYang
 	 * @param req
 	 * @return
 	 */
 	@POST
 	@Path("/ask")
-	public TaoBaoResponseBase ask(TaoBaoAsk req);
+	public TaoBaoResponseBase ask(WaimaiOrderAckRequest req);
 
 	/**
 	 * 更新配送员信息接口（API）
-	 * 
+	 * @author CaoHeYang
 	 * @param req
 	 * @return
 	 */
 	@POST
 	@Path("update")
-	public TaoBaoResponseBase update(TaoBaoUpdate req);
+	public TaoBaoResponseBase update(WaimaiDeliveryUpdateRequest req);
 
 	/**
 	 * 取件（API）
-	 * 
+	 * @author CaoHeYang
 	 * @param req
 	 * @return
 	 */
 	@POST
 	@Path("/pickup")
-	public TaoBaoResponseBase pickUp(TaoBaoPickUp req);
+	public TaoBaoResponseBase pickUp(WaimaiDeliveryPickupRequest  req);
 
 	/**
 	 * 妥投（API）
-	 * 
+	 * @author CaoHeYang
 	 * @param req
 	 * @return
 	 */
 	@POST
 	@Path("/confirm")
-	public TaoBaoResponseBase confirm(TaoBaoConfirm req);
+	public TaoBaoResponseBase confirm(WaimaiDeliveryConfirmRequest  req);
 
 	/**
 	 * 更新配送员位置信息（API）
-	 * 
+	 * @author CaoHeYang
 	 * @param req
 	 * @return
 	 */
 	@POST
 	@Path("/locationupdate")
-	public TaoBaoResponseBase locationUpdate(TaoBaoLocationUpdate req);
+	public TaoBaoResponseBase locationUpdate(WaimaiDeliveryLocationUpdateRequest  req);
 }
