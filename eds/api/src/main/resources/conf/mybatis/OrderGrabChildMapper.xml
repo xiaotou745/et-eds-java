@@ -11,7 +11,13 @@
     from OrderGrabChild
     where Id = #{id,jdbcType=INTEGER}
   </select>
-    <select id="selectByGrabOrderId" resultType="com.edaisong.entity.OrderGrabChild" parameterType="java.lang.Long" >
+    <select id="selectCompletedOrderByGrabOrderId" resultType="com.edaisong.entity.OrderGrabChild" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderGrabChild with(nolock)
+    where GrabOrderId = #{grabOrderId,jdbcType=INTEGER} and status=1
+  </select>
+      <select id="selectByGrabOrderId" resultType="com.edaisong.entity.OrderGrabChild" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from OrderGrabChild with(nolock)

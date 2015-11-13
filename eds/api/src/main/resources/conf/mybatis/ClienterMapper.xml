@@ -668,7 +668,7 @@
 		clienter C WITH (NOLOCK) left JOIN BusinessClienterRelation bcr
 		with(nolock) on C.Id=bcr.ClienterId 
 		and bcr.BusinessId=${businessId}
-		and bcr.IsBind=1
+		and bcr.IsBind=0
 		and bcr.IsEnable=1
 	</sql>
 	<!-- 获得骑士和绑定信息列表 ,不包含骑士已接单的数量 add by pengyi 20150901 -->

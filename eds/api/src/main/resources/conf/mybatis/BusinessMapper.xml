@@ -517,10 +517,10 @@ order by c.WaitingCounts desc
 	<!-- 骑士绑定商户 建立关系 wangchao-->
 	<insert id="bindClienterBusiness" parameterType="com.edaisong.entity.domain.BindClienterBusiness">
 		insert  into dbo.BusinessClienterRelation
-		        ( BusinessId, ClienterId, CreateBy )
+		        ( BusinessId, ClienterId, CreateBy,IsBind )
 		values  ( #{businessId,jdbcType=INTEGER},  
 		          #{clienterId,jdbcType=INTEGER},  
-		          #{businessName,jdbcType=NVARCHAR}  
+		          #{businessName,jdbcType=NVARCHAR},0
 		          );
 		insert into dbo.ClienterBindOptionLog
 		        ( BusinessId ,
@@ -555,7 +555,7 @@ order by Id desc
 	
    <sql id="getMyOrdeBListWhere">
   		1=1 and og.BusinessId = ${businessId}  and og.[Status] = ${status}
-  		and (og.OrderRegionTwoId=${orderRegionTwoId} or  og.OrderRegionOneId=${orderRegionOneId} )
+  		and (og.OrderRegionTwoId=${regionId} or  og.OrderRegionOneId=${regionId} )
   </sql>
      <sql id="getMyOrdeBListColumns">
   		 c.TrueName ClienterName, 
@@ -596,9 +596,8 @@ order by Id desc
 			isnull(sum(case when og.Status =  1 then og.OrderCount else 0 end),0) yiWanChenOrderCountTotal
 			from 
 			dbo.OrderGrab og(nolock)
-          where og.BusinessId = #{businessId,jdbcType=INTEGER}
-          and  og.OrderRegionTwoId=${orderRegionTwoId} 
-          and (og.OrderRegionTwoId=${orderRegionTwoId} or og.OrderRegionOneId=${orderRegionOneId} )
+          where og.BusinessId = #{businessId,jdbcType=INTEGER} 
+          and (og.OrderRegionTwoId=${regionId} or og.OrderRegionOneId=${regionId} )
 	</select> 
 	<select id="getMyOrderDetailB" resultType="com.edaisong.entity.resp.MyOrderDetailBResp"
 		parameterType="com.edaisong.entity.req.OrderDetailBReq">
