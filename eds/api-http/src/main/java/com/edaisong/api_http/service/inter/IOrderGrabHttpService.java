@@ -50,7 +50,7 @@ public interface IOrderGrabHttpService {
 	 */
 	@POST
 	@Path("/confirmtake")
-	HttpResultModel<Integer> ConfirmTake(OrderGrabConfirmTakeReq req);
+	HttpResultModel<OrderGrabResp> ConfirmTake(OrderGrabConfirmTakeReq req);
 	
 	/**
 	 * 完成订单
@@ -62,7 +62,7 @@ public interface IOrderGrabHttpService {
 	 */
 	@POST
 	@Path("/complete")
-	HttpResultModel<Integer> Complete(OrderGrabCompleteReq req);
+	HttpResultModel<OrderGrabResp> Complete(OrderGrabCompleteReq req);
 	
 	/*
 	 * 获取我的任务C

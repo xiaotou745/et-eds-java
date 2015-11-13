@@ -56,7 +56,7 @@ public interface IOrderGrabService {
 	 * @param req 
 	 * @return
 	 */	
-	HttpResultModel<Integer> ConfirmTake(OrderGrabConfirmTakeReq req);
+	HttpResultModel<OrderGrabResp> ConfirmTake(OrderGrabConfirmTakeReq req);
 	
 	/**
 	 * 骑士完成订单
@@ -65,7 +65,7 @@ public interface IOrderGrabService {
 	 * @param req 
 	 * @return
 	 */	
-	HttpResultModel<Integer> Complete(OrderGrabCompleteReq req);
+	HttpResultModel<OrderGrabResp> Complete(OrderGrabCompleteReq req);
 	
 	
 	MyOrderGrabCResp getMyOrderGrabC(MyOrderGrabCReq myOrderGrabCReq);
