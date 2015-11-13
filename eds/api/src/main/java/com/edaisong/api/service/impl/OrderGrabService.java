@@ -32,23 +32,13 @@ import com.edaisong.entity.resp.MyOrderGrabCResp;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
  
 
-
-
-
-
-
-
-
-
-
-
-
-
+import com.edaisong.entity.Order;
 import java.util.ArrayList;
 import java.util.Date; 
 
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao; 
+import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderGrabChildDao; 
 import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao; 
@@ -75,7 +65,8 @@ import com.edaisong.entity.resp.OrderGrabResp;
 @Service
 public class OrderGrabService implements IOrderGrabService {
 
-	
+    @Autowired
+	private IOrderDao orderDao;
 	@Autowired
 	private IOrderGrabDao orderGrabDao;
     @Autowired
@@ -439,13 +430,13 @@ public class OrderGrabService implements IOrderGrabService {
 		{
 			throw new TransactionalRuntimeException("取货与完成骑士不符");
 		}
-		if(currOgModel.getStatus().equals(OrderStatus.Taking.value()))
+		/*if(currOgModel.getStatus().equals(OrderStatus.Taking.value()))
 		{			
 		}
 		else
 		{
 			throw new TransactionalRuntimeException("订单不处于取货状态");
-		}
+		}*/
 		
 		//更新骑士余额	获取第一条子订单	
 		OrderGrabChild currOgcModel=  orderGrabChildDao.selectTop1ByGrabOrderId((long)req.getOrderGrabId());
@@ -473,6 +464,7 @@ public class OrderGrabService implements IOrderGrabService {
 		OrderGrabChild ogcModel=new OrderGrabChild();
 		ogcModel.setId(currOgcModel.getId());
 		ogcModel.setStatus((byte)OrderStatus.Complite.value());
+		ogcModel.setActualdonedate(new Date());
 		ogcModel.setDonelatitude(req.getDoneLatitude());
 		ogcModel.setDonelongitude(req.getDoneLongitude());
 		int ogcId=orderGrabChildDao.updateByPrimaryKeySelective(ogcModel);
@@ -488,6 +480,15 @@ public class OrderGrabService implements IOrderGrabService {
 		int ocId=orderChildDao.updateByPrimaryKeySelective(orderChildModel);
 		if (ocId <= 0) {
 			throw new TransactionalRuntimeException("完成订单子表错误");
+		}
+		//更新发单主表
+		Order order=new  Order();
+		order.setId(currOgcModel.getOrderid());
+		order.setStatus((byte)OrderStatus.Complite.value());
+		order.setActualdonedate(new Date());
+		int oId=orderDao.updateByPrimaryKeySelective(order);
+		if (ocId <= 0) {
+			throw new TransactionalRuntimeException("更新订单主表错误");
 		}
 		
 		//更新区域表	

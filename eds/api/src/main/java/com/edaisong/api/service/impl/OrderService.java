@@ -1484,7 +1484,7 @@ public class OrderService implements IOrderService {
 		order.setAmount(req.getAmount());
 		order.setRemark(req.getRemark());
 		order.setOrderfrom(req.getOrderfrom());
-		order.setStatus((byte) OrderStatus.New.value());
+		order.setStatus((byte) OrderStatus.Cancel.value());
 		order.setOrdercount(req.getOrdercount());
 		order.setPubdate(new Date());
 		order.setBusinessid(req.getBusinessid());
