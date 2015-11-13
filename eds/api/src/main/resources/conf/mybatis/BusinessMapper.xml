@@ -269,7 +269,7 @@
 			and b.recommendPhone=''${recommendPhone}''
 		</if>
 		<if test="businessName != null and businessName!=''">
-			and b.name=''${businessName}''
+			and b.name like ''%${businessName}%''
 		</if>
 		<if test="businessPhone != null and businessPhone!=''">
 			and b.PhoneNo=''${businessPhone}''

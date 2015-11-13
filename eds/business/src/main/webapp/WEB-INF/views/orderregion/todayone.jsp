@@ -237,13 +237,15 @@ String businessid=request.getAttribute("businessid").toString();
 		overlayClick(getmaxParentid());
 	}
 	function getdetail(status,target){
-		var regionid=$(target).attr('regionid'); 
-		if(parseInt(regionid)<0){
-			return;
+		try{
+			var regionid=$(target).attr('regionid'); 
+			if(parseInt(regionid)<0){
+				return;
+			}
+			//和app交互
+			window.todayOrder.orderList(businessid,regionid,status);
+		}catch(e){
 		}
-		alert(businessid);
-		alert(regionid);
-		alert(status);
 	}
 	function getmaxParentid(){
 		var maxparentid=-1;
@@ -266,7 +268,7 @@ String businessid=request.getAttribute("businessid").toString();
 				}
 			}
 		}
-		//return;
+		return;
 	    $(window).scrollTop(200);
 	    map.zoomTo(16);
 		var point = getcenter(overlayId);

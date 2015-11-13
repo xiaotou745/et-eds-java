@@ -65,7 +65,12 @@ public enum OrderGrabReturnEnum {
 	/**
 	 *获取抢单信息失败
 	 */
-	OrderGrabEmpty(-14, "获取抢单信息失败");
+	OrderGrabEmpty(-14, "获取抢单信息失败"),
+	
+	/**
+	 *获取抢单子表信息失败
+	 */
+	OrderGrabChildEmpty(-15, "获取抢单子表信息失败");
 
 	private int value = 0;
 	private String desc;

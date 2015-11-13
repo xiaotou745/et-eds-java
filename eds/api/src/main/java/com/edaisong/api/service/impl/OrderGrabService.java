@@ -399,7 +399,7 @@ public class OrderGrabService implements IOrderGrabService {
 	{
 		HttpResultModel<Integer> resp=new HttpResultModel<Integer>();		
 
-		if (req.getOrderGrabChildId() == null) {
+		if (req.getOrderGrabId() == null) {
 			resp.setStatus(OrderGrabReturnEnum.OrderGrabEmpty.value());
 			resp.setMessage(OrderGrabReturnEnum.OrderGrabEmpty.desc());				
 			return resp;			
@@ -410,8 +410,15 @@ public class OrderGrabService implements IOrderGrabService {
 			return resp;			
 		}
 		
+		//getOrderGrabChildId		
 		//更新骑士余额		
-		OrderGrabChild currOgcModel=  orderGrabChildDao.selectByPrimaryKey(req.getOrderGrabChildId());
+		OrderGrabChild currOgcModel=  orderGrabChildDao.selectTop1ByGrabOrderId((long)req.getOrderGrabId());
+		if(currOgcModel==null)
+		{
+			resp.setStatus(OrderGrabReturnEnum.OrderGrabChildEmpty.value());
+			resp.setMessage(OrderGrabReturnEnum.OrderGrabChildEmpty.desc());		
+			return resp;
+		}
 		ClienterMoney clienterMoney = new ClienterMoney();
 		clienterMoney.setAmount(currOgcModel.getOrderCommission()); 
 		clienterMoney.setClienterId(req.getClienterId());
@@ -428,12 +435,12 @@ public class OrderGrabService implements IOrderGrabService {
 		
 		//更新子订单
 		OrderGrabChild ogcModel=new OrderGrabChild();
-		ogcModel.setId(req.getOrderGrabChildId());
+		ogcModel.setId(currOgcModel.getId());
 		ogcModel.setStatus((byte)OrderStatus.Complite.value());
 		ogcModel.setDonelatitude(req.getDoneLatitude());
 		ogcModel.setDonelongitude(req.getDoneLongitude());
-		int ogId=orderGrabChildDao.updateByPrimaryKeySelective(ogcModel);
-		if (ogId <= 0) {
+		int ogcId=orderGrabChildDao.updateByPrimaryKeySelective(ogcModel);
+		if (ogcId <= 0) {
 			throw new TransactionalRuntimeException("完成订单主表错误");
 		}
 		
@@ -442,8 +449,8 @@ public class OrderGrabService implements IOrderGrabService {
 		orderChildModel.setId((long)currOgcModel.getOrderchildid());
 		orderChildModel.setStatus((short)OrderStatus.Complite.value());
 		orderChildModel.setUpdateby(req.getClienterId().toString());
-		int ogcId=orderChildDao.updateByPrimaryKeySelective(orderChildModel);
-		if (ogcId <= 0) {
+		int ocId=orderChildDao.updateByPrimaryKeySelective(orderChildModel);
+		if (ocId <= 0) {
 			throw new TransactionalRuntimeException("完成订单子表错误");
 		}
 		
@@ -487,7 +494,7 @@ public class OrderGrabService implements IOrderGrabService {
 		
 		// 记录取货日志
 		OrderSubsidiesLog record = new OrderSubsidiesLog();
-		record.setOrderid(req.getOrderGrabChildId());
+		record.setOrderid(currOgcModel.getId());
 		record.setOrderstatus(OrderStatus.Complite.value());
 		record.setOptid(req.getClienterId());
 		record.setPrice(0d);

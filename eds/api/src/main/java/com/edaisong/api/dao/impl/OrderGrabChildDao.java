@@ -39,6 +39,13 @@ public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao {
 						grabOrderId);
 	}
 	@Override
+	public OrderGrabChild selectTop1ByGrabOrderId(Long grabOrderId) {
+		return getMasterSqlSessionUtil().selectOne(
+						"com.edaisong.api.dao.inter.IOrderGrabChildDao.selectTop1ByGrabOrderId",
+						grabOrderId);
+	}
+	
+	@Override
 	public OrderGrabChild selectByPrimaryKey(Integer id) {
 		return getMasterSqlSessionUtil().selectOne(
 				"com.edaisong.api.dao.inter.IOrderGrabChildDao.selectByPrimaryKey", id);

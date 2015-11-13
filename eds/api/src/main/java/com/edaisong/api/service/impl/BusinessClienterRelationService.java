@@ -176,7 +176,7 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	public GetMyServiceClientersResp  getMyServiceClienters(PagedGetMyServiceClientersReq req) {
 		GetMyServiceClientersResp result=businessClienterRelationDao.getMyServiceClientersCountInfo(req);
 		result.setList( businessClienterRelationDao.getMyServiceClienters(req));
-		result.getList().forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageServicePath") + action.getHeadPhoto()));
+		result.getList().forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageClienterServicePath") + action.getHeadPhoto()));
 		return result;
 	}
 
