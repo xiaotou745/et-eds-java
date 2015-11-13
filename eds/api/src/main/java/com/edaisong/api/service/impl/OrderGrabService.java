@@ -143,6 +143,10 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
 			return resp;			
 		}
+		if(req.getOrderRegionTwoId()==null)
+			req.setOrderRegionTwoId(0);
+		if(req.getOrderRegionTwoName()==null)
+			req.setOrderRegionTwoName("");
 		
 		//抢单主表
 		OrderGrab orderGrab=fillOrderGrab(req);		
@@ -286,6 +290,10 @@ public class OrderGrabService implements IOrderGrabService {
 			return resp;			
 		}
 		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(req.getGrabOrderId());
+		if(currOgModel==null)
+		{
+			throw new TransactionalRuntimeException("抢单信息不存在");
+		}
 		if(!currOgModel.getClienterid().equals(req.getClienterId()))
 		{
 			throw new TransactionalRuntimeException("抢单与取货骑士不符");
@@ -539,9 +547,23 @@ public class OrderGrabService implements IOrderGrabService {
 		orderGrab.setBusinessid(req.getBusinessId());	
 		orderGrab.setClienterid(req.getClienterId());		
 		orderGrab.setOrderRegionOneId(req.getOrderRegionOneId());		
-		orderGrab.setOrderRegionOneName(req.getOrderRegionOneName());		
-		orderGrab.setOrderRegionTwoId(req.getOrderRegionTwoId());		
-		orderGrab.setOrderRegionTwoName(req.getOrderRegionTwoName());
+		orderGrab.setOrderRegionOneName(req.getOrderRegionOneName());
+		if(req.getOrderRegionTwoId()==null)
+		{
+			orderGrab.setOrderRegionTwoId(0);
+		}
+		else
+		{
+			orderGrab.setOrderRegionTwoId(req.getOrderRegionTwoId());
+		}
+		if(req.getOrderRegionTwoName()==null)
+		{
+			orderGrab.setOrderRegionTwoName("");
+		}
+		else
+		{
+			orderGrab.setOrderRegionTwoName(req.getOrderRegionTwoName());
+		}
 		orderGrab.setOrdercount(req.getOrderCount());		
 		orderGrab.setGraborderno(OrderNoHelper.generateOrderCode(req.getClienterId()));
 		orderGrab.setStatus((byte)OrderStatus.Delivery.value());

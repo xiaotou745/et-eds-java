@@ -40,10 +40,10 @@ public class OrderRegionHttpService implements IOrderRegionHttpService {
 		
 		List<OrderRegion> orderRegionList = iOrderRegionService.getOrderRegion(orderRegionReq);
 		
-		if(orderRegionList!=null && orderRegionList.size()>0){
-			
+		if(orderRegionList!=null && orderRegionList.size()>0){ 
 			//获取一级区域信息
-			List<OrderRegion> firstOrderRegionList=	orderRegionList.stream().filter(k->k.getParentid()==0).collect(Collectors.toList());
+			List<OrderRegion> firstOrderRegionList=	orderRegionList.stream().filter(k->k.getParentid().equals(0)).collect(Collectors.toList()); 
+			List<OrderRegion> selectTwoOrderRegionList = orderRegionList.stream().filter(m->m.getParentid() != 0).collect(Collectors.toList());
 			if(firstOrderRegionList.size() !=9){
 				result.setStatus(HttpReturnRnums.NoData.value());
 				result.setMessage(HttpReturnRnums.NoData.desc());
@@ -54,13 +54,11 @@ public class OrderRegionHttpService implements IOrderRegionHttpService {
 				orderRegionResp.setId(firserOrderRegion.getId());
 				orderRegionResp.setRegionName(firserOrderRegion.getName()); 
 				orderRegionRespList.add(orderRegionResp);		
-			}
-			
+			} 
 			//获取二级区域信息
 			for (OrderRegionResp firstOrderRegionResp : orderRegionRespList) { 
-				List<TwoOrderRegion> twoOrderRegionList = new ArrayList<TwoOrderRegion>(); 
-				List<OrderRegion> twoOrderRegion=orderRegionList.stream().filter(i->i.getParentid() == firstOrderRegionResp.getId()).collect(Collectors.toList());
-				
+				List<TwoOrderRegion> twoOrderRegionList = new ArrayList<TwoOrderRegion>();  
+				List<OrderRegion> twoOrderRegion=selectTwoOrderRegionList.stream().filter(i->i.getParentid().equals(firstOrderRegionResp.getId())).collect(Collectors.toList());
 				for (OrderRegion orderRegion2 : twoOrderRegion) {
 					TwoOrderRegion twoOrderRegion2 = new TwoOrderRegion();
 					twoOrderRegion2.setId(orderRegion2.getId());

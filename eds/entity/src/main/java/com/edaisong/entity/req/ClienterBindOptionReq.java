@@ -12,6 +12,7 @@ public class ClienterBindOptionReq {
 	private int businessId;
 	// 骑士Id
 	private int clienterId;
+	private int auditStatus;
 	// 操作人
 	private String optName;
 	// 添加时间
@@ -20,6 +21,8 @@ public class ClienterBindOptionReq {
 	private String remark;
 	// 是否绑定(0:否 1:是)
 	private int isBind;
+	
+	private int isEnable;
 	// 操作人Id
 	private int optId;	
 	public int getOptId() {
@@ -63,5 +66,17 @@ public class ClienterBindOptionReq {
 	}
 	public void setIsBind(int isBind) {
 		this.isBind = isBind;
+	}
+	public int getAuditStatus() {
+		return auditStatus;
+	}
+	public void setAuditStatus(int auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+	public int getIsEnable() {
+		return isEnable;
+	}
+	public void setIsEnable(int isEnable) {
+		this.isEnable = isEnable;
 	}
 }

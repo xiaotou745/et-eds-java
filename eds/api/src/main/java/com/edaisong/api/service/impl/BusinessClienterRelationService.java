@@ -17,6 +17,7 @@ import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.ClienterBindOptionLog;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.ClienterBindOptionReq;
@@ -201,6 +202,27 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 		}
 		req.setOptName("门店");
 		return businessClienterRelationDao.optBindClienter(req);
+	}
+
+	/*
+	 * 骑士申请绑定时候，若绑定关系已经存在且审核不是审核通过的情况下，修改状态值为待审核
+	 * wangchao
+	 */
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	@Override
+	public boolean updateClienterBindRelation(ClienterBindOptionReq bindClienterBusiness) {
+		boolean reg = false;
+		if (businessClienterRelationDao.updateClienterBindRelation(bindClienterBusiness)) {
+			if (businessDao.updateBusinessIsBind(bindClienterBusiness.getBusinessId(), 1)) {
+				if (clienterDao.updateClienterIsBind(bindClienterBusiness.getClienterId(), 1)) {
+					reg = true;
+				}
+			}
+		}
+		if (!reg) {
+			throw new TransactionalRuntimeException("骑士再次申请绑定商户失败");
+		}
+		return reg;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.ClienterBindOptionReq;
@@ -93,4 +94,7 @@ public interface IBusinessClienterRelationDao {
 		 * @return
 		 */
 	   int optBindClienter(OptBindClienterReq req);
+
+		boolean updateClienterBindRelation(
+				ClienterBindOptionReq bindClienterBusiness);
 }

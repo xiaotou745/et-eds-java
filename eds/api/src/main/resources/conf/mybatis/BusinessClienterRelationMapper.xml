@@ -346,9 +346,8 @@
 	set    bcr.AuditStatus=#{auditStatus},
 	bcr.IsEnable=#{isEnable},
 	bcr.IsBind=#{isBind},
-	UpdateBy=${optName},
+	UpdateBy= '${optName}' ,
     UpdateTime=getdate()
-	
     OUTPUT
 	  Inserted.BusinessId,
 	  Inserted.ClienterId,
@@ -366,5 +365,29 @@
 	from BusinessClienterRelation bcr WITH ( ROWLOCK )
 	where bcr.BusinessId=${businessId}  AND bcr.id=${relationId} and  bcr.AuditStatus=0  
   </update>
- 
+  <!-- 骑士再次申请绑定商户， 修改绑定关系中的相关状态 记录日志  wangchao -->
+ <update id="updateClienterBindRelation" parameterType="com.edaisong.entity.req.ClienterBindOptionReq">
+  	update bcr
+	set    bcr.AuditStatus=#{auditStatus},
+	bcr.IsEnable=#{isEnable},
+	bcr.IsBind=#{isBind},
+	UpdateBy=${clienterId},
+    UpdateTime=getdate()
+    OUTPUT
+	  Inserted.BusinessId,
+	  Inserted.ClienterId,
+	  ${clienterId},
+	  '${optName}',
+	  getdate(),
+	  '${remark}'
+	INTO ClienterBindOptionLog
+	  ( BusinessId
+	   ,ClienterId
+	   ,OptId
+	   ,OptName
+	   ,InsertTime
+	   ,Remark)
+	from BusinessClienterRelation bcr WITH ( ROWLOCK )
+	where bcr.BusinessId=${businessId}  AND bcr.ClienterId=${clienterId}  
+  </update>
 </mapper>

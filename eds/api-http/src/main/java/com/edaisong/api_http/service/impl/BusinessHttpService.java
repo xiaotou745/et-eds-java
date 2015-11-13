@@ -28,6 +28,8 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.RandomCodeStrGenerator;
 import com.edaisong.core.util.SmsUtils;
 import com.edaisong.core.validator.CommonValidator;
+import com.edaisong.entity.BusinessClienterRelation;
+import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessBasicInfoModel;
@@ -120,23 +122,55 @@ public class BusinessHttpService implements IBusinessHttpService {
 			result.setStatus(ClienterBindBusinessEnum.ClienterNameEmpty.value());
 			result.setMessage(ClienterBindBusinessEnum.ClienterNameEmpty.desc());
 			return result;
-		}
-
-		result.setStatus(ClienterBindBusinessEnum.Success.value());
-		result.setMessage(ClienterBindBusinessEnum.Success.desc());
-		boolean b = businessService.getClienterBind(bindClienterBusiness);
-		if (!b) {
-			int bindResult = businessService.bindClienter(bindClienterBusiness);
-			if (bindResult <= 0) {
+		} 
+		
+		BusinessClienterRelation b = businessService.getClienterBind(bindClienterBusiness);
+		if(b==null){ //不存在绑定关系，直接绑定
+			ClienterBindOptionReq cbor = new ClienterBindOptionReq();
+			cbor.setBusinessId(bindClienterBusiness.getBusinessId());
+			cbor.setClienterId(bindClienterBusiness.getClienterId());
+			cbor.setIsBind(1);
+			cbor.setOptId(bindClienterBusiness.getClienterId());
+			cbor.setOptName(bindClienterBusiness.getClienterName()); 
+			cbor.setRemark("添加绑定");
+			if(businessClienterRelationService.addClienterBind(cbor)){
+				result.setStatus(ClienterBindBusinessEnum.Success.value());
+				result.setMessage(ClienterBindBusinessEnum.Success.desc());
+			}else{ 
 				result.setStatus(ClienterBindBusinessEnum.Fail.value());
-				result.setMessage(ClienterBindBusinessEnum.Fail.desc());
+				result.setMessage(ClienterBindBusinessEnum.Fail.desc()); 
 			}
 		} else {
-			result.setStatus(ClienterBindBusinessEnum.HadBind.value());
-			result.setMessage(ClienterBindBusinessEnum.HadBind.desc());
+			if(b.getIsbind() == 1){  //绑定状态为1已绑定 
+				if(b.getAuditStatus() == 1){  //已经审核通过
+					result.setStatus(ClienterBindBusinessEnum.AuditPass.value());
+					result.setMessage(ClienterBindBusinessEnum.AuditPass.desc()); 
+					return result;
+				} 
+			}
+			//绑定状态0，或者已经绑定审核状态不是审核通过，重新修改状态
+			if(b.getIsbind() == 0 || (b.getIsbind() == 1 && b.getAuditStatus() != 1)){
+				//不是绑定状态且审核通过的，再次申请时候，修改状态
+				ClienterBindOptionReq modifycbor = new ClienterBindOptionReq();
+				modifycbor.setBusinessId(bindClienterBusiness.getBusinessId());
+				modifycbor.setClienterId(bindClienterBusiness.getClienterId());
+				modifycbor.setIsBind(1);
+				modifycbor.setOptId(bindClienterBusiness.getClienterId());
+				modifycbor.setOptName(bindClienterBusiness.getClienterName()); 
+				modifycbor.setAuditStatus(0);//待审核
+				modifycbor.setIsEnable(1);
+				modifycbor.setRemark("骑士再次申请绑定商户");
+				boolean uprel= businessClienterRelationService.updateClienterBindRelation(modifycbor);
+				if(uprel){
+					result.setStatus(ClienterBindBusinessEnum.Success.value());
+					result.setMessage(ClienterBindBusinessEnum.Success.desc());
+				}else{
+					result.setStatus(ClienterBindBusinessEnum.Fail.value());
+					result.setMessage(ClienterBindBusinessEnum.Fail.desc()); 
+				}
+			}
 		}
 		return result;
-
 	}
 
 	/**
@@ -236,11 +270,22 @@ public class BusinessHttpService implements IBusinessHttpService {
 		if (businessReq.getBusinessId() <= 0) {
 			result.setStatus(BusinessOrderEnum.BusinessIdEmpty.value());
 			result.setMessage(BusinessOrderEnum.BusinessIdEmpty.desc());
+			return result;
 		}
+		if (businessReq.getClienterId() <= 0) {
+			result.setStatus(BusinessOrderEnum.ClienterIdNotExist.value());
+			result.setMessage(BusinessOrderEnum.ClienterIdNotExist.desc());
+			return result;
+		}
+		
 		result.setStatus(HttpReturnRnums.Success.value());
 		result.setMessage(HttpReturnRnums.Success.desc());
 		BusinessBasicInfoModel businessBasicInfoModel = businessService.getBusinessInfo(businessReq);
-
+		if(businessBasicInfoModel == null){
+			result.setStatus(BusinessOrderEnum.BusinessNotExist.value());
+			result.setMessage(BusinessOrderEnum.BusinessNotExist.desc());
+			return result;
+		}
 		result.setResult(businessBasicInfoModel);
 		return result;
 	}

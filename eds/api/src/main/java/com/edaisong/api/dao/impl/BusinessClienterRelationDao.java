@@ -10,6 +10,7 @@ import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IBusinessClienterRelationDao;
 import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.ClienterBindOptionReq;
@@ -175,5 +176,14 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	public	int optBindClienter(OptBindClienterReq req){
 		return getMasterSqlSessionUtil().update(
 				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.optBindClienter", req);
+	}
+
+	@Override
+	public boolean updateClienterBindRelation(
+			ClienterBindOptionReq bindClienterBusiness) {
+		int i =getMasterSqlSessionUtil().update(
+				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.updateClienterBindRelation", bindClienterBusiness);
+		return i>0;
+		 
 	}
 }

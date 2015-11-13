@@ -14,8 +14,11 @@ public enum ClienterBindBusinessEnum {
 	
 	ClienterNameEmpty(3,"骑士名称和Id不能为空"),
 	
-	BusinessNameEmpty(4,"商户名称和Id不能为空");
+	BusinessNameEmpty(4,"商户名称和Id不能为空"),
 	
+	WaitAudit(6,"已申请待审核中"),
+	
+	AuditPass(7,"已绑定且审核通过");
 	
 	private int value = 0;
 	private String desc;
