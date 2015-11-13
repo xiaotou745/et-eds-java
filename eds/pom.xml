@@ -19,6 +19,7 @@
 		<module>openapi</module>
 		<module>wap</module>
 		<module>web</module>
+	    <module>taobaoopenapi</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

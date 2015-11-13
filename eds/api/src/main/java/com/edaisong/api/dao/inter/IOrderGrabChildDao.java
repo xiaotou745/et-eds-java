@@ -9,6 +9,9 @@ public interface IOrderGrabChildDao {
 
     int deleteByPrimaryKey(Integer id);
     List<OrderGrabChild> selectByGrabOrderId(Long grabOrderId);
+    
+    public OrderGrabChild selectTop1ByGrabOrderId(Long grabOrderId);
+    
     int insert(OrderGrabChild record);
 
     int insertSelective(OrderGrabChild record);

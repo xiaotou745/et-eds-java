@@ -20,35 +20,25 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	<!-- 配置引用的环境相关引用文件 Start -->
- 	<!--  <import resource="classpath:conf/core/dev-context.xml" />   -->
-		<import resource="classpath:conf/core/test-context.xml" />
+ 	 <import resource="classpath:conf/core/dev-context.xml" />  
+		<!-- <import resource="classpath:conf/core/test-context.xml" /> -->
 <!-- 	<import resource="classpath:conf/core/pro-context.xml" /> -->
 	  <!--<import resource="classpath:conf/core/devtest-context.xml" /> -->
 	<!-- 配置引用的环境相关引用文件 END -->
 
-	<context:component-scan base-package="com.edaisong.api_http.service.impl" />
+	<context:component-scan base-package="com.edaisong.taobaoopenapi.service.impl" />
 
 	<jaxrs:server id="myService" address="/">
 		<jaxrs:serviceBeans>
-			<ref bean="testService" />
-			<ref bean="commonService" />
-			<ref bean="messageHttpService" />
 			<ref bean="orderHttpService" />
-			<ref bean="accountBillService" />
-			<ref bean="feedbackHttpService" />
-			<ref bean="financeService" />
-			<ref bean="businessHttpService" />
-			<ref bean="orderRegionHttpService" />
-			<ref bean="orderGrabHttpService" />	
-			<ref bean="clienterHttpService" />
 		</jaxrs:serviceBeans>
 			<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
 		<jaxrs:inInterceptors>
 			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
-			<bean class="com.edaisong.api_http.common.AESInterceptor"></bean>
+			<bean class="com.edaisong.taobaoopenapi.common.AESInterceptor"></bean>
 		</jaxrs:inInterceptors>
 		<jaxrs:outInterceptors>
-			<bean class="com.edaisong.api_http.common.RqeustInterceptor"></bean>
+			<bean class="com.edaisong.taobaoopenapi.common.RqeustInterceptor"></bean>
 			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
 		</jaxrs:outInterceptors>
 		<!-- <jaxrs:extensionMappings> -->
@@ -59,7 +49,7 @@
 			<entry key="en" value="en-gb" />
 		</jaxrs:languageMappings>
 		<jaxrs:providers>
-		    <bean class="com.edaisong.api_http.common.GlobalExceptionHandler"/>  
+		    <bean class="com.edaisong.taobaoopenapi.common.GlobalExceptionHandler"/>  
 			<ref bean="jacksonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
