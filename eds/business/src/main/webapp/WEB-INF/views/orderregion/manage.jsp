@@ -7,11 +7,10 @@ String regionjson = (String) request.getAttribute("regionjson");
 String businessLat = (String) request.getAttribute("businessLat");
 %>
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/map.css">
-<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+<link rel="stylesheet" href="<%=basePath%>/css/DrawingManager_min.css" />
 <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=286c3ec71cae58cacfa75d49145ff545"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
-<script src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js" type="text/javascript"></script>
+<script type="text/javascript" src="<%=basePath%>/js/DrawingManager_min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/GeoUtils_min.js"></script>
 <div class="top cb">
 	<h3 class="cb">配送区域管理</h3>
 	<div class="map_title">
@@ -122,6 +121,8 @@ function init(){
 }
 //区域绘制完成事件
 var overlaycomplete = function(e) {
+	//判断多边形面积
+	//var m=BMapLib.GeoUtils.getPolygonArea(e.overlay);
 	if(e.overlay.getPath().length<3){
 		alert("请绘制一个有效的区域");
 		map.removeOverlay(e.overlay);
@@ -349,7 +350,7 @@ function checksame(overlay){
 		for(i=0;i<overlay.getPath().length;i++){
 			var pppoint = new BMap.Point(overlay.getPath()[i].lng,overlay.getPath()[i].lat);
 			var result = BMapLib.GeoUtils.isPointInPolygon(pppoint,overlayArray[parentId]);
-			if(result){
+			if(!result){
 				var p=$('#regionlistul a[id^="regiontitle'+parentId+'_"]');
 				alert("二级区域不能超出一级区域("+$(p).html()+")的范围");
 				return true;
