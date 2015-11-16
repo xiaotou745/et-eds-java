@@ -11,7 +11,9 @@
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.core.consts.AuthCode"%>
+<%@page import="com.edaisong.core.enums.BusinessClienterRelationAuditStatus"%>
 <%@page import="java.util.List"%>
+
 <%
 PagedResponse<BusinessClienterRelationModel> responsePageList=	(PagedResponse<BusinessClienterRelationModel>)request.getAttribute("listData");
 List<BusinessClienterRelationModel> data = responsePageList.getResultList();
@@ -32,6 +34,7 @@ if(data == null){
 								<th>骑士电话</th>
 								<th>时间</th>
 								<th>状态</th>
+								<th>审核状态</th>
 								<th>操作人</th>
 								<th>操作</th>
 							</tr>
@@ -44,25 +47,27 @@ if(data == null){
 								<td><%=data.get(i).getPhoneNo()%></td>
 		                        <td><%=ParseHelper.ToDateString(data.get(i).getUpdatetime()) %></td>
 		                        <td><%=data.get(i).getIsbind()==(short)0? "未绑定":"已绑定"%></td>
+		                        <td><%=BusinessClienterRelationAuditStatus.getEnum(data.get(i).getAuditStatus()).desc()%></td>
 		                        <td><%=data.get(i).getUpdateby() %></td>
 		                        <td>
-		                        <%if(business_setSettleMoneyRate){
-	                        		if(data.get(i).getIsbind() == 0){
-	                        		%>
-	                        		<a href="javascript:funModifyClienterBind(<%=data.get(i).getBusinessid() %>,<%=data.get(i).getClienterid() %>,1,'是否绑定？')">绑定</a>
-	                        		<%}else{
-	                        		%>
-	                        		<a href="javascript:funModifyClienterBind(<%=data.get(i).getBusinessid() %>,<%=data.get(i).getClienterid() %>,0,'是否解除绑定？')">解除绑定</a>
-	                        		<%}
-	                        	}
-								if(business_Recharge){
-									if(data.get(i).getIsenable() == 0){%>
-	                        			<a href="javascript:void(0)" style="color:gray">删除</a>
-	                        		<%}else{%>
-	                        			<a href="javascript:funRemoveClienterBind(<%=data.get(i).getBusinessid() %>,<%=data.get(i).getClienterid() %>)">删除</a>
-	                        		<%}
-	                        	}
-		                        %>
+		                        <% if((int)data.get(i).getAuditStatus()!=BusinessClienterRelationAuditStatus.Wait.value()){
+		                        	if(business_setSettleMoneyRate){
+		                        		if(data.get(i).getIsbind() == 0){
+		                        		%>
+		                        		<a href="javascript:funModifyClienterBind(<%=data.get(i).getBusinessid() %>,<%=data.get(i).getClienterid() %>,1,'是否绑定？')">绑定</a>
+		                        		<%}else{
+		                        		%>
+		                        		<a href="javascript:funModifyClienterBind(<%=data.get(i).getBusinessid() %>,<%=data.get(i).getClienterid() %>,0,'是否解除绑定？')">解除绑定</a>
+		                        		<%}
+		                        	}
+									if(business_Recharge){
+										if(data.get(i).getIsbind()> 0){%>
+		                        			<a href="javascript:void(0)" style="color:gray">删除</a>
+		                        		<%}else{%>
+		                        			<a href="javascript:funRemoveClienterBind(<%=data.get(i).getBusinessid() %>,<%=data.get(i).getClienterid() %>)">删除</a>
+		                        		<%}
+		                        	}
+		                        }%>
 		                        <a href="javascript:bindRecord('<%=data.get(i).getBusinessid() %>','<%=data.get(i).getClienterid() %>')">操作记录</a>
 		                        </td>
 							</tr>

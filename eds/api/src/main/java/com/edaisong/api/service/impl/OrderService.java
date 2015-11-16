@@ -371,7 +371,7 @@ public class OrderService implements IOrderService {
 		// 校验是否可以正常发单
 		PublishOrderReturnEnum returnEnum = verificationAddOrder(req,
 				businessModel);
-		if (returnEnum != PublishOrderReturnEnum.Success) {
+		if (returnEnum != PublishOrderReturnEnum.VerificationSuccess) {
 			resp.setResponseCode(returnEnum.value());
 			resp.setMessage(returnEnum.desc());
 			return resp;
@@ -1484,7 +1484,7 @@ public class OrderService implements IOrderService {
 		order.setAmount(req.getAmount());
 		order.setRemark(req.getRemark());
 		order.setOrderfrom(req.getOrderfrom());
-		order.setStatus((byte) OrderStatus.New.value());
+		order.setStatus((byte) OrderStatus.Cancel.value());
 		order.setOrdercount(req.getOrdercount());
 		order.setPubdate(new Date());
 		order.setBusinessid(req.getBusinessid());
@@ -1585,6 +1585,18 @@ public class OrderService implements IOrderService {
 				child.setPayprice(0d);
 				child.setHasuploadticket(false);
 				child.setThirdpaystatus((short) 0);
+				
+				//以下属性是快单用到的属性
+				child.setBusinessid(req.getBusinessid());
+				child.setStatus((short)0);
+				child.setOrderRegionOneId(0);
+				child.setOrderRegionTwoId(0);
+				child.setOrderCommission(0d);
+				child.setSettleMoney(0d);
+				child.setCommissionRate(0d);
+				child.setBaseCommission(0d);
+				child.setWebsiteSubsidy(0d);
+				child.setAdjustment(0d);
 			}
 		}
 	}

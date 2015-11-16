@@ -668,7 +668,7 @@
 		clienter C WITH (NOLOCK) left JOIN BusinessClienterRelation bcr
 		with(nolock) on C.Id=bcr.ClienterId 
 		and bcr.BusinessId=${businessId}
-		and bcr.IsBind=1
+		and bcr.IsBind=0
 		and bcr.IsEnable=1
 	</sql>
 	<!-- 获得骑士和绑定信息列表 ,不包含骑士已接单的数量 add by pengyi 20150901 -->
@@ -758,22 +758,22 @@
         bcr.CreateTime
 from    dbo.BusinessClienterRelation bcr ( nolock )
         join dbo.business b ( nolock ) on bcr.BusinessId = b.Id
-where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{auditStatus,jdbcType=INTEGER} and bcr.IsBind = 1 and bcr.IsEnable = 1 
+where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{auditStatus,jdbcType=INTEGER} and bcr.IsEnable = 1 
 	</select> 
 	<!-- 获取服务中的商户数量 wangchao -->
 	   <select id="getServiceBusinessTotal" resultType="com.edaisong.entity.resp.MyBusinessResp" 
     parameterType="com.edaisong.entity.req.MyBusinessReq" >
-   select ISNULL(SUM(CASE AuditStatus
-              when 0 then 1
+   select ISNULL(SUM(CASE 
+              when AuditStatus=0 and IsBind=0 then 1
               else 0
             end),0) as shenQingZhongTotal,
-        ISNULL(SUM(CASE AuditStatus
-              when 1 then 1
+        ISNULL(SUM(CASE 
+              when AuditStatus=1 and IsBind=1 then 1 
               else 0
             end),0) as fuWuZhongTotal
  from   dbo.BusinessClienterRelation    a(nolock)
- where   	a.IsEnable=1 and a.IsBind=1
- 	<if test="businessId != 0" >
+ where   	a.IsEnable=1 
+ 	<if test="clienterId != 0" >
   		AND a.[ClienterId]=${clienterId}
   	</if>
   </select>

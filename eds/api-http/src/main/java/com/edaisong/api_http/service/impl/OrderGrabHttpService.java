@@ -54,9 +54,9 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	 * @return
 	 */
 	@Override
-	public HttpResultModel<Integer> ConfirmTake(OrderGrabConfirmTakeReq req)
+	public HttpResultModel<OrderGrabResp> ConfirmTake(OrderGrabConfirmTakeReq req)
 	{
-		HttpResultModel<Integer> resp=orderGrabService.ConfirmTake(req);
+		HttpResultModel<OrderGrabResp> resp=orderGrabService.ConfirmTake(req);
 		return resp;
 	}
 	
@@ -69,9 +69,9 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	 * @return
 	 */
 	@Override	       
-	public HttpResultModel<Integer> Complete(OrderGrabCompleteReq req)
+	public HttpResultModel<OrderGrabResp> Complete(OrderGrabCompleteReq req)
 	{
-		HttpResultModel<Integer> resp=orderGrabService.Complete(req);
+		HttpResultModel<OrderGrabResp> resp=orderGrabService.Complete(req);
 		return resp;
 	}	
 

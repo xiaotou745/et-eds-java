@@ -75,6 +75,7 @@ public class ClienterHttpService implements IClienterHttpService {
 		req.setOptId(req.getClienterId());
         req.setInsertTime(new Date());  
         req.setIsBind(0);  //解除绑定
+        req.setAuditStatus(2);
         boolean b= businessClienterRelationService.modifyClienterBind(req);
         if(!b){
         	res.setStatus(HttpReturnRnums.Fail.value());

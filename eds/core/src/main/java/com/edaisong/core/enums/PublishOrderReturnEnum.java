@@ -65,7 +65,7 @@ public enum PublishOrderReturnEnum {
 	/**
 	 * 策略错误
 	 */
-	StrategyErr(-12, "策略错误"),
+	StrategyErr(-12, "策略错误,请联系客服"),
 	/**
 	 * "区域不能为空
 	 */
@@ -73,7 +73,7 @@ public enum PublishOrderReturnEnum {
 	/**
 	 * 发单模式错误
 	 */
-	PushOrderTypeErr(-14, "发单模式错误");
+	PushOrderTypeErr(-14, "发单模式错误,请联系客服");
 	
 
 	private int value = 0;

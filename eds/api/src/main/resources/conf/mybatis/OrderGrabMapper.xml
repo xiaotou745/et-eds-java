@@ -518,6 +518,9 @@ GROUP BY o.GrabOrderNo ,
             og.PickUpTime ,
             og.ActualDoneDate ,
             og.[Status] ,
+            b.Longitude businessLongitude,
+            b.Latitude businessLatitude,
+            b.City businessCityName,
             ( select    ISNULL(sum(a.OrderCommission),0)
               from      dbo.OrderGrabChild a ( nolock )
               where     a.GrabOrderId = #{grabOrderId,jdbcType=INTEGER}
@@ -577,7 +580,7 @@ select b.Name BusinessName ,
             og.OrderCommission 
      from   dbo.OrderGrab og ( nolock ) 
             join dbo.business b ( nolock ) on og.BusinessId = b.Id
-     where og.[Status] = 1 
+     where og.[Status] = 1 and og.ClienterId = #{clienterId,jdbcType=INTEGER} 
         <if test="dateInfo != null">
 			and  CONVERT(VARCHAR(100), og.GrabTime, 23)='${dateInfo}'
 		</if> 

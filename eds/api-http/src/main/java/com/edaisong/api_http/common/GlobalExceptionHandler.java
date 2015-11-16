@@ -4,17 +4,17 @@ package com.edaisong.api_http.common;
 import org.springframework.stereotype.Component;
 
 
+
 import com.edaisong.api.common.TransactionalRuntimeException;
-
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
-
 import com.edaisong.core.util.StringUtils;
-
 import com.edaisong.entity.common.HttpResultModel;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.ext.ExceptionMapper;
+
 import java.util.Locale;
 
 /**
@@ -27,7 +27,8 @@ public class GlobalExceptionHandler implements ExceptionMapper {
 	@Override
     public Response toResponse(Throwable ex) {
     	HttpResultModel<String> rep=new HttpResultModel<String>();
-    	if (ex instanceof TransactionalRuntimeException) {
+    	if (ex instanceof TransactionalRuntimeException||
+    		ex instanceof InvalidFormatException) {
 	        rep.setStatus(HttpReturnRnums.ParaError.value());
 	        rep.setMessage(HttpReturnRnums.ParaError.desc());
 	        rep.setResult(ex.getMessage());

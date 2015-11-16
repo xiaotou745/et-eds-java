@@ -54,42 +54,29 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	@Override
 	public boolean modifyClienterBind(ClienterBindOptionReq req) {
-		boolean flag = false;
-		if (businessClienterRelationDao.modifyClienterBind(req)) { // 更新绑定状态
+		if(businessClienterRelationDao.modifyClienterBind(req)){
 			if (req.getIsBind() == 1) {// 绑定
-				if (businessDao.updateBusinessIsBind(req.getBusinessId(), 1)) {
-					if (clienterDao.updateClienterIsBind(req.getClienterId(), 1)) {
-						flag = true;
-					}
-				}
+				businessDao.updateBusinessIsBind(req.getBusinessId(), 1);
+			    clienterDao.updateClienterIsBind(req.getClienterId(), 1);
 			} else {// 解绑
-				if (businessClienterRelationDao.getClienterBindBusinessQty(req.getClienterId()) > 0) {
-					if (businessClienterRelationDao.getBusinessBindClienterQty(req.getBusinessId()) > 0) {
-						flag = true;
-					} else {
-						if (businessDao.updateBusinessIsBind(req.getBusinessId(), 0)) {
-							flag = true;
-						}
-					}
-				} else {
-					if (clienterDao.updateClienterIsBind(req.getClienterId(), 0)) {
-						if (businessClienterRelationDao.getBusinessBindClienterQty(req.getBusinessId()) > 0) {
-							flag = true;
-						} else {
-							if (businessDao.updateBusinessIsBind(req.getBusinessId(), 0)) {
-								flag = true;
-							}
-						}
-					}
-				}
+				removeBusinessAndClienterBind(req);
 			}
 		}
-		if (!flag) {
-			throw new TransactionalRuntimeException("修改骑士绑定失败");
-		}
-		return flag;
+		return true;
 	}
-
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public boolean removeBusinessAndClienterBind(ClienterBindOptionReq req){
+		boolean clienterHasBind=businessClienterRelationDao.getClienterBindBusinessQty(req.getClienterId()) > 0;
+		boolean businessHasBind=businessClienterRelationDao.getBusinessBindClienterQty(req.getBusinessId()) > 0;
+	
+		if (!clienterHasBind) {
+			clienterDao.updateClienterIsBind(req.getClienterId(), 0);
+		}
+		if (!businessHasBind) {
+			businessDao.updateBusinessIsBind(req.getBusinessId(), 0);
+		} 
+		return true;
+	}
 	/**
 	 * 删除骑士绑定
 	 * 
@@ -99,28 +86,10 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	@Override
 	public boolean removeclienterbind(ClienterBindOptionReq req) {
-		boolean flag = false;
-		if (businessClienterRelationDao.removeclienterbind(req)) {
-			if (businessClienterRelationDao.getClienterBindBusinessQty(req.getClienterId()) > 0) {
-				if (businessClienterRelationDao.getBusinessBindClienterQty(req.getBusinessId()) > 0) {
-					flag = true;
-				}
-			} else {
-				if (clienterDao.updateClienterIsBind(req.getClienterId(), 0)) {
-					if (businessClienterRelationDao.getBusinessBindClienterQty(req.getBusinessId()) > 0) {
-						flag = true;
-					} else {
-						if (businessDao.updateBusinessIsBind(req.getBusinessId(), 0)) {
-							flag = true;
-						}
-					}
-				}
-			}
+		if(businessClienterRelationDao.removeclienterbind(req)){
+			removeBusinessAndClienterBind(req);
 		}
-		if (!flag) {
-			throw new TransactionalRuntimeException("删除骑士绑定失败");
-		}
-		return flag;
+		return true;
 	}
 
 	/**
@@ -144,18 +113,12 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	 */
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public boolean addClienterBind(ClienterBindOptionReq req) {
-		boolean reg = false;
-		if (businessClienterRelationDao.addClienterBind(req)) {
-			if (businessDao.updateBusinessIsBind(req.getBusinessId(), 1)) {
-				if (clienterDao.updateClienterIsBind(req.getClienterId(), 1)) {
-					reg = true;
-				}
-			}
+		businessClienterRelationDao.addClienterBind(req);
+		if (req.getIsBind()==1) {
+			businessDao.updateBusinessIsBind(req.getBusinessId(), 1);
+			clienterDao.updateClienterIsBind(req.getClienterId(), 1);
 		}
-		if (!reg) {
-			throw new TransactionalRuntimeException("添加骑士绑定失败");
-		}
-		return reg;
+		return true;
 	}
 
 	@Override
@@ -176,7 +139,8 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	public GetMyServiceClientersResp  getMyServiceClienters(PagedGetMyServiceClientersReq req) {
 		GetMyServiceClientersResp result=businessClienterRelationDao.getMyServiceClientersCountInfo(req);
 		result.setList( businessClienterRelationDao.getMyServiceClienters(req));
-		result.getList().forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageServicePath") + action.getHeadPhoto()));
+		result.getList().forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageClienterServicePath") 
+				+ action.getHeadPhoto()));
 		return result;
 	}
 
@@ -190,39 +154,34 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int optBindClienter(OptBindClienterReq req) {
 		if (req.getAuditStatus() == BusinessClienterRelationAuditStatus.Pass.value()) {
 			req.setRemark("门店审核通过骑士申请");
 			req.setIsEnable(1);
-			req.setIsBind(1);
+			req.setIsBind(1); 
 		} else if (req.getAuditStatus() == BusinessClienterRelationAuditStatus.Refuse.value()) {
 			req.setRemark("门店拒绝通过骑士申请");
 			req.setIsEnable(1);
-			req.setIsBind(0);
+			req.setIsBind(0); 
 		}
 		req.setOptName("门店");
-		return businessClienterRelationDao.optBindClienter(req);
+		int result= businessClienterRelationDao.optBindClienter(req);
+		if (result>0&&req.getAuditStatus() == BusinessClienterRelationAuditStatus.Pass.value()) {
+			BusinessClienterRelation relationData=businessClienterRelationDao.getByRelationId(req.getRelationId());
+			businessDao.updateBusinessIsBind(req.getBusinessId(), 1);
+			clienterDao.updateClienterIsBind(relationData.getClienterid(), 1);
+		}
+		return result;
 	}
 
 	/*
 	 * 骑士申请绑定时候，若绑定关系已经存在且审核不是审核通过的情况下，修改状态值为待审核
 	 * wangchao
 	 */
-	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	@Override
 	public boolean updateClienterBindRelation(ClienterBindOptionReq bindClienterBusiness) {
-		boolean reg = false;
-		if (businessClienterRelationDao.updateClienterBindRelation(bindClienterBusiness)) {
-			if (businessDao.updateBusinessIsBind(bindClienterBusiness.getBusinessId(), 1)) {
-				if (clienterDao.updateClienterIsBind(bindClienterBusiness.getClienterId(), 1)) {
-					reg = true;
-				}
-			}
-		}
-		if (!reg) {
-			throw new TransactionalRuntimeException("骑士再次申请绑定商户失败");
-		}
-		return reg;
+		return businessClienterRelationDao.updateClienterBindRelation(bindClienterBusiness);
 	}
 
 }

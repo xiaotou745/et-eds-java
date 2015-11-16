@@ -269,7 +269,7 @@
 			and b.recommendPhone=''${recommendPhone}''
 		</if>
 		<if test="businessName != null and businessName!=''">
-			and b.name=''${businessName}''
+			and b.name like ''%${businessName}%''
 		</if>
 		<if test="businessPhone != null and businessPhone!=''">
 			and b.PhoneNo=''${businessPhone}''
@@ -504,7 +504,7 @@ select @cliernterPoint=geography::Point(#{latitude},#{longitude},4326) ;
 select  b.id as BusinessId,  
 b.name as BusinessName,b.address as BusinessAddress
 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(@cliernterPoint),0) as DistanceToBusiness,
-WaitingCounts
+WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,b.City businessCityName 
 from    BusinessClienterRelation a (nolock)
 join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER} 
 join (select ISNULL(SUM(WaitingCount),0) as  WaitingCounts,BusinessId from OrderRegion (nolock) where Status=1 group by BusinessId ) c on a.BusinessId=c.BusinessId
@@ -517,10 +517,10 @@ order by c.WaitingCounts desc
 	<!-- 骑士绑定商户 建立关系 wangchao-->
 	<insert id="bindClienterBusiness" parameterType="com.edaisong.entity.domain.BindClienterBusiness">
 		insert  into dbo.BusinessClienterRelation
-		        ( BusinessId, ClienterId, CreateBy )
+		        ( BusinessId, ClienterId, CreateBy,IsBind )
 		values  ( #{businessId,jdbcType=INTEGER},  
 		          #{clienterId,jdbcType=INTEGER},  
-		          #{businessName,jdbcType=NVARCHAR}  
+		          #{businessName,jdbcType=NVARCHAR},0
 		          );
 		insert into dbo.ClienterBindOptionLog
 		        ( BusinessId ,
@@ -539,7 +539,7 @@ order by c.WaitingCounts desc
 	<!-- 查询骑士商户是否已经绑定 wangchao -->
 	<select id="getClienterBind" resultType="com.edaisong.entity.BusinessClienterRelation"
 		parameterType="com.edaisong.entity.domain.BindClienterBusiness">
-		SELECT Id ,
+		SELECT top 1 Id ,
        BusinessId ,
        ClienterId ,
        IsEnable ,
@@ -549,17 +549,13 @@ order by c.WaitingCounts desc
        UpdateTime ,
        IsBind ,
        AuditStatus FROM dbo.BusinessClienterRelation (nolock)
-where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,jdbcType=INTEGER}
+where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,jdbcType=INTEGER} 
+order by Id desc
 	</select>
 	
    <sql id="getMyOrdeBListWhere">
   		1=1 and og.BusinessId = ${businessId}  and og.[Status] = ${status}
-  		<if test="orderRegionTwoId !=0">
-			 and og.OrderRegionTwoId=${orderRegionTwoId}
-		</if>		 
-		<if test="orderRegionOneId != 0 and orderRegionTwoId == 0">
-			and og.OrderRegionOneId=${orderRegionOneId} 
-		</if>		
+  		and (og.OrderRegionTwoId=${regionId} or  og.OrderRegionOneId=${regionId} )
   </sql>
      <sql id="getMyOrdeBListColumns">
   		 c.TrueName ClienterName, 
@@ -601,12 +597,7 @@ where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,
 			from 
 			dbo.OrderGrab og(nolock)
           where og.BusinessId = #{businessId,jdbcType=INTEGER} 
-          <if test="orderRegionTwoId !=0">
-			 and og.OrderRegionTwoId=${orderRegionTwoId} 
-		</if>
-		<if test="orderRegionOneId != 0 and orderRegionTwoId == 0">
-			and og.OrderRegionOneId=${orderRegionOneId} 
-		</if>		
+          and (og.OrderRegionTwoId=${regionId} or og.OrderRegionOneId=${regionId} )
 	</select> 
 	<select id="getMyOrderDetailB" resultType="com.edaisong.entity.resp.MyOrderDetailBResp"
 		parameterType="com.edaisong.entity.req.OrderDetailBReq">

@@ -1,13 +1,18 @@
 @charset "utf-8";
+html{
+  height: 100%;
+}
 body{
   background: #fff;
+  height: 100%;
 }
 .map_main{
   background: #fff;
+  height: 100%;
 }
 .map_top{
   width: 100%;
-  height: 200px;
+  height: 55%;
 }
 .map_bottom p{
   height: 30px;

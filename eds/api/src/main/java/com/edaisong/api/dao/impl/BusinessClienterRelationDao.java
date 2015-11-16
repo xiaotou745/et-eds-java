@@ -21,42 +21,6 @@ import com.edaisong.entity.resp.GetMyServiceClientersResp;
 
 @Repository
 public class BusinessClienterRelationDao extends DaoBase implements IBusinessClienterRelationDao{
-
-	@Override
-	public int deleteByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insert(BusinessClienterRelation record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertSelective(BusinessClienterRelation record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public BusinessClienterRelation selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(BusinessClienterRelation record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(BusinessClienterRelation record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	/**
 	 * 获得商户绑定的骑士数量
@@ -185,5 +149,10 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.updateClienterBindRelation", bindClienterBusiness);
 		return i>0;
 		 
+	}
+
+	@Override
+	public BusinessClienterRelation getByRelationId(Integer id) {
+return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getByRelationId", id);
 	}
 }

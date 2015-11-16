@@ -129,7 +129,8 @@ public class BusinessHttpService implements IBusinessHttpService {
 			ClienterBindOptionReq cbor = new ClienterBindOptionReq();
 			cbor.setBusinessId(bindClienterBusiness.getBusinessId());
 			cbor.setClienterId(bindClienterBusiness.getClienterId());
-			cbor.setIsBind(1);
+			cbor.setIsBind(0);
+			cbor.setAuditStatus(BusinessClienterRelationAuditStatus.Wait.value());
 			cbor.setOptId(bindClienterBusiness.getClienterId());
 			cbor.setOptName(bindClienterBusiness.getClienterName()); 
 			cbor.setRemark("添加绑定");
@@ -148,17 +149,17 @@ public class BusinessHttpService implements IBusinessHttpService {
 					return result;
 				} 
 			}
-			//绑定状态0，或者已经绑定审核状态不是审核通过，重新修改状态
-			if(b.getIsbind() == 0 || (b.getIsbind() == 1 && b.getAuditStatus() != 1)){
+			//绑定状态0，即，删除状态，或解绑，或待审核，或拒绝
+			if(b.getIsbind() == 0){
 				//不是绑定状态且审核通过的，再次申请时候，修改状态
 				ClienterBindOptionReq modifycbor = new ClienterBindOptionReq();
 				modifycbor.setBusinessId(bindClienterBusiness.getBusinessId());
 				modifycbor.setClienterId(bindClienterBusiness.getClienterId());
-				modifycbor.setIsBind(1);
-				modifycbor.setOptId(bindClienterBusiness.getClienterId());
-				modifycbor.setOptName(bindClienterBusiness.getClienterName()); 
+				modifycbor.setIsBind(0);
 				modifycbor.setAuditStatus(0);//待审核
 				modifycbor.setIsEnable(1);
+				modifycbor.setOptId(bindClienterBusiness.getClienterId());
+				modifycbor.setOptName(bindClienterBusiness.getClienterName()); 
 				modifycbor.setRemark("骑士再次申请绑定商户");
 				boolean uprel= businessClienterRelationService.updateClienterBindRelation(modifycbor);
 				if(uprel){
@@ -222,6 +223,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 		req.setOptName("门店");
 		req.setOptId(req.getBusinessId());
 		req.setIsBind(0); // 解除绑定
+		req.setAuditStatus(2);
 		businessClienterRelationService.modifyClienterBind(req);
 		return res;
 	}
