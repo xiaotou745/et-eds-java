@@ -133,7 +133,7 @@ public class BusinessController {
 		List<GroupModel> resultList = iGroupService.getGroupList(groupReq);
 
 		int accountID = 0;// 如果管理后台的类型是所有权限就传0，否则传管理后台id
-
+		//获取城市
 		List<AreaModel> openCityList = iPublicProvinceCityService.getOpenCityListByAccountID(accountID);
 		List<BusinessGroup> businessGroupListData = iBusinessGroupService.getBusinessGroupList();
 
