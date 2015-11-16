@@ -60,10 +60,10 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
      * @return
      */
 	@Override
-	public List<Integer> updateCancel(OrderChild record)
+	public List<Integer> updateCancel(String  createtime)
 	{
 		return getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderChildDao.updateCancel", record);
+				"com.edaisong.api.dao.inter.IOrderChildDao.updateCancel", createtime);
 	}
 	
 	@Override
