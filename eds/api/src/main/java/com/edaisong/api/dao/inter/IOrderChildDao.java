@@ -21,7 +21,7 @@ public interface IOrderChildDao {
      * @Date 2015年11月5日 11:40:37
      * @return
      */
-	List<Integer> updateCancel(OrderChild record);
+	List<Integer> updateCancel(String  createtime);
 	
 	
     List<Integer>   updateGradOne(OrderGrabReq record);  	

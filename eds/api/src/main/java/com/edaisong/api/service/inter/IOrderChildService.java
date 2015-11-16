@@ -33,6 +33,7 @@ import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
+import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderPushResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
@@ -41,5 +42,5 @@ import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
 
 public interface IOrderChildService {
-	ResponseBase cancelOrderChild(OrderChild cancelOrder);
+	HttpResultModel<OrderGrabResp> cancelOrderChild(String  createtime);
 }
