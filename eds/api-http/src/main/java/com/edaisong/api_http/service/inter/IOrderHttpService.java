@@ -150,4 +150,13 @@ public interface IOrderHttpService {
 	@Path("/getinstoretask")
 	public HttpResultModel<List<InStoreTask>>  getInStoreTask(InStoreTaskReq para);
 	
+	
+	/**
+	 * C端任务统计接口 
+	 * @author wangchao
+	 * @param data
+	 */
+	@POST
+	@Path("/ordergrabstatisticsc")
+	public HttpResultModel<OrderStatisticsCResp> orderGrabStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
 }

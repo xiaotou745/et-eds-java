@@ -620,9 +620,8 @@ where   og.Id = #{grabOrderId,jdbcType=INTEGER}
 		parameterType="com.edaisong.entity.req.BusinessReq">
 		declare @hasBind int= 0
  select @hasBind = count(1)
- from   dbo.business b ( nolock )
-        left join dbo.BusinessClienterRelation bcr ( nolock ) on b.Id = bcr.BusinessId
- where  b.Id = #{businessId,jdbcType=INTEGER} and bcr.ClienterId = #{clienterId,jdbcType=INTEGER} 
+ from   dbo.BusinessClienterRelation bcr ( nolock )
+ where  bcr.BusinessId = #{businessId,jdbcType=INTEGER} and bcr.ClienterId = #{clienterId,jdbcType=INTEGER} 
  if @hasBind = 0
     begin  
         select top 1
@@ -630,12 +629,10 @@ where   og.Id = #{grabOrderId,jdbcType=INTEGER}
                 b.Name BusinessName ,
                 b.PhoneNo BusinessPhoneNo ,
                 b.Address BusinessAddress ,
-                isnull(bcr.IsBind, 0) IsBind ,
-                isnull(bcr.AuditStatus, 0) AuditStatus
+                0 IsBind ,
+                0 AuditStatus
         from    dbo.business b ( nolock )
-                left join dbo.BusinessClienterRelation bcr ( nolock ) on b.Id = bcr.BusinessId
         where   b.Id = #{businessId,jdbcType=INTEGER}
-        order by bcr.Id desc
     end
  else
     begin
@@ -647,8 +644,8 @@ where   og.Id = #{grabOrderId,jdbcType=INTEGER}
                 isnull(bcr.IsBind, 0) IsBind ,
                 isnull(bcr.AuditStatus, 0) AuditStatus
         from    dbo.business b ( nolock )
-                left join dbo.BusinessClienterRelation bcr ( nolock ) on b.Id = bcr.BusinessId
-        where   b.Id = #{businessId,jdbcType=INTEGER} and bcr.ClienterId = #{clienterId,jdbcType=INTEGER} order by bcr.Id desc
+                join dbo.BusinessClienterRelation bcr ( nolock ) on b.Id = bcr.BusinessId
+        where   bcr.BusinessId = #{businessId,jdbcType=INTEGER} and bcr.ClienterId = #{clienterId,jdbcType=INTEGER} order by bcr.Id desc
     end 
 	</select> 
 	<!-- 商户是否已注册 add by caoheyang 20151110 -->

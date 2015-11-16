@@ -280,5 +280,11 @@ public interface IOrderDao {
 	 * @return
 	 */
 	Long queryIngOrderByRegionId(Long regionId) ;
+
+	OrderStatisticsCResp getOrderGrabStatisticsC(
+			OrderStatisticsCReq orderStatisticsCReq);
+
+	List<DaySatisticsC> getOrderGrabStatisticsDaySatisticsC(
+			OrderStatisticsCReq orderStatisticsCReq);
 	
 }
