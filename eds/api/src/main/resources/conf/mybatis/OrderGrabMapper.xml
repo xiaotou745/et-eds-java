@@ -548,7 +548,10 @@ select b.Name BusinessName ,
         og.OrderRegionTwoName ,
         og.OrderCount ,
         og.Id GrabOrderId,
-        og.GrabOrderNo 
+        og.GrabOrderNo,
+        b.Longitude businessLongitude,
+            b.Latitude businessLatitude,
+            b.City businessCityName,
        <if test="status == 2">
 		 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${clienterLatitude},${clienterLongitude},4326)),0) as DistanceToBusiness  
 	  </if> 

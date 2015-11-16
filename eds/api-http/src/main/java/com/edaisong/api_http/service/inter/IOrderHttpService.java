@@ -13,6 +13,7 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
+import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderReq;
@@ -65,7 +66,7 @@ public interface IOrderHttpService {
 
 	@POST
 	@Path("/cancelOrderChild")
-	public HttpResultModel<OrderGrabResp> CancelOrderChild(String createtime);	
+	public HttpResultModel<OrderGrabResp> CancelOrderChild(OrderChildCancelReq  req);	
 	
 	/**
 	 * B端任务统计接口

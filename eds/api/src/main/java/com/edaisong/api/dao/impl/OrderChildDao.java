@@ -19,6 +19,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
@@ -60,10 +61,10 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
      * @return
      */
 	@Override
-	public List<Integer> updateCancel(String  createtime)
+	public List<Integer> updateCancel(OrderChildCancelReq req)
 	{
 		return getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderChildDao.updateCancel", createtime);
+				"com.edaisong.api.dao.inter.IOrderChildDao.updateCancel", req);
 	}
 	
 	@Override

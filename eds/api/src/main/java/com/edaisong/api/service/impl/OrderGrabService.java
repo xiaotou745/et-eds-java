@@ -216,7 +216,7 @@ public class OrderGrabService implements IOrderGrabService {
 			if(orModelOne.getWaitingcount()==orderCount)
 			{				
 				orModelOne.setHaschild(false);
-		}
+			}
 			orModelOne.setId(OneId);
 			orModelOne.setWaitingcount(-orderCount);		
 			orModelOne.setGrabcount(orderCount);
