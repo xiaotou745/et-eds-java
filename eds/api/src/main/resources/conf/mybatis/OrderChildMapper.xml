@@ -50,7 +50,7 @@
 			OriginalOrderNo, WxCodeUrl, ThirdPayStatus,
 			Status,OrderRegionOneId,OrderRegionTwoId,
 			OrderCommission,SettleMoney,CommissionRate,
-			BaseCommission,WebsiteSubsidy,Adjustment
+			BaseCommission,WebsiteSubsidy,Adjustment,Platform
 			) values (
 			#{item.orderid,jdbcType=INTEGER},
 			#{item.businessid,jdbcType=INTEGER},
@@ -81,7 +81,8 @@
 			#{item.commissionRate,jdbcType=DECIMAL},
 			#{item.baseCommission,jdbcType=DECIMAL},
 			#{item.websiteSubsidy,jdbcType=DECIMAL},
-			#{item.adjustment,jdbcType=DECIMAL}
+			#{item.adjustment,jdbcType=DECIMAL},
+			#{item.platform,jdbcType=INTEGER}
 			);
 		</foreach>
 	</update>
@@ -190,20 +191,20 @@
     where Id = #{id,jdbcType=BIGINT}
   </update>
     <select id="updateGradOne" resultType="java.lang.Integer" parameterType="com.edaisong.entity.req.OrderGrabReq" >
-update dbo.OrderChild set status=1 output inserted.Id where  id in(
+update dbo.OrderChild set status=2 output inserted.Id where  id in(
 select top ${orderCount} id from dbo.OrderChild 
 where status=0 and businessid= ${businessId}
  and orderRegionOneId=#{orderRegionOneId})
   </select>  
   <select id="updateGradTwo" resultType="java.lang.Integer" parameterType="com.edaisong.entity.req.OrderGrabReq" >
-update dbo.OrderChild set status=1 output inserted.Id where  id in(
+update dbo.OrderChild set status=2 output inserted.Id where  id in(
 select top ${orderCount} id from dbo.OrderChild 
 where status=0 and businessid= ${businessId}
 and orderRegionTwoId=${orderRegionTwoId})
   </select>  
-      <select id="updateCancel" resultType="java.lang.Integer" parameterType="com.edaisong.entity.OrderChild" >
+      <select id="updateCancel" resultType="java.lang.Integer" parameterType="java.lang.String" >
 update dbo.OrderChild set status=3 output inserted.Id 
-   where Platform=2 and status=0 and createTime>= #{createtime,jdbcType=TIMESTAMP} and  #{createtime,jdbcType=TIMESTAMP}>=createTime
+   where Platform=2 and status=0 and createTime>= #{createtime,jdbcType=NVARCHAR} and  #{createtime,jdbcType=NVARCHAR}>=createTime
   </select>  
   <select id="selectByPrimaryKey" resultType="com.edaisong.entity.OrderChild" parameterType="java.lang.Long" >
     select 

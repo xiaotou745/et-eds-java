@@ -34,10 +34,12 @@ import com.edaisong.entity.Group;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderSubsidiesLog;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
+import com.edaisong.entity.resp.OrderGrabResp;
 
 import java.util.Date;
 @Service
@@ -67,10 +69,12 @@ public class OrderChildService implements IOrderChildService {
      * @return
      */
 	@Override
-	public ResponseBase cancelOrderChild(OrderChild cancelOrder) {
+	public HttpResultModel<OrderGrabResp> cancelOrderChild(String createtime) {
 
-/*		List<Integer> list=orderChildDao.updateCancel(cancelOrder);
-		for(int i=0;i<list.size();i++)
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
+		
+		List<Integer> list=orderChildDao.updateCancel(createtime);
+		/*for(int i=0;i<list.size();i++)
 		{
 			int id=list.get(0);
 			OrderChild currOcModel= orderChildDao.selectByPrimaryKey(id);			
@@ -137,7 +141,7 @@ public class OrderChildService implements IOrderChildService {
 			record.setPlatform(SuperPlatform.NewSystemCancel.value());
 			int ordersubsidiesId = orderSubsidiesLogDao.insert(record);
 		}*/
-		return null;
+		return resp;
 	}
 	
    
