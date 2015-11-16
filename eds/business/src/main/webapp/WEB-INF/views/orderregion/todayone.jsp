@@ -28,6 +28,7 @@ String businessid=request.getAttribute("businessid").toString();
 		<link href="<%=basePath%>/css/todaymap.css" rel="stylesheet">
 		<script type="text/javascript" src="<%=basePath%>/js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=286c3ec71cae58cacfa75d49145ff545"></script>
+<script src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js" type="text/javascript"></script>
 </head>
 <body>
 	<div class="map_main">
@@ -119,19 +120,26 @@ String businessid=request.getAttribute("businessid").toString();
 		map.centerAndZoom(poi, 14);
 	}
 	function addevent(tempPolygon,overlayId){
-		tempPolygon.addEventListener('click',function(e){
-			overlayClick(overlayId);
-		});
+// 		tempPolygon.addEventListener('click',function(e){
+// 			overlayClick(overlayId);
+// 		});
 		//app上触摸，不会触发click事件，网上给的解决方法如下：
 		//地址：http://www.lofter.com/postentry?from=search&permalink=1ce8cc_7dc4e1
-		tempPolygon.addEventListener('touchstart',function(e){
-			map.onclick = tmpfun;
-			overlayClick(overlayId);
-		});
+// 		tempPolygon.addEventListener('touchstart',function(e){
+// 			map.onclick = tmpfun;
+// 			overlayClick(overlayId);
+// 		});
+	}
+	function pointarray(object){
+		var pts = [];
+		for(var i=0;i<object.overlayPointList.length;i++){
+			pts.push(new BMap.Point(object.overlayPointList[i].lng, object.overlayPointList[i].lat));
+		}
+		return pts;
 	}
 	//绘制一个多边形
 	function drawOverlay(object){
-		var tempPolygon = new BMap.Polygon(object.overlayPointList,styleOptions);
+		var tempPolygon = new BMap.Polygon(pointarray(object),styleOptions);
 		var overlayId=object.overlayId;
 		addevent(tempPolygon,overlayId);
 		overlayArray[overlayId]=tempPolygon;
@@ -140,7 +148,7 @@ String businessid=request.getAttribute("businessid").toString();
 		var tempid=0;
 		for(var i=0;i<object.subLists.length;i++){
 			tempid=object.subLists[i].overlayId;
-		    var childPolygon = new BMap.Polygon(object.subLists[i].overlayPointList,styleOptions);
+		    var childPolygon = new BMap.Polygon(pointarray(object.subLists[i]),styleOptions);
 		    addevent(childPolygon,tempid);
 			map.addOverlay(childPolygon);
 			overlayArray[tempid]=childPolygon;
@@ -241,7 +249,6 @@ String businessid=request.getAttribute("businessid").toString();
 		for(var i=0;i<tempArray.length;i++){
 			drawOverlay(tempArray[i]);
 		}
-
 		overlayClick(getmaxParentid());
 	}
 	function getdetail(status,target){
@@ -300,6 +307,26 @@ String businessid=request.getAttribute("businessid").toString();
 		var point = getcenter(overlayId);
 	    map.panTo(point);
 	  }
+	map.addEventListener("click",function(e){
+		//先判断是否点击的是二级区域
+		for(var i=0;i<tempArray.length;i++){
+			for(var j=0;j<tempArray[i].subLists.length;j++){
+				var ply =overlayArray[tempArray[i].subLists[j].overlayId];
+				if(BMapLib.GeoUtils.isPointInPolygon(e.point, ply)){
+					overlayClick(tempArray[i].subLists[j].overlayId);
+					return;
+				 }
+			}
+		}
+		//然后判断是否点击的是一级区域
+		for(var i=0;i<tempArray.length;i++){
+			var ply =overlayArray[tempArray[i].overlayId];
+			if(BMapLib.GeoUtils.isPointInPolygon(e.point, ply)){
+				overlayClick(tempArray[i].overlayId);
+				return;
+			 }
+		}
+	});
 	$(function(){
 		init();
 		var t=setTimeout(function(){

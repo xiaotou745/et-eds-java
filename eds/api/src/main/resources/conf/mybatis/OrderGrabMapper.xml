@@ -518,6 +518,9 @@ GROUP BY o.GrabOrderNo ,
             og.PickUpTime ,
             og.ActualDoneDate ,
             og.[Status] ,
+            b.Longitude businessLongitude,
+            b.Latitude businessLatitude,
+            b.City businessCityName,
             ( select    ISNULL(sum(a.OrderCommission),0)
               from      dbo.OrderGrabChild a ( nolock )
               where     a.GrabOrderId = #{grabOrderId,jdbcType=INTEGER}

@@ -13,7 +13,9 @@ public class InStoreTask {
 	private String businessAddress;
 	private String distanceToBusiness;
 	private List<InStoreOrderRegionInfo> list;
-
+	private double longitude;
+	private double latitude;
+	private String cityName;
 	/**
 	 * 商户id
 	 * 
@@ -102,6 +104,30 @@ public class InStoreTask {
 	 */
 	public void setList(List<InStoreOrderRegionInfo> list) {
 		this.list = list;
+	} 
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
 
 }
