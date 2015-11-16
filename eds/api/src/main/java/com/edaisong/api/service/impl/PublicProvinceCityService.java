@@ -115,7 +115,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	public List<AreaModel> getOpenCityListByAccountID(int accountID) {
 		
 		if (accountID == 0) {
-			return getOpenCityByJiBie(2);
+			return getOpenCityByJiBie(3);
 		}else {
 			return publicProvinceCityDao.getOpenCityListByAccountID(accountID);	
 		}
@@ -130,7 +130,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 		List<AreaModel> listnew = new ArrayList<AreaModel>();
 
 		for (AreaModel item : list) {
-			if (item.getJiBie() == 3&&item.getParentId()==cityId) {
+			if (item.getJiBie() == 4&&item.getParentId()==cityId) {
 				listnew.add(item);
 			}
 		}

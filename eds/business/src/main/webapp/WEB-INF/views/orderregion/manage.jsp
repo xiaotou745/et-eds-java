@@ -526,10 +526,23 @@ function saveall(){
 		}
 		var childLength = $('#parent'+parId+' li[id^="child"]').length;
 		if(childLength<9){
-		    zoomIn(parId,true);
-			showregion(parId);
-			parentId=parId;
-			beginDraw();
+			var url = "<%=basePath%>/orderregion/checkorder";
+	        $.ajax({
+	            type: 'POST',
+	            url: url,
+	            data: {"regionId":parId},
+	            success: function (result) {   		
+	            	if(result>0){
+	            		alert("当前区域中今日还存在未完成的订单,暂时不能添加二级区域");  
+	            	}
+	            	else{
+	        		    zoomIn(parId,true);
+	        			showregion(parId);
+	        			parentId=parId;
+	        			beginDraw();
+	            	}
+	            }
+	        });
 		}else{
 			alert("二级区域最多只能有9个");
 		}
