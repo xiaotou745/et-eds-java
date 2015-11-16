@@ -115,7 +115,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	public List<AreaModel> getOpenCityListByAccountID(int accountID) {
 		
 		if (accountID == 0) {
-			return getOpenCityByJiBie(2);
+			return getOpenCityByJiBie(3);
 		}else {
 			return publicProvinceCityDao.getOpenCityListByAccountID(accountID);	
 		}
