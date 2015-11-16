@@ -539,7 +539,7 @@ order by c.WaitingCounts desc
 	<!-- 查询骑士商户是否已经绑定 wangchao -->
 	<select id="getClienterBind" resultType="com.edaisong.entity.BusinessClienterRelation"
 		parameterType="com.edaisong.entity.domain.BindClienterBusiness">
-		SELECT top 1 Id ,
+	SELECT top 1 Id ,
        BusinessId ,
        ClienterId ,
        IsEnable ,
@@ -552,7 +552,6 @@ order by c.WaitingCounts desc
 where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,jdbcType=INTEGER} 
 order by Id desc
 	</select>
-	
    <sql id="getMyOrdeBListWhere">
   		1=1 and og.BusinessId = ${businessId}  and og.[Status] = ${status}
   		and (og.OrderRegionTwoId=${regionId} or  og.OrderRegionOneId=${regionId} )
@@ -561,9 +560,9 @@ order by Id desc
   		 c.TrueName ClienterName, 
 			og.ClienterId,
 			c.PhoneNo ClienterPhoneNo, 
-			og.GrabTime,
-			og.PickUpTime,
-			og.ActualDoneDate,
+			CONVERT(varchar(100),og.GrabTime,20) GrabTime,
+            CONVERT(varchar(100),og.PickUpTime,20) PickUpTime,
+            CONVERT(varchar(100),og.ActualDoneDate,20) ActualDoneDate ,
 			og.OrderRegionOneName,
 			og.OrderRegionTwoName,
 			og.Status,
@@ -604,9 +603,9 @@ order by Id desc
 	select  c.TrueName ClienterName ,
         og.ClienterId ,
         c.PhoneNo ClienterPhoneNo , 
-        og.GrabTime, 
-        og.PickUpTime ,
-        og.ActualDoneDate ,
+        CONVERT(varchar(100),og.GrabTime,20) GrabTime,
+        CONVERT(varchar(100),og.PickUpTime,20) PickUpTime,
+        CONVERT(varchar(100),og.ActualDoneDate,20) ActualDoneDate ,
         og.OrderRegionOneName ,
         og.OrderRegionTwoName ,
         og.[Status] , 
