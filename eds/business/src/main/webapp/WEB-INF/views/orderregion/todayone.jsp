@@ -37,30 +37,30 @@ String businessid=request.getAttribute("businessid").toString();
 			<p class="todaya">请点击区域查看订单</p>
 			<span id="regiontitle">尚8一级>尚8二级（50单）</span>
 			<ul class="m-bx m-bx-l">
-				<li class="m-fx-1">
+				<li class="m-fx-1" id="waiting" regionid="-1">
 					<dl>
 						<dt>待接单</dt>
-						<dd><a id="waiting" href="#" regionid="-1" onclick="getdetail(0,this)">0单待接单</a></dd>
+						<dd id="waitingNum">0单待接单</dd>
 					</dl>
 				</li>
-				<li class="m-fx-1">
+				<li class="m-fx-1" id="picking" regionid="-1">
 					<dl class="quh">
 						<dt>取货中>></dt>
-						<dd><a id="picking" href="#" regionid="-1"  onclick="getdetail(2,this)">0单取货中</a></dd>
+						<dd id="pickingNum">0单取货中</dd>
 					</dl>
 				</li>
 			</ul>
 			<ul class="m-bx m-bx-l">
-				<li class="m-fx-1">
+				<li class="m-fx-1"  id="sending" regionid="-1">
 					<dl class="peis">
 						<dt>配送中>></dt>
-						<dd><a id="sending" href="#" regionid="-1" onclick="getdetail(4,this)">0单配送中</a></dd>
+						<dd id="sendingNum">0单配送中</dd>
 					</dl>
 				</li>
-				<li class="m-fx-1">
+				<li class="m-fx-1" id="done" regionid="-1">
 					<dl class="wanc">
 						<dt>已完成>></dt>
-						<dd><a id="done" href="#" regionid="-1" onclick="getdetail(1,this)">0单已完成</a></dd>
+						<dd id="doneNum">0单已完成</dd>
 					</dl>
 				</li>
 			</ul>
@@ -175,6 +175,7 @@ String businessid=request.getAttribute("businessid").toString();
 		label.setStyle({color :"blue", fontWeight :'700', fontSize :"12px", fontFamily :"Microsoft Yahei", backgroundColor :'none', border :0, cursor :"pointer"});
 		map.addOverlay(label);  
 	}
+	
 	function overlayClick(id){
 		if(id<0){
 			return;
@@ -213,10 +214,10 @@ String businessid=request.getAttribute("businessid").toString();
 		$("#done").attr("regionid",id);
 		
 		//默认都是0单（如果有详情，则显示详情中的数量）
-		$("#waiting").html("0单待接单");
-		$("#picking").html("0单取货中");
-		$("#sending").html("0单配送中");
-		$("#done").html("0单已完成");
+		$("#waitingNum").html("0单待接单");
+		$("#pickingNum").html("0单取货中");
+		$("#sendingNum").html("0单配送中");
+		$("#doneNum").html("0单已完成");
 		
 		for(var i=0;i<detailJson.length;i++){
 			if((region.parentId==0&&
@@ -227,16 +228,16 @@ String businessid=request.getAttribute("businessid").toString();
 				 detailJson[i].orderRegionTwoId==id)){
 					switch(detailJson[i].status){
 						case 0:
-							$("#waiting").html(detailJson[i].num+"单待接单");
+							$("#waitingNum").html(detailJson[i].num+"单待接单");
 							break;
 						case 2:
-							$("#picking").html(detailJson[i].num+"单取货中");
+							$("#pickingNum").html(detailJson[i].num+"单取货中");
 							break;
 						case 4:
-							$("#sending").html(detailJson[i].num+"单配送中");
+							$("#sendingNum").html(detailJson[i].num+"单配送中");
 							break;
 						case 1:
-							$("#done").html(detailJson[i].num+"单已完成");
+							$("#doneNum").html(detailJson[i].num+"单已完成");
 							break;
 					}
 			}
@@ -258,14 +259,15 @@ String businessid=request.getAttribute("businessid").toString();
 		}
 		overlayClick(getmaxParentid());
 	}
-	function getdetail(status,target){
+
+	function getdetail(status,regionid){
 		if(status==0){
 			return;
 		}
-		var regionid=$(target).attr('regionid'); 
 		if(parseInt(regionid)<0){
 			return;
 		}
+
 		var regionName="";
 		for(var i=0;i<totalJson.length;i++){
 			if(totalJson[i].id==regionid){
@@ -328,6 +330,18 @@ String businessid=request.getAttribute("businessid").toString();
 	});
 	$(function(){
 		init();
+		$('#waiting').click(function(){
+			getdetail(0,$('#waiting').attr('regionid'));
+		});
+		$('#picking').click(function(){
+			getdetail(2,$('#picking').attr('regionid'));
+		});
+		$('#sending').click(function(){
+			getdetail(4,$('#sending').attr('regionid'));
+		});
+		$('#done').click(function(){
+			getdetail(1,$('#done').attr('regionid'));
+		});
 		var t=setTimeout(function(){
 			var divs=$("#map a").hide();
 		},1000);
