@@ -117,7 +117,7 @@ String businessid=request.getAttribute("businessid").toString();
 		}
 
 		var poi = new BMap.Point(centerLongitude, centerLatitude);
-		map.centerAndZoom(poi, 14);
+		map.centerAndZoom(poi, 15);
 	}
 	function addevent(tempPolygon,overlayId){
 // 		tempPolygon.addEventListener('click',function(e){
@@ -197,7 +197,14 @@ String businessid=request.getAttribute("businessid").toString();
 			$("#regiontitle").html(parentregion.name+"("+parentregion.num+"单)"+">"+region.name+"("+region.num+"单)");
 		}else{
 			$("#regiontitle").html(region.name+"("+region.num+"单)");
-		    zoomIn(id);
+			var haschild=false;
+			for(var i=0;i<totalJson.length;i++){
+				if(totalJson[i].parentId==region.id){
+					haschild=true;
+					break;
+				}
+			}
+		    zoomIn(id,haschild);
 		}
 
 		$("#waiting").attr("regionid",id);
@@ -290,19 +297,11 @@ String businessid=request.getAttribute("businessid").toString();
 		return maxparentid;
 	}
 	//点击区域放大，地图居中
-	function zoomIn(overlayId) {
-		var isparent=true;
-		for(var i=0;i<totalJson.length;i++){
-			if(totalJson[i].id==overlayId){
-				if(totalJson[i].parentId>=0){
-					isparent=false;
-					break;
-				}
-			}
-		}
-	    //$(window).scrollTop(200);
-	    if(isparent){
+	function zoomIn(overlayId,haschild) {
+	    if(haschild){
 		    map.zoomTo(16);
+	    }else{
+	    	 map.zoomTo(15);
 	    }
 		var point = getcenter(overlayId);
 	    map.panTo(point);
