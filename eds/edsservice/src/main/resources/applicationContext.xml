@@ -30,7 +30,7 @@
 		</property>
 		<property name="cronExpression">
 			<!-- <value>0 0 8 * * ?</value> -->
-			<value>0/10 * * * * ?</value>
+			<value>0/30 * * * * ?</value>
 		</property>
 	</bean>
 
