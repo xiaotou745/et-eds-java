@@ -223,6 +223,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 		req.setOptName("门店");
 		req.setOptId(req.getBusinessId());
 		req.setIsBind(0); // 解除绑定
+		req.setAuditStatus(2);
 		businessClienterRelationService.modifyClienterBind(req);
 		return res;
 	}
