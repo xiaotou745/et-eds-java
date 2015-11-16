@@ -28,6 +28,7 @@ String businessid=request.getAttribute("businessid").toString();
 		<link href="<%=basePath%>/css/todaymap.css" rel="stylesheet">
 		<script type="text/javascript" src="<%=basePath%>/js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=286c3ec71cae58cacfa75d49145ff545"></script>
+<script type="text/javascript" src="<%=basePath%>/js/GeoUtils_min.js"></script>
 </head>
 <body>
 	<div class="map_main">
@@ -39,7 +40,7 @@ String businessid=request.getAttribute("businessid").toString();
 				<li class="m-fx-1">
 					<dl>
 						<dt>待接单</dt>
-						<dd><a id="waiting" href="#" regionid="-1" onclick="getdetail(0,this)">0单接单</a></dd>
+						<dd><a id="waiting" href="#" regionid="-1" onclick="getdetail(0,this)">0单待接单</a></dd>
 					</dl>
 				</li>
 				<li class="m-fx-1">
@@ -116,22 +117,29 @@ String businessid=request.getAttribute("businessid").toString();
 		}
 
 		var poi = new BMap.Point(centerLongitude, centerLatitude);
-		map.centerAndZoom(poi, 14);
+		map.centerAndZoom(poi, 15);
 	}
 	function addevent(tempPolygon,overlayId){
-		tempPolygon.addEventListener('click',function(e){
-			overlayClick(overlayId);
-		});
+// 		tempPolygon.addEventListener('click',function(e){
+// 			overlayClick(overlayId);
+// 		});
 		//app上触摸，不会触发click事件，网上给的解决方法如下：
 		//地址：http://www.lofter.com/postentry?from=search&permalink=1ce8cc_7dc4e1
-		tempPolygon.addEventListener('touchstart',function(e){
-			map.onclick = tmpfun;
-			overlayClick(overlayId);
-		});
+// 		tempPolygon.addEventListener('touchstart',function(e){
+// 			map.onclick = tmpfun;
+// 			overlayClick(overlayId);
+// 		});
+	}
+	function pointarray(object){
+		var pts = [];
+		for(var i=0;i<object.overlayPointList.length;i++){
+			pts.push(new BMap.Point(object.overlayPointList[i].lng, object.overlayPointList[i].lat));
+		}
+		return pts;
 	}
 	//绘制一个多边形
 	function drawOverlay(object){
-		var tempPolygon = new BMap.Polygon(object.overlayPointList,styleOptions);
+		var tempPolygon = new BMap.Polygon(pointarray(object),styleOptions);
 		var overlayId=object.overlayId;
 		addevent(tempPolygon,overlayId);
 		overlayArray[overlayId]=tempPolygon;
@@ -140,7 +148,7 @@ String businessid=request.getAttribute("businessid").toString();
 		var tempid=0;
 		for(var i=0;i<object.subLists.length;i++){
 			tempid=object.subLists[i].overlayId;
-		    var childPolygon = new BMap.Polygon(object.subLists[i].overlayPointList,styleOptions);
+		    var childPolygon = new BMap.Polygon(pointarray(object.subLists[i]),styleOptions);
 		    addevent(childPolygon,tempid);
 			map.addOverlay(childPolygon);
 			overlayArray[tempid]=childPolygon;
@@ -165,7 +173,7 @@ String businessid=request.getAttribute("businessid").toString();
 		map.centerAndZoom(point, 15);
 		var label = new BMap.Label(title, {position :point, offset :new BMap.Size(-20, -10)});
 		label.setStyle({color :"blue", fontWeight :'700', fontSize :"12px", fontFamily :"Microsoft Yahei", backgroundColor :'none', border :0, cursor :"pointer"});
-		//map.addOverlay(label);  
+		map.addOverlay(label);  
 	}
 	function overlayClick(id){
 		if(id<0){
@@ -189,7 +197,14 @@ String businessid=request.getAttribute("businessid").toString();
 			$("#regiontitle").html(parentregion.name+"("+parentregion.num+"单)"+">"+region.name+"("+region.num+"单)");
 		}else{
 			$("#regiontitle").html(region.name+"("+region.num+"单)");
-		    zoomIn(id);
+			var haschild=false;
+			for(var i=0;i<totalJson.length;i++){
+				if(totalJson[i].parentId==region.id){
+					haschild=true;
+					break;
+				}
+			}
+		    zoomIn(id,haschild);
 		}
 
 		$("#waiting").attr("regionid",id);
@@ -198,7 +213,7 @@ String businessid=request.getAttribute("businessid").toString();
 		$("#done").attr("regionid",id);
 		
 		//默认都是0单（如果有详情，则显示详情中的数量）
-		$("#waiting").html("0单接待");
+		$("#waiting").html("0单待接单");
 		$("#picking").html("0单取货中");
 		$("#sending").html("0单配送中");
 		$("#done").html("0单已完成");
@@ -212,7 +227,7 @@ String businessid=request.getAttribute("businessid").toString();
 				 detailJson[i].orderRegionTwoId==id)){
 					switch(detailJson[i].status){
 						case 0:
-							$("#waiting").html(detailJson[i].num+"单接待");
+							$("#waiting").html(detailJson[i].num+"单待接单");
 							break;
 						case 2:
 							$("#picking").html(detailJson[i].num+"单取货中");
@@ -241,7 +256,6 @@ String businessid=request.getAttribute("businessid").toString();
 		for(var i=0;i<tempArray.length;i++){
 			drawOverlay(tempArray[i]);
 		}
-
 		overlayClick(getmaxParentid());
 	}
 	function getdetail(status,target){
@@ -283,23 +297,35 @@ String businessid=request.getAttribute("businessid").toString();
 		return maxparentid;
 	}
 	//点击区域放大，地图居中
-	function zoomIn(overlayId) {
-		var isparent=true;
-		for(var i=0;i<totalJson.length;i++){
-			if(totalJson[i].id==overlayId){
-				if(totalJson[i].parentId>=0){
-					isparent=false;
-					break;
-				}
-			}
-		}
-	    //$(window).scrollTop(200);
-	    if(isparent){
+	function zoomIn(overlayId,haschild) {
+	    if(haschild){
 		    map.zoomTo(16);
+	    }else{
+	    	 map.zoomTo(15);
 	    }
 		var point = getcenter(overlayId);
 	    map.panTo(point);
 	  }
+	map.addEventListener("click",function(e){
+		//先判断是否点击的是二级区域
+		for(var i=0;i<tempArray.length;i++){
+			for(var j=0;j<tempArray[i].subLists.length;j++){
+				var ply =overlayArray[tempArray[i].subLists[j].overlayId];
+				if(BMapLib.GeoUtils.isPointInPolygon(e.point, ply)){
+					overlayClick(tempArray[i].subLists[j].overlayId);
+					return;
+				 }
+			}
+		}
+		//然后判断是否点击的是一级区域
+		for(var i=0;i<tempArray.length;i++){
+			var ply =overlayArray[tempArray[i].overlayId];
+			if(BMapLib.GeoUtils.isPointInPolygon(e.point, ply)){
+				overlayClick(tempArray[i].overlayId);
+				return;
+			 }
+		}
+	});
 	$(function(){
 		init();
 		var t=setTimeout(function(){

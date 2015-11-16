@@ -216,7 +216,7 @@ public class OrderGrabService implements IOrderGrabService {
 			if(orModelOne.getWaitingcount()==orderCount)
 			{				
 				orModelOne.setHaschild(false);
-		}
+			}
 			orModelOne.setId(OneId);
 			orModelOne.setWaitingcount(-orderCount);		
 			orModelOne.setGrabcount(orderCount);
@@ -292,7 +292,8 @@ public class OrderGrabService implements IOrderGrabService {
 		{
 			throw new TransactionalRuntimeException("抢单与取货骑士不符");
 		}
-		if(currOgModel.getStatus().equals(OrderStatus.Delivery.value()))
+		
+		if(currOgModel.getStatus().toString().equals(Integer.toString(OrderStatus.Delivery.value()) ))
 		{			
 		}
 		else
@@ -430,13 +431,14 @@ public class OrderGrabService implements IOrderGrabService {
 		{
 			throw new TransactionalRuntimeException("取货与完成骑士不符");
 		}
-		/*if(currOgModel.getStatus().equals(OrderStatus.Taking.value()))
+		
+		if(currOgModel.getStatus().toString().equals(Integer.toString(OrderStatus.Taking.value())))
 		{			
 		}
 		else
 		{
 			throw new TransactionalRuntimeException("订单不处于取货状态");
-		}*/
+		}
 		
 		//更新骑士余额	获取第一条子订单	
 		OrderGrabChild currOgcModel=  orderGrabChildDao.selectTop1ByGrabOrderId((long)req.getOrderGrabId());

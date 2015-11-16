@@ -228,6 +228,7 @@ public class OrderRegionController {
 		model.addObject("regionjson", json);
 		List<RegionOrderTotal> totalData=orderService.queryTodayOrderTotal(businessid);
 		List<RegionOrderDetail> detailData=orderService.queryTodayOrderDetail(businessid);
+		plusChild2Parent(totalData);
 		String totalJson=JsonUtil.obj2string(totalData);
 		String detailJson=JsonUtil.obj2string(detailData);
 		model.addObject("totalJson", totalJson);
@@ -237,6 +238,21 @@ public class OrderRegionController {
 		model.addObject("businessLat", businessLat);
 		model.addObject("businessid", businessid);
 		return model;
+	}
+	/**
+	 * 将二级区域中的订单数量加到所属的一级区域中
+	 * @author hailongzhao
+	 * @date 20151116
+	 * @param totalData
+	 */
+	private void plusChild2Parent(List<RegionOrderTotal> totalData){
+		long childNum=0; 
+		for (RegionOrderTotal regionOrderTotal : totalData) {
+			if (regionOrderTotal.getParentId().equals(0l)) {
+				childNum=totalData.stream().filter(t ->regionOrderTotal.getId().equals(t.getParentId())).mapToLong(t->t.getNum()).sum();
+				regionOrderTotal.setNum(regionOrderTotal.getNum()+childNum);
+			}
+		}
 	}
 //	/**
 //	 * e代送新流程中的h5今日订单页面区域统计(给手机app用，当前站点不显示)

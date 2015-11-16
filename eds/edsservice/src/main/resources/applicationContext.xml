@@ -7,8 +7,8 @@
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<import resource="classpath:conf/core/dev-context.xml" />
-
+	<!-- <import resource="classpath:conf/core/dev-context.xml" /> -->
+	<import resource="classpath:conf/core/pro-context.xml" />
 	<!-- mvn clean install -DskipTests=true -->
 	<!-- OrderWindowService -->
 	<context:property-placeholder
@@ -30,15 +30,15 @@
 		</property>
 		<property name="cronExpression">
 			<!-- <value>0 0 8 * * ?</value> -->
-			<value>0 0/1 * * * ?</value>
+			<value>0/30 * * * * ?</value>
 		</property>
 	</bean>
-	
+
 	<bean id="startQuertz" lazy-init="false" autowire="no"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="doOrderWindowService" />
+				<ref bean="doOrderService" />
 			</list>
 		</property>
 	</bean>

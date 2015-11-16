@@ -2,20 +2,25 @@ package com.edaisong.api_http.service.impl;
 
 import java.util.List;
 
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.service.inter.IOrderChildService;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.enums.returnenums.InStoreTaskReturnEnum;
+import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder; 
-
+import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
@@ -47,6 +52,9 @@ public class OrderHttpService implements IOrderHttpService {
 	@Autowired
 	private IOrderService orderService;
 	
+	@Autowired
+	private IOrderChildService orderChildService;
+	
 
 	/**
 	 * 发布订单 
@@ -63,6 +71,12 @@ public class OrderHttpService implements IOrderHttpService {
 		return resp;
 	}	
 
+	@Override
+	public HttpResultModel<OrderGrabResp> CancelOrderChild(OrderChildCancelReq  req)
+	{
+		HttpResultModel<OrderGrabResp> resp= orderChildService.cancelOrderChild(req);			
+		return resp;
+	}	
 	
 	/**
 	 * B端任务统计接口

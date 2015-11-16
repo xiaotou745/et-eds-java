@@ -30,6 +30,9 @@ public class MyOrderGrabDetailCResp {
     private String pickUpTime;
   
     private Double orderCommission;
+	private double businessLongitude;
+	private double businessLatitude;
+	private String businessCityName;
 	public String getOrderRegionOneName() {
 		return orderRegionOneName;
 	}
@@ -155,5 +158,29 @@ public class MyOrderGrabDetailCResp {
 
 	public void setOrderCommission(Double orderCommission) {
 		this.orderCommission = orderCommission;
+	}
+
+	public double getBusinessLongitude() {
+		return businessLongitude;
+	}
+
+	public void setBusinessLongitude(double businessLongitude) {
+		this.businessLongitude = businessLongitude;
+	}
+
+	public double getBusinessLatitude() {
+		return businessLatitude;
+	}
+
+	public void setBusinessLatitude(double businessLatitude) {
+		this.businessLatitude = businessLatitude;
+	}
+
+	public String getBusinessCityName() {
+		return businessCityName;
+	}
+
+	public void setBusinessCityName(String businessCityName) {
+		this.businessCityName = businessCityName;
 	} 
 }

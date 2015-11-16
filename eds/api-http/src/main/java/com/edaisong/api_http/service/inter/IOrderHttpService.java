@@ -7,11 +7,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
+import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderReq;
@@ -62,7 +64,9 @@ public interface IOrderHttpService {
 	@Path("/push")
 	public HttpResultModel<OrderResp> Push(OrderReq req);	
 
-	
+	@POST
+	@Path("/cancelOrderChild")
+	public HttpResultModel<OrderGrabResp> CancelOrderChild(OrderChildCancelReq  req);	
 	
 	/**
 	 * B端任务统计接口

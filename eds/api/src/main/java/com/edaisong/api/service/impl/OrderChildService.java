@@ -16,9 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IGroupDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
+import com.edaisong.api.dao.inter.IOrderDao;
 import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
 import com.edaisong.api.service.inter.IBusinessService;
@@ -31,18 +33,26 @@ import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Group;
+import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
+import com.edaisong.entity.OrderGrab;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderSubsidiesLog;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
+import com.edaisong.entity.req.OrderChildCancelReq;
+import com.edaisong.entity.resp.OrderGrabResp;
 
 import java.util.Date;
 @Service
 public class OrderChildService implements IOrderChildService {
 
+	@Autowired
+	private IOrderDao orderDao;
+	
 	@Autowired
 	private IOrderChildDao orderChildDao;
 	
@@ -66,16 +76,29 @@ public class OrderChildService implements IOrderChildService {
      * @Date 2015年11月5日 11:40:37
      * @return
      */
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	@Override
-	public ResponseBase cancelOrderChild(OrderChild cancelOrder) {
+	public HttpResultModel<OrderGrabResp> cancelOrderChild(OrderChildCancelReq req) {
 
-/*		List<Integer> list=orderChildDao.updateCancel(cancelOrder);
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
+		
+		List<Integer> list=orderChildDao.updateCancel(req);
+
 		for(int i=0;i<list.size();i++)
 		{
-			int id=list.get(0);
+			int id=list.get(i);
 			OrderChild currOcModel= orderChildDao.selectByPrimaryKey(id);			
-			BusinessModel businessModel = businessDao.getBusiness(currOcModel
+			BusinessModel businessModel = businessDao.getBusiness((long)currOcModel
 					.getBusinessid());
+			
+			//更新订单表
+			Order updateOModel=new Order();		
+			updateOModel.setId(currOcModel.getOrderid());					
+			updateOModel.setStatus((byte)OrderStatus.Cancel.value());
+			int updateOrderGrabId= orderDao.updateByPrimaryKeySelective(updateOModel);
+			if (updateOrderGrabId <= 0) {				
+				throw new TransactionalRuntimeException("更新订单主表状诚错误");
+			}				
 			
 			//更新商户余额 ，可提现余额	
 			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
@@ -99,7 +122,7 @@ public class OrderChildService implements IOrderChildService {
 			balanceRecord.setOperator(businessModel.getName());
 			balanceRecord.setWithwardid((long) id);
 			balanceRecord.setRelationno("");
-			balanceRecord.setRemark("返回商户");
+			balanceRecord.setRemark("系统取消订单返还配送费支出金额");
 			businessService.updateForWithdrawC(0, balanceRecord);
 			
 			//更新区余数量
@@ -110,21 +133,35 @@ public class OrderChildService implements IOrderChildService {
 			int orderCount = 1;
 			if (TwoId > 0)// 二级
 			{
-				orderRegion.setId(TwoId);
-				orderRegion.setWaitingcount(orderCount);
-				orderRegionId = orderRegionDao
-						.updateByPrimaryKeySelective(orderRegion);
-
-				orderRegion.setId(OneId);
-				orderRegion.setWaitingcount(orderCount);
-				orderRegion.setHaschild(true);
-				orderRegionId = orderRegionDao
-						.updateByPrimaryKeySelective(orderRegion);
+				//更新数量			
+				OrderRegion orModelTwo=new OrderRegion();
+				orModelTwo.setId(TwoId);
+				orModelTwo.setWaitingcount(-orderCount);			
+				int orderRegionTwoId=orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+				if (orderRegionTwoId <= 0) {
+					throw new TransactionalRuntimeException("更新二级区域错误");
+				}			
+				
+				OrderRegion orModelOne=orderRegionDao.getByIdWrite(OneId);//查询，更新不会锁表
+				if(orModelOne.getWaitingcount()==orderCount)
+				{				
+					orModelOne.setHaschild(false);
+				}
+				orModelOne.setId(OneId);
+				orModelOne.setWaitingcount(-orderCount);	
+			
+				int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);		
+				if (orderRegionOneId <= 0) {
+					throw new TransactionalRuntimeException("更新一级区域错误");
+				}	
 			} else {
-				orderRegion.setId(OneId);
-				orderRegion.setWaitingcount(orderCount);
-				orderRegionId = orderRegionDao
-						.updateByPrimaryKeySelective(orderRegion);
+				OrderRegion orModelOne=new OrderRegion();
+				orModelOne.setId(OneId);
+				orModelOne.setWaitingcount(-orderCount);				
+				int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+				if (orderRegionOneId <= 0) {
+					throw new TransactionalRuntimeException("更新一级区域错误");
+				}
 			}
 			//写入订单日志
 			OrderSubsidiesLog record = new OrderSubsidiesLog();
@@ -136,9 +173,13 @@ public class OrderChildService implements IOrderChildService {
 			record.setRemark(TaskStatus.CancelOrder.desc());
 			record.setPlatform(SuperPlatform.NewSystemCancel.value());
 			int ordersubsidiesId = orderSubsidiesLogDao.insert(record);
-		}*/
-		return null;
+			if (ordersubsidiesId <= 0) {
+				throw new TransactionalRuntimeException("记录订单日志错误");
+			}
+		}
+		
+		return resp;
+
 	}
-	
    
 }

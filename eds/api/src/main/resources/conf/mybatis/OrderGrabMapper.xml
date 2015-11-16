@@ -514,10 +514,13 @@ GROUP BY o.GrabOrderNo ,
             og.OrderCount ,
             og.Id GrabOrderId ,
             og.GrabOrderNo , 
-            og.GrabTime,
-            og.PickUpTime ,
-            og.ActualDoneDate ,
+            CONVERT(varchar(100),og.GrabTime,20) GrabTime,
+            CONVERT(varchar(100),og.PickUpTime,20) PickUpTime,
+            CONVERT(varchar(100),og.ActualDoneDate,20) ActualDoneDate ,
             og.[Status] ,
+            b.Longitude businessLongitude,
+            b.Latitude businessLatitude,
+            b.City businessCityName,
             ( select    ISNULL(sum(a.OrderCommission),0)
               from      dbo.OrderGrabChild a ( nolock )
               where     a.GrabOrderId = #{grabOrderId,jdbcType=INTEGER}
@@ -539,12 +542,16 @@ GROUP BY o.GrabOrderNo ,
 select b.Name BusinessName ,
         b.PhoneNo BusinessPhoneNo ,
         b.[Address] BusinessAddress ,
-        og.GrabTime,
+        CONVERT(varchar(100),og.GrabTime,20) GrabTime, 
+        CONVERT(varchar(100),og.ActualDoneDate,20) ActualDoneDate ,
         og.OrderRegionOneName ,
         og.OrderRegionTwoName ,
         og.OrderCount ,
         og.Id GrabOrderId,
-        og.GrabOrderNo 
+        og.GrabOrderNo,
+        b.Longitude businessLongitude,
+            b.Latitude businessLatitude,
+            b.City businessCityName,
        <if test="status == 2">
 		 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${clienterLatitude},${clienterLongitude},4326)),0) as DistanceToBusiness  
 	  </if> 
@@ -570,14 +577,14 @@ select b.Name BusinessName ,
             og.OrderCount ,
             og.Id GrabOrderId ,
             og.GrabOrderNo , 
-            og.GrabTime,
-            og.PickUpTime ,
-            og.ActualDoneDate ,
+            CONVERT(varchar(100),og.GrabTime,20) GrabTime,
+            CONVERT(varchar(100),og.PickUpTime,20) PickUpTime,
+            CONVERT(varchar(100),og.ActualDoneDate,20) ActualDoneDate ,
             og.[Status] ,
             og.OrderCommission 
      from   dbo.OrderGrab og ( nolock ) 
             join dbo.business b ( nolock ) on og.BusinessId = b.Id
-     where og.[Status] = 1 
+     where og.[Status] = 1 and og.ClienterId = #{clienterId,jdbcType=INTEGER} 
         <if test="dateInfo != null">
 			and  CONVERT(VARCHAR(100), og.GrabTime, 23)='${dateInfo}'
 		</if> 

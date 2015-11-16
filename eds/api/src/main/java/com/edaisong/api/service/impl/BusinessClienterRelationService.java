@@ -139,7 +139,8 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	public GetMyServiceClientersResp  getMyServiceClienters(PagedGetMyServiceClientersReq req) {
 		GetMyServiceClientersResp result=businessClienterRelationDao.getMyServiceClientersCountInfo(req);
 		result.setList( businessClienterRelationDao.getMyServiceClienters(req));
-		result.getList().forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageServicePath") + action.getHeadPhoto()));
+		result.getList().forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageClienterServicePath") 
+				+ action.getHeadPhoto()));
 		return result;
 	}
 
@@ -158,11 +159,11 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 		if (req.getAuditStatus() == BusinessClienterRelationAuditStatus.Pass.value()) {
 			req.setRemark("门店审核通过骑士申请");
 			req.setIsEnable(1);
-			req.setIsBind(1);
+			req.setIsBind(1); 
 		} else if (req.getAuditStatus() == BusinessClienterRelationAuditStatus.Refuse.value()) {
 			req.setRemark("门店拒绝通过骑士申请");
 			req.setIsEnable(1);
-			req.setIsBind(0);
+			req.setIsBind(0); 
 		}
 		req.setOptName("门店");
 		int result= businessClienterRelationDao.optBindClienter(req);

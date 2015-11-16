@@ -1649,6 +1649,7 @@ public class OrderService implements IOrderService {
 						.getOrderRegionOneId());
 				child.setOrderRegionTwoId(listOrderRegion.get(i)
 						.getOrderRegionTwoId());
+				child.setPlatform(2);
 
 				OrderCommission orderCommission = new OrderCommission();
 				orderCommission.setAmount(goodPrice);

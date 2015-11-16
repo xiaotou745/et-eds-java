@@ -7,11 +7,10 @@ String regionjson = (String) request.getAttribute("regionjson");
 String businessLat = (String) request.getAttribute("businessLat");
 %>
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/map.css">
-<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+<link rel="stylesheet" href="<%=basePath%>/css/DrawingManager_min.css" />
 <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=286c3ec71cae58cacfa75d49145ff545"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
-<script src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js" type="text/javascript"></script>
+<script type="text/javascript" src="<%=basePath%>/js/DrawingManager_min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/GeoUtils_min.js"></script>
 <div class="top cb">
 	<h3 class="cb">配送区域管理</h3>
 	<div class="map_title">
@@ -122,12 +121,17 @@ function init(){
 }
 //区域绘制完成事件
 var overlaycomplete = function(e) {
+	//判断多边形面积
+	//var m=BMapLib.GeoUtils.getPolygonArea(e.overlay);
 	if(e.overlay.getPath().length<3){
 		alert("请绘制一个有效的区域");
 		map.removeOverlay(e.overlay);
 		return;
 	}
-	checksame(e.overlay);
+	if(checksame(e.overlay)){
+		map.removeOverlay(e.overlay);
+		return;
+	}
 	var overlayId=0;
 	for (var key in overlayArray){
 		if(overlayId<parseInt(key)){
@@ -165,7 +169,7 @@ var overlaycomplete = function(e) {
 	}
 	$("#region"+overlayId).focus();
 	
-	overlayArray[overlayId] = e.overlay;
+	overlayArray[overlayId] = overlaybyArray(e.overlay.getPath());
 	overlayPointArray[overlayId]=e.overlay.getPath();//e.overlay.getPath()为多边形各点数组
 	newoverlayArray[overlayId]=overlayId;
 	showregion(overlayId);
@@ -187,9 +191,23 @@ var styleOptions = {
 	fillOpacity : NORMAL_OPACITY, //填充的透明度，取值范围0 - 1。
 	strokeStyle : 'solid' //边线的样式，solid或dashed。
 }
+function pointarray(object){
+	var pts = [];
+	for(var i=0;i<object.overlayPointList.length;i++){
+		pts.push(new BMap.Point(object.overlayPointList[i].lng, object.overlayPointList[i].lat));
+	}
+	return pts;
+}
+function overlaybyArray(pointArray){
+	var pts = [];
+	for(var i=0;i<pointArray.length;i++){
+		pts.push(new BMap.Point(pointArray[i].lng, pointArray[i].lat));
+	}
+	return new BMap.Polygon(pts);
+}
 //绘制一个一级区域和其拥有的二级区域
 function drawOverlay(object) {
-	var tempPolygon = new BMap.Polygon(object.overlayPointList,styleOptions);
+	var tempPolygon = new BMap.Polygon(pointarray(object),styleOptions);
 	tempPolygon.addEventListener('click', function(e) {
 		overlayClick(object.overlayId, this);
 	});
@@ -201,7 +219,7 @@ function drawOverlay(object) {
 	var tempid=0;
 	for(var i=0;i<object.subLists.length;i++){
 		tempid=object.subLists[i].overlayId;
-	    var childPolygon = new BMap.Polygon(object.subLists[i].overlayPointList,styleOptions);
+	    var childPolygon = new BMap.Polygon(pointarray(object.subLists[i]),styleOptions);
 	    childPolygon.addEventListener('click', function(e) {
 			overlayClick(tempid, this);
 		});
@@ -326,35 +344,20 @@ function showPanel(){
 		right : "0px"
 	});
 }
-function da(po){
-	var pts = [];
-	for(var i=0;i<po.length;i++){
-		 var pt1 = new BMap.Point(po.lng, po.lat);
-		   pts.push(pt1);
-	}
-	return  new BMap.Polygon(pts);
-}
+
 function checksame(overlay){
-	return;
-var same=false;
-	//for (var key in overlayArray){
+	if(parentId>0){
 		for(i=0;i<overlay.getPath().length;i++){
-			//var pppoint = new BMap.Point(overlay.getPath()[i].lng,overlay.getPath()[i].lat);
 			var pppoint = new BMap.Point(overlay.getPath()[i].lng,overlay.getPath()[i].lat);
-			//var ply = new BMap.Polygon(overlayArray[38].getPath());
-			var result = BMapLib.GeoUtils.isPointInPolygon(pppoint, da(overlayArray[38].getPath()));
-			alert(result);
-			if(result){
-				var p=$('#regionlistul a[id^="regiontitle'+key+'_"]');
-				alert("和"+$(p).html()+"有重叠");
-				same=true;
-				break;
+			var result = BMapLib.GeoUtils.isPointInPolygon(pppoint,overlayArray[parentId]);
+			if(!result){
+				var p=$('#regionlistul a[id^="regiontitle'+parentId+'_"]');
+				alert("二级区域不能超出一级区域("+$(p).html()+")的范围");
+				return true;
 			}
-		}
-// 		if(same){
-// 			break;
-// 		}
-// 	}
+		}	
+	}	
+	return false;
 }
 function deleteregion(regionid){
 	if(!confirm("确定要删除当前区域？")){
@@ -523,10 +526,23 @@ function saveall(){
 		}
 		var childLength = $('#parent'+parId+' li[id^="child"]').length;
 		if(childLength<9){
-		    zoomIn(parId,true);
-			showregion(parId);
-			parentId=parId;
-			beginDraw();
+			var url = "<%=basePath%>/orderregion/checkorder";
+	        $.ajax({
+	            type: 'POST',
+	            url: url,
+	            data: {"regionId":parId},
+	            success: function (result) {   		
+	            	if(result>0){
+	            		alert("当前区域中今日还存在未完成的订单,暂时不能添加二级区域");  
+	            	}
+	            	else{
+	        		    zoomIn(parId,true);
+	        			showregion(parId);
+	        			parentId=parId;
+	        			beginDraw();
+	            	}
+	            }
+	        });
 		}else{
 			alert("二级区域最多只能有9个");
 		}
