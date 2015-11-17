@@ -671,7 +671,7 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 					} else if(result==-2){
 						alert("选择智能调度模式时补贴策略只能选择基本佣金+网站补贴类型的策略！");
 					}else if(result==-3){
-						alert("当前商家有待接单订单尚未处理，不能修改商户结算（应收）和补贴设置（应付）");
+						alert("当前商家有订单尚未完成，不能修改商户结算（应收）和补贴设置（应付）");
 					}
 				}
 			});
