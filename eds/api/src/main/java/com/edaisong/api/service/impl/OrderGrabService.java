@@ -272,7 +272,7 @@ public class OrderGrabService implements IOrderGrabService {
 	{
 		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
 
-		if (req.getGrabOrderId() == null) {
+		if (req.getOrderGrabId() == null) {
 			resp.setStatus(OrderGrabReturnEnum.OrderGrabEmpty.value());
 			resp.setMessage(OrderGrabReturnEnum.OrderGrabEmpty.desc());				
 			return resp;			
@@ -283,7 +283,7 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
 			return resp;			
 		}
-		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(req.getGrabOrderId());
+		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(req.getOrderGrabId());
 		if(currOgModel==null)
 		{
 			throw new TransactionalRuntimeException("取货信息不存在");
@@ -303,7 +303,7 @@ public class OrderGrabService implements IOrderGrabService {
 		
 		//更新取货主表	
 		OrderGrab ogModel=new OrderGrab ();		
-		ogModel.setId(req.getGrabOrderId());
+		ogModel.setId(req.getOrderGrabId());
 		ogModel.setPickuplongitude(req.getPickUpLongitude());
 		ogModel.setPickuplatitude(req.getPickUpLatitude());
 		ogModel.setStatus((byte)OrderStatus.Taking.value());
@@ -315,7 +315,7 @@ public class OrderGrabService implements IOrderGrabService {
 		
 		//更新抢单子表
 		OrderGrabChild ogcModel=new OrderGrabChild();
-		ogcModel.setGraborderid(req.getGrabOrderId());
+		ogcModel.setGraborderid(req.getOrderGrabId());
 		ogcModel.setStatus((byte)OrderStatus.Taking.value());
 		int ogcId= orderGrabChildDao.updateByGraborderidSelective(ogcModel);
 		if (ogcId <= 0) {
@@ -323,7 +323,7 @@ public class OrderGrabService implements IOrderGrabService {
 		}
 		
 		//更新发单子表 (通过抢单子表更新原子订单表)
-		List<OrderGrabChild> listOgc= orderGrabChildDao.selectByGrabOrderId((long)req.getGrabOrderId());
+		List<OrderGrabChild> listOgc= orderGrabChildDao.selectByGrabOrderId((long)req.getOrderGrabId());
 		List<OrderChild> listOc=new ArrayList<OrderChild>();
 		for(int i=0;i<listOgc.size();i++)
 		{
@@ -376,7 +376,7 @@ public class OrderGrabService implements IOrderGrabService {
 		
 		// 记录取货日志
 		OrderSubsidiesLog record = new OrderSubsidiesLog();
-		record.setOrderid(req.getGrabOrderId());
+		record.setOrderid(req.getOrderGrabId());
 		record.setOrderstatus(OrderStatus.Taking.value());
 		record.setOptid(req.getClienterId());
 		record.setPrice(0d);

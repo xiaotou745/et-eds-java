@@ -35,7 +35,7 @@ public enum OrderFrom {
 	 */
 	Tourism(6, "首旅"),
 	/**
-	 * 首旅
+	 * 门店高速版
 	 */
 	FastOrder(10, "门店高速版"),
 	/**
