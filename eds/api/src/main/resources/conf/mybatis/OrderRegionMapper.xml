@@ -165,7 +165,6 @@ from    OrderRegion a (nolock)
                where    tempregion.Status = 1
                group by tempregion.BusinessId
              ) c on a.BusinessId = c.BusinessId
-                    and c.WaitingCounts > 0
 where   a.Status = 1 
   </select>
 </mapper>
