@@ -1,5 +1,6 @@
 package com.edaisong.api.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,6 +132,17 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setMessage(OrderGrabReturnEnum.BusinessEmpty.desc());				
 			return resp;			
 		}
+		// 区域
+		if(req.getOrderRegionOneId()==null)
+			throw new TransactionalRuntimeException("抢单错误");
+		if(req.getOrderRegionOneName()==null)
+			req.setOrderRegionOneName("");
+		
+		if(req.getOrderRegionTwoId()==null)
+			req.setOrderRegionTwoId(0);
+		if(req.getOrderRegionTwoName()==null)
+			req.setOrderRegionTwoName("");
+		//
 		if (req.getClienterId() == null) {
 			resp.setStatus(OrderGrabReturnEnum.ClienterEmpty.value());
 			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
@@ -148,15 +160,8 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setStatus(OrderGrabReturnEnum.ClienterStatusErr.value());
 			resp.setMessage(OrderGrabReturnEnum.ClienterStatusErr.desc());				
 			return resp;	
-		}
-		
-		
-		if(req.getOrderRegionTwoId()==null)
-			req.setOrderRegionTwoId(0);
-		if(req.getOrderRegionTwoName()==null)
-			req.setOrderRegionTwoName("");
-		
-		
+		}				
+
 		//抢单主表
 		OrderGrab orderGrab=fillOrderGrab(req);		
 		int orderGrabId=orderGrabDao.insertSelective(orderGrab);		
@@ -245,6 +250,10 @@ public class OrderGrabService implements IOrderGrabService {
 		}
 		else//一级区域
 		{		
+			OrderRegion selectORModel=  orderRegionDao.getByIdWrite(OneId);
+			if(selectORModel.getHaschild())
+				throw new TransactionalRuntimeException("当前区域包含二级区域,不能进行发单");
+			
 			OrderRegion orModelOne=new OrderRegion();
 			orModelOne.setId(OneId);
 			orModelOne.setWaitingcount(-orderCount);
@@ -261,7 +270,7 @@ public class OrderGrabService implements IOrderGrabService {
 		record.setOrderstatus(OrderStatus.Delivery.value());
 		record.setOptid(req.getClienterId());
 		record.setPrice(0d);
-		record.setOptname("");//临时
+		record.setOptname(selectClienterModel.getTruename());
 		record.setRemark(TaskStatus.OrderHadRush.desc());
 		record.setPlatform(SuperPlatform.NewApiReceive.value());
 		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);
@@ -296,11 +305,27 @@ public class OrderGrabService implements IOrderGrabService {
 			return resp;			
 		}
 		
+		//
 		if (req.getClienterId() == null) {
 			resp.setStatus(OrderGrabReturnEnum.ClienterEmpty.value());
 			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
 			return resp;			
 		}
+		Clienter selectClienterModel= clienterService.selectByPrimaryKeyWrite(req.getClienterId());
+		if(selectClienterModel==null)
+		{
+			resp.setStatus(OrderGrabReturnEnum.ClienterEmpty.value());
+			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
+			return resp;	
+		}
+		if(selectClienterModel.getStatus()!=ClienterStatusEnum.AuditPass.value())
+		{
+			resp.setStatus(OrderGrabReturnEnum.ClienterStatusErr.value());
+			resp.setMessage(OrderGrabReturnEnum.ClienterStatusErr.desc());				
+			return resp;	
+		}		
+		
+		//			
 		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(req.getOrderGrabId());
 		if(currOgModel==null)
 		{
@@ -398,7 +423,7 @@ public class OrderGrabService implements IOrderGrabService {
 		record.setOrderstatus(OrderStatus.Taking.value());
 		record.setOptid(req.getClienterId());
 		record.setPrice(0d);
-		record.setOptname("");//临时
+		record.setOptname(selectClienterModel.getTruename());
 		record.setRemark(TaskStatus.Taking.desc());
 		record.setPlatform(SuperPlatform.NewApiConfirmtake.value());
 		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);		
@@ -437,6 +462,19 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setStatus(OrderGrabReturnEnum.ClienterEmpty.value());
 			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
 			return resp;			
+		}		
+		Clienter selectClienterModel= clienterService.selectByPrimaryKeyWrite(req.getClienterId());
+		if(selectClienterModel==null)
+		{
+			resp.setStatus(OrderGrabReturnEnum.ClienterEmpty.value());
+			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
+			return resp;	
+		}
+		if(selectClienterModel.getStatus()!=ClienterStatusEnum.AuditPass.value())
+		{
+			resp.setStatus(OrderGrabReturnEnum.ClienterStatusErr.value());
+			resp.setMessage(OrderGrabReturnEnum.ClienterStatusErr.desc());				
+			return resp;	
 		}		
 		
 		//获取取货主表
@@ -477,7 +515,13 @@ public class OrderGrabService implements IOrderGrabService {
 		clienterMoney.setOperator(req.getClienterId().toString());
 		clienterMoney.setStatus(ClienterBalanceRecordStatus.Success
 				.value());
-		clienterMoney.setRemark("完成订单佣金"+currOgcModel.getOrderCommission()+"元");
+		DecimalFormat df = new DecimalFormat("#.00");
+		String strCommission="0";
+		if(currOgcModel.getOrderCommission()==0)
+			strCommission="0";
+		else
+			strCommission=df.format(currOgcModel.getOrderCommission());
+		clienterMoney.setRemark("完成订单佣金"+strCommission+"元");
 		clienterService.updateCBalanceAndWithdraw(clienterMoney);		
 		
 		//更新完成子订单
@@ -554,7 +598,7 @@ public class OrderGrabService implements IOrderGrabService {
 		record.setOrderstatus(OrderStatus.Complite.value());
 		record.setOptid(req.getClienterId());
 		record.setPrice(0d);
-		record.setOptname("");//临时
+		record.setOptname(selectClienterModel.getTruename());
 		record.setRemark(TaskStatus.OrderFinish.desc());
 		record.setPlatform(SuperPlatform.NewApiComplete.value());
 		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);		

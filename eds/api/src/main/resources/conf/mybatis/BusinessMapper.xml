@@ -625,9 +625,9 @@ where   og.Id = #{grabOrderId,jdbcType=INTEGER}
     begin  
         select top 1
                 b.Id BusinessId ,
-                b.Name BusinessName ,
+                ISNULL(b.Name,'') BusinessName ,
                 b.PhoneNo BusinessPhoneNo ,
-                b.Address BusinessAddress ,
+                ISNULL(b.Address,'') BusinessAddress ,
                 0 IsBind ,
                 0 AuditStatus
         from    dbo.business b ( nolock )
@@ -637,9 +637,9 @@ where   og.Id = #{grabOrderId,jdbcType=INTEGER}
     begin
         select top 1
                 b.Id BusinessId ,
-                b.Name BusinessName ,
+                ISNULL(b.Name,'') BusinessName ,
                 b.PhoneNo BusinessPhoneNo ,
-                b.Address BusinessAddress ,
+                ISNULL(b.Address,'') BusinessAddress ,
                 isnull(bcr.IsBind, 0) IsBind ,
                 isnull(bcr.AuditStatus, 0) AuditStatus
         from    dbo.business b ( nolock )
