@@ -472,37 +472,28 @@ public class OrderService implements IOrderService {
 		
 		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
 
-		// 字符串转化为列表
-		List<OrderRegionReq> list = converAnswerFormString(req
-				.getListOrderRegionStr());
-		req.setListOrderRegion(list);
-		if (list == null || list.size() < 1) {
-			resp.setStatus(PublishOrderReturnEnum.OrderRegionNull.value());
-			resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());
-			return resp;
-		}
 		if(req.getOrdercount()>50)
 		{
 			resp.setStatus(PublishOrderReturnEnum.PushOrderCountErr.value());
 			resp.setMessage(PublishOrderReturnEnum.PushOrderCountErr.desc());
 			return resp;
 		}
+		// 时间戳
+		if (req.getTimeSpan() != null && !req.getTimeSpan().equals("")) {
+						if (isExistByBusinessId(req)) {
+							resp.setStatus(PublishOrderReturnEnum.OrderHasExist.value());
+							resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc());
+							return resp;
+						}
+		}
+		
 		if(req.getBusinessid()==null)
 		{
 			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
 			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
 			return resp;
 		}
-		
-		// 时间戳
-		if (req.getTimeSpan() != null && !req.getTimeSpan().equals("")) {
-				if (isExistByBusinessId(req)) {
-					resp.setStatus(PublishOrderReturnEnum.OrderHasExist.value());
-					resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc());
-					return resp;
-				}
-		}
-
+				
 		// 获取商户信息讯(读串)
 		BusinessModel businessModel = businessDao.getBusiness((long) req
 				.getBusinessid());
@@ -512,6 +503,15 @@ public class OrderService implements IOrderService {
 			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
 			return resp;
 		}
+		// 字符串转化为列表
+		List<OrderRegionReq> list = converAnswerFormString(req.getListOrderRegionStr());
+		req.setListOrderRegion(list);//赋值
+		if (list == null || list.size() < 1) {
+					resp.setStatus(PublishOrderReturnEnum.OrderRegionNull.value());
+					resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());
+					return resp;
+		}	
+
 		PublishOrderReturnEnum returnEnum = verificationPushOrder(req,
 				businessModel);
 		if (returnEnum != PublishOrderReturnEnum.VerificationSuccess) {
