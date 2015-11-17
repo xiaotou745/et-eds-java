@@ -1616,6 +1616,7 @@ public class OrderService implements IOrderService {
 				child.setBaseCommission(0d);
 				child.setWebsiteSubsidy(0d);
 				child.setAdjustment(0d);
+				child.setPlatform(1);
 			}
 		}
 	}

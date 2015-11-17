@@ -66,6 +66,7 @@ import com.edaisong.entity.domain.BusinessThirdRelationModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.domain.ImportClienterInfo;
+import com.edaisong.entity.req.BusinessClienterRelationReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.GroupReq;
@@ -403,6 +404,13 @@ public class BusinessController {
 				.getBusinessClienterRelationList(req);
 		model.addObject("listData", resp);
 		return model;
+	}
+	
+	@RequestMapping("updateClienterBindRelationCooperation")
+	@ResponseBody
+	public int UpdateClienterBindRelationCooperation(BusinessClienterRelationReq req){
+		return businessClienterRelationService.updateClienterBindRelationCooperation(req);
+//		return tmpval;
 	}
 
 	@RequestMapping("modifyclienterbind")
