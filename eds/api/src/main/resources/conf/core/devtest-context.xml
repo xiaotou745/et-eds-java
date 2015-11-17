@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/aop
 		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
     	">
-	<bean id="propertyConfigurer"
+	 <bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="order" value="1" />
 		<property name="locations">
@@ -34,7 +34,7 @@
 	<!-- 相当于将spring-datasource.xml和当前文档合并在一起，或者将这两个文件的内容合并在一起 -->
 	<import resource="classpath:conf/module/spring-datasource.xml" />
 	<import resource="classpath:conf/module/redis-context.xml" />
-	<!-- <import resource="classpath:conf/module/activemq-context.xml" /> -->
-	<!-- <import resource="classpath:conf/module/mongo-context.xml" /> -->
+<!-- 	<import resource="classpath:conf/module/activemq-context.xml" /> -->
+<!--     <import resource="classpath:conf/module/mongo-context.xml" /> -->
 	<context:component-scan base-package="com.edaisong.api" />
 </beans>
