@@ -105,7 +105,7 @@ public class FastOrderController {
 	   List<FastOrderExportModel> records=	 orderGrabService.exportOrder(searchReq) ;
 	   if(records.size() > 0){
 			//导出数据
-			String fileName = "e代送-%s-快单数据";
+			String fileName = "e代送-%s-智能调度数据";
 			fileName = String.format(fileName, searchReq.getOrderGrabStart() + "到" +searchReq.getOrderGrabEnd());
 			//add data
 			LinkedHashMap<String,String> columnTitiles=new LinkedHashMap<String,String>();
@@ -125,7 +125,7 @@ public class FastOrderController {
 //			columnTitiles.put("佣金比例", "commissionRate");
 //			columnTitiles.put("基本佣金", "baseCommission");
 			
-			ExcelUtils.export2Excel(fileName,"快单记录",columnTitiles,records,request,response);
+			ExcelUtils.export2Excel(fileName,"智能调度记录",columnTitiles,records,request,response);
 			return;
 		}else {
 			//如果查询到的数据为空,则跳转到收支详情页
@@ -134,7 +134,7 @@ public class FastOrderController {
 		}
 	}
 	/**
-	 * 快单详情页面
+	 * 智能调度详情页面
 	 * @author zhaohl
 	 * @Date 20151102
 	 * @return

@@ -178,6 +178,19 @@ private IClienterAllowWithdrawRecordDao clienterAllowWithdrawRecordDao;
 	public Clienter selectByPrimaryKey(Integer id) {
 		return clienterDao.selectByPrimaryKey(id);
 	}
+	
+	/**
+	 * 根据骑士id获得实体对象
+	 * @author 胡灵波
+	 * @date 2015年11月17日 16:14:08
+	 * @version 1.0
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public Clienter selectByPrimaryKeyWrite(Integer id) {
+		return clienterDao.selectByPrimaryKeyWrite(id);
+	}	
 
 	/**
 	 * 获取用户状态信息

@@ -16,7 +16,7 @@ public interface IOrderChildDao {
     int updateByPrimaryKeySelective(OrderChild record);
 	int updateList(List<OrderChild> record);	
     /**
-     * 取消订单 （取消前一天快单发单且未被抢单的子订单时）
+     * 取消订单 （取消前一天智能调度发单且未被抢单的子订单时）
      * @param 日期
      * @author 胡灵波
      * @Date 2015年11月5日 11:40:37

@@ -3,7 +3,7 @@
 <%@page import="com.edaisong.toolsentity.common.PagedResponse"%>
 <%@page import="com.edaisong.toolscore.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.edaisong.toolsentity.RoleInfo"%>
+<%@page import="com.edaisong.toolsentity.AuthorityRole"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
 <%
@@ -23,16 +23,16 @@
 	<tbody>
 
 		<%
-		List<RoleInfo> list = (List<RoleInfo>) request.getAttribute("listData");
+		List<AuthorityRole> list = (List<AuthorityRole>) request.getAttribute("listData");
 			for (int i = 0; i < list.size(); i++) {
 		%>
 		<tr>
 			<td><%=(i+1)%></td>
-			<td><%=list.get(i).getRoleName()%></td>
-			<td><%=list.get(i).getBeLock()? "锁定" : "可用"%></td>
-			<td><%=list.get(i).getOptName()%></td>
+			<td><%=list.get(i).getRolename()%></td>
+			<td><%=list.get(i).getBelock()? "锁定" : "可用"%></td>
+			<td></td>
 			<td>
-			<a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId()%>,<%=list.get(i).getBeLock()?1:0%>,'<%=list.get(i).getRoleName()%>')">编辑</a>
+			<a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId()%>,<%=list.get(i).getBelock()?1:0%>,'<%=list.get(i).getRolename()%>')">编辑</a>
 			<a href="javascript:void(0)"
 				onclick="setauth(<%=list.get(i).getId()%>)">分配权限</a></td>
 		</tr>

@@ -44,7 +44,6 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 		<tr>
 			<td><%=i + 1%></td>
 			<td><a href="<%=basePath%>/fastorder/detail?orderid=<%=data.get(i).getId()%>"><%=data.get(i).getOrderNo()%></a><br /> 
-			来源:<%=OrderFrom.getEnum(data.get(i).getOrderFrom()).desc() %>
 		    </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getBusinessName())%> <br /> 
 			<%=data.get(i).getBusinessPhoneNo()%></td>

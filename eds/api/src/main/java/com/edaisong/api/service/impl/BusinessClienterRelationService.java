@@ -13,6 +13,7 @@ import com.edaisong.api.dao.inter.IClienterBindOptionLogDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.ClienterBindOptionLog;
@@ -20,6 +21,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.BusinessClienterRelationReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
@@ -139,8 +141,10 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 	public GetMyServiceClientersResp  getMyServiceClienters(PagedGetMyServiceClientersReq req) {
 		GetMyServiceClientersResp result=businessClienterRelationDao.getMyServiceClientersCountInfo(req);
 		result.setList( businessClienterRelationDao.getMyServiceClienters(req));
-		result.getList().forEach(action -> action.setHeadPhoto(PropertyUtils.getProperty("ImageClienterServicePath") 
-				+ action.getHeadPhoto()));
+		result.getList().forEach(action -> action.setHeadPhoto(
+			 ParseHelper.ToString(action.getHeadPhoto(), "")==""?"":PropertyUtils.getProperty("ImageClienterServicePath") 
+				+ action.getHeadPhoto()
+				));
 		return result;
 	}
 
@@ -184,4 +188,13 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 		return businessClienterRelationDao.updateClienterBindRelation(bindClienterBusiness);
 	}
 
+
+	/**
+	 * 修改绑定合作、店内骑士
+	 * @author haichao 
+	 * @date 2015年11月16日 18:00:28
+	 * */
+	public int updateClienterBindRelationCooperation(BusinessClienterRelationReq req){
+	 	return businessClienterRelationDao.updateClienterBindRelationCooperation(req);
+	}
 }

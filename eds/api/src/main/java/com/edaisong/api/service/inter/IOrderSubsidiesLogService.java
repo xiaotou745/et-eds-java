@@ -14,7 +14,7 @@ public interface IOrderSubsidiesLogService {
      */
    List<OrderSubsidiesLog>  GetOrderOptionLog(Long orderId);
    /**
-    * 获取快单操作日志
+    * 获取智能调度操作日志
     * @author zhaohl
     * @param orderId 订单id
     * @date 20151105

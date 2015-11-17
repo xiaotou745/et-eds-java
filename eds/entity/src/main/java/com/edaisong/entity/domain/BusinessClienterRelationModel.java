@@ -5,7 +5,16 @@ import com.edaisong.entity.BusinessClienterRelation;
 public class BusinessClienterRelationModel extends BusinessClienterRelation{
 	private String trueName;
 	private String phoneNo;
+	private int isCooperation;
 	
+	public int getIsCooperation() {
+		return isCooperation;
+	}
+
+	public void setIsCooperation(int isCooperation) {
+		this.isCooperation = isCooperation;
+	}
+
 	public String getTrueName() {
 		return trueName;
 	}

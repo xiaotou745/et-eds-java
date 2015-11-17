@@ -52,13 +52,13 @@ IAuthorityMenuClassService menuService = SpringBeanHelper.getCustomBeanByType(IA
 			<%
 			        String parentClass="";
 					for (MenuEntity menu : menuList) {
-						if (menu.getParid() == 0) {
+						if (menu.getParid().equals(0)) {
 							parentClass="";
 							List<MenuEntity> data=new ArrayList<>();
 							for (MenuEntity itemMenu : menuList) {
-								if (itemMenu.getParid() == menu.getId()
+								if (itemMenu.getParid().equals(menu.getMenuid())
 										&& itemMenu.getIsbutton() == false) {
-									if(viewPath.equals(itemMenu.getUrl().substring(1))){
+									if(!itemMenu.getUrl().isEmpty()&& viewPath.equals(itemMenu.getUrl().substring(1))){
 										parentClass=" class='active' ";
 									}
 									data.add(itemMenu);

@@ -5,7 +5,7 @@
 <%@page import="com.edaisong.toolscore.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
     <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
-<%@page import="com.edaisong.toolsentity.AccountInfo"%>
+<%@page import="com.edaisong.toolsentity.Account"%>
 <%@page import="java.util.List"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
@@ -25,19 +25,19 @@
 	<tbody>
 
 		<%
-			PagedResponse<AccountInfo> data = (PagedResponse<AccountInfo>) request
+			PagedResponse<Account> data = (PagedResponse<Account>) request
 					.getAttribute("listData");
-			List<AccountInfo> list = data.getResultList();
+			List<Account> list = data.getResultList();
 			if (list == null) {
-				list = new ArrayList<AccountInfo>();
+				list = new ArrayList<Account>();
 			}
 			for (int i = 0; i < list.size(); i++) {
 		%>
 		<tr>
 			<td><%=(i+1)%></td>
-			<td><%=list.get(i).getUserName()%></td>
-			<td><%=list.get(i).getLoginName()%></td>
-			<td><%=ParseHelper.ToDateString(list.get(i).getLastChangeTime(), "") %></td>
+			<td><%=list.get(i).getUsername()%></td>
+			<td><%=list.get(i).getLoginname()%></td>
+			<td><%=ParseHelper.ToDateString(list.get(i).getLcdatetime(), "") %></td>
 			<td><%=list.get(i).getStatus() == 1 ? "√" : "×"%></td>
 			<td><a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId()%>)">编辑</a>
 			<a href="javascript:void(0)"

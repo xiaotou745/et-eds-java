@@ -42,7 +42,7 @@ import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 public interface IBusinessHttpService {
 
 	/**
-	 * 获取门店发单模式：0 普通模式（默认），1 快单模式   默认0
+	 * 获取门店发单模式：0 普通模式（默认），1 智能调度模式   默认0
 	 * @author CaoHeYang
 	 * @date 20151030
 	 * @param par
