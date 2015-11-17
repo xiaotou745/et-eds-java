@@ -20,6 +20,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.BusinessClienterRelationReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
@@ -184,4 +185,13 @@ public class BusinessClienterRelationService implements IBusinessClienterRelatio
 		return businessClienterRelationDao.updateClienterBindRelation(bindClienterBusiness);
 	}
 
+
+	/**
+	 * 修改绑定合作、店内骑士
+	 * @author haichao 
+	 * @date 2015年11月16日 18:00:28
+	 * */
+	public int updateClienterBindRelationCooperation(BusinessClienterRelationReq req){
+	 	return businessClienterRelationDao.updateClienterBindRelationCooperation(req);
+	}
 }

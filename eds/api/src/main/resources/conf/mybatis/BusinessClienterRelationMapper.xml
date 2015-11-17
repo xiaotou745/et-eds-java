@@ -26,7 +26,7 @@
     <select id="getBusinessClienterRelationList" resultType="com.edaisong.entity.domain.BusinessClienterRelationModel" parameterType="com.edaisong.entity.req.PagedCustomerSearchReq"  statementType="CALLABLE" >
   	{call Sp_CustomPage2015_V1(
 	' bcr.isbind desc,bcr.auditstatus ',
-	' bcr.Id id,c.TrueName trueName,c.phoneNo,bcr.auditStatus,bcr.createTime,bcr.isBind,bcr.createBy,bcr.updateBy,bcr.updateTime,bcr.businessId,bcr.clienterId,bcr.isEnable ',
+	' bcr.Id id,c.TrueName trueName,c.phoneNo,bcr.auditStatus,bcr.createTime,bcr.isBind,bcr.createBy,bcr.updateBy,bcr.updateTime,bcr.businessId,bcr.clienterId,bcr.isEnable,bcr.isCooperation ',
 	' BusinessClienterRelation bcr WITH(NOLOCK) JOIN dbo.clienter c WITH(NOLOCK) ON bcr.ClienterId=c.Id ',
 	' <include refid="getBusinessClienterRelationListWhere" /> ',
 	#{pageSize,mode=IN,jdbcType=INTEGER},
@@ -228,4 +228,8 @@
 	from BusinessClienterRelation bcr WITH ( ROWLOCK )
 	where bcr.BusinessId=${businessId}  AND bcr.ClienterId=${clienterId}  
   </update>
+  
+   <update id="updateClienterBindRelationCooperation" parameterType="com.edaisong.entity.req.BusinessClienterRelationReq" >
+   		update BusinessClienterRelation set IsCooperation=#{type,jdbcType=INTEGER} where Id=#{id,jdbcType=INTEGER}
+   </update>
 </mapper>
