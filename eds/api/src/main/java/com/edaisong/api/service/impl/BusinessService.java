@@ -19,6 +19,7 @@ import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService; 
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
+import com.edaisong.core.enums.BusinessPushOrderType;
 import com.edaisong.core.enums.BusinessStatusEnum;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.HttpUtil;
@@ -146,7 +147,7 @@ public class BusinessService implements IBusinessService {
 		{
 			int StrategyId = iBusinessDao.getStrategyIdByGroupId(detailModel.getBusinessgroupid());
 			if(StrategyId!=4)
-				return -2;//选择快单模式时补贴策略只能选择基本佣金+网站补贴类型的策略！
+				return -2;//选择智能调度模式时补贴策略只能选择基本佣金+网站补贴类型的策略！
 		}
 		String remark = GetRemark(oldModel, detailModel);
 		if (remark.isEmpty()) {
@@ -267,8 +268,8 @@ public class BusinessService implements IBusinessService {
 			//发单模式
 			if (model.getPushOrderType()!=null&&brm.getPushOrderType() != model.getPushOrderType()) {
 				remark.append(String.format("发单模式原值:%s,修改为%s;",
-						brm.getPushOrderType() == 1 ? "快单模式" : "普通模式",
-						model.getPushOrderType() == 1 ? "快单模式" : "普通模式"));
+						BusinessPushOrderType.getEnum(brm.getPushOrderType()).desc(),
+						BusinessPushOrderType.getEnum(model.getPushOrderType()).desc()));
 			}
 			//现金支付
 			if (model.getIsAllowCashPay()!=null&&brm.getIsAllowCashPay() != model.getIsAllowCashPay()) {
@@ -437,7 +438,7 @@ public class BusinessService implements IBusinessService {
 	}
 
 	/**
-	 * 获取门店发单模式：0 普通模式（默认），1 快单模式   默认0
+	 * 获取门店发单模式：0 普通模式（默认），1 智能调度模式   默认0
 	 * @author CaoHeYang
 	 * @date 20151030
 	 * @param par
@@ -457,8 +458,9 @@ public class BusinessService implements IBusinessService {
 	public MyOrderBResp getMyOrdeB(MyOrderBReq myOrderBReq) { 
 		List<OrderRespModel> orderRespModels = iBusinessDao.getMyOrdeB(myOrderBReq);
 		if(orderRespModels!=null &&orderRespModels.size() > 0){		
+//			orderRespModels.forEach(action -> action.setClienterHeadPhoto((PropertyUtils.getProperty("ImageClienterServicePath") + action.getClienterHeadPhoto())));
 			orderRespModels.forEach(action -> action.setClienterHeadPhoto(
-						ParseHelper.ToString(action.getClienterHeadPhoto(), "")==""?"": PropertyUtils.getProperty("ImageServicePath") + action.getClienterHeadPhoto()
+						ParseHelper.ToString(action.getClienterHeadPhoto(), "")==""?"": PropertyUtils.getProperty("ImageClienterServicePath") + action.getClienterHeadPhoto()
 					));
 		}
 		MyOrderBResp myOrderBResp = new MyOrderBResp();

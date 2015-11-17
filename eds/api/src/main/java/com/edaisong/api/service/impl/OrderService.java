@@ -481,6 +481,12 @@ public class OrderService implements IOrderService {
 			resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());
 			return resp;
 		}
+		if(req.getOrdercount()>50)
+		{
+			resp.setStatus(PublishOrderReturnEnum.PushOrderCountErr.value());
+			resp.setMessage(PublishOrderReturnEnum.PushOrderCountErr.desc());
+			return resp;
+		}
 		if(req.getBusinessid()==null)
 		{
 			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
@@ -1605,7 +1611,7 @@ public class OrderService implements IOrderService {
 				child.setHasuploadticket(false);
 				child.setThirdpaystatus((short) 0);
 				
-				//以下属性是快单用到的属性
+				//以下属性是智能调度用到的属性
 				child.setBusinessid(req.getBusinessid());
 				child.setStatus((short)0);
 				child.setOrderRegionOneId(0);

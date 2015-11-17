@@ -33,6 +33,7 @@ import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
  
 
 import com.edaisong.entity.Order;
+
 import java.util.ArrayList;
 import java.util.Date; 
 
@@ -53,6 +54,7 @@ import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus; 
 import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
 import com.edaisong.core.util.OrderNoHelper; 
+import com.edaisong.entity.Clienter;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild; 
 import com.edaisong.entity.OrderGrabChild; 
@@ -134,10 +136,26 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
 			return resp;			
 		}
+		Clienter selectClienterModel= clienterService.selectByPrimaryKeyWrite(req.getClienterId());
+		if(selectClienterModel==null)
+		{
+			resp.setStatus(OrderGrabReturnEnum.ClienterEmpty.value());
+			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
+			return resp;	
+		}
+		if(selectClienterModel.getStatus()!=ClienterStatusEnum.AuditPass.value())
+		{
+			resp.setStatus(OrderGrabReturnEnum.ClienterStatusErr.value());
+			resp.setMessage(OrderGrabReturnEnum.ClienterStatusErr.desc());				
+			return resp;	
+		}
+		
+		
 		if(req.getOrderRegionTwoId()==null)
 			req.setOrderRegionTwoId(0);
 		if(req.getOrderRegionTwoName()==null)
 			req.setOrderRegionTwoName("");
+		
 		
 		//抢单主表
 		OrderGrab orderGrab=fillOrderGrab(req);		
@@ -459,7 +477,7 @@ public class OrderGrabService implements IOrderGrabService {
 		clienterMoney.setOperator(req.getClienterId().toString());
 		clienterMoney.setStatus(ClienterBalanceRecordStatus.Success
 				.value());
-		clienterMoney.setRemark("佣金"+currOgcModel.getOrderCommission());
+		clienterMoney.setRemark("完成订单佣金"+currOgcModel.getOrderCommission()+"元");
 		clienterService.updateCBalanceAndWithdraw(clienterMoney);		
 		
 		//更新完成子订单
@@ -546,6 +564,7 @@ public class OrderGrabService implements IOrderGrabService {
 		
 		//如果全部完成，更新完成状态		
 		List<OrderGrabChild>  listOrderGrabChild= orderGrabChildDao.selectCompletedOrderByGrabOrderId((long)req.getOrderGrabId());
+		int resStatus=OrderStatus.Complite.value();
 		OrderGrab updateOGCModel=new OrderGrab();
 		if(currOgModel.getOrdercount().equals(listOrderGrabChild.size()))
 		{			
@@ -556,13 +575,16 @@ public class OrderGrabService implements IOrderGrabService {
 			if (updateOrderGrabId <= 0) {				
 				throw new TransactionalRuntimeException("更新抢单主表金额错误");
 			}		
+			
+			resStatus=OrderStatus.Complite.value();
 		}
 		
 		resp.setStatus(OrderGrabReturnEnum.Success.value());
-		resp.setMessage(OrderGrabReturnEnum.Success.desc());		
+		resp.setMessage(OrderGrabReturnEnum.Success.desc());	
+		
 		OrderGrabResp reReturnModel=new OrderGrabResp();
 		reReturnModel.setOrderCount(currOgModel.getOrdercount());		
-		reReturnModel.setStatus((short)OrderStatus.Complite.value());		
+		reReturnModel.setStatus((short)resStatus);		
 		reReturnModel.setActualdoneCount(listOrderGrabChild.size());;
 		reReturnModel.setActualdoneDate(updateOGCModel.getActualdonedate());
 		resp.setResult(reReturnModel);

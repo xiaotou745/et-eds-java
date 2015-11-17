@@ -43,7 +43,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				if (needCheckPageAuth(request)) {
 					List<MenuEntity> menuList=authorityMenuClassService.getMenuListByUserID(UserContext.getCurrentContext(request).getId());
 					for (MenuEntity menuEntity : menuList) {
-						if (request.getServletPath().equals(menuEntity.getJavaUrl())) {
+						if (request.getServletPath().equals(menuEntity.getUrl())) {
 							return true;
 						}
 					}
