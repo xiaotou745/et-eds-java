@@ -1,7 +1,7 @@
 package com.edaisong.core.enums;
 
 /**
- * 发单模式：0 普通模式（默认），1 快单模式   默认0
+ * 发单模式：0 普通模式（默认），1 智能调度模式   默认0
  * 
  * @author 胡灵波
  *
@@ -13,9 +13,9 @@ public enum BusinessPushOrderType {
 		 */
 	Ordinary(0, "普通"),
 		/**
-		 * 快单模式
+		 * 智能调度模式
 		 */
-	Quick(1, "快单模式");
+	Quick(1, "智能调度模式");
 	private int value = 0;
 	private String desc;
 

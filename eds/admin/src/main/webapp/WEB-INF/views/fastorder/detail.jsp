@@ -8,7 +8,7 @@
 <%@page import="com.edaisong.entity.domain.FastOrderDetail"%>
 <%@page import="com.edaisong.entity.OrderSubsidiesLog"%>
 <%@page import="java.util.List"%>
-<%@page import="com.edaisong.core.enums.OrderPlatform"%>
+<%@page import="com.edaisong.core.enums.SuperPlatform"%>
 <%@page import="com.edaisong.core.enums.OrderFrom"%>
 <%@page import="java.lang.StringBuilder"%>
 <%
@@ -160,7 +160,7 @@ List<OrderGrabChild> orderChildList = detailModel.getOrderChilds();
 						<td><%=ParseHelper.ShowString(item.getOptname())%></td>
 						<td><%=ParseHelper.ToDateString(item.getInserttime())%></td>
 						<td><%=ParseHelper.ShowString(item.getRemark())%></td>
-						<td><%=OrderPlatform.FastClienter.desc()%></td>
+						<td><%=SuperPlatform.FastClienter.desc()%></td>
 					</tr>
 					<%
 						}
