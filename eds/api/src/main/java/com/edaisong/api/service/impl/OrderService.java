@@ -481,6 +481,12 @@ public class OrderService implements IOrderService {
 			resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());
 			return resp;
 		}
+		if(req.getOrdercount()>50)
+		{
+			resp.setStatus(PublishOrderReturnEnum.PushOrderCountErr.value());
+			resp.setMessage(PublishOrderReturnEnum.PushOrderCountErr.desc());
+			return resp;
+		}
 		if(req.getBusinessid()==null)
 		{
 			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());

@@ -191,6 +191,10 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.selectByPrimaryKey",id);
 	}
 
+	@Override
+	public Clienter selectByPrimaryKeyWrite(Integer id) {
+		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.selectByPrimaryKey",id);
+	}
 	/**
 	 * 获取用户状态信息
 	 * @author CaoHeYang
