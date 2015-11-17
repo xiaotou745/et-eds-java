@@ -1,9 +1,12 @@
 package com.edaisong.taobaoopenapi.service.inter;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
 import com.taobao.api.request.WaimaiDeliveryConfirmRequest;
 import com.taobao.api.request.WaimaiDeliveryLocationUpdateRequest;
@@ -38,7 +41,7 @@ public interface ITaoBaoOrderHttpService {
 	 * @return
 	 */
 	@POST
-	@Path("update")
+	@Path("/update")
 	public TaoBaoResponseBase update(WaimaiDeliveryUpdateRequest req);
 
 	/**
@@ -70,4 +73,5 @@ public interface ITaoBaoOrderHttpService {
 	@POST
 	@Path("/locationupdate")
 	public TaoBaoResponseBase locationUpdate(WaimaiDeliveryLocationUpdateRequest  req);
+	
 }
