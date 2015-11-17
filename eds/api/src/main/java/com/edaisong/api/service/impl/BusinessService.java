@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.omg.CORBA.Request;
+import org.apache.activemq.transport.stomp.FrameTranslator.Helper;
+import org.apache.poi.openxml4j.opc.StreamHelper;
 import org.fusesource.hawtbuf.codec.VariableCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import com.edaisong.core.enums.BusinessPushOrderType;
 import com.edaisong.core.enums.BusinessStatusEnum;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.HttpUtil;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
@@ -455,7 +458,10 @@ public class BusinessService implements IBusinessService {
 	public MyOrderBResp getMyOrdeB(MyOrderBReq myOrderBReq) { 
 		List<OrderRespModel> orderRespModels = iBusinessDao.getMyOrdeB(myOrderBReq);
 		if(orderRespModels!=null &&orderRespModels.size() > 0){		
-			orderRespModels.forEach(action -> action.setClienterHeadPhoto((PropertyUtils.getProperty("ImageClienterServicePath") + action.getClienterHeadPhoto())));
+//			orderRespModels.forEach(action -> action.setClienterHeadPhoto((PropertyUtils.getProperty("ImageClienterServicePath") + action.getClienterHeadPhoto())));
+			orderRespModels.forEach(action -> action.setClienterHeadPhoto(
+						ParseHelper.ToString(action.getClienterHeadPhoto(), "")==""?"": PropertyUtils.getProperty("ImageClienterServicePath") + action.getClienterHeadPhoto()
+					));
 		}
 		MyOrderBResp myOrderBResp = new MyOrderBResp();
 		myOrderBResp.setOrderRespModel(orderRespModels);
