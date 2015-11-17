@@ -27,7 +27,7 @@
                             WHERE OrderId= #{orderId,jdbcType=INTEGER} and 101>Platform
                             ORDER BY Id;
 	</select>
-	    <!-- 获取快单操作日志  zhaohl 20151105 -->
+	    <!-- 获取智能调度操作日志  zhaohl 20151105 -->
 	<select id="GetFastOrderOptionLog" resultType="com.edaisong.entity.OrderSubsidiesLog"
 		parameterType="java.util.Map">
 		SELECT  Id,

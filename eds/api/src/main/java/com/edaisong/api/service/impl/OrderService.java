@@ -1611,7 +1611,7 @@ public class OrderService implements IOrderService {
 				child.setHasuploadticket(false);
 				child.setThirdpaystatus((short) 0);
 				
-				//以下属性是快单用到的属性
+				//以下属性是智能调度用到的属性
 				child.setBusinessid(req.getBusinessid());
 				child.setStatus((short)0);
 				child.setOrderRegionOneId(0);
