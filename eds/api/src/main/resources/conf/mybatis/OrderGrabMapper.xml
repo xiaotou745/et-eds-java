@@ -15,7 +15,7 @@
     where Id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectById" resultType="com.edaisong.entity.domain.FastOrderDetail" parameterType="java.lang.Long" >
-   SELECT  2 as OrderFrom ,
+   SELECT  10 as OrderFrom ,
         b.Name AS businessName ,
         b.PhoneNo AS businessPhoneNo ,
         b.PhoneNo2 AS businessPhoneNo2 ,
@@ -232,6 +232,7 @@ GROUP BY b.Name ,
         o.GrabOrderNo as orderNo ,
         b.Name as businessName,
         b.PhoneNo as businessPhoneNo,
+        10 as OrderFrom,
         ISNULL(c.TrueName, '''') AS clienterName ,
         ISNULL(c.PhoneNo, '''') AS clienterPhoneNo ,
         o.GrabTime ,
