@@ -68,7 +68,8 @@ public class RedisService {
 	 * */
 	public <T> T get(String key, Class<T> type,Boolean isSuffxKey) {
 		ValueOperations<String, Object> operation = getOperation();
-		Object object = operation.get(isSuffxKey?suffxKey(key):key);
+		String finalKey=isSuffxKey?suffxKey(key):key;
+		Object object = operation.get(finalKey);
 
 		// TODO: 这里没有判断object的类型是否是T，之后再加；
 		return (T) object;
