@@ -37,7 +37,7 @@ public enum OrderFrom {
 	/**
 	 * 门店高速版
 	 */
-	FastOrder(10, "门店高速版"),
+	FastOrder(10, "E代送智能调度"),
 	/**
 	 * 商家版后台
 	 */
