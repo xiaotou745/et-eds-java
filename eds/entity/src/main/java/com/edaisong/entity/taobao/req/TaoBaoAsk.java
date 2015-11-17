@@ -18,8 +18,4 @@ public class TaoBaoAsk {
 	public Long getDeliveryOrderNo() {
 		return this.deliveryOrderNo;
 	}
-
-	public String getApiMethodName() {
-		return "taobao.waimai.order.ack";
-	}
 }
