@@ -171,12 +171,11 @@ public class OrderService implements IOrderService {
 	}
 
 	/**
-	 * 后台订单列表页面
-	 * 
+	 * 后台订单列表页面 
 	 * @author CaoHeYang
 	 * @Date 20150728
 	 * @param orderid
-	 *            订单id
+	 * 订单id
 	 * @return
 	 */
 	@Override
@@ -1764,6 +1763,16 @@ public class OrderService implements IOrderService {
 		} else {
 			return true;
 		}
+	} 
+	@Override
+	public OrderStatisticsCResp getOrderGrabStatisticsC(
+			OrderStatisticsCReq orderStatisticsCReq) {
+		OrderStatisticsCResp orderStatisticsResp = orderDao
+				.getOrderGrabStatisticsC(orderStatisticsCReq);
+		List<DaySatisticsC> daySatisticsCs = orderDao
+				.getOrderGrabStatisticsDaySatisticsC(orderStatisticsCReq);
+		orderStatisticsResp.setDatas(daySatisticsCs);
+		return orderStatisticsResp;
 	}
 
 

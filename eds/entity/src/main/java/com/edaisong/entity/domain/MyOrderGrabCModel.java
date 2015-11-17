@@ -15,6 +15,9 @@ public class MyOrderGrabCModel {
 	private String grabOrderNo; 
 	private String distanceToBusiness;
 	private String actualDoneDate;
+	private double businessLongitude;
+	private double businessLatitude;
+	private String businessCityName;
 	public String getBusinessName() {
 		return businessName;
 	}
@@ -104,5 +107,29 @@ public class MyOrderGrabCModel {
 
 	public void setActualDoneDate(String actualDoneDate) {
 		this.actualDoneDate = actualDoneDate;
+	}
+
+	public double getBusinessLongitude() {
+		return businessLongitude;
+	}
+
+	public void setBusinessLongitude(double businessLongitude) {
+		this.businessLongitude = businessLongitude;
+	}
+
+	public double getBusinessLatitude() {
+		return businessLatitude;
+	}
+
+	public void setBusinessLatitude(double businessLatitude) {
+		this.businessLatitude = businessLatitude;
+	}
+
+	public String getBusinessCityName() {
+		return businessCityName;
+	}
+
+	public void setBusinessCityName(String businessCityName) {
+		this.businessCityName = businessCityName;
 	}
 }

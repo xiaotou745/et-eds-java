@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.edaisong.api.common.AjaxNotLoginRunTimeException;
 import com.edaisong.core.util.PropertyUtils;
 
 public class AuthInteceptor extends HandlerInterceptorAdapter {
@@ -20,8 +21,12 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				!request.getServletPath().equals("/account/code")&& 
 				!request.getServletPath().equals("/orderregion/todayone")&& 
 				!request.getServletPath().equals("/group/return_url")) {
-				response.sendRedirect(basePath + "/");
-				return false;
+				if(isAjax(request)){
+					throw new AjaxNotLoginRunTimeException("请重新登录");
+				}else {
+					response.sendRedirect(basePath + "/");
+					return false;
+				}
 			}
 			if (isLogin) {
 				UserContext userContext = UserContext.getCurrentContext(request);
@@ -42,10 +47,16 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 		}
 		return true;
 	}
+	private boolean isAjax(HttpServletRequest request){
+		String requestType = request.getHeader("X-Requested-With");
+		if (requestType != null && requestType.equals("XMLHttpRequest")) {
+			return true;
+		}
+		return false;
+	}
 	private boolean isHasAuth(HttpServletRequest request,UserContext userContext) {
 		// 如果当前请求是从ajax中来的，或当前请求的页面为订单列表或验证码页面，则不进行权限判断
-		String requestType = request.getHeader("X-Requested-With");
-		if (!(requestType != null && requestType.equals("XMLHttpRequest"))) {
+		if (!isAjax(request)) {
 				if (userContext.getBusinessType() == 1) {// 集团商家登录
 					if (request.getServletPath().equals("/group/recharge")|| 
 					    request.getServletPath().equals("/group/alipayapi")||

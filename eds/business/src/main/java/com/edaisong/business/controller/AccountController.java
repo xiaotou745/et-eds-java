@@ -77,7 +77,7 @@ public class AccountController {
 			return resp;
 		}
 		// 登录成功,写cookie
-		int cookieMaxAge = 2 * 60 * 24;
+		int cookieMaxAge = -1;
 		// 选择记住我,默认cookie24小时,否则随浏览器的关闭而失效
 		if (rememberMe==1) {
 			cookieMaxAge = 60 * 60 * 24;

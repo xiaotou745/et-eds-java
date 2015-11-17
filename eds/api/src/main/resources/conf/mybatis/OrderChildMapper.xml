@@ -7,7 +7,7 @@
  paytime, payprice,  hasuploadticket,   ticketurl,createby,
  createtime, updateby, updatetime,   originalorderno, wxcodeurl,
    thirdpaystatus,  status,   orderCommission,  settleMoney,orderRegionOneId,
- orderRegionTwoId,CommissionRate,BaseCommission,WebsiteSubsidy,Adjustment,DistribSubsidy
+ orderRegionTwoId,CommissionRate,BaseCommission,WebsiteSubsidy,Adjustment,DistribSubsidy,businessId
   </sql>
 	<insert id="insert" parameterType="com.edaisong.entity.OrderChild"
 		useGeneratedKeys="true" keyProperty="id">
@@ -193,18 +193,18 @@
     <select id="updateGradOne" resultType="java.lang.Integer" parameterType="com.edaisong.entity.req.OrderGrabReq" >
 update dbo.OrderChild set status=2 output inserted.Id where  id in(
 select top ${orderCount} id from dbo.OrderChild 
-where status=0 and businessid= ${businessId}
+where status=0 and businessid= #{businessId}
  and orderRegionOneId=#{orderRegionOneId})
   </select>  
   <select id="updateGradTwo" resultType="java.lang.Integer" parameterType="com.edaisong.entity.req.OrderGrabReq" >
 update dbo.OrderChild set status=2 output inserted.Id where  id in(
 select top ${orderCount} id from dbo.OrderChild 
-where status=0 and businessid= ${businessId}
-and orderRegionTwoId=${orderRegionTwoId})
+where status=0 and businessid= #{businessId}
+and orderRegionTwoId=#{orderRegionTwoId})
   </select>  
-      <select id="updateCancel" resultType="java.lang.Integer" parameterType="java.lang.String" >
+      <select id="updateCancel" resultType="java.lang.Integer" parameterType="com.edaisong.entity.req.OrderChildCancelReq" >
 update dbo.OrderChild set status=3 output inserted.Id 
-   where Platform=2 and status=0 and createTime>= #{createtime,jdbcType=NVARCHAR} and  #{createtime,jdbcType=NVARCHAR}>=createTime
+   where   Platform=2 and status=0 and createTime>= '${startTime}' and '${endTime}'>=createTime
   </select>  
   <select id="selectByPrimaryKey" resultType="com.edaisong.entity.OrderChild" parameterType="java.lang.Long" >
     select 

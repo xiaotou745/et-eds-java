@@ -20,6 +20,7 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder; 
+import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
@@ -71,9 +72,9 @@ public class OrderHttpService implements IOrderHttpService {
 	}	
 
 	@Override
-	public HttpResultModel<OrderGrabResp> CancelOrderChild(String  createtime)
+	public HttpResultModel<OrderGrabResp> CancelOrderChild(OrderChildCancelReq  req)
 	{
-		HttpResultModel<OrderGrabResp> resp= orderChildService.cancelOrderChild(createtime);			
+		HttpResultModel<OrderGrabResp> resp= orderChildService.cancelOrderChild(req);			
 		return resp;
 	}	
 	
@@ -216,6 +217,19 @@ public class OrderHttpService implements IOrderHttpService {
 		  }
 		 res.setResult(orderService.getInStoreTask(para));
 		 return res;
+	}
+	/**
+	 * C端任务统计接口 
+	 * @author wangchao
+	 * @param data
+	 */
+	@Override
+	public HttpResultModel<OrderStatisticsCResp> orderGrabStatisticsC(
+			OrderStatisticsCReq orderStatisticsCReq) {
+		OrderStatisticsCResp orderStatisticsResp = orderService.getOrderGrabStatisticsC(orderStatisticsCReq);
+		HttpResultModel<OrderStatisticsCResp> httpResultModel = new HttpResultModel<OrderStatisticsCResp>();
+		httpResultModel.setResult(orderStatisticsResp);
+		return httpResultModel;
 	}
 
 }

@@ -6,6 +6,7 @@ import com.edaisong.entity.CommissionType;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderGrabChild;
 import com.edaisong.entity.OrderOther;
+import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderGrabReq;
 
 public interface IOrderChildDao {
@@ -21,7 +22,7 @@ public interface IOrderChildDao {
      * @Date 2015年11月5日 11:40:37
      * @return
      */
-	List<Integer> updateCancel(String  createtime);
+	List<Integer> updateCancel(OrderChildCancelReq req);
 	
 	
     List<Integer>   updateGradOne(OrderGrabReq record);  	

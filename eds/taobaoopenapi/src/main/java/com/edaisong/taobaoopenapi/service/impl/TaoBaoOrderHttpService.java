@@ -33,7 +33,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	/**
 	 * 
 	 */
-	private TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
+	 TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
 
 	/**
 	 * 确认接单接口(API)

@@ -389,5 +389,21 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		return  getReadOnlySqlSessionUtil().selectOne(
 				"com.edaisong.api.dao.inter.IOrderDao.queryIngOrderByRegionId", regionId);
 	}
+
+	@Override
+	public OrderStatisticsCResp getOrderGrabStatisticsC(
+			OrderStatisticsCReq orderStatisticsCReq) {
+		return getReadOnlySqlSessionUtil().selectOne(
+				"com.edaisong.api.dao.inter.IOrderDao.getOrderGrabStatisticsC", 
+				orderStatisticsCReq);
+	}
+
+	@Override
+	public List<DaySatisticsC> getOrderGrabStatisticsDaySatisticsC(
+			OrderStatisticsCReq orderStatisticsCReq) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderDao.getOrderGrabStatisticsDaySatisticsC", 
+				orderStatisticsCReq);
+	}
 	
 }
