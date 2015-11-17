@@ -507,7 +507,7 @@ GROUP BY o.GrabOrderNo ,
   <!-- 获取我的任务详情 wangchao -->
   <select id="getMyOrderGrabDetailC" resultType="com.edaisong.entity.resp.MyOrderGrabDetailCResp" parameterType="com.edaisong.entity.req.OrderGrabDetailCReq" >
     select 	b.Name BusinessName ,
-        	case when b.PhoneNo2 !=null and b.PhoneNo2!='' then b.PhoneNo2
+        	case when b.PhoneNo2 is not null and b.PhoneNo2!='' then b.PhoneNo2
 else b.PhoneNo end  BusinessPhoneNo ,
         	b.[Address] BusinessAddress ,
             og.OrderRegionOneName ,
