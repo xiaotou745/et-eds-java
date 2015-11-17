@@ -35,7 +35,7 @@ String businessid=request.getAttribute("businessid").toString();
 		<div class="map_top" id="map"></div>
 		<div class="map_bottom">
 			<p class="todaya">请点击区域查看订单</p>
-			<span id="regiontitle">尚8一级>尚8二级（50单）</span>
+			<span id="regiontitle">暂未设置区域</span>
 			<ul class="m-bx m-bx-l">
 				<li class="m-fx-1" id="waiting" regionid="-1">
 					<dl>
