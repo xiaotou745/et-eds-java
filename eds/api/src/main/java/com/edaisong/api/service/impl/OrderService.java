@@ -466,6 +466,10 @@ public class OrderService implements IOrderService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public HttpResultModel<OrderResp> PushOrder(OrderReq req) {
 
+		req.setOrderfrom(OrderFrom.FastOrder.value());
+		req.setPlatform(2);
+		req.setIspay(true);
+		
 		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
 
 		// 字符串转化为列表
@@ -477,10 +481,37 @@ public class OrderService implements IOrderService {
 			resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());
 			return resp;
 		}
+		if(req.getOrdercount()>50)
+		{
+			resp.setStatus(PublishOrderReturnEnum.PushOrderCountErr.value());
+			resp.setMessage(PublishOrderReturnEnum.PushOrderCountErr.desc());
+			return resp;
+		}
+		if(req.getBusinessid()==null)
+		{
+			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
+			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
+			return resp;
+		}
+		
+		// 时间戳
+		if (req.getTimeSpan() != null && !req.getTimeSpan().equals("")) {
+				if (isExistByBusinessId(req)) {
+					resp.setStatus(PublishOrderReturnEnum.OrderHasExist.value());
+					resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc());
+					return resp;
+				}
+		}
 
 		// 获取商户信息讯(读串)
 		BusinessModel businessModel = businessDao.getBusiness((long) req
 				.getBusinessid());
+		if(businessModel==null)
+		{
+			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
+			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
+			return resp;
+		}
 		PublishOrderReturnEnum returnEnum = verificationPushOrder(req,
 				businessModel);
 		if (returnEnum != PublishOrderReturnEnum.VerificationSuccess) {
@@ -488,17 +519,8 @@ public class OrderService implements IOrderService {
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
-		// 时间戳
-		if (req.getTimeSpan() != null && !req.getTimeSpan().equals("")) {
-			if (isExistByBusinessId(req)) {
-				resp.setStatus(PublishOrderReturnEnum.OrderHasExist.value());
-				resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc());
-				return resp;
-			}
-		}
 
-		// 订单主表
-		req.setPlatform(2);
+		// 订单主表		
 		Order order = fillOrder(req, businessModel);
 		int orderId = orderDao.insert(order);
 		if (orderId <= 0) {
@@ -547,6 +569,10 @@ public class OrderService implements IOrderService {
 					throw new TransactionalRuntimeException("更新一级区域错误");
 				}
 			} else {
+				OrderRegion selectORModel=  orderRegionDao.getByIdWrite(OneId);
+				if(selectORModel.getHaschild())
+					throw new TransactionalRuntimeException("当前区域包含二级区域,不能进行发单");
+				
 				OrderRegion orModelOne = new OrderRegion();
 				orModelOne.setId(OneId);
 				orModelOne.setWaitingcount(orderCount);

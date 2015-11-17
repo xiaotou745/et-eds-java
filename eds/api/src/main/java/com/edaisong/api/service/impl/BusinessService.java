@@ -454,7 +454,7 @@ public class BusinessService implements IBusinessService {
 	public MyOrderBResp getMyOrdeB(MyOrderBReq myOrderBReq) { 
 		List<OrderRespModel> orderRespModels = iBusinessDao.getMyOrdeB(myOrderBReq);
 		if(orderRespModels!=null &&orderRespModels.size() > 0){		
-			orderRespModels.forEach(action -> action.setClienterHeadPhoto((PropertyUtils.getProperty("ImageServicePath") + action.getClienterHeadPhoto())));
+			orderRespModels.forEach(action -> action.setClienterHeadPhoto((PropertyUtils.getProperty("ImageClienterServicePath") + action.getClienterHeadPhoto())));
 		}
 		MyOrderBResp myOrderBResp = new MyOrderBResp();
 		myOrderBResp.setOrderRespModel(orderRespModels);
