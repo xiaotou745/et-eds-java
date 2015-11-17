@@ -3,16 +3,17 @@ package com.edaisong.entity.req;
 import java.util.Date;
 
 public class OrderGrabConfirmTakeReq {
-	private Integer grabOrderId;
+	private Integer orderGrabId;
+	public Integer getOrderGrabId() {
+		return orderGrabId;
+	}
+	public void setOrderGrabId(Integer orderGrabId) {
+		this.orderGrabId = orderGrabId;
+	}
 	private Integer clienterId;
 	private Double pickUpLongitude;
 	private Double pickUpLatitude;
-	public Integer getGrabOrderId() {
-		return grabOrderId;
-	}
-	public void setGrabOrderId(Integer grabOrderId) {
-		this.grabOrderId = grabOrderId;
-	}
+
 	public Integer getClienterId() {
 		return clienterId;
 	}
