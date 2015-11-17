@@ -529,10 +529,9 @@ GROUP BY o.GrabOrderNo ,
               from      dbo.OrderGrabChild b ( nolock )
               where     b.GrabOrderId = #{grabOrderId,jdbcType=INTEGER}
                         and b.[Status] = 1
-            ) HadCompleteOrderGrab
-            <if test="status == 2">
-		 		,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${clienterLatitude},${clienterLongitude},4326)),0) as DistanceToBusiness  
-	  		</if>
+            ) HadCompleteOrderGrab,
+             case when og.Status = 2 then round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${clienterLatitude},${clienterLongitude},4326)),0) 
+             else '' end as DistanceToBusiness 
      from   dbo.OrderGrab og ( nolock ) 
             join dbo.business b ( nolock ) on og.BusinessId = b.Id
      where og.Id = #{grabOrderId,jdbcType=INTEGER}
