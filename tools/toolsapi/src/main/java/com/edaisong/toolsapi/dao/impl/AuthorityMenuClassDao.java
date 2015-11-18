@@ -10,7 +10,7 @@ import com.edaisong.toolsapi.dao.inter.IAuthorityMenuClassDao;
 import com.edaisong.toolsapi.redis.RedisService;
 import com.edaisong.toolscore.consts.RedissCacheKey;
 import com.edaisong.toolsentity.AuthorityMenuClass;
-import com.edaisong.toolsentity.MenuEntity;
+import com.edaisong.toolsentity.domain.MenuEntity;
 
 @Repository
 public class AuthorityMenuClassDao extends DaoBase implements
@@ -33,7 +33,6 @@ public class AuthorityMenuClassDao extends DaoBase implements
 	public List<MenuEntity> getMenuListByUserID(int accountId) {
 		String key=RedissCacheKey.Menu_Auth+accountId;
 		List<MenuEntity> result=redisService.get(key, List.class);
-		result=null;
 		if (result==null||result.size()==0) {
 			List<MenuEntity> list = getReadOnlySqlSessionUtil()
 					.selectList(

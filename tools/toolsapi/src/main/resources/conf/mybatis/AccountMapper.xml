@@ -92,4 +92,8 @@
     update account set roleid=#{newRoleID,jdbcType=INTEGER}
     where Id = #{userID,jdbcType=INTEGER}
   </update>
+      <update id="updatePwd"  parameterType="com.edaisong.toolsentity.req.UpdatePwdReq" >
+    update account set Password=#{newPwd,jdbcType=NVARCHAR}
+    where Id = #{userId,jdbcType=INTEGER} and Password=#{oldPwd,jdbcType=NVARCHAR}
+  </update>
 </mapper>

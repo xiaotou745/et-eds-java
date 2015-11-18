@@ -12,7 +12,7 @@
 	boolean isLogin =false;// LoginUtil.checkIsLogin(request,response);
 	if(isLogin){
 		//如果登录,跳转到首页
-		response.sendRedirect(basePath+"/home/toolsindex"); 
+		response.sendRedirect(basePath+"/account/list"); 
 	}
 %>
 <!DOCTYPE html>

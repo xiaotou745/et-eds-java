@@ -2,7 +2,6 @@
 	pageEncoding="utf-8"%>
 <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
 <%@page import="java.util.List"%>
-<%@page import="com.edaisong.toolsentity.MenuInfo"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.toolsadmin.url");
 %>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api_http.service.inter.IOrderGrabHttpService;
 import com.edaisong.core.enums.ClienterBindBusinessEnum;
@@ -41,7 +42,17 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	@Override
 	public HttpResultModel<OrderGrabResp> Receive(OrderGrabReq req)
 	{
-		HttpResultModel<OrderGrabResp> resp=orderGrabService.GrabOrder(req);			
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
+		try
+		{
+			resp=orderGrabService.GrabOrder(req);	
+		}
+		catch(TransactionalRuntimeException err)
+		{
+			resp.setMessage(err.getMessage());
+			resp.setStatus(HttpReturnRnums.ParaError.value());
+		}			
+	
 		return resp;
 	}
 	
@@ -56,7 +67,18 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	@Override
 	public HttpResultModel<OrderGrabResp> ConfirmTake(OrderGrabConfirmTakeReq req)
 	{
-		HttpResultModel<OrderGrabResp> resp=orderGrabService.ConfirmTake(req);
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
+		
+		try
+		{
+			resp=orderGrabService.ConfirmTake(req);	
+		}
+		catch(TransactionalRuntimeException err)
+		{
+			resp.setMessage(err.getMessage());
+			resp.setStatus(HttpReturnRnums.ParaError.value());
+		}			
+	
 		return resp;
 	}
 	
@@ -71,8 +93,19 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	@Override	       
 	public HttpResultModel<OrderGrabResp> Complete(OrderGrabCompleteReq req)
 	{
-		HttpResultModel<OrderGrabResp> resp=orderGrabService.Complete(req);
-		return resp;
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
+		try
+		{
+			resp=orderGrabService.Complete(req);	
+		}
+		catch(TransactionalRuntimeException err)
+		{
+			resp.setMessage(err.getMessage());
+			resp.setStatus(HttpReturnRnums.ParaError.value());
+		}			
+	
+		return resp;	
+
 	}	
 
 	
