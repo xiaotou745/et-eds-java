@@ -526,7 +526,7 @@ count(oc.Id) WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLat
 from    BusinessClienterRelation a (nolock)
 join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER}
 join (select ISNULL(SUM(WaitingCount),0) as  WaitingCounts,BusinessId from OrderRegion (nolock) where Status=1 group by BusinessId ) c on a.BusinessId=c.BusinessId
-join OrderChild oc(nolock) on a.BusinessId=oc.BusinessId and oc.Status=1
+join OrderChild oc(nolock) on a.BusinessId=oc.BusinessId and oc.Status=0
 where a.IsEnable = 1
 and a.IsBind = 1
 and a.AuditStatus=1
