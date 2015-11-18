@@ -22,9 +22,9 @@ public enum SuperPlatform {
 	 */
 	ThirdParty(4, "第三方对接平台"),
 	/**
-	 * 骑士高速版
+	 * E代送轻骑士
 	 */
-	FastClienter(5, "骑士高速版"),
+	FastClienter(5, "E代送轻骑士"),
 	/**
 	 * 区域Api发单
 	 */

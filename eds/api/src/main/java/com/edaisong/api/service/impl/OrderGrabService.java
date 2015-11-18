@@ -593,7 +593,7 @@ public class OrderGrabService implements IOrderGrabService {
 		
 		//如果全部完成，更新完成状态		
 		List<OrderGrabChild>  listOrderGrabChild= orderGrabChildDao.selectCompletedOrderByGrabOrderId((long)req.getOrderGrabId());
-		int resStatus=OrderStatus.Complite.value();
+		int resStatus=OrderStatus.Taking.value();
 		OrderGrab updateOGCModel=new OrderGrab();
 		if(currOgModel.getOrdercount()==listOrderGrabChild.size())
 		{		
