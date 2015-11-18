@@ -607,10 +607,7 @@ public class OrderService implements IOrderService {
 		balanceRecord.setWithwardid((long) order.getId());
 		balanceRecord.setRelationno(order.getOrderno());
 		balanceRecord.setRemark("配送费支出金额");
-		int bbcId = businessService.updateForWithdrawC(0, balanceRecord);
-		if (bbcId <= 0) {
-			throw new TransactionalRuntimeException("更新商家信息出错");
-		}
+		int bbcId = businessService.updateForWithdrawC(0, balanceRecord);	
 
 		// 记录发单日志
 		OrderSubsidiesLog record = new OrderSubsidiesLog();
@@ -1160,7 +1157,7 @@ public class OrderService implements IOrderService {
 					.filter(t -> t.getPubDate().equals(
 							daySatisticsB.getMonthDate()))
 					.collect(Collectors.toList());
-			;
+			
 			daySatisticsB.setServiceClienters(temp);
 		}
 		orderStatisticsResp.setDatas(daySatisticsBs);
