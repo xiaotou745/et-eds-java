@@ -1151,9 +1151,9 @@ public class OrderService implements IOrderService {
 				.getOrderStatisticsDaySatistics(orderStatisticsBReq); // B端任务统计接口
 																		// 天数据列表
 		serviceClienters.forEach(action -> action
-				.setClienterPhoto(PropertyUtils
-						.getProperty("ImageClienterServicePath")
-						+ action.getClienterPhoto()));
+				.setClienterPhoto(
+					 	ParseHelper.ToString(action.getClienterPhoto(), "")==""?"": 
+						PropertyUtils.getProperty("ImageClienterServicePath")+ action.getClienterPhoto()));
 		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
 			List<ServiceClienter> temp = serviceClienters
 					.stream()
