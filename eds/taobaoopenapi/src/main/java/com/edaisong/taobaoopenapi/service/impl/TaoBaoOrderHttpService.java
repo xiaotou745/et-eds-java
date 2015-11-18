@@ -1,8 +1,13 @@
 package com.edaisong.taobaoopenapi.service.impl;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.core.consts.TaoBaoConsts;
+import com.edaisong.core.security.AES;
+import com.edaisong.core.util.HttpUtil;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
 import com.edaisong.entity.taobao.req.TaoBaoAsk;
 import com.edaisong.entity.taobao.req.TaoBaoConfirm;
@@ -151,7 +156,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public TaoBaoResponseBase locationUpdate(TaoBaoLocationUpdate r) {
+	public TaoBaoResponseBase locationUpdate(TaoBaoLocationUpdate r) {	
 		WaimaiDeliveryLocationUpdateRequest req =new WaimaiDeliveryLocationUpdateRequest ();
 		req.setDelivererPhone(r.getDelivererPhone());
 		req.setDelivererName(r.getDelivererName());
