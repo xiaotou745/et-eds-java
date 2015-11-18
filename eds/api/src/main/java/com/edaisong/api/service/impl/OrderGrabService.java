@@ -181,7 +181,7 @@ public class OrderGrabService implements IOrderGrabService {
 		}			
 		if(listOrderChild.size()<req.getOrderCount())
 		{			
-			throw new TransactionalRuntimeException("抢单数量不符合规则");				
+			throw new TransactionalRuntimeException("订单数量不足或被抢完");				
 		}		
 			
 		//写入抢单子表
