@@ -18,10 +18,9 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 if(data == null){
 	data = new ArrayList<ClienterBindInfoModel>();
 }%>
-<table
-						class="table table-striped table-bordered table-hover dataTables-example">
+<table class="table table-striped table-bordered table-hover dataTables-example">
 						<thead>
-							<tr>
+							<tr class="tdbg">
 								<th>编号</th>
 								<th>骑士姓名</th>
 								<th>骑士电话</th>
@@ -30,7 +29,7 @@ if(data == null){
 						</thead>
 						<tbody>
 							<%for (int i = 0; i < data.size(); i++) { %>
-							<tr class="info">
+							<tr>
 								<td><%=(i+1) %></td>
 								<td><%=ParseHelper.ShowString(data.get(i).getTrueName())%></td>
 								<td><%=data.get(i).getPhoneNo()%></td>

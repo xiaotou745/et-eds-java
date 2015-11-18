@@ -1,9 +1,25 @@
 package com.edaisong.toolsentity.domain;
 
 public class ConnectionInfo {
-	private String url;
+	private String host;
+	private int port;
+	private String dataBase;
 	private String userName;
 	private String passWord;
+	private String url;
+	public String getHost() {
+		return host;
+	}
+	public void setHost(String host) {
+		this.host = host;
+	}
+	public int getPort() {
+		return port;
+	}
+	public void setPort(int port) {
+		this.port = port;
+	}
+
 	public String getUrl() {
 		return url;
 	}
@@ -21,5 +37,11 @@ public class ConnectionInfo {
 	}
 	public void setPassWord(String passWord) {
 		this.passWord = passWord;
+	}
+	public String getDataBase() {
+		return dataBase;
+	}
+	public void setDataBase(String dataBase) {
+		this.dataBase = dataBase;
 	}
 }

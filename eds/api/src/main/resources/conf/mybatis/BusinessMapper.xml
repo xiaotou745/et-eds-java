@@ -488,8 +488,8 @@
       FROM      dbo.[order] a ( NOLOCK )
                 JOIN dbo.OrderChild b ( NOLOCK ) ON a.Id = b.OrderId
       WHERE     a.businessId = #{businessId,jdbcType=INTEGER}
-                 AND ((b.Status =0 AND b.Platform=2)
-					OR (a.Status =0 AND b.Platform=1))
+                 AND (b.Status =0 AND b.Platform=2)
+					
 	</select>
 	<select id="getStrategyIdByGroupId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 	SELECT StrategyId FROM BusinessGroup nolock WHERE id=#{groupId,jdbcType=INTEGER}
@@ -622,9 +622,9 @@ order by Id desc
   <select id="getOrderCountTotal" resultType="com.edaisong.entity.resp.MyOrderBResp"
 		parameterType="com.edaisong.entity.req.MyOrderBReq">
 		SELECT  
-			isnull(sum(case when og.Status =  2 then og.OrderCount else 0 end),0) quHuoOrderCountTotal,
-			isnull(sum(case when og.Status =  4 then og.OrderCount else 0 end),0) peiSongOrderCountTotal,
-			isnull(sum(case when og.Status =  1 then og.OrderCount else 0 end),0) yiWanChenOrderCountTotal
+			isnull(sum(case when og.Status =  2 then 1 else 0 end),0) quHuoOrderCountTotal,
+			isnull(sum(case when og.Status =  4 then 1 else 0 end),0) peiSongOrderCountTotal,
+			isnull(sum(case when og.Status =  1 then 1 else 0 end),0) yiWanChenOrderCountTotal
 			from 
 			dbo.OrderGrab og(nolock)
 			join (

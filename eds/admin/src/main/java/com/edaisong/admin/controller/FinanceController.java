@@ -34,7 +34,7 @@ public class FinanceController {
 	 
 	@RequestMapping("bustasklist")
 	public ModelAndView list() {
-		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();
+		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("areaListData", areaListData);
 		model.addObject("subtitle", "财务管理");

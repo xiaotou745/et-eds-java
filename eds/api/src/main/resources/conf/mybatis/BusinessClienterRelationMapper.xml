@@ -139,8 +139,8 @@
     parameterType="com.edaisong.entity.req.PagedGetMyServiceClientersReq"  statementType="CALLABLE" >
   	{call Sp_CustomPage2015_V1(
 	' a.Id DESC ',
-	' a.id as RelationId,a.ClienterId,b.TrueName,b.PhoneNo,b.HeadPhoto ',
-	' dbo.BusinessClienterRelation a (nolock) join dbo.clienter b(nolock) on a.ClienterId=b.Id ',
+	' a.id as RelationId,a.ClienterId,isnull(b.TrueName,'') TrueName, isnull(b.PhoneNo,'') PhoneNo, isnull(b.HeadPhoto,'') HeadPhoto ',
+	' dbo.BusinessClienterRelation a (nolock) left join dbo.clienter b(nolock) on a.ClienterId=b.Id ',
 	' <include refid="getMyServiceClientersWhere" /> ',
 	#{pageSize,mode=IN,jdbcType=INTEGER},
 	#{currentPage,mode=IN,jdbcType=INTEGER}

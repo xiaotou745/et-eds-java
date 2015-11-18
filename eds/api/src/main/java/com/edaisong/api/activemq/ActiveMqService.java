@@ -14,7 +14,7 @@ import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.core.util.SystemUtils;
 
-//@Service
+@Service
 public class ActiveMqService {
 	@Autowired
 	private JmsTemplate jmsTemplate;
@@ -50,7 +50,8 @@ public class ActiveMqService {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+            System.out.println("ActiveMq发送日志消息时出错：" + e.getMessage());   
 			String isSendMail = PropertyUtils.getProperty("IsSendMail");
 			if (isSendMail.equals("1")) {
 				String stackTrace = StringUtils.getStackTrace(e);

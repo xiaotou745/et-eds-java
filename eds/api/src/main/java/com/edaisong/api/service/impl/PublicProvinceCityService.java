@@ -82,8 +82,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 		return opencitys;
 	}
 
-	@Override
-	public List<AreaModel> getOpenCityListFromRedis() {
+	private List<AreaModel> getOpenCityListFromRedis() {
 		// String jsonData = redisService.get(
 		// RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
 		// String.class);

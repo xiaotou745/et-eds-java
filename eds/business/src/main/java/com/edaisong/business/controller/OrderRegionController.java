@@ -254,30 +254,4 @@ public class OrderRegionController {
 			}
 		}
 	}
-//	/**
-//	 * e代送新流程中的h5今日订单页面区域统计(给手机app用，当前站点不显示)
-//	 * 根据区域查询订单数量
-//	 * @author zhaohailong
-//	 * @Date 20151029
-//	 * @return
-//	 */
-//	@RequestMapping(value = "todaytotal", produces= "application/json; charset=utf-8")
-//	@ResponseBody
-//	public List<RegionOrderTotal> todayTotal(HttpServletRequest request) {
-//		UserContext context = UserContext.getCurrentContext(request);
-//		return orderService.queryTodayOrderTotal((long)context.getBusinessID());
-//	}
-//	/**
-//	 * e代送新流程中的h5今日订单页面区域详情
-//	 * 根据区域查询订单数量
-//	 * @author zhaohailong
-//	 * @Date 20151029
-//	 * @return
-//	 */
-//	@RequestMapping(value = "todaydetail", produces= "application/json; charset=utf-8")
-//	@ResponseBody
-//	public List<RegionOrderDetail> todayDetail(HttpServletRequest request) {
-//		UserContext context = UserContext.getCurrentContext(request);
-//		return orderService.queryTodayOrderDetail((long)context.getBusinessID());
-//	}
 }

@@ -4,7 +4,7 @@
 
 <%	
 String basePath =PropertyUtils.getProperty("java.business.url");
-basePath="http://10.8.7.253:8091/business";
+//basePath="http://10.8.7.253:8091/business";
 String regionjson = (String) request.getAttribute("regionjson");
 String totalJson = (String) request.getAttribute("totalJson");
 String detailJson = (String) request.getAttribute("detailJson");
@@ -85,7 +85,7 @@ String businessid=request.getAttribute("businessid").toString();
 	    fillOpacity: NORMAL_OPACITY,      //填充的透明度，取值范围0 - 1。
 	    strokeStyle: 'solid' //边线的样式，solid或dashed。
 	}
-	var map =new BMap.Map('map', {minZoom :12, maxZoom :16, enableMapClick :false});
+	var map =new BMap.Map('map', {minZoom :12, enableMapClick :false});
 	tmpfun = map.onclick;
 	map.onclick = null;
 	function initMap(){

@@ -1305,7 +1305,7 @@ LEFT JOIN (  SELECT
 				SUM(OrderCount) TotalCount
 		FROM dbo.[order] o WITH(NOLOCK)
 		join  OrderOther oo  WITH(NOLOCK) ON o.id=oo.OrderId
-		WHERE o.clienterId=#{clienterId} AND o.Status = 1
+		WHERE o.clienterId=#{clienterId} AND o.Status = 1 and o.[Platform] = 1 
 		GROUP BY  Convert (VARCHAR(10),o.PubDate,120)
 		) tbl ON tbl.PubDate=tbldate.MonthDate
 WHERE tbldate.MonthDate <![CDATA[ <=]]>GETDATE()
@@ -1333,7 +1333,7 @@ join  OrderOther oo  WITH(NOLOCK) ON o.id=oo.OrderId
 where   Status = 1
         and o.PubDate >= @startDate and o.PubDate <![CDATA[ <]]> @endDate
         and o.clienterId=#{clienterId}  
-
+		and o.[Platform] = 1 
 	</select>
 		<!--  移动端 订单列表  add by caoheyang 20150910-->
 	<select id="queryOrder" resultType="com.edaisong.entity.domain.QueryOrder"
@@ -1597,50 +1597,49 @@ where   Status = 1
 	<select id="queryTodayOrderDetail" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderDetail">
 	     WITH    onedetailregion
           AS (
-				--没有二级区域的区域的今日订单统计
+				--没有二级区域的一级区域的今日订单统计
                SELECT   b.OrderRegionOneId ,
-                c.Name AS OneName ,
+                		b.OrderRegionOneName AS OneName ,
                         0 AS OrderRegionTwoId ,
                         '' AS TwoName ,
                         b.Status ,
                         COUNT(0) AS Num,
                         0 AS LevelType
                FROM     dbo.[order] a ( NOLOCK )
-                        JOIN dbo.OrderChild b ( NOLOCK ) ON a.id = b.OrderId
-                        JOIN dbo.OrderRegion c ( NOLOCK ) ON b.OrderRegionOneId = c.id
+                		JOIN OrderGrabChild m ( NOLOCK ) ON a.id = m.OrderId
+                        join OrderGrab b (nolock) ON b.Id = m.GrabOrderId
                WHERE    a.businessId=#{businessId}
-               			AND c.status=1
-               			AND a.Platform = 2
                         AND b.OrderRegionOneId > 0
                         AND b.OrderRegionTwoId = 0
-                        AND CONVERT(VARCHAR(10), b.CreateTime, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                        AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                        and b.status in (0,1,2,4)
                GROUP BY b.OrderRegionOneId ,
-                        c.Name ,
+                        b.OrderRegionOneName ,
                         b.Status
              ),
 
         twodetailregion
           AS ( 
                 --二级区域的今日订单统计
-          SELECT   b.OrderRegionOneId ,
-                        '' AS OneName ,
+          SELECT   		b.OrderRegionOneId ,
+                        b.OrderRegionOneName AS OneName ,
                         b.OrderRegionTwoId ,
-                        c.Name AS TwoName,
+                        b.OrderRegionTwoName AS TwoName,
                         b.Status ,
                         COUNT(0) AS Num,
                          1 AS LevelType
                FROM     dbo.[order] a ( NOLOCK )
-                        JOIN dbo.OrderChild b ( NOLOCK ) ON a.id = b.OrderId
-                        JOIN dbo.OrderRegion c ( NOLOCK ) ON b.OrderRegionTwoId = c.id
+                        JOIN OrderGrabChild m ( NOLOCK ) ON a.id = m.OrderId
+                        join OrderGrab b (nolock) ON b.Id = m.GrabOrderId
                WHERE     a.businessId=#{businessId}
-               			AND c.status=1
-               			AND a.Platform = 2
                         AND b.OrderRegionOneId > 0
                         AND b.OrderRegionTwoId > 0
-                        AND CONVERT(VARCHAR(10), b.CreateTime, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                        AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                        and b.status in (0,1,2,4)
                GROUP BY b.OrderRegionOneId ,
+                        b.OrderRegionOneName,
                         b.OrderRegionTwoId ,
-                        c.Name ,
+                        b.OrderRegionTwoName,
                         b.Status
              ),
         onetotal
@@ -1654,7 +1653,7 @@ where   Status = 1
                     SUM(m.num) AS Num ,
                     2 AS LevelType
           FROM      twodetailregion m
-                    JOIN OrderRegion c ON m.OrderRegionOneId = c.id
+                    JOIN OrderRegion c ( NOLOCK ) ON m.OrderRegionOneId = c.id and c.parentId=0
           GROUP BY  m.OrderRegionOneId ,
                     c.Name ,
                     m.Status
@@ -1673,14 +1672,15 @@ where   Status = 1
                 ISNULL(SUM(mb.tb), 0) AS num
         FROM    OrderRegion a ( NOLOCK )
                 LEFT JOIN ( SELECT  1 AS tb ,
-                                    m.OrderRegionOneId ,
-                                    m.OrderRegionTwoId
+                                    a.OrderRegionOneId ,
+                                    a.OrderRegionTwoId
                             FROM    [order] b ( NOLOCK )
-                                    JOIN dbo.OrderChild m ( NOLOCK ) ON b.id = m.OrderId
+                                    JOIN OrderGrabChild m ( NOLOCK ) ON b.id = m.OrderId
+                                    join OrderGrab a (nolock) ON a.Id = m.GrabOrderId
                             WHERE   b.businessId=#{businessId}
-                            		AND b.Platform = 2
                                     AND CONVERT(VARCHAR(10), b.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-                                    AND m.OrderRegionOneId > 0
+                                    AND a.OrderRegionOneId > 0
+                                    and a.status in (0,1,2,4)
                           ) mb ON  
                                   ( mb.OrderRegionTwoId = 0
                                         AND a.Id = mb.OrderRegionOneId

@@ -28,8 +28,9 @@ public class LogConsumerMessageListener implements MessageListener {
             String mongoTable=getMongoTableName();
             mongoService.saveJsonInfo(mongoTable, textMsg.getText());
             //System.out.println("日志消费者接收到了一个日志消息，内容是：" + textMsg.getText());   
-        } catch (JMSException e) {   
-            e.printStackTrace();   
+        } catch (Exception e) {   
+            //e.printStackTrace();   
+            System.out.println("mongo处理日志消息时出错：" + e.getMessage());   
 			String isSendMail = PropertyUtils.getProperty("IsSendMail");
 			if (isSendMail.equals("1")) {
 				String stackTrace = StringUtils.getStackTrace(e);

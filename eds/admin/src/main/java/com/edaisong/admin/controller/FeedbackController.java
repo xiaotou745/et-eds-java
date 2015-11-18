@@ -58,7 +58,7 @@ public class FeedbackController {
 	 */
 	@RequestMapping("list")
 	public ModelAndView list(){			
-		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();		
+		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);		
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "客户服务");
 		model.addObject("currenttitle", "意见与反馈");

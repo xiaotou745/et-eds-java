@@ -241,8 +241,8 @@ width: 100%;
 	
 	 function showMapData(orderid) {
 	        //弹出地图时，禁用滚动条
-	        document.documentElement.style.overflow = "hidden";
-	        document.body.style.overflow = "hidden";
+// 	        document.documentElement.style.overflow = "hidden";
+// 	        document.body.style.overflow = "hidden";
 	        var url = "<%=basePath%>/order/ordermap?orderid="+orderid;
 	        $.ajax({
 	            type: 'POST',

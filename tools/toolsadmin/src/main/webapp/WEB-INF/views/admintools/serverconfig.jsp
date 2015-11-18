@@ -57,9 +57,13 @@ List<String> appNameList = (List<String>) request.getAttribute("appNameList");
 	    <h4 class="modal-title">用户操作</h4>
 	</div>
 <div class="modal-body">
-系统名称：<input type="text" id="appname" class="form-control"/><br/><br/>
-服务器类型： <%=HtmlHelper.getSelect("configtype", EnumHelper.GetEnumItems(ServerType.class), "desc", "value",null,null,"") %><br/><br/>
-连接串：<input type="text" id="configvalue" class="form-control"/><br/><br/>
+系统名称:<input type="text" id="appname" class="form-control"/><br/><br/>
+服务器类型: <%=HtmlHelper.getSelect("configtype", EnumHelper.GetEnumItems(ServerType.class), "desc", "value",null,null,"") %><br/><br/>
+机器ip(或域名):<input type="text" id="host" class="form-control"/><br/><br/>
+端口号:<input type="text" id="port" class="form-control"/><br/><br/>
+数据库名称:<input type="text" id="dataBase" class="form-control"/><br/><br/>
+用户名:<input type="text" id="userName" class="form-control"/><br/><br/>
+密码:<input type="text" id="passWord" class="form-control"/><br/><br/>
 </div>
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -91,17 +95,32 @@ $("#btnSearch").click(function(){
 });
 function reset(){
 	$("#appname").val("");
-	//$("#configtype").val("");
-	$("#configvalue").val("");
+	$("#host").val("");
+	$("#port").val("");
+	$("#dataBase").val("");
+	$("#userName").val("");
+	$("#passWord").val("");
 }
-var oldvalue="";
+var oldvalue;
 function modifyApp(id,name,configtype,configvalue) {
-	oldvalue=name.trim()+configtype.trim()+configvalue.trim();
 	$("#appid").val(id);
 	$("#appname").val(name);
 	$("#configtype").val(configtype);
-	$("#configvalue").val(configvalue);
+	var obj = eval(configvalue);
+	$("#host").val(obj.host);
+	$("#port").val(obj.port);
+	if(configtype==0||paramaters.configtype==2){
+		$("#dataBase").val(obj.dataBase);
+	}else{
+		$("#dataBase").val("");
+	}
+	
+	$("#userName").val(obj.userName);
+	$("#passWord").val(obj.passWord);
+	
 	$("#optype").val(0);//0表示修改，1表示新增
+	
+	var oldvalue=getValue();
 	$('#myModal').modal('show');
 	$("#appname").attr("disabled","disabled");
 	$("#configtype").attr("disabled","disabled");
@@ -129,35 +148,64 @@ function deleteApp(id) {
 		});
 
 }
-
+function getValue(){
+	var paramaters = {
+			"id":$("#appid").val(),
+			"appname" :  $("#appname").val().trim(),
+			"configtype" : $("#configtype").val().trim(),
+			"host" : $("#host").val().trim(),
+			"port" : $("#port").val().trim(),
+			"dataBase" : $("#dataBase").val().trim(),
+			"userName" : $("#userName").val().trim(),
+			"passWord" : $("#passWord").val().trim(),
+			"optype":$("#optype").val()
+		};
+	return paramaters;
+}
 $("#saveapp").click(function(){
-	if($("#appname").val().trim()==""){
+	var paramaters=getValue();
+	if(paramaters.appname==""){
 		alert("系统名称不能为空");
 		return;
 	}
-	if($("#configtype").val().trim()==""){
+	if(paramaters.configtype==""){
 		alert("服务器类型不能为空");
 		return;
 	}
-	if($("#configvalue").val().trim()==""){
-		alert("连接串不能为空");
+	if(paramaters.host==""){
+		alert("机器ip(或域名)不能为空");
 		return;
 	}
-	if($("#optype").val()=="0"){
-		if(oldvalue==$("#appname").val().trim()+$("#configtype").val().trim()+$("#configvalue").val().trim()){
+	if(paramaters.port==""){
+		alert("端口号不能为空");
+		return;
+	}
+	//只有数据库和mongo才需要填写数据库名称
+	if((paramaters.configtype==0||paramaters.configtype==2)&&
+		paramaters.dataBase==""){
+		alert("数据库名称不能为空");
+		return;
+	}
+	if(paramaters.userName==""){
+		alert("用户名不能为空");
+		return;
+	}
+	if(paramaters.passWord==""){
+		alert("密码不能为空");
+		return;
+	}
+	if(paramaters.optype=="0"){
+		//修改时，需要判断是否真正的修改了数据
+		if(paramaters.host==oldvalue.host&&
+			paramaters.port==oldvalue.port&&
+			paramaters.dataBase==oldvalue.dataBase&&
+			paramaters.userName==oldvalue.userName&&
+			paramaters.passWord==oldvalue.passWord){
 			alert("没有任何修改，不需要保存");
 			return;
 		}
 	}
 	
-	
-	var paramaters = {
-			"id":$("#appid").val(),
-			"appname" :  $("#appname").val().trim(),
-			"configtype" : $("#configtype").val().trim(),
-			"configvalue":$("#configvalue").val().trim(),
-			"optype":$("#optype").val()
-		};
 		var url = "<%=basePath%>/admintools/saveapp";
 		$.ajax({
 			type : 'POST',
@@ -168,7 +216,7 @@ $("#saveapp").click(function(){
 					alert("操作成功");
 					window.location.href = window.location.href;
 				} else {
-					alert("操作失败:已经存在系统名称为"+$("#appname").val().trim()+",服务器类型为"+$("#configtype option:selected").html()+"的配置项");
+					alert("操作失败:已经存在系统名称为"+paramaters.appname+",服务器类型为"+$("#configtype option:selected").html()+"的配置项");
 				}
 			}
 		});
