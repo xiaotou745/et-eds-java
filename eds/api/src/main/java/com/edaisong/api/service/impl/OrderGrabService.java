@@ -459,6 +459,11 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setMessage(OrderGrabReturnEnum.OrderGrabEmpty.desc());				
 			return resp;			
 		}
+		if (req.getDoneLatitude() == null || req.getDoneLongitude() == null  ) {
+			resp.setStatus(OrderGrabReturnEnum.CompleteCoordinateErr.value());
+			resp.setMessage(OrderGrabReturnEnum.CompleteCoordinateErr.desc());				
+			return resp;			
+		}
 		if (req.getClienterId() == null) {
 			resp.setStatus(OrderGrabReturnEnum.ClienterEmpty.value());
 			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
