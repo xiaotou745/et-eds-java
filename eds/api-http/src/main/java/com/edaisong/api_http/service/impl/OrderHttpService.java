@@ -240,4 +240,11 @@ public class OrderHttpService implements IOrderHttpService {
 		return httpResultModel;
 	}
 
+	@Override
+	public HttpResultModel<OrderStatisticsBResp> orderGrabStatisticsB(
+			OrderStatisticsBReq orderStatisticsBReq) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -503,19 +503,35 @@
   	<!--  骑士端获取店内任务  获取当前骑士的所有含有未接单订单的 雇主信息    add by caoheyang 20151102-->
 	<select id="getInStoreTaskStroes" resultType="com.edaisong.entity.domain.InStoreTask"
 		parameterType="com.edaisong.entity.req.InStoreTaskReq">
- declare @cliernterPoint geography ;
+<!--  declare @cliernterPoint geography ; -->
+<!-- select @cliernterPoint=geography::Point(#{latitude},#{longitude},4326) ; -->
+<!-- select  b.id as BusinessId,   -->
+<!-- b.name as BusinessName,b.address as BusinessAddress -->
+<!-- ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(@cliernterPoint),0) as DistanceToBusiness, -->
+<!-- WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,b.City businessCityName  -->
+<!-- from    BusinessClienterRelation a (nolock) -->
+<!-- join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER}  -->
+<!-- join (select ISNULL(SUM(WaitingCount),0) as  WaitingCounts,BusinessId from OrderRegion (nolock) where Status=1 group by BusinessId ) c on a.BusinessId=c.BusinessId -->
+<!-- where a.IsEnable = 1 -->
+<!-- and a.IsBind = 1 -->
+<!-- and a.AuditStatus=1 -->
+<!-- order by c.WaitingCounts desc   -->
+
+declare @cliernterPoint geography ;
 select @cliernterPoint=geography::Point(#{latitude},#{longitude},4326) ;
-select  b.id as BusinessId,  
-b.name as BusinessName,b.address as BusinessAddress
+select  b.Id as BusinessId,  
+min(b.Name) as BusinessName,min(b.address) as BusinessAddress
 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(@cliernterPoint),0) as DistanceToBusiness,
-WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,b.City businessCityName 
+count(oc.Id) WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,min(b.City) businessCityName 
 from    BusinessClienterRelation a (nolock)
-join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER} 
+join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER}
 join (select ISNULL(SUM(WaitingCount),0) as  WaitingCounts,BusinessId from OrderRegion (nolock) where Status=1 group by BusinessId ) c on a.BusinessId=c.BusinessId
+join OrderChild oc(nolock) on a.BusinessId=oc.BusinessId and oc.Status=1
 where a.IsEnable = 1
 and a.IsBind = 1
 and a.AuditStatus=1
-order by c.WaitingCounts desc  
+group by b.Id,b.Latitude,b.Longitude
+order by count(oc.Id) desc  
 	</select>
 	<!-- 骑士绑定商户 建立关系 wangchao-->
 	<insert id="bindClienterBusiness" parameterType="com.edaisong.entity.domain.BindClienterBusiness">
@@ -557,7 +573,7 @@ order by Id desc
 	</select>
    <sql id="getMyOrdeBListWhere">
   		1=1 and og.BusinessId = ${businessId}  and og.[Status] = ${status}
-  		and (og.OrderRegionTwoId=${regionId} or  og.OrderRegionOneId=${regionId} )
+  		and (og.OrderRegionTwoId=${regionId} or  og.OrderRegionOneId=${regionId} ) 
   </sql>
      <sql id="getMyOrdeBListColumns">
   		 c.TrueName ClienterName, 
@@ -574,7 +590,19 @@ order by Id desc
 			og.Id GrabOrderId 
   </sql>
    <sql id="getMyOrdeBListFrom">
-  		  dbo.OrderGrab og ( nolock ) join dbo.clienter c ( nolock ) on og.ClienterId = c.Id
+  		  dbo.OrderGrab og ( nolock ) 
+  		  join dbo.clienter c ( nolock ) on og.ClienterId = c.Id
+  		  join (
+				select  ogg.Id
+				from    OrderGrabChild m with ( nolock )
+				        join [OrderGrab] ogg with ( nolock ) on ogg.Id = m.GrabOrderId
+				        join dbo.[order] o with ( nolock ) on o.Id = m.OrderId
+				where   ogg.BusinessId = ${businessId}  and ogg.[Status] = ${status}
+  						and (ogg.OrderRegionTwoId=${regionId} or  ogg.OrderRegionOneId=${regionId} ) 
+  						and convert(varchar(10), o.PubDate, 120) = convert(varchar(10), getdate(), 120) 
+						group by ogg.Id 
+				) a on a.Id = og.Id
+  		  
   </sql>
   <!-- 获取商户端 取货中 配送中 已完成 任务  wangchao-->
 	<select id="getMyOrdeB" resultType="com.edaisong.entity.domain.OrderRespModel" parameterType="com.edaisong.entity.req.MyOrderBReq" statementType="CALLABLE">	
@@ -582,7 +610,7 @@ order by Id desc
 		'og.GrabTime asc',
 		'<include refid="getMyOrdeBListColumns" />',
 		'<include refid="getMyOrdeBListFrom" />',
-		'<include refid="getMyOrdeBListWhere" />', 
+		' 1=1 ', 
 		#{pageSize,mode=IN,jdbcType=INTEGER},
 		#{currentPage,mode=IN,jdbcType=INTEGER}
 		,1,
@@ -598,8 +626,16 @@ order by Id desc
 			isnull(sum(case when og.Status =  1 then og.OrderCount else 0 end),0) yiWanChenOrderCountTotal
 			from 
 			dbo.OrderGrab og(nolock)
-          where og.BusinessId = #{businessId,jdbcType=INTEGER} 
-          and (og.OrderRegionTwoId=${regionId} or og.OrderRegionOneId=${regionId} )
+			join (
+				select  ogg.Id  
+				from    OrderGrabChild m with ( nolock )
+				        join [OrderGrab] ogg with ( nolock ) on ogg.Id = m.GrabOrderId
+				        join dbo.[order] o with ( nolock ) on o.Id = m.OrderId
+				where   ogg.BusinessId = ${businessId}  and ogg.[Status] = ${status}
+  						and (ogg.OrderRegionTwoId=${regionId} or  ogg.OrderRegionOneId=${regionId} ) 
+  						and convert(varchar(10), o.PubDate, 120) = convert(varchar(10), getdate(), 120) 
+						group by ogg.Id 
+				) a on a.Id = og.Id  
 	</select> 
 	<select id="getMyOrderDetailB" resultType="com.edaisong.entity.resp.MyOrderDetailBResp"
 		parameterType="com.edaisong.entity.req.OrderDetailBReq">

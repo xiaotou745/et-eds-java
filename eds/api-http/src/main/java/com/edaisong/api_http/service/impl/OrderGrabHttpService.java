@@ -67,7 +67,18 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	@Override
 	public HttpResultModel<OrderGrabResp> ConfirmTake(OrderGrabConfirmTakeReq req)
 	{
-		HttpResultModel<OrderGrabResp> resp=orderGrabService.ConfirmTake(req);
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
+		
+		try
+		{
+			resp=orderGrabService.ConfirmTake(req);	
+		}
+		catch(TransactionalRuntimeException err)
+		{
+			resp.setMessage(err.getMessage());
+			resp.setStatus(HttpReturnRnums.ParaError.value());
+		}			
+	
 		return resp;
 	}
 	
@@ -82,8 +93,19 @@ public class OrderGrabHttpService implements IOrderGrabHttpService {
 	@Override	       
 	public HttpResultModel<OrderGrabResp> Complete(OrderGrabCompleteReq req)
 	{
-		HttpResultModel<OrderGrabResp> resp=orderGrabService.Complete(req);
-		return resp;
+		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();
+		try
+		{
+			resp=orderGrabService.Complete(req);	
+		}
+		catch(TransactionalRuntimeException err)
+		{
+			resp.setMessage(err.getMessage());
+			resp.setStatus(HttpReturnRnums.ParaError.value());
+		}			
+	
+		return resp;	
+
 	}	
 
 	

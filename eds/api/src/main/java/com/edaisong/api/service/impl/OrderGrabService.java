@@ -459,6 +459,11 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setMessage(OrderGrabReturnEnum.OrderGrabEmpty.desc());				
 			return resp;			
 		}
+		if (req.getDoneLatitude() == null || req.getDoneLongitude() == null  ) {
+			resp.setStatus(OrderGrabReturnEnum.CompleteCoordinateErr.value());
+			resp.setMessage(OrderGrabReturnEnum.CompleteCoordinateErr.desc());				
+			return resp;			
+		}
 		if (req.getClienterId() == null) {
 			resp.setStatus(OrderGrabReturnEnum.ClienterEmpty.value());
 			resp.setMessage(OrderGrabReturnEnum.ClienterEmpty.desc());				
@@ -588,7 +593,7 @@ public class OrderGrabService implements IOrderGrabService {
 		
 		//如果全部完成，更新完成状态		
 		List<OrderGrabChild>  listOrderGrabChild= orderGrabChildDao.selectCompletedOrderByGrabOrderId((long)req.getOrderGrabId());
-		int resStatus=OrderStatus.Complite.value();
+		int resStatus=OrderStatus.Taking.value();
 		OrderGrab updateOGCModel=new OrderGrab();
 		if(currOgModel.getOrdercount()==listOrderGrabChild.size())
 		{		
