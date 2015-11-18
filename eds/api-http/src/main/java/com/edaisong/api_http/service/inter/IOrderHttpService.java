@@ -159,4 +159,15 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/ordergrabstatisticsc")
 	public HttpResultModel<OrderStatisticsCResp> orderGrabStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
+	
+	/**
+	 * B端任务统计接口
+	 * 
+	 * @author wangchao
+	 * @param orderStatisticsBReq
+	 * @return
+	 */
+	@POST
+	@Path("/ordergrabstatisticsb")
+	public HttpResultModel<OrderStatisticsBResp> orderGrabStatisticsB(OrderStatisticsBReq orderStatisticsBReq);
 }
