@@ -1,8 +1,13 @@
 package com.edaisong.taobaoopenapi.service.impl;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.core.consts.TaoBaoConsts;
+import com.edaisong.core.security.AES;
+import com.edaisong.core.util.HttpUtil;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.taobaoopenapi.service.inter.ITmcControlHttpService;
 import com.taobao.api.internal.tmc.Message;
 import com.taobao.api.internal.tmc.MessageHandler;
@@ -31,7 +36,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 				if (message.getTopic() == TaoBaoConsts.OrderDispatch) {
 
 				} else if (message.getTopic() == TaoBaoConsts.OrderClose) {
-
+					orderClose(message.getContent());
 				} else if (message.getTopic() == TaoBaoConsts.OuterOrderDispatch) {
 
 				}
@@ -58,8 +63,8 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 	 * @author CaoHeYang
 	 * @date 20151113
 	 */
-	private void orderClose() {
-
+	private void orderClose(String data) {
+	    String r= HttpUtil.sendPost(PropertyUtils.getProperty("TaoBaoCloseOrder"), "data="+AES.aesEncrypt(data));
 	}
 
 	/**
