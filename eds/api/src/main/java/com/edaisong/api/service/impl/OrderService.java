@@ -522,6 +522,7 @@ public class OrderService implements IOrderService {
 
 		// 订单主表		
 		Order order = fillOrder(req, businessModel);
+		order.setStatus((byte) OrderStatus.Cancel.value());
 		int orderId = orderDao.insert(order);
 		if (orderId <= 0) {
 			throw new TransactionalRuntimeException("保存订单出错");
@@ -1506,7 +1507,7 @@ public class OrderService implements IOrderService {
 		order.setAmount(req.getAmount());
 		order.setRemark(req.getRemark());
 		order.setOrderfrom(req.getOrderfrom());
-		order.setStatus((byte) OrderStatus.Cancel.value());
+		order.setStatus((byte) OrderStatus.New.value());
 		order.setOrdercount(req.getOrdercount());
 		order.setPubdate(new Date());
 		order.setBusinessid(req.getBusinessid());
