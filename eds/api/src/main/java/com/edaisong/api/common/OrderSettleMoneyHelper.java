@@ -21,7 +21,7 @@ public class OrderSettleMoneyHelper {
  */
 	public static Double GetSettleMoney(Double amount, Double businessCommissionRate, Double commissionFixValue,
 			int ordercount, Double distribSubsidy, int orderform) {
-		if (orderform > 0&&orderform!=OrderFrom.BusinessWeb.value()){ // 第三方订单 不考虑外送费
+		if (orderform > 0&&orderform<10){ // 第三方订单 不考虑外送费
 			distribSubsidy = 0d;
 		}
 		//订单金额*结算比例+(固定金额+外送费)*订单数量

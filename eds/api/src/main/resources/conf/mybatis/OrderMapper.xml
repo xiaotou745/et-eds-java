@@ -1266,7 +1266,7 @@ declare @endDate date ;
 set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate) ; 
 set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
   
-select  SUM(ISNULL(ordercount,0)) as OrderCount ,
+select  isnull(SUM(ISNULL(ordercount,0)),0) as OrderCount ,
         COUNT(distinct ISNULL(clienterId,0)) as ServiceClienterCount ,
         ISNULL(SUM(Amount),0)  as TotalAmount
 from    dbo.[order]
