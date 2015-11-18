@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
-<%@page import="com.edaisong.toolsentity.RoleInfo"%>
+<%@page import="com.edaisong.toolsentity.AuthorityRole"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.toolscore.util.HtmlHelper"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
-List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");
+List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleData");
 %>
 <script src="<%=basePath%>/js/bootstrap-treeview.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">

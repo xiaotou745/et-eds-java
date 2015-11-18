@@ -80,35 +80,35 @@
 <%-- <script src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script> --%>
 <%-- <script src="<%=basePath%>/js/hplus.js"></script> --%>
 <script>
-    $(document).ajaxError( function(event, jqXHR, options, errorMsg){
-   	 var content="内部服务器错误";
-    	if(jqXHR.responseText==undefined){
-    		content=jqXHR.statusText;
-    	}else{
-    	 var start=jqXHR.responseText.indexOf("<body>");
+$(document).ajaxError( function(event, jqXHR, options, errorMsg){
+  	 var content="内部服务器错误";
+   	if(jqXHR.responseText==undefined){
+   		content=jqXHR.statusText;
+   	}else{
+   	 var start=jqXHR.responseText.indexOf("<body>");
 
-    	 if(start>0){
-        	 var end=jqXHR.responseText.indexOf("</body>");
-        	 content=jqXHR.responseText.substring(start+6,end);
-        	 content=content.replace("h1","h4"); 
-    	 }else{
-    		 var start2=jqXHR.responseText.indexOf("<pre>");
-    		 var end2=jqXHR.responseText.indexOf("</pre>");
-        	 content=jqXHR.responseText.substring(start2,end2+6);
-    	 }
-    	 }
+   	 if(start>0){
+       	 var end=jqXHR.responseText.indexOf("</body>");
+       	 content=jqXHR.responseText.substring(start+6,end);
+       	 content=content.replace("h1","h4"); 
+   	 }else{
+   		 var start2=jqXHR.responseText.indexOf("<pre>");
+   		 var end2=jqXHR.responseText.indexOf("</pre>");
+       	 content=jqXHR.responseText.substring(start2,end2+6);
+   	 }
+   	 }
 		if(content.indexOf("AjaxNotLoginRunTimeException")>0){
 			alert("由于你长时间没操作，请重新登录");  
 			window.location.href = "<%=basePath %>";
 			return;
 		}
-    	 $("#gloablErrorParam").html(options.url+"调用出错了！");
-    	 $("#gloablErrorContent").html(content);
-    	 $("#gloablShowError").html("显示详细信息");
-    	 $("#gloablErrorContent").hide();
-    	 $('#gloablErrorDiv').modal('show');
-    });
-    
+   	 $("#gloablErrorParam").html(options.url+"调用出错了！");
+   	 $("#gloablErrorContent").html(content);
+   	 $("#gloablShowError").html("显示详细信息");
+   	 $("#gloablErrorContent").hide();
+   	 $('#gloablErrorDiv').modal('show');
+   });
+   
 	$(document).ready(function() {
 		$("#gloablShowError").click(function() {
 			if ($("#gloablShowError").html() == "显示详细信息") {
@@ -127,10 +127,11 @@
 		$(document).on("click", "#pagesearch", function(){
 			var page=$("#pagesearchvalue").val();
 			var maxpage=$("#pagesearchmax").val();
+			var currentpage=$("#pagesearchcurrentpage").val();
 			var s = new RegExp("^\\s*(\\d+)\\s*$");
 			if(!s.test(page)||parseInt(page) < 1 || parseInt(page) > maxpage){
 			  alert("页索引超出范围");
-			  $("#pagesearchvalue").val("1");
+			  $("#pagesearchvalue").val(currentpage);
 			  return;
 			}
 			jss.search(page);
@@ -148,6 +149,25 @@
 			    return true;
 			}else{
 			    return false;
+			}
+		});
+		//列表页下拉框改变时，自动查询
+		$("select").on("change",function(e){
+			try{
+				jss.search(1);
+			}catch(e){
+			}
+		});
+		//列表页点击回车时，自动查询
+		$(document).on("keydown",function(event){
+			try {
+				var e = event || 
+						window.event|| 
+						arguments.callee.caller.arguments[0];
+				if (e && e.keyCode == 13) { // enter 键
+					jss.search(1);
+				}
+			} catch (e) {
 			}
 		});
 	});

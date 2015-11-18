@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
-<%@page import="com.edaisong.toolsentity.RoleInfo"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.toolscore.util.HtmlHelper"%>
 <%

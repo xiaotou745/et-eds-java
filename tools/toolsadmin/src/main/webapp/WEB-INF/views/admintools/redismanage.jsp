@@ -2,7 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
-<%@page import="com.edaisong.toolsentity.RoleInfo"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.toolscore.util.HtmlHelper"%>
 <script src="<%=Config.adminurl%>/js/bootstrap-treeview.js"></script>
@@ -47,7 +46,7 @@ function funGetRedis(mtype,mkey){
 	else{
 		sType = $("input[name='sType']:checked").val();
 	}
-	$.post("<%=Config.adminurl%>/admintools/redistools_do",{key:key,sType:sType},function(d){
+	$.post("<%=Config.adminurl%>/admintools/redisdo",{key:key,sType:sType},function(d){
 		var arr=new Array();
 		if(sType==1)
 			{
@@ -61,8 +60,7 @@ function funGetRedis(mtype,mkey){
 			}
 		else{
 			//详情
-			arr.push(
-					detail(1,key,d));	
+			arr.push(detail(1,key,d));	
 		}
 		$("#Content").html(arr.join(''));
 	});

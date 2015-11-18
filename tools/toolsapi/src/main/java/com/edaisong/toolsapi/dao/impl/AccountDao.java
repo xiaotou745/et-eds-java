@@ -11,6 +11,7 @@ import com.edaisong.toolsapi.dao.inter.IAccountDao;
 import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.req.PagedAccountReq;
+import com.edaisong.toolsentity.req.UpdatePwdReq;
 
 @Repository
 public class AccountDao extends DaoBase implements IAccountDao {
@@ -49,6 +50,12 @@ public class AccountDao extends DaoBase implements IAccountDao {
 	public List<Account> getByRoleID(int roleID) {
 		return getReadOnlySqlSessionUtil().selectList(
 				"com.edaisong.toolsapi.dao.inter.IAccountDao.getByRoleID", roleID);
+	}
+
+	@Override
+	public int updatePwd(UpdatePwdReq req) {
+		return getMasterSqlSessionUtil().update(
+				"com.renrentui.renrenapi.dao.inter.IAccountDao.updatePwd", req);
 	}
 
 }

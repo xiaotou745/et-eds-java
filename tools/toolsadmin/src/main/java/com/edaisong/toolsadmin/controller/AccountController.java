@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.toolsadmin.common.LoginUtil;
@@ -36,6 +37,7 @@ import com.edaisong.toolsentity.AuthorityRole;
 import com.edaisong.toolsentity.common.PagedResponse; 
 import com.edaisong.toolsentity.domain.SimpleUserInfoModel;
 import com.edaisong.toolsentity.req.PagedAccountReq;
+import com.edaisong.toolsentity.req.UpdatePwdReq;
 
 
 //import java.util.function.Predicate;
@@ -92,7 +94,7 @@ public class AccountController {
 		boolean isLogin = LoginUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
-			response.sendRedirect(basePath+"/home/toolsindex"); 
+			response.sendRedirect(basePath+"/account/list"); 
 			return;
 		}
 		AccountLog log = new AccountLog();
@@ -143,7 +145,7 @@ public class AccountController {
 		String encyCookie=AES.aesEncrypt(JsonUtil.obj2string(loginUser));
 		CookieUtils.setCookie(request,response,"admin", LoginUtil.LOGIN_COOKIE_NAME, encyCookie, cookieMaxAge,
 				true);
-		response.sendRedirect(basePath+"/home/toolsindex"); 
+		response.sendRedirect(basePath+"/account/list"); 
 	}
 	
 	/**
@@ -159,12 +161,21 @@ public class AccountController {
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 删除登录cookie
 		CookieUtils.deleteCookie(request, response,"toolsadmin", LoginUtil.LOGIN_COOKIE_NAME);
-		UserContext context=UserContext.getCurrentContext(request);
-		int loginFrom=context.getLoginFrom();
-		if (loginFrom==0) {
-			response.sendRedirect(PropertyUtils.getProperty("net.admin.url") + "/account/login");
-		}else {
-			response.sendRedirect(PropertyUtils.getProperty("java.toolsadmin.url") + "/");
-		}
+		response.sendRedirect(PropertyUtils.getProperty("java.toolsadmin.url") + "/");
+	}
+	@RequestMapping(value = "changepwd")
+	public ModelAndView changePwd(){
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "管理员");
+		view.addObject("currenttitle", "修改密码");
+		view.addObject("viewPath", "account/changepwd");
+		return view;
+	}
+	@RequestMapping(value = "updatepwd")
+	@ResponseBody
+	public int updatePwd(HttpServletRequest request, UpdatePwdReq req){
+		UserContext context = UserContext.getCurrentContext(request);
+		req.setUserId(context.getId());
+		return accountService.updatePwd(req);
 	}
 }

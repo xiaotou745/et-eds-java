@@ -2,7 +2,7 @@ package com.edaisong.toolsadmin.common;
 
 import java.util.List;
 
-import com.edaisong.toolsentity.MenuEntity;
+import com.edaisong.toolsentity.domain.MenuEntity;
 
 public class MenuHelper {
 	public static String getAuthJson(List<MenuEntity> menuList) {

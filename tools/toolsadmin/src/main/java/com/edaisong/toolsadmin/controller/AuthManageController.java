@@ -20,9 +20,9 @@ import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.AuthorityAccountMenuSet;
 import com.edaisong.toolsentity.AuthorityMenuClass;
 import com.edaisong.toolsentity.AuthorityRole;
-import com.edaisong.toolsentity.MenuEntity;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.common.ResponseBase;
+import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.req.AddNewMenuReq;
 import com.edaisong.toolsentity.req.PagedAccountReq;
 
@@ -37,24 +37,6 @@ public class AuthManageController {
 	private IAuthorityAccountMenuSetService authorityAccountMenuSetService;
 	@Autowired
 	private IAuthorityRoleService authorityRoleService;
-	@RequestMapping("list")
-	public ModelAndView list() {
-		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "管理员");
-		model.addObject("currenttitle", "个人账户权限管理");
-		model.addObject("viewPath", "authmanage/list");
-		List<AuthorityRole> datalist=authorityRoleService.selectList();
-		model.addObject("roleData", datalist);
-		return model;
-	}
-
-	@RequestMapping("listdo")
-	public ModelAndView listdo(PagedAccountReq req) {
-		PagedResponse<Account> resp = accountService.queryAccount(req);
-		ModelAndView model = new ModelAndView("authmanage/listdo");
-		model.addObject("listData", resp);
-		return model;
-	}
 	@RequestMapping("getroleid")
 	@ResponseBody
 	public int getRoleID(int userID) {
@@ -106,38 +88,5 @@ public class AuthManageController {
 		authorityAccountMenuSetService.modifyAuthList(authList);
 
 		return "";
-	}
-
-	@RequestMapping("menulist")
-	public ModelAndView menuList(Integer parId) {
-		parId = (parId == null ? 0 : parId);
-		List<AuthorityMenuClass> resp = authorityMenuClassService.getListMenuByParId(parId);
-		ModelAndView view = new ModelAndView("adminView");
-		view.addObject("subtitle", "权限");
-		view.addObject("currenttitle", "菜单管理");
-		view.addObject("viewPath", "authmanage/menulist");
-		view.addObject("listData", resp);
-		view.addObject("currentMenu", authorityMenuClassService.getMenuById(parId));
-		return view;
-	}
-	
-	@RequestMapping("addnewmenu")
-	@ResponseBody
-	public ResponseBase addNewMenu(AuthorityMenuClass req){
-		ResponseBase resp = new ResponseBase();
-		if(StringUtils.isEmpty(req.getMenuname())){
-			resp.setMessage("请填写菜单名称");
-		}else{
-			int curId = req.getParid() == null ? 0 : req.getParid();
-			req.setParid(curId);
-			req.setBelock(false);
-			authorityMenuClassService.addMenu(req);
-			
-			resp.setMessage("添加菜单成功");
-			resp.setResponseCode(1);
-		}
-		
-		
-		return resp;
 	}
 }
