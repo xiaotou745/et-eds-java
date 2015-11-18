@@ -195,8 +195,7 @@ public class OrderGrabService implements IOrderGrabService {
 		double num1=0,num2=0,num3=0,num4=0,num5=0,num6=0,num7=0;
 		for (int i=0;i<listOrderGrabChild.size();i++)
 		{			
-			OrderGrabChild tempOGCModel=new OrderGrabChild();
-			tempOGCModel=listOrderGrabChild.get(i);
+			OrderGrabChild tempOGCModel=listOrderGrabChild.get(i);
 			num1+=tempOGCModel.getOrderCommission();
 			num2+=tempOGCModel.getSettleMoney();
 			num3+=tempOGCModel.getCommissionRate();
@@ -204,6 +203,15 @@ public class OrderGrabService implements IOrderGrabService {
 			num5+=tempOGCModel.getWebsiteSubsidy();
 			num6+=tempOGCModel.getAdjustment();
 			num7+=tempOGCModel.getDistribsubsidy();
+			
+			//更新发单主表  （记录最后1个骑士）		
+			Order order=new  Order();
+			order.setId(tempOGCModel.getOrderid());
+			order.setClienterid(req.getClienterId());		
+			int oId=orderDao.updateByPrimaryKeySelective(order);
+			if (oId <= 0) {
+				throw new TransactionalRuntimeException("更新订单主表错误");
+			}
 		}
 		OrderGrab updateOGCModel=new OrderGrab();
 		updateOGCModel.setId(orderGrab.getId());
