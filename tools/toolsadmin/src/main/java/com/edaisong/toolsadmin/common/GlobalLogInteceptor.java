@@ -82,7 +82,7 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			logEngity.setRequestUrl(request.getRequestURL().toString());
 			logEngity.setDecryptMsg("");
 			logEngity.setResultJson("");
-			logEngity.setContentType(request.getContentType());
+			
 			logEngity.setHeader(headers);
 			logEngity.setRequestMethod(request.getMethod());
 			logEngity.setUserID(userID);
@@ -96,7 +96,11 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			logEngity.setExecuteTime(endDate.getTime() - requestTime.getTime());
 			logEngity.setRequestTime(ParseHelper.ToDateString(requestTime, ""));
 			logEngity.setRequestEndTime(ParseHelper.ToDateString(endDate, ""));
-
+			if (request.getContentType()!=null) {
+				logEngity.setContentType(request.getContentType());	
+			}else {
+				logEngity.setContentType("");	
+			}
 			String requestType = request.getHeader("X-Requested-With");
 			if (requestType != null && requestType.equals("XMLHttpRequest")) {
 				logEngity.setRequestType(1);

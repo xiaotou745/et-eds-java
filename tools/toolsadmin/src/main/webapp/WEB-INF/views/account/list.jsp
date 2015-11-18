@@ -2,12 +2,12 @@
     pageEncoding="utf-8"%>
     <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
 <%@page import="com.edaisong.toolsentity.Account"%>
-<%@page import="com.edaisong.toolsentity.RoleInfo"%>
+<%@page import="com.edaisong.toolsentity.AuthorityRole"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.toolscore.util.HtmlHelper"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
-List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");
+List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleData");
 %>
 <script src="<%=basePath%>/js/bootstrap-treeview.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -47,7 +47,7 @@ List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");
 						单独分配<input type="radio" id="usertype" name="objtype" value="1">
 					</div>
 					<div class="control-group" id="rolediv">
-						<%=HtmlHelper.getSelect("roleid", roleData, "roleName", "id",null,null,"全部")%>
+						<%=HtmlHelper.getSelect("roleid", roleData, "rolename", "id",null,null,"全部")%>
 					</div>
 					<div class="control-group" id="userdiv" style="display: hidden;">
 						<div class="controls">

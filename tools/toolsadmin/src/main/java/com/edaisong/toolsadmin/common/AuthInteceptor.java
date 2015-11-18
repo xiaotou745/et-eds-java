@@ -15,7 +15,7 @@ import com.edaisong.toolsapi.common.LoginHelper;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
 import com.edaisong.toolscore.consts.GlobalSettings;
 import com.edaisong.toolscore.util.PropertyUtils;
-import com.edaisong.toolsentity.MenuEntity;
+import com.edaisong.toolsentity.domain.MenuEntity;
 
 public class AuthInteceptor extends HandlerInterceptorAdapter {
 	@Autowired
@@ -47,7 +47,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 							return true;
 						}
 					}
-					response.sendRedirect(basePath+"/order/list");
+					response.sendRedirect(basePath+"/account/list");
 					return false;
 				}
 			}
