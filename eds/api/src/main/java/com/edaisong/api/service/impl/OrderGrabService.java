@@ -1,5 +1,6 @@
 package com.edaisong.api.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -514,7 +515,13 @@ public class OrderGrabService implements IOrderGrabService {
 		clienterMoney.setOperator(req.getClienterId().toString());
 		clienterMoney.setStatus(ClienterBalanceRecordStatus.Success
 				.value());
-		clienterMoney.setRemark("完成订单佣金"+currOgcModel.getOrderCommission()+"元");
+		DecimalFormat df = new DecimalFormat("#.00");
+		String strCommission="0";
+		if(currOgcModel.getOrderCommission()==0)
+			strCommission="0";
+		else
+			strCommission=df.format(currOgcModel.getOrderCommission());
+		clienterMoney.setRemark("完成订单佣金"+strCommission+"元");
 		clienterService.updateCBalanceAndWithdraw(clienterMoney);		
 		
 		//更新完成子订单
