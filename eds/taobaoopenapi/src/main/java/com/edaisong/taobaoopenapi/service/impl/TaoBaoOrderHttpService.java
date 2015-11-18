@@ -5,8 +5,11 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.core.consts.TaoBaoConsts;
+import com.edaisong.core.entity.Gps;
 import com.edaisong.core.security.AES;
 import com.edaisong.core.util.HttpUtil;
+import com.edaisong.core.util.MapUtils;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
 import com.edaisong.entity.taobao.req.TaoBaoAsk;
@@ -78,11 +81,12 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	@Override
 	public TaoBaoResponseBase update(TaoBaoUpdate r) {
 		WaimaiDeliveryUpdateRequest request=new WaimaiDeliveryUpdateRequest ();
+		Gps gps=MapUtils.bd09_To_Gcj02(ParseHelper.ToDouble(r.getLat(), 0d),ParseHelper.ToDouble(r.getLng(), 0d));
 		request.setDeliveryOrderNo(r.getDeliveryOrderNo());
 		request.setDelivererPhone(r.getDelivererPhone());
 		request.setDelivererName(r.getDelivererName());
-		request.setLng(r.getLng());
-		request.setLat(r.getLat());
+		request.setLng(gps.getWgLon()+"");
+		request.setLat(gps.getWgLat()+"");
 		request.setCardNo(r.getCardNo());
 		request.setDelivererId(r.getDelivererId());
 		try {
@@ -107,9 +111,10 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	@Override
 	public TaoBaoResponseBase pickUp(TaoBaoPickUp r) {
 		WaimaiDeliveryPickupRequest req=new WaimaiDeliveryPickupRequest();
+		Gps gps=MapUtils.bd09_To_Gcj02(ParseHelper.ToDouble(r.getLat(), 0d),ParseHelper.ToDouble(r.getLng(), 0d));
 		req.setDeliveryOrderNo(r.getDeliveryOrderNo());
-		req.setLng(r.getLng());
-		req.setLat(r.getLat());
+		req.setLng(gps.getWgLon()+"");
+		req.setLat(gps.getWgLat()+"");
 		try {
 			WaimaiDeliveryPickupResponse response = client.execute(req, sessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
@@ -133,9 +138,10 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	@Override
 	public TaoBaoResponseBase confirm(TaoBaoConfirm r) {
 		WaimaiDeliveryConfirmRequest req=new WaimaiDeliveryConfirmRequest() ;
+		Gps gps=MapUtils.bd09_To_Gcj02(ParseHelper.ToDouble(r.getLat(), 0d),ParseHelper.ToDouble(r.getLng(), 0d));
 		req.setDeliveryOrderNo(r.getDeliveryOrderNo());
-		req.setLat(r.getLat());
-		req.setLng(r.getLng());
+		req.setLng(gps.getWgLon()+"");
+		req.setLat(gps.getWgLat()+"");
 		try {
 			WaimaiDeliveryConfirmResponse response = client.execute(req, sessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
@@ -158,10 +164,11 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	@Override
 	public TaoBaoResponseBase locationUpdate(TaoBaoLocationUpdate r) {	
 		WaimaiDeliveryLocationUpdateRequest req =new WaimaiDeliveryLocationUpdateRequest ();
+		Gps gps=MapUtils.bd09_To_Gcj02(ParseHelper.ToDouble(r.getLat(), 0d),ParseHelper.ToDouble(r.getLng(), 0d));
 		req.setDelivererPhone(r.getDelivererPhone());
 		req.setDelivererName(r.getDelivererName());
-		req.setLng(r.getLng());
-		req.setLat(r.getLat());
+		req.setLng(gps.getWgLon()+"");
+		req.setLat(gps.getWgLat()+"");
 		try {
 			WaimaiDeliveryLocationUpdateResponse response = client.execute(req, sessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
