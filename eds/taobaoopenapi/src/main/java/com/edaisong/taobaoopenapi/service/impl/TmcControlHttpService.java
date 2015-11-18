@@ -65,6 +65,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 	 */
 	private void orderClose(String data) {
 	    String r= HttpUtil.sendPost(PropertyUtils.getProperty("TaoBaoCloseOrder"), "data="+AES.aesEncrypt(data));
+	    //TODo 不成功时写日志
 	}
 
 	/**

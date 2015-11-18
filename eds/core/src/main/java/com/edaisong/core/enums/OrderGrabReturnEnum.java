@@ -74,7 +74,11 @@ public enum OrderGrabReturnEnum {
 	/**
 	 *骑士未审核通过
 	 */
-	ClienterStatusErr(-16, "骑士未审核通过");
+	ClienterStatusErr(-16, "骑士未审核通过"),
+	/**
+	 *获取抢单信息失败
+	 */
+	CompleteCoordinateErr(-17, "完成必需上传坐标");
 
 	private int value = 0;
 	private String desc;
