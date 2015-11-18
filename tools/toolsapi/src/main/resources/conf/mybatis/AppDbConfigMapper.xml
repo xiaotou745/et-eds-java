@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.toolsapi.dao.inter.IAppDbConfigDao" >
+
+  <sql id="Base_Column_List" >
+    Id, AppName, DbUrl, RedisUrl, CreateTime, UpdateTime, CreateName, UpdateName
+  </sql>
+
+  <delete id="deleteById" parameterType="java.lang.Long" >
+    delete from AppDbConfig
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.toolsentity.AppDbConfig" >
+    insert into AppDbConfig (AppName, DbUrl, 
+      RedisUrl, CreateTime, UpdateTime, 
+      CreateName, UpdateName)
+    values (#{appname,jdbcType=NVARCHAR}, #{dburl,jdbcType=NVARCHAR}, 
+      #{redisurl,jdbcType=NVARCHAR}, getdate(), getdate(), 
+      #{createname,jdbcType=NVARCHAR}, #{updatename,jdbcType=NVARCHAR})
+  </insert>
+  <update id="updateById" parameterType="com.edaisong.toolsentity.AppDbConfig" >
+    update AppDbConfig
+    set AppName = #{appname,jdbcType=NVARCHAR},
+      DbUrl = #{dburl,jdbcType=NVARCHAR},
+      RedisUrl = #{redisurl,jdbcType=NVARCHAR},
+      UpdateTime = getdate(),
+      CreateName = #{createname,jdbcType=NVARCHAR},
+      UpdateName = #{updatename,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+<select id="query" resultType="com.edaisong.toolsentity.AppDbConfig" parameterType="com.edaisong.toolsentity.common.PagedRequestBase" statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+		' Id desc ',
+		' Id, AppName, DbUrl, RedisUrl, CreateTime, UpdateTime, CreateName, UpdateName',
+		' AppDbConfig(nolock) ',
+		'1=1',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)} 
+  </select>
+</mapper>
