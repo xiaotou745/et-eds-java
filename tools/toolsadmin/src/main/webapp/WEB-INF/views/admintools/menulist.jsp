@@ -3,19 +3,19 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
 <%@page import="com.edaisong.toolscore.util.ParseHelper"%>
-<%@page import="com.edaisong.toolsentity.MenuInfo"%>
+<%@page import="com.edaisong.toolsentity.AuthorityMenuClass"%>
 <%@page import="com.edaisong.toolscore.util.EnumHelper"%>
 <%@page import="com.edaisong.toolscore.util.HtmlHelper"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.toolsadmin.url");
-	List<MenuInfo> data = (List<MenuInfo>) request.getAttribute("listData");
-	MenuInfo currentMenu = (MenuInfo) request.getAttribute("currentMenu");
+	List<AuthorityMenuClass> data = (List<AuthorityMenuClass>) request.getAttribute("listData");
+	AuthorityMenuClass currentMenu = (AuthorityMenuClass) request.getAttribute("currentMenu");
 %>
 
 <div class="SearchMd">
 	<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td><%=currentMenu==null?"一级菜单":currentMenu.getMenuName()%></td>
+			<td><%=currentMenu==null?"一级菜单":currentMenu.getMenuname()%></td>
 			<td><input type="button" value="新增菜单" onclick="addNewMenu()" /></td>
 		</tr>
 	</table>
@@ -44,7 +44,7 @@
 						%>
 						<tr class="info">
 							<td><%=data.get(i).getId()%></td>
-							<td><%=ParseHelper.ShowString(data.get(i).getMenuName())%></td>
+							<td><%=ParseHelper.ShowString(data.get(i).getMenuname())%></td>
 							<td>
 								<button type="button" class="btn btn-default btn-sm">修改</button>
 								<button type="button" class="btn btn-default btn-sm">查看子菜单</button>
@@ -77,11 +77,11 @@
 						%>
 						<tr class="info">
 							<td><%=data.get(i).getId()%></td>
-							<td><%=ParseHelper.ShowString(data.get(i).getMenuName())%></td>
+							<td><%=ParseHelper.ShowString(data.get(i).getMenuname())%></td>
 							<td><%=data.get(i).getUrl()%></td>
 							<td><%=data.get(i).getUrl()%></td>
-							<td><%=data.get(i).getParId()%></td>
-							<td><%=data.get(i).getIsButton()%></td>
+							<td><%=data.get(i).getParid()%></td>
+							<td><%=data.get(i).getIsbutton()%></td>
 							<td>
 								<button type="button" class="btn btn-default btn-sm">修改</button>
 								<button type="button" class="btn btn-default btn-sm">添加按钮</button>
@@ -180,7 +180,7 @@
 			return;
 		}
 		var data=$("#searchForm").serialize();
-		$.post("<%=basePath%>/authmanage/addNewMenu",data,function(d){
+		$.post("<%=basePath%>/admintools/addNewMenu",data,function(d){
 			alert(d);
 			location.reload();
 		});

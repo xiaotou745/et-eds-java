@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.edaisong.toolsentity.AuthorityAccountMenuSet;
 import com.edaisong.toolsentity.AuthorityMenuClass;
-import com.edaisong.toolsentity.MenuEntity;
+import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.req.AddNewMenuReq;
 
 public interface IAuthorityMenuClassDao {

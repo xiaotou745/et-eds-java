@@ -1,30 +1,24 @@
 package com.edaisong.toolsadmin.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
 import com.edaisong.toolscore.security.AES;
 import com.edaisong.toolscore.util.CookieUtils;
 import com.edaisong.toolscore.util.JsonUtil;
-import com.edaisong.toolscore.util.PropertyUtils;
 import com.edaisong.toolscore.util.SpringBeanHelper;
 import com.edaisong.toolsentity.domain.SimpleUserInfoModel;
 
 public class UserContext {
 	private SimpleUserInfoModel account;
-	private String host="";
 	private final static IAuthorityMenuClassService authorityMenuClassService;
 	static {
 		authorityMenuClassService = SpringBeanHelper
 				.getCustomBeanByType(IAuthorityMenuClassService.class);
 	}
 
-	private UserContext(SimpleUserInfoModel account,String host) {
+	private UserContext(SimpleUserInfoModel account) {
 		this.account = account;
-		this.host = host;
 	}
 
 	/**
@@ -64,26 +58,9 @@ public class UserContext {
 				!account.getUserName().isEmpty()&&
 				account.getLoginName()!=null&&
 				!account.getLoginName().isEmpty()) {
-				return new UserContext(account,request.getHeader("host"));
+				return new UserContext(account);
 			}
 		}
 		return null;
-	}
-	/**
-	 * 登录来源，0表示从net版后台登录，1表示从java版后台登录
-	 * @author hailongzhao
-	 * @date 20150916
-	 * @param loginfrom
-	 */
-	public  int getLoginFrom() {
-		String staticUrl=PropertyUtils.getProperty("java.toolsadmin.url");
-		int index=staticUrl.indexOf(".");
-		if (index>0) {
-			String webDomain=staticUrl.substring(staticUrl.indexOf("."));
-			if (host!=null&&host.indexOf(webDomain)>0) {
-				return 0;
-			}
-		}
-		return 1;
 	}
 }

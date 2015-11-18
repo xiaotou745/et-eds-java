@@ -9,7 +9,7 @@ import com.edaisong.toolsapi.dao.inter.IAuthorityMenuClassDao;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
 import com.edaisong.toolsentity.AuthorityAccountMenuSet;
 import com.edaisong.toolsentity.AuthorityMenuClass;
-import com.edaisong.toolsentity.MenuEntity;
+import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.req.AddNewMenuReq;
 
 @Service

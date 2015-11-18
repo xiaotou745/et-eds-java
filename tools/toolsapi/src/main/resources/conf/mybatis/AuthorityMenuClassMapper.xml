@@ -7,7 +7,6 @@
     <result column="MenuName" property="menuname" jdbcType="VARCHAR" />
     <result column="BeLock" property="belock" jdbcType="BIT" />
     <result column="Url" property="url" jdbcType="VARCHAR" />
-    <result column="JavaUrl" property="javaUrl" jdbcType="VARCHAR" />
     <result column="IsButton" property="isbutton" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -24,7 +23,7 @@
     values (#{parid,jdbcType=INTEGER}, #{menuname,jdbcType=VARCHAR}, 
       #{belock,jdbcType=BIT}, #{url,jdbcType=VARCHAR}, #{isbutton,jdbcType=BIT})
   </insert>
-  <select id="getMenuListByUserID" resultType="com.edaisong.toolsentity.MenuEntity" parameterType="java.lang.Integer" >
+  <select id="getMenuListByUserID" resultType="com.edaisong.toolsentity.domain.MenuEntity" parameterType="java.lang.Integer" >
 DECLARE @roleID INT
 SELECT @roleID=ISNULL(b.Id,0) FROM dbo.account a left JOIN (select * from  AuthorityRole where BeLock=0 ) b ON 
 a.RoleId=b.Id WHERE a.id=#{accountId}
@@ -52,7 +51,7 @@ ELSE
     WHERE   aam.AccoutId = #{accountId}
             AND amc.BeLock = CAST(0 AS BIT) 
   </select>
-   <select id="getAuthSettingList" resultType="com.edaisong.toolsentity.MenuEntity"  parameterType="java.lang.Integer" >
+   <select id="getAuthSettingList" resultType="com.edaisong.toolsentity.domain.MenuEntity"  parameterType="java.lang.Integer" >
     SELECT  * ,
             -1 AS accoutid
     FROM    (select * from AuthorityMenuClass a WITH ( NOLOCK )) a 
@@ -62,7 +61,7 @@ ELSE
                       ) t ON a.Id = t.MenuId   
     where a.BeLock = CAST(0 AS BIT)	
   </select>
-     <select id="getRoleAuthSettingList" resultType="com.edaisong.toolsentity.MenuEntity"  parameterType="java.lang.Integer" >
+     <select id="getRoleAuthSettingList" resultType="com.edaisong.toolsentity.domain.MenuEntity"  parameterType="java.lang.Integer" >
 SELECT  *,-1 as accoutid 
 FROM    AuthorityMenuClass a WITH ( NOLOCK )
         LEFT JOIN ( SELECT  b.MenuId
@@ -73,10 +72,10 @@ FROM    AuthorityMenuClass a WITH ( NOLOCK )
   </select>
   
   <select id="getListMenuByParId" resultMap="BaseResultMap" parameterType="int">
-  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,JavaUrl FROM AuthorityMenuClass with(nolock) where ParId=#{parId,jdbcType=INTEGER} and BeLock = CAST(0 AS BIT)	 
+  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton FROM AuthorityMenuClass with(nolock) where ParId=#{parId,jdbcType=INTEGER} and BeLock = CAST(0 AS BIT)	 
   </select>
   
     <select id="getMenuById" resultMap="BaseResultMap" parameterType="int">
-  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,JavaUrl FROM AuthorityMenuClass with(nolock) where Id=#{Id,jdbcType=INTEGER} 
+  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton FROM AuthorityMenuClass with(nolock) where Id=#{Id,jdbcType=INTEGER} 
   </select>
 </mapper>

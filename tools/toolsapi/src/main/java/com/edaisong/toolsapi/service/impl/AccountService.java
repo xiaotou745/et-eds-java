@@ -13,6 +13,7 @@ import com.edaisong.toolscore.security.MD5Util;
 import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.req.PagedAccountReq;
+import com.edaisong.toolsentity.req.UpdatePwdReq;
 
 @Service
 public class AccountService implements IAccountService{
@@ -50,5 +51,14 @@ public class AccountService implements IAccountService{
 	@Override
 	public List<Account> getByRoleID(int roleID) {
 		return accountDao.getByRoleID(roleID);
+	}
+
+	@Override
+	public int updatePwd(UpdatePwdReq req) {
+		String oldPassword = MD5Util.MD5(req.getOldPwd());
+		String newPassword = MD5Util.MD5(req.getNewPwd());
+		req.setOldPwd(oldPassword);
+		req.setNewPwd(newPassword);
+		return accountDao.updatePwd(req);
 	}
 }

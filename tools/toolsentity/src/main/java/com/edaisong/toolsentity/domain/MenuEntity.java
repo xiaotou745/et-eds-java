@@ -1,6 +1,8 @@
-package com.edaisong.toolsentity;
+package com.edaisong.toolsentity.domain;
 
 import java.io.Serializable;
+
+import com.edaisong.toolsentity.AuthorityMenuClass;
 
 public class MenuEntity extends AuthorityMenuClass implements Serializable{
     public Integer getAccoutid() {

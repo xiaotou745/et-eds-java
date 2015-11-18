@@ -14,7 +14,6 @@ public class AddNewMenuReq extends RequestBase{
 	private Integer curId;//当前菜单id
 	private String menuName;
 	private String url;
-	private String javaUrl;
 	private Integer isButton;
 	public Integer getCurId() {
 		return curId;
@@ -33,12 +32,6 @@ public class AddNewMenuReq extends RequestBase{
 	}
 	public void setUrl(String url) {
 		this.url = url;
-	}
-	public String getJavaUrl() {
-		return javaUrl;
-	}
-	public void setJavaUrl(String javaUrl) {
-		this.javaUrl = javaUrl;
 	}
 	public Integer getIsButton() {
 		return isButton;

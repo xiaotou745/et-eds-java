@@ -17,7 +17,7 @@ import com.edaisong.toolsapi.service.inter.IAuthorityRoleService;
 import com.edaisong.toolsentity.AuthorityAccountMenuSet;
 import com.edaisong.toolsentity.AuthorityRole;
 import com.edaisong.toolsentity.AuthorityRoleMentMenuSet;
-import com.edaisong.toolsentity.MenuEntity;
+import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.req.PagedAccountReq;
 
 @Controller

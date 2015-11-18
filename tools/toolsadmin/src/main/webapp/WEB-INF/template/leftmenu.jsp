@@ -7,11 +7,10 @@
 	import="com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService"%>
 <%@ page language="java"
 	import="com.edaisong.toolscore.util.SpringBeanHelper"%>
-<%@ page language="java" import="com.edaisong.toolsentity.MenuInfo"%>
 <%@ page language="java" import="java.util.List"%>
 <%@ page language="java" import="java.util.ArrayList"%>
 <%@page import="com.edaisong.toolsadmin.common.UserContext"%>
-<%@page import="com.edaisong.toolsentity.MenuEntity"%>
+<%@page import="com.edaisong.toolsentity.domain.MenuEntity"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
 IAuthorityMenuClassService menuService = SpringBeanHelper.getCustomBeanByType(IAuthorityMenuClassService.class);
