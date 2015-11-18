@@ -484,7 +484,11 @@
 		from dbo.business with(nolock) WHERE id=#{userid,jdbcType=INTEGER}
 	</select>
 	<select id="getOrderCountInfoByBusinessId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-	SELECT ISNULL(Sum(WaitingCount),0) FROM dbo.OrderRegion where Status=1 and BusinessId=#{businessId,jdbcType=INTEGER}
+	  SELECT    ISNULL(COUNT(0),0) AS num
+      FROM      dbo.[order] a ( NOLOCK )
+                JOIN dbo.OrderChild b ( NOLOCK ) ON a.Id = b.OrderId
+      WHERE     a.businessId = #{businessId,jdbcType=INTEGER}
+                AND b.Status =0
 	</select>
 	<select id="getStrategyIdByGroupId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 	SELECT StrategyId FROM BusinessGroup nolock WHERE id=#{groupId,jdbcType=INTEGER}
