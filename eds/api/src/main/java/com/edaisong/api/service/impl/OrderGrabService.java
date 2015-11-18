@@ -453,6 +453,7 @@ public class OrderGrabService implements IOrderGrabService {
 	{
 		HttpResultModel<OrderGrabResp> resp=new HttpResultModel<OrderGrabResp>();		
 
+		//参数验证
 		if (req.getOrderGrabId() == null) {
 			resp.setStatus(OrderGrabReturnEnum.OrderGrabEmpty.value());
 			resp.setMessage(OrderGrabReturnEnum.OrderGrabEmpty.desc());				
@@ -475,10 +476,8 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setStatus(OrderGrabReturnEnum.ClienterStatusErr.value());
 			resp.setMessage(OrderGrabReturnEnum.ClienterStatusErr.desc());				
 			return resp;	
-		}		
-		
-		//获取取货主表
-		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(req.getOrderGrabId());
+		}				
+		OrderGrab currOgModel= orderGrabDao.selectByPrimaryKeyWrite(req.getOrderGrabId());//获取取货主表
 		if(currOgModel==null)
 		{
 			throw new TransactionalRuntimeException("完成信息不存在");
@@ -494,8 +493,7 @@ public class OrderGrabService implements IOrderGrabService {
 		else
 		{
 			throw new TransactionalRuntimeException("订单不处于取货状态");
-		}
-		
+		}		
 		//更新骑士余额	获取第一条子订单	
 		OrderGrabChild currOgcModel=  orderGrabChildDao.selectTop1ByGrabOrderId((long)req.getOrderGrabId());
 		if(currOgcModel==null)
@@ -503,27 +501,9 @@ public class OrderGrabService implements IOrderGrabService {
 			resp.setStatus(OrderGrabReturnEnum.OrderGrabChildEmpty.value());
 			resp.setMessage(OrderGrabReturnEnum.OrderGrabChildEmpty.desc());		
 			return resp;
-		}
-		ClienterMoney clienterMoney = new ClienterMoney();
-		clienterMoney.setAmount(currOgcModel.getOrderCommission()); 
-		clienterMoney.setClienterId(req.getClienterId());
-		clienterMoney
-				.setRecordType(ClienterBalanceRecordRecordType.OrderCommission
-						.value());
-		clienterMoney.setRelationNo("");
-		clienterMoney.setWithwardId(currOgcModel.getId());
-		clienterMoney.setOperator(req.getClienterId().toString());
-		clienterMoney.setStatus(ClienterBalanceRecordStatus.Success
-				.value());
-		DecimalFormat df = new DecimalFormat("#.00");
-		String strCommission="0";
-		if(currOgcModel.getOrderCommission()==0)
-			strCommission="0";
-		else
-			strCommission=df.format(currOgcModel.getOrderCommission());
-		clienterMoney.setRemark("完成订单佣金"+strCommission+"元");
-		clienterService.updateCBalanceAndWithdraw(clienterMoney);		
+		}	
 		
+		//操作
 		//更新完成子订单
 		OrderGrabChild ogcModel=new OrderGrabChild();
 		ogcModel.setId(currOgcModel.getId());
@@ -536,6 +516,15 @@ public class OrderGrabService implements IOrderGrabService {
 			throw new TransactionalRuntimeException("完成订单主表错误");
 		}
 		
+		//更新发单主表
+		Order order=new  Order();
+		order.setId(currOgcModel.getOrderid());
+		order.setStatus((byte)OrderStatus.Complite.value());
+		order.setActualdonedate(new Date());
+		int oId=orderDao.updateByPrimaryKeySelective(order);
+		if (oId <= 0) {
+			throw new TransactionalRuntimeException("更新订单主表错误");
+		}
 		//更新发单子表
 		OrderChild orderChildModel=new OrderChild();
 		orderChildModel.setId((long)currOgcModel.getOrderchildid());
@@ -544,16 +533,7 @@ public class OrderGrabService implements IOrderGrabService {
 		int ocId=orderChildDao.updateByPrimaryKeySelective(orderChildModel);
 		if (ocId <= 0) {
 			throw new TransactionalRuntimeException("完成订单子表错误");
-		}
-		//更新发单主表
-		Order order=new  Order();
-		order.setId(currOgcModel.getOrderid());
-		order.setStatus((byte)OrderStatus.Complite.value());
-		order.setActualdonedate(new Date());
-		int oId=orderDao.updateByPrimaryKeySelective(order);
-		if (ocId <= 0) {
-			throw new TransactionalRuntimeException("更新订单主表错误");
-		}
+		}		
 		
 		//更新区域表	
 		int OneId = currOgModel.getOrderRegionOneId();
@@ -610,17 +590,36 @@ public class OrderGrabService implements IOrderGrabService {
 		List<OrderGrabChild>  listOrderGrabChild= orderGrabChildDao.selectCompletedOrderByGrabOrderId((long)req.getOrderGrabId());
 		int resStatus=OrderStatus.Complite.value();
 		OrderGrab updateOGCModel=new OrderGrab();
-		if(currOgModel.getOrdercount().equals(listOrderGrabChild.size()))
-		{			
+		if(currOgModel.getOrdercount()==listOrderGrabChild.size())
+		{		
+			resStatus=OrderStatus.Complite.value();
+			
+			//更新抢单时主表
 			updateOGCModel.setId(req.getOrderGrabId());
 			updateOGCModel.setActualdonedate(new Date());			
 			updateOGCModel.setStatus((byte)OrderStatus.Complite.value());
 			int updateOrderGrabId= orderGrabDao.updateByPrimaryKeySelective(updateOGCModel);
 			if (updateOrderGrabId <= 0) {				
 				throw new TransactionalRuntimeException("更新抢单主表金额错误");
-			}		
-			
-			resStatus=OrderStatus.Complite.value();
+			}				
+		
+			ClienterMoney clienterMoney = new ClienterMoney();
+			clienterMoney.setAmount(currOgModel.getOrderCommission()); 
+			clienterMoney.setClienterId(req.getClienterId());
+			clienterMoney.setRecordType(ClienterBalanceRecordRecordType.OrderCommission	.value());
+			clienterMoney.setRelationNo(currOgModel.getGraborderno());
+			clienterMoney.setWithwardId(currOgModel.getId());
+			clienterMoney.setOperator(req.getClienterId().toString());
+			clienterMoney.setStatus(ClienterBalanceRecordStatus.Success
+					.value());
+			DecimalFormat df = new DecimalFormat("#.00");
+			String strCommission="0";
+			if(currOgModel.getOrderCommission()==0)
+				strCommission="0";
+			else
+				strCommission=df.format(currOgModel.getOrderCommission());
+			clienterMoney.setRemark("完成订单佣金"+strCommission+"元");
+			clienterService.updateCBalanceAndWithdraw(clienterMoney);		
 		}
 		
 		resp.setStatus(OrderGrabReturnEnum.Success.value());
