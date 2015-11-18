@@ -70,7 +70,11 @@ public enum OrderGrabReturnEnum {
 	/**
 	 *获取抢单子表信息失败
 	 */
-	OrderGrabChildEmpty(-15, "获取抢单子表信息失败");
+	OrderGrabChildEmpty(-15, "获取抢单子表信息失败"),
+	/**
+	 *骑士未审核通过
+	 */
+	ClienterStatusErr(-16, "骑士未审核通过");
 
 	private int value = 0;
 	private String desc;

@@ -91,7 +91,11 @@
         	 content=jqXHR.responseText.substring(start2,end2+6);
     	 }
     	 }
-
+		if(content.indexOf("AjaxNotLoginRunTimeException")>0){
+			alert("由于你长时间没操作，请重新登录");  
+			window.location.href = "<%=basePath %>";
+			return;
+		}
     	 $("#gloablErrorParam").html(options.url+"调用出错了！");
     	 $("#gloablErrorContent").html(content);
     	 $("#gloablShowError").html("显示详细信息");

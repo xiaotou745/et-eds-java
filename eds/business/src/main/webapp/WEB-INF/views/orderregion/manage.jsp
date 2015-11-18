@@ -53,6 +53,7 @@ var NORMAL_OPACITY = 0.3, SELECT_OPACITY = 0.7;
 var map;
 var drawingManager;
 var overlayArray = {};//区域数组
+var mapoverlayArray = {};//原始区域数组
 var overlayPointArray ={};//区域坐标数组
 var newoverlayArray = {};//新增区域数组
 var parentId=-1;
@@ -168,7 +169,7 @@ var overlaycomplete = function(e) {
 		setParentNum(1,true);
 	}
 	$("#region"+overlayId).focus();
-	
+	mapoverlayArray[overlayId] = e.overlay;
 	overlayArray[overlayId] = overlaybyArray(e.overlay.getPath());
 	overlayPointArray[overlayId]=e.overlay.getPath();//e.overlay.getPath()为多边形各点数组
 	newoverlayArray[overlayId]=overlayId;
@@ -320,7 +321,7 @@ $('#mapPopup').on('click', '.change', function() {
 		}
 	}
 })
-function showregion(regionid){
+function showregion(regionid,iszoom){
 	for (var key in overlayArray){
 		if(regionid==parseInt(key)){
 			overlayArray[key].setFillOpacity(SELECT_OPACITY);
@@ -337,7 +338,12 @@ function showregion(regionid){
 	}
 	$('#regionlistul a[id^="regiontitle'+regionid+'_"]').addClass("selected_a");
 	showPanel();
-	zoomIn(regionid,false);
+	if(iszoom){
+		
+	}else{
+		zoomIn(regionid,false);
+	}
+
 }
 function showPanel(){
 	$('#mapPopup').animate({
@@ -392,31 +398,33 @@ function dodelete(regionid,delDb){
 			}
 			for(var i=0 ;i<childs.length;i++){
 				var childid=parseInt(childs[i].id.replace("child",''));
-				map.removeOverlay(overlayArray[childid]);
-				delete overlayPointArray[childid];
-				delete overlayArray[childid];
+				del(childid,delDb);
 			}
-			map.removeOverlay(overlayArray[regionid]);
-			delete overlayPointArray[regionid];
-			delete overlayArray[regionid];
+			del(regionid,delDb);
 			par.remove();
 		}else{
-			map.removeOverlay(overlayArray[regionid]);
-			delete overlayPointArray[regionid];
-			delete overlayArray[regionid];
+			del(regionid,delDb);
 			par.remove();
 		}
 		setParentNum(-1,true);
 	}else{
-		map.removeOverlay(overlayArray[regionid]);
-		delete overlayPointArray[regionid];
-		delete overlayArray[regionid];
+		del(regionid,delDb);
 		$('#child'+regionid).remove();
 	}
 	parentId=-1;
 	if(delDb){
 		saveall();
 	}
+}
+function del(regionid,isnew){
+	if(!isnew){
+		map.removeOverlay(mapoverlayArray[regionid]);
+		delete mapoverlayArray[regionid];
+	}else{
+		map.removeOverlay(overlayArray[regionid]);
+	}
+	delete overlayPointArray[regionid];
+	delete overlayArray[regionid];
 }
 function getpoints(pointObj){
 	var result="";
@@ -526,20 +534,38 @@ function saveall(){
 		}
 		var childLength = $('#parent'+parId+' li[id^="child"]').length;
 		if(childLength<9){
-		    zoomIn(parId,true);
-			showregion(parId);
-			parentId=parId;
-			beginDraw();
+			var url = "<%=basePath%>/orderregion/checkorder";
+	        $.ajax({
+	            type: 'POST',
+	            url: url,
+	            data: {"regionId":parId},
+	            success: function (result) {   		
+	            	if(result>0){
+	            		alert("当前区域中今日还存在未完成的订单,暂时不能添加二级区域");  
+	            	}
+	            	else{
+	        			showregion(parId,true);
+	        		    zoomIn(parId,true);
+	        			parentId=parId;
+	        			beginDraw();
+	            	}
+	            }
+	        });
 		}else{
 			alert("二级区域最多只能有9个");
 		}
 	}
 	function zoomIn(overlayId,isparent) {
-	    //$(window).scrollTop(200);
-	    if(isparent){
-		    map.zoomTo(16);	
-	    }
 		var point = getcenter(overlayId);
+	    if(isparent){
+	    	point.lng=point.lng+0.01;
+	    	point.lat=point.lat-0.005;
+		    map.zoomTo(16);	
+	    }else{
+	    	point.lng=point.lng+0.02;
+	    	point.lat=point.lat-0.01;
+	    }
+
 	    map.panTo(point);
 	  }
 // 	function setBounds(parId){

@@ -35,32 +35,32 @@ String businessid=request.getAttribute("businessid").toString();
 		<div class="map_top" id="map"></div>
 		<div class="map_bottom">
 			<p class="todaya">请点击区域查看订单</p>
-			<span id="regiontitle">尚8一级>尚8二级（50单）</span>
+			<span id="regiontitle">暂未设置区域</span>
 			<ul class="m-bx m-bx-l">
-				<li class="m-fx-1">
+				<li class="m-fx-1" id="waiting" regionid="-1">
 					<dl>
 						<dt>待接单</dt>
-						<dd><a id="waiting" href="#" regionid="-1" onclick="getdetail(0,this)">0单待接单</a></dd>
+						<dd id="waitingNum">0单</dd>
 					</dl>
 				</li>
-				<li class="m-fx-1">
+				<li class="m-fx-1" id="picking" regionid="-1">
 					<dl class="quh">
 						<dt>取货中>></dt>
-						<dd><a id="picking" href="#" regionid="-1"  onclick="getdetail(2,this)">0单取货中</a></dd>
+						<dd id="pickingNum">0单</dd>
 					</dl>
 				</li>
 			</ul>
 			<ul class="m-bx m-bx-l">
-				<li class="m-fx-1">
+				<li class="m-fx-1"  id="sending" regionid="-1">
 					<dl class="peis">
 						<dt>配送中>></dt>
-						<dd><a id="sending" href="#" regionid="-1" onclick="getdetail(4,this)">0单配送中</a></dd>
+						<dd id="sendingNum">0单</dd>
 					</dl>
 				</li>
-				<li class="m-fx-1">
+				<li class="m-fx-1" id="done" regionid="-1">
 					<dl class="wanc">
 						<dt>已完成>></dt>
-						<dd><a id="done" href="#" regionid="-1" onclick="getdetail(1,this)">0单已完成</a></dd>
+						<dd id="doneNum">0单</dd>
 					</dl>
 				</li>
 			</ul>
@@ -117,7 +117,7 @@ String businessid=request.getAttribute("businessid").toString();
 		}
 
 		var poi = new BMap.Point(centerLongitude, centerLatitude);
-		map.centerAndZoom(poi, 14);
+		map.centerAndZoom(poi, 15);
 	}
 	function addevent(tempPolygon,overlayId){
 // 		tempPolygon.addEventListener('click',function(e){
@@ -175,6 +175,7 @@ String businessid=request.getAttribute("businessid").toString();
 		label.setStyle({color :"blue", fontWeight :'700', fontSize :"12px", fontFamily :"Microsoft Yahei", backgroundColor :'none', border :0, cursor :"pointer"});
 		map.addOverlay(label);  
 	}
+	
 	function overlayClick(id){
 		if(id<0){
 			return;
@@ -197,7 +198,14 @@ String businessid=request.getAttribute("businessid").toString();
 			$("#regiontitle").html(parentregion.name+"("+parentregion.num+"单)"+">"+region.name+"("+region.num+"单)");
 		}else{
 			$("#regiontitle").html(region.name+"("+region.num+"单)");
-		    zoomIn(id);
+			var haschild=false;
+			for(var i=0;i<totalJson.length;i++){
+				if(totalJson[i].parentId==region.id){
+					haschild=true;
+					break;
+				}
+			}
+		    zoomIn(id,haschild);
 		}
 
 		$("#waiting").attr("regionid",id);
@@ -206,10 +214,10 @@ String businessid=request.getAttribute("businessid").toString();
 		$("#done").attr("regionid",id);
 		
 		//默认都是0单（如果有详情，则显示详情中的数量）
-		$("#waiting").html("0单待接单");
-		$("#picking").html("0单取货中");
-		$("#sending").html("0单配送中");
-		$("#done").html("0单已完成");
+		$("#waitingNum").html("0单");
+		$("#pickingNum").html("0单");
+		$("#sendingNum").html("0单");
+		$("#doneNum").html("0单");
 		
 		for(var i=0;i<detailJson.length;i++){
 			if((region.parentId==0&&
@@ -220,16 +228,16 @@ String businessid=request.getAttribute("businessid").toString();
 				 detailJson[i].orderRegionTwoId==id)){
 					switch(detailJson[i].status){
 						case 0:
-							$("#waiting").html(detailJson[i].num+"单待接单");
+							$("#waitingNum").html(detailJson[i].num+"单");
 							break;
 						case 2:
-							$("#picking").html(detailJson[i].num+"单取货中");
+							$("#pickingNum").html(detailJson[i].num+"单");
 							break;
 						case 4:
-							$("#sending").html(detailJson[i].num+"单配送中");
+							$("#sendingNum").html(detailJson[i].num+"单");
 							break;
 						case 1:
-							$("#done").html(detailJson[i].num+"单已完成");
+							$("#doneNum").html(detailJson[i].num+"单");
 							break;
 					}
 			}
@@ -251,88 +259,122 @@ String businessid=request.getAttribute("businessid").toString();
 		}
 		overlayClick(getmaxParentid());
 	}
-	function getdetail(status,target){
-		if(status==0){
+	//订单数量为0时，不可进入订单列表页
+function isdetail(status,regionid){
+	if (status == 0) {
+		return false;
+	}
+	if (parseInt(regionid) < 0) {
+		return false;
+	}
+	switch (status) {
+	case 0:
+		if ($("#waitingNum").html() == "0单") {
+			return false;
+		}
+		break;
+	case 2:
+		if ($("#pickingNum").html() == "0单") {
+			return false;
+		}
+		break;
+	case 4:
+		if ($("#sendingNum").html() == "0单") {
+			return false;
+		}
+		break;
+	case 1:
+		if ($("#doneNum").html() == "0单") {
+			return false;
+		}
+		break;
+	}
+	return true;
+}
+	function getdetail(status,regionid){	
+		if(!isdetail(status)){
 			return;
 		}
-		var regionid=$(target).attr('regionid'); 
-		if(parseInt(regionid)<0){
-			return;
-		}
-		var regionName="";
-		for(var i=0;i<totalJson.length;i++){
-			if(totalJson[i].id==regionid){
-				regionName=totalJson[i].name;
+		var regionName = "";
+		for (var i = 0; i < totalJson.length; i++) {
+			if (totalJson[i].id == regionid) {
+				regionName = totalJson[i].name;
 				break;
 			}
 		}
-		try{
-		//和app交互
-		    window.todayOrder.orderList(businessid,regionid,status,regionName);
-		}catch(e){
-		}
-		try{
+		try {
 			//和app交互
-			orderList(businessid,regionid,status,regionName);
-		}catch(e){
+			window.todayOrder.orderList(businessid, regionid, status,
+					regionName);
+		} catch (e) {
 		}
-	}
-	function getmaxParentid(){
-		var maxparentid=-1;
-		var maxnum=0;
-		for(var i=0;i<totalJson.length;i++){
-			if(totalJson[i].parentId==0){
-				if(maxnum<=totalJson[i].num){
-					maxparentid=totalJson[i].id;
+		try {
+			//和app交互
+			orderList(businessid, regionid, status, regionName);
+		} catch (e) {
+		}
+}
+		function getmaxParentid() {
+			var maxparentid = -1;
+			var maxnum = 0;
+			for (var i = 0; i < totalJson.length; i++) {
+				if (totalJson[i].parentId == 0) {
+					if (maxnum < totalJson[i].num) {
+						maxparentid = totalJson[i].id;
+						maxnum = totalJson[i].num;
+					}
 				}
 			}
+			return maxparentid;
 		}
-		return maxparentid;
-	}
-	//点击区域放大，地图居中
-	function zoomIn(overlayId) {
-		var isparent=true;
-		for(var i=0;i<totalJson.length;i++){
-			if(totalJson[i].id==overlayId){
-				if(totalJson[i].parentId>=0){
-					isparent=false;
-					break;
+		//点击区域放大，地图居中
+		function zoomIn(overlayId, haschild) {
+			if (haschild) {
+				map.zoomTo(16);
+			} else {
+				map.zoomTo(15);
+			}
+			var point = getcenter(overlayId);
+			map.panTo(point);
+		}
+		map.addEventListener("click", function(e) {
+			//先判断是否点击的是二级区域
+			for (var i = 0; i < tempArray.length; i++) {
+				for (var j = 0; j < tempArray[i].subLists.length; j++) {
+					var ply = overlayArray[tempArray[i].subLists[j].overlayId];
+					if (BMapLib.GeoUtils.isPointInPolygon(e.point, ply)) {
+						overlayClick(tempArray[i].subLists[j].overlayId);
+						return;
+					}
 				}
 			}
-		}
-	    //$(window).scrollTop(200);
-	    if(isparent){
-		    map.zoomTo(16);
-	    }
-		var point = getcenter(overlayId);
-	    map.panTo(point);
-	  }
-	map.addEventListener("click",function(e){
-		//先判断是否点击的是二级区域
-		for(var i=0;i<tempArray.length;i++){
-			for(var j=0;j<tempArray[i].subLists.length;j++){
-				var ply =overlayArray[tempArray[i].subLists[j].overlayId];
-				if(BMapLib.GeoUtils.isPointInPolygon(e.point, ply)){
-					overlayClick(tempArray[i].subLists[j].overlayId);
+			//然后判断是否点击的是一级区域
+			for (var i = 0; i < tempArray.length; i++) {
+				var ply = overlayArray[tempArray[i].overlayId];
+				if (BMapLib.GeoUtils.isPointInPolygon(e.point, ply)) {
+					overlayClick(tempArray[i].overlayId);
 					return;
-				 }
+				}
 			}
-		}
-		//然后判断是否点击的是一级区域
-		for(var i=0;i<tempArray.length;i++){
-			var ply =overlayArray[tempArray[i].overlayId];
-			if(BMapLib.GeoUtils.isPointInPolygon(e.point, ply)){
-				overlayClick(tempArray[i].overlayId);
-				return;
-			 }
-		}
-	});
-	$(function(){
-		init();
-		var t=setTimeout(function(){
-			var divs=$("#map a").hide();
-		},1000);
-	});
+		});
+		$(function() {
+			init();
+			$('#waiting').click(function() {
+				getdetail(0, $('#waiting').attr('regionid'));
+			});
+			$('#picking').click(function() {
+				getdetail(2, $('#picking').attr('regionid'));
+			});
+			$('#sending').click(function() {
+				getdetail(4, $('#sending').attr('regionid'));
+			});
+			$('#done').click(function() {
+				getdetail(1, $('#done').attr('regionid'));
+			});
+			var t = setTimeout(function() {
+				var divs = $("#map a").hide();
+			}, 1000);
+		});
 	</script>
 </body>
 </html>

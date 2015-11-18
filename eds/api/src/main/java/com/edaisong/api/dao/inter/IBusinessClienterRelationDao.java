@@ -7,6 +7,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BindClienterBusiness;
 import com.edaisong.entity.domain.BusinessClienterRelationModel;
 import com.edaisong.entity.domain.ServiceClienters;
+import com.edaisong.entity.req.BusinessClienterRelationReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
@@ -85,6 +86,19 @@ public interface IBusinessClienterRelationDao {
 		 */
 	   int optBindClienter(OptBindClienterReq req);
 
+	   /**
+	    * 绑定店内骑士
+	    * @author 赵海龙
+	    * @date 2015年11月16日 17:59:26
+	    * */
 		boolean updateClienterBindRelation(
 				ClienterBindOptionReq bindClienterBusiness);
+		
+		/**
+		 * 修改绑定合作、店内骑士
+		 * @author haichao 
+		 * @date 2015年11月16日 18:00:28
+		 * */
+		int updateClienterBindRelationCooperation(BusinessClienterRelationReq req);
+		
 }

@@ -15,7 +15,7 @@
     where Id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectById" resultType="com.edaisong.entity.domain.FastOrderDetail" parameterType="java.lang.Long" >
-   SELECT  2 as OrderFrom ,
+   SELECT  10 as OrderFrom ,
         b.Name AS businessName ,
         b.PhoneNo AS businessPhoneNo ,
         b.PhoneNo2 AS businessPhoneNo2 ,
@@ -230,9 +230,9 @@ GROUP BY b.Name ,
 	<sql id="queryFrom">
 		(SELECT  o.id ,
         o.GrabOrderNo as orderNo ,
-        2 as OrderFrom ,
         b.Name as businessName,
         b.PhoneNo as businessPhoneNo,
+        10 as OrderFrom,
         ISNULL(c.TrueName, '''') AS clienterName ,
         ISNULL(c.PhoneNo, '''') AS clienterPhoneNo ,
         o.GrabTime ,
@@ -332,7 +332,7 @@ GROUP BY o.id ,
                 JOIN business m WITH ( NOLOCK ) ON b.businessid = m.id
                 WHERE a.Platform = 2 and   c.Id = #{id,jdbcType=INTEGER}
 	</select>
-	<!-- 导出快单列表 zhaohl 20151103 -->
+	<!-- 导出智能调度列表 zhaohl 20151103 -->
 	<sql id="exportOrderWhere">
 		1=1 
 		<if test="businessName != null and businessName != ''">
@@ -507,16 +507,17 @@ GROUP BY o.GrabOrderNo ,
   <!-- 获取我的任务详情 wangchao -->
   <select id="getMyOrderGrabDetailC" resultType="com.edaisong.entity.resp.MyOrderGrabDetailCResp" parameterType="com.edaisong.entity.req.OrderGrabDetailCReq" >
     select 	b.Name BusinessName ,
-        	b.PhoneNo BusinessPhoneNo ,
+        	case when b.PhoneNo2 is not null and b.PhoneNo2!='' then b.PhoneNo2
+else b.PhoneNo end  BusinessPhoneNo ,
         	b.[Address] BusinessAddress ,
             og.OrderRegionOneName ,
             og.OrderRegionTwoName ,
             og.OrderCount ,
             og.Id GrabOrderId ,
             og.GrabOrderNo , 
-            og.GrabTime,
-            og.PickUpTime ,
-            og.ActualDoneDate ,
+            CONVERT(varchar(100),og.GrabTime,20) GrabTime,
+            CONVERT(varchar(100),og.PickUpTime,20) PickUpTime,
+            CONVERT(varchar(100),og.ActualDoneDate,20) ActualDoneDate ,
             og.[Status] ,
             b.Longitude businessLongitude,
             b.Latitude businessLatitude,
@@ -529,10 +530,9 @@ GROUP BY o.GrabOrderNo ,
               from      dbo.OrderGrabChild b ( nolock )
               where     b.GrabOrderId = #{grabOrderId,jdbcType=INTEGER}
                         and b.[Status] = 1
-            ) HadCompleteOrderGrab
-            <if test="status == 2">
-		 		,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${clienterLatitude},${clienterLongitude},4326)),0) as DistanceToBusiness  
-	  		</if>
+            ) HadCompleteOrderGrab,
+             case when og.Status = 2 then round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${clienterLatitude},${clienterLongitude},4326)),0) 
+             else '' end as DistanceToBusiness 
      from   dbo.OrderGrab og ( nolock ) 
             join dbo.business b ( nolock ) on og.BusinessId = b.Id
      where og.Id = #{grabOrderId,jdbcType=INTEGER}
@@ -542,12 +542,16 @@ GROUP BY o.GrabOrderNo ,
 select b.Name BusinessName ,
         b.PhoneNo BusinessPhoneNo ,
         b.[Address] BusinessAddress ,
-        og.GrabTime,
+        CONVERT(varchar(100),og.GrabTime,20) GrabTime, 
+        CONVERT(varchar(100),og.ActualDoneDate,20) ActualDoneDate ,
         og.OrderRegionOneName ,
         og.OrderRegionTwoName ,
         og.OrderCount ,
         og.Id GrabOrderId,
-        og.GrabOrderNo 
+        og.GrabOrderNo,
+        b.Longitude businessLongitude,
+            b.Latitude businessLatitude,
+            b.City businessCityName
        <if test="status == 2">
 		 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${clienterLatitude},${clienterLongitude},4326)),0) as DistanceToBusiness  
 	  </if> 
@@ -573,9 +577,9 @@ select b.Name BusinessName ,
             og.OrderCount ,
             og.Id GrabOrderId ,
             og.GrabOrderNo , 
-            og.GrabTime,
-            og.PickUpTime ,
-            og.ActualDoneDate ,
+            CONVERT(varchar(100),og.GrabTime,20) GrabTime,
+            CONVERT(varchar(100),og.PickUpTime,20) PickUpTime,
+            CONVERT(varchar(100),og.ActualDoneDate,20) ActualDoneDate ,
             og.[Status] ,
             og.OrderCommission 
      from   dbo.OrderGrab og ( nolock ) 

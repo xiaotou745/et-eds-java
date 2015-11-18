@@ -65,7 +65,17 @@ public class OrderChild implements Serializable {
 	private Integer orderRegionOneId;
     private Integer orderRegionTwoId;
     
-    public Double getDistribSubsidy() {
+    private Integer platform;
+    
+    public Integer getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Integer platform) {
+		this.platform = platform;
+	}
+
+	public Double getDistribSubsidy() {
 		return distribSubsidy;
 	}
 

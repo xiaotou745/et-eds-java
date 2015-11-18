@@ -171,12 +171,11 @@ public class OrderService implements IOrderService {
 	}
 
 	/**
-	 * 后台订单列表页面
-	 * 
+	 * 后台订单列表页面 
 	 * @author CaoHeYang
 	 * @Date 20150728
 	 * @param orderid
-	 *            订单id
+	 * 订单id
 	 * @return
 	 */
 	@Override
@@ -467,21 +466,52 @@ public class OrderService implements IOrderService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public HttpResultModel<OrderResp> PushOrder(OrderReq req) {
 
+		req.setOrderfrom(OrderFrom.FastOrder.value());
+		req.setPlatform(2);
+		req.setIspay(true);
+		
 		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
 
-		// 字符串转化为列表
-		List<OrderRegionReq> list = converAnswerFormString(req
-				.getListOrderRegionStr());
-		req.setListOrderRegion(list);
-		if (list == null || list.size() < 1) {
-			resp.setStatus(PublishOrderReturnEnum.OrderRegionNull.value());
-			resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());
+		if(req.getOrdercount()>50)
+		{
+			resp.setStatus(PublishOrderReturnEnum.PushOrderCountErr.value());
+			resp.setMessage(PublishOrderReturnEnum.PushOrderCountErr.desc());
 			return resp;
 		}
-
+		// 时间戳
+		if (req.getTimeSpan() != null && !req.getTimeSpan().equals("")) {
+						if (isExistByBusinessId(req)) {
+							resp.setStatus(PublishOrderReturnEnum.OrderHasExist.value());
+							resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc());
+							return resp;
+						}
+		}
+		
+		if(req.getBusinessid()==null)
+		{
+			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
+			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
+			return resp;
+		}
+				
 		// 获取商户信息讯(读串)
 		BusinessModel businessModel = businessDao.getBusiness((long) req
 				.getBusinessid());
+		if(businessModel==null)
+		{
+			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
+			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
+			return resp;
+		}
+		// 字符串转化为列表
+		List<OrderRegionReq> list = converAnswerFormString(req.getListOrderRegionStr());
+		req.setListOrderRegion(list);//赋值
+		if (list == null || list.size() < 1) {
+					resp.setStatus(PublishOrderReturnEnum.OrderRegionNull.value());
+					resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());
+					return resp;
+		}	
+
 		PublishOrderReturnEnum returnEnum = verificationPushOrder(req,
 				businessModel);
 		if (returnEnum != PublishOrderReturnEnum.VerificationSuccess) {
@@ -489,17 +519,8 @@ public class OrderService implements IOrderService {
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
-		// 时间戳
-		if (req.getTimeSpan() != null && !req.getTimeSpan().equals("")) {
-			if (isExistByBusinessId(req)) {
-				resp.setStatus(PublishOrderReturnEnum.OrderHasExist.value());
-				resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc());
-				return resp;
-			}
-		}
 
-		// 订单主表
-		req.setPlatform(2);
+		// 订单主表		
 		Order order = fillOrder(req, businessModel);
 		int orderId = orderDao.insert(order);
 		if (orderId <= 0) {
@@ -548,6 +569,10 @@ public class OrderService implements IOrderService {
 					throw new TransactionalRuntimeException("更新一级区域错误");
 				}
 			} else {
+				OrderRegion selectORModel=  orderRegionDao.getByIdWrite(OneId);
+				if(selectORModel.getHaschild())
+					throw new TransactionalRuntimeException("当前区域包含二级区域,不能进行发单");
+				
 				OrderRegion orModelOne = new OrderRegion();
 				orModelOne.setId(OneId);
 				orModelOne.setWaitingcount(orderCount);
@@ -1586,7 +1611,7 @@ public class OrderService implements IOrderService {
 				child.setHasuploadticket(false);
 				child.setThirdpaystatus((short) 0);
 				
-				//以下属性是快单用到的属性
+				//以下属性是智能调度用到的属性
 				child.setBusinessid(req.getBusinessid());
 				child.setStatus((short)0);
 				child.setOrderRegionOneId(0);
@@ -1597,6 +1622,7 @@ public class OrderService implements IOrderService {
 				child.setBaseCommission(0d);
 				child.setWebsiteSubsidy(0d);
 				child.setAdjustment(0d);
+				child.setPlatform(1);
 			}
 		}
 	}
@@ -1649,6 +1675,7 @@ public class OrderService implements IOrderService {
 						.getOrderRegionOneId());
 				child.setOrderRegionTwoId(listOrderRegion.get(i)
 						.getOrderRegionTwoId());
+				child.setPlatform(2);
 
 				OrderCommission orderCommission = new OrderCommission();
 				orderCommission.setAmount(goodPrice);
@@ -1763,6 +1790,16 @@ public class OrderService implements IOrderService {
 		} else {
 			return true;
 		}
+	} 
+	@Override
+	public OrderStatisticsCResp getOrderGrabStatisticsC(
+			OrderStatisticsCReq orderStatisticsCReq) {
+		OrderStatisticsCResp orderStatisticsResp = orderDao
+				.getOrderGrabStatisticsC(orderStatisticsCReq);
+		List<DaySatisticsC> daySatisticsCs = orderDao
+				.getOrderGrabStatisticsDaySatisticsC(orderStatisticsCReq);
+		orderStatisticsResp.setDatas(daySatisticsCs);
+		return orderStatisticsResp;
 	}
 
 

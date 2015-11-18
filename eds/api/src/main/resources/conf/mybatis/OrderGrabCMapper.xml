@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderDao">
+	  <!-- C端任务统计接口   wangchao 20151116 -->
+	<select id="getOrderGrabStatisticsC" parameterType="com.edaisong.entity.req.OrderStatisticsCReq"   resultType="com.edaisong.entity.resp.OrderStatisticsCResp">
+declare @sdate DATETIME
+set @sdate = '${monthInfo}-01'
+declare @startDate date ;
+declare @endDate date ;
+set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate) ; 
+set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
+  
+select  SUM(ISNULL(o.OrderCount,0)) as TotalOrderCount ,
+	        ISNULL(SUM(o.OrderCommission),0) TotalOrderCommission
+from   dbo.OrderGrab o WITH(NOLOCK) 
+where   o.[Status] = 1
+        and o.GrabTime >= @startDate and o.GrabTime <![CDATA[ <]]> @endDate
+        and o.clienterId=#{clienterId}  
+
+	</select>
+	
+	 <!-- C端任务统计接口  天数据列表  wangchao 20151116 -->
+	<select id="getOrderGrabStatisticsDaySatisticsC" parameterType="com.edaisong.entity.req.OrderStatisticsCReq"   resultType="com.edaisong.entity.domain.DaySatisticsC">
+declare @sdate DATETIME
+set @sdate = '${monthInfo}-01'
+declare @startDate date ;
+declare @endDate date ;
+set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate) ; 
+set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
+SELECT  tbldate.MonthDate,
+		tbldate.DateInfo,
+		ISNULL(tbl.TotalCount,0) OrderCount,
+		ISNULL(tbl.TotalCommission,0) OrderCommission
+FROM(
+	  SELECT CONVERT(VARCHAR(100), DATEADD(dd, number, @sdate), 23) as MonthDate ,
+			 CONVERT(VARCHAR(4), DATEPART(day,DATEADD(dd, number, @sdate)))+ '日' as DateInfo
+      FROM master..spt_values 
+      WHERE type = 'P'
+		AND DATEADD(dd, number, @sdate)<![CDATA[ <]]> DATEADD(mm, 1, @sdate)) tbldate
+LEFT JOIN (  SELECT 
+                ISNULL(SUM(o.OrderCommission),0) TotalCommission,
+				CONVERT (VARCHAR(10),o.GrabTime,120) PubDate,
+				SUM(o.OrderCount) TotalCount
+		FROM dbo.OrderGrab o WITH(NOLOCK) 
+		WHERE o.clienterId=#{clienterId} AND o.[Status] = 1
+		GROUP BY  Convert (VARCHAR(10),o.GrabTime,120)
+		) tbl ON tbl.PubDate=tbldate.MonthDate
+WHERE tbldate.MonthDate <![CDATA[ <=]]>GETDATE()
+ORDER BY tbldate.MonthDate   DESC
+	</select>
+</mapper>

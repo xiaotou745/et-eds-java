@@ -248,7 +248,7 @@ public class OrderRegionController {
 	private void plusChild2Parent(List<RegionOrderTotal> totalData){
 		long childNum=0; 
 		for (RegionOrderTotal regionOrderTotal : totalData) {
-			if (regionOrderTotal.getParentId().equals(0)) {
+			if (regionOrderTotal.getParentId().equals(0l)) {
 				childNum=totalData.stream().filter(t ->regionOrderTotal.getId().equals(t.getParentId())).mapToLong(t->t.getNum()).sum();
 				regionOrderTotal.setNum(regionOrderTotal.getNum()+childNum);
 			}

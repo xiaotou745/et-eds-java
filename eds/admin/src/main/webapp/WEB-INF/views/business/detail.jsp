@@ -166,7 +166,7 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 					<input id="rPushOrderTypeN" name="rPushOrderType" type="radio" value="0"  <%=detail.getPushOrderType()==0?"checked" : ""%>> 
 					<label>普通模式</label>
 					<input id="rPushOrderTypeY" name="rPushOrderType" type="radio" value="1" <%=detail.getPushOrderType()==1?"checked" : ""%>> 
-					<label>快单模式</label>
+					<label>智能调度模式</label>
 				</div>
 				<div class="control-group">
 	                    <label style="margin-left: 20px;width:150px;">应收门店：</label>
@@ -669,9 +669,9 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 					} else if(result==-1){
 						alert("没有需要更新的信息");
 					} else if(result==-2){
-						alert("选择快单模式时补贴策略只能选择基本佣金+网站补贴类型的策略！");
+						alert("选择智能调度模式时补贴策略只能选择基本佣金+网站补贴类型的策略！");
 					}else if(result==-3){
-						alert("当前商家有待接单订单尚未处理，不能修改商户结算（应收）和补贴设置（应付）");
+						alert("当前商家有订单尚未完成，不能修改商户结算（应收）和补贴设置（应付）");
 					}
 				}
 			});

@@ -19,6 +19,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
@@ -53,17 +54,17 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 				"com.edaisong.api.dao.inter.IOrderChildDao.updateList", record);
 	}
     /**
-     * 取消订单 （取消前一天快单发单且未被抢单的子订单时）
+     * 取消订单 （取消前一天智能调度发单且未被抢单的子订单时）
      * @param 日期
      * @author 胡灵波
      * @Date 2015年11月5日 11:40:37
      * @return
      */
 	@Override
-	public List<Integer> updateCancel(OrderChild record)
+	public List<Integer> updateCancel(OrderChildCancelReq req)
 	{
 		return getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderChildDao.updateCancel", record);
+				"com.edaisong.api.dao.inter.IOrderChildDao.updateCancel", req);
 	}
 	
 	@Override

@@ -1,8 +1,14 @@
 package com.edaisong.taobaoopenapi.service.impl;
 
 import org.springframework.stereotype.Service;
+
 import com.edaisong.core.consts.TaoBaoConsts;
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
+import com.edaisong.entity.taobao.req.TaoBaoAsk;
+import com.edaisong.entity.taobao.req.TaoBaoConfirm;
+import com.edaisong.entity.taobao.req.TaoBaoLocationUpdate;
+import com.edaisong.entity.taobao.req.TaoBaoPickUp;
+import com.edaisong.entity.taobao.req.TaoBaoUpdate;
 import com.edaisong.taobaoopenapi.service.inter.ITaoBaoOrderHttpService;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
@@ -33,7 +39,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	/**
 	 * 
 	 */
-	private TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
+	 TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
 
 	/**
 	 * 确认接单接口(API)
@@ -42,7 +48,9 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public TaoBaoResponseBase ask(WaimaiOrderAckRequest req) {
+	public TaoBaoResponseBase ask(TaoBaoAsk r) {
+		WaimaiOrderAckRequest req=new WaimaiOrderAckRequest();
+		req.setDeliveryOrderNo(r.getDeliveryOrderNo());
 		try {
 			WaimaiOrderAckResponse response = client.execute(req, sessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
@@ -63,7 +71,15 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public TaoBaoResponseBase update(WaimaiDeliveryUpdateRequest request) {
+	public TaoBaoResponseBase update(TaoBaoUpdate r) {
+		WaimaiDeliveryUpdateRequest request=new WaimaiDeliveryUpdateRequest ();
+		request.setDeliveryOrderNo(r.getDeliveryOrderNo());
+		request.setDelivererPhone(r.getDelivererPhone());
+		request.setDelivererName(r.getDelivererName());
+		request.setLng(r.getLng());
+		request.setLat(r.getLat());
+		request.setCardNo(r.getCardNo());
+		request.setDelivererId(r.getDelivererId());
 		try {
 			WaimaiDeliveryUpdateResponse response = client.execute(request, sessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
@@ -84,7 +100,11 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public TaoBaoResponseBase pickUp(WaimaiDeliveryPickupRequest req) {
+	public TaoBaoResponseBase pickUp(TaoBaoPickUp r) {
+		WaimaiDeliveryPickupRequest req=new WaimaiDeliveryPickupRequest();
+		req.setDeliveryOrderNo(r.getDeliveryOrderNo());
+		req.setLng(r.getLng());
+		req.setLat(r.getLat());
 		try {
 			WaimaiDeliveryPickupResponse response = client.execute(req, sessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
@@ -106,7 +126,11 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public TaoBaoResponseBase confirm(WaimaiDeliveryConfirmRequest req) {
+	public TaoBaoResponseBase confirm(TaoBaoConfirm r) {
+		WaimaiDeliveryConfirmRequest req=new WaimaiDeliveryConfirmRequest() ;
+		req.setDeliveryOrderNo(r.getDeliveryOrderNo());
+		req.setLat(r.getLat());
+		req.setLng(r.getLng());
 		try {
 			WaimaiDeliveryConfirmResponse response = client.execute(req, sessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
@@ -127,7 +151,12 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public TaoBaoResponseBase locationUpdate(WaimaiDeliveryLocationUpdateRequest req) {
+	public TaoBaoResponseBase locationUpdate(TaoBaoLocationUpdate r) {
+		WaimaiDeliveryLocationUpdateRequest req =new WaimaiDeliveryLocationUpdateRequest ();
+		req.setDelivererPhone(r.getDelivererPhone());
+		req.setDelivererName(r.getDelivererName());
+		req.setLng(r.getLng());
+		req.setLat(r.getLat());
 		try {
 			WaimaiDeliveryLocationUpdateResponse response = client.execute(req, sessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();

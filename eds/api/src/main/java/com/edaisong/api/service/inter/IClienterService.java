@@ -98,6 +98,16 @@ public interface IClienterService {
 	Clienter selectByPrimaryKey(Integer id);
 	
 	/**
+	 * 根据骑士id获得实体对象
+	 * @author 胡灵波
+	 * @date 2015年11月17日 16:14:08
+	 * @version 1.0
+	 * @param id
+	 * @return
+	 */
+	Clienter selectByPrimaryKeyWrite(Integer id);
+	
+	/**
 	 * 获取用户状态信息
 	 * @author CaoHeYang
 	 * @param userid

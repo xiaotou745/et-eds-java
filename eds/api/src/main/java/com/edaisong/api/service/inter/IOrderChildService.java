@@ -21,6 +21,7 @@ import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
+import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.OrderReq;
@@ -33,6 +34,7 @@ import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
+import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderPushResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
@@ -41,5 +43,5 @@ import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
 
 public interface IOrderChildService {
-	ResponseBase cancelOrderChild(OrderChild cancelOrder);
+	HttpResultModel<OrderGrabResp> cancelOrderChild(OrderChildCancelReq req);
 }

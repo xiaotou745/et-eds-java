@@ -14,7 +14,9 @@ public class MyOrderDetailBResp {
     private String grabTime; 
     private String pickUpTime; 
 	private Integer orderCount;  
-	 
+	private double businessLongitude;
+	private double businessLatitude;
+	private String businessCityName;
 	public Integer getClienterId() {
 		return clienterId;
 	}
@@ -51,11 +53,14 @@ public class MyOrderDetailBResp {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public String getActualDoneDate() {
-		if(actualDoneDate == null){actualDoneDate = "";}
+	public String getActualDoneDate() { 
+		
 		return actualDoneDate;
 	}
 	public void setActualDoneDate(String actualDoneDate) {
+		if(actualDoneDate != ""){
+			
+		}
 		this.actualDoneDate = actualDoneDate;
 	}
 	public String getGrabTime() {
@@ -83,6 +88,24 @@ public class MyOrderDetailBResp {
 	}
 	public void setGrabOrderId(Integer grabOrderId) {
 		this.grabOrderId = grabOrderId;
+	}
+	public double getBusinessLongitude() {
+		return businessLongitude;
+	}
+	public void setBusinessLongitude(double businessLongitude) {
+		this.businessLongitude = businessLongitude;
+	}
+	public double getBusinessLatitude() {
+		return businessLatitude;
+	}
+	public void setBusinessLatitude(double businessLatitude) {
+		this.businessLatitude = businessLatitude;
+	}
+	public String getBusinessCityName() {
+		return businessCityName;
+	}
+	public void setBusinessCityName(String businessCityName) {
+		this.businessCityName = businessCityName;
 	}
 	
 }

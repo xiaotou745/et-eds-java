@@ -10,7 +10,7 @@
 <%@page import="com.edaisong.entity.OrderSubsidiesLog"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.core.enums.PayType"%>
-<%@page import="com.edaisong.core.enums.OrderPlatform"%>
+<%@page import="com.edaisong.core.enums.SuperPlatform"%>
 <%@page import="com.edaisong.core.enums.MealsSettleMode"%>
 <%@page import="java.lang.StringBuilder"%>
 <%
@@ -216,7 +216,7 @@
 												String orderstatus = "";
 												String strplatform = ""; 
 																 for(OrderSubsidiesLog item :orderSubsidiesLogs){
-																	 strplatform=OrderPlatform.getEnum(item.getPlatform()).desc();
+																	 strplatform=SuperPlatform.getEnum(item.getPlatform()).desc();
 				%>
 				<tr id="<%=item.getId()%>">
 					<td><%=ParseHelper.ShowString(OrderStatus.getEnum(item.getOrderstatus()).desc())%></td>

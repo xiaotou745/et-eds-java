@@ -1,10 +1,18 @@
 package com.edaisong.taobaoopenapi.service.inter;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
+import com.edaisong.entity.taobao.req.TaoBaoAsk;
+import com.edaisong.entity.taobao.req.TaoBaoConfirm;
+import com.edaisong.entity.taobao.req.TaoBaoLocationUpdate;
+import com.edaisong.entity.taobao.req.TaoBaoPickUp;
+import com.edaisong.entity.taobao.req.TaoBaoUpdate;
 import com.taobao.api.request.WaimaiDeliveryConfirmRequest;
 import com.taobao.api.request.WaimaiDeliveryLocationUpdateRequest;
 import com.taobao.api.request.WaimaiDeliveryPickupRequest;
@@ -29,7 +37,7 @@ public interface ITaoBaoOrderHttpService {
 	 */
 	@POST
 	@Path("/ask")
-	public TaoBaoResponseBase ask(WaimaiOrderAckRequest req);
+	public TaoBaoResponseBase ask(TaoBaoAsk r);
 
 	/**
 	 * 更新配送员信息接口（API）
@@ -38,8 +46,8 @@ public interface ITaoBaoOrderHttpService {
 	 * @return
 	 */
 	@POST
-	@Path("update")
-	public TaoBaoResponseBase update(WaimaiDeliveryUpdateRequest req);
+	@Path("/update")
+	public TaoBaoResponseBase update(TaoBaoUpdate r);
 
 	/**
 	 * 取件（API）
@@ -49,7 +57,7 @@ public interface ITaoBaoOrderHttpService {
 	 */
 	@POST
 	@Path("/pickup")
-	public TaoBaoResponseBase pickUp(WaimaiDeliveryPickupRequest  req);
+	public TaoBaoResponseBase pickUp(TaoBaoPickUp  r);
 
 	/**
 	 * 妥投（API）
@@ -59,7 +67,7 @@ public interface ITaoBaoOrderHttpService {
 	 */
 	@POST
 	@Path("/confirm")
-	public TaoBaoResponseBase confirm(WaimaiDeliveryConfirmRequest  req);
+	public TaoBaoResponseBase confirm(TaoBaoConfirm r );
 
 	/**
 	 * 更新配送员位置信息（API）
@@ -69,5 +77,6 @@ public interface ITaoBaoOrderHttpService {
 	 */
 	@POST
 	@Path("/locationupdate")
-	public TaoBaoResponseBase locationUpdate(WaimaiDeliveryLocationUpdateRequest  req);
+	public TaoBaoResponseBase locationUpdate(TaoBaoLocationUpdate  r);
+	
 }

@@ -1,14 +1,14 @@
 package com.edaisong.entity.domain;
 
 public class RegionOrderTotal {
-	private String id;
+	private Long id;
 	private Long parentId;
 	private String name;
 	private Long num;
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public Long getParentId() {

@@ -512,8 +512,7 @@ WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,b.City 
 from    BusinessClienterRelation a (nolock)
 join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER} 
 join (select ISNULL(SUM(WaitingCount),0) as  WaitingCounts,BusinessId from OrderRegion (nolock) where Status=1 group by BusinessId ) c on a.BusinessId=c.BusinessId
-and c.WaitingCounts>0
-where   a.IsEnable = 1
+where a.IsEnable = 1
 and a.IsBind = 1
 and a.AuditStatus=1
 order by c.WaitingCounts desc  
@@ -543,7 +542,7 @@ order by c.WaitingCounts desc
 	<!-- 查询骑士商户是否已经绑定 wangchao -->
 	<select id="getClienterBind" resultType="com.edaisong.entity.BusinessClienterRelation"
 		parameterType="com.edaisong.entity.domain.BindClienterBusiness">
-		SELECT top 1 Id ,
+	SELECT top 1 Id ,
        BusinessId ,
        ClienterId ,
        IsEnable ,
@@ -556,7 +555,6 @@ order by c.WaitingCounts desc
 where BusinessId = #{businessId,jdbcType=INTEGER} and ClienterId = #{clienterId,jdbcType=INTEGER} 
 order by Id desc
 	</select>
-	
    <sql id="getMyOrdeBListWhere">
   		1=1 and og.BusinessId = ${businessId}  and og.[Status] = ${status}
   		and (og.OrderRegionTwoId=${regionId} or  og.OrderRegionOneId=${regionId} )
@@ -565,9 +563,9 @@ order by Id desc
   		 c.TrueName ClienterName, 
 			og.ClienterId,
 			c.PhoneNo ClienterPhoneNo, 
-			og.GrabTime,
-			og.PickUpTime,
-			og.ActualDoneDate,
+			CONVERT(varchar(100),og.GrabTime,20) GrabTime,
+            CONVERT(varchar(100),og.PickUpTime,20) PickUpTime,
+            CONVERT(varchar(100),og.ActualDoneDate,20) ActualDoneDate ,
 			og.OrderRegionOneName,
 			og.OrderRegionTwoName,
 			og.Status,
@@ -608,9 +606,9 @@ order by Id desc
 	select  c.TrueName ClienterName ,
         og.ClienterId ,
         c.PhoneNo ClienterPhoneNo , 
-        og.GrabTime, 
-        og.PickUpTime ,
-        og.ActualDoneDate ,
+        CONVERT(varchar(100),og.GrabTime,20) GrabTime,
+        CONVERT(varchar(100),og.PickUpTime,20) PickUpTime,
+        CONVERT(varchar(100),og.ActualDoneDate,20) ActualDoneDate ,
         og.OrderRegionOneName ,
         og.OrderRegionTwoName ,
         og.[Status] , 
@@ -623,10 +621,35 @@ where   og.Id = #{grabOrderId,jdbcType=INTEGER}
 	<!-- 获取商户基础信息 wangchao 扫一扫时候调用 -->
 	<select id="getBusinessInfo" resultType="com.edaisong.entity.domain.BusinessBasicInfoModel"
 		parameterType="com.edaisong.entity.req.BusinessReq">
-select top 1 b.Id BusinessId,b.Name BusinessName,b.PhoneNo BusinessPhoneNo,b.Address BusinessAddress,ISNULL(bcr.IsBind,0) IsBind,ISNULL(bcr.AuditStatus,0) AuditStatus FROM dbo.business b(nolock)
-	 	left join dbo.BusinessClienterRelation bcr (nolock) on b.Id = bcr.BusinessId
-where (b.Id = #{businessId,jdbcType=INTEGER} and bcr.ClienterId = #{clienterId,jdbcType=INTEGER}) or (b.id = #{businessId,jdbcType=INTEGER})
-order by bcr.Id desc
+		declare @hasBind int= 0
+ select @hasBind = count(1)
+ from   dbo.BusinessClienterRelation bcr ( nolock )
+ where  bcr.BusinessId = #{businessId,jdbcType=INTEGER} and bcr.ClienterId = #{clienterId,jdbcType=INTEGER} 
+ if @hasBind = 0
+    begin  
+        select top 1
+                b.Id BusinessId ,
+                ISNULL(b.Name,'') BusinessName ,
+                b.PhoneNo BusinessPhoneNo ,
+                ISNULL(b.Address,'') BusinessAddress ,
+                0 IsBind ,
+                0 AuditStatus
+        from    dbo.business b ( nolock )
+        where   b.Id = #{businessId,jdbcType=INTEGER}
+    end
+ else
+    begin
+        select top 1
+                b.Id BusinessId ,
+                ISNULL(b.Name,'') BusinessName ,
+                b.PhoneNo BusinessPhoneNo ,
+                ISNULL(b.Address,'') BusinessAddress ,
+                isnull(bcr.IsBind, 0) IsBind ,
+                isnull(bcr.AuditStatus, 0) AuditStatus
+        from    dbo.business b ( nolock )
+                join dbo.BusinessClienterRelation bcr ( nolock ) on b.Id = bcr.BusinessId
+        where   bcr.BusinessId = #{businessId,jdbcType=INTEGER} and bcr.ClienterId = #{clienterId,jdbcType=INTEGER} order by bcr.Id desc
+    end 
 	</select> 
 	<!-- 商户是否已注册 add by caoheyang 20151110 -->
    <select id="isExist" resultType="java.lang.Integer"

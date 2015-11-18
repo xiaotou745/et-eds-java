@@ -3,7 +3,7 @@
 DIR=`pwd`
 
 
-ulimit -n 65536
+ulimit -n 65535
 
 export PATH=$DIR:$PATH
 
