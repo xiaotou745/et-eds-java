@@ -1160,7 +1160,7 @@ public class OrderService implements IOrderService {
 					.filter(t -> t.getPubDate().equals(
 							daySatisticsB.getMonthDate()))
 					.collect(Collectors.toList());
-			;
+			
 			daySatisticsB.setServiceClienters(temp);
 		}
 		orderStatisticsResp.setDatas(daySatisticsBs);
