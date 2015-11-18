@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
+import org.apache.commons.lang.ObjectUtils.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -215,7 +216,14 @@ public class OrderHttpService implements IOrderHttpService {
 		 if (para.getLongitude()==null||para.getLongitude()==0||para.getLatitude()==null||para.getLatitude()==0) {
 				return res.setStatus(InStoreTaskReturnEnum.LocationError.value()).setMessage(InStoreTaskReturnEnum.LocationError.desc());
 		  }
-		 res.setResult(orderService.getInStoreTask(para));
+		 //商户下的区域不足九个不返回任务数据
+		 List<InStoreTask> instoreTaskList= orderService.getInStoreTask(para);
+		 for (int i = 0; i < instoreTaskList.size(); i++) {
+			 	if(instoreTaskList.get(i).getList()== null || instoreTaskList.get(i).getList().size()!=9){
+			 		instoreTaskList.remove(instoreTaskList.get(i));
+			 }
+		 } 
+		 res.setResult(instoreTaskList);
 		 return res;
 	}
 	/**
