@@ -22,8 +22,9 @@ String businessLat = (String) request.getAttribute("businessLat");
 	<div class="bottom bottom2 bottom3" id="content2">
 		<div class="map_main">
 			<div class="map_center">
-			<div class="map_top"><span id="parentNum">当前已配置一级区域3个</span>
-			<a href="javascript:;" id="draw">绘制一级区域</a>
+			<div class="map_top">
+			<span id="parentNum">当前已配置一级区域1个</span>
+			<span style="cursor:pointer;background-color: #006699;color:#fff;" id="draw">绘制一级区域</span>
 			</div>
 			
 				<div id="map" class="map" style="min-height: 798pxhight:400px;"></div>
