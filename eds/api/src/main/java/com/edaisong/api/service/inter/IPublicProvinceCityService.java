@@ -23,13 +23,6 @@ public interface IPublicProvinceCityService {
 	 */
 	 List<OpenCityModel> getOpenCityList(String  cityName);
 	 
-	/**
-	 * 从Redis获取开放城市列表（非分页）
-	 * @author zhaohailong
-	 * @param cityName 城市名称
-	 */
-	 List<AreaModel> getOpenCityListFromRedis();
-	 
 	 /**
 	  * 修改绑定城市    
 	  * @author CaoHeYang 

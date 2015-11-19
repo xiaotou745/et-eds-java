@@ -57,7 +57,7 @@ public class OrderController {
 	 */
 	@RequestMapping("list")
 	public ModelAndView order(){
-		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityListFromRedis();
+		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityByJiBie(3);
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "订单管理");
 		model.addObject("currenttitle", "订单管理");
