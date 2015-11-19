@@ -24,7 +24,7 @@
 		GroupId, HealthCardID,
 		InternalDepart, ProvinceCode, AreaCode, CityCode, Province, BussinessID, WorkStatus,
 		AllowWithdrawPrice, HasWithdrawPrice, IsBind, DeliveryCompanyId,
-		Timespan,Appkey,IsReceivePush,HeadPhoto,GradeType,IsCooperation 
+		Timespan,Appkey,IsReceivePush,HeadPhoto,GradeType
 	</sql>
 
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"

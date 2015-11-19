@@ -60,6 +60,12 @@ public class Clienter {
 
     private Integer deliverycompanyid;
     private Long timespan;
+
+
+	private String appkey;
+    private boolean isReceivePush;
+    private String headPhoto;
+    private Integer GradeType;
     public Long getTimespan() {
 		return timespan;
 	}
@@ -100,19 +106,6 @@ public class Clienter {
 		GradeType = gradeType;
 	}
 
-	public Integer getIsCooperation() {
-		return isCooperation;
-	}
-
-	public void setIsCooperation(Integer isCooperation) {
-		this.isCooperation = isCooperation;
-	}
-
-	private String appkey;
-    private boolean isReceivePush;
-    private String headPhoto;
-    private Integer GradeType;
-    private Integer isCooperation; 
 
     public Integer getId() {
         return id;
