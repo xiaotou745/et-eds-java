@@ -230,11 +230,6 @@ public class OrderHttpService implements IOrderHttpService {
 		  }
 		 //商户下的区域不足九个不返回任务数据
 		 List<InStoreTask> instoreTaskList= orderService.getInStoreTask(para);
-		 for (int i = 0; i < instoreTaskList.size(); i++) {
-			 	if(instoreTaskList.get(i).getList()== null || instoreTaskList.get(i).getList().size()!=9){
-			 		instoreTaskList.remove(instoreTaskList.get(i));
-			 }
-		 } 
 		 res.setResult(instoreTaskList);
 		 return res;
 	}
@@ -252,11 +247,33 @@ public class OrderHttpService implements IOrderHttpService {
 		return httpResultModel;
 	}
 
+	/**
+	 * B端任务统计接口
+	 * 
+	 * @author wangchao 
+	 * @param data
+	 * @return
+	 */
 	@Override
-	public HttpResultModel<OrderStatisticsBResp> orderGrabStatisticsB(
-			OrderStatisticsBReq orderStatisticsBReq) {
-		// TODO Auto-generated method stub
-		return null;
+	public HttpResultModel<OrderStatisticsBResp> orderGrabStatisticsB(OrderStatisticsBReq para) {
+		if (para.getMonthInfo() == null || para.getMonthInfo().trim().isEmpty() || para.getBusinessId() == 0 ) {
+			HttpResultModel<OrderStatisticsBResp> result=new HttpResultModel<OrderStatisticsBResp>();
+			result.setStatus(HttpReturnRnums.ParaError.value());
+			result.setMessage(HttpReturnRnums.ParaError.desc());
+			return result;  
+		}
+		return orderService.getOrderGrabStatisticsB(para);
 	}
 
+	@Override
+	public HttpResultModel<List<QueryOrder>> getCompliteOrderGrabB(
+			QueryOrderReq para) {
+		if (para.getDateInfo() == null || para.getDateInfo().trim().isEmpty() || para.getBusinessId() == null || para.getBusinessId() == 0) {
+			HttpResultModel<List<QueryOrder>> result=new HttpResultModel<List<QueryOrder>>();
+			result.setStatus(HttpReturnRnums.ParaError.value());
+			result.setMessage(HttpReturnRnums.ParaError.desc());
+			return result; 
+		}
+		return orderService.getCompliteOrderGrab(para,0);
+	}
 }

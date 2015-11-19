@@ -20,10 +20,10 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	<!-- 配置引用的环境相关引用文件 Start -->
- 	 <import resource="classpath:conf/core/dev-context.xml" />  
-<!-- 		<import resource="classpath:conf/core/test-context.xml" /> -->
-<!-- 	<import resource="classpath:conf/core/pro-context.xml" /> -->
-	  <!--<import resource="classpath:conf/core/devtest-context.xml" /> -->
+	<!-- <import resource="classpath:conf/core/dev-context.xml" /> -->
+	<import resource="classpath:conf/core/test-context.xml" />
+	<!-- <import resource="classpath:conf/core/pro-context.xml" /> -->
+	<!--<import resource="classpath:conf/core/devtest-context.xml" /> -->
 	<!-- 配置引用的环境相关引用文件 END -->
 
 	<context:component-scan base-package="com.edaisong.api_http.service.impl" />
@@ -39,10 +39,10 @@
 			<ref bean="financeService" />
 			<ref bean="businessHttpService" />
 			<ref bean="orderRegionHttpService" />
-			<ref bean="orderGrabHttpService" />	
+			<ref bean="orderGrabHttpService" />
 			<ref bean="clienterHttpService" />
 		</jaxrs:serviceBeans>
-			<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
+		<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
 		<jaxrs:inInterceptors>
 			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
 			<bean class="com.edaisong.api_http.common.AESInterceptor"></bean>
@@ -59,7 +59,7 @@
 			<entry key="en" value="en-gb" />
 		</jaxrs:languageMappings>
 		<jaxrs:providers>
-		    <bean class="com.edaisong.api_http.common.GlobalExceptionHandler"/>  
+			<bean class="com.edaisong.api_http.common.GlobalExceptionHandler" />
 			<ref bean="jacksonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
@@ -67,5 +67,5 @@
 	<bean id="jacksonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
 		<property name="mapper" ref="jacksonMapper" />
 	</bean>
-	<bean id="jacksonMapper" class="com.edaisong.core.util.ExtandObjectMapper"/>
+	<bean id="jacksonMapper" class="com.edaisong.core.util.ExtandObjectMapper" />
 </beans>

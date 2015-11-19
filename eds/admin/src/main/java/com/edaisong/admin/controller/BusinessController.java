@@ -37,6 +37,7 @@ import com.edaisong.api.service.inter.IMarkService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
+import com.edaisong.core.enums.ClienterGradeType;
 import com.edaisong.core.util.ExcelUtils;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
@@ -48,6 +49,7 @@ import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessFinanceAccount;
 import com.edaisong.entity.BusinessGroup;
 import com.edaisong.entity.BusinessOptionLog;
+import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterBindOptionLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.Mark;
@@ -125,6 +127,7 @@ public class BusinessController {
 	
 	@Autowired
 	private IMarkService markService;
+
 
 	@RequestMapping("list")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse res) {
@@ -405,7 +408,15 @@ public class BusinessController {
 		model.addObject("listData", resp);
 		return model;
 	}
-	
+	@RequestMapping("getisfulltime")
+	@ResponseBody
+	public int getIsFullTime(Integer clienterId){
+		Clienter clienter=clienterService.selectByPrimaryKey(clienterId);
+		if(ClienterGradeType.getEnum(clienter.getGradeType())==ClienterGradeType.FullTimeClienter){
+			return 1;
+		}
+		return 0;
+	}
 	@RequestMapping("updateClienterBindRelationCooperation")
 	@ResponseBody
 	public int UpdateClienterBindRelationCooperation(BusinessClienterRelationReq req){

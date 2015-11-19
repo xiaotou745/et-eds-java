@@ -1216,7 +1216,7 @@ select  ISNULL(b.Id,0) as ClienterId ,
         ISNULL(MIN (b.HeadPhoto),'') as ClienterPhoto
 from    dbo.[order] (nolock)a
         LEFT join dbo.clienter (nolock) b on a.clienterId = b.Id
-where   a.Status = 1   and businessId=#{businessId}  
+where   a.Status = 1   and businessId=#{businessId}  and a.[Platform] = 1 
 and a.PubDate>=@startDate and a.PubDate <![CDATA[ <]]> @endDate
 group by b.Id ,
         b.PhoneNo ,
@@ -1249,8 +1249,8 @@ from    ( select    CONVERT(VARCHAR(100), DATEADD(dd, number, @sdate), 23) as Mo
         left join ( select  SUM(OrderCount) as OrderCount ,
                             COUNT(distinct clienterId) as ServiceClienterCount ,
                             CONVERT(VARCHAR(100), PubDate, 23) as OrderDate
-                    from    dbo.[order]
-                    where   Status = 1 and businessId=#{businessId}  
+                    from    dbo.[order] (nolock)
+                    where   Status = 1 and businessId=#{businessId} and [Platform] = 1 
                     and PubDate>=@startDate and PubDate  <![CDATA[ <]]>  @endDate
                     group by CONVERT(VARCHAR(100), PubDate, 23)
                   ) as b on a.MonthDate = b.OrderDate
@@ -1269,10 +1269,10 @@ set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
 select  isnull(SUM(ISNULL(ordercount,0)),0) as OrderCount ,
         COUNT(distinct ISNULL(clienterId,0)) as ServiceClienterCount ,
         ISNULL(SUM(Amount),0)  as TotalAmount
-from    dbo.[order]
+from    dbo.[order] (nolock) 
 where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
-        and businessId=#{businessId}  
+        and businessId=#{businessId} and [Platform] = 1 
 	</select>
 
     <!-- C端任务统计接口  天数据列表  wangxudan 20150910 -->
@@ -1409,11 +1409,11 @@ where   Status = 1
         join business (nolock) as b on o.businessId = b.Id
         left join clienter (nolock) as c on o.clienterId = c.Id
         left join dbo.[group] (nolock) g on o.OrderFrom = g.Id
-                                            and g.IsValid = 1
+                                            and g.IsValid = 1 
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderWhere">
-		1=1 and o.IsEnable=1  
+		1=1 and o.IsEnable=1  and o.[Platform]=1 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 
@@ -1442,7 +1442,7 @@ where   Status = 1
               else 0
             end),0) takingCount
        from    dbo.[order] (nolock)
-       where businessId=${businessId}
+       where businessId=${businessId} and [Platform]=1 
 	</select>
 	<!-- 骑士端我的任务 addby caoheyang 20150914 -->
 		<select id="queryOrderC" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderCResp">
@@ -1456,7 +1456,7 @@ where   Status = 1
               else 0
             end),0) takingCount
        from    dbo.[order] (nolock)
-       where  clienterId=${clienterId}
+       where  clienterId=${clienterId} and [Platform]=1 
 	</select>
 		<!--   c端查询待取货订单（会计算距离） 订单列表  add by caoheyang 20150910-->
 	<select id="queryDeliveryOrderC" resultType="com.edaisong.entity.domain.QueryOrder"
@@ -1530,7 +1530,7 @@ where   Status = 1
 	</sql>
 	<!--    c端查询待取货订单（会计算距离） 订单列表add by caoheyang 20150910 -->
 	<sql id="queryDeliveryOrderCWhere">
-		1=1 and o.IsEnable=1  
+		1=1 and o.IsEnable=1 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 

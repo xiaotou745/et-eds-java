@@ -1313,16 +1313,21 @@ public class OrderService implements IOrderService {
 																			// 雇主信息
 		List<InStoreOrderRegionInfo> regionInfos = orderRegionDao
 				.getInStoreOrderRegions(para); // 获取当前骑士的所有含有未接单订单的 雇主信息
-		List<InStoreOrderRegionInfo> temp = regionInfos.stream()
-				.filter(predicate -> predicate.getParentId() == 0)
+		List<InStoreOrderRegionInfo> temp = regionInfos.stream().filter(predicate -> predicate.getParentId() == 0)
 				.collect(Collectors.toList()); // 筛选出所有的一级区域
-		temp.stream()
-				.filter(predicate -> predicate.getHasChild() == 1)
-				.forEach(
-						action -> action.setChilds(regionInfos
-								.stream()
-								.filter(pre -> pre.getParentId() == action
-										.getId()).collect(Collectors.toList()))); // 为所有的一级区域中含有子区域的设置二级区域
+		 // 为所有的一级区域中含有子区域的设置二级区域
+		for(InStoreOrderRegionInfo inStoreOrderRegionInfo : temp)
+		{
+			if (inStoreOrderRegionInfo.getHasChild()==1) {
+				inStoreOrderRegionInfo.setChilds(regionInfos.stream().filter(pre -> pre.getParentId() == inStoreOrderRegionInfo
+								   .getId()).collect(Collectors.toList()));
+				int tempCount=0;
+				for (InStoreOrderRegionInfo inStoreOrderRegionInfo2 : inStoreOrderRegionInfo.getChilds()) {
+					tempCount=inStoreOrderRegionInfo2.getWaitingCount()+tempCount;
+				}
+				inStoreOrderRegionInfo.setWaitingCount(tempCount);
+			}
+		}
 		for (InStoreTask action : list) {// 将所有的区域归类到对应的商家下
 			action.setList(temp
 					.stream()
@@ -1332,6 +1337,9 @@ public class OrderService implements IOrderService {
 					action.getDistanceToBusiness(), 0);
 			action.setDistanceToBusiness(tempDis < 1000 ? tempDis + "m"
 					: ParseHelper.digitsNum(tempDis * 0.001, 2) + "km");
+	        if (action.getList()==null||action.getList().size()!=9) {
+				list.remove(action);
+			}
 		}
 		return list;
 	}
@@ -1789,6 +1797,10 @@ public class OrderService implements IOrderService {
 			return true;
 		}
 	} 
+	/*
+	 * C端任务统计
+	 * wangchao
+	 */
 	@Override
 	public OrderStatisticsCResp getOrderGrabStatisticsC(
 			OrderStatisticsCReq orderStatisticsCReq) {
@@ -1798,6 +1810,65 @@ public class OrderService implements IOrderService {
 				.getOrderGrabStatisticsDaySatisticsC(orderStatisticsCReq);
 		orderStatisticsResp.setDatas(daySatisticsCs);
 		return orderStatisticsResp;
+	}
+	/*
+	 * B端任务统计
+	 * wangchao
+	 */
+	@Override
+	public HttpResultModel<OrderStatisticsBResp> getOrderGrabStatisticsB(
+			OrderStatisticsBReq orderStatisticsBReq) {
+		HttpResultModel<OrderStatisticsBResp> resultModel = new HttpResultModel<OrderStatisticsBResp>();
+
+		// 注释掉对用户状态的判断
+		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId())
+				.getStatus() != BusinessStatusEnum.AuditPass.value()) {
+			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
+			resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+			return resultModel;
+		}
+
+		OrderStatisticsBResp orderStatisticsResp = orderDao
+				.getOrderGrabStatisticsB(orderStatisticsBReq);// 当月数据总览统计
+		List<ServiceClienter> serviceClienters = orderDao
+				.getOrderGrabStatisticsServiceClienterB(orderStatisticsBReq); // 获取每天发单骑士信息
+		List<DaySatisticsB> daySatisticsBs = orderDao
+				.getOrderGrabStatisticsDaySatisticsB(orderStatisticsBReq); // B端任务统计接口
+																		// 天数据列表
+		serviceClienters.forEach(action -> action
+				.setClienterPhoto(
+					 	ParseHelper.ToString(action.getClienterPhoto(), "")==""?"": 
+						PropertyUtils.getProperty("ImageClienterServicePath")+ action.getClienterPhoto()));
+		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
+			List<ServiceClienter> temp = serviceClienters
+					.stream()
+					.filter(t -> t.getPubDate().equals(daySatisticsB.getMonthDate()))
+					.collect(Collectors.toList());
+			
+			daySatisticsB.setServiceClienters(temp);
+		}
+		orderStatisticsResp.setDatas(daySatisticsBs);
+		resultModel.setResult(orderStatisticsResp);
+		return resultModel;
+	}
+
+	@Override
+	public HttpResultModel<List<QueryOrder>> getCompliteOrderGrab(
+			QueryOrderReq query, int type) {
+		query.setStatus(OrderStatus.Complite.value());
+		HttpResultModel<List<QueryOrder>> res = new HttpResultModel<List<QueryOrder>>();
+		if ((type == 0 && businessDao.getUserStatus(query.getBusinessId())
+				.getStatus() != BusinessStatusEnum.AuditPass.value()) // B端判断B端逻辑
+				|| (type == 1 && clienterService.getUserStatus(
+						query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass
+						.value())) {// C端判断C端逻辑
+			res.setStatus(QueryOrderReturnEnum.ErrStatus.value());
+			res.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+			return res;
+		}
+		query.setorderBy(1);
+		res.setResult(orderDao.queryOrderGrab(query));
+		return res;
 	}
 
 
