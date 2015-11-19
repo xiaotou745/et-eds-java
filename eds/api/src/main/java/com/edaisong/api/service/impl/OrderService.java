@@ -1313,16 +1313,21 @@ public class OrderService implements IOrderService {
 																			// 雇主信息
 		List<InStoreOrderRegionInfo> regionInfos = orderRegionDao
 				.getInStoreOrderRegions(para); // 获取当前骑士的所有含有未接单订单的 雇主信息
-		List<InStoreOrderRegionInfo> temp = regionInfos.stream()
-				.filter(predicate -> predicate.getParentId() == 0)
+		List<InStoreOrderRegionInfo> temp = regionInfos.stream().filter(predicate -> predicate.getParentId() == 0)
 				.collect(Collectors.toList()); // 筛选出所有的一级区域
-		temp.stream()
-				.filter(predicate -> predicate.getHasChild() == 1)
-				.forEach(
-						action -> action.setChilds(regionInfos
-								.stream()
-								.filter(pre -> pre.getParentId() == action
-										.getId()).collect(Collectors.toList()))); // 为所有的一级区域中含有子区域的设置二级区域
+		 // 为所有的一级区域中含有子区域的设置二级区域
+		for(InStoreOrderRegionInfo inStoreOrderRegionInfo : temp)
+		{
+			if (inStoreOrderRegionInfo.getHasChild()==1) {
+				inStoreOrderRegionInfo.setChilds(regionInfos.stream().filter(pre -> pre.getParentId() == inStoreOrderRegionInfo
+								   .getId()).collect(Collectors.toList()));
+				int tempCount=0;
+				for (InStoreOrderRegionInfo inStoreOrderRegionInfo2 : inStoreOrderRegionInfo.getChilds()) {
+					tempCount=inStoreOrderRegionInfo2.getWaitingCount()+tempCount;
+				}
+				inStoreOrderRegionInfo.setWaitingCount(tempCount);
+			}
+		}
 		for (InStoreTask action : list) {// 将所有的区域归类到对应的商家下
 			action.setList(temp
 					.stream()
@@ -1332,6 +1337,9 @@ public class OrderService implements IOrderService {
 					action.getDistanceToBusiness(), 0);
 			action.setDistanceToBusiness(tempDis < 1000 ? tempDis + "m"
 					: ParseHelper.digitsNum(tempDis * 0.001, 2) + "km");
+	        if (action.getList()==null||action.getList().size()!=9) {
+				list.remove(action);
+			}
 		}
 		return list;
 	}
