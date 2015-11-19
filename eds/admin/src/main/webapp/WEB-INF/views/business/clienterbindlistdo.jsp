@@ -50,7 +50,7 @@ if(data == null){
 		                        <td><%=ParseHelper.ToDateString(data.get(i).getUpdatetime()) %></td>
 		                        
 		                        <td>
-		                        <select id="selCoop" onchange="funUpdateCooperation(<%=data.get(i).getId()%>,<%=data.get(i).getClienterid()%>)">
+		                        <select id="selCoop" onchange="funUpdateCooperation(<%=data.get(i).getId()%>,<%=data.get(i).getClienterid()%>,this)">
 		                        <option value="0" <%=data.get(i).getIsCooperation()==0?"selected=‘selected’":"" %>>合作骑士</option>
 		                        <option value="1" <%=data.get(i).getIsCooperation()==1?"selected=‘selected’":"" %>>店内骑士</option>
 		                        </select>
