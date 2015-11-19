@@ -117,7 +117,10 @@ ORDER BY MonthDate DESC
         b.Longitude ,
         b.Latitude ,
         aa.[Status],
-        aa.OrderCount 
+        aa.OrderCount,
+        0 amount,
+        CONVERT(varchar(100),aa.ActualDoneDate ,20) ActualDoneDate ,
+        aa.OrderRegionOneName + '' ''+ aa.OrderRegionTwoName receviceAddress 
 	</sql> 
 	 
 	 
@@ -133,7 +136,10 @@ ORDER BY MonthDate DESC
                         join dbo.[order] o with ( nolock ) on o.Id = m.OrderId
                where    convert(varchar(100), PubDate, 23) = ''${dateInfo}''
                         and ogg.BusinessId = ${businessId}
-                        and ogg.ClienterId = ${clienterId}  
+                        <if test="clienterId  >0 ">
+						 and ogg.ClienterId = ${clienterId}
+						</if>  
+                        and ogg.[status]=1 
                group by ogg.Id ,o.PubDate 
              ) bb on aa.Id = bb.Id
         join business (nolock) as b on aa.BusinessId = b.Id
