@@ -319,7 +319,7 @@ function isdetail(status,regionid){
 			var maxnum = 0;
 			for (var i = 0; i < totalJson.length; i++) {
 				if (totalJson[i].parentId == 0) {
-					if (maxnum < totalJson[i].num) {
+					if (maxnum <= totalJson[i].num) {
 						maxparentid = totalJson[i].id;
 						maxnum = totalJson[i].num;
 					}

@@ -377,6 +377,16 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		return  getReadOnlySqlSessionUtil().selectList(
 				"com.edaisong.api.dao.inter.IOrderDao.queryTodayOrderDetail", businessId);
 	}
+	@Override
+	public List<RegionOrderDetail> queryTodayOrderDetailing(Long businessId) {
+		return  getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderDao.queryTodayOrderDetailing", businessId);
+	}
+	@Override
+	public List<RegionOrderDetail> queryTodayOrderDetailWait(Long businessId) {
+		return  getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderDao.queryTodayOrderDetailWait", businessId);
+	}
 
 	@Override
 	public List<RegionOrderTotal> queryTodayOrderTotal(Long businessId) {
