@@ -14,7 +14,7 @@ import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.core.util.SystemUtils;
 
-//@Service
+@Service
 public class ActiveMqService {
 	@Autowired
 	private JmsTemplate jmsTemplate;

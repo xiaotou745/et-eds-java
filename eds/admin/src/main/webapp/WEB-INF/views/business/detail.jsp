@@ -175,7 +175,7 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 	                    %&nbsp;+&nbsp;
 	                    <label title="应收商家配送费定额">商配定额</label><input id="CommissionFixValue" name="CommissionFixValue" style="width:100px" value="<%=detail.getCommissionfixvalue()%>" />
 	                    &nbsp;+&nbsp;
-	                    <label title="代收客户配送费">代收客配</label><input id="busiWaisong" id="busiWaisong" style="width:100px" value="<%=detail.getDistribsubsidy()%>" />
+	                    <label title="代收客户配送费">代收客配</label><input id="busiWaisong" name="busiWaisong" style="width:100px" value="<%=detail.getDistribsubsidy()%>" />
 	            </div>
 	            <div class="control-group" style="margin-left: 27px">
 					<label id="labGlobalConfig" style="margin-left: 48px"><%=subsidyConfig%></label><!-- 全局补贴 -->
