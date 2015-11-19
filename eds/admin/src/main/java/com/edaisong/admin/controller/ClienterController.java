@@ -74,7 +74,7 @@ public class ClienterController {
 	@RequestMapping("list")
 	public ModelAndView list(){		
 	
-		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();
+		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);
 		List<DeliveryCompany> dCListData=deliveryCompanyService.getDeliveryCompanyList();	
 		
 		ModelAndView model = new ModelAndView("adminView");
@@ -242,7 +242,7 @@ public class ClienterController {
 	 */	
 	@RequestMapping("forzenbalancelist")
 	public ModelAndView forzenBalanceList(){ 
-		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityListFromRedis();
+		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "骑士管理");
 		model.addObject("currenttitle", "余额冻结");
