@@ -10,7 +10,7 @@ declare @endDate date ;
 set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate) ; 
 set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
   
-select  isnull(sum(isnull(og.OrderCount, 0)), 0) as OrderCount ,
+select  count(1) as OrderCount ,
         count(distinct isnull(og.ClienterId, 0)) as ServiceClienterCount ,
         isnull(sum(oc.TotalPrice), 0) as TotalAmount
 from    dbo.OrderGrab (nolock) og
@@ -96,7 +96,7 @@ ORDER BY MonthDate DESC
 		'
 		<include refid="queryOrderGrabBFrom" />
 		',
-		' 1=1 ',
+		'<include refid="queryOrderGrabBWhere" /> ',
 		#{pageSize,mode=IN,jdbcType=INTEGER},
 		#{currentPage,mode=IN,jdbcType=INTEGER}
 		,1,
@@ -105,8 +105,7 @@ ORDER BY MonthDate DESC
 		)}
 	</select>	
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
-	<sql id="queryOrderGrabBColums"> 
-	    CONVERT(varchar(100),bb.PubDate,20) PubDate,
+	<sql id="queryOrderGrabBColums">  
 		b.Id as BusinessId ,
         b.Name as BusinessName ,
         b.PhoneNo as BusinessPhone ,
@@ -121,28 +120,24 @@ ORDER BY MonthDate DESC
         0 amount,
         CONVERT(varchar(100),aa.ActualDoneDate ,20) ActualDoneDate ,
         aa.OrderRegionOneName + '' ''+ aa.OrderRegionTwoName receviceAddress 
-	</sql> 
-	 
-	 
+	</sql>  
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderGrabBFrom">
-		 dbo.OrderGrab (nolock) as aa
-        join ( select   ogg.Id ,
-                        o.PubDate ,
-                        isnull(sum(oc.TotalPrice), 0) as TotalAmount
-               from     OrderGrabChild m with ( nolock )
-                        join dbo.OrderChild (nolock) oc on m.OrderChildId = oc.Id
-                        join [OrderGrab] ogg with ( nolock ) on ogg.Id = m.GrabOrderId
-                        join dbo.[order] o with ( nolock ) on o.Id = m.OrderId
-               where    convert(varchar(100), PubDate, 23) = ''${dateInfo}''
-                        and ogg.BusinessId = ${businessId}
-                        <if test="clienterId  >0 ">
-						 and ogg.ClienterId = ${clienterId}
-						</if>  
-                        and ogg.[status]=1 
-               group by ogg.Id ,o.PubDate 
-             ) bb on aa.Id = bb.Id
+		 dbo.OrderGrab (nolock) as aa 
         join business (nolock) as b on aa.BusinessId = b.Id
-        left join clienter (nolock) as c on aa.ClienterId = c.Id 
+        left join clienter (nolock) as c on aa.ClienterId = c.Id  
+	</sql> 
+	
+	<sql id="queryOrderGrabBWhere">
+		1=1 and aa.[status]=1 
+	   <if test="clienterId != null and  clienterId !=0 ">
+			and aa.clienterId=${clienterId}
+		</if> 
+		<if test="businessId != null and  businessId !=0 ">
+			and aa.businessId=${businessId}
+		</if> 
+		<if test="dateInfo != null">
+			and  CONVERT(VARCHAR(100), aa.GrabTime, 23)=''${dateInfo}''
+		</if> 
 	</sql> 
 </mapper>
