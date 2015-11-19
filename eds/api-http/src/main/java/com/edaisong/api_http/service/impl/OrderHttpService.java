@@ -9,6 +9,7 @@ import org.apache.commons.lang.ObjectUtils.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.service.inter.IOrderChildService;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderService;
@@ -67,8 +68,19 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<OrderResp> Push(OrderReq req) {
+
+		HttpResultModel<OrderResp> resp=new HttpResultModel<OrderResp>();
 		
-		HttpResultModel<OrderResp> resp= orderService.PushOrder(req);			
+		try
+		{
+			resp=orderService.PushOrder(req);	
+		}
+		catch(TransactionalRuntimeException err)
+		{
+			resp.setMessage(err.getMessage());
+			resp.setStatus(HttpReturnRnums.ParaError.value());
+		}			
+	
 		return resp;
 	}	
 

@@ -555,7 +555,7 @@ public class OrderService implements IOrderService {
 				orModelTwo.setId(TwoId);
 				orModelTwo.setWaitingcount(orderCount);
 				int orderRegionTwoId = orderRegionDao
-						.updateByPrimaryKeySelective(orModelTwo);
+						.updateCountByPrimaryKeySelective(orModelTwo);
 				if (orderRegionTwoId <= 0) {
 					throw new TransactionalRuntimeException("更新二级区域错误");
 				}
@@ -565,7 +565,7 @@ public class OrderService implements IOrderService {
 				orModelOne.setWaitingcount(orderCount);
 				orModelOne.setHaschild(true);
 				int orderRegionOneId = orderRegionDao
-						.updateByPrimaryKeySelective(orModelOne);
+						.updateCountByPrimaryKeySelective(orModelOne);
 				if (orderRegionOneId <= 0) {
 					throw new TransactionalRuntimeException("更新一级区域错误");
 				}
@@ -578,7 +578,7 @@ public class OrderService implements IOrderService {
 				orModelOne.setId(OneId);
 				orModelOne.setWaitingcount(orderCount);
 				int orderRegionOneId = orderRegionDao
-						.updateByPrimaryKeySelective(orModelOne);
+						.updateCountByPrimaryKeySelective(orModelOne);
 				if (orderRegionOneId <= 0) {
 					throw new TransactionalRuntimeException("更新一级区域错误");
 				}
