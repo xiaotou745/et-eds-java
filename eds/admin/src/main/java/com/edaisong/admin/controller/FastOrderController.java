@@ -54,7 +54,7 @@ public class FastOrderController {
 		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityListFromRedis();
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "订单管理");
-		model.addObject("currenttitle", "快单列表");
+		model.addObject("currenttitle", "智能调度列表");
 		model.addObject("areaListData", areaListData);   //下拉城市  
 		model.addObject("viewPath", "fastorder/list");
 		return model;
