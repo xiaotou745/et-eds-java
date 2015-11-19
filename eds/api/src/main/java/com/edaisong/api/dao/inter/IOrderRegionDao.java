@@ -22,7 +22,7 @@ public interface IOrderRegionDao {
      */
     List<OrderRegion> getOrderRegion(OrderRegionReq orderRegionReq);
     
-    int updateByPrimaryKeySelective(OrderRegion record);
+    int updateCountByPrimaryKeySelective(OrderRegion record);
     
     /**
 	 * 骑士端获取店内任务  获取当前骑士的所有区域订单的信息

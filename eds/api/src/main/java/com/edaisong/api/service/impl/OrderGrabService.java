@@ -238,7 +238,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelTwo.setId(TwoId);
 			orModelTwo.setWaitingcount(-orderCount);
 			orModelTwo.setGrabcount(orderCount);
-			int orderRegionTwoId=orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+			int orderRegionTwoId=orderRegionDao.updateCountByPrimaryKeySelective(orModelTwo);
 			if (orderRegionTwoId <= 0) {
 				throw new TransactionalRuntimeException("更新二级区域错误");
 			}			
@@ -251,7 +251,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setWaitingcount(-orderCount);		
 			orModelOne.setGrabcount(orderCount);
-			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);		
+			int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);		
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 			}
@@ -266,7 +266,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setWaitingcount(-orderCount);
 			orModelOne.setGrabcount(orderCount);	
-			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+			int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);	
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 			}
@@ -399,7 +399,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelTwo.setId(TwoId);
 			orModelTwo.setGrabcount(-orderCount);
 			orModelTwo.setDistributioning(orderCount);
-			int orderRegionTwoId= orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+			int orderRegionTwoId= orderRegionDao.updateCountByPrimaryKeySelective(orModelTwo);
 			if (orderRegionTwoId <= 0) {
 				throw new TransactionalRuntimeException("更新二级区域错误");
 			}
@@ -408,7 +408,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setGrabcount(-orderCount);		
 			orModelOne.setDistributioning(orderCount);
-			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+			int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);	
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 		}
@@ -419,7 +419,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setGrabcount(-orderCount);		
 			orModelOne.setDistributioning(orderCount);
-			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);
+			int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 		}
@@ -559,7 +559,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelTwo.setId(TwoId);
 			orModelTwo.setDistributioning(-orderCount);
 			orModelTwo.setDonecount(orderCount);
-			int orderRegionTwoId=orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+			int orderRegionTwoId=orderRegionDao.updateCountByPrimaryKeySelective(orModelTwo);
 			if (orderRegionTwoId <= 0) {
 				throw new TransactionalRuntimeException("更新二级区域错误");
 			}
@@ -568,7 +568,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setDistributioning(-orderCount);		
 			orModelOne.setDonecount(orderCount);
-			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+			int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);	
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 			}
@@ -579,7 +579,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setDistributioning(-orderCount);		
 			orModelOne.setDonecount(orderCount);
-			int orderRegionOneId= orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+			int orderRegionOneId= orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);	
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 			}
