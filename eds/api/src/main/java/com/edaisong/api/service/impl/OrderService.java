@@ -1328,6 +1328,8 @@ public class OrderService implements IOrderService {
 				inStoreOrderRegionInfo.setWaitingCount(tempCount);
 			}
 		}
+		List<InStoreTask> returnList=new ArrayList<InStoreTask>(); 
+
 		for (InStoreTask action : list) {// 将所有的区域归类到对应的商家下
 			action.setList(temp
 					.stream()
@@ -1337,11 +1339,11 @@ public class OrderService implements IOrderService {
 					action.getDistanceToBusiness(), 0);
 			action.setDistanceToBusiness(tempDis < 1000 ? tempDis + "m"
 					: ParseHelper.digitsNum(tempDis * 0.001, 2) + "km");
-	        if (action.getList()==null||action.getList().size()!=9) {
-				list.remove(action);
+	        if (action.getList()!=null&&action.getList().size()==9) {
+			      returnList.add(action);
 			}
 		}
-		return list;
+		return returnList;
 	}
 
 	@Override
