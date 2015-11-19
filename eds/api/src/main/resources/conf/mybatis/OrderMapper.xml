@@ -1305,7 +1305,7 @@ LEFT JOIN (  SELECT
 				SUM(OrderCount) TotalCount
 		FROM dbo.[order] o WITH(NOLOCK)
 		join  OrderOther oo  WITH(NOLOCK) ON o.id=oo.OrderId
-		WHERE o.clienterId=#{clienterId} AND o.Status = 1
+		WHERE o.clienterId=#{clienterId} AND o.Status = 1 and o.[Platform] = 1 
 		GROUP BY  Convert (VARCHAR(10),o.PubDate,120)
 		) tbl ON tbl.PubDate=tbldate.MonthDate
 WHERE tbldate.MonthDate <![CDATA[ <=]]>GETDATE()
@@ -1333,7 +1333,7 @@ join  OrderOther oo  WITH(NOLOCK) ON o.id=oo.OrderId
 where   Status = 1
         and o.PubDate >= @startDate and o.PubDate <![CDATA[ <]]> @endDate
         and o.clienterId=#{clienterId}  
-
+		and o.[Platform] = 1 
 	</select>
 		<!--  移动端 订单列表  add by caoheyang 20150910-->
 	<select id="queryOrder" resultType="com.edaisong.entity.domain.QueryOrder"
