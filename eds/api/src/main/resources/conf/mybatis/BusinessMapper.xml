@@ -622,9 +622,9 @@ order by Id desc
   <select id="getOrderCountTotal" resultType="com.edaisong.entity.resp.MyOrderBResp"
 		parameterType="com.edaisong.entity.req.MyOrderBReq">
 		SELECT  
-			isnull(sum(case when og.Status =  2 then og.OrderCount else 0 end),0) quHuoOrderCountTotal,
-			isnull(sum(case when og.Status =  4 then og.OrderCount else 0 end),0) peiSongOrderCountTotal,
-			isnull(sum(case when og.Status =  1 then og.OrderCount else 0 end),0) yiWanChenOrderCountTotal
+			isnull(sum(case when og.Status =  2 then 1 else 0 end),0) quHuoOrderCountTotal,
+			isnull(sum(case when og.Status =  4 then 1 else 0 end),0) peiSongOrderCountTotal,
+			isnull(sum(case when og.Status =  1 then 1 else 0 end),0) yiWanChenOrderCountTotal
 			from 
 			dbo.OrderGrab og(nolock)
 			join (
