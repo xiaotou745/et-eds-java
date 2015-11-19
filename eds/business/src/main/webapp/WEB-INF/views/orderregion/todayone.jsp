@@ -85,7 +85,7 @@ String businessid=request.getAttribute("businessid").toString();
 	    fillOpacity: NORMAL_OPACITY,      //填充的透明度，取值范围0 - 1。
 	    strokeStyle: 'solid' //边线的样式，solid或dashed。
 	}
-	var map =new BMap.Map('map', {minZoom :12, maxZoom :16, enableMapClick :false});
+	var map =new BMap.Map('map', {minZoom :12, enableMapClick :false});
 	tmpfun = map.onclick;
 	map.onclick = null;
 	function initMap(){

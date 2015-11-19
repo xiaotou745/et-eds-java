@@ -144,6 +144,7 @@ function regTrEvent(){
 	var oldY = 0;
 	var flag = false;
 	var maxArea = 5;
+	var t;
 	document.onmousemove = function(e) {
 		var pointer = getCoordInDocument(e);
 		if (Math.abs(pointer.x - oldX) > maxArea
@@ -155,7 +156,10 @@ function regTrEvent(){
 		}
 		if (isMove) {
 			flag = true;
-			var t=setTimeout("logoff()",2*60*60*1000);
+			if(t>0){
+				clearTimeout(t);
+			}
+			t=setTimeout("logoff()",2*60*60*1000);
 		}
 		oldX = pointer.x;
 		oldY = pointer.y;

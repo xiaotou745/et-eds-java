@@ -94,7 +94,7 @@ function init(){
 	}else{
 		var poi = new BMap.Point(centerLongitude, centerLatitude);
 		//map = new BMap.Map('map');
-		map =new BMap.Map('map', {minZoom :12, maxZoom :16, enableMapClick :false});
+		map =new BMap.Map('map', {minZoom :12, enableMapClick :false});
 		map.centerAndZoom(poi, 15);
 		map.enableScrollWheelZoom();
 		//实例化鼠标绘制工具
