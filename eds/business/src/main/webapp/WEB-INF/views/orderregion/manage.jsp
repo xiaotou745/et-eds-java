@@ -15,7 +15,7 @@ String businessLat = (String) request.getAttribute("businessLat");
 	<h3 class="cb">配送区域管理</h3>
 	<div class="map_title">
 		<span>画图文字说明<br/>
-1、绘图说明：点击“画多边形”→在地图中单击鼠标左键定点→移动+单击鼠标左键绘制点线面→双击鼠标结束画图<br/>
+1、绘图说明：点击“绘制一级区域”→在地图中单击鼠标左键定点→移动+单击鼠标左键绘制点线面→双击鼠标结束画图<br/>
 2、一级区域必须设定9个方可生效；每个一级区域里最多可设定9个二级区域</span>
 <a href="<%=basePath%>/orderregion/loglist">查看操作记录</a>
 	</div>
@@ -23,7 +23,7 @@ String businessLat = (String) request.getAttribute("businessLat");
 		<div class="map_main">
 			<div class="map_center">
 			<div class="map_top"><span id="parentNum">当前已配置一级区域3个</span>
-			<a href="javascript:;" id="draw">画多边形</a>
+			<a href="javascript:;" id="draw">绘制一级区域</a>
 			</div>
 			
 				<div id="map" class="map" style="min-height: 798pxhight:400px;"></div>
