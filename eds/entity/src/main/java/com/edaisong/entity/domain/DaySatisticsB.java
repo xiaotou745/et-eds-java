@@ -15,14 +15,13 @@ public class DaySatisticsB {
 	private int orderCount;
 	private int serviceClienterCount;
 	private String dateInfo;
-	@JsonIgnore
+	 
 	private String monthDate;
 	private List<ServiceClienter> serviceClienters;
 
 	public String getMonthDate() {
 		return monthDate;
-	}
-
+	} 
 	public void setMonthDate(String monthDate) {
 		this.monthDate = monthDate;
 	}

@@ -286,5 +286,16 @@ public interface IOrderDao {
 
 	List<DaySatisticsC> getOrderGrabStatisticsDaySatisticsC(
 			OrderStatisticsCReq orderStatisticsCReq);
+
+	OrderStatisticsBResp getOrderGrabStatisticsB(
+			OrderStatisticsBReq orderStatisticsBReq);
+
+	List<ServiceClienter> getOrderGrabStatisticsServiceClienterB(
+			OrderStatisticsBReq orderStatisticsBReq);
+
+	List<DaySatisticsB> getOrderGrabStatisticsDaySatisticsB(
+			OrderStatisticsBReq orderStatisticsBReq);
+
+	List<QueryOrder> queryOrderGrab(QueryOrderReq query);
 	
 }
