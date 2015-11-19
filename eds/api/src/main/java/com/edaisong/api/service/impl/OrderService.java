@@ -1340,8 +1340,9 @@ public class OrderService implements IOrderService {
 		for(InStoreOrderRegionInfo inStoreOrderRegionInfo : temp)
 		{
 			if (inStoreOrderRegionInfo.getParentId()==0) {
-				inStoreOrderRegionInfo.setChilds(regionInfos.stream().filter(pre -> pre.getParentId() == inStoreOrderRegionInfo
-								   .getId()).collect(Collectors.toList()));
+				List<InStoreOrderRegionInfo> childs=regionInfos.stream().filter(pre -> pre.getParentId() == inStoreOrderRegionInfo
+						   .getId()).collect(Collectors.toList());
+				inStoreOrderRegionInfo.setChilds(childs==null||childs.size()==0?null:childs);
 				//有数量 
 				if(inStoreOrderRegionInfo.getWaitingCount()==0){
 					int tempCount=0;
