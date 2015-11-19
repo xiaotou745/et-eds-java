@@ -4,7 +4,7 @@
 
 <%	
 String basePath =PropertyUtils.getProperty("java.business.url");
-basePath="http://10.8.7.253:8091/business";
+//basePath="http://10.8.7.253:8091/business";
 String regionjson = (String) request.getAttribute("regionjson");
 String totalJson = (String) request.getAttribute("totalJson");
 String detailJson = (String) request.getAttribute("detailJson");
