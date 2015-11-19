@@ -7,7 +7,7 @@ import org.apache.log4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//import com.edaisong.api.activemq.ActiveMqService;
+import com.edaisong.api.activemq.ActiveMqService;
 import com.edaisong.api.dao.inter.IActionLogDao;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
@@ -18,8 +18,8 @@ import com.edaisong.entity.domain.ActionLog;
 public class LogServiceBLL {
 	@Autowired
 	private IActionLogDao iActionLogDao;
-//	@Autowired
-//	private ActiveMqService activeMqService;
+	@Autowired
+	private ActiveMqService activeMqService;
 
 	private static Logger businessLogger = Logger.getLogger("businessLogger");
 	private static Logger adminLogger = Logger.getLogger("adminLogger");
@@ -44,7 +44,7 @@ public class LogServiceBLL {
 			}
 			//initLog4DB(logEngity);
 			String jsonMsg = JsonUtil.obj2string(logEngity);
-			//activeMqService.asynSendMessage(jsonMsg);
+			activeMqService.asynSendMessage(jsonMsg);
 			switch (logEngity.getSourceSys()) {
 			case "admin":
 				adminLogger.info(jsonMsg);

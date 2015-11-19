@@ -488,8 +488,8 @@
       FROM      dbo.[order] a ( NOLOCK )
                 JOIN dbo.OrderChild b ( NOLOCK ) ON a.Id = b.OrderId
       WHERE     a.businessId = #{businessId,jdbcType=INTEGER}
-                 AND ((b.Status =0 AND b.Platform=2)
-					OR (a.Status =0 AND b.Platform=1))
+                 AND (b.Status =0 AND b.Platform=2)
+					
 	</select>
 	<select id="getStrategyIdByGroupId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 	SELECT StrategyId FROM BusinessGroup nolock WHERE id=#{groupId,jdbcType=INTEGER}
