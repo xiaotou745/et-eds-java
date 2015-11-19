@@ -10,15 +10,45 @@
 	String basePath = PropertyUtils.getProperty("java.toolsadmin.url");
 	List<AuthorityMenuClass> data = (List<AuthorityMenuClass>) request.getAttribute("listData");
 	AuthorityMenuClass currentMenu = (AuthorityMenuClass) request.getAttribute("currentMenu");
+	List<String> appNameList = (List<String>) request.getAttribute("appNameList");
 %>
-
-<div class="SearchMd">
-	<table border="0" cellspacing="0" cellpadding="0">
-		<tr>
-			<td><%=currentMenu==null?"一级菜单":currentMenu.getMenuname()%></td>
-			<td><input type="button" value="新增菜单" onclick="addNewMenu()" /></td>
-		</tr>
-	</table>
+<div class="wrapper wrapper-content animated fadeInRight">
+<div class="row">
+		<div class="col-lg-12">
+			<form method="POST" action="#" class="form-horizontal" id="searchForm">
+				<div class="row">
+				<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">系统名称:</label>
+							<div class="col-sm-8">
+							   <%=HtmlHelper.getSelect("appname", appNameList, "", "",null,"","全部")%>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">菜单名称:</label>
+							<div class="col-sm-8">
+							 <%=currentMenu==null?"一级菜单":currentMenu.getMenuname()%>
+							</div>
+						</div>
+					</div>
+				</div>
+			    <div class="row">
+						<div class="col-lg-3">
+						<button type="button" class="btn btn-w-m btn-primary" id="btnSearch" style="margin-left:3px;">查询</button>
+						<input type="button" class="btn btn-w-m btn-primary" style="margin-left:3px;" value="新增菜单" onclick="addNewMenu()" />
+					</div>
+			</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox-content" id="content"></div>
+		</div>
+	</div>
+	
 </div>
 
 

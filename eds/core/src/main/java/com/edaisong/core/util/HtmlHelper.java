@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * html页面帮助类
  * 
- * @author CaoHeYang
- * @Date 20150730
+ * @author zhaohl
+ * @Date 20151119
  */
 public class HtmlHelper {
 
@@ -60,31 +60,35 @@ public class HtmlHelper {
 		try {
 
 			if (list != null && list.size() > 0) {
-				List<Field> fields = getFinalFields(list.get(0).getClass(),
-						textName, valueName);
-				if (fields == null) {
-					return "";
+				List<Field> fields = getFinalFields(list.get(0).getClass(),textName, valueName);
+				boolean isSimple=false;
+				if (fields == null) {//此时表示List中的值是简单类型，则不用反射取值
+					isSimple=true;
 				}
-
+				String NameText="";
+				String ValueText="";
 				for (int i = 0; i < list.size(); i++) {
+					if (isSimple) {
+						NameText=list.get(i).toString();
+						ValueText=list.get(i).toString();
+					}else {
+						NameText=fields.get(0).get(list.get(i)).toString();
+						ValueText=fields.get(1).get(list.get(i)).toString();
+					}
 					if (selectedValue != null
-							&& selectedValue.toString().equals(
-									fields.get(1).get(list.get(i)).toString())) {
+						&& selectedValue.toString().equals(ValueText)) {
 						selected = " selected=\"selected\" ";
 					}
 					htmlStrBuffer.append(" <option " + selected + " value=\""
-							+ fields.get(1).get(list.get(i)).toString() + "\">"
-							+ fields.get(0).get(list.get(i)).toString()
-							+ "</option>");
+										+ ValueText + "\">"+ NameText+ "</option>");
 					selected = "";
 				}
 			}
 			return htmlStrBuffer.append("</select>").toString();
 		} catch (Exception e) {
-			return "";
+			throw new RuntimeException(e.getMessage());
 		}
 	}
-
 	/**
 	 * 
 	 * @param type
@@ -92,8 +96,11 @@ public class HtmlHelper {
 	 * @param valueName
 	 * @return
 	 */
-	private static List<Field> getFinalFields(Class type, String textName,
-			String valueName) {
+	private static List<Field> getFinalFields(Class type, String textName,String valueName) {
+		if (textName==null||textName.isEmpty()||
+			valueName==null||valueName.isEmpty()) {
+			return null;
+		}
 		List<Field> resultList = new ArrayList<>();
 		Field fieldText = null;
 		Field fieldValue = null;

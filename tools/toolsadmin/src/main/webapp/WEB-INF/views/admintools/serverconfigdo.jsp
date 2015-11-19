@@ -7,6 +7,7 @@
     <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
 <%@page import="com.edaisong.toolsentity.AppDbConfig"%>
 <%@page import="java.util.List"%>
+<%@page import="com.edaisong.toolscore.enums.ServerType"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
 %>
@@ -16,8 +17,8 @@
 		<tr>
 			<th width="5%">编号</th>
 			<th>系统名称</th>
-			<th>db连接串</th>
-			<th>redis连接串</th>
+			<th>服务器类型</th>
+			<th>连接串</th>
 			<th>创建时间</th>
 			<th>创建人</th>
 			<th>最后修改时间</th>
@@ -38,13 +39,13 @@
 		<tr>
 			<td><%=(i+1)%></td>
 			<td><%=list.get(i).getAppname()%></td>
-			<td><%=list.get(i).getDburl()%></td>
-			<td><%=list.get(i).getRedisurl()%></td>
+			<td><%=ServerType.getEnum(list.get(i).getConfigtype()).desc()%></td>
+		    <td><%=list.get(i).getConfigvalue()%></td>
 			<td><%=ParseHelper.ToDateString(list.get(i).getCreatetime(), "") %></td>
 			<td><%=list.get(i).getCreatename()%></td>
 			<td><%=ParseHelper.ToDateString(list.get(i).getUpdatetime(), "") %></td>
 			<td><%=list.get(i).getUpdatename()%></td>
-			<td><a href="javascript:void(0)" onclick="modifyApp(<%=list.get(i).getId()%>,'<%=list.get(i).getAppname()%>','<%=list.get(i).getDburl()%>','<%=list.get(i).getRedisurl()%>')">修改</a>
+			<td><a href="javascript:void(0)" onclick="modifyApp(<%=list.get(i).getId()%>,'<%=list.get(i).getAppname()%>','<%=list.get(i).getConfigtype()%>','<%=list.get(i).getConfigvalue()%>')">修改</a>
 			<a href="javascript:void(0)" onclick="deleteApp(<%=list.get(i).getId()%>)">删除</a>
 			</td>
 		</tr>

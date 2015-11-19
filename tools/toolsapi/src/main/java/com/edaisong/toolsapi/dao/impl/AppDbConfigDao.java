@@ -1,5 +1,7 @@
 package com.edaisong.toolsapi.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.toolsapi.common.DaoBase;
@@ -7,6 +9,7 @@ import com.edaisong.toolsapi.dao.inter.IAppDbConfigDao;
 import com.edaisong.toolsentity.AppDbConfig;
 import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
+import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 @Repository
 public class AppDbConfigDao extends DaoBase implements IAppDbConfigDao{
 
@@ -26,8 +29,13 @@ return getMasterSqlSessionUtil().update("com.edaisong.toolsapi.dao.inter.IAppDbC
 	}
 
 	@Override
-	public PagedResponse<AppDbConfig> query(PagedRequestBase req) {
+	public PagedResponse<AppDbConfig> query(PagedAppDbConfigReq req) {
 return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.toolsapi.dao.inter.IAppDbConfigDao.query", req);
+	}
+
+	@Override
+	public  List<AppDbConfig> queryList(PagedAppDbConfigReq req) {
+return getReadOnlySqlSessionUtil().selectList("com.edaisong.toolsapi.dao.inter.IAppDbConfigDao.queryList",req);
 	}
 
 }

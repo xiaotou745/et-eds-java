@@ -136,5 +136,32 @@
             }
         });
 	}
+
+	function funUpdateCooperation(id,clienterId) {
+		var type=$("#selCoop").val();
+		if(!window.confirm("确认修改骑士状态？")) {
+			type==0?$("#selCoop").val(1):$("#selCoop").val(0);
+			return;
+		}
+		var paramaters = {"clienterId": clienterId};
+        var url = "<%=basePath%>/business/getisfulltime";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: paramaters,
+            success: function (result) {
+            	if(result>0&&type==1){//是全职骑士，就只能是合作骑士
+            		alert("当前骑士是全职骑士，不能修改为店内骑士");
+            		return;
+            	}else{
+              		var url ="<%=basePath%>/business/updateClienterBindRelationCooperation";
+              		$.post(url,{id:id,type:type,m:Math.random()},function(d){
+              			alert("修改成功了!");
+              		});
+                }
+            }
+
+        });
+	}
 </script>
 
