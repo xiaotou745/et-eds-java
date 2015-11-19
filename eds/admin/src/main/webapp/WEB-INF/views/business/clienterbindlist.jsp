@@ -137,8 +137,8 @@
         });
 	}
 
-	function funUpdateCooperation(id,clienterId) {
-		var type=$("#selCoop").val();
+	function funUpdateCooperation(id,clienterId,obj) {
+		var type=$(obj).val();
 		if(!window.confirm("确认修改骑士状态？")) {
 			type==0?$("#selCoop").val(1):$("#selCoop").val(0);
 			return;
