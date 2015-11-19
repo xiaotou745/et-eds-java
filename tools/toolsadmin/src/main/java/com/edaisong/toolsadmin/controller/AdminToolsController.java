@@ -1,6 +1,7 @@
 package com.edaisong.toolsadmin.controller;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,7 @@ import com.edaisong.toolsadmin.common.UserContext;
 import com.edaisong.toolsapi.redis.RedisService;
 import com.edaisong.toolsapi.service.inter.IAppDbConfigService;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
+import com.edaisong.toolscore.enums.ServerType;
 import com.edaisong.toolscore.util.StringUtils;
 import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.AppDbConfig;
@@ -22,6 +24,7 @@ import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.common.ResponseBase;
 import com.edaisong.toolsentity.req.PagedAccountReq;
+import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 /**
  * 控制其他app
  * @author hailongzhao
@@ -84,6 +87,7 @@ public class AdminToolsController {
 		view.addObject("viewPath", "admintools/menulist");
 		view.addObject("listData", resp);
 		view.addObject("currentMenu", authorityMenuClassService.getMenuById(parId));
+		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
 		return view;
 	}
 	/**
@@ -131,13 +135,31 @@ public class AdminToolsController {
 	 * @date 20151118
 	 * @return
 	 */
-	@RequestMapping("dbmanage")
-	public ModelAndView dbmange() {
+	@RequestMapping("serverconfig")
+	public ModelAndView serverconfig() {
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "APP控制");
-		view.addObject("currenttitle", "数据库配置");
-		view.addObject("viewPath", "admintools/dbmanage");
+		view.addObject("currenttitle", "App服务器配置");
+		view.addObject("viewPath", "admintools/serverconfig");
+		view.addObject("appNameList", getappNameList(null,null));
 		return view;
+	}
+	/**
+	 * 查询配置了给定类型的服务器的appName
+	 * @param serverType
+	 * @return
+	 */
+	private List<String> getappNameList(ServerType serverType,String appName){
+		PagedAppDbConfigReq req=new PagedAppDbConfigReq();
+		if (serverType!=null) {
+			req.setConfigtype(serverType.value());
+		}
+		if (appName!=null&&!appName.isEmpty()) {
+			req.setAppname(appName);
+		}
+		List<AppDbConfig> resp = appDbConfigService.queryList(req);
+		List<String> appNameList =resp.stream().map(t->t.getAppname()).distinct().collect(Collectors.toList());
+		return appNameList;
 	}
 	/**
 	 * app数据库配置分页
@@ -145,11 +167,11 @@ public class AdminToolsController {
 	 * @date 20151118
 	 * @return
 	 */
-	@RequestMapping("dbmanagedo")
-	public ModelAndView dbmanagedo(PagedRequestBase req) {
+	@RequestMapping("serverconfigdo")
+	public ModelAndView serverconfigdo(PagedAppDbConfigReq req) {
 		PagedResponse<AppDbConfig> resp = appDbConfigService.query(req);
 		ModelAndView view = new ModelAndView();
-		view.addObject("viewPath", "admintools/dbmanagedo");
+		view.addObject("viewPath", "admintools/serverconfigdo");
 		view.addObject("listData", resp);
 		return view;
 	}

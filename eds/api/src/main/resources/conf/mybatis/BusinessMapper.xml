@@ -488,7 +488,8 @@
       FROM      dbo.[order] a ( NOLOCK )
                 JOIN dbo.OrderChild b ( NOLOCK ) ON a.Id = b.OrderId
       WHERE     a.businessId = #{businessId,jdbcType=INTEGER}
-                AND b.Status =0
+                 AND ((b.Status =0 AND b.Platform=2)
+					OR (a.Status =0 AND b.Platform=1))
 	</select>
 	<select id="getStrategyIdByGroupId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 	SELECT StrategyId FROM BusinessGroup nolock WHERE id=#{groupId,jdbcType=INTEGER}
@@ -631,7 +632,7 @@ order by Id desc
 				from    OrderGrabChild m with ( nolock )
 				        join [OrderGrab] ogg with ( nolock ) on ogg.Id = m.GrabOrderId
 				        join dbo.[order] o with ( nolock ) on o.Id = m.OrderId
-				where   ogg.BusinessId = ${businessId}  and ogg.[Status] = ${status}
+				where   ogg.BusinessId = ${businessId} 
   						and (ogg.OrderRegionTwoId=${regionId} or  ogg.OrderRegionOneId=${regionId} ) 
   						and convert(varchar(10), o.PubDate, 120) = convert(varchar(10), getdate(), 120) 
 						group by ogg.Id 

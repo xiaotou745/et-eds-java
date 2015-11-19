@@ -50,7 +50,7 @@ if(data == null){
 		                        <td><%=ParseHelper.ToDateString(data.get(i).getUpdatetime()) %></td>
 		                        
 		                        <td>
-		                        <select id="selCoop" onchange="funUpdateCooperation(<%=data.get(i).getId()%>)">
+		                        <select id="selCoop" onchange="funUpdateCooperation(<%=data.get(i).getId()%>,<%=data.get(i).getClienterid()%>)">
 		                        <option value="0" <%=data.get(i).getIsCooperation()==0?"selected=‘selected’":"" %>>合作骑士</option>
 		                        <option value="1" <%=data.get(i).getIsCooperation()==1?"selected=‘selected’":"" %>>店内骑士</option>
 		                        </select>
@@ -87,21 +87,6 @@ if(data == null){
 						</tbody>
 					</table>
 					
-<script>
-
-	function funUpdateCooperation(id) {
-		var type=$("#selCoop").val();
-		if(!window.confirm("确认修改骑士状态？")) {
-				type==0?$("#selCoop").val(1):$("#selCoop").val(0);
-				return;
-			}
-		 var url ="<%=basePath%>/business/updateClienterBindRelationCooperation";
-		 
-		$.post(url,{id:id,type:type,m:Math.random()},function(d){
-			alert("修改成功了!");
-		});
-	}
-</script>
 <%=PageHelper.getPage(responsePageList.getPageSize(),
 		responsePageList.getCurrentPage(), responsePageList.getTotalRecord(),
 		responsePageList.getTotalPage())%>
