@@ -1336,14 +1336,19 @@ public class OrderService implements IOrderService {
 		 // 为所有的一级区域中含有子区域的设置二级区域
 		for(InStoreOrderRegionInfo inStoreOrderRegionInfo : temp)
 		{
-			if (inStoreOrderRegionInfo.getHasChild()==1) {
+			if (inStoreOrderRegionInfo.getParentId()==0) {
 				inStoreOrderRegionInfo.setChilds(regionInfos.stream().filter(pre -> pre.getParentId() == inStoreOrderRegionInfo
 								   .getId()).collect(Collectors.toList()));
-				int tempCount=0;
-				for (InStoreOrderRegionInfo inStoreOrderRegionInfo2 : inStoreOrderRegionInfo.getChilds()) {
-					tempCount=inStoreOrderRegionInfo2.getWaitingCount()+tempCount;
+				//有数量 
+				if(inStoreOrderRegionInfo.getWaitingCount()==0){
+					int tempCount=0;
+					for (InStoreOrderRegionInfo inStoreOrderRegionInfo2 : inStoreOrderRegionInfo.getChilds()) {
+//						System.out.println(inStoreOrderRegionInfo2.getWaitingCount());
+						tempCount=inStoreOrderRegionInfo2.getWaitingCount()+tempCount;
+					}
+					inStoreOrderRegionInfo.setWaitingCount(tempCount);
 				}
-				inStoreOrderRegionInfo.setWaitingCount(tempCount);
+				
 			}
 		}
 		List<InStoreTask> returnList=new ArrayList<InStoreTask>(); 
