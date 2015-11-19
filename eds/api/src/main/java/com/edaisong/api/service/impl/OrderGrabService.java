@@ -227,7 +227,7 @@ public class OrderGrabService implements IOrderGrabService {
 			throw new TransactionalRuntimeException("更新抢单主表金额错误");
 		}	
 		
-		//更新区域
+/*		//更新区域
 		int OneId = req.getOrderRegionOneId();
 		int TwoId =req.getOrderRegionTwoId();
 		int orderCount = req.getOrderCount();
@@ -271,7 +271,7 @@ public class OrderGrabService implements IOrderGrabService {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 			}
 		}					
-		
+		*/
 		// 记录抢单日志
 		OrderSubsidiesLog record = new OrderSubsidiesLog();
 		record.setOrderid(orderGrab.getId());
@@ -389,7 +389,7 @@ public class OrderGrabService implements IOrderGrabService {
 			throw new TransactionalRuntimeException("更新子订单状态错误");
 		}
 		
-		//更新区域表		
+		/*//更新区域表		
 		int OneId = currOgModel.getOrderRegionOneId();
 		int TwoId =currOgModel.getOrderRegionTwoId();
 		int orderCount = currOgModel.getOrdercount();
@@ -423,7 +423,7 @@ public class OrderGrabService implements IOrderGrabService {
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 		}
-		}
+		}*/
 		
 		// 记录取货日志
 		OrderSubsidiesLog record = new OrderSubsidiesLog();
@@ -548,7 +548,7 @@ public class OrderGrabService implements IOrderGrabService {
 			throw new TransactionalRuntimeException("完成订单子表错误");
 		}		
 		
-		//更新区域表	
+		/*//更新区域表	
 		int OneId = currOgModel.getOrderRegionOneId();
 		int TwoId =currOgModel.getOrderRegionTwoId();
 		int orderCount = 1;
@@ -583,7 +583,7 @@ public class OrderGrabService implements IOrderGrabService {
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 			}
-		}
+		}*/
 		
 		// 记录取货日志
 		OrderSubsidiesLog record = new OrderSubsidiesLog();

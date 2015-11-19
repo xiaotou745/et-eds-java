@@ -73,11 +73,12 @@ public enum PublishOrderReturnEnum {
 	/**
 	 * 发单模式错误
 	 */
-	PushOrderTypeErr(-14, "发单模式错误,请联系客服"),
+	PushOrderTypeErr(-14, "发单模式错误,请联系客服"), 
 	/**
 	 * 发布度单不能超过50个
 	 */
-	PushOrderCountErr(-15, "发布订单不能超过50个");
+	PushOrderCountErr(-15, "发布订单不能超过50个"),
+	PushErrRegionNotEnough(-16, "发单失败,配送区域不足9个");
 	
 
 	private int value = 0;
