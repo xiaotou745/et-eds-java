@@ -615,7 +615,7 @@ order by Id desc
 				from    OrderGrabChild m with ( nolock )
 				        join [OrderGrab] ogg with ( nolock ) on ogg.Id = m.GrabOrderId
 				        join dbo.[order] o with ( nolock ) on o.Id = m.OrderId
-				where   ogg.BusinessId = ${businessId}  and ogg.[Status] = ${status}
+				where   ogg.BusinessId = ${businessId} 
   						and (ogg.OrderRegionTwoId=${regionId} or  ogg.OrderRegionOneId=${regionId} ) 
   						and convert(varchar(10), o.PubDate, 120) = convert(varchar(10), getdate(), 120) 
 						group by ogg.Id 
