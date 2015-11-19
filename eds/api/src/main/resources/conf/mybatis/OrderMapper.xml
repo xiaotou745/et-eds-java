@@ -1593,6 +1593,44 @@ where   Status = 1
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
+	<select id="queryTodayOrderDetailing" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderDetail">
+               SELECT   b.OrderRegionOneId ,
+                		b.OrderRegionOneName AS OneName ,
+                        b.OrderRegionTwoId ,
+                        b.OrderRegionTwoName AS TwoName ,
+                        b.Status ,
+                        COUNT(0) AS Num
+               FROM     dbo.[order] a ( NOLOCK )
+                		JOIN OrderGrabChild m ( NOLOCK ) ON a.id = m.OrderId
+                        join OrderGrab b (nolock) ON b.Id = m.GrabOrderId
+               WHERE    a.businessId=#{businessId}
+                        AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                        and b.status in (1,2,4)
+               GROUP BY b.OrderRegionOneId ,
+                		b.OrderRegionOneName ,
+                        b.OrderRegionTwoId ,
+                        b.OrderRegionTwoName ,
+                        b.Status 
+	</select>
+	<select id="queryTodayOrderDetailWait" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderDetail">
+
+				--待接单
+               SELECT  m1.OrderRegionOneId ,
+                		'' AS OneName ,
+                        m1.OrderRegionTwoId ,
+                        '' AS TwoName ,
+                        0 as Status,
+                        COUNT(0) AS Num
+                    FROM    [order] b1 ( NOLOCK )
+                            JOIN orderchild m1 ( NOLOCK ) ON b1.id = m1.orderid
+                    WHERE   b1.businessId = #{businessId}
+                            AND CONVERT(VARCHAR(10), b1.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                            AND b1.platform = 2
+                            AND b1.status = 0
+                    GROUP BY 
+                            m1.OrderRegionOneId ,
+                			m1.OrderRegionTwoId   
+	</select>
 	<!--商家端新模式下的今日订单 addby zhaohailong 20151030 -->
 	<select id="queryTodayOrderDetail" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderDetail">
 	     WITH    onedetailregion
@@ -1612,10 +1650,31 @@ where   Status = 1
                         AND b.OrderRegionOneId > 0
                         AND b.OrderRegionTwoId = 0
                         AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-                        and b.status in (0,1,2,4)
+                        and b.status in (1,2,4)
                GROUP BY b.OrderRegionOneId ,
                         b.OrderRegionOneName ,
                         b.Status
+              UNION ALL
+                    SELECT  m1.OrderRegionOneId ,
+                		k1.Name AS OneName ,
+                        0 AS OrderRegionTwoId ,
+                        '' AS TwoName ,
+                        0 ,
+                        COUNT(0) AS Num,
+                        0 AS LevelType
+                    FROM    [order] b1 ( NOLOCK )
+                            JOIN orderchild m1 ( NOLOCK ) ON b1.id = m1.orderid
+                            join orderregion k1 (nolock) on m1.OrderRegionOneId=k1.id
+                    WHERE   b1.businessId = #{businessId}
+                    		and k1.businessId = #{businessId}
+                    		AND m1.OrderRegionOneId > 0
+                        	AND m1.OrderRegionTwoId = 0
+                            AND CONVERT(VARCHAR(10), b1.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                            AND b1.platform = 2
+                            AND b1.status = 0
+                    GROUP BY 
+                            m1.OrderRegionOneId ,
+                			k1.Name 
              ),
 
         twodetailregion
@@ -1635,12 +1694,34 @@ where   Status = 1
                         AND b.OrderRegionOneId > 0
                         AND b.OrderRegionTwoId > 0
                         AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-                        and b.status in (0,1,2,4)
+                        and b.status in (1,2,4)
                GROUP BY b.OrderRegionOneId ,
                         b.OrderRegionOneName,
                         b.OrderRegionTwoId ,
                         b.OrderRegionTwoName,
                         b.Status
+              UNION ALL
+                    SELECT  m1.OrderRegionOneId ,
+                       '' AS OneName ,
+                        m1.OrderRegionTwoId ,
+                        k1.Name AS TwoName,
+                        0 as Status ,
+                        COUNT(0) AS Num,
+                         1 AS LevelType
+                    FROM    [order] b1 ( NOLOCK )
+                            JOIN orderchild m1 ( NOLOCK ) ON b1.id = m1.orderid
+                            join orderregion k1 (nolock) on m1.OrderRegionTwoId=k1.id
+                    WHERE   b1.businessId = #{businessId}
+                    		and k1.businessId = #{businessId}
+                    		AND m1.OrderRegionOneId > 0
+                        	AND m1.OrderRegionTwoId > 0
+                            AND CONVERT(VARCHAR(10), b1.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                            AND b1.platform = 2
+                            AND b1.status = 0
+                    GROUP BY 
+                            m1.OrderRegionOneId ,
+                            m1.OrderRegionTwoId,
+                			k1.Name 
              ),
         onetotal
           AS ( 
@@ -1666,32 +1747,42 @@ where   Status = 1
 	</select>
 	<!--商家端新模式下的今日订单 addby zhaohailong 20151030 -->
 	<select id="queryTodayOrderTotal" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderTotal">
-		SELECT  a.id ,
-                a.ParentId ,
-                a.name ,
-                ISNULL(SUM(mb.tb), 0) AS num
-        FROM    OrderRegion a ( NOLOCK )
-                LEFT JOIN ( SELECT  1 AS tb ,
-                                    a.OrderRegionOneId ,
-                                    a.OrderRegionTwoId
-                            FROM    [order] b ( NOLOCK )
-                                    JOIN OrderGrabChild m ( NOLOCK ) ON b.id = m.OrderId
-                                    join OrderGrab a (nolock) ON a.Id = m.GrabOrderId
-                            WHERE   b.businessId=#{businessId}
-                                    AND CONVERT(VARCHAR(10), b.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-                                    AND a.OrderRegionOneId > 0
-                                    and a.status in (0,1,2,4)
-                          ) mb ON  
-                                  ( mb.OrderRegionTwoId = 0
-                                        AND a.Id = mb.OrderRegionOneId
-                                      )
-                                  OR ( mb.OrderRegionTwoId > 0
-                                       AND a.Id = mb.OrderRegionTwoId
-                                     )
-        where a.businessId=#{businessId} AND a.status = 1
-        GROUP BY a.id ,
-                a.ParentId ,
-                a.name  
+     SELECT  a.id ,
+        a.ParentId ,
+        a.name ,
+        ISNULL(SUM(mb.tb), 0) AS num
+FROM    OrderRegion a ( NOLOCK )
+        LEFT JOIN ( SELECT  1 AS tb ,
+                            a.OrderRegionOneId ,
+                            a.OrderRegionTwoId
+                    FROM    [order] b ( NOLOCK )
+                            JOIN OrderGrabChild m ( NOLOCK ) ON b.id = m.OrderId
+                            JOIN OrderGrab a ( NOLOCK ) ON a.Id = m.GrabOrderId
+                    WHERE   b.businessId = #{businessId}
+                            AND CONVERT(VARCHAR(10), b.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                            AND a.OrderRegionOneId > 0
+                            AND a.status IN ( 1, 2, 4 )
+                    UNION ALL
+                    SELECT  1 AS tb ,
+                            m1.OrderRegionOneId ,
+                            m1.OrderRegionTwoId
+                    FROM    [order] b1 ( NOLOCK )
+                            JOIN orderchild m1 ( NOLOCK ) ON b1.id = m1.orderid
+                    WHERE   b1.businessId = #{businessId}
+                            AND CONVERT(VARCHAR(10), b1.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                            AND b1.platform = 2
+                            AND b1.status = 0
+                  ) mb ON ( mb.OrderRegionTwoId = 0
+                            AND a.Id = mb.OrderRegionOneId
+                          )
+                          OR ( mb.OrderRegionTwoId > 0
+                               AND a.Id = mb.OrderRegionTwoId
+                             )
+WHERE   a.businessId = #{businessId}
+        AND a.status = 1
+GROUP BY a.id ,
+        a.ParentId ,
+        a.name  
 	</select>
 	<!--商家端新模式下给定区域下是否有处理中的订单addby zhaohailong 20151030 -->
 	<select id="queryIngOrderByRegionId" parameterType="java.lang.Long"   resultType="java.lang.Long">

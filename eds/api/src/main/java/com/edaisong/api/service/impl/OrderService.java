@@ -4,8 +4,10 @@ import java.lang.Double;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -155,6 +157,7 @@ public class OrderService implements IOrderService {
 
 	@Autowired
 	private IOrderGrabDao iOrderGrabDao;
+
 
 	/**
 	 * 后台订单列表页面
@@ -1366,7 +1369,71 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) {
-		return orderDao.queryTodayOrderDetail(businessId);
+		List<RegionOrderDetail> result=new ArrayList<>();
+		List<RegionOrderDetail> ingData=orderDao.queryTodayOrderDetailing(businessId);
+		List<RegionOrderDetail> waitData=orderDao.queryTodayOrderDetailWait(businessId);
+		//没有二级的一级区域
+		List<RegionOrderDetail> ingDataNoChild=ingData.stream().filter(t->t.getOrderRegionOneId()>0&&
+				t.getOrderRegionTwoId().equals(0)).collect(Collectors.toList());
+		List<RegionOrderDetail> waitDataNoChild=waitData.stream().filter(t->t.getOrderRegionOneId()>0&&
+				t.getOrderRegionTwoId().equals(0)).collect(Collectors.toList());
+		for (RegionOrderDetail regionOrderDetail : waitDataNoChild) {
+			regionOrderDetail.setLevelType(0);//需要给一级名称复制
+		}
+		for (RegionOrderDetail regionOrderDetail : ingDataNoChild) {
+			regionOrderDetail.setLevelType(0);
+		}
+		result.addAll(ingDataNoChild);
+		result.addAll(waitDataNoChild);
+		//二级区域
+		List<RegionOrderDetail> ingDataTwo=ingData.stream().filter(t->t.getOrderRegionOneId()>0&&
+				t.getOrderRegionTwoId()>0).collect(Collectors.toList());
+		List<RegionOrderDetail> waitDataTwo=waitData.stream().filter(t->t.getOrderRegionOneId()>0&&
+				t.getOrderRegionTwoId()>0).collect(Collectors.toList());
+		for (RegionOrderDetail regionOrderDetail : waitDataTwo) {
+			regionOrderDetail.setLevelType(1);//需要给一级名称复制
+		}
+		for (RegionOrderDetail regionOrderDetail : ingDataTwo) {
+			regionOrderDetail.setLevelType(1);
+		}
+		result.addAll(ingDataTwo);
+		result.addAll(waitDataTwo);
+		//有二级的一级区域，需要把二级的数量汇总到一级区域中
+		List<String> ingDataOne=ingDataTwo.stream().map(t->t.getOrderRegionOneId()+"#"+
+				t.getStatus()).collect(Collectors.toList());
+		String[] tea=null;
+		for (String string : ingDataOne) {
+			tea=string.split("#");
+			Long oneId=Long.parseLong(tea[0]);
+			Integer status=Integer.parseInt(tea[1]);
+			long sum=ingDataTwo.stream().filter(t->t.getOrderRegionOneId().equals(oneId)&&
+					t.getStatus().equals(status)).mapToLong(m->m.getNum()).sum();
+			RegionOrderDetail temp=new RegionOrderDetail();
+			temp.setNum(sum);
+			temp.setLevelType(2);
+			temp.setOrderRegionOneId(Long.parseLong(tea[0]));
+			temp.setStatus(Integer.parseInt(tea[1]));
+			result.add(temp);
+		}
+		OrderRegionReq orderRegionReq=new OrderRegionReq();
+		orderRegionReq.setBusinessId(Integer.parseInt(businessId.toString()));
+		orderRegionReq.setStatus(1);
+		List<OrderRegion> regions=orderRegionDao.getOrderRegion(orderRegionReq);
+		Map<Long, String> names=new HashMap<Long, String>();
+		regions.stream().forEach(t->names.put(Long.parseLong(t.getId().toString()), t.getName()));
+		for (RegionOrderDetail detail : result) {
+			if (names.containsKey(detail.getOrderRegionOneId())) {
+				detail.setOneName(names.get(detail.getOrderRegionOneId()));
+			}
+			if (detail.getOrderRegionTwoId()>0) {
+				if (names.containsKey(detail.getOrderRegionTwoId())) {
+					detail.setTwoName(names.get(detail.getOrderRegionTwoId()));
+				}
+			}
+		}
+
+		return result;
+		//return orderDao.queryTodayOrderDetail(businessId);
 	}
 
 	@Override
