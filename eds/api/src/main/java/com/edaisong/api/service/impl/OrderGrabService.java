@@ -195,8 +195,7 @@ public class OrderGrabService implements IOrderGrabService {
 		double num1=0,num2=0,num3=0,num4=0,num5=0,num6=0,num7=0;
 		for (int i=0;i<listOrderGrabChild.size();i++)
 		{			
-			OrderGrabChild tempOGCModel=new OrderGrabChild();
-			tempOGCModel=listOrderGrabChild.get(i);
+			OrderGrabChild tempOGCModel=listOrderGrabChild.get(i);
 			num1+=tempOGCModel.getOrderCommission();
 			num2+=tempOGCModel.getSettleMoney();
 			num3+=tempOGCModel.getCommissionRate();
@@ -204,6 +203,15 @@ public class OrderGrabService implements IOrderGrabService {
 			num5+=tempOGCModel.getWebsiteSubsidy();
 			num6+=tempOGCModel.getAdjustment();
 			num7+=tempOGCModel.getDistribsubsidy();
+			
+			//更新发单主表  （记录最后1个骑士）		
+			Order order=new  Order();
+			order.setId(tempOGCModel.getOrderid());
+			order.setClienterid(req.getClienterId());		
+			int oId=orderDao.updateByPrimaryKeySelective(order);
+			if (oId <= 0) {
+				throw new TransactionalRuntimeException("更新订单主表错误");
+			}
 		}
 		OrderGrab updateOGCModel=new OrderGrab();
 		updateOGCModel.setId(orderGrab.getId());
@@ -230,7 +238,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelTwo.setId(TwoId);
 			orModelTwo.setWaitingcount(-orderCount);
 			orModelTwo.setGrabcount(orderCount);
-			int orderRegionTwoId=orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+			int orderRegionTwoId=orderRegionDao.updateCountByPrimaryKeySelective(orModelTwo);
 			if (orderRegionTwoId <= 0) {
 				throw new TransactionalRuntimeException("更新二级区域错误");
 			}			
@@ -243,7 +251,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setWaitingcount(-orderCount);		
 			orModelOne.setGrabcount(orderCount);
-			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);		
+			int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);		
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 			}
@@ -258,7 +266,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setWaitingcount(-orderCount);
 			orModelOne.setGrabcount(orderCount);	
-			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+			int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);	
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 			}
@@ -341,7 +349,7 @@ public class OrderGrabService implements IOrderGrabService {
 		}
 		else
 		{
-			throw new TransactionalRuntimeException("订单不处于待接单状态");
+			throw new TransactionalRuntimeException("该任务已取货");
 		}
 		
 		//更新取货主表	
@@ -391,7 +399,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelTwo.setId(TwoId);
 			orModelTwo.setGrabcount(-orderCount);
 			orModelTwo.setDistributioning(orderCount);
-			int orderRegionTwoId= orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+			int orderRegionTwoId= orderRegionDao.updateCountByPrimaryKeySelective(orModelTwo);
 			if (orderRegionTwoId <= 0) {
 				throw new TransactionalRuntimeException("更新二级区域错误");
 			}
@@ -400,7 +408,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setGrabcount(-orderCount);		
 			orModelOne.setDistributioning(orderCount);
-			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+			int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);	
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 		}
@@ -411,7 +419,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setGrabcount(-orderCount);		
 			orModelOne.setDistributioning(orderCount);
-			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);
+			int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 		}
@@ -497,7 +505,7 @@ public class OrderGrabService implements IOrderGrabService {
 		}
 		else
 		{
-			throw new TransactionalRuntimeException("订单不处于取货状态");
+			throw new TransactionalRuntimeException("该任务已完成");
 		}		
 		//更新骑士余额	获取第一条子订单	
 		OrderGrabChild currOgcModel=  orderGrabChildDao.selectTop1ByGrabOrderId((long)req.getOrderGrabId());
@@ -551,7 +559,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelTwo.setId(TwoId);
 			orModelTwo.setDistributioning(-orderCount);
 			orModelTwo.setDonecount(orderCount);
-			int orderRegionTwoId=orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+			int orderRegionTwoId=orderRegionDao.updateCountByPrimaryKeySelective(orModelTwo);
 			if (orderRegionTwoId <= 0) {
 				throw new TransactionalRuntimeException("更新二级区域错误");
 			}
@@ -560,7 +568,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setDistributioning(-orderCount);		
 			orModelOne.setDonecount(orderCount);
-			int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+			int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);	
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 			}
@@ -571,7 +579,7 @@ public class OrderGrabService implements IOrderGrabService {
 			orModelOne.setId(OneId);
 			orModelOne.setDistributioning(-orderCount);		
 			orModelOne.setDonecount(orderCount);
-			int orderRegionOneId= orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+			int orderRegionOneId= orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);	
 			if (orderRegionOneId <= 0) {
 				throw new TransactionalRuntimeException("更新一级区域错误");
 			}

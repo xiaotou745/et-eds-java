@@ -712,14 +712,14 @@
 		bcr.Id BindId,
 		bcr.ClienterId ,
         bcr.BusinessId ,
-        b.Name BusinessName ,
-        b.PhoneNo BusinessPhoneNo ,
-        b.Address BusinessAddress,
+        isnull(b.Name,'') BusinessName ,
+        isnull(b.PhoneNo,'') BusinessPhoneNo ,
+        isnull(b.Address,'') BusinessAddress,
         bcr.IsBind ,
         bcr.AuditStatus,
         bcr.CreateTime
 from    dbo.BusinessClienterRelation bcr ( nolock )
-        join dbo.business b ( nolock ) on bcr.BusinessId = b.Id
+        left join dbo.business b ( nolock ) on bcr.BusinessId = b.Id
 where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{auditStatus,jdbcType=INTEGER} and bcr.IsEnable = 1 
 	</select> 
 	<!-- 获取服务中的商户数量 wangchao -->
