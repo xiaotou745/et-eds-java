@@ -152,7 +152,7 @@ public interface IOrderHttpService {
 	
 	
 	/**
-	 * C端任务统计接口 
+	 * C端任务统计接口 -- 新版九宫格 
 	 * @author wangchao
 	 * @param data
 	 */
@@ -161,7 +161,7 @@ public interface IOrderHttpService {
 	public HttpResultModel<OrderStatisticsCResp> orderGrabStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
 	
 	/**
-	 * B端任务统计接口
+	 * B端任务统计接口 -- 新版九宫格 
 	 * 
 	 * @author wangchao
 	 * @param orderStatisticsBReq
@@ -170,4 +170,13 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/ordergrabstatisticsb")
 	public HttpResultModel<OrderStatisticsBResp> orderGrabStatisticsB(OrderStatisticsBReq orderStatisticsBReq);
+	
+	/**
+	 * B端已完成任务列表或者配送员配送列表  -- 新版九宫格 
+	 * @author wangchao
+	 * @return
+	 */
+	@POST
+	@Path("/getcompliteordergrabb")
+	public HttpResultModel<List<QueryOrder>> getCompliteOrderGrabB(QueryOrderReq para);
 }

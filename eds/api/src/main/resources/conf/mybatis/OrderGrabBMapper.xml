@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderDao">
+<!-- B端任务统计接口  天数据列表  wangchao -->
+ <select id="getOrderGrabStatisticsB" parameterType="com.edaisong.entity.req.OrderStatisticsBReq"   resultType="com.edaisong.entity.resp.OrderStatisticsBResp">
+	declare @sdate DATETIME
+set @sdate = '${monthInfo}-01'
+declare @startDate date ;
+declare @endDate date ;
+set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate) ; 
+set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
+  
+select  count(1) as OrderCount ,
+        count(distinct isnull(og.ClienterId, 0)) as ServiceClienterCount ,
+        isnull(sum(oc.TotalPrice), 0) as TotalAmount
+from    dbo.OrderGrab (nolock) og
+        join dbo.OrderGrabChild (nolock) ogc on og.Id = ogc.GrabOrderId
+        join dbo.OrderChild (nolock) oc on ogc.OrderChildId = oc.Id
+where   og.Status = 1
+        and og.GrabTime >= @startDate and og.GrabTime <![CDATA[ <]]> @endDate
+        and og.businessId=#{businessId} 
+	</select>
+	
+	<!-- B端任务统计接口 统计当月服务骑士信息 wangchao -->
+	<select id="getOrderGrabStatisticsServiceClienterB" parameterType="com.edaisong.entity.req.OrderStatisticsBReq"   resultType="com.edaisong.entity.domain.ServiceClienter">
+declare @sdate DATETIME
+set @sdate = '${monthInfo}-01'
+declare @startDate date ;
+declare @endDate date ;
+set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate);  
+set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
+select  ISNULL(b.Id,0) as ClienterId ,
+        ISNULL(b.PhoneNo,'未知') as ClienterPhone ,
+        ISNULL(b.TrueName,'未知') as ClienterName ,
+        SUM(a.OrderCount) as OrderCount ,
+        CONVERT(VARCHAR(100), a.GrabTime, 23) as PubDate,
+        ISNULL(MIN (b.HeadPhoto),'') as ClienterPhoto
+from    dbo.[ordergrab] (nolock) a
+        LEFT join dbo.clienter (nolock) b on a.clienterId = b.Id
+where   a.Status = 1 and businessId=#{businessId}  
+and a.GrabTime>=@startDate and a.GrabTime <![CDATA[ <]]> @endDate
+group by b.Id ,
+        b.PhoneNo ,
+        b.TrueName ,
+        CONVERT(VARCHAR(100), a.GrabTime, 23) ,
+        DATEPART(day, a.GrabTime)
+order by PubDate desc 
+	</select>
+		<!-- B端任务统计接口  天数据列表  add by wangchao -->
+	<select id="getOrderGrabStatisticsDaySatisticsB" parameterType="com.edaisong.entity.req.OrderStatisticsBReq"   resultType="com.edaisong.entity.domain.DaySatisticsB">
+	declare @sdate DATETIME
+set @sdate = '${monthInfo}-01'
+declare @startDate date ;
+declare @endDate date ;
+set  @startDate  = dateadd(dd,-day(@sdate)+1,@sdate) ; 
+set  @endDate=   dateadd(dd,1-day(@sdate),dateadd(m,1,@sdate));
+select  a.MonthDate ,
+        ISNULL(b.OrderCount, 0) as OrderCount ,
+        ISNULL(b.ServiceClienterCount, 0) as ServiceClienterCount ,
+        a.DateInfo
+from    ( select    CONVERT(VARCHAR(100), DATEADD(dd, number, @sdate), 23) as MonthDate ,
+                    CONVERT(VARCHAR(4), DATEPART(day,
+                                                 DATEADD(dd, number, @sdate)))
+                    + '日' as DateInfo
+          from      master..spt_values
+          where     type = 'P'
+                    and DATEADD(dd, number, @sdate) <![CDATA[ <]]> DATEADD(mm, 1, @sdate)
+        ) a
+        left join ( select  SUM(OrderCount) as OrderCount ,
+                            COUNT(distinct clienterId) as ServiceClienterCount ,
+                            CONVERT(VARCHAR(100), GrabTime, 23) as OrderDate
+                    from    dbo.[ordergrab] (nolock)
+                    where   Status = 1 and businessId=#{businessId}  
+                    and GrabTime>=@startDate and GrabTime  <![CDATA[ <]]>  @endDate
+                    group by CONVERT(VARCHAR(100), GrabTime, 23)
+                  ) as b on a.MonthDate = b.OrderDate
+where a.MonthDate <![CDATA[ <=]]>GETDATE()  
+ORDER BY MonthDate DESC 
+	</select>
+		<!--  移动端 订单列表  add by wangchao -->
+	<select id="queryOrderGrabB" resultType="com.edaisong.entity.domain.QueryOrder"
+		parameterType="com.edaisong.entity.req.QueryOrderReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		'
+		<if test="orderBy  ==0 ">
+			bb.PubDate asc
+		</if>
+		 <if test="orderBy  ==1 ">
+			aa.ActualDoneDate desc
+		</if>
+		',
+		'
+		<include refid="queryOrderGrabBColums" />
+		',
+		'
+		<include refid="queryOrderGrabBFrom" />
+		',
+		'<include refid="queryOrderGrabBWhere" /> ',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>	
+	<!--   移动端 订单列表add by caoheyang 20150910 -->
+	<sql id="queryOrderGrabBColums">  
+		b.Id as BusinessId ,
+        b.Name as BusinessName ,
+        b.PhoneNo as BusinessPhone ,
+        b.PhoneNo2 as BusinessPhone2 ,
+        c.TrueName as SuperManName ,
+        c.PhoneNo as SuperManPhone , 
+        aa.id as OrderId , 
+        b.Longitude ,
+        b.Latitude ,
+        aa.[Status],
+        aa.OrderCount,
+        0 amount,
+        CONVERT(varchar(100),aa.ActualDoneDate ,20) ActualDoneDate ,
+        aa.OrderRegionOneName + '' ''+ aa.OrderRegionTwoName receviceAddress 
+	</sql>  
+	<!--   移动端 订单列表add by caoheyang 20150910 -->
+	<sql id="queryOrderGrabBFrom">
+		 dbo.OrderGrab (nolock) as aa 
+        join business (nolock) as b on aa.BusinessId = b.Id
+        left join clienter (nolock) as c on aa.ClienterId = c.Id  
+	</sql> 
+	
+	<sql id="queryOrderGrabBWhere">
+		1=1 and aa.[status]=1 
+	   <if test="clienterId != null and  clienterId !=0 ">
+			and aa.clienterId=${clienterId}
+		</if> 
+		<if test="businessId != null and  businessId !=0 ">
+			and aa.businessId=${businessId}
+		</if> 
+		<if test="dateInfo != null">
+			and  CONVERT(VARCHAR(100), aa.GrabTime, 23)=''${dateInfo}''
+		</if> 
+	</sql> 
+</mapper>

@@ -21,9 +21,9 @@ public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
 	}
 				
 	@Override
-	public int updateByPrimaryKeySelective(OrderRegion record) {	
+	public int updateCountByPrimaryKeySelective(OrderRegion record) {	
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IOrderRegionDao.updateByPrimaryKeySelective",
+				.update("com.edaisong.api.dao.inter.IOrderRegionDao.updateCountByPrimaryKeySelective",
 						record);
 	}
 	

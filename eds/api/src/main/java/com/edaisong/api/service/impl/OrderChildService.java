@@ -42,6 +42,7 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.GroupModel;
+import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.resp.OrderGrabResp;
@@ -86,21 +87,23 @@ public class OrderChildService implements IOrderChildService {
 
 		for(int i=0;i<list.size();i++)
 		{
-			int id=list.get(i);
-			OrderChild currOcModel= orderChildDao.selectByPrimaryKey(id);			
-			BusinessModel businessModel = businessDao.getBusiness((long)currOcModel
-					.getBusinessid());
-			
+			int id=list.get(i);		
+	
 			//更新订单表
+			OrderChild currOcModel= orderChildDao.selectByPrimaryKey(id);	
+			OrderListModel selectOLModel=orderDao.getOrderWriteByNoId(null, currOcModel.getOrderid());
+			int count=selectOLModel.getOrderCount();		
 			Order updateOModel=new Order();		
-			updateOModel.setId(currOcModel.getOrderid());					
-			updateOModel.setStatus((byte)OrderStatus.Cancel.value());
+			updateOModel.setId(currOcModel.getOrderid());				
+			updateOModel.setOrdercount(count-1);
 			int updateOrderGrabId= orderDao.updateByPrimaryKeySelective(updateOModel);
 			if (updateOrderGrabId <= 0) {				
 				throw new TransactionalRuntimeException("更新订单主表状诚错误");
 			}				
 			
 			//更新商户余额 ，可提现余额	
+			BusinessModel businessModel = businessDao.getBusiness((long)currOcModel
+					.getBusinessid());
 			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 			balanceRecord.setBusinessid(currOcModel.getBusinessid());
 			if (businessModel.getGroupBusinessID() > 0) {
@@ -137,7 +140,7 @@ public class OrderChildService implements IOrderChildService {
 				OrderRegion orModelTwo=new OrderRegion();
 				orModelTwo.setId(TwoId);
 				orModelTwo.setWaitingcount(-orderCount);			
-				int orderRegionTwoId=orderRegionDao.updateByPrimaryKeySelective(orModelTwo);
+				int orderRegionTwoId=orderRegionDao.updateCountByPrimaryKeySelective(orModelTwo);
 				if (orderRegionTwoId <= 0) {
 					throw new TransactionalRuntimeException("更新二级区域错误");
 				}			
@@ -150,7 +153,7 @@ public class OrderChildService implements IOrderChildService {
 				orModelOne.setId(OneId);
 				orModelOne.setWaitingcount(-orderCount);	
 			
-				int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);		
+				int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);		
 				if (orderRegionOneId <= 0) {
 					throw new TransactionalRuntimeException("更新一级区域错误");
 				}	
@@ -158,7 +161,7 @@ public class OrderChildService implements IOrderChildService {
 				OrderRegion orModelOne=new OrderRegion();
 				orModelOne.setId(OneId);
 				orModelOne.setWaitingcount(-orderCount);				
-				int orderRegionOneId=orderRegionDao.updateByPrimaryKeySelective(orModelOne);	
+				int orderRegionOneId=orderRegionDao.updateCountByPrimaryKeySelective(orModelOne);	
 				if (orderRegionOneId <= 0) {
 					throw new TransactionalRuntimeException("更新一级区域错误");
 				}

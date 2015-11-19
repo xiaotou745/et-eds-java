@@ -290,7 +290,15 @@ public interface IOrderService {
 	 * @param data
 	 */
 	OrderStatisticsCResp getOrderGrabStatisticsC(
-			OrderStatisticsCReq orderStatisticsCReq); 
+			OrderStatisticsCReq orderStatisticsCReq);
+	/*
+	 * B端任务统计
+	 * wangchao
+	 */
+	HttpResultModel<OrderStatisticsBResp> getOrderGrabStatisticsB(
+			OrderStatisticsBReq para);
+
+	HttpResultModel<List<QueryOrder>> getCompliteOrderGrab(QueryOrderReq query,int type);
 	
 	
 }

@@ -526,8 +526,8 @@ min(b.Name) as BusinessName,min(b.address) as BusinessAddress
 count(oc.Id) WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,min(b.City) businessCityName 
 from    BusinessClienterRelation a (nolock)
 join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER}
-join OrderChild oc(nolock) on a.BusinessId=oc.BusinessId and oc.Status=0
-join dbo.[order] o (nolock) on oc.OrderId=o.Id and o.Platform=2 
+left join OrderChild oc(nolock) on a.BusinessId=oc.BusinessId and oc.Status=0
+left  join dbo.[order] o (nolock) on oc.OrderId=o.Id and o.Platform=2 
 where a.IsEnable = 1
 and a.IsBind = 1
 and a.AuditStatus=1
@@ -632,7 +632,7 @@ order by Id desc
 				from    OrderGrabChild m with ( nolock )
 				        join [OrderGrab] ogg with ( nolock ) on ogg.Id = m.GrabOrderId
 				        join dbo.[order] o with ( nolock ) on o.Id = m.OrderId
-				where   ogg.BusinessId = ${businessId}  and ogg.[Status] = ${status}
+				where   ogg.BusinessId = ${businessId} 
   						and (ogg.OrderRegionTwoId=${regionId} or  ogg.OrderRegionOneId=${regionId} ) 
   						and convert(varchar(10), o.PubDate, 120) = convert(varchar(10), getdate(), 120) 
 						group by ogg.Id 
