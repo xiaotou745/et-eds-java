@@ -349,7 +349,7 @@ public class OrderGrabService implements IOrderGrabService {
 		}
 		else
 		{
-			throw new TransactionalRuntimeException("订单不处于待接单状态");
+			throw new TransactionalRuntimeException("该任务已取货");
 		}
 		
 		//更新取货主表	
@@ -505,7 +505,7 @@ public class OrderGrabService implements IOrderGrabService {
 		}
 		else
 		{
-			throw new TransactionalRuntimeException("订单不处于取货状态");
+			throw new TransactionalRuntimeException("该任务已完成");
 		}		
 		//更新骑士余额	获取第一条子订单	
 		OrderGrabChild currOgcModel=  orderGrabChildDao.selectTop1ByGrabOrderId((long)req.getOrderGrabId());
