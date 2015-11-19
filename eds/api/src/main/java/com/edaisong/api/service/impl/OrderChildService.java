@@ -94,8 +94,7 @@ public class OrderChildService implements IOrderChildService {
 			OrderListModel selectOLModel=orderDao.getOrderWriteByNoId(null, currOcModel.getOrderid());
 			int count=selectOLModel.getOrderCount();		
 			Order updateOModel=new Order();		
-			updateOModel.setId(currOcModel.getOrderid());					
-			updateOModel.setStatus((byte)OrderStatus.Cancel.value());
+			updateOModel.setId(currOcModel.getOrderid());				
 			updateOModel.setOrdercount(count-1);
 			int updateOrderGrabId= orderDao.updateByPrimaryKeySelective(updateOModel);
 			if (updateOrderGrabId <= 0) {				
