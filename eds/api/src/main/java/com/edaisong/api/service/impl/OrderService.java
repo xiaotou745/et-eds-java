@@ -563,7 +563,7 @@ public class OrderService implements IOrderService {
 			throw new TransactionalRuntimeException("保存订单明细出错");
 		}
 
-		// 更新区域
+		/*// 更新区域
 		List<OrderRegionReq> listOrderRegion = req.getListOrderRegion();
 		for (int i = 0; i < listOrderRegion.size(); i++) {
 
@@ -604,7 +604,7 @@ public class OrderService implements IOrderService {
 					throw new TransactionalRuntimeException("更新一级区域错误");
 				}
 			}
-		}
+		}*/
 
 		// 扣除商家结算费
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
