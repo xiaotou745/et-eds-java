@@ -16,6 +16,7 @@ import com.edaisong.toolsapi.redis.RedisService;
 import com.edaisong.toolsapi.service.inter.IAppDbConfigService;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
 import com.edaisong.toolscore.enums.ServerType;
+import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.StringUtils;
 import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.AppDbConfig;
@@ -23,6 +24,7 @@ import com.edaisong.toolsentity.AuthorityMenuClass;
 import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.common.ResponseBase;
+import com.edaisong.toolsentity.domain.ConnectionInfo;
 import com.edaisong.toolsentity.req.PagedAccountReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 /**
@@ -194,8 +196,9 @@ public class AdminToolsController {
 	 */
 	@RequestMapping("saveapp")
 	@ResponseBody
-	public int saveapp(AppDbConfig req,Integer optype,HttpServletRequest request) {
+	public int saveapp(ConnectionInfo conInfo,AppDbConfig req,Integer optype,HttpServletRequest request) {
 		UserContext context = UserContext.getCurrentContext(request);
+		req.setConfigvalue(JsonUtil.obj2string(conInfo));
 		req.setCreatename(context.getUserName());
 		req.setUpdatename(context.getUserName());
 		if (optype.equals(0)) {//0表示修改，1表示新增
