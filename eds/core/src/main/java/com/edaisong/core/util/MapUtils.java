@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * File Name: MapUtils.java 
  * History:
@@ -11,7 +10,7 @@ import com.edaisong.core.entity.Gps;
 
 
 /**
- * µØÍ¼×ª»»¹¤¾ß (Description)
+ * åœ°å›¾è½¬æ¢å·¥å…· (Description)
  * 
  * @author zaokafei
  * @version 1.0
@@ -19,9 +18,9 @@ import com.edaisong.core.entity.Gps;
  */
 public class MapUtils {
     /**
-     * ¸÷µØÍ¼API×ø±êÏµÍ³±È½ÏÓë×ª»»; WGS84×ø±êÏµ£º¼´µØÇò×ø±êÏµ£¬¹ú¼ÊÉÏÍ¨ÓÃµÄ×ø±êÏµ¡£Éè±¸Ò»°ã°üº¬GPSÐ¾Æ¬»òÕß±±¶·Ð¾Æ¬»ñÈ¡µÄ¾­Î³¶ÈÎªWGS84µØÀí×ø±êÏµ, ¹È¸èµØÍ¼²ÉÓÃµÄÊÇWGS84µØÀí×ø±êÏµ£¨ÖÐ¹ú·¶Î§³ýÍâ£©;
-     * GCJ02×ø±êÏµ£º¼´»ðÐÇ×ø±êÏµ£¬ÊÇÓÉÖÐ¹ú¹ú¼Ò²â»æ¾ÖÖÆ¶©µÄµØÀíÐÅÏ¢ÏµÍ³µÄ×ø±êÏµÍ³¡£ÓÉWGS84×ø±êÏµ¾­¼ÓÃÜºóµÄ×ø±êÏµ¡£ ¹È¸èÖÐ¹úµØÍ¼ºÍËÑËÑÖÐ¹úµØÍ¼²ÉÓÃµÄÊÇGCJ02µØÀí×ø±êÏµ;
-     * BD09×ø±êÏµ£º¼´°Ù¶È×ø±êÏµ£¬GCJ02×ø±êÏµ¾­¼ÓÃÜºóµÄ×ø±êÏµ; ËÑ¹·×ø±êÏµ¡¢Í¼°É×ø±êÏµµÈ£¬¹À¼ÆÒ²ÊÇÔÚGCJ02»ù´¡ÉÏ¼ÓÃÜ¶ø³ÉµÄ¡£
+     * å„åœ°å›¾APIåæ ‡ç³»ç»Ÿæ¯”è¾ƒä¸Žè½¬æ¢; WGS84åæ ‡ç³»ï¼šå³åœ°çƒåæ ‡ç³»ï¼Œå›½é™…ä¸Šé€šç”¨çš„åæ ‡ç³»ã€‚è®¾å¤‡ä¸€èˆ¬åŒ…å«GPSèŠ¯ç‰‡æˆ–è€…åŒ—æ–—èŠ¯ç‰‡èŽ·å–çš„ç»çº¬åº¦ä¸ºWGS84åœ°ç†åæ ‡ç³», è°·æ­Œåœ°å›¾é‡‡ç”¨çš„æ˜¯WGS84åœ°ç†åæ ‡ç³»ï¼ˆä¸­å›½èŒƒå›´é™¤å¤–ï¼‰;
+     * GCJ02åæ ‡ç³»ï¼šå³ç«æ˜Ÿåæ ‡ç³»ï¼Œæ˜¯ç”±ä¸­å›½å›½å®¶æµ‹ç»˜å±€åˆ¶è®¢çš„åœ°ç†ä¿¡æ¯ç³»ç»Ÿçš„åæ ‡ç³»ç»Ÿã€‚ç”±WGS84åæ ‡ç³»ç»åŠ å¯†åŽçš„åæ ‡ç³»ã€‚ è°·æ­Œä¸­å›½åœ°å›¾å’Œæœæœä¸­å›½åœ°å›¾é‡‡ç”¨çš„æ˜¯GCJ02åœ°ç†åæ ‡ç³»;
+     * BD09åæ ‡ç³»ï¼šå³ç™¾åº¦åæ ‡ç³»ï¼ŒGCJ02åæ ‡ç³»ç»åŠ å¯†åŽçš„åæ ‡ç³»; æœç‹—åæ ‡ç³»ã€å›¾å§åæ ‡ç³»ç­‰ï¼Œä¼°è®¡ä¹Ÿæ˜¯åœ¨GCJ02åŸºç¡€ä¸ŠåŠ å¯†è€Œæˆçš„ã€‚
      */
 
     public static final String BAIDU_LBS_TYPE = "bd09ll";
@@ -31,7 +30,7 @@ public class MapUtils {
     public static double ee = 0.00669342162296594323;
 
     /**
-     * 84 to »ðÐÇ×ø±êÏµ (GCJ-02) World Geodetic System ==> Mars Geodetic System
+     * 84 to ç«æ˜Ÿåæ ‡ç³» (GCJ-02) World Geodetic System ==> Mars Geodetic System
      * 
      * @param lat
      * @param lon
@@ -55,7 +54,7 @@ public class MapUtils {
     }
 
     /**
-     * * »ðÐÇ×ø±êÏµ (GCJ-02) to 84 * * @param lon * @param lat * @return
+     * * ç«æ˜Ÿåæ ‡ç³» (GCJ-02) to 84 * * @param lon * @param lat * @return
      * */
     public static Gps gcj_To_Gps84(double lat, double lon) {
         Gps gps = transform(lat, lon);
@@ -65,7 +64,7 @@ public class MapUtils {
     }
 
     /**
-     * »ðÐÇ×ø±êÏµ (GCJ-02) Óë°Ù¶È×ø±êÏµ (BD-09) µÄ×ª»»Ëã·¨ ½« GCJ-02 ×ø±ê×ª»»³É BD-09 ×ø±ê
+     * ç«æ˜Ÿåæ ‡ç³» (GCJ-02) ä¸Žç™¾åº¦åæ ‡ç³» (BD-09) çš„è½¬æ¢ç®—æ³• å°† GCJ-02 åæ ‡è½¬æ¢æˆ BD-09 åæ ‡
      * 
      * @param gg_lat
      * @param gg_lon
@@ -80,7 +79,7 @@ public class MapUtils {
     }
 
     /**
-     * * »ðÐÇ×ø±êÏµ (GCJ-02) Óë°Ù¶È×ø±êÏµ (BD-09) µÄ×ª»»Ëã·¨ * * ½« BD-09 ×ø±ê×ª»»³ÉGCJ-02 ×ø±ê * * @param bd_lat * @param bd_lon * @return
+     * * ç«æ˜Ÿåæ ‡ç³» (GCJ-02) ä¸Žç™¾åº¦åæ ‡ç³» (BD-09) çš„è½¬æ¢ç®—æ³• * * å°† BD-09 åæ ‡è½¬æ¢æˆGCJ-02 åæ ‡ * * @param bd_lat * @param bd_lon * @return
      */
     public static Gps bd09_To_Gcj02(double bd_lat, double bd_lon) {
         double x = bd_lon - 0.0065, y = bd_lat - 0.006;
@@ -149,7 +148,7 @@ public class MapUtils {
 
     public static void main(String[] args) {
 
-        // ±±¶·Ð¾Æ¬»ñÈ¡µÄ¾­Î³¶ÈÎªWGS84µØÀí×ø±ê 31.426896,119.496145
+        // åŒ—æ–—èŠ¯ç‰‡èŽ·å–çš„ç»çº¬åº¦ä¸ºWGS84åœ°ç†åæ ‡ 31.426896,119.496145
         Gps gps = new Gps(31.426896, 119.496145);
         System.out.println("gps :" + gps);
         Gps gcj = gps84_To_Gcj02(gps.getWgLat(), gps.getWgLon());
@@ -163,169 +162,3 @@ public class MapUtils {
     }
 
 }
-=======
-/*
- * File Name: MapUtils.java 
- * History:
- * Created by Administrator on 2015-4-29
- */
-package com.edaisong.core.util;
-
-import com.edaisong.core.entity.Gps;
-
-
-
-/**
- * µØÍ¼×ª»»¹¤¾ß (Description)
- * 
- * @author zaokafei
- * @version 1.0
- * @date 2015-4-29
- */
-public class MapUtils {
-    /**
-     * ¸÷µØÍ¼API×ø±êÏµÍ³±È½ÏÓë×ª»»; WGS84×ø±êÏµ£º¼´µØÇò×ø±êÏµ£¬¹ú¼ÊÉÏÍ¨ÓÃµÄ×ø±êÏµ¡£Éè±¸Ò»°ã°üº¬GPSÐ¾Æ¬»òÕß±±¶·Ð¾Æ¬»ñÈ¡µÄ¾­Î³¶ÈÎªWGS84µØÀí×ø±êÏµ, ¹È¸èµØÍ¼²ÉÓÃµÄÊÇWGS84µØÀí×ø±êÏµ£¨ÖÐ¹ú·¶Î§³ýÍâ£©;
-     * GCJ02×ø±êÏµ£º¼´»ðÐÇ×ø±êÏµ£¬ÊÇÓÉÖÐ¹ú¹ú¼Ò²â»æ¾ÖÖÆ¶©µÄµØÀíÐÅÏ¢ÏµÍ³µÄ×ø±êÏµÍ³¡£ÓÉWGS84×ø±êÏµ¾­¼ÓÃÜºóµÄ×ø±êÏµ¡£ ¹È¸èÖÐ¹úµØÍ¼ºÍËÑËÑÖÐ¹úµØÍ¼²ÉÓÃµÄÊÇGCJ02µØÀí×ø±êÏµ;
-     * BD09×ø±êÏµ£º¼´°Ù¶È×ø±êÏµ£¬GCJ02×ø±êÏµ¾­¼ÓÃÜºóµÄ×ø±êÏµ; ËÑ¹·×ø±êÏµ¡¢Í¼°É×ø±êÏµµÈ£¬¹À¼ÆÒ²ÊÇÔÚGCJ02»ù´¡ÉÏ¼ÓÃÜ¶ø³ÉµÄ¡£
-     */
-
-    public static final String BAIDU_LBS_TYPE = "bd09ll";
-
-    public static double pi = 3.1415926535897932384626;
-    public static double a = 6378245.0;
-    public static double ee = 0.00669342162296594323;
-
-    /**
-     * 84 to »ðÐÇ×ø±êÏµ (GCJ-02) World Geodetic System ==> Mars Geodetic System
-     * 
-     * @param lat
-     * @param lon
-     * @return
-     */
-    public static Gps gps84_To_Gcj02(double lat, double lon) {
-        if (outOfChina(lat, lon)) {
-            return null;
-        }
-        double dLat = transformLat(lon - 105.0, lat - 35.0);
-        double dLon = transformLon(lon - 105.0, lat - 35.0);
-        double radLat = lat / 180.0 * pi;
-        double magic = Math.sin(radLat);
-        magic = 1 - ee * magic * magic;
-        double sqrtMagic = Math.sqrt(magic);
-        dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * pi);
-        dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * pi);
-        double mgLat = lat + dLat;
-        double mgLon = lon + dLon;
-        return new Gps(mgLat, mgLon);
-    }
-
-    /**
-     * * »ðÐÇ×ø±êÏµ (GCJ-02) to 84 * * @param lon * @param lat * @return
-     * */
-    public static Gps gcj_To_Gps84(double lat, double lon) {
-        Gps gps = transform(lat, lon);
-        double lontitude = lon * 2 - gps.getWgLon();
-        double latitude = lat * 2 - gps.getWgLat();
-        return new Gps(latitude, lontitude);
-    }
-
-    /**
-     * »ðÐÇ×ø±êÏµ (GCJ-02) Óë°Ù¶È×ø±êÏµ (BD-09) µÄ×ª»»Ëã·¨ ½« GCJ-02 ×ø±ê×ª»»³É BD-09 ×ø±ê
-     * 
-     * @param gg_lat
-     * @param gg_lon
-     */
-    public static Gps gcj02_To_Bd09(double gg_lat, double gg_lon) {
-        double x = gg_lon, y = gg_lat;
-        double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * pi);
-        double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * pi);
-        double bd_lon = z * Math.cos(theta) + 0.0065;
-        double bd_lat = z * Math.sin(theta) + 0.006;
-        return new Gps(bd_lat, bd_lon);
-    }
-
-    /**
-     * * »ðÐÇ×ø±êÏµ (GCJ-02) Óë°Ù¶È×ø±êÏµ (BD-09) µÄ×ª»»Ëã·¨ * * ½« BD-09 ×ø±ê×ª»»³ÉGCJ-02 ×ø±ê * * @param bd_lat * @param bd_lon * @return
-     */
-    public static Gps bd09_To_Gcj02(double bd_lat, double bd_lon) {
-        double x = bd_lon - 0.0065, y = bd_lat - 0.006;
-        double z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * pi);
-        double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * pi);
-        double gg_lon = z * Math.cos(theta);
-        double gg_lat = z * Math.sin(theta);
-        return new Gps(gg_lat, gg_lon);
-    }
-
-    /**
-     * (BD-09)-->84
-     * 
-     * @param bd_lat
-     * @param bd_lon
-     * @return
-     */
-    public static Gps bd09_To_Gps84(double bd_lat, double bd_lon) {
-
-        Gps gcj02 = MapUtils.bd09_To_Gcj02(bd_lat, bd_lon);
-        Gps map84 = MapUtils.gcj_To_Gps84(gcj02.getWgLat(), gcj02.getWgLon());
-        return map84;
-
-    }
-
-    public static boolean outOfChina(double lat, double lon) {
-        if (lon < 72.004 || lon > 137.8347)
-            return true;
-        if (lat < 0.8293 || lat > 55.8271)
-            return true;
-        return false;
-    }
-
-    public static Gps transform(double lat, double lon) {
-        if (outOfChina(lat, lon)) {
-            return new Gps(lat, lon);
-        }
-        double dLat = transformLat(lon - 105.0, lat - 35.0);
-        double dLon = transformLon(lon - 105.0, lat - 35.0);
-        double radLat = lat / 180.0 * pi;
-        double magic = Math.sin(radLat);
-        magic = 1 - ee * magic * magic;
-        double sqrtMagic = Math.sqrt(magic);
-        dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * pi);
-        dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * pi);
-        double mgLat = lat + dLat;
-        double mgLon = lon + dLon;
-        return new Gps(mgLat, mgLon);
-    }
-
-    public static double transformLat(double x, double y) {
-        double ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
-        ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0;
-        ret += (20.0 * Math.sin(y * pi) + 40.0 * Math.sin(y / 3.0 * pi)) * 2.0 / 3.0;
-        ret += (160.0 * Math.sin(y / 12.0 * pi) + 320 * Math.sin(y * pi / 30.0)) * 2.0 / 3.0;
-        return ret;
-    }
-
-    public static double transformLon(double x, double y) {
-        double ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
-        ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0;
-        ret += (20.0 * Math.sin(x * pi) + 40.0 * Math.sin(x / 3.0 * pi)) * 2.0 / 3.0;
-        ret += (150.0 * Math.sin(x / 12.0 * pi) + 300.0 * Math.sin(x / 30.0 * pi)) * 2.0 / 3.0;
-        return ret;
-    }
-
-    public static void main(String[] args) {
-
-        // ±±¶·Ð¾Æ¬»ñÈ¡µÄ¾­Î³¶ÈÎªWGS84µØÀí×ø±ê 31.426896,119.496145
-        Gps gps = new Gps(31.426896, 119.496145);
-        System.out.println("gps :" + gps);
-        Gps gcj = gps84_To_Gcj02(gps.getWgLat(), gps.getWgLon());
-        System.out.println("gcj :" + gcj);
-        Gps star = gcj_To_Gps84(gcj.getWgLat(), gcj.getWgLon());
-        System.out.println("star:" + star);
-        Gps bd = gcj02_To_Bd09(gcj.getWgLat(), gcj.getWgLon());
-        System.out.println("bd  :" + bd);
-        Gps gcj2 = bd09_To_Gcj02(bd.getWgLat(), bd.getWgLon());
-        System.out.println("gcj :" + gcj2);
-    }
-
-}
->>>>>>> a7bb198d84969346ce1f4222aa8020139fe26181
