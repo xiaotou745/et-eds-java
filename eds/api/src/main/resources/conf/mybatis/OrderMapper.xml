@@ -1597,12 +1597,12 @@ where   Status = 1
 	<select id="queryTodayOrderDetail" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderDetail">
 	     WITH    onedetailregion
           AS (
-				--没有二级区域的区域的今日订单统计
+				--没有二级区域的一级区域的今日订单统计
                SELECT   b.OrderRegionOneId ,
                 c.Name AS OneName ,
                         0 AS OrderRegionTwoId ,
                         '' AS TwoName ,
-                        b.Status ,
+                        a.Status ,
                         COUNT(0) AS Num,
                         0 AS LevelType
                FROM     dbo.[order] a ( NOLOCK )
@@ -1614,9 +1614,10 @@ where   Status = 1
                         AND b.OrderRegionOneId > 0
                         AND b.OrderRegionTwoId = 0
                         AND CONVERT(VARCHAR(10), b.CreateTime, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                        and a.status in (0,1,2,4)
                GROUP BY b.OrderRegionOneId ,
                         c.Name ,
-                        b.Status
+                        a.Status
              ),
 
         twodetailregion
@@ -1626,7 +1627,7 @@ where   Status = 1
                         '' AS OneName ,
                         b.OrderRegionTwoId ,
                         c.Name AS TwoName,
-                        b.Status ,
+                        a.Status ,
                         COUNT(0) AS Num,
                          1 AS LevelType
                FROM     dbo.[order] a ( NOLOCK )
@@ -1638,10 +1639,11 @@ where   Status = 1
                         AND b.OrderRegionOneId > 0
                         AND b.OrderRegionTwoId > 0
                         AND CONVERT(VARCHAR(10), b.CreateTime, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                        and a.status in (0,1,2,4)
                GROUP BY b.OrderRegionOneId ,
                         b.OrderRegionTwoId ,
                         c.Name ,
-                        b.Status
+                        a.Status
              ),
         onetotal
           AS ( 
@@ -1654,7 +1656,7 @@ where   Status = 1
                     SUM(m.num) AS Num ,
                     2 AS LevelType
           FROM      twodetailregion m
-                    JOIN OrderRegion c ON m.OrderRegionOneId = c.id
+                    JOIN OrderRegion c ON m.OrderRegionOneId = c.id and c.parentId=0
           GROUP BY  m.OrderRegionOneId ,
                     c.Name ,
                     m.Status
@@ -1681,6 +1683,7 @@ where   Status = 1
                             		AND b.Platform = 2
                                     AND CONVERT(VARCHAR(10), b.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
                                     AND m.OrderRegionOneId > 0
+                                    and b.status in (0,1,2,4)
                           ) mb ON  
                                   ( mb.OrderRegionTwoId = 0
                                         AND a.Id = mb.OrderRegionOneId
