@@ -296,7 +296,7 @@
 		WHERE BusinessId=#{businessId,jdbcType=INTEGER}
 		AND OperateTime > #{startDate,jdbcType=VARCHAR} AND
 		#{endDate,jdbcType=VARCHAR} > OperateTime
-		AND RecordType IN (1,2,8,9,12)
+		AND RecordType IN (1,2,8,9,12,13)
 		GROUP by
 		Convert ( VARCHAR(10), OperateTime, 120)
 	</select>
@@ -309,12 +309,12 @@
 			AND RecordType IN (1)
 		</if>
 		<if test="billType == 2"><!-- 入账 -->
-			AND RecordType IN (2,8,9,12)
+			AND RecordType IN (2,8,9,12,13)
 		</if>
 		<if test="recordType !=0"><!--非全部 -->
 			AND RecordType = ${recordType}
 		</if>
-	    and GroupId=0 AND RecordType IN (1,2,8,9,12)
+	    and GroupId=0 AND RecordType IN (1,2,8,9,12,13)
 	</sql>
 	<!-- 获取商户日账单分页 茹化肖 2015年9月10日19:06:57 -->
 	<select id="getAccountBillDayBList" resultType="com.edaisong.entity.domain.AccountBillDayModel"

@@ -478,8 +478,23 @@ public class OrderService implements IOrderService {
 			resp.setMessage(PublishOrderReturnEnum.PushOrderCountErr.desc());
 			return resp;
 		}
-		
-		
+		//发单时判断 该商户下的以及区域是否够九个，不够提示 wangchao增加判断
+		OrderRegionReq orrOrderRegionReq = new OrderRegionReq();
+		orrOrderRegionReq.setBusinessId(req.getBusinessid());
+		orrOrderRegionReq.setStatus(1);
+		List<OrderRegion> listOrderRegions= orderRegionDao.getOrderRegion(orrOrderRegionReq); 
+		if(listOrderRegions == null ){
+			resp.setStatus(PublishOrderReturnEnum.PushErrRegionNotEnough.value());
+			resp.setMessage(PublishOrderReturnEnum.PushErrRegionNotEnough.desc());
+			return resp;
+		}else{
+			List<OrderRegion> firstOrderRegionList=	listOrderRegions.stream().filter(k->k.getParentid().equals(0)).collect(Collectors.toList());
+			if(firstOrderRegionList.size()!=9){
+				resp.setStatus(PublishOrderReturnEnum.PushErrRegionNotEnough.value());
+				resp.setMessage(PublishOrderReturnEnum.PushErrRegionNotEnough.desc());
+				return resp;
+			}
+		}
 		
 		// 时间戳
 		if (req.getTimeSpan() != null && !req.getTimeSpan().equals("")) {
@@ -545,7 +560,7 @@ public class OrderService implements IOrderService {
 			throw new TransactionalRuntimeException("保存订单明细出错");
 		}
 
-		// 更新区域
+		/*// 更新区域
 		List<OrderRegionReq> listOrderRegion = req.getListOrderRegion();
 		for (int i = 0; i < listOrderRegion.size(); i++) {
 
@@ -586,7 +601,7 @@ public class OrderService implements IOrderService {
 					throw new TransactionalRuntimeException("更新一级区域错误");
 				}
 			}
-		}
+		}*/
 
 		// 扣除商家结算费
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
