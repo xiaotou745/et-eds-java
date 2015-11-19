@@ -525,7 +525,7 @@ min(b.Name) as BusinessName,min(b.address) as BusinessAddress
 count(oc.Id) WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,min(b.City) businessCityName 
 from    BusinessClienterRelation a (nolock)
 join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER}
-join OrderChild oc(nolock) on a.BusinessId=oc.BusinessId and oc.Status=1
+join OrderChild oc(nolock) on a.BusinessId=oc.BusinessId and oc.Status=0
 join dbo.[order] o (nolock) on oc.OrderId=o.Id and o.Platform=2 
 where a.IsEnable = 1
 and a.IsBind = 1
