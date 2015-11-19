@@ -7,9 +7,9 @@ public class AppDbConfig {
 
     private String appname;
 
-    private String dburl;
+    private String configvalue;
 
-    private String redisurl;
+    private Integer configtype;
 
     private Date createtime;
 
@@ -35,21 +35,6 @@ public class AppDbConfig {
         this.appname = appname == null ? null : appname.trim();
     }
 
-    public String getDburl() {
-        return dburl;
-    }
-
-    public void setDburl(String dburl) {
-        this.dburl = dburl == null ? null : dburl.trim();
-    }
-
-    public String getRedisurl() {
-        return redisurl;
-    }
-
-    public void setRedisurl(String redisurl) {
-        this.redisurl = redisurl == null ? null : redisurl.trim();
-    }
 
     public Date getCreatetime() {
         return createtime;
@@ -82,4 +67,20 @@ public class AppDbConfig {
     public void setUpdatename(String updatename) {
         this.updatename = updatename == null ? null : updatename.trim();
     }
+
+	public String getConfigvalue() {
+		return configvalue;
+	}
+
+	public void setConfigvalue(String configvalue) {
+		this.configvalue = configvalue;
+	}
+
+	public Integer getConfigtype() {
+		return configtype;
+	}
+
+	public void setConfigtype(Integer configtype) {
+		this.configtype = configtype;
+	}
 }

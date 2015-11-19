@@ -3,7 +3,7 @@
 <mapper namespace="com.edaisong.toolsapi.dao.inter.IAppDbConfigDao" >
 
   <sql id="Base_Column_List" >
-    Id, AppName, DbUrl, RedisUrl, CreateTime, UpdateTime, CreateName, UpdateName
+    Id, AppName, ConfigValue, ConfigType, CreateTime, UpdateTime, CreateName, UpdateName
   </sql>
 
   <delete id="deleteById" parameterType="java.lang.Long" >
@@ -11,34 +11,48 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.edaisong.toolsentity.AppDbConfig" >
-    insert into AppDbConfig (AppName, DbUrl, 
-      RedisUrl, CreateTime, UpdateTime, 
+  if not EXISTS(select 1 from AppDbConfig (nolock) where AppName=#{appname,jdbcType=NVARCHAR} and ConfigType=#{configtype,jdbcType=INTEGER})
+    insert into AppDbConfig (AppName, ConfigValue, 
+      ConfigType, CreateTime, UpdateTime, 
       CreateName, UpdateName)
-    values (#{appname,jdbcType=NVARCHAR}, #{dburl,jdbcType=NVARCHAR}, 
-      #{redisurl,jdbcType=NVARCHAR}, getdate(), getdate(), 
+    values (#{appname,jdbcType=NVARCHAR}, #{configvalue,jdbcType=NVARCHAR}, 
+      #{configtype,jdbcType=INTEGER}, getdate(), getdate(), 
       #{createname,jdbcType=NVARCHAR}, #{updatename,jdbcType=NVARCHAR})
   </insert>
   <update id="updateById" parameterType="com.edaisong.toolsentity.AppDbConfig" >
     update AppDbConfig
-    set AppName = #{appname,jdbcType=NVARCHAR},
-      DbUrl = #{dburl,jdbcType=NVARCHAR},
-      RedisUrl = #{redisurl,jdbcType=NVARCHAR},
+    set 
+      configvalue = #{configvalue,jdbcType=NVARCHAR},
       UpdateTime = getdate(),
-      CreateName = #{createname,jdbcType=NVARCHAR},
       UpdateName = #{updatename,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
-<select id="query" resultType="com.edaisong.toolsentity.AppDbConfig" parameterType="com.edaisong.toolsentity.common.PagedRequestBase" statementType="CALLABLE">
+   <sql id="queryWhere">
+		1=1
+		<if test="appname != null and appname!=''">
+			and appname = ''${appname}''
+		</if>
+		<if test="configtype != null and configtype>=0">
+			and configtype =${configtype}
+		</if>
+	</sql> 
+<select id="query" resultType="com.edaisong.toolsentity.AppDbConfig" parameterType="com.edaisong.toolsentity.req.PagedAppDbConfigReq" statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
 		' Id desc ',
-		' Id, AppName, DbUrl, RedisUrl, CreateTime, UpdateTime, CreateName, UpdateName',
+		' Id, AppName, ConfigValue, ConfigType, CreateTime, UpdateTime, CreateName, UpdateName',
 		' AppDbConfig(nolock) ',
-		'1=1',
+		'<include refid="queryWhere" />',
 		#{pageSize,mode=IN,jdbcType=INTEGER},
 		#{currentPage,mode=IN,jdbcType=INTEGER}
 		,1,
 		#{totalRecord,mode=OUT,jdbcType=INTEGER},
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)} 
+  </select>
+    <select id="queryList" resultType="com.edaisong.toolsentity.AppDbConfig" parameterType="com.edaisong.toolsentity.req.PagedAppDbConfigReq" >
+    select 
+    AppName, ConfigValue, ConfigType
+    from AppDbConfig(nolock) where 
+    <include refid="queryWhere" />
   </select>
 </mapper>

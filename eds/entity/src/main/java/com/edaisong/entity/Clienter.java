@@ -59,6 +59,60 @@ public class Clienter {
     private Short isbind;
 
     private Integer deliverycompanyid;
+    private Long timespan;
+    public Long getTimespan() {
+		return timespan;
+	}
+
+	public void setTimespan(Long timespan) {
+		this.timespan = timespan;
+	}
+
+	public String getAppkey() {
+		return appkey;
+	}
+
+	public void setAppkey(String appkey) {
+		this.appkey = appkey;
+	}
+
+	public boolean isReceivePush() {
+		return isReceivePush;
+	}
+
+	public void setReceivePush(boolean isReceivePush) {
+		this.isReceivePush = isReceivePush;
+	}
+
+	public String getHeadPhoto() {
+		return headPhoto;
+	}
+
+	public void setHeadPhoto(String headPhoto) {
+		this.headPhoto = headPhoto;
+	}
+
+	public Integer getGradeType() {
+		return GradeType;
+	}
+
+	public void setGradeType(Integer gradeType) {
+		GradeType = gradeType;
+	}
+
+	public Integer getIsCooperation() {
+		return isCooperation;
+	}
+
+	public void setIsCooperation(Integer isCooperation) {
+		this.isCooperation = isCooperation;
+	}
+
+	private String appkey;
+    private boolean isReceivePush;
+    private String headPhoto;
+    private Integer GradeType;
+    private Integer isCooperation; 
 
     public Integer getId() {
         return id;
