@@ -1598,19 +1598,52 @@ where   Status = 1
                 		b.OrderRegionOneName AS OneName ,
                         b.OrderRegionTwoId ,
                         b.OrderRegionTwoName AS TwoName ,
-                        b.Status ,
+                        1 as Status ,
                         COUNT(0) AS Num
                FROM     dbo.[order] a ( NOLOCK )
                 		JOIN OrderGrabChild m ( NOLOCK ) ON a.id = m.OrderId
                         join OrderGrab b (nolock) ON b.Id = m.GrabOrderId
                WHERE    a.businessId=#{businessId}
                         AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-                        and b.status in (1,2,4)
+                        and b.status =1
                GROUP BY b.OrderRegionOneId ,
                 		b.OrderRegionOneName ,
                         b.OrderRegionTwoId ,
-                        b.OrderRegionTwoName ,
-                        b.Status 
+                        b.OrderRegionTwoName
+              union all
+                             SELECT   b.OrderRegionOneId ,
+                		b.OrderRegionOneName AS OneName ,
+                        b.OrderRegionTwoId ,
+                        b.OrderRegionTwoName AS TwoName ,
+                        2 as Status ,
+                        COUNT(0) AS Num
+               FROM     dbo.[order] a ( NOLOCK )
+                		JOIN OrderGrabChild m ( NOLOCK ) ON a.id = m.OrderId
+                        join OrderGrab b (nolock) ON b.Id = m.GrabOrderId
+               WHERE    a.businessId=#{businessId}
+                        AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                        and b.status =2
+               GROUP BY b.OrderRegionOneId ,
+                		b.OrderRegionOneName ,
+                        b.OrderRegionTwoId ,
+                        b.OrderRegionTwoName
+               union all
+                             SELECT   b.OrderRegionOneId ,
+                		b.OrderRegionOneName AS OneName ,
+                        b.OrderRegionTwoId ,
+                        b.OrderRegionTwoName AS TwoName ,
+                        4 as Status ,
+                        COUNT(0) AS Num
+               FROM     dbo.[order] a ( NOLOCK )
+                		JOIN OrderGrabChild m ( NOLOCK ) ON a.id = m.OrderId
+                        join OrderGrab b (nolock) ON b.Id = m.GrabOrderId
+               WHERE    a.businessId=#{businessId}
+                        AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
+                        and b.status =4
+               GROUP BY b.OrderRegionOneId ,
+                		b.OrderRegionOneName ,
+                        b.OrderRegionTwoId ,
+                        b.OrderRegionTwoName
 	</select>
 	<select id="queryTodayOrderDetailWait" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderDetail">
 

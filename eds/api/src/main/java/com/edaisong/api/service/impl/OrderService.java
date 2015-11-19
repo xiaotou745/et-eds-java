@@ -1412,6 +1412,7 @@ public class OrderService implements IOrderService {
 			temp.setNum(sum);
 			temp.setLevelType(2);
 			temp.setOrderRegionOneId(Long.parseLong(tea[0]));
+			temp.setOrderRegionTwoId(0l);
 			temp.setStatus(Integer.parseInt(tea[1]));
 			result.add(temp);
 		}
