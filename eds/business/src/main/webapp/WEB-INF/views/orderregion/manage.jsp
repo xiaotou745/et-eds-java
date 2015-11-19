@@ -561,7 +561,7 @@ function saveall(){
 	    if(isparent){
 	    	point.lng=point.lng+0.01;
 	    	point.lat=point.lat-0.005;
-		    map.zoomTo(16);	
+		    //map.zoomTo(16);	
 	    }else{
 	    	point.lng=point.lng+0.02;
 	    	point.lat=point.lat-0.01;
