@@ -47,6 +47,10 @@ function funGetRedis(mtype,mkey){
 		sType = $("input[name='sType']:checked").val();
 	}
 	$.post("<%=Config.adminurl%>/admintools/redisdo",{key:key,sType:sType},function(d){
+		if(d==""){
+			$("#Content").html("");
+			return;
+		}
 		var arr=new Array();
 		if(sType==1)
 			{

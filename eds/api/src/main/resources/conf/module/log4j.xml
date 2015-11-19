@@ -51,6 +51,17 @@
 			<param name="LevelMin" value="INFO" />
 		</filter>
 	</appender>
+		<appender name="taobaoopenapiAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="File" value="c:/log/taobaoopenapi/taobaoopenapi.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+		</filter>
+	</appender>
 <!-- 	<appender name="dbAppender" class="com.edaisong.api.common.JDBCPoolAppender"> -->
 <!--         <param name="sql" value="INSERT INTO ActionLog (AppServer, UserID, UserName, SourceSys,ClientFrom, -->
 <!-- 						        MethodName,ExecuteTime,Param,StackTrace, -->
@@ -73,6 +84,10 @@
 		<level value="INFO" />
 		<appender-ref ref="apiHttpAppender" />
 <!-- 		<appender-ref ref="dbAppender" /> -->
+	</category>
+		<category name="taobaoopenapiLogger" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="taobaoopenapiAppender" />
 	</category>
 	<!-- 下面是打印mybatis语句的配置 -->
 	<logger name="com.ibatis" additivity="true">

@@ -48,28 +48,6 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 	 * @throws Fault
 	 */
 	public void handleMessage(Message message) throws Fault {
-		// for (String iterable_element : message.keySet()) {
-		// System.out.println("message------" + iterable_element + ":"+
-		// message.get(iterable_element));
-		// }
-		// Exchange exchange = message.getExchange();
-		// for (String iterable_element : exchange.keySet()) {
-		// System.out.println("exchange------" + iterable_element + ":"+
-		// exchange.get(iterable_element));
-		// }
-		// Message inputmsgMessage = message.getExchange().getInMessage();
-		// for (String iterable_element : inputmsgMessage.keySet()) {
-		// System.out.println("InMessage------" + iterable_element + ":"+
-		// inputmsgMessage.get(iterable_element));
-		// }
-		// HttpServletResponse reponse = (HttpServletResponse)
-		// message.get(AbstractHTTPDestination.HTTP_RESPONSE);//这句可以获取到request
-		// final ByteArrayOutputStream os =
-		// message.getContent(ByteArrayOutputStream.class);
-		// String result = "";
-		//
-		// HttpResultModel<String> error =
-		// JsonUtil.str2obj(result,HttpResultModel.class);
 		try {
 			Exchange exchange = message.getExchange();
 			Message inMessage = exchange.getInMessage();
@@ -142,7 +120,7 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			logEngity.setUserName("");
 			logEngity.setRequestType(0);
 			logEngity.setClientIp(clientIp);
-			logEngity.setSourceSys("apihttp");
+			logEngity.setSourceSys("taobaoopenapi");
 			logEngity.setRequestUrl(url);
 			logEngity.setParam(param);
 			logEngity.setDecryptMsg(decryptMsg);

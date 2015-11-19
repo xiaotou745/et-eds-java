@@ -503,19 +503,35 @@
   	<!--  骑士端获取店内任务  获取当前骑士的所有含有未接单订单的 雇主信息    add by caoheyang 20151102-->
 	<select id="getInStoreTaskStroes" resultType="com.edaisong.entity.domain.InStoreTask"
 		parameterType="com.edaisong.entity.req.InStoreTaskReq">
- declare @cliernterPoint geography ;
+<!--  declare @cliernterPoint geography ; -->
+<!-- select @cliernterPoint=geography::Point(#{latitude},#{longitude},4326) ; -->
+<!-- select  b.id as BusinessId,   -->
+<!-- b.name as BusinessName,b.address as BusinessAddress -->
+<!-- ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(@cliernterPoint),0) as DistanceToBusiness, -->
+<!-- WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,b.City businessCityName  -->
+<!-- from    BusinessClienterRelation a (nolock) -->
+<!-- join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER}  -->
+<!-- join (select ISNULL(SUM(WaitingCount),0) as  WaitingCounts,BusinessId from OrderRegion (nolock) where Status=1 group by BusinessId ) c on a.BusinessId=c.BusinessId -->
+<!-- where a.IsEnable = 1 -->
+<!-- and a.IsBind = 1 -->
+<!-- and a.AuditStatus=1 -->
+<!-- order by c.WaitingCounts desc   -->
+
+declare @cliernterPoint geography ;
 select @cliernterPoint=geography::Point(#{latitude},#{longitude},4326) ;
-select  b.id as BusinessId,  
-b.name as BusinessName,b.address as BusinessAddress
+select  b.Id as BusinessId,  
+min(b.Name) as BusinessName,min(b.address) as BusinessAddress
 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(@cliernterPoint),0) as DistanceToBusiness,
-WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,b.City businessCityName 
+count(oc.Id) WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,min(b.City) businessCityName 
 from    BusinessClienterRelation a (nolock)
-join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER} 
-join (select ISNULL(SUM(WaitingCount),0) as  WaitingCounts,BusinessId from OrderRegion (nolock) where Status=1 group by BusinessId ) c on a.BusinessId=c.BusinessId
+join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER}
+join OrderChild oc(nolock) on a.BusinessId=oc.BusinessId and oc.Status=0
+join dbo.[order] o (nolock) on oc.OrderId=o.Id and o.Platform=2 
 where a.IsEnable = 1
 and a.IsBind = 1
 and a.AuditStatus=1
-order by c.WaitingCounts desc  
+group by b.Id,b.Latitude,b.Longitude
+order by count(oc.Id) desc  
 	</select>
 	<!-- 骑士绑定商户 建立关系 wangchao-->
 	<insert id="bindClienterBusiness" parameterType="com.edaisong.entity.domain.BindClienterBusiness">

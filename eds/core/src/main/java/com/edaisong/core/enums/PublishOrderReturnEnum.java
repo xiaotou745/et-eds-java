@@ -77,7 +77,7 @@ public enum PublishOrderReturnEnum {
 	/**
 	 * 发布度单不能超过50个
 	 */
-	PushOrderCountErr(-15, "发布度单不能超过50个");
+	PushOrderCountErr(-15, "发布订单不能超过50个");
 	
 
 	private int value = 0;
