@@ -87,6 +87,11 @@ public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
     	return getReadOnlySqlSessionUtil().selectList(
 				"com.edaisong.api.dao.inter.IOrderRegionDao.getInStoreOrderRegions", para);
     }
+
+	@Override
+	public int updateAllHasChild() {
+		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderRegionDao.updateAllHasChild");
+	}
     
 
 

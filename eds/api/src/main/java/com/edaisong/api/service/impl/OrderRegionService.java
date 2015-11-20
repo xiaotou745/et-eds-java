@@ -13,6 +13,7 @@ import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderRegionLogDao;
 import com.edaisong.api.service.inter.IOrderRegionService; 
 import com.edaisong.core.enums.OrderRegionLogOptType;
+import com.edaisong.core.util.SystemUtils;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderRegionLog;
 import com.edaisong.entity.req.OrderRegionReq;
@@ -67,10 +68,30 @@ public class OrderRegionService implements IOrderRegionService {
 	/*
 	 * 获取商户的区域信息
 	 * wangchao
+	 * update by zhaohl 20151120
 	 */ 
 	@Override
 	public List<OrderRegion> getOrderRegion(OrderRegionReq orderRegionReq) {
-		return orderRegionDao.getOrderRegion(orderRegionReq);
+		List<OrderRegion> oldData = orderRegionDao
+				.getOrderRegion(orderRegionReq);
+		for (OrderRegion orderRegion : oldData) {
+			// 如果一个有效的一级区域haschild=false，但是却有有效的二级区域，则修复数据
+			if (orderRegion.getStatus().equals((byte)1)
+					&& orderRegion.getParentid().equals(0)
+					&& orderRegion.getHaschild() == false) {
+				List<OrderRegion> childList = oldData
+						.stream()
+						.filter(t -> orderRegion.getStatus().equals((byte)1)
+								&& t.getParentid().equals(orderRegion.getId()))
+						.collect(Collectors.toList());
+				if (childList.size() > 0) {
+					orderRegionDao.updateAllHasChild();
+					SystemUtils.sendAlertEmail("business_java项目预警", orderRegionReq.getBusinessId()+"商家区域数据haschild异常");
+					return orderRegionDao.getOrderRegion(orderRegionReq);
+				}
+			}
+		}
+		return oldData;
 	}
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
