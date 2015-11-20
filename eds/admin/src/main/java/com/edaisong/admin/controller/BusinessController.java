@@ -182,38 +182,32 @@ public class BusinessController {
 			subsidyConfig = subsidyConfig.isEmpty() ? "全局补贴：动态时间奖励" : "全局补贴：跨店抢单奖励和动态时间奖励";
 		}
 		// 从常量配置中获取
-
-		String relativePath = PropertyUtils.getProperty("RelativePath");
-		String picHost = PropertyUtils.getProperty("WebApiAddress");
-		String parentRelativePath = PropertyUtils.getProperty("ParentRelativePath");
-		String fileUploadFolderNameBusiness = PropertyUtils.getProperty("FileUploadFolderNameBusiness");
-
+		String defaultPic = PropertyUtils.getProperty("ImageServicePath");
+		String imageBusinessPath = PropertyUtils.getProperty("ImageBusinessServicePath");
 		String originSize = "_0_0";
-		String bigFileName = relativePath + "/nopic.jpg";
-		String bigFileNameb = relativePath + "/nopic.jpg";
-		String checkPicUrl = relativePath + "/nopic.jpg";
-		String businessLicensePic = relativePath + "/nopic.jpg";
+		String bigFileName = defaultPic + "/nopic.jpg";
+		String bigFileNameb = defaultPic + "/nopic.jpg";
+		String checkPicUrl = defaultPic + "/nopic.jpg";
+		String businessLicensePic = defaultPic + "/nopic.jpg";
 		if (detail.getCheckpicurl() != null && !detail.getCheckpicurl().isEmpty()) {
 			int fileLastDot = detail.getCheckpicurl().lastIndexOf('.');
 			String fileHandHouZhui = detail.getCheckpicurl().substring(fileLastDot, detail.getCheckpicurl().length());
-			bigFileName = parentRelativePath + "/" + fileUploadFolderNameBusiness
-					+ detail.getCheckpicurl().substring(0, fileLastDot) + originSize + fileHandHouZhui;
-			checkPicUrl = parentRelativePath + "/" + fileUploadFolderNameBusiness + detail.getCheckpicurl();
+			checkPicUrl = imageBusinessPath + detail.getCheckpicurl();
+			bigFileName = imageBusinessPath + detail.getCheckpicurl().substring(0, fileLastDot) + originSize + fileHandHouZhui;
+
 		}
 		if (detail.getBusinesslicensepic() != null && !detail.getBusinesslicensepic().isEmpty()) {
 			int fileLastDotb = detail.getBusinesslicensepic().lastIndexOf('.');
 			String fileHandHouZhuib = detail.getBusinesslicensepic().substring(fileLastDotb,
 					detail.getBusinesslicensepic().length());
-			bigFileNameb = parentRelativePath + "/" + fileUploadFolderNameBusiness
-					+ detail.getBusinesslicensepic().substring(0, fileLastDotb) + originSize + fileHandHouZhuib;
-			businessLicensePic = parentRelativePath + "/" + fileUploadFolderNameBusiness
-					+ detail.getBusinesslicensepic();
+			businessLicensePic = imageBusinessPath + detail.getBusinesslicensepic();
+			bigFileNameb = imageBusinessPath + detail.getBusinesslicensepic().substring(0, fileLastDotb) + originSize + fileHandHouZhuib;
 		}
-		String finalCheckPicUrl = picHost + checkPicUrl;
-		String finalBigCheckPicUrl = picHost + bigFileName;
+		String finalCheckPicUrl =  checkPicUrl;
+		String finalBigCheckPicUrl = bigFileName;
 
-		String finalBusinessPicUrl = picHost + businessLicensePic;
-		String finalBigBusinessPicUrl = picHost + bigFileNameb;
+		String finalBusinessPicUrl = businessLicensePic;
+		String finalBigBusinessPicUrl = bigFileNameb;
 
 		int accountID = 0;// 如果管理后台的类型是所有权限就传0，否则传管理后台id
 		List<AreaModel> openCityList = iPublicProvinceCityService.getOpenCityListByAccountID(accountID);
