@@ -123,25 +123,29 @@ public class OrderRegionService implements IOrderRegionService {
 		List<Integer>  childIdList=regionList.stream().filter(t ->parentIdList.contains(t.getParentid())).map(t->t.getId()).collect(Collectors.toList());
 		allIdList.removeAll(parentIdList);
 		allIdList.removeAll(childIdList);
-		//在以前的一级区域下新增的二级区域，直接保存
-		List<OrderRegion>  noParentList=regionList.stream().filter(t ->allIdList.contains(t.getId())).collect(Collectors.toList());
-		for (OrderRegion orderRegion : noParentList) {
-			orderRegionDao.insert(orderRegion);
-			addLog(OrderRegionLogOptType.add,orderRegion,null);
-		}
+
 		//如果是在原有的一级区域下新增的二级区域，且原有的一级区域下没有二级区域，
 		//则需要更新这个一级区域的HasChild标记为1
 		if (allIdList.size()>0) {
 			List<Integer> updateList=new ArrayList<>();
-			List<Integer> parentList=regionList.stream().filter(t ->allIdList.contains(t.getId())).map(t->t.getParentid()).distinct().collect(Collectors.toList());
+			List<OrderRegion> tempParent=new ArrayList<OrderRegion>();
+			tempParent.addAll(regionList);
+			tempParent.addAll(oldList);
+			List<Integer> parentList=tempParent.stream().filter(t ->allIdList.contains(t.getId())).map(t->t.getParentid()).distinct().collect(Collectors.toList());
 			for (Integer parId : parentList) {
-				OrderRegion  temp=oldList.stream().filter(t ->t.getId().equals(parId)).findFirst().get();
+				OrderRegion  temp=tempParent.stream().filter(t ->t.getId().equals(parId)).findFirst().get();
 				if (temp!=null&&!temp.getHaschild()) {
 					updateList.add(parId);
 				}
 			}
 			if (updateList.size()>0) {
 				orderRegionDao.updateHasChildByIds(1,updateList);	
+			}
+			//在以前的一级区域下新增的二级区域，直接保存
+			List<OrderRegion>  noParentList=regionList.stream().filter(t ->allIdList.contains(t.getId())).collect(Collectors.toList());
+			for (OrderRegion orderRegion : noParentList) {
+				orderRegionDao.insert(orderRegion);
+				addLog(OrderRegionLogOptType.add,orderRegion,null);
 			}
 		}
 		//本次操作中新增的一级区域和一级区域下的二级区域是通过前端生成的parentid关联的，并不是最终的id

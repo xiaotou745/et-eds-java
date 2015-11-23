@@ -1371,19 +1371,63 @@ public class OrderService implements IOrderService {
 		}
 		return returnList;
 	}
-
+	/**
+	 * 设置RegionOrderDetail的区域名称
+	 * 移除无效的区域信息
+	 * @author hailongzhao
+	 * @date 20151123
+	 * @param regionNames
+	 * @param ListData
+	 */
+	private void setRegionName(Map<Long, String> regionNames,List<RegionOrderDetail> ListData){
+		for (int i = 0; i < ListData.size(); i++) {
+			if (regionNames.containsKey(ListData.get(i).getOrderRegionOneId())) {
+				ListData.get(i).setOneName(regionNames.get(ListData.get(i).getOrderRegionOneId()));
+				if (ListData.get(i).getOrderRegionTwoId()>0) {
+					if (regionNames.containsKey(ListData.get(i).getOrderRegionTwoId())) {
+						ListData.get(i).setTwoName(regionNames.get(ListData.get(i).getOrderRegionTwoId()));
+					}else {
+						ListData.remove(i);
+					}
+				}
+			}else {
+				ListData.remove(i);
+			}
+		}
+	}
+	/**
+	 * 获取今日订单数量详情
+	 * @author hailongzhao
+	 * @date 20151123
+	 */
 	@Override
 	public List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) {
 		List<RegionOrderDetail> result=new ArrayList<>();
+		OrderRegionReq orderRegionReq=new OrderRegionReq();
+		orderRegionReq.setBusinessId(Integer.parseInt(businessId.toString()));
+		orderRegionReq.setStatus(1);
+		List<OrderRegion> regions=orderRegionDao.getOrderRegion(orderRegionReq);
+		Map<Long, String> regionNames=new HashMap<Long, String>();
+		regions.stream().forEach(t->regionNames.put(Long.parseLong(t.getId().toString()), t.getName()));
+		if (regionNames.size()==0) {
+			return result;
+		}
+
 		List<RegionOrderDetail> ingData=orderDao.queryTodayOrderDetailing(businessId);
 		List<RegionOrderDetail> waitData=orderDao.queryTodayOrderDetailWait(businessId);
+		setRegionName(regionNames,ingData);
+		setRegionName(regionNames,waitData);
+		if (ingData.size()==0&&waitData.size()==0) {
+			return result;
+		}
+		
 		//没有二级的一级区域
 		List<RegionOrderDetail> ingDataNoChild=ingData.stream().filter(t->t.getOrderRegionOneId()>0&&
-				t.getOrderRegionTwoId().equals(0)).collect(Collectors.toList());
+				t.getOrderRegionTwoId().equals(0l)).collect(Collectors.toList());
 		List<RegionOrderDetail> waitDataNoChild=waitData.stream().filter(t->t.getOrderRegionOneId()>0&&
-				t.getOrderRegionTwoId().equals(0)).collect(Collectors.toList());
+				t.getOrderRegionTwoId().equals(0l)).collect(Collectors.toList());
 		for (RegionOrderDetail regionOrderDetail : waitDataNoChild) {
-			regionOrderDetail.setLevelType(0);//需要给一级名称复制
+			regionOrderDetail.setLevelType(0);
 		}
 		for (RegionOrderDetail regionOrderDetail : ingDataNoChild) {
 			regionOrderDetail.setLevelType(0);
@@ -1396,7 +1440,7 @@ public class OrderService implements IOrderService {
 		List<RegionOrderDetail> waitDataTwo=waitData.stream().filter(t->t.getOrderRegionOneId()>0&&
 				t.getOrderRegionTwoId()>0).collect(Collectors.toList());
 		for (RegionOrderDetail regionOrderDetail : waitDataTwo) {
-			regionOrderDetail.setLevelType(1);//需要给一级名称复制
+			regionOrderDetail.setLevelType(1);
 		}
 		for (RegionOrderDetail regionOrderDetail : ingDataTwo) {
 			regionOrderDetail.setLevelType(1);
@@ -1417,26 +1461,13 @@ public class OrderService implements IOrderService {
 			temp.setNum(sum);
 			temp.setLevelType(2);
 			temp.setOrderRegionOneId(Long.parseLong(tea[0]));
+			temp.setOneName(regionNames.get(Long.parseLong(tea[0])));
 			temp.setOrderRegionTwoId(0l);
+			temp.setTwoName("");
 			temp.setStatus(Integer.parseInt(tea[1]));
 			result.add(temp);
 		}
-		OrderRegionReq orderRegionReq=new OrderRegionReq();
-		orderRegionReq.setBusinessId(Integer.parseInt(businessId.toString()));
-		orderRegionReq.setStatus(1);
-		List<OrderRegion> regions=orderRegionDao.getOrderRegion(orderRegionReq);
-		Map<Long, String> names=new HashMap<Long, String>();
-		regions.stream().forEach(t->names.put(Long.parseLong(t.getId().toString()), t.getName()));
-		for (RegionOrderDetail detail : result) {
-			if (names.containsKey(detail.getOrderRegionOneId())) {
-				detail.setOneName(names.get(detail.getOrderRegionOneId()));
-			}
-			if (detail.getOrderRegionTwoId()>0) {
-				if (names.containsKey(detail.getOrderRegionTwoId())) {
-					detail.setTwoName(names.get(detail.getOrderRegionTwoId()));
-				}
-			}
-		}
+		
 
 		return result;
 		//return orderDao.queryTodayOrderDetail(businessId);
