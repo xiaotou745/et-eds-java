@@ -1659,7 +1659,7 @@ where   Status = 1
                     WHERE   b1.businessId = #{businessId}
                             AND CONVERT(VARCHAR(10), b1.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
                             AND b1.platform = 2
-                            AND m1.status = 3 --快单默认是取消状态，即待接单
+                            AND m1.status = 0
                     GROUP BY 
                             m1.OrderRegionOneId ,
                 			m1.OrderRegionTwoId   
@@ -1804,7 +1804,7 @@ FROM    OrderRegion a ( NOLOCK )
                     WHERE   b1.businessId = #{businessId}
                             AND CONVERT(VARCHAR(10), b1.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
                             AND b1.platform = 2
-                            AND m1.status = 3 --快单默认是取消状态，即待接单
+                            AND m1.status = 0 
                   ) mb ON ( mb.OrderRegionTwoId = 0
                             AND a.Id = mb.OrderRegionOneId
                           )
@@ -1827,6 +1827,6 @@ GROUP BY a.id ,
             AND ( b.OrderRegionOneId = #{regionId}
                   OR b.OrderRegionTwoId = #{regionId}
                 )
-            AND b.Status IN ( 3, 2, 4 )
+            AND b.Status IN ( 0, 2, 4 )
 	</select>
 </mapper>
