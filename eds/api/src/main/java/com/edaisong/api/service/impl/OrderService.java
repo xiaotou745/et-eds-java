@@ -1447,15 +1447,19 @@ public class OrderService implements IOrderService {
 		}
 		result.addAll(ingDataTwo);
 		result.addAll(waitDataTwo);
+		
 		//有二级的一级区域，需要把二级的数量汇总到一级区域中
-		List<String> ingDataOne=ingDataTwo.stream().map(t->t.getOrderRegionOneId()+"#"+
+		List<RegionOrderDetail> hasChildList=new ArrayList<>();
+		hasChildList.addAll(ingDataTwo);
+		hasChildList.addAll(waitDataTwo);
+		List<String> hasChildOne=hasChildList.stream().map(t->t.getOrderRegionOneId()+"#"+
 				t.getStatus()).collect(Collectors.toList());
 		String[] tea=null;
-		for (String string : ingDataOne) {
+		for (String string : hasChildOne) {
 			tea=string.split("#");
 			Long oneId=Long.parseLong(tea[0]);
 			Integer status=Integer.parseInt(tea[1]);
-			long sum=ingDataTwo.stream().filter(t->t.getOrderRegionOneId().equals(oneId)&&
+			long sum=hasChildList.stream().filter(t->t.getOrderRegionOneId().equals(oneId)&&
 					t.getStatus().equals(status)).mapToLong(m->m.getNum()).sum();
 			RegionOrderDetail temp=new RegionOrderDetail();
 			temp.setNum(sum);
