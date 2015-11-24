@@ -4,8 +4,10 @@ import java.lang.Double;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -155,6 +157,7 @@ public class OrderService implements IOrderService {
 
 	@Autowired
 	private IOrderGrabDao iOrderGrabDao;
+
 
 	/**
 	 * 后台订单列表页面
@@ -1336,14 +1339,19 @@ public class OrderService implements IOrderService {
 		 // 为所有的一级区域中含有子区域的设置二级区域
 		for(InStoreOrderRegionInfo inStoreOrderRegionInfo : temp)
 		{
-			if (inStoreOrderRegionInfo.getHasChild()==1) {
+			if (inStoreOrderRegionInfo.getParentId()==0) {
 				inStoreOrderRegionInfo.setChilds(regionInfos.stream().filter(pre -> pre.getParentId() == inStoreOrderRegionInfo
-								   .getId()).collect(Collectors.toList()));
-				int tempCount=0;
-				for (InStoreOrderRegionInfo inStoreOrderRegionInfo2 : inStoreOrderRegionInfo.getChilds()) {
-					tempCount=inStoreOrderRegionInfo2.getWaitingCount()+tempCount;
+						   .getId()).collect(Collectors.toList()));
+				//有数量 
+				if(inStoreOrderRegionInfo.getWaitingCount()==0){
+					int tempCount=0;
+					for (InStoreOrderRegionInfo inStoreOrderRegionInfo2 : inStoreOrderRegionInfo.getChilds()) {
+//						System.out.println(inStoreOrderRegionInfo2.getWaitingCount());
+						tempCount=inStoreOrderRegionInfo2.getWaitingCount()+tempCount;
+					}
+					inStoreOrderRegionInfo.setWaitingCount(tempCount);
 				}
-				inStoreOrderRegionInfo.setWaitingCount(tempCount);
+				
 			}
 		}
 		List<InStoreTask> returnList=new ArrayList<InStoreTask>(); 
@@ -1363,10 +1371,110 @@ public class OrderService implements IOrderService {
 		}
 		return returnList;
 	}
-
+	/**
+	 * 设置RegionOrderDetail的区域名称
+	 * 移除无效的区域信息
+	 * @author hailongzhao
+	 * @date 20151123
+	 * @param regionNames
+	 * @param ListData
+	 */
+	private void setRegionName(Map<Long, String> regionNames,List<RegionOrderDetail> ListData){
+		for (int i = 0; i < ListData.size(); i++) {
+			if (regionNames.containsKey(ListData.get(i).getOrderRegionOneId())) {
+				ListData.get(i).setOneName(regionNames.get(ListData.get(i).getOrderRegionOneId()));
+				if (ListData.get(i).getOrderRegionTwoId()>0) {
+					if (regionNames.containsKey(ListData.get(i).getOrderRegionTwoId())) {
+						ListData.get(i).setTwoName(regionNames.get(ListData.get(i).getOrderRegionTwoId()));
+					}else {
+						ListData.remove(i);
+					}
+				}
+			}else {
+				ListData.remove(i);
+			}
+		}
+	}
+	/**
+	 * 获取今日订单数量详情
+	 * @author hailongzhao
+	 * @date 20151123
+	 */
 	@Override
 	public List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) {
-		return orderDao.queryTodayOrderDetail(businessId);
+		List<RegionOrderDetail> result=new ArrayList<>();
+		OrderRegionReq orderRegionReq=new OrderRegionReq();
+		orderRegionReq.setBusinessId(Integer.parseInt(businessId.toString()));
+		orderRegionReq.setStatus(1);
+		List<OrderRegion> regions=orderRegionDao.getOrderRegion(orderRegionReq);
+		Map<Long, String> regionNames=new HashMap<Long, String>();
+		regions.stream().forEach(t->regionNames.put(Long.parseLong(t.getId().toString()), t.getName()));
+		if (regionNames.size()==0) {
+			return result;
+		}
+
+		List<RegionOrderDetail> ingData=orderDao.queryTodayOrderDetailing(businessId);
+		List<RegionOrderDetail> waitData=orderDao.queryTodayOrderDetailWait(businessId);
+		setRegionName(regionNames,ingData);
+		setRegionName(regionNames,waitData);
+		if (ingData.size()==0&&waitData.size()==0) {
+			return result;
+		}
+		
+		//没有二级的一级区域
+		List<RegionOrderDetail> ingDataNoChild=ingData.stream().filter(t->t.getOrderRegionOneId()>0&&
+				t.getOrderRegionTwoId().equals(0l)).collect(Collectors.toList());
+		List<RegionOrderDetail> waitDataNoChild=waitData.stream().filter(t->t.getOrderRegionOneId()>0&&
+				t.getOrderRegionTwoId().equals(0l)).collect(Collectors.toList());
+		for (RegionOrderDetail regionOrderDetail : waitDataNoChild) {
+			regionOrderDetail.setLevelType(0);
+		}
+		for (RegionOrderDetail regionOrderDetail : ingDataNoChild) {
+			regionOrderDetail.setLevelType(0);
+		}
+		result.addAll(ingDataNoChild);
+		result.addAll(waitDataNoChild);
+		//二级区域
+		List<RegionOrderDetail> ingDataTwo=ingData.stream().filter(t->t.getOrderRegionOneId()>0&&
+				t.getOrderRegionTwoId()>0).collect(Collectors.toList());
+		List<RegionOrderDetail> waitDataTwo=waitData.stream().filter(t->t.getOrderRegionOneId()>0&&
+				t.getOrderRegionTwoId()>0).collect(Collectors.toList());
+		for (RegionOrderDetail regionOrderDetail : waitDataTwo) {
+			regionOrderDetail.setLevelType(1);
+		}
+		for (RegionOrderDetail regionOrderDetail : ingDataTwo) {
+			regionOrderDetail.setLevelType(1);
+		}
+		result.addAll(ingDataTwo);
+		result.addAll(waitDataTwo);
+		
+		//有二级的一级区域，需要把二级的数量汇总到一级区域中
+		List<RegionOrderDetail> hasChildList=new ArrayList<>();
+		hasChildList.addAll(ingDataTwo);
+		hasChildList.addAll(waitDataTwo);
+		List<String> hasChildOne=hasChildList.stream().map(t->t.getOrderRegionOneId()+"#"+
+				t.getStatus()).collect(Collectors.toList());
+		String[] tea=null;
+		for (String string : hasChildOne) {
+			tea=string.split("#");
+			Long oneId=Long.parseLong(tea[0]);
+			Integer status=Integer.parseInt(tea[1]);
+			long sum=hasChildList.stream().filter(t->t.getOrderRegionOneId().equals(oneId)&&
+					t.getStatus().equals(status)).mapToLong(m->m.getNum()).sum();
+			RegionOrderDetail temp=new RegionOrderDetail();
+			temp.setNum(sum);
+			temp.setLevelType(2);
+			temp.setOrderRegionOneId(Long.parseLong(tea[0]));
+			temp.setOneName(regionNames.get(Long.parseLong(tea[0])));
+			temp.setOrderRegionTwoId(0l);
+			temp.setTwoName("");
+			temp.setStatus(Integer.parseInt(tea[1]));
+			result.add(temp);
+		}
+		
+
+		return result;
+		//return orderDao.queryTodayOrderDetail(businessId);
 	}
 
 	@Override

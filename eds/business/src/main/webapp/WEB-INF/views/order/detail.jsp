@@ -7,6 +7,7 @@
 <%@page import="com.edaisong.core.enums.OrderStatus"%>
 <%@page import="com.edaisong.core.enums.PayStatus"%>
 <%@page import="com.edaisong.core.enums.PayType"%>
+<%@page import="com.edaisong.core.enums.OrderFrom"%>
 <%@page import="com.edaisong.core.enums.OrderIsPay"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.business.url");
@@ -35,8 +36,7 @@
 	    	<h5>
 		<%} %>
 			订单来源：
-			<%=ParseHelper.ShowString(modelDatas.getOrderModel()
-					.getGroupName())%></h5>
+			<%=OrderFrom.getEnum(modelDatas.getOrderModel().getOrderFrom()).desc()%></h5>
 		<h5 >
 			备注：<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getRemark())%></h5>

@@ -13,6 +13,7 @@ import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderRegionLogDao;
 import com.edaisong.api.service.inter.IOrderRegionService; 
 import com.edaisong.core.enums.OrderRegionLogOptType;
+import com.edaisong.core.util.SystemUtils;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderRegionLog;
 import com.edaisong.entity.req.OrderRegionReq;
@@ -67,10 +68,30 @@ public class OrderRegionService implements IOrderRegionService {
 	/*
 	 * 获取商户的区域信息
 	 * wangchao
+	 * update by zhaohl 20151120
 	 */ 
 	@Override
 	public List<OrderRegion> getOrderRegion(OrderRegionReq orderRegionReq) {
-		return orderRegionDao.getOrderRegion(orderRegionReq);
+		List<OrderRegion> oldData = orderRegionDao
+				.getOrderRegion(orderRegionReq);
+		for (OrderRegion orderRegion : oldData) {
+			// 如果一个有效的一级区域haschild=false，但是却有有效的二级区域，则修复数据
+			if (orderRegion.getStatus().equals((byte)1)
+					&& orderRegion.getParentid().equals(0)
+					&& orderRegion.getHaschild() == false) {
+				List<OrderRegion> childList = oldData
+						.stream()
+						.filter(t -> orderRegion.getStatus().equals((byte)1)
+								&& t.getParentid().equals(orderRegion.getId()))
+						.collect(Collectors.toList());
+				if (childList.size() > 0) {
+					orderRegionDao.updateAllHasChild();
+					SystemUtils.sendAlertEmail("business_java项目预警", orderRegionReq.getBusinessId()+"商家区域数据haschild异常");
+					return orderRegionDao.getOrderRegion(orderRegionReq);
+				}
+			}
+		}
+		return oldData;
 	}
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
@@ -102,25 +123,29 @@ public class OrderRegionService implements IOrderRegionService {
 		List<Integer>  childIdList=regionList.stream().filter(t ->parentIdList.contains(t.getParentid())).map(t->t.getId()).collect(Collectors.toList());
 		allIdList.removeAll(parentIdList);
 		allIdList.removeAll(childIdList);
-		//在以前的一级区域下新增的二级区域，直接保存
-		List<OrderRegion>  noParentList=regionList.stream().filter(t ->allIdList.contains(t.getId())).collect(Collectors.toList());
-		for (OrderRegion orderRegion : noParentList) {
-			orderRegionDao.insert(orderRegion);
-			addLog(OrderRegionLogOptType.add,orderRegion,null);
-		}
+
 		//如果是在原有的一级区域下新增的二级区域，且原有的一级区域下没有二级区域，
 		//则需要更新这个一级区域的HasChild标记为1
 		if (allIdList.size()>0) {
 			List<Integer> updateList=new ArrayList<>();
-			List<Integer> parentList=regionList.stream().filter(t ->allIdList.contains(t.getId())).map(t->t.getParentid()).distinct().collect(Collectors.toList());
+			List<OrderRegion> tempParent=new ArrayList<OrderRegion>();
+			tempParent.addAll(regionList);
+			tempParent.addAll(oldList);
+			List<Integer> parentList=tempParent.stream().filter(t ->allIdList.contains(t.getId())).map(t->t.getParentid()).distinct().collect(Collectors.toList());
 			for (Integer parId : parentList) {
-				OrderRegion  temp=oldList.stream().filter(t ->t.getId().equals(parId)).findFirst().get();
+				OrderRegion  temp=tempParent.stream().filter(t ->t.getId().equals(parId)).findFirst().get();
 				if (temp!=null&&!temp.getHaschild()) {
 					updateList.add(parId);
 				}
 			}
 			if (updateList.size()>0) {
 				orderRegionDao.updateHasChildByIds(1,updateList);	
+			}
+			//在以前的一级区域下新增的二级区域，直接保存
+			List<OrderRegion>  noParentList=regionList.stream().filter(t ->allIdList.contains(t.getId())).collect(Collectors.toList());
+			for (OrderRegion orderRegion : noParentList) {
+				orderRegionDao.insert(orderRegion);
+				addLog(OrderRegionLogOptType.add,orderRegion,null);
 			}
 		}
 		//本次操作中新增的一级区域和一级区域下的二级区域是通过前端生成的parentid关联的，并不是最终的id
