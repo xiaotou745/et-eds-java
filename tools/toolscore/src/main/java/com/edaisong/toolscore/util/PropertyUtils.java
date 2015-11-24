@@ -16,6 +16,7 @@ import org.springframework.core.io.support.PropertiesLoaderSupport;
 
 /**
  * 读取配置文件的帮助类
+ * 
  * @author hailongzhao
  * @date 20150827
  */
@@ -25,11 +26,10 @@ public class PropertyUtils {
 		InputStream inputStream = null;
 		try {
 			List<String> res = getEnvSet();
-			//从当前类目录中读配置文件
+			// 从当前类目录中读配置文件
 			if (res.get(0) == "0") {
-				inputStream = PropertyUtils.class.getClassLoader()
-						.getResourceAsStream(res.get(1));
-			} else {//从绝对路径中读取配置文件
+				inputStream = PropertyUtils.class.getClassLoader().getResourceAsStream(res.get(1));
+			} else {// 从绝对路径中读取配置文件
 				inputStream = new FileInputStream(res.get(1));
 			}
 
@@ -52,15 +52,13 @@ public class PropertyUtils {
 	 * @throws IllegalArgumentException
 	 * @throws IOException
 	 */
-	private static List<String> getEnvSet() throws NoSuchFieldException,
-			SecurityException, IllegalArgumentException,
+	private static List<String> getEnvSet() throws NoSuchFieldException, SecurityException, IllegalArgumentException,
 			IllegalAccessException, IOException {
 		List<String> res = new ArrayList<String>();
 
 		PropertiesLoaderSupport property = (PropertiesLoaderSupport) SpringBeanHelper
 				.getCustomBeanByType(PropertyPlaceholderConfigurer.class);
-		Field field = PropertiesLoaderSupport.class
-				.getDeclaredField("locations");
+		Field field = PropertiesLoaderSupport.class.getDeclaredField("locations");
 		field.setAccessible(true);
 		Resource[] locations = (Resource[]) field.get(property);
 		if (locations[0] instanceof ClassPathResource) {

@@ -1,8 +1,5 @@
 package com.edaisong.toolsadmin.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;

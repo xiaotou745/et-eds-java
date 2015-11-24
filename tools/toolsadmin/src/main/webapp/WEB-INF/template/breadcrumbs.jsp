@@ -1,9 +1,8 @@
 <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="utf-8"%>
-		<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
-	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
+	String basePath = PropertyUtils.getProperty("java.toolsadmin.url");
 %>
 <div class="row wrapper border-bottom white-bg page-heading">
 	<div class="col-lg-10">

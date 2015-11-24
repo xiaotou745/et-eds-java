@@ -17,8 +17,6 @@
 
 <link rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css" />
 <link rel="stylesheet" href="<%=basePath%>/font-awesome/css/font-awesome.min.css" />
-<%-- <link rel="stylesheet" href="<%=basePath%>/css/plugins/toastr/toastr.min.css" /> --%>
-<%-- <link rel="stylesheet" href="<%=basePath%>/js/plugins/gritter/jquery.gritter.css" /> --%>
 <link rel="stylesheet" href="<%=basePath%>/css/animate.css" />
 <link rel="stylesheet" href="<%=basePath%>/css/style.css" />
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
@@ -36,49 +34,15 @@
 <script src="<%=basePath%>/js/jquery.uploadify-v2.1.0/swfobject.js"></script> 
 <script src="<%=basePath%>/js/jquery.uploadify-v2.1.0/jquery.uploadify.v2.1.0.min.js"></script> 
 
-<!-- Flot -->
-<%-- <script src="<%=basePath%>/js/plugins/flot/jquery.flot.js"></script>
-<script src="<%=basePath%>/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-<script src="<%=basePath%>/js/plugins/flot/jquery.flot.spline.js"></script>
-<script src="<%=basePath%>/js/plugins/flot/jquery.flot.resize.js"></script>
-<script src="<%=basePath%>/js/plugins/flot/jquery.flot.pie.js"></script> --%>
-
-<!-- Peity -->
-<%-- <script src="<%=basePath%>/js/plugins/peity/jquery.peity.min.js"></script>
-<script src="<%=basePath%>/js/demo/peity-demo.js"></script> --%>
-
 <!-- Custom and plugin javascript -->
 <script src="<%=basePath%>/js/inspinia.js"></script>
-<%-- <script src="<%=basePath%>/js/plugins/pace/pace.min.js"></script> --%>
 
 <!-- jQuery UI -->
 <script src="<%=basePath%>/js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
-<!-- GITTER -->
-<%-- <script src="<%=basePath%>/js/plugins/gritter/jquery.gritter.min.js"></script> --%>
-
-<!-- Sparkline -->
-<%-- <script src="<%=basePath%>/js/plugins/sparkline/jquery.sparkline.min.js"></script> --%>
-
-<!-- Sparkline demo data  -->
-<%-- <script src="<%=basePath%>/js/demo/sparkline-demo.js"></script> --%>
-
-<!-- ChartJS-->
-<%-- <script src="<%=basePath%>/js/plugins/chartJs/Chart.min.js"></script> --%>
-
-<!-- Toastr -->
-<%-- <script src="<%=basePath%>/js/plugins/toastr/toastr.min.js"></script> --%>
-
-
 <!-- 第三方弹窗js -->
 <script src="<%=basePath%>/js/layer.js"></script>
 
-<!-- 分页相关js -->
-<%--     <script type="text/javascript" src="<%=basePath%>/js/admin.js"></script> --%>
-<%-- <script src="<%=basePath%>/js/plugins/jeditable/jquery.jeditable.js"></script>  --%>
-<%-- <script src="<%=basePath%>/js/plugins/dataTables/jquery.dataTables.js"></script> --%>
-<%-- <script src="<%=basePath%>/js/plugins/dataTables/dataTables.bootstrap.js"></script> --%>
-<%-- <script src="<%=basePath%>/js/hplus.js"></script> --%>
 <script>
     $(document).ajaxError( function(event, jqXHR, options, errorMsg){
    	 var content="内部服务器错误";
