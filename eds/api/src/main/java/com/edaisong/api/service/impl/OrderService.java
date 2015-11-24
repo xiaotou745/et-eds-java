@@ -1999,5 +1999,17 @@ public class OrderService implements IOrderService {
 		return res;
 	}
 
-
+	/**
+	 * 后台E单订单列表页面
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public PagedResponse<OrderListModel> getShanSongOrders(PagedOrderSearchReq search){
+		return orderDao.getOrders(search);
+	}
 }

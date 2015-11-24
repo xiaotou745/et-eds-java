@@ -301,4 +301,15 @@ public interface IOrderService {
 	HttpResultModel<List<QueryOrder>> getCompliteOrderGrab(QueryOrderReq query,int type);
 	
 	
+	/**
+	 * 后台E单订单列表页面
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	PagedResponse<OrderListModel> getShanSongOrders(PagedOrderSearchReq search);
+	
 }

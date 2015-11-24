@@ -227,4 +227,38 @@ public class OrderController {
 		ResponseBase responseBase= orderService.cancelOrder(cancelorder);
 		return responseBase;
 	}
+	
+	
+	
+	/**
+	 * 订单列表页面 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @return
+	 */
+	@RequestMapping("shansonglist")
+	public ModelAndView shansonglist(){
+		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityByJiBie(3);
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "订单管理");
+		model.addObject("currenttitle", "E单列表");
+		model.addObject("areaListData", areaListData);   //下拉城市
+		model.addObject("viewPath", "order/shansonglist");
+		return model;
+	}
+
+	/**
+	 * 订单列表页面 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @return
+	 */
+	@RequestMapping("shansonglistdo")
+	public ModelAndView shansonglistdo(PagedOrderSearchReq searchWebReq){
+		PagedResponse<OrderListModel> resp = orderService.getOrders(searchWebReq);
+		ModelAndView view = new ModelAndView();
+		view.addObject("viewPath", "order/shansonglistdo");
+		view.addObject("listData", resp);
+		return view;
+	}
 }
