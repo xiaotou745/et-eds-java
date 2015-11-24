@@ -282,14 +282,6 @@ public interface IOrderDao {
 	List<RegionOrderDetail> queryTodayOrderDetailWait(Long businessId) ;
 
 	/**
-	 * 获取商家的今日订单的区域统计详细数据
-	 * @date 20151030
-	 * @author hailongzhao
-	 * @param businessId
-	 * @return
-	 */
-	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) ;
-	/**
 	 * 获取指定区域下今日未完成的订单数量
 	 * @date 20151030
 	 * @author hailongzhao

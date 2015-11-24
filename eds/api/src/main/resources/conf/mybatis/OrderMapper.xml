@@ -1593,6 +1593,7 @@ where   Status = 1
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
+		<!--商家端新模式下的处理中的今日订单 addby zhaohailong 20151124 -->
 	<select id="queryTodayOrderDetailing" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderDetail">
                SELECT   b.OrderRegionOneId ,
                 		b.OrderRegionOneName AS OneName ,
@@ -1645,6 +1646,7 @@ where   Status = 1
                         b.OrderRegionTwoId ,
                         b.OrderRegionTwoName
 	</select>
+		<!--商家端新模式下的待接单的今日订单 addby zhaohailong 20151124 -->
 	<select id="queryTodayOrderDetailWait" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderDetail">
 
 				--待接单
@@ -1663,120 +1665,6 @@ where   Status = 1
                     GROUP BY 
                             m1.OrderRegionOneId ,
                 			m1.OrderRegionTwoId   
-	</select>
-	<!--商家端新模式下的今日订单 addby zhaohailong 20151030 -->
-	<select id="queryTodayOrderDetail" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderDetail">
-	     WITH    onedetailregion
-          AS (
-				--没有二级区域的一级区域的今日订单统计
-               SELECT   b.OrderRegionOneId ,
-                		b.OrderRegionOneName AS OneName ,
-                        0 AS OrderRegionTwoId ,
-                        '' AS TwoName ,
-                        b.Status ,
-                        COUNT(0) AS Num,
-                        0 AS LevelType
-               FROM     dbo.[order] a ( NOLOCK )
-                		JOIN OrderGrabChild m ( NOLOCK ) ON a.id = m.OrderId
-                        join OrderGrab b (nolock) ON b.Id = m.GrabOrderId
-               WHERE    a.businessId=#{businessId}
-                        AND b.OrderRegionOneId > 0
-                        AND b.OrderRegionTwoId = 0
-                        AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-                        and b.status in (1,2,4)
-               GROUP BY b.OrderRegionOneId ,
-                        b.OrderRegionOneName ,
-                        b.Status
-              UNION ALL
-                    SELECT  m1.OrderRegionOneId ,
-                		k1.Name AS OneName ,
-                        0 AS OrderRegionTwoId ,
-                        '' AS TwoName ,
-                        0 ,
-                        COUNT(0) AS Num,
-                        0 AS LevelType
-                    FROM    [order] b1 ( NOLOCK )
-                            JOIN orderchild m1 ( NOLOCK ) ON b1.id = m1.orderid
-                            join orderregion k1 (nolock) on m1.OrderRegionOneId=k1.id
-                    WHERE   b1.businessId = #{businessId}
-                    		and k1.businessId = #{businessId}
-                    		AND m1.OrderRegionOneId > 0
-                        	AND m1.OrderRegionTwoId = 0
-                            AND CONVERT(VARCHAR(10), b1.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-                            AND b1.platform = 2
-                            AND b1.status = 0
-                    GROUP BY 
-                            m1.OrderRegionOneId ,
-                			k1.Name 
-             ),
-
-        twodetailregion
-          AS ( 
-                --二级区域的今日订单统计
-          SELECT   		b.OrderRegionOneId ,
-                        b.OrderRegionOneName AS OneName ,
-                        b.OrderRegionTwoId ,
-                        b.OrderRegionTwoName AS TwoName,
-                        b.Status ,
-                        COUNT(0) AS Num,
-                         1 AS LevelType
-               FROM     dbo.[order] a ( NOLOCK )
-                        JOIN OrderGrabChild m ( NOLOCK ) ON a.id = m.OrderId
-                        join OrderGrab b (nolock) ON b.Id = m.GrabOrderId
-               WHERE     a.businessId=#{businessId}
-                        AND b.OrderRegionOneId > 0
-                        AND b.OrderRegionTwoId > 0
-                        AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-                        and b.status in (1,2,4)
-               GROUP BY b.OrderRegionOneId ,
-                        b.OrderRegionOneName,
-                        b.OrderRegionTwoId ,
-                        b.OrderRegionTwoName,
-                        b.Status
-              UNION ALL
-                    SELECT  m1.OrderRegionOneId ,
-                       '' AS OneName ,
-                        m1.OrderRegionTwoId ,
-                        k1.Name AS TwoName,
-                        0 as Status ,
-                        COUNT(0) AS Num,
-                         1 AS LevelType
-                    FROM    [order] b1 ( NOLOCK )
-                            JOIN orderchild m1 ( NOLOCK ) ON b1.id = m1.orderid
-                            join orderregion k1 (nolock) on m1.OrderRegionTwoId=k1.id
-                    WHERE   b1.businessId = #{businessId}
-                    		and k1.businessId = #{businessId}
-                    		AND m1.OrderRegionOneId > 0
-                        	AND m1.OrderRegionTwoId > 0
-                            AND CONVERT(VARCHAR(10), b1.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
-                            AND b1.platform = 2
-                            AND b1.status = 0
-                    GROUP BY 
-                            m1.OrderRegionOneId ,
-                            m1.OrderRegionTwoId,
-                			k1.Name 
-             ),
-        onetotal
-          AS ( 
-                  --有二级区域的一级区域的汇总
-         SELECT    m.OrderRegionOneId ,
-                    c.name AS OneName ,
-                    0 AS OrderRegionTwoId ,
-                    '' AS TwoName ,
-                    m.Status ,
-                    SUM(m.num) AS Num ,
-                    2 AS LevelType
-          FROM      twodetailregion m
-                    JOIN OrderRegion c ( NOLOCK ) ON m.OrderRegionOneId = c.id and c.parentId=0
-          GROUP BY  m.OrderRegionOneId ,
-                    c.Name ,
-                    m.Status
-             )
-	    SELECT  * FROM    onedetailregion
-	    UNION ALL
-	    SELECT  * FROM    twodetailregion
-	    UNION ALL
-	    SELECT  * FROM    onetotal         
 	</select>
 	<!--商家端新模式下的今日订单 addby zhaohailong 20151030 -->
 	<select id="queryTodayOrderTotal" parameterType="java.lang.Long"   resultType="com.edaisong.entity.domain.RegionOrderTotal">
