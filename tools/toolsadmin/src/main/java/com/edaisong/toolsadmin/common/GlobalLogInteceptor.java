@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.edaisong.toolsapi.common.AjaxNotLoginRunTimeException;
 import com.edaisong.toolsapi.common.LogServiceBLL;
 import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.ParseHelper;
@@ -68,7 +69,7 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 				Object objMsg = request.getAttribute("exception");
 				exceptionMsg = (objMsg == null ? "" : objMsg.toString());
 				stackTrace = obj.toString();
-			} else if (ex != null) {
+			} else if (ex != null&&!(ex instanceof AjaxNotLoginRunTimeException)) {
 				exceptionMsg = ex.getMessage() == null ? "" : ex.getMessage();
 				stackTrace = StringUtils.getStackTrace(ex);
 			}
