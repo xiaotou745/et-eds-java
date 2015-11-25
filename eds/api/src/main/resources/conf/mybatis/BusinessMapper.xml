@@ -716,5 +716,13 @@ where   phoneNo= #{phone}  and GroupId=0
 		Remark)
 		where Id = #{businessId,jdbcType=BIGINT}
 	</update>
-	
+	<!-- 商户注册 闪送 wangchao-->
+	<insert id="register" parameterType="com.edaisong.entity.req.BusinessRegisterReq" useGeneratedKeys="true" keyProperty="id">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			select @@IDENTITY as id
+		</selectKey>
+		 insert into dbo.business (City,PhoneNo,Password,Timespan,Appkey)
+values( '',#{phoneNo,jdbcType=NVARCHAR},#{passWord,jdbcType=NVARCHAR},#{timespan,jdbcType=NVARCHAR},#{appkey,jdbcType=NVARCHAR});
+	</insert> 
 </mapper>
