@@ -19,6 +19,7 @@ import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
+import com.edaisong.entity.domain.ShanSongOrderListModel;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
@@ -306,5 +307,16 @@ public interface IOrderDao {
 			OrderStatisticsBReq orderStatisticsBReq);
 
 	List<QueryOrder> queryOrderGrab(QueryOrderReq query);
+	
+	/**
+	 * 后台E单订单列表页面
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	PagedResponse<ShanSongOrderListModel> getShanSongOrders(PagedOrderSearchReq search);
 	
 }
