@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.ITaskDistributionConfigDao" >
+ <resultMap id="BaseResultMap" type="com.edaisong.entity.TaskDistributionConfig" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="KM" property="kM" jdbcType="INTEGER" />
+    <result column="KG" property="kG" jdbcType="INTEGER" />
+    <result column="DistributionPrice" property="distributionPrice" jdbcType="DOUBLE" />
+    <result column="IsMaster" property="isMaster" jdbcType="INTEGER" />
+  </resultMap>
+ <select id="query" resultMap="BaseResultMap">
+  SELECT Id,KM,KG,DistributionPrice,IsMaster FROM TaskDistributionConfig(nolock)
+  </select>
+  
+  <update id="update" parameterType="com.edaisong.entity.TaskDistributionConfig">
+  	update dbo.TaskDistributionConfig set KM= #{kM,jdbcType=INTEGER},KG=#{kG,jdbcType=INTEGER},DistributionPrice= #{distributionPrice,jdbcType=DOUBLE} where Id=#{id,jdbcType=INTEGER}
+  </update>
+</mapper>
