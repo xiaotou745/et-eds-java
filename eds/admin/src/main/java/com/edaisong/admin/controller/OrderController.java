@@ -29,8 +29,10 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.ExportShanSongOrder;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.ShanSongOrderListModel;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
@@ -226,5 +228,82 @@ public class OrderController {
 		cancelorder.setOptUserName(UserContext.getCurrentContext(request).getLoginName());
 		ResponseBase responseBase= orderService.cancelOrder(cancelorder);
 		return responseBase;
+	}
+	
+	
+	
+	/**
+	 * 订单列表页面 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @return
+	 */
+	@RequestMapping("shansonglist")
+	public ModelAndView shansonglist(){
+		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityByJiBie(3);
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "订单管理");
+		model.addObject("currenttitle", "E单列表");
+		model.addObject("areaListData", areaListData);   //下拉城市
+		model.addObject("viewPath", "order/shansonglist");
+		return model;
+	}
+
+	/**
+	 * 订单列表页面 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @return
+	 */
+	@RequestMapping("shansonglistdo")
+	public ModelAndView shansonglistdo(PagedOrderSearchReq searchWebReq){
+		PagedResponse<ShanSongOrderListModel> resp = orderService.getShanSongOrders(searchWebReq);
+		ModelAndView view = new ModelAndView();
+		view.addObject("viewPath", "order/shansonglistdo");
+		view.addObject("listData", resp);
+		return view;
+	}
+	/**
+	 * E单列表导出数据
+	 * @author CaoHeYang
+	 * @date 20150906
+	 * @param superManPhone 骑士电话
+	 * @param superManName  骑士姓名
+	 * @param businessPhone  商户电话
+	 * @param businessName 商户姓名
+	 * @param orderStatus 订单状态
+	 * @param businessCity 城市
+	 * @param orderPubStart 开始时间
+	 * @param orderPubEnd 结束时间
+	 * @param groupId 集团id
+	 */
+	@RequestMapping(value="exportshansongorder" )
+	public void exportshansongorder(PagedOrderSearchReq searchReq,HttpServletResponse response)throws Exception{
+	   List<ExportShanSongOrder> records=	 orderService.exportShanSongOrder(searchReq) ;
+	   if(records.size() > 0){
+			String fileName = "e代送-%s-E单数据";
+			fileName = String.format(fileName, searchReq.getOrderPubStart()+ "到" + searchReq.getOrderPubEnd());
+			LinkedHashMap<String, String> columnTitiles = new LinkedHashMap<String, String>();
+			columnTitiles.put("订单号", "orderNo");
+			columnTitiles.put("发货账号", "businessPhoneNo");
+			columnTitiles.put("发货人姓名", "pubName");
+			columnTitiles.put("发货人电话", "pubPhoneNo");
+			columnTitiles.put("发货地址", "pickUpAddress");
+			columnTitiles.put("收货人姓名", "receviceName");
+			columnTitiles.put("收货人电话", "recevicePhoneNo");
+			columnTitiles.put("收货人地址", "receviceAddress");
+			columnTitiles.put("重量", "weight");
+			columnTitiles.put("距离", "km");
+			columnTitiles.put("配送费", "amount");
+			columnTitiles.put("订单状态", "status");
+			columnTitiles.put("支付方式", "payType");
+			columnTitiles.put("取货码", "pickupCode");
+			columnTitiles.put("发单时间", "pubDate");
+			ExcelUtils.export2Excel(fileName, "闪送订单记录", columnTitiles,records, request, response);
+			return;
+		}else {
+			String basePath = PropertyUtils.getProperty("java.admin.url");
+			response.sendRedirect(basePath+"/order/shansonglist");
+		}
 	}
 }

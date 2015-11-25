@@ -21,6 +21,7 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.ExportShanSongOrder;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -28,6 +29,7 @@ import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
+import com.edaisong.entity.domain.ShanSongOrderListModel;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderReq;
@@ -443,4 +445,36 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		return result.getResultList();
 	}
 	
+	/**
+	 *  后台E单订单列表页面
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20151125
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public PagedResponse<ShanSongOrderListModel> getShanSongOrders(PagedOrderSearchReq search) {
+		PagedResponse<ShanSongOrderListModel> result = new PagedResponse<ShanSongOrderListModel>();
+		result = getReadOnlySqlSessionUtil().selectPageList(
+				"com.edaisong.api.dao.inter.IOrderDao.getShanSongOrders", search);
+		return result;
+	}
+	
+	/**
+	 * 导出订单
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20151125
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public List<ExportShanSongOrder> exportShanSongOrder(PagedOrderSearchReq search) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderDao.exportShanSongOrder", 
+				search);
+	}
 }

@@ -1717,4 +1717,115 @@ GROUP BY a.id ,
                 )
             AND b.Status IN ( 0, 2, 4 )
 	</select>
+	
+	
+	<!-- 后台E单订单列表页面   查询列集合 add by caoheyang 20151124 -->
+	<sql id="getShanSongOrdersColums">
+		a.* ,
+        c.TrueName ClienterName,
+        c.PhoneNo ClienterPhoneNo,
+        b.PhoneNo BusinessPhoneNo 
+	</sql>
+
+	<!-- 后台E单订单列表页面 查询列集来源 add by caoheyang 20151124 -->
+	<sql id="getShanSongOrdersFrom">
+		( select  Id,OrderNo,PubDate,PickUpAddress,BusinessId,ReceviceAddress,ISNULL(ClienterId, 0) clienterId ,
+                    PickupCode ,[Status] ,0 FormType,Amount,Weight, KM
+          from      dbo.[order] (nolock) where Platform=3
+          union all
+          select 0 Id ,OrderNo , PubDate ,PubAddress as PickUpAddress,BusinessId ,
+                 ReceviceAddress ,0 as clienterId ,TakeCode as PickupCode ,
+                 -1  [Status] ,1 FormType,Amount,Weight,KM
+          from    OrderDraft (nolock)
+        ) a
+        join business b with ( nolock ) on b.Id = a.businessId
+        left join dbo.clienter (nolock) c on a.ClienterId = c.Id
+        left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
+	</sql>
+	<!--  后台E单订单列表页面 动态查询条件 add by caoheyang 20151124 -->
+	<sql id="getShanSongOrdersColumsWhere">
+		1=1
+		<if test="businessPhone != null and businessPhone!='' ">
+			and b.PhoneNo=''${businessPhone}''
+		</if>
+		<if test="orderId != null and orderId!=''">
+			and a.OrderNo=''${orderId}''
+		</if>
+		<if test="orderStatus != null and orderStatus>-1">
+			and a.Status=${orderStatus}
+		</if>
+		<if test="superManName != null and superManName!=''">
+			and c.TrueName=''${superManName}''
+		</if>
+		<if test="superManPhone != null and superManPhone!='' ">
+			and c.PhoneNo=''${superManPhone}''
+		</if>
+		<if test="orderPubStart != null and orderPubStart!=''">
+			and a.PubDate>= ''${orderPubStart} 00:00:00''
+		</if>
+	    <if test="businessCity != null and businessCity !=''">
+			and b.city  = ''${businessCity}''
+		</if>
+		<if test="orderPubEnd != null and orderPubEnd!=''">
+         <![CDATA[ and a.PubDate<=]]>
+			''${orderPubEnd} 23:59:59''
+		</if>
+		<if test="authorityCityNameList != null">
+			and b.city in
+			<foreach item="item" index="index" collection="authorityCityNameList"
+				open="(''" separator="'',''" close="'')">
+				#{item}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- 后台E单订单列表页面 add by caoheyang 20151124 -->
+	<select id="getShanSongOrders" resultType="com.edaisong.entity.domain.ShanSongOrderListModel"
+		parameterType="com.edaisong.entity.req.PagedOrderSearchReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' a.PubDate desc ',
+		'
+		<include refid="getShanSongOrdersColums" />
+		',
+		'
+		<include refid="getShanSongOrdersFrom" />
+		',
+		'
+		<include refid="getShanSongOrdersColumsWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+	
+	<!-- 闪送导出订单 add by caoheyang 20151125 -->
+	  <select id="exportShanSongOrder" resultType="com.edaisong.entity.domain.ExportShanSongOrder"
+  		 parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
+select 	 a.Id ,a.OrderNo ,a.PickUpAddress,a.BusinessId ,
+   a.ReceviceAddress ,a.clienterId ,a.PickupCode ,
+   a.[Status] ,a.FormType,a.Amount,a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
+   a.ReceviceName , CONVERT(VARCHAR(100),  a.[PubDate], 120) as PubDate,  e.PayType,
+ISNULL(c.TrueName,'匿名') ClienterName,
+ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
+ISNULL( b.PhoneNo ,'无') BusinessPhoneNo 
+from ( select  Id,OrderNo,PubDate,PickUpAddress,BusinessId,ReceviceAddress,ISNULL(ClienterId, 0) clienterId ,
+            PickupCode ,[Status] ,0 FormType,Amount,Weight, KM,RecevicePhoneNo,ReceviceName,' 'PubName,'' PubPhoneNo
+  from      dbo.[order] (nolock) where Platform=3
+  union all
+  select 0 Id ,OrderNo , PubDate ,PubAddress as PickUpAddress,BusinessId ,
+         ReceviceAddress ,0 as clienterId ,TakeCode as PickupCode ,
+         -1  [Status] ,1 FormType,Amount,Weight,KM,PubName,PubPhoneNo,RecevicePhoneNo,
+         ReceviceName
+  from    OrderDraft (nolock)
+) a
+join business b with ( nolock ) on b.Id = a.businessId
+left join dbo.clienter (nolock) c on a.ClienterId = c.Id
+left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
+LEFT join dbo.OrderChild e ( nolock ) on  a.Id=d.OrderId
+
+  </select>
 </mapper>
