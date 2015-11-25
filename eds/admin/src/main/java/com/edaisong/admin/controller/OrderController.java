@@ -31,6 +31,7 @@ import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.ShanSongOrderListModel;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
@@ -226,5 +227,39 @@ public class OrderController {
 		cancelorder.setOptUserName(UserContext.getCurrentContext(request).getLoginName());
 		ResponseBase responseBase= orderService.cancelOrder(cancelorder);
 		return responseBase;
+	}
+	
+	
+	
+	/**
+	 * 订单列表页面 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @return
+	 */
+	@RequestMapping("shansonglist")
+	public ModelAndView shansonglist(){
+		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityByJiBie(3);
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "订单管理");
+		model.addObject("currenttitle", "E单列表");
+		model.addObject("areaListData", areaListData);   //下拉城市
+		model.addObject("viewPath", "order/shansonglist");
+		return model;
+	}
+
+	/**
+	 * 订单列表页面 
+	 * @author CaoHeYang
+	 * @Date 20150728
+	 * @return
+	 */
+	@RequestMapping("shansonglistdo")
+	public ModelAndView shansonglistdo(PagedOrderSearchReq searchWebReq){
+		PagedResponse<ShanSongOrderListModel> resp = orderService.getShanSongOrders(searchWebReq);
+		ModelAndView view = new ModelAndView();
+		view.addObject("viewPath", "order/shansonglistdo");
+		view.addObject("listData", resp);
+		return view;
 	}
 }
