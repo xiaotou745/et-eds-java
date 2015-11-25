@@ -8,24 +8,22 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.domain.ShanSongOrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
-<%@page import="com.edaisong.core.enums.OrderStatus"%>
-<%@page import="com.edaisong.core.enums.OrderAuditStatus"%>
+<%@page import="com.edaisong.core.enums.ShanSongOrderStatus"%>
 
-<table
-	class="table table-striped table-bordered table-hover dataTables-example">
+<table class="table table-striped table-bordered table-hover dataTables-example" style="text-align:center;">
 	<thead>
 		<tr>
-			<th style="width: 60px;">编号</th>
-			<th style="width: 150px;">订单号</th>
-			<th style="width: 200px;">发货账号</th>
-			<th style="width: 200px;">发布时间</th>
-			<th style="width: 200px;">发货地址</th>
-			<th style="width: 200px;">收货地址</th>
-			<th style="width: 200px;">费用信息</th>
-			<th style="width: 150px;">骑士信息</th>
-		    <th style="width: 150px;">取货码</th>
-		    <th style="width: 150px;">订单状态</th>
-			<th style="width: 60px;">操作</th>
+			<th style="width: 60px;text-align:center" >编号</th>
+			<th style="width: 150px;text-align:center;">订单号</th>
+			<th style="width: 200px;text-align:center;">发货账号</th>
+			<th style="width: 200px;text-align:center;">发布时间</th>
+			<th style="width: 200px;text-align:center;">发货地址</th>
+			<th style="width: 200px;text-align:center;">收货地址</th>
+			<th style="width: 200px;text-align:center;">费用信息</th>
+			<th style="width: 150px;text-align:center;">骑士信息</th>
+		    <th style="width: 220px;text-align:center;">取货码</th>
+		    <th style="width: 150px;text-align:center;">订单状态</th>
+			<th style="width: 60px;text-align:center;">操作</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -68,11 +66,12 @@
 			</td>
 			<td><%=ParseHelper.ShowString(data.get(i).getPickUpAddress())%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getReceviceAddress())%></td>
-			<td></td>
-			<td><%=ParseHelper.ShowString(data.get(i).getClienterName())%>,
+			<td> <%=ParseHelper.ShowString(data.get(i).getKm())%>公里/<%=ParseHelper.ShowString(data.get(i).getWeight())%>公斤<br/>
+			配送费: <%=ParseHelper.ShowString(data.get(i).getAmount())%>元</td>
+			<td><%=ParseHelper.ShowString(data.get(i).getClienterName())%> <br/>
 			<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%></td>
-			<td></td>
-			<td>	<%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
+			<td><%=ParseHelper.ShowString(data.get(i).getPickupCode())%></td>
+			<td>	<%=ShanSongOrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td><a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a></td>
 		</tr>
 		<%

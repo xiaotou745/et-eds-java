@@ -2,7 +2,6 @@ package com.edaisong.entity.domain;
 
 public class ShanSongOrderListModel extends OrderListModel {
 	private Double weight;
-	private Double km;
 	private String pickupCode;
 	private int formType;
 
@@ -20,23 +19,7 @@ public class ShanSongOrderListModel extends OrderListModel {
 		this.weight = weight;
 	}
 
-	/**
-	 * 距离
-	 * 
-	 * @return
-	 */
-	public Double getKm() {
-		return km;
-	}
-
-	/**
-	 * 距离
-	 * 
-	 * @param km
-	 */
-	public void setKm(Double km) {
-		this.km = km;
-	}
+	
 
 	/**
 	 * 取货码

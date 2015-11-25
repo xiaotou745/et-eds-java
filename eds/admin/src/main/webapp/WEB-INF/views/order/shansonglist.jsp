@@ -11,7 +11,7 @@
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.util.EnumHelper"%>
-<%@page import="com.edaisong.core.enums.OrderStatus"%>
+<%@page import="com.edaisong.core.enums.ShanSongOrderStatus"%>
 <%@page import="com.edaisong.core.enums.OrderAuditStatus"%>
 
 
@@ -46,13 +46,13 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">订单状态:</label>
 							<div class="col-sm-8">
-							<%=HtmlHelper.getSelect("orderStatus", EnumHelper.GetEnumItems(OrderStatus.class), "desc", "value",null,"-1","全部") %>
+							<%=HtmlHelper.getSelect("orderStatus", EnumHelper.GetEnumItems(ShanSongOrderStatus.class), "desc", "value",null,"-1","全部") %>
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">筛选城市:</label>
+							<label class="col-sm-4 control-label">选择城市:</label>
 							<div class="col-sm-8">
 							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部") %>
 							</div>
@@ -60,7 +60,7 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">商户电话:</label>
+							<label class="col-sm-4 control-label">发货账号:</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" name="businessPhone"  id="txtBusinessPhone"/>
 							</div>
@@ -68,7 +68,7 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">超人电话:</label>
+							<label class="col-sm-4 control-label">骑士电话:</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" name="superManPhone"  id="txtSuperManPhone" />
 							</div>
@@ -78,7 +78,7 @@ width: 100%;
 				<div class="row">
 					<div class="col-lg-3">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">超人姓名:</label>
+								<label class="col-sm-4 control-label">骑士姓名:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control"  name="superManName"  id="txtSuperManName"/>
 								</div>
@@ -94,7 +94,7 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">抢单时间:</label>
+							<label class="col-sm-4 control-label">发布时间:</label>
 							<div class="col-sm-8">
 							<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -115,7 +115,8 @@ width: 100%;
 						</div>
 					</div>
 				</div>
-			    <div class="row">
+			    <div class="row" style="margin-bottom:15px;">
+			    		<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 							style="margin-left: 3px;height:30px;">查询</button>
