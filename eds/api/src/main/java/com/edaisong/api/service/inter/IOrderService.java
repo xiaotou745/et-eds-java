@@ -10,6 +10,7 @@ import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.ExportOrder; 
+import com.edaisong.entity.domain.ExportShanSongOrder;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -313,5 +314,15 @@ public interface IOrderService {
 	 * @return
 	 */
 	PagedResponse<ShanSongOrderListModel> getShanSongOrders(PagedOrderSearchReq search);
-	
+	/**
+	 * 导出订单
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20151125
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+
+	 List<ExportShanSongOrder> exportShanSongOrder(PagedOrderSearchReq search); 
 }

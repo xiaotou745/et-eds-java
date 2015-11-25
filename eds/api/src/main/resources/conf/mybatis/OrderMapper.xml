@@ -1798,4 +1798,31 @@ GROUP BY a.id ,
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
+	
+	<!-- 闪送导出订单 add by caoheyang 20151125 -->
+	  <select id="exportShanSongOrder" resultType="com.edaisong.entity.domain.ExportShanSongOrder"
+  		 parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
+select 	 a.Id ,a.OrderNo ,a.PickUpAddress,a.BusinessId ,
+   a.ReceviceAddress ,a.clienterId ,a.PickupCode ,
+   a.[Status] ,a.FormType,a.Amount,a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
+   a.ReceviceName , CONVERT(VARCHAR(100),  a.[PubDate], 120) as PubDate,  e.PayType,
+ISNULL(c.TrueName,'匿名') ClienterName,
+ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
+ISNULL( b.PhoneNo ,'无') BusinessPhoneNo 
+from ( select  Id,OrderNo,PubDate,PickUpAddress,BusinessId,ReceviceAddress,ISNULL(ClienterId, 0) clienterId ,
+            PickupCode ,[Status] ,0 FormType,Amount,Weight, KM,RecevicePhoneNo,ReceviceName,' 'PubName,'' PubPhoneNo
+  from      dbo.[order] (nolock) where Platform=3
+  union all
+  select 0 Id ,OrderNo , PubDate ,PubAddress as PickUpAddress,BusinessId ,
+         ReceviceAddress ,0 as clienterId ,TakeCode as PickupCode ,
+         -1  [Status] ,1 FormType,Amount,Weight,KM,PubName,PubPhoneNo,RecevicePhoneNo,
+         ReceviceName
+  from    OrderDraft (nolock)
+) a
+join business b with ( nolock ) on b.Id = a.businessId
+left join dbo.clienter (nolock) c on a.ClienterId = c.Id
+left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
+LEFT join dbo.OrderChild e ( nolock ) on  a.Id=d.OrderId
+
+  </select>
 </mapper>
