@@ -1773,8 +1773,8 @@ GROUP BY a.id ,
 		<if test="authorityCityNameList != null">
 			and b.city in
 			<foreach item="item" index="index" collection="authorityCityNameList"
-				open="(''" separator="'',''" close="'')">
-				#{item}
+				open="(" separator="," close=")">
+				''${item}''
 			</foreach>
 		</if>
 	</sql>
