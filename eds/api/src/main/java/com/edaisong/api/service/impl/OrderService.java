@@ -1629,7 +1629,7 @@ public class OrderService implements IOrderService {
 	 */
 	private Order fillOrder(OrderReq req, BusinessModel businessModel) {
 		Order order = new Order();
-		order.setOrderno(OrderNoHelper.generateOrderCode(req.getBusinessid()));// 临时
+		order.setOrderno(OrderNoHelper.generateOrderCode(req.getBusinessid()));
 		order.setRecevicename(req.getRecevicename());
 		order.setRecevicephoneno(req.getRecevicephoneno());
 		if (businessModel.getOnekeypuborder() != null
