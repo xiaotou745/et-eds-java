@@ -52,9 +52,10 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">选择城市:</label>
+							<label class="col-sm-4 control-label">发单城市:</label>
 							<div class="col-sm-8">
-							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部") %>
+								<input type="text" class="form-control" name="businessCity"  id="businessCity"/>
+						<%-- 	  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部") %> --%>
 							</div>
 						</div>
 					</div>
