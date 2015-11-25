@@ -2,6 +2,7 @@ package com.edaisong.api.service.inter;
 
 import java.util.Date;
 import java.util.List;
+
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
@@ -13,6 +14,7 @@ import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.QueryOrder;
+import com.edaisong.entity.domain.ShanSongOrderListModel;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
@@ -310,6 +312,6 @@ public interface IOrderService {
 	 *            查询条件实体
 	 * @return
 	 */
-	PagedResponse<OrderListModel> getShanSongOrders(PagedOrderSearchReq search);
+	PagedResponse<ShanSongOrderListModel> getShanSongOrders(PagedOrderSearchReq search);
 	
 }

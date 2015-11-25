@@ -6,7 +6,7 @@
 <%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="com.edaisong.entity.domain.OrderListModel"%>
+<%@page import="com.edaisong.entity.domain.ShanSongOrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.enums.OrderStatus"%>
 <%@page import="com.edaisong.core.enums.OrderAuditStatus"%>
@@ -30,10 +30,10 @@
 	</thead>
 	<tbody>
 		<%
-			PagedResponse<OrderListModel> responsePageList = (PagedResponse<OrderListModel>) request.getAttribute("listData");
-			List<OrderListModel> data = responsePageList.getResultList();
+			PagedResponse<ShanSongOrderListModel> responsePageList = (PagedResponse<ShanSongOrderListModel>) request.getAttribute("listData");
+			List<ShanSongOrderListModel> data = responsePageList.getResultList();
 			if (data == null) {
-				data = new ArrayList<OrderListModel>();
+				data = new ArrayList<ShanSongOrderListModel>();
 			}
 			for (int i = 0; i < data.size(); i++) {
 				double distance = data.get(i).getGrabToCompleteDistance();

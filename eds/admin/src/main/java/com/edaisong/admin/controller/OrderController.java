@@ -31,6 +31,7 @@ import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
+import com.edaisong.entity.domain.ShanSongOrderListModel;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.GroupReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
@@ -255,7 +256,7 @@ public class OrderController {
 	 */
 	@RequestMapping("shansonglistdo")
 	public ModelAndView shansonglistdo(PagedOrderSearchReq searchWebReq){
-		PagedResponse<OrderListModel> resp = orderService.getOrders(searchWebReq);
+		PagedResponse<ShanSongOrderListModel> resp = orderService.getShanSongOrders(searchWebReq);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "order/shansonglistdo");
 		view.addObject("listData", resp);
