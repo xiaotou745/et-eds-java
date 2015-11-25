@@ -13,10 +13,13 @@ import com.edaisong.entity.domain.MyOrderHadFinishCModel;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.HadFinishOrderReq;
+import com.edaisong.entity.req.ModifyVehicleReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
+import com.edaisong.entity.req.UserStatusReq;
+import com.edaisong.entity.resp.ClienterUserStatusResp;
 import com.edaisong.entity.resp.HadFinishOrderResp;
 import com.edaisong.entity.resp.MyBusinessResp;
 
@@ -120,5 +123,13 @@ public interface IClienterService {
 	 * wangchao
 	 */
 	MyBusinessResp getMyBusiness(MyBusinessReq myBusinessReq);
+	/*
+	 * 获取骑士信息 闪送模式 wangchao
+	 */
+	ClienterUserStatusResp getUserStatus(UserStatusReq req);
+	/*
+	 * 修改骑士交通工具 wangchao
+	 */
+	int modifyVehicle(ModifyVehicleReq req);
  
 }

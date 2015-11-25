@@ -27,6 +27,7 @@ import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.BCheckCodeReq;
+import com.edaisong.entity.req.BusinessRegisterReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
@@ -278,5 +279,10 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	@Override
 	public int getStrategyIdByGroupId(int groupId) {
 		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getStrategyIdByGroupId", groupId);
+	}
+
+	@Override
+	public int register(BusinessRegisterReq req) { 
+		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessDao.register",req);
 	}
 }
