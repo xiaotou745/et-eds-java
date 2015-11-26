@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="java.sql.Date"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="java.lang.Double"%>
@@ -9,7 +10,9 @@
 <%@page import="com.edaisong.entity.domain.ShanSongOrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.enums.ShanSongOrderStatus"%>
-
+<%	
+String basePath =PropertyUtils.getProperty("java.admin.url");
+%>
 <table class="table table-striped table-bordered table-hover dataTables-example" style="text-align:center;">
 	<thead>
 		<tr>
@@ -38,7 +41,7 @@
 		<tr>
 			<td><%=i + 1%></td>
 			<td>
-			<%=data.get(i).getOrderNo()%>
+			<a href="<%=basePath%>/order/shansongdetail?orderno=<%=data.get(i).getOrderNo()%>&orderid=<%=data.get(i).getId()%>"><%=data.get(i).getOrderNo()%></a>
 		    </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getBusinessPhoneNo())%> 
 			<td><%=ParseHelper.ToDateString(data.get(i).getPubDate())%>
@@ -51,7 +54,11 @@
 			<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getPickupCode())%></td>
 			<td>	<%=ShanSongOrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
-			<td><a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a></td>
+			<td>  
+			<%if(data.get(i).getFormType()==0){%>
+			<a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a>
+			<%}%>
+			</td>
 		</tr>
 		<%
 			}

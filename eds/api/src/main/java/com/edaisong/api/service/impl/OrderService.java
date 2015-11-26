@@ -2028,4 +2028,24 @@ public class OrderService implements IOrderService {
 	public List<ExportShanSongOrder> exportShanSongOrder(PagedOrderSearchReq search){
 		return orderDao.exportShanSongOrder(search);
 	}
+	
+	/**
+	 * 根据订单号查订单信息
+	 * 
+	 * @author CaoHeYang
+	 * @param ordernNo
+	 *            订单号
+	 * @Date 20151126
+	 * @return
+	 */
+ @Override
+	public ShanSongOrderListModel getShanSongOrderByNo(String orderNo) {
+		if (orderNo == null || orderNo.isEmpty()) {
+			return null;
+		}
+		ShanSongOrderListModel orderListModel = orderDao.getShanSongOrderByNo(orderNo);
+		return orderListModel;
+	}
+ 
+ 
 }

@@ -314,4 +314,27 @@ public class OrderController {
 			response.sendRedirect(basePath+"/order/shansonglist");
 		}
 	}
+	
+	/**
+	 * 订单详情页面
+	 * @author CaoHeYang
+	 * @Date 20150827
+	 * @return
+	 */
+	@RequestMapping("shansongdetail")
+	public ModelAndView shansongdetail(String orderno, int orderid){
+		ModelAndView model = new ModelAndView("adminView");
+       ShanSongOrderListModel orderListModel =orderService.getShanSongOrderByNo(orderno);
+	   if (orderListModel==null) {
+		   throw new RuntimeException("没有找到orderno="+orderno+"的订单");
+	   }
+	    List<OrderSubsidiesLog> orderSubsidiesLogs=orderSubsidiesLogService.GetOrderOptionLog((long)orderid);
+		model.addObject("subtitle", "订单管理");
+		model.addObject("currenttitle", "E单详情");
+		model.addObject("viewPath", "order/shansongdetail");
+		model.addObject("orderListModel", orderListModel);
+		model.addObject("orderSubsidiesLogs", orderSubsidiesLogs);
+		model.addObject("isShowAuditBtn", isShowAuditBtn(orderListModel));
+		return model;
+	}
 }
