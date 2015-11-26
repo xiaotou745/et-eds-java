@@ -2097,7 +2097,7 @@ public class OrderService implements IOrderService {
 		// 取消订单
 		Order tempCanelOrder = new Order();
 		tempCanelOrder.setId(cancelOrder.getOrderId());
-		tempCanelOrder.setStatus(cancelStatus);
+		tempCanelOrder.setStatus((byte)cancelStatus);
 		orderDao.updateByPrimaryKeySelective(tempCanelOrder);
 		// 记录取消订单日志
 		OrderSubsidiesLog record = new OrderSubsidiesLog();
