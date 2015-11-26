@@ -624,7 +624,7 @@
 				Remark = #{remark,jdbcType=NVARCHAR},
 			</if>
 			<if test="status != null">
-				Status = #{status,jdbcType=INTEGER},
+				Status = #{status,jdbcType=TINYINT},
 			</if>
 			<if test="clienterid != null">
 				clienterId = #{clienterid,jdbcType=INTEGER},
