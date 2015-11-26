@@ -21,6 +21,7 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.ExportShanSongOrder;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -459,5 +460,38 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		result = getReadOnlySqlSessionUtil().selectPageList(
 				"IOrderDao.getShanSongOrders", search);
 		return result;
+	}
+	
+	/**
+	 * 导出订单
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20151125
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public List<ExportShanSongOrder> exportShanSongOrder(PagedOrderSearchReq search) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.edaisong.api.dao.inter.IOrderDao.exportShanSongOrder", 
+				search);
+	}
+	
+	/**
+	 * 根据订单号/订单id查订单信息
+	 * 
+	 * @author CaoHeYang
+	 * @param ordernNo
+	 *            订单号
+	 * @param orderId
+	 *            订单id
+	 * @Date 20150827
+	 * @return
+	 */
+	@Override
+	public  ShanSongOrderListModel getShanSongOrderByNo(String ordernNo){
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderDao.getShanSongOrderByNo"
+				, ordernNo);
 	}
 }

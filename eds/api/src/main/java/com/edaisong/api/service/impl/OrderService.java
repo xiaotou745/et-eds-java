@@ -83,6 +83,7 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.ExportShanSongOrder;
 import com.edaisong.entity.domain.InStoreOrderRegionInfo;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderCommission;
@@ -1628,7 +1629,7 @@ public class OrderService implements IOrderService {
 	 */
 	private Order fillOrder(OrderReq req, BusinessModel businessModel) {
 		Order order = new Order();
-		order.setOrderno(OrderNoHelper.generateOrderCode(req.getBusinessid()));// 临时
+		order.setOrderno(OrderNoHelper.generateOrderCode(req.getBusinessid()));
 		order.setRecevicename(req.getRecevicename());
 		order.setRecevicephoneno(req.getRecevicephoneno());
 		if (businessModel.getOnekeypuborder() != null
@@ -2013,4 +2014,38 @@ public class OrderService implements IOrderService {
 	public PagedResponse<ShanSongOrderListModel> getShanSongOrders(PagedOrderSearchReq search){
 		return orderDao.getShanSongOrders(search);
 	}
+	
+	/**
+	 * 导出订单
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20151125
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public List<ExportShanSongOrder> exportShanSongOrder(PagedOrderSearchReq search){
+		return orderDao.exportShanSongOrder(search);
+	}
+	
+	/**
+	 * 根据订单号查订单信息
+	 * 
+	 * @author CaoHeYang
+	 * @param ordernNo
+	 *            订单号
+	 * @Date 20151126
+	 * @return
+	 */
+ @Override
+	public ShanSongOrderListModel getShanSongOrderByNo(String orderNo) {
+		if (orderNo == null || orderNo.isEmpty()) {
+			return null;
+		}
+		ShanSongOrderListModel orderListModel = orderDao.getShanSongOrderByNo(orderNo);
+		return orderListModel;
+	}
+ 
+ 
 }

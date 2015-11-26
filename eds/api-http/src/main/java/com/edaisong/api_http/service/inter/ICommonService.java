@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.RecordType;
+import com.edaisong.entity.resp.TaskDistributionConfigResp;
 
 /**
  * 通用模块 
@@ -38,5 +39,14 @@ public interface ICommonService {
 	@POST
 	@Path("/getrecordtypec")
 	 public HttpResultModel<List<RecordType>> getRecordtypeC();
+	
+	/**
+	 * @author haichao
+	 * @date 2015年11月26日 09:54:08
+	 * 获取普通任务配送费配置
+	 * */
+	@POST
+	@Path("/gettaskdistributionconfig")
+	public HttpResultModel<TaskDistributionConfigResp> getTaskDistributionConfig();
 }
 

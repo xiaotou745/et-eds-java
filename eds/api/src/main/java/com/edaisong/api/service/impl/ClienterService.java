@@ -21,10 +21,13 @@ import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.domain.MyBusinessModel;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
+import com.edaisong.entity.req.ModifyVehicleReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
+import com.edaisong.entity.req.UserStatusReq;
+import com.edaisong.entity.resp.ClienterUserStatusResp;
 import com.edaisong.entity.resp.MyBusinessResp;
 
 @Service
@@ -230,5 +233,15 @@ public class ClienterService implements IClienterService {
 				.getShenQingZhongTotal());
 
 		return myBusinessResp;
+	}
+
+	@Override
+	public ClienterUserStatusResp getUserStatus(UserStatusReq req) { 
+		return clienterDao.getUserStatus(req);
+	}
+
+	@Override
+	public int modifyVehicle(ModifyVehicleReq req) {
+		return clienterDao.modifyVehicle(req);
 	}
 }

@@ -8,26 +8,23 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
-import com.edaisong.api.dao.inter.IClienterDao;
-import com.edaisong.core.util.ParseHelper;
-import com.edaisong.core.util.StringUtils;
-import com.edaisong.entity.Clienter;
-import com.edaisong.entity.ClienterBalanceRecord;
+import com.edaisong.api.dao.inter.IClienterDao; 
+import com.edaisong.entity.Clienter; 
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
-import com.edaisong.entity.domain.MyBusinessModel;
-import com.edaisong.entity.domain.MyOrderHadFinishCModel;
-import com.edaisong.entity.req.ClienterOptionReq;
-import com.edaisong.entity.req.HadFinishOrderReq;
+import com.edaisong.entity.domain.MyBusinessModel; 
+import com.edaisong.entity.req.ClienterOptionReq; 
+import com.edaisong.entity.req.ModifyVehicleReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
-import com.edaisong.entity.resp.HadFinishOrderResp;
+import com.edaisong.entity.req.UserStatusReq;
+import com.edaisong.entity.resp.ClienterUserStatusResp; 
 import com.edaisong.entity.resp.MyBusinessResp;
 
 
@@ -218,5 +215,15 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	public MyBusinessResp getServiceBusinessTotal(MyBusinessReq myBusinessReq) {
 		return	getReadOnlySqlSessionUtil().selectOne("IClienterDao.getServiceBusinessTotal",myBusinessReq);
 		 
+	}
+
+	@Override
+	public ClienterUserStatusResp getUserStatus(UserStatusReq req) {
+		return	getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.getUserStatusForFlash",req);
+	}
+
+	@Override
+	public int modifyVehicle(ModifyVehicleReq req) {
+		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IClienterDao.modifyVehicle",req);
 	} 
 }

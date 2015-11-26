@@ -6,30 +6,22 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-
-import com.edaisong.entity.AccountBillResultModel;
-import com.edaisong.entity.Business;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BusinessBasicInfoModel;
-import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.domain.BindClienterBusiness;
-import com.edaisong.entity.req.AccountBillBReq;
 import com.edaisong.entity.req.BCheckCodeReq;
 import com.edaisong.entity.req.BSendCodeReq;
+import com.edaisong.entity.req.BusinessRegisterReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.MyOrderBReq;
-import com.edaisong.entity.req.MyOrderGrabCReq;
 import com.edaisong.entity.req.OptBindClienterReq;
 import com.edaisong.entity.req.OrderDetailBReq;
-import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.PagedGetMyServiceClientersReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.resp.GetMyServiceClientersResp;
 import com.edaisong.entity.resp.MyOrderBResp;
 import com.edaisong.entity.resp.MyOrderDetailBResp;
-import com.edaisong.entity.resp.MyOrderGrabCResp;
-import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 
 /**
  *  商家相关 
@@ -150,4 +142,13 @@ public interface IBusinessHttpService {
 	@POST
 	@Path("/businessmodiyphonestep2")
 	public HttpResultModel<Object> businessModiyPhoneStep2(BCheckCodeReq req);
+	/*
+	 * 商户注册
+	 * wangchao
+	 */ 
+	@POST
+	@Path("/register")
+	public HttpResultModel<Object> register(BusinessRegisterReq req);
+	
+	
 }

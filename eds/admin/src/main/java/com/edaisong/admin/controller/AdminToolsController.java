@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IGlobalConfigService;
+import com.edaisong.api.service.inter.ITaskDistributionConfigService;
 import com.edaisong.entity.BusinessMessage;
 import com.edaisong.entity.GlobalConfig;
+import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
 import com.edaisong.entity.req.PagedGlobalConfigReq;
+import com.edaisong.entity.req.TaskDistributionConfigReq;
 /*
  * 管理员工具
  * 茹化肖
@@ -29,6 +33,8 @@ import com.edaisong.entity.req.PagedGlobalConfigReq;
 public class AdminToolsController {
 	@Autowired
 	private IGlobalConfigService globalConfigService;
+	@Autowired
+	private ITaskDistributionConfigService taskDistributionConfigService;
 	@RequestMapping("list")
 	public ModelAndView globalConfigManager(HttpServletRequest request, HttpServletResponse res){
 		ModelAndView model = new ModelAndView("adminView");
@@ -58,5 +64,29 @@ public class AdminToolsController {
 	public int addConfig(GlobalConfig par){
 		return globalConfigService.insert(par);
 	}
-
+	
+	/**
+	 * @author haichao 
+	 * @date 2015年11月24日 15:45:23
+	 * 普通任务配送费配置
+	 * */
+	@RequestMapping("taskdistributionconfig")
+	public ModelAndView taskDistributionConfig (HttpServletRequest request, HttpServletResponse res)
+	{
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "管理员");
+		model.addObject("currenttitle", "普通任务配送费配置");
+		model.addObject("viewPath", "admintools/taskdistributionconfig");
+		List<TaskDistributionConfig> list = taskDistributionConfigService.query();
+		model.addObject("listData", list);
+		return model;
+	}
+	
+	@RequestMapping("updatetaskdistributionconfig")
+	@ResponseBody
+	public int taskDistributionConfigDo(TaskDistributionConfigReq req,HttpServletRequest request){
+		req.setOptId(UserContext.getCurrentContext(request).getId());
+		req.setOptName(UserContext.getCurrentContext(request).getLoginName());
+		return taskDistributionConfigService.update(req);
+	}
 }

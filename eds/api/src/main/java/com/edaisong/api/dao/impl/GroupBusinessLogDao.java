@@ -20,7 +20,6 @@ public class GroupBusinessLogDao extends DaoBase implements IGroupBusinessLogDao
 
 	@Override
 	public int insert(GroupBusinessLog gbl) {
-		 
 		return getMasterSqlSessionUtil().insert("IGroupBusinessLogDao.insert",gbl);
 	} 
 }

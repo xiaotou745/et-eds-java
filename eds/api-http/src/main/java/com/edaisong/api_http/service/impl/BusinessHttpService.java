@@ -3,6 +3,7 @@ package com.edaisong.api_http.service.impl;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import com.edaisong.core.enums.BSendCodeType;
 import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.enums.BusinessOrderEnum;
 import com.edaisong.core.enums.ClienterBindBusinessEnum;
+import com.edaisong.core.enums.RegisterBEnum;
 import com.edaisong.core.enums.returnenums.BusinessModiyPhoneReturnEnum;
 import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
@@ -24,6 +26,7 @@ import com.edaisong.core.enums.returnenums.GetPushOrderTypeReturnEnum;
 import com.edaisong.core.enums.returnenums.OptBindClienterReturnEnum;
 import com.edaisong.core.enums.returnenums.RemoveRelationReturnEnum;
 import com.edaisong.core.enums.returnenums.SendSmsReturnType;
+import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.RandomCodeStrGenerator;
 import com.edaisong.core.util.SmsUtils;
@@ -32,10 +35,12 @@ import com.edaisong.entity.BusinessClienterRelation;
 import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BindClienterBusiness;
+import com.edaisong.entity.domain.BusiRegisterResultModel;
 import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.ServiceClienters;
 import com.edaisong.entity.req.BCheckCodeReq;
 import com.edaisong.entity.req.BSendCodeReq;
+import com.edaisong.entity.req.BusinessRegisterReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.MyOrderBReq;
@@ -436,5 +441,55 @@ public class BusinessHttpService implements IBusinessHttpService {
 		}
 		return businessService.businessModiyPhone(req)?res:res.setStatus(BusinessModiyPhoneReturnEnum.ModifyError.value()).
 				setMessage(BusinessModiyPhoneReturnEnum.ModifyError.desc());
+	}
+	/*
+	 * 闪送注册
+	 * wangchao
+	 */
+	@Override
+	public HttpResultModel<Object> register(BusinessRegisterReq req) {
+		HttpResultModel<Object> res = new HttpResultModel<Object>();
+		res.setMessage(HttpReturnRnums.Success.desc()).setStatus(HttpReturnRnums.Success.value());
+		//手机号验证
+		if (req.getPhoneNo()==null||req.getPhoneNo().isEmpty()||CommonValidator.validPhoneNumber(req.getPhoneNo())) {
+			return res.setStatus(RegisterBEnum.PhoneError.value()).setMessage
+					(RegisterBEnum.PhoneError.desc());
+		} 
+		//验证码验证
+		if (req.getCode()==null||req.getCode().isEmpty()) {
+			return res.setStatus(RegisterBEnum.VerCodeNull.value()).setMessage
+					(RegisterBEnum.VerCodeNull.desc());
+		} 
+		String key = String.format(RedissCacheKey.RegisterCount_B,req.getPhoneNo());
+		int excuteCount=redisService.get(key, Integer.class);
+		if(excuteCount>=10){
+			return res.setMessage(RegisterBEnum.CountError.desc()).setStatus(RegisterBEnum.CountError.value());
+		}
+		redisService.set(key, excuteCount + 1, 5*60);
+		//获取缓存中的验证码
+		String code = redisService.get(String.format(RedissCacheKey.PostRegisterInfo_B,req.getPhoneNo()), String.class);
+		if(code.toLowerCase() != req.getCode().toLowerCase()){
+			return res.setMessage(RegisterBEnum.CodeError.desc()).setStatus(RegisterBEnum.CodeError.value());
+		}
+		//密码验证
+		if (req.getPassWord()==null||req.getPassWord().isEmpty()) {
+				req.setPassWord(MD5Util.MD5(code));  //如果用户没有输入密码，则将验证码作为密码使用
+		}
+		//验证手机号是否已注册
+		if (businessService.isExist(req.getPhoneNo())) {
+			return res.setStatus(RegisterBEnum.PhoneExists.value()).
+					setMessage(RegisterBEnum.PhoneExists.desc());
+		}
+		String uuid = UUID.randomUUID().toString();
+		req.setAppkey(uuid);
+ 		int s = businessService.register(req);
+ 		if(s<=0){
+ 			return res.setStatus(RegisterBEnum.Fail.value()).setMessage
+					(RegisterBEnum.Fail.desc());
+ 		}
+ 		BusiRegisterResultModel brrm = new BusiRegisterResultModel();
+ 		brrm.setUserId(s);
+ 		brrm.setAppkey(uuid);
+		return res;
 	}
 }
