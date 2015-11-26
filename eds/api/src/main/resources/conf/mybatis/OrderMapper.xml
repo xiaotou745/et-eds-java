@@ -1857,7 +1857,7 @@ ISNULL( b.PhoneNo ,'无') BusinessPhoneNo ,a.Remark,a.ProductName
 from  dbo.[order] (nolock) a
 join business b with ( nolock ) on b.Id = a.businessId and a.Platform=3
 left join dbo.clienter (nolock) c on a.ClienterId = c.Id
-left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
+left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId 
 where a.orderno=#{ordernNo}
 </select>
   
