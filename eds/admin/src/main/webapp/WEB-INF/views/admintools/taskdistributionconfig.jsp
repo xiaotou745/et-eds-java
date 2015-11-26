@@ -37,17 +37,18 @@ double masterPirce=entityMaster.getDistributionPrice();
 					class="table table-striped table-bordered table-hover dataTables-example">
 					<tbody>
 						<tr>
-							<td><input type="text" value=<%=masterKM %> id="masterKM"/> 公里内 <input type="text" value="<%=masterKG %>" id="masterKG" /> 公斤以下 <input
-								type="text" value="<%=masterPirce%>" id="masterPrice"/> 元配送费</td>
+							<td><input type="text" value=<%=masterKM %> id="masterKM" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/> 
+							公里内 <input type="text" value="<%=masterKG %>" id="masterKG" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/> 公斤以下 <input
+								type="text" value="<%=masterPirce%>" id="masterPrice" onkeyup="clearNoNum(this)"/> 元配送费</td>
 						</tr>
 						<tr>
-							<td>超过<%=masterKM %>公里，每增加 <input type="text" value="<%=entityOne.getkM()%>" id="oneKM"/> 公里，增加 <input
-								type="text" value="<%=entityOne.getDistributionPrice() %>" id="oneDistributionPrice" /> 元配送费
+							<td>超过<%=masterKM %>公里，每增加 <input type="text" value="<%=entityOne.getkM()%>" id="oneKM" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/> 
+							公里，增加 <input type="text" value="<%=entityOne.getDistributionPrice() %>" id="oneDistributionPrice" onkeyup="clearNoNum(this)"/> 元配送费
 							</td>
 						</tr>
 						<tr>
-							<td>超过<%=masterKM %>公斤，每增加 <input type="text" value="<%=entityTwo.getkG() %>" id="twoKG" /> 公斤，增加 <input
-								type="text" value="<%=entityTwo.getDistributionPrice() %>" id="twoDistributionPrice"/> 元配送费
+							<td>超过<%=masterKM %>公斤，每增加 <input type="text" value="<%=entityTwo.getkG() %>" id="twoKG" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/> 
+							公斤，增加 <input type="text" value="<%=entityTwo.getDistributionPrice() %>" id="twoDistributionPrice" onkeyup="clearNoNum(this)"/> 元配送费
 							</td>
 						</tr>
 					</tbody>
@@ -117,5 +118,10 @@ double masterPirce=entityMaster.getDistributionPrice();
 					alert("更新配置异常!");
 				});
 		});
-	})
+	});
+	function clearNoNum(obj){   obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符  
+	 obj.value = obj.value.replace(/^\./g,"");  //验证第一个字符是数字而不是. 
+	 obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的.   
+	 obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+	}
 </script>
