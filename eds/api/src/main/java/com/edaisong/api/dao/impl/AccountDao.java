@@ -18,7 +18,7 @@ public class AccountDao extends DaoBase implements IAccountDao {
 	@Override
 	public PagedResponse<Account> query(PagedAccountReq req) {
 		return getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IAccountDao.query", req);
+				"IAccountDao.query", req);
 	}
 
 	@Override
@@ -27,13 +27,13 @@ public class AccountDao extends DaoBase implements IAccountDao {
 		params.put("username", username);
 		params.put("password", password);
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IAccountDao.login", params);
+				"IAccountDao.login", params);
 	}
 
 	@Override
 	public Account getByID(int userID) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IAccountDao.getByID", userID);
+				"IAccountDao.getByID", userID);
 	}
 
 	@Override
@@ -42,13 +42,13 @@ public class AccountDao extends DaoBase implements IAccountDao {
 		params.put("userID", userID);
 		params.put("newRoleID", newRoleID);
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IAccountDao.updateRoleID", params);
+				"IAccountDao.updateRoleID", params);
 	}
 
 	@Override
 	public List<Account> getByRoleID(int roleID) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IAccountDao.getByRoleID", roleID);
+				"IAccountDao.getByRoleID", roleID);
 	}
 
 }

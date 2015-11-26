@@ -35,9 +35,13 @@ public enum OrderFrom {
 	 */
 	Tourism(6, "首旅"),
 	/**
-	 * 门店高速版
+	 * E代送智能调度
 	 */
 	FastOrder(10, "E代送智能调度"),
+	/**
+	 * 闪送
+	 */
+	FlashOrder(11, "闪送"),
 	/**
 	 * 商家版后台
 	 */

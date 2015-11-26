@@ -31,13 +31,13 @@ public class OrderDraft extends DaoBase implements IOrderDraftDao {
 	@Override
 	public int insertSelective(com.edaisong.entity.OrderDraft record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderDraftDao.insertSelective", record);	
+				"IOrderDraftDao.insertSelective", record);	
 	}
 
 	@Override
 	public com.edaisong.entity.OrderDraft selectByPrimaryKey(Integer id) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderDraftDao.selectByPrimaryKey", id);	
+				"IOrderDraftDao.selectByPrimaryKey", id);	
 	}
 
 	@Override

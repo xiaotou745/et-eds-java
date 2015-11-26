@@ -406,11 +406,38 @@
 			<if test="platform != null">
 				platform,
 			</if>
+			 <if test="pubname != null" >
+             PubName,
+            </if>
+            <if test="pubphoneno != null" >
+        PubPhoneNo,
+      </if>
+      <if test="pubaddress != null" >
+        PubAddress,
+      </if>
+      <if test="taketype != null" >
+        TakeType,
+      </if>
+      <if test="taketime != null" >
+        TakeTime,
+      </if>
+      <if test="takecode != null" >
+        TakeCode,
+      </if>
+      <if test="takelongitude != null" >
+        TakeLongitude,
+      </if>
+      <if test="takelatitude != null" >
+        TakeLatitude,
+      </if>
+      <if test="productname != null" >
+        ProductName,
+      </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderno != null">
 				#{orderno,jdbcType=NVARCHAR},
-			</if>
+			</if>	
 			<if test="pickupaddress != null">
 				#{pickupaddress,jdbcType=NVARCHAR},
 			</if>
@@ -579,6 +606,33 @@
 			<if test="platform != null">
 				#{platform,jdbcType=INTEGER},
 			</if>
+					<if test="pubname != null" >
+        #{pubname,jdbcType=NVARCHAR},
+      </if>
+			 <if test="pubphoneno != null" >
+        #{pubphoneno,jdbcType=NVARCHAR},
+      </if>
+      <if test="pubaddress != null" >
+        #{pubaddress,jdbcType=NVARCHAR},
+      </if>
+       <if test="taketype != null" >
+        #{taketype,jdbcType=SMALLINT},
+      </if>
+      <if test="taketime != null" >
+        #{taketime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="takecode != null" >
+        #{takecode,jdbcType=NVARCHAR},
+      </if>
+      <if test="takelongitude != null" >
+        #{takelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="takelatitude != null" >
+        #{takelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="productname != null" >
+        #{productname,jdbcType=NVARCHAR},
+      </if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Order">
@@ -1108,6 +1162,9 @@
 		JOIN OrderOther (NOLOCK) ord ON ord.OrderId = ab.Id
 		JOIN business (NOLOCK) c ON c.id = ab.businessId
 		WHERE ab.Id =#{orderId,jdbcType=INTEGER} 
+		<if test="platform != null">
+			and ab.Platform=#{platform,jdbcType=INTEGER} 
+		</if>
 	</select>
 
 	<!--商家后台 订单详情页面基础数据 add by caoheyang 20150804 -->
@@ -1721,7 +1778,8 @@ GROUP BY a.id ,
 	
 	<!-- 后台E单订单列表页面   查询列集合 add by caoheyang 20151124 -->
 	<sql id="getShanSongOrdersColums">
-		a.* ,
+		a.Id,a.OrderNo,a.PubDate,a.PickUpAddress,a.BusinessId,a.ReceviceAddress,ISNULL(a.ClienterId, 0) clienterId ,
+                    a.PickupCode ,a.[Status],a.Amount,a.Weight,a. KM ,
         c.TrueName ClienterName,
         c.PhoneNo ClienterPhoneNo,
         b.PhoneNo BusinessPhoneNo 
@@ -1729,15 +1787,7 @@ GROUP BY a.id ,
 
 	<!-- 后台E单订单列表页面 查询列集来源 add by caoheyang 20151124 -->
 	<sql id="getShanSongOrdersFrom">
-		( select  Id,OrderNo,PubDate,PickUpAddress,BusinessId,ReceviceAddress,ISNULL(ClienterId, 0) clienterId ,
-                    PickupCode ,[Status] ,0 FormType,Amount,Weight, KM
-          from      dbo.[order] (nolock) where Platform=3
-          union all
-          select 0 Id ,OrderNo , PubDate ,PubAddress as PickUpAddress,BusinessId ,
-                 ReceviceAddress ,0 as clienterId ,TakeCode as PickupCode ,
-                 -1  [Status] ,1 FormType,Amount,Weight,KM
-          from    OrderDraft (nolock)
-        ) a
+	   dbo.[order] (nolock)  a
         join business b with ( nolock ) on b.Id = a.businessId
         left join dbo.clienter (nolock) c on a.ClienterId = c.Id
         left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
@@ -1751,7 +1801,7 @@ GROUP BY a.id ,
 		<if test="orderId != null and orderId!=''">
 			and a.OrderNo=''${orderId}''
 		</if>
-		<if test="orderStatus != null and orderStatus>-1">
+		<if test="orderStatus != null and orderStatus!=-1">
 			and a.Status=${orderStatus}
 		</if>
 		<if test="superManName != null and superManName!=''">
@@ -1773,8 +1823,8 @@ GROUP BY a.id ,
 		<if test="authorityCityNameList != null">
 			and b.city in
 			<foreach item="item" index="index" collection="authorityCityNameList"
-				open="(''" separator="'',''" close="'')">
-				#{item}
+				open="(" separator="," close=")">
+				''${item}''
 			</foreach>
 		</if>
 	</sql>
@@ -1807,25 +1857,65 @@ GROUP BY a.id ,
   		 parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
 select 	 a.Id ,a.OrderNo ,a.PickUpAddress,a.BusinessId ,
    a.ReceviceAddress ,a.clienterId ,a.PickupCode ,
-   a.[Status] ,a.FormType,a.Amount,a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
+   a.[Status] ,a.Amount,a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
    a.ReceviceName , CONVERT(VARCHAR(100),  a.[PubDate], 120) as PubDate,  e.PayType,
 ISNULL(c.TrueName,'匿名') ClienterName,
 ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
 ISNULL( b.PhoneNo ,'无') BusinessPhoneNo 
-from ( select  Id,OrderNo,PubDate,PickUpAddress,BusinessId,ReceviceAddress,ISNULL(ClienterId, 0) clienterId ,
-            PickupCode ,[Status] ,0 FormType,Amount,Weight, KM,RecevicePhoneNo,ReceviceName,' 'PubName,'' PubPhoneNo
-  from      dbo.[order] (nolock) where Platform=3
-  union all
-  select 0 Id ,OrderNo , PubDate ,PubAddress as PickUpAddress,BusinessId ,
-         ReceviceAddress ,0 as clienterId ,TakeCode as PickupCode ,
-         -1  [Status] ,1 FormType,Amount,Weight,KM,PubName,PubPhoneNo,RecevicePhoneNo,
-         ReceviceName
-  from    OrderDraft (nolock)
-) a
-join business b with ( nolock ) on b.Id = a.businessId
+from  dbo.[order] (nolock) a 
+join business b with ( nolock ) on b.Id = a.businessId and  a.Platform=3
 left join dbo.clienter (nolock) c on a.ClienterId = c.Id
 left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
 LEFT join dbo.OrderChild e ( nolock ) on  a.Id=d.OrderId
-
+where 
+1=1
+		<if test="businessPhone != null and businessPhone!='' ">
+			and b.PhoneNo='${businessPhone}'
+		</if>
+		<if test="orderId != null and orderId!=''">
+			and a.OrderNo='${orderId}'
+		</if>
+		<if test="orderStatus != null and orderStatus!=-1">
+			and a.Status=${orderStatus}
+		</if>
+		<if test="superManName != null and superManName!=''">
+			and c.TrueName='${superManName}'
+		</if>
+		<if test="superManPhone != null and superManPhone!='' ">
+			and c.PhoneNo='${superManPhone}'
+		</if>
+		<if test="orderPubStart != null and orderPubStart!=''">
+			and a.PubDate>= '${orderPubStart} 00:00:00'
+		</if>
+	    <if test="businessCity != null and businessCity !=''">
+			and b.city  = '${businessCity}'
+		</if>
+		<if test="orderPubEnd != null and orderPubEnd!=''">
+         <![CDATA[ and a.PubDate<=]]>
+			'${orderPubEnd} 23:59:59'
+		</if>
+		<if test="authorityCityNameList != null">
+			and b.city in
+			<foreach item="item" index="index" collection="authorityCityNameList"
+				open="(" separator="," close=")">
+				'${item}'
+			</foreach>
+		</if>
   </select>
+  	<!-- 后台E单订单详情页面 add by caoheyang 20151124 -->
+<select id="getShanSongOrderByNo" resultType="com.edaisong.entity.domain.ShanSongOrderListModel"
+		parameterType="java.lang.String">
+select 	 a.Id ,a.OrderNo ,a.PickUpAddress,a.BusinessId ,a.ReceviceAddress ,a.clienterId ,a.PickupCode ,
+a.[status],a.Amount,a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
+a.ReceviceName ,  a.[PubDate],
+ISNULL(c.TrueName,'匿名') ClienterName,
+ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
+ISNULL( b.PhoneNo ,'无') BusinessPhoneNo ,a.Remark,a.ProductName,a.IsEnable 
+from  dbo.[order] (nolock) a
+join business b with ( nolock ) on b.Id = a.businessId and a.Platform=3
+left join dbo.clienter (nolock) c on a.ClienterId = c.Id
+left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId 
+where a.orderno=#{ordernNo}
+</select>
+  
 </mapper>

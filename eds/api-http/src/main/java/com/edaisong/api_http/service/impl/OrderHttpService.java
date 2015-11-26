@@ -27,6 +27,7 @@ import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderDraftReq;
 import com.edaisong.entity.req.OrderDraftGetReq;
+import com.edaisong.entity.req.OrderDraftReturnReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
@@ -40,6 +41,7 @@ import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.req.OrderDraftReq;
 
 /**
  * 订单模块
@@ -65,8 +67,9 @@ public class OrderHttpService implements IOrderHttpService {
 	@Autowired
 	private IOrderDraftService orderDraftService;
 
-	/**
-	 * 发布订单 
+
+	/**快单模式
+	 * 发布订单  
 	 * @author 胡灵波
 	 * @date 2015年10月30日 11:29:00
 	 * @version 1.0
@@ -105,8 +108,10 @@ public class OrderHttpService implements IOrderHttpService {
 		return resp;
 	}	
 	
-	/**
-	 * 发布订单(闪送模式) 
+	// region 闪送模式
+	
+	/**闪送模式
+	 * 发布订单
 	 * @author 胡灵波
 	 * @date 2015年11月24日 13:24:18
 	 * @version 1.0
@@ -114,14 +119,40 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public HttpResultModel<OrderDraftResp> FlashPush(OrderDraftReq req)
+	public HttpResultModel<OrderResp> FlashPush(OrderDraftReq req)
 	{
-		HttpResultModel<OrderDraftResp> resp= orderDraftService.add(req);			
-		return resp;		
+		HttpResultModel<OrderResp> resp=new HttpResultModel<OrderResp>();
+		
+		try
+		{
+			resp=orderService.FlashPushOrder(req);	
+		}
+		catch(TransactionalRuntimeException err)
+		{
+			resp.setMessage(err.getMessage());
+			resp.setStatus(HttpReturnRnums.ParaError.value());
+		}			
+	
+		return resp;	
 	}	
 
-	/**
-	 * 获取未生效订单 (闪送模式) 
+	/**闪送模式
+	 * 确定发布订单回调
+	 * @author 胡灵波
+	 * @date 2015年11月25日 11:51:28
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderResp> ReturnFlashPush(OrderDraftReturnReq req)
+	{
+		orderService.ReturnFlashPush(req);
+		return null;
+	}	
+
+	/**闪送模式
+	 * 获取未生效订单
 	 * @author 胡灵波
 	 * @date 2015年11月25日 17:56:41
 	 * @version 1.0
@@ -133,6 +164,8 @@ public class OrderHttpService implements IOrderHttpService {
 	{				
 		return 	orderDraftService.selectByPrimaryKey(req.getId());		
 	}	
+	
+	// endregion
 	/**
 	 * B端任务统计接口
 	 * 

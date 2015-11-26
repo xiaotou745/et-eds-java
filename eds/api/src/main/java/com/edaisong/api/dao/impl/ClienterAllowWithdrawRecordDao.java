@@ -20,7 +20,7 @@ public class ClienterAllowWithdrawRecordDao extends DaoBase  implements
 	 */
 	@Override
 	public int insert(ClienterAllowWithdrawRecord record) {
-		int result = getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterAllowWithdrawRecordDao.insert",
+		int result = getMasterSqlSessionUtil().insert("IClienterAllowWithdrawRecordDao.insert",
 				record);
 		return result;
 	}

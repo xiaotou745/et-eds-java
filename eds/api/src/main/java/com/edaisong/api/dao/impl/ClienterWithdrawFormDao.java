@@ -26,6 +26,6 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 	@Override
 	public List<AlipayBatchClienterWithdrawForm> getClienterWithdrawFormByBatchNo(Long id) {
 	 	return getReadOnlySqlSessionUtil().selectList(
-			"com.edaisong.api.dao.inter.IClienterWithdrawFormDao.getClienterWithdrawFormByBatchNo", id);
+			"IClienterWithdrawFormDao.getClienterWithdrawFormByBatchNo", id);
 	}
 }

@@ -55,7 +55,7 @@ public class BusinessThirdRelationDao extends DaoBase implements
 	@Override
 	public List<BusinessThirdRelationModel> getListByBusinessID(int businessID) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IBusinessThirdRelationDao.getListByBusinessID",
+				"IBusinessThirdRelationDao.getListByBusinessID",
 				businessID);
 	}
 

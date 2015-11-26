@@ -27,45 +27,45 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 	@Override
 	public int insert(OrderGrab record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderGrabDao.insert", record);
+				"IOrderGrabDao.insert", record);
 	}
 	@Override
 	public int deleteById(Long id) {
 		return getMasterSqlSessionUtil().delete(
-				"com.edaisong.api.dao.inter.IOrderGrabDao.deleteById", id);
+				"IOrderGrabDao.deleteById", id);
 	}
 	
 	@Override
 	public int updateByPrimaryKeySelective(OrderGrab record)
 	{
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderGrabDao.updateByPrimaryKeySelective", record);
+				"IOrderGrabDao.updateByPrimaryKeySelective", record);
 	}	
 
 	@Override
 	public OrderGrab selectByPrimaryKeyWrite(Integer id)
 	{
 		return getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderGrabDao.selectByPrimaryKey", id);		
+				"IOrderGrabDao.selectByPrimaryKey", id);		
 	}
 		
 	@Override
 	public FastOrderDetail selectById(Long id) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderGrabDao.selectById", id);
+				"IOrderGrabDao.selectById", id);
 	}
 
 	@Override
 	public PagedResponse<FastOrderModel> query(PagedFastOrderSearchReq req) {
 		return getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IOrderGrabDao.query", req);
+				"IOrderGrabDao.query", req);
 	}
 
 	@Override
 	public List<FastOrderMapDetail> getMapDetailById(Long id) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dao.inter.IOrderGrabDao.getMapDetailById",
+						"IOrderGrabDao.getMapDetailById",
 						id);
 	} 
 	/*
@@ -76,7 +76,7 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 	public List<MyOrderGrabCModel> getMyOrderGrabC(
 			MyOrderGrabCReq myOrderGrabCReq) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderGrabDao.getMyOrderGrabC", myOrderGrabCReq);
+				"IOrderGrabDao.getMyOrderGrabC", myOrderGrabCReq);
 	}
 	/*
 	 * 获取我的任务详情
@@ -85,32 +85,32 @@ public class OrderGrabDao extends DaoBase implements IOrderGrabDao {
 	@Override
 	public MyOrderGrabDetailCResp getMyOrderGrabDetailC(
 			OrderGrabDetailCReq orderGrabDetailCReq) { 
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderGrabDao.getMyOrderGrabDetailC", orderGrabDetailCReq);
+		return getReadOnlySqlSessionUtil().selectOne("IOrderGrabDao.getMyOrderGrabDetailC", orderGrabDetailCReq);
 	}
 
 	@Override
 	public int insertSelective(OrderGrab record) {
 	
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderGrabDao.insertSelective", record);
+				"IOrderGrabDao.insertSelective", record);
 	}
 
 	@Override
 	public List<FastOrderExportModel> exportOrder(PagedFastOrderSearchReq req) {
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IOrderGrabDao.exportOrder", req);
+		return getReadOnlySqlSessionUtil().selectList("IOrderGrabDao.exportOrder", req);
 	}
 	@Override
 	public MyOrderGrabCResp getMyOrderGrabCTotalInfo(
 			MyOrderGrabCReq myOrderGrabCReq) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderGrabDao.getMyOrderGrabCTotalInfo", myOrderGrabCReq);
+		return getReadOnlySqlSessionUtil().selectOne("IOrderGrabDao.getMyOrderGrabCTotalInfo", myOrderGrabCReq);
 	}
 	@Override
 	public List<MyOrderGrabCModel> getHadFinishOrderC(HadFinishOrderReq para) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderGrabDao.getHadFinishOrderC", para);
+				"IOrderGrabDao.getHadFinishOrderC", para);
 	}
 	@Override
 	public HadFinishOrderResp getHadFinishOrderCTotalInfo(HadFinishOrderReq para) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderGrabDao.getHadFinishOrderCTotalInfo", para);
+		return getReadOnlySqlSessionUtil().selectOne("IOrderGrabDao.getHadFinishOrderCTotalInfo", para);
 	} 
 }

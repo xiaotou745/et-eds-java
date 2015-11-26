@@ -24,25 +24,25 @@ public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
 	public PagedResponse<GroupBusinessModel> getPageList(PagedGroupBusinessReq req) {
 		PagedResponse<GroupBusinessModel> result = new PagedResponse<GroupBusinessModel>();
 		result = getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IGroupBusinessDao.getPageList", req);
+				"IGroupBusinessDao.getPageList", req);
 		return result;
 	}
 	@Override
 	public GroupBusinessModel getSingle(GroupBusinessReq gbr) { 
 		GroupBusinessModel result = new GroupBusinessModel();
 		result = getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IGroupBusinessDao.getSingle", gbr);
+				"IGroupBusinessDao.getSingle", gbr);
 		return result;
 	}
 	@Override
 	public int addGroupBusiness(GroupBusiness groupBusiness) {
 		// TODO Auto-generated method stub
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IGroupBusinessDao.insert", groupBusiness);
+		return getMasterSqlSessionUtil().insert("IGroupBusinessDao.insert", groupBusiness);
 	}
 
 	@Override
 	public int modifyGroupBusiness(GroupBusiness groupBusiness) {
-		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IGroupBusinessDao.updateByPrimaryKey", groupBusiness);
+		return getMasterSqlSessionUtil().update("IGroupBusinessDao.updateByPrimaryKey", groupBusiness);
 	}
 	@Override
 	public GroupBusiness getByPhoneNoAndPwd(String phoneNo, String password) {
@@ -50,7 +50,7 @@ public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
 		paramMap.put("phoneNo", phoneNo);
 		paramMap.put("password", password);
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IGroupBusinessDao.getByPhoneNoAndPwd", paramMap);
+				.selectOne("IGroupBusinessDao.getByPhoneNoAndPwd", paramMap);
 	}
 	@Override
 	public int recharge(int groupID, double amount) {
@@ -58,12 +58,12 @@ public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
 		paramMap.put("groupID", groupID);
 		paramMap.put("amount", amount);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IGroupBusinessDao.recharge", paramMap);
+				.update("IGroupBusinessDao.recharge", paramMap);
 	} 
 	@Override
 	public GroupBusiness select(int groupID) {
 		return getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IGroupBusinessDao.select",
+				"IGroupBusinessDao.select",
 				groupID);
 	}
 }

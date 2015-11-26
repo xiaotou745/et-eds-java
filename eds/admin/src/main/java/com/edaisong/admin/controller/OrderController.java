@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.UserContext;
+import com.edaisong.api.service.inter.IAccountCityRelationService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
@@ -50,6 +51,8 @@ public class OrderController {
 	 private IOrderSubsidiesLogService orderSubsidiesLogService;
 	 @Autowired
 	 private HttpServletRequest request;
+	 @Autowired
+	 private IAccountCityRelationService accountCityRelationService;
 	 
 	/**
 	 * 订单列表页面 
@@ -256,8 +259,13 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("shansonglistdo")
-	public ModelAndView shansonglistdo(PagedOrderSearchReq searchWebReq){
-		PagedResponse<ShanSongOrderListModel> resp = orderService.getShanSongOrders(searchWebReq);
+	public ModelAndView shansonglistdo(PagedOrderSearchReq searchWebReq,HttpServletRequest request){
+		//如果管理后台的类型是所有权限就传0，否则传管理后台id    暂时注释
+		/*List<String> authsList =UserContext.getCurrentContext(request).getAccountType() == 1 ?
+				null:
+				accountCityRelationService.getAuthorityCitys(UserContext.getCurrentContext(request).getId());
+        searchWebReq.setAuthorityCityNameList(authsList);*/
+        PagedResponse<ShanSongOrderListModel> resp = orderService.getShanSongOrders(searchWebReq);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "order/shansonglistdo");
 		view.addObject("listData", resp);
@@ -306,4 +314,46 @@ public class OrderController {
 			response.sendRedirect(basePath+"/order/shansonglist");
 		}
 	}
+	
+	/**
+	 * 订单详情页面
+	 * @author CaoHeYang
+	 * @Date 20150827
+	 * @return
+	 */
+	@RequestMapping("shansongdetail")
+	public ModelAndView shansongdetail(String orderno, int orderid){
+		ModelAndView model = new ModelAndView("adminView");
+       ShanSongOrderListModel orderListModel =orderService.getShanSongOrderByNo(orderno);
+	   if (orderListModel==null) {
+		   throw new RuntimeException("没有找到orderno="+orderno+"的订单");
+	   }
+	    List<OrderSubsidiesLog> orderSubsidiesLogs=orderSubsidiesLogService.GetOrderOptionLog((long)orderid);
+		model.addObject("subtitle", "订单管理");
+		model.addObject("currenttitle", "E单详情");
+		model.addObject("viewPath", "order/shansongdetail");
+		model.addObject("orderListModel", orderListModel);
+		model.addObject("orderSubsidiesLogs", orderSubsidiesLogs);
+		model.addObject("isShowAuditBtn", isShowAuditBtn(orderListModel));
+		return model;
+	}
+	
+	/**
+	 * 取消订单
+	 * 该方法在订单超时列表页也调用
+	 * @author CaoHeYang
+	 * @param auditOkOrder
+	 * @Date 20150828
+	 * @return
+	 */
+	@RequestMapping(value="shansongcancelorder",method= {RequestMethod.POST})
+	@ResponseBody
+	public ResponseBase shansongcancelorder(OptOrder cancelorder){
+		cancelorder.setOptUserId(UserContext.getCurrentContext(request).getId());
+		cancelorder.setOptUserName(UserContext.getCurrentContext(request).getLoginName());
+		ResponseBase responseBase= orderService.shanSongCancelOrder(cancelorder);
+		return responseBase;
+	}
+	
+	
 }

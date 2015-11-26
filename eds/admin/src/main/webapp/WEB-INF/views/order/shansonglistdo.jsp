@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="java.sql.Date"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="java.lang.Double"%>
@@ -9,7 +10,9 @@
 <%@page import="com.edaisong.entity.domain.ShanSongOrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.enums.ShanSongOrderStatus"%>
-
+<%	
+String basePath =PropertyUtils.getProperty("java.admin.url");
+%>
 <table class="table table-striped table-bordered table-hover dataTables-example" style="text-align:center;">
 	<thead>
 		<tr>
@@ -34,32 +37,11 @@
 				data = new ArrayList<ShanSongOrderListModel>();
 			}
 			for (int i = 0; i < data.size(); i++) {
-				double distance = data.get(i).getGrabToCompleteDistance();
-				String grabToCompleteStyle = "";
-				String grabToCompleteStr = "";
-				if (distance == -1)//抢单和完成的坐标有一个未知时
-				{
-					grabToCompleteStyle = "color:black";
-					grabToCompleteStr = "未知";
-				} else if (distance == 0.0)//抢单和完成的坐标重合
-				{
-					grabToCompleteStyle = "color:red;font-weight:900";
-					grabToCompleteStr = "重合";
-				} else //抢单和完成的坐标不重合
-				{
-					grabToCompleteStyle = "color:green";
-					grabToCompleteStr = "不重合";
-				}
-				int diffHour = 0;
-				String val = diffHour > 10 && data.get(i).getStatus() == 0 ? "red"
-						: diffHour > 8 && data.get(i).getStatus() == 0 ? "blue"
-								: diffHour > 5 && data.get(i).getStatus() == 0 ? "yellow"
-										: "none";
 		%>
 		<tr>
 			<td><%=i + 1%></td>
 			<td>
-			<%=data.get(i).getOrderNo()%>
+			<a href="<%=basePath%>/order/shansongdetail?orderno=<%=data.get(i).getOrderNo()%>&orderid=<%=data.get(i).getId()%>"><%=data.get(i).getOrderNo()%></a>
 		    </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getBusinessPhoneNo())%> 
 			<td><%=ParseHelper.ToDateString(data.get(i).getPubDate())%>
@@ -72,7 +54,11 @@
 			<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getPickupCode())%></td>
 			<td>	<%=ShanSongOrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
-			<td><a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a></td>
+			<td>  
+			<%if(data.get(i).getStatus()!=ShanSongOrderStatus.WaitPay.value()){%>
+			<a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a>
+			<%}%>
+			</td>
 		</tr>
 		<%
 			}

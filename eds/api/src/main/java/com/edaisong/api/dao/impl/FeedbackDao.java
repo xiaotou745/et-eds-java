@@ -37,7 +37,7 @@ public class FeedbackDao extends DaoBase implements IFeedbackDao {
 	public int insert(Feedback record) {
 		// TODO Auto-generated method stub	
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IFeedbackDao.insert", record);
+				"IFeedbackDao.insert", record);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class FeedbackDao extends DaoBase implements IFeedbackDao {
 
 		PagedResponse<FeedbackModel> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.edaisong.api.dao.inter.IFeedbackDao.query",
+						"IFeedbackDao.query",
 						req);
 		return model;
 	}

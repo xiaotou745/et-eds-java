@@ -42,6 +42,6 @@ public class BusinessWithdrawFormDao extends DaoBase implements IBusinessWithdra
 
 	@Override
 	public BusinessWithdrawFormModel getBusinessWithdrawListById(String withwardId) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessWithdrawFormDao.getBusinessWithdrawListById", withwardId);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessWithdrawFormDao.getBusinessWithdrawListById", withwardId);
 	}
 }
