@@ -21,6 +21,8 @@ import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq; 
+import com.edaisong.entity.req.OrderDraftReq;
+import com.edaisong.entity.req.OrderDraftReturnReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
@@ -137,6 +139,22 @@ public interface IOrderService {
 	 * @return
 	 */
 	HttpResultModel<OrderResp> PushOrder(OrderReq req);
+	
+	
+	// region 闪送
+	/**
+	 * 发布订单 api调用
+	 * 
+	 * @param req
+	 *            参数
+	 * @author 胡灵波
+	 * @Date 2015年8月6日 09:51:47
+	 * @return
+	 */
+	HttpResultModel<OrderResp> FlashPushOrder(OrderDraftReq req);
+	
+	HttpResultModel<OrderResp> ReturnFlashPush(OrderDraftReturnReq req);
+	// endregion 
 
 	/**
 	 * 商户发单，点击按纽钱查询商户余额信息，以及该订单的结算信息

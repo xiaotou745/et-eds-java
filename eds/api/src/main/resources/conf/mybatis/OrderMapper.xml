@@ -406,11 +406,38 @@
 			<if test="platform != null">
 				platform,
 			</if>
+			 <if test="pubname != null" >
+             PubName,
+            </if>
+            <if test="pubphoneno != null" >
+        PubPhoneNo,
+      </if>
+      <if test="pubaddress != null" >
+        PubAddress,
+      </if>
+      <if test="taketype != null" >
+        TakeType,
+      </if>
+      <if test="taketime != null" >
+        TakeTime,
+      </if>
+      <if test="takecode != null" >
+        TakeCode,
+      </if>
+      <if test="takelongitude != null" >
+        TakeLongitude,
+      </if>
+      <if test="takelatitude != null" >
+        TakeLatitude,
+      </if>
+      <if test="productname != null" >
+        ProductName,
+      </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderno != null">
 				#{orderno,jdbcType=NVARCHAR},
-			</if>
+			</if>	
 			<if test="pickupaddress != null">
 				#{pickupaddress,jdbcType=NVARCHAR},
 			</if>
@@ -579,6 +606,33 @@
 			<if test="platform != null">
 				#{platform,jdbcType=INTEGER},
 			</if>
+					<if test="pubname != null" >
+        #{pubname,jdbcType=NVARCHAR},
+      </if>
+			 <if test="pubphoneno != null" >
+        #{pubphoneno,jdbcType=NVARCHAR},
+      </if>
+      <if test="pubaddress != null" >
+        #{pubaddress,jdbcType=NVARCHAR},
+      </if>
+       <if test="taketype != null" >
+        #{taketype,jdbcType=SMALLINT},
+      </if>
+      <if test="taketime != null" >
+        #{taketime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="takecode != null" >
+        #{takecode,jdbcType=NVARCHAR},
+      </if>
+      <if test="takelongitude != null" >
+        #{takelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="takelatitude != null" >
+        #{takelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="productname != null" >
+        #{productname,jdbcType=NVARCHAR},
+      </if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Order">

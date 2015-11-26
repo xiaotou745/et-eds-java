@@ -17,6 +17,7 @@ import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderDraftReq;
 import com.edaisong.entity.req.OrderDraftGetReq;
+import com.edaisong.entity.req.OrderDraftReturnReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderReq;
@@ -82,10 +83,24 @@ public interface IOrderHttpService {
 	 * @param req
 	 * @return
 	 */
+//	@POST
+//	@Path("/flashpush")
+//	public HttpResultModel<OrderDraftResp> FlashPush(OrderDraftReq req);
 	@POST
 	@Path("/flashpush")
-	public HttpResultModel<OrderDraftResp> FlashPush(OrderDraftReq req);
+	public HttpResultModel<OrderResp> FlashPush(OrderDraftReq req);
 	
+	/**
+	 * 确定发布订单回调(闪送模式) 
+	 * @author 胡灵波
+	 * @date 2015年11月25日 11:51:28
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/returnflashpush")
+	public HttpResultModel<OrderResp> ReturnFlashPush(OrderDraftReturnReq req);
 
 	/**
 	 * 获取未生效订单(闪送模式) 

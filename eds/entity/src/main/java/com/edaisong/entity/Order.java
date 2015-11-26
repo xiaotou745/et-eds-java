@@ -118,6 +118,93 @@ public class Order {
     
     private Double basecommission;
     private Integer platform;
+    
+    public String getPubname() {
+		return pubname;
+	}
+
+	public void setPubname(String pubname) {
+		this.pubname = pubname;
+	}
+
+	public String getPubphoneno() {
+		return pubphoneno;
+	}
+
+	public void setPubphoneno(String pubphoneno) {
+		this.pubphoneno = pubphoneno;
+	}
+
+	public String getPubaddress() {
+		return pubaddress;
+	}
+
+	public void setPubaddress(String pubaddress) {
+		this.pubaddress = pubaddress;
+	}
+
+	public Short getTaketype() {
+		return taketype;
+	}
+
+	public void setTaketype(Short taketype) {
+		this.taketype = taketype;
+	}
+
+	public Date getTaketime() {
+		return taketime;
+	}
+
+	public void setTaketime(Date taketime) {
+		this.taketime = taketime;
+	}
+
+	public String getTakecode() {
+		return takecode;
+	}
+
+	public void setTakecode(String takecode) {
+		this.takecode = takecode;
+	}
+
+	public Double getTakelongitude() {
+		return takelongitude;
+	}
+
+	public void setTakelongitude(Double takelongitude) {
+		this.takelongitude = takelongitude;
+	}
+
+	public Double getTakelatitude() {
+		return takelatitude;
+	}
+
+	public void setTakelatitude(Double takelatitude) {
+		this.takelatitude = takelatitude;
+	}
+
+	public String getProductname() {
+		return productname;
+	}
+
+	public void setProductname(String productname) {
+		this.productname = productname;
+	}
+
+	private String pubname;
+    private String pubphoneno;
+    private String pubaddress;
+
+    private Short taketype;
+
+    private Date taketime;
+
+    private String takecode;
+
+    private Double takelongitude;
+
+    private Double takelatitude;
+    private String productname;
 	
     public Integer getPlatform() {
 		return platform;
