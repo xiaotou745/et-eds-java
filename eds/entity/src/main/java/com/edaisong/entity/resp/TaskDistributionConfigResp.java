@@ -3,12 +3,18 @@ package com.edaisong.entity.resp;
 public class TaskDistributionConfigResp {
 	private int masterKM;
 	private int masterKG;
-	private double masterPrice;
+	private double masterDistributionPrice;
 	private int oneKM;
 	private double oneDistributionPrice;
 	private int twoKG;
 	private double twoDistributionPrice;
 	
+	public double getMasterDistributionPrice() {
+		return masterDistributionPrice;
+	}
+	public void setMasterDistributionPrice(double masterDistributionPrice) {
+		this.masterDistributionPrice = masterDistributionPrice;
+	}
 	public int getMasterKG() {
 		return masterKG;
 	}
@@ -22,12 +28,7 @@ public class TaskDistributionConfigResp {
 		this.masterKM = masterKM;
 	}
 	
-	public double getMasterPrice() {
-		return masterPrice;
-	}
-	public void setMasterPrice(double masterPrice) {
-		this.masterPrice = masterPrice;
-	}
+	
 	public int getOneKM() {
 		return oneKM;
 	}

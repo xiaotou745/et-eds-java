@@ -51,7 +51,7 @@ public class TaskDistributionConfigService implements
 		TaskDistributionConfig config= list.get(0);
 		response.setMasterKM(config.getkM());
 		response.setMasterKG(config.getkG());
-		response.setMasterPrice(config.getDistributionPrice());
+		response.setMasterDistributionPrice(config.getDistributionPrice());
 		
 		config =list.get(1);
 		response.setOneKM(config.getkM());
