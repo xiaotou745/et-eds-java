@@ -11,7 +11,7 @@ public class AccountLoginLogDao extends DaoBase implements IAccountLoginLogDao{
 
 	@Override
 	public void addLog(AccountLog log) {
-		getMasterSqlSessionUtil().insert("com.edaisong.toolsapi.dao.inter.IAccountLoginLogDao.addLog", log);
+		getMasterSqlSessionUtil().insert("IAccountLoginLogDao.addLog", log);
 	}
 
 }

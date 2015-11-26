@@ -36,11 +36,11 @@ public class GroupDao extends DaoBase implements IGroupDao {
 //		paramMap.put("ismodifybind", 0);
 //
 //		return getMasterSqlSessionUtil().insert(
-//				"com.edaisong.api.dao.inter.IGroupDao.insert", record);
+//				"IGroupDao.insert", record);
 		 
 
 			return getMasterSqlSessionUtil().insert(
-					"com.edaisong.api.dao.inter.IGroupDao.insert", record);
+					"IGroupDao.insert", record);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class GroupDao extends DaoBase implements IGroupDao {
 			paramMap.put("isvalid", record.getIsvalid());
 
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IGroupDao.updateByPrimaryKeySelective",
+				.update("IGroupDao.updateByPrimaryKeySelective",
 						paramMap);
 
 	}
@@ -81,7 +81,7 @@ public class GroupDao extends DaoBase implements IGroupDao {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", id);
 		List<GroupModel> list = getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IGroupDao.getGroupListByID",
+				"IGroupDao.getGroupListByID",
 				paramMap);
 		return list;
 
@@ -94,7 +94,7 @@ public class GroupDao extends DaoBase implements IGroupDao {
 //		paramMap.put("groupname", req.getGroupName());
 //		paramMap.put("appkey", req.getAppKey());
 		List<GroupModel> list = getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IGroupDao.getGroupList",
+				"IGroupDao.getGroupList",
 				paramMap);
 		return list;
 	}

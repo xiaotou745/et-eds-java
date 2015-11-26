@@ -20,7 +20,7 @@ public class ClienterForzenDao  extends DaoBase implements IClienterForzenDao{
 	 */
 	@Override
 	public int insert(ClienterForzen record) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterForzenDao.insert", record);
+		return getMasterSqlSessionUtil().insert("IClienterForzenDao.insert", record);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class ClienterForzenDao  extends DaoBase implements IClienterForzenDao{
 
 	@Override
 	public int updateByPrimaryKey(ClienterForzen record) {
-		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IClienterForzenDao.updateByPrimaryKey", record); 
+		return getMasterSqlSessionUtil().update("IClienterForzenDao.updateByPrimaryKey", record); 
 	}
     /*
      * 获取冻结单列表
@@ -55,7 +55,7 @@ public class ClienterForzenDao  extends DaoBase implements IClienterForzenDao{
 			PagedClienterForzenReq par) {
 		PagedResponse<ClienterForzen> resp = new PagedResponse<ClienterForzen>();
 		resp = getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IClienterForzenDao.getFrozenList", par);
+				"IClienterForzenDao.getFrozenList", par);
 		return resp;
 	}
 

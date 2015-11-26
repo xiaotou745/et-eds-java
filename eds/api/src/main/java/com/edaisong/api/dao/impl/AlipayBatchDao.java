@@ -26,7 +26,7 @@ public class AlipayBatchDao  extends DaoBase  implements IAlipayBatchDao {
 	public PagedResponse<AlipayBatch>  getAlipayBatchPagedList(PagedAlipayBatchListReq req){
 		PagedResponse<AlipayBatch> result = new PagedResponse<AlipayBatch>();
 		result = getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IAlipayBatchDao.getAlipayBatchPagedList", req);
+				"IAlipayBatchDao.getAlipayBatchPagedList", req);
 		return result;
 	}
 	/**
@@ -38,6 +38,6 @@ public class AlipayBatchDao  extends DaoBase  implements IAlipayBatchDao {
 	@Override
 	public AlipayBatch getAlipayBatchById(Long id) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IAlipayBatchDao.getAlipayBatchById", id);
+				"IAlipayBatchDao.getAlipayBatchById", id);
 	}
 }

@@ -52,7 +52,7 @@ public class BusinessGroupDao extends DaoBase implements IBusinessGroupDao{
 
 	@Override
 	public List<BusinessGroup> getBusinessGroupList() {
-		String statement = "com.edaisong.api.dao.inter.IBusinessGroupDao.getBusinessGroupList";
+		String statement = "IBusinessGroupDao.getBusinessGroupList";
 		List<BusinessGroup> model = getReadOnlySqlSessionUtil().selectList(
 				statement);
 		return model;

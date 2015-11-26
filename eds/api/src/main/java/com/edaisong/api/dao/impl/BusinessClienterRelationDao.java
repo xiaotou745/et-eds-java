@@ -31,7 +31,7 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	@Override
 	public int getBusinessBindClienterQty(int businessId) {
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getBusinessBindClienterQty", businessId);
+				.selectOne("IBusinessClienterRelationDao.getBusinessBindClienterQty", businessId);
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	@Override
 	public int getClienterBindBusinessQty(int clienterId) {
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getClienterBindBusinessQty", clienterId);
+				.selectOne("IBusinessClienterRelationDao.getClienterBindBusinessQty", clienterId);
 	}
 
 	/**
@@ -53,19 +53,19 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	@Override
 	public PagedResponse<BusinessClienterRelationModel> getBusinessClienterRelationList(PagedCustomerSearchReq req) {
 		return getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getBusinessClienterRelationList", req);
+				"IBusinessClienterRelationDao.getBusinessClienterRelationList", req);
 	}
 
 	@Override
 	public boolean modifyClienterBind(ClienterBindOptionReq req) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.modifyClienterBind", req) > 0;
+				"IBusinessClienterRelationDao.modifyClienterBind", req) > 0;
 	}
 
 	@Override
 	public boolean removeclienterbind(ClienterBindOptionReq req) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.removeclienterbind", req) > 0;
+				"IBusinessClienterRelationDao.removeclienterbind", req) > 0;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	@Override
 	public boolean checkHaveBind(ClienterBindOptionReq req) {
 		return ((int)getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.checkHaveBind", req)) > 0;
+				"IBusinessClienterRelationDao.checkHaveBind", req)) > 0;
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	@Override
 	public boolean addClienterBind(ClienterBindOptionReq req){
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.addClienterBind", req) > 0;
+				"IBusinessClienterRelationDao.addClienterBind", req) > 0;
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 		map.put("businessId", businessId);
 		map.put("clienterId", clienterId);
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getDetails", map);
+				"IBusinessClienterRelationDao.getDetails", map);
 	}
 	/**
 	 * 商戶端 我的骑士
@@ -111,7 +111,7 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	@Override
 	public List<ServiceClienters> getMyServiceClienters(PagedGetMyServiceClientersReq req) {
 		PagedResponse<ServiceClienters> lists= getMasterSqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getMyServiceClienters", req);
+				"IBusinessClienterRelationDao.getMyServiceClienters", req);
 		return lists.getResultList();
 	}
 	
@@ -127,7 +127,7 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	@Override
 	public GetMyServiceClientersResp getMyServiceClientersCountInfo(PagedGetMyServiceClientersReq req){
 		return getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getMyServiceClientersCountInfo", req);
+				"IBusinessClienterRelationDao.getMyServiceClientersCountInfo", req);
 	}
 	/**
 	 * 商戶端 我的骑士 申请中 同意/拒绝功能
@@ -140,21 +140,21 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	 */
 	public	int optBindClienter(OptBindClienterReq req){
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.optBindClienter", req);
+				"IBusinessClienterRelationDao.optBindClienter", req);
 	}
 
 	@Override
 	public boolean updateClienterBindRelation(
 			ClienterBindOptionReq bindClienterBusiness) {
 		int i =getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IBusinessClienterRelationDao.updateClienterBindRelation", bindClienterBusiness);
+				"IBusinessClienterRelationDao.updateClienterBindRelation", bindClienterBusiness);
 		return i>0;
 		 
 	}
 
 	@Override
 	public BusinessClienterRelation getByRelationId(Integer id) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessClienterRelationDao.getByRelationId", id);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessClienterRelationDao.getByRelationId", id);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class BusinessClienterRelationDao extends DaoBase implements IBusinessCli
 	 * */
 	@Override
 	public int updateClienterBindRelationCooperation(BusinessClienterRelationReq req) {
-		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IBusinessClienterRelationDao.updateClienterBindRelationCooperation", req);
+		return getMasterSqlSessionUtil().update("IBusinessClienterRelationDao.updateClienterBindRelationCooperation", req);
 	}
 	
 	

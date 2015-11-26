@@ -17,12 +17,12 @@ public class GroupBusinessBalanceDao extends DaoBase implements IGroupBusinessBa
 	@Override
 	public PagedResponse<GroupBusinessBalanceRecord> getGroupBusinessRecord(
 			PagedGroupBussinessBalanceReq req) { 
-		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IGroupBusinessBalanceDao.getGroupBusinessRecord", req);
+		return getReadOnlySqlSessionUtil().selectPageList("IGroupBusinessBalanceDao.getGroupBusinessRecord", req);
 	}
 
 	@Override
 	public List<GroupBusinessBalanceRecord> getGroupBusinessBalanceRecordForExport(
 			PagedGroupBussinessBalanceReq req) {
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IGroupBusinessBalanceDao.getGroupBusinessRecordForExport", req);
+		return getReadOnlySqlSessionUtil().selectList("IGroupBusinessBalanceDao.getGroupBusinessRecordForExport", req);
 	} 
 }

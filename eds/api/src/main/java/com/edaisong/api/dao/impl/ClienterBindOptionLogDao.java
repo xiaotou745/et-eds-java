@@ -14,7 +14,7 @@ public class ClienterBindOptionLogDao extends DaoBase implements IClienterBindOp
 
 	@Override
 	public int insert(ClienterBindOptionLog record) {
-return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterBindOptionLogDao.selectList", record);
+return getMasterSqlSessionUtil().insert("IClienterBindOptionLogDao.selectList", record);
 	}
 
 	@Override
@@ -23,7 +23,7 @@ return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterBin
 		Map<String, Object> param=new HashMap<String, Object>();
 		param.put("businessId", businessId);
 		param.put("clienterId", clienterId);
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IClienterBindOptionLogDao.selectList", param);
+		return getReadOnlySqlSessionUtil().selectList("IClienterBindOptionLogDao.selectList", param);
 	}
 
 }

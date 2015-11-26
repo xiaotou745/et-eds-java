@@ -60,7 +60,7 @@ public class OrderDetailDao  extends DaoBase implements IOrderDetailDao {
 		Map<String, Object> paramMap = new HashedMap();
 		paramMap.put("orderNo", ordernNo);  //订单号
 		paramMap.put("orderId", orderId);  //订单id
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IOrderDetailDao.getOrderDetailIByNoId", paramMap);
+		return getReadOnlySqlSessionUtil().selectList("IOrderDetailDao.getOrderDetailIByNoId", paramMap);
 	}
 
 }

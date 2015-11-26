@@ -67,7 +67,7 @@ public class ClienterLocationDao extends DaoBase implements IClienterLocationDao
 		maps.put("start",  ParseHelper.ToDateString(start));
 		maps.put("end",  ParseHelper.ToDateString(end));
 		maps.put("clienterId",  clienterId);
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IClienterLocationDao.getLocationsByTime", maps);
+		return getReadOnlySqlSessionUtil().selectList("IClienterLocationDao.getLocationsByTime", maps);
 	}
 
 }

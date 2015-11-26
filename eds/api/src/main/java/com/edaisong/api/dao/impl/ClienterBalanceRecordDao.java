@@ -27,7 +27,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 
 	@Override
 	public AccountBillDayCResultModel getAccountInMoneyAndOutMoney(PagedAccountBillDayCReq par) {
-		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.getAccountInMoneyAndOutMoney",
+		return getMasterSqlSessionUtil().selectOne("IClienterBalanceRecordDao.getAccountInMoneyAndOutMoney",
 				par);
 	}
 	/**
@@ -35,7 +35,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	 */
 	@Override
 	public int insert(ClienterBalanceRecord record) {
-		int result = getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.insert",
+		int result = getMasterSqlSessionUtil().insert("IClienterBalanceRecordDao.insert",
 				record);
 		return result;
 	}
@@ -69,7 +69,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 
 		PagedResponse<ClienterBalanceRecord> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.edaisong.api.dao.inter.IClienterBalanceRecordDao.query",
+						"IClienterBalanceRecordDao.query",
 						req);
 		return model;
 	}
@@ -86,7 +86,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	public ClienterBalanceRecord getByOrderId(long id) {
 		Map< String, Object> map=new HashedMap();
 		map.put("id", id);
-		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.getByOrderId", map);
+		return getMasterSqlSessionUtil().selectOne("IClienterBalanceRecordDao.getByOrderId", map);
 	}
 	/***
 	 * 骑士获取月账单信息
@@ -113,7 +113,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 		params.put("clienterId", par.getClienterId());
 		params.put("startDate", startDate);
 		params.put("endDate", endDate);
-		List<AccountBillModel> list= getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.getAccountBillCList", params);
+		List<AccountBillModel> list= getReadOnlySqlSessionUtil().selectList("IClienterBalanceRecordDao.getAccountBillCList", params);
 		Map<String,AccountBillModel> map=new HashMap<String,AccountBillModel>();
 		for (int i = 0; i < list.size(); i++) {
 			map.put(list.get(i).getDayInfo(), list.get(i));
@@ -130,7 +130,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	public List<AccountBillDayCModel> getAccountBillListDayC(
 			PagedAccountBillDayCReq par) {
 		 List<AccountBillDayCModel> list=new ArrayList<AccountBillDayCModel>();
-			PagedResponse<AccountBillDayCModel> result =getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.getAccountBillDayCList", par);
+			PagedResponse<AccountBillDayCModel> result =getReadOnlySqlSessionUtil().selectPageList("IClienterBalanceRecordDao.getAccountBillDayCList", par);
 			if(result.getResultList()!=null&&result.getResultList().size()>0)
 			{
 				list=result.getResultList();
@@ -145,7 +145,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	@Override
 	public AccountBillDetailCModel getAccountBillDetailC(
 			AccountBillDetailCReq par) {
-		AccountBillDetailCModel model=getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterBalanceRecordDao.getAccountBillDetailC", par);
+		AccountBillDetailCModel model=getReadOnlySqlSessionUtil().selectOne("IClienterBalanceRecordDao.getAccountBillDetailC", par);
 		return model;
 	}
 
