@@ -21,6 +21,7 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.ExportShanSongOrder;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -50,14 +51,14 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public int insert(Order record)
 	{
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderDao.insertSelective", record);
+				"IOrderDao.insertSelective", record);
 	}
 	
 	@Override
 	public Order selectIsExistByBusinessId(OrderReq req)
 	{
 		Order result = getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderDao.selectIsExistByBusinessId",
+				"IOrderDao.selectIsExistByBusinessId",
 				req);
 		return result;
 	}
@@ -76,7 +77,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 
 		PagedResponse<OrderListModel> result = new PagedResponse<OrderListModel>();
 		result = getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IOrderDao.GetOrders", search);
+				"IOrderDao.GetOrders", search);
 		return result;
 	}
 
@@ -90,7 +91,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	 */
 	public OrderMapDetail getOrderMapDetail(int orderId) {
 		OrderMapDetail result = getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderDao.getOrderMapDetail",
+				"IOrderDao.getOrderMapDetail",
 				orderId);
 		return result;
 	}
@@ -108,7 +109,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 			OrderDetailBusinessReq para) {
 		OrderDetailBusiness result = getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dao.inter.IOrderDao.getOrderDetailBusiness",
+						"IOrderDao.getOrderDetailBusiness",
 						para);
 		return result;
 	}
@@ -126,7 +127,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public Order getOneByCriteria(Order order) {
 		Order result = getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dao.inter.IOrderDao.getOneByCriteria",
+						"IOrderDao.getOneByCriteria",
 						order);
 		return result;
 	}
@@ -144,7 +145,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public int cancelOrderBusiness(Order order) {
 		int res = getMasterSqlSessionUtil()
 				.update(
-						"com.edaisong.api.dao.inter.IOrderDao.cancelOrderBusiness",
+						"IOrderDao.cancelOrderBusiness",
 						order);
 		return res;
 	}
@@ -152,7 +153,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	public BusinessOrderSummaryModel getBusinessOrderSummary(int businessId) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderDao.getBusinessOrderSummary", 
+				"IOrderDao.getBusinessOrderSummary", 
 				businessId);
 	}
 
@@ -163,13 +164,13 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		paramMap.put("startTime", startTime);
 		paramMap.put("endTime", endTime);
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.getBusiPubOrderTimeStatistics", 
+				"IOrderDao.getBusiPubOrderTimeStatistics", 
 				paramMap);
 	}
 
 	@Override
 	public PagedResponse<OrderListModel> customerGetOrders(PagedCustomerSearchReq req) {
-		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IOrderDao.customerGetOrders", req);
+		return getReadOnlySqlSessionUtil().selectPageList("IOrderDao.customerGetOrders", req);
 	}
 
 	 /**
@@ -185,7 +186,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		Map<String, Object> paramMap = new HashedMap();
 		paramMap.put("orderNo", ordernNo);  //订单号
 		paramMap.put("orderId", orderId);  //订单id
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderDao.getOrderByNoId", paramMap);
+		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.getOrderByNoId", paramMap);
 	}
 	
 	 /**
@@ -202,7 +203,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		Map<String, Object> paramMap = new HashedMap();
 		paramMap.put("orderNo", ordernNo);  //订单号
 		paramMap.put("orderId", orderId);  //订单id
-		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderDao.getOrderByNoId", paramMap);
+		return getMasterSqlSessionUtil().selectOne("IOrderDao.getOrderByNoId", paramMap);
 	}
 	/**
 	 * update 任意列 根据id 
@@ -211,7 +212,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	 * @return
 	 */
   public int updateByPrimaryKeySelective(Order order){
-	  return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderDao.updateByPrimaryKeySelective", order);
+	  return getMasterSqlSessionUtil().update("IOrderDao.updateByPrimaryKeySelective", order);
   }
   /**
    * 更新订单真实佣金
@@ -222,7 +223,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
    */
 	@Override
 	public int updateOrderRealCommission(OrderOtherSearch orderOtherSearch) {
-		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderDao.updateOrderRealCommission", orderOtherSearch);
+		return getMasterSqlSessionUtil().update("IOrderDao.updateOrderRealCommission", orderOtherSearch);
 	}
 
 	/**
@@ -237,7 +238,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	public List<ExportOrder> exportOrder(PagedOrderSearchReq search) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.exportOrder", 
+				"IOrderDao.exportOrder", 
 				search);
 	}
 
@@ -249,7 +250,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	public List<ServiceClienter> getOrderStatisticsServiceClienterB(OrderStatisticsBReq orderStatisticsBReq) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.getOrderStatisticsServiceClienterB", 
+				"IOrderDao.getOrderStatisticsServiceClienterB", 
 				orderStatisticsBReq);
 	}
 
@@ -262,7 +263,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	public List<DaySatisticsB> getOrderStatisticsDaySatistics(OrderStatisticsBReq orderStatisticsBReq) {
 			return getReadOnlySqlSessionUtil().selectList(
-					"com.edaisong.api.dao.inter.IOrderDao.getOrderStatisticsDaySatistics", 
+					"IOrderDao.getOrderStatisticsDaySatistics", 
 					orderStatisticsBReq);
 	}
 
@@ -274,7 +275,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	public OrderStatisticsBResp getOrderStatistics(OrderStatisticsBReq orderStatisticsBReq) {
 			return getReadOnlySqlSessionUtil().selectOne(
-					"com.edaisong.api.dao.inter.IOrderDao.getOrderStatistics", 
+					"IOrderDao.getOrderStatistics", 
 					orderStatisticsBReq);
 	}
 
@@ -288,7 +289,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	public List<QueryOrder> queryOrder(QueryOrderReq query) {
 		PagedResponse<QueryOrder> result=  getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IOrderDao.queryOrder", 
+				"IOrderDao.queryOrder", 
 				query);
 		return result.getResultList();
 	}
@@ -302,7 +303,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public OrderStatisticsCResp getOrderStatisticsC(
 			OrderStatisticsCReq orderStatisticsCReq) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderDao.getOrderStatisticsC", 
+				"IOrderDao.getOrderStatisticsC", 
 				orderStatisticsCReq);
 	}
 	/**
@@ -315,7 +316,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public List<DaySatisticsC> getOrderStatisticsDaySatisticsC(
 			OrderStatisticsCReq orderStatisticsCReq) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.getOrderStatisticsDaySatisticsC", 
+				"IOrderDao.getOrderStatisticsDaySatisticsC", 
 				orderStatisticsCReq);
 	}
 	/**
@@ -328,7 +329,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
    public	QueryOrderCResp queryOrderC(QueryOrderReq query) {
 	   return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderDao.queryOrderC", 
+				"IOrderDao.queryOrderC", 
 				query);
    }
 	/**
@@ -341,7 +342,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	public QueryOrderBResp queryOrderB(QueryOrderReq query) {
 		   return getReadOnlySqlSessionUtil().selectOne(
-					"com.edaisong.api.dao.inter.IOrderDao.queryOrderB", 
+					"IOrderDao.queryOrderB", 
 					query);
 	}
 	/**
@@ -354,7 +355,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	 public List<QueryOrder> queryDeliveryOrderC(QueryOrderReq query) {
 		PagedResponse<QueryOrder> result=  getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IOrderDao.queryDeliveryOrderC", 
+				"IOrderDao.queryDeliveryOrderC", 
 				query);
 		return result.getResultList();
 	 }
@@ -370,37 +371,37 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	public PagedResponse<BusTaskList> busTaskList(PagedBusTaskListReq req){
 		return  getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IOrderDao.busTaskList", req);
+				"IOrderDao.busTaskList", req);
 	}
 
 	@Override
 	public List<RegionOrderDetail> queryTodayOrderDetailing(Long businessId) {
 		return  getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.queryTodayOrderDetailing", businessId);
+				"IOrderDao.queryTodayOrderDetailing", businessId);
 	}
 	@Override
 	public List<RegionOrderDetail> queryTodayOrderDetailWait(Long businessId) {
 		return  getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.queryTodayOrderDetailWait", businessId);
+				"IOrderDao.queryTodayOrderDetailWait", businessId);
 	}
 
 	@Override
 	public List<RegionOrderTotal> queryTodayOrderTotal(Long businessId) {
 		return  getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.queryTodayOrderTotal", businessId);
+				"IOrderDao.queryTodayOrderTotal", businessId);
 	}
 
 	@Override
 	public Long queryIngOrderByRegionId(Long regionId) {
 		return  getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderDao.queryIngOrderByRegionId", regionId);
+				"IOrderDao.queryIngOrderByRegionId", regionId);
 	}
 
 	@Override
 	public OrderStatisticsCResp getOrderGrabStatisticsC(
 			OrderStatisticsCReq orderStatisticsCReq) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderDao.getOrderGrabStatisticsC", 
+				"IOrderDao.getOrderGrabStatisticsC", 
 				orderStatisticsCReq);
 	}
 
@@ -408,7 +409,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public List<DaySatisticsC> getOrderGrabStatisticsDaySatisticsC(
 			OrderStatisticsCReq orderStatisticsCReq) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.getOrderGrabStatisticsDaySatisticsC", 
+				"IOrderDao.getOrderGrabStatisticsDaySatisticsC", 
 				orderStatisticsCReq);
 	}
 
@@ -416,7 +417,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public OrderStatisticsBResp getOrderGrabStatisticsB(
 			OrderStatisticsBReq orderStatisticsBReq) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderDao.getOrderGrabStatisticsB", 
+				"IOrderDao.getOrderGrabStatisticsB", 
 				orderStatisticsBReq);
 	}
 
@@ -424,7 +425,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public List<ServiceClienter> getOrderGrabStatisticsServiceClienterB(
 			OrderStatisticsBReq orderStatisticsBReq) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.getOrderGrabStatisticsServiceClienterB", 
+				"IOrderDao.getOrderGrabStatisticsServiceClienterB", 
 				orderStatisticsBReq);
 	}
 
@@ -432,14 +433,14 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public List<DaySatisticsB> getOrderGrabStatisticsDaySatisticsB(
 			OrderStatisticsBReq orderStatisticsBReq) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.getOrderGrabStatisticsDaySatisticsB", 
+				"IOrderDao.getOrderGrabStatisticsDaySatisticsB", 
 				orderStatisticsBReq);
 	}
 
 	@Override
 	public List<QueryOrder> queryOrderGrab(QueryOrderReq query) {
 		PagedResponse<QueryOrder> result=  getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IOrderDao.queryOrderGrabB", 
+				"IOrderDao.queryOrderGrabB", 
 				query);
 		return result.getResultList();
 	}
@@ -457,7 +458,40 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public PagedResponse<ShanSongOrderListModel> getShanSongOrders(PagedOrderSearchReq search) {
 		PagedResponse<ShanSongOrderListModel> result = new PagedResponse<ShanSongOrderListModel>();
 		result = getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IOrderDao.getShanSongOrders", search);
+				"IOrderDao.getShanSongOrders", search);
 		return result;
+	}
+	
+	/**
+	 * 导出订单
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20151125
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public List<ExportShanSongOrder> exportShanSongOrder(PagedOrderSearchReq search) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"IOrderDao.exportShanSongOrder", 
+				search);
+	}
+	
+	/**
+	 * 根据订单号/订单id查订单信息
+	 * 
+	 * @author CaoHeYang
+	 * @param ordernNo
+	 *            订单号
+	 * @param orderId
+	 *            订单id
+	 * @Date 20150827
+	 * @return
+	 */
+	@Override
+	public  ShanSongOrderListModel getShanSongOrderByNo(String ordernNo){
+		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.getShanSongOrderByNo"
+				, ordernNo);
 	}
 }

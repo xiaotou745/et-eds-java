@@ -30,7 +30,7 @@ public class GroupApiConfigDao extends DaoBase implements IGroupApiConfigDao {
 		paramMap.put("groupid", record.getGroupid());
 
 		return getMasterSqlSessionUtil()
-				.insert("com.edaisong.api.dao.inter.IGroupApiConfigDao.insert",
+				.insert("IGroupApiConfigDao.insert",
 						paramMap);
 	}
 

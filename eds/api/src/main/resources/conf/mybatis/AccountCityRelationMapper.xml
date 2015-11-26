@@ -125,4 +125,12 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 获取后台用户可查看的城市集合  add by caoheyang  20151125 -->
+   <select id="getAuthorityCitys" resultType="java.lang.String" parameterType="java.lang.Integer" >
+SELECT ppc.name
+FROM [AccountCityRelation] acr with(nolock)
+JOIN PublicProvinceCity ppc with(nolock) on acr.CityId=ppc.code
+WHERE acr.AccountId=#{userId} and acr.IsEnable=1
+  </select>
+  
 </mapper>

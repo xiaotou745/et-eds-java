@@ -24,7 +24,7 @@ public class MarkDao extends DaoBase implements IMarkDao {
 	public PagedResponse<Mark> getMarkList(MarkReq par) {
 		PagedResponse<Mark> resp=new PagedResponse<Mark>();
 		resp = getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IMarkDao.getMarkList", par);
+				"IMarkDao.getMarkList", par);
 		return resp;
 	}
 	/**
@@ -35,7 +35,7 @@ public class MarkDao extends DaoBase implements IMarkDao {
 	*/
 	@Override
 	public boolean CheckExist(String tagname) {
-		int result = getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IMarkDao.checkExist", tagname);
+		int result = getReadOnlySqlSessionUtil().selectOne("IMarkDao.checkExist", tagname);
 		return result>0 ?true:false;
 		 
 	}
@@ -47,7 +47,7 @@ public class MarkDao extends DaoBase implements IMarkDao {
 	*/
 	@Override
 	public boolean editTag(MarkEditReq markEditReq) {
-		int result = getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.editMark", markEditReq);
+		int result = getMasterSqlSessionUtil().update("IMarkDao.editMark", markEditReq);
 		return result>0 ?true:false;
 	}
 	/**
@@ -62,7 +62,7 @@ public class MarkDao extends DaoBase implements IMarkDao {
 		map.put("isenable", markEditReq.getIsenable());
 		map.put("id", markEditReq.getId());
 		map.put("operator", markEditReq.getOperator());
-		int result = getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.modifyMarkStatus", markEditReq);
+		int result = getMasterSqlSessionUtil().update("IMarkDao.modifyMarkStatus", markEditReq);
 		return result>0 ?true:false;
 	}
 	/**
@@ -72,7 +72,7 @@ public class MarkDao extends DaoBase implements IMarkDao {
 	 */
 	@Override
 	public List<Mark> getBusMarksList(int userId) {
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IMarkDao.getBusMarksList",userId);
+		return getReadOnlySqlSessionUtil().selectList("IMarkDao.getBusMarksList",userId);
 	}
 	/***
 	 * 编辑商户标签
@@ -81,7 +81,7 @@ public class MarkDao extends DaoBase implements IMarkDao {
 	 */
 	@Override
 	public int modifyBusinessTags(TagRelationModel model) {
-		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IMarkDao.modifyBusinessTags", model);
+		return getMasterSqlSessionUtil().update("IMarkDao.modifyBusinessTags", model);
 	}
 
 }

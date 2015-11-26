@@ -1,0 +1,31 @@
+package com.edaisong.entity.req;
+
+public class ModifyVehicleReq {
+	private Integer clienterId;
+	private String clienterName;
+	private String vehicleName;
+
+	public String getVehicleName() {
+		return vehicleName;
+	}
+
+	public void setVehicleName(String vehicleName) {
+		this.vehicleName = vehicleName;
+	}
+
+	public int getClienterId() {
+		return clienterId;
+	}
+
+	public void setClienterId(int clienterId) {
+		this.clienterId = clienterId;
+	}
+
+	public String getClienterName() {
+		return clienterName;
+	}
+
+	public void setClienterName(String clienterName) {
+		this.clienterName = clienterName;
+	}
+}

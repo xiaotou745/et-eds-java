@@ -6,6 +6,7 @@ import java.util.List;
 
 
 
+
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.BusinessClienterRelation;
@@ -19,6 +20,7 @@ import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.req.BCheckCodeReq;
 import com.edaisong.entity.req.BusinessMoney;
+import com.edaisong.entity.req.BusinessRegisterReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
@@ -159,4 +161,5 @@ public interface IBusinessService {
 		 * @return
 		 */
 	boolean businessModiyPhone(BCheckCodeReq req);
+	int register(BusinessRegisterReq req);
 }

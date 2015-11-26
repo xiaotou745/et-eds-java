@@ -14,7 +14,7 @@ public class AuthorityRoleMentMenuSetDao extends DaoBase implements
 	@Override
 	public boolean modifyAuthList(List<AuthorityRoleMentMenuSet> authList) {
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IAuthorityRoleMentMenuSetDao.modifyAuthList",
+				.update("IAuthorityRoleMentMenuSetDao.modifyAuthList",
 						authList) > 0;
 	}
 

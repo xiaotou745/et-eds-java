@@ -58,7 +58,7 @@ public class GroupBusinessBindOptionLogDao extends DaoBase implements IGroupBusi
 
 	@Override
 	public PagedResponse<GroupBusinessBindOptionLogModel> getBusinessBindLogList(PagedBusinessBindLogReq req) {
-		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IGroupBusinessBindOptionLogDao.getBusinessBindLogList", req);
+		return getReadOnlySqlSessionUtil().selectPageList("IGroupBusinessBindOptionLogDao.getBusinessBindLogList", req);
 	}
 
 }

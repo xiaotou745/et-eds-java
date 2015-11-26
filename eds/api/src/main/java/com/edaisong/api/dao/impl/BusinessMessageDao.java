@@ -24,7 +24,7 @@ public class BusinessMessageDao extends DaoBase implements IBusinessMessageDao{
 	@Override
 	public BusinessMessage getLatestMessage(int businessId) {
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IBusinessMessageDao.getLatestMessage"
+				.selectOne("IBusinessMessageDao.getLatestMessage"
 						, businessId);
 	}
 
@@ -37,7 +37,7 @@ public class BusinessMessageDao extends DaoBase implements IBusinessMessageDao{
 	public PagedResponse<BusinessMessage> getMessages(PagedBusinessMessageReq search) {
 		PagedResponse<BusinessMessage> result = new PagedResponse<BusinessMessage>();
 		result = getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IBusinessMessageDao.getMessages", search);
+				"IBusinessMessageDao.getMessages", search);
 		return result;
 	}
 

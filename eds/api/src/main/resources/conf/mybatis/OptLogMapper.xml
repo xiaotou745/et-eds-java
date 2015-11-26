@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOptLog" >
+  <insert id="insert" parameterType="com.edaisong.entity.OptLog">
+  insert into OptLog(UpdateValue,OptId,OptName,OptTime,OptType) VALUES (#{updateValue,jdbcType=VARCHAR} ,#{optId,jdbcType=INTEGER} ,#{optName,jdbcType=VARCHAR},getdate(),#{optType,jdbcType=INTEGER})
+  </insert>
+</mapper>

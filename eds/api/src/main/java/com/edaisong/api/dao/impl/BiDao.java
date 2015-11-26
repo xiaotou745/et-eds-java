@@ -14,7 +14,7 @@ public class BiDao extends DaoBase implements IBiDao {
 	@Override
 	public List<Everyday> queryEveryDayDao() {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IBiDao.queryEveryDayDao");
+				"IBiDao.queryEveryDayDao");
 	}
 
 }

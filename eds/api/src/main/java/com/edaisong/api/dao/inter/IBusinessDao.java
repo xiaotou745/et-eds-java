@@ -21,6 +21,7 @@ import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.req.BCheckCodeReq;
+import com.edaisong.entity.req.BusinessRegisterReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
@@ -185,5 +186,6 @@ public interface IBusinessDao {
 	 * @return
 	 */
 	int getStrategyIdByGroupId(int groupId);
+	int register(BusinessRegisterReq req);
 
 }

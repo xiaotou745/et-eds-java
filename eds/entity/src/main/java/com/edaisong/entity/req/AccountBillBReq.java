@@ -4,7 +4,7 @@ package com.edaisong.entity.req;
  * */
 public class AccountBillBReq {
 private String monthInfo;//月信息 2015-08
-private Integer businessId;//商户ID
+private Integer businessId;//商户ID 
 public String getMonthInfo() {
 	return monthInfo;
 }
@@ -16,5 +16,5 @@ public Integer getBusinessId() {
 }
 public void setBusinessId(Integer businessId) {
 	this.businessId = businessId;
-}
+} 
 }
