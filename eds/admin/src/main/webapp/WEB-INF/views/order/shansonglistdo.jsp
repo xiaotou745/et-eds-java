@@ -55,7 +55,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			<td><%=ParseHelper.ShowString(data.get(i).getPickupCode())%></td>
 			<td>	<%=ShanSongOrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td>  
-			<%if(data.get(i).getFormType()==0){%>
+			<%if(data.get(i).getStatus()!=ShanSongOrderStatus.WaitPay.value()){%>
 			<a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a>
 			<%}%>
 			</td>

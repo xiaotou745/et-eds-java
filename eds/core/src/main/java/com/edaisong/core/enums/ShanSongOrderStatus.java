@@ -9,7 +9,7 @@ public enum ShanSongOrderStatus {
 	/*
 	 * 待接入
 	 */
-	WaitPay(-1, "待支付"),
+	WaitPay(-5, "待支付"),
 	/**
 	 * 订单新增 
 	 */
