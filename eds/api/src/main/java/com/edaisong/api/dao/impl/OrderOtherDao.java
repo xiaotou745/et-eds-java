@@ -26,7 +26,7 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao {
 	public int insert(OrderOther record) {
 		// TODO Auto-generated method stub
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderOtherDao.insertSelective",
+				"IOrderOtherDao.insertSelective",
 				record);
 	}
 
@@ -45,7 +45,7 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao {
 	@Override
 	public int updateByPrimaryKeySelective(OrderOther record) {
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IOrderOtherDao.updateByPrimaryKeySelective",
+				.update("IOrderOtherDao.updateByPrimaryKeySelective",
 						record);
 		// TODO Auto-generated method stub
 	}
@@ -69,7 +69,7 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao {
 		Map<String, Object> maps = new HashedMap();
 		maps.put("orderId", orderId);
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderOtherDao.updateJoinWithdraw",
+				"IOrderOtherDao.updateJoinWithdraw",
 				maps);
 	}
 
@@ -88,7 +88,7 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao {
 		maps.put("orderId", orderId);
 		maps.put("auditstatus", auditstatus);
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderOtherDao.updateAuditStatus",
+				"IOrderOtherDao.updateAuditStatus",
 				maps);
 	}
 	/**
@@ -103,7 +103,7 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao {
 	@Override
 	public int updateOrderIsReal(OrderOtherSearch orderOtherSearch) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderOtherDao.updateOrderIsReal",
+				"IOrderOtherDao.updateOrderIsReal",
 				orderOtherSearch);
 	}
 	

@@ -31,27 +31,27 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 	public int insert(OrderChild record)
 	{
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderChildDao.insertSelective", record);
+				"IOrderChildDao.insertSelective", record);
 	}	
 	
 	@Override
 	public int insertList(List<OrderChild> record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderChildDao.insertList", record);
+				"IOrderChildDao.insertList", record);
 	}
 	
 	@Override
 	public int updateByPrimaryKeySelective(OrderChild record)
 	{
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderChildDao.updateByPrimaryKeySelective", record);
+				"IOrderChildDao.updateByPrimaryKeySelective", record);
 	}
 	
 	@Override
 	public  int updateList(List<OrderChild> record)
 	{
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderChildDao.updateList", record);
+				"IOrderChildDao.updateList", record);
 	}
     /**
      * 取消订单 （取消前一天智能调度发单且未被抢单的子订单时）
@@ -64,21 +64,21 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 	public List<Integer> updateCancel(OrderChildCancelReq req)
 	{
 		return getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderChildDao.updateCancel", req);
+				"IOrderChildDao.updateCancel", req);
 	}
 	
 	@Override
 	 public List<Integer>  updateGradOne(OrderGrabReq record)
 	 {
 		return getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderChildDao.updateGradOne", record);
+				"IOrderChildDao.updateGradOne", record);
 	 }
 		
 	@Override
 	public	List<Integer>  updateGradTwo(OrderGrabReq record)
 	{
 		return getMasterSqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderChildDao.updateGradTwo", record);
+				"IOrderChildDao.updateGradTwo", record);
 	}
 
 	
@@ -86,7 +86,7 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 	public OrderChild selectByPrimaryKey(Integer id)
 	{
 		return getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderChildDao.selectByPrimaryKey", id);
+				"IOrderChildDao.selectByPrimaryKey", id);
 	}	  
 	
 	  /**
@@ -103,7 +103,7 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("OrderNo", orderNo);
 		paramMap.put("BusinessId", businessId);
-		List<OrderChild> result=getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IOrderChildDao.getOrderChildByOrderInfo"
+		List<OrderChild> result=getReadOnlySqlSessionUtil().selectList("IOrderChildDao.getOrderChildByOrderInfo"
 				 , paramMap);
 	     return result;
 
@@ -119,7 +119,7 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 	public int getOrderTaskPayStatus(int orderId) {
 		Map<String ,Object> maps=new HashedMap();
 		maps.put("orderId", orderId);
-		int res= getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderChildDao.getOrderTaskPayStatus", maps);
+		int res= getReadOnlySqlSessionUtil().selectOne("IOrderChildDao.getOrderTaskPayStatus", maps);
 		return res;
 	}
 	

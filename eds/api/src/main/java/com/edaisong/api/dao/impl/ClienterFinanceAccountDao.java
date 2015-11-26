@@ -28,22 +28,22 @@ public class ClienterFinanceAccountDao extends DaoBase implements IClienterFinan
 
 	@Override
 	public boolean insert(ClienterFinanceAccount record) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.insert",record) > 0;
+		return getMasterSqlSessionUtil().insert("IClienterFinanceAccountDao.insert",record) > 0;
 	}
 
 	@Override
 	public int insertSelective(ClienterFinanceAccount record) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.insertSelective",record);
+		return getMasterSqlSessionUtil().insert("IClienterFinanceAccountDao.insertSelective",record);
 	}
 
 	@Override
 	public ClienterFinanceAccount selectByPrimaryKey(Integer id) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.selectByPrimaryKey",id);
+		return getReadOnlySqlSessionUtil().selectOne("IClienterFinanceAccountDao.selectByPrimaryKey",id);
 	}
 
 	@Override
 	public boolean updateByPrimaryKeySelective(ClienterFinanceAccount record) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.updateByPrimaryKeySelective",record) > 0;
+		return getMasterSqlSessionUtil().insert("IClienterFinanceAccountDao.updateByPrimaryKeySelective",record) > 0;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class ClienterFinanceAccountDao extends DaoBase implements IClienterFinan
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("clienterId", clienterId);
 		map.put("accountType", accountType);
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterFinanceAccountDao.getCountByClientId", map);
+		return getReadOnlySqlSessionUtil().selectOne("IClienterFinanceAccountDao.getCountByClientId", map);
 	}
 
 }

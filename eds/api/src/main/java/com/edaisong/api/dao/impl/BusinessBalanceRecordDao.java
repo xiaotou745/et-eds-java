@@ -40,7 +40,7 @@ import com.edaisong.entity.req.PagedTransDetailReq;
 public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanceRecordDao {
 	@Override
 	public int insert(BusinessBalanceRecord record) {
-		int result = getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.insert",
+		int result = getMasterSqlSessionUtil().insert("IBusinessBalanceRecordDao.insert",
 				record);
 		return result;
 	}
@@ -54,7 +54,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 	public PagedResponse<BusinessBalanceRecord> getTransDetailList(PagedTransDetailReq par) {
 		PagedResponse<BusinessBalanceRecord> resp = new PagedResponse<BusinessBalanceRecord>();
 		resp = getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getTransDetailList", par);
+				"IBusinessBalanceRecordDao.getTransDetailList", par);
 		return resp;
 	}
 
@@ -66,14 +66,14 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 	@Override
 	public AccountBillDayResultModel getAccountInMoneyAndOutMoney(
 			PagedAccountBillDayReq par) {
-		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getAccountInMoneyAndOutMoney",
+		return getMasterSqlSessionUtil().selectOne("IBusinessBalanceRecordDao.getAccountInMoneyAndOutMoney",
 				par);
 	}
 
 	@Override
 	public PagedResponse<BusinessBalanceRecord> customerGetTransDetailList(PagedCustomerSearchReq par) {
 		return getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.customerGetTransDetailList", par);
+				"IBusinessBalanceRecordDao.customerGetTransDetailList", par);
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 			par.setEndDate(ParseHelper.ToDateString(finalDt, "yyyy-MM-dd"));
 		}
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.queryBusinessRechargeTotalAmount", par);
+				"IBusinessBalanceRecordDao.queryBusinessRechargeTotalAmount", par);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 	@Override
 	public List<BusinessBalanceRecordModel> getBusinessBalanceRecordListForExport(PagedTransDetailReq par) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getBusinessBalanceRecordListForExport", par);
+				"IBusinessBalanceRecordDao.getBusinessBalanceRecordListForExport", par);
 	}
 	/**
 	 * API 获取商户月账单信息
@@ -127,7 +127,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 		params.put("businessId", par.getBusinessId());
 		params.put("startDate", startDate);
 		params.put("endDate", endDate);
-		List<AccountBillModel> list= getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getAccountBillBList", params);
+		List<AccountBillModel> list= getReadOnlySqlSessionUtil().selectList("IBusinessBalanceRecordDao.getAccountBillBList", params);
 		Map<String,AccountBillModel> map=new HashMap<String,AccountBillModel>();
 		for (int i = 0; i < list.size(); i++) {
 			map.put(list.get(i).getDayInfo(), list.get(i));
@@ -143,7 +143,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 	public List<AccountBillDayModel> getAccountBillListDayB(
 			PagedAccountBillDayReq par) {
 		 List<AccountBillDayModel> list=new ArrayList<AccountBillDayModel>();
-		PagedResponse<AccountBillDayModel> result =getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getAccountBillDayBList", par);
+		PagedResponse<AccountBillDayModel> result =getReadOnlySqlSessionUtil().selectPageList("IBusinessBalanceRecordDao.getAccountBillDayBList", par);
 		if(result.getResultList()!=null&&result.getResultList().size()>0)
 		{
 			list=result.getResultList();
@@ -158,13 +158,13 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 	 * */
 	@Override
 	public AccountBillDetailModel getAccountBillDetailB(AccountBillDetailReq par) {
-		AccountBillDetailModel model=getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.getAccountBillDetailB", par);
+		AccountBillDetailModel model=getReadOnlySqlSessionUtil().selectOne("IBusinessBalanceRecordDao.getAccountBillDetailB", par);
 		return model;
 	}
 
 	@Override
 	public int groupInsert(BusinessBalanceRecord record) {
-		int result = getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessBalanceRecordDao.groupInsert",
+		int result = getMasterSqlSessionUtil().insert("IBusinessBalanceRecordDao.groupInsert",
 				record);
 		return result;
 	}

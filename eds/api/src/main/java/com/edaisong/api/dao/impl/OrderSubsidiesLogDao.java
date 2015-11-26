@@ -15,7 +15,7 @@ public class OrderSubsidiesLogDao extends DaoBase implements IOrderSubsidiesLogD
 
 	@Override
 	public int insert(OrderSubsidiesLog record) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IOrderSubsidiesLogDao.insert",record);
+		return getMasterSqlSessionUtil().insert("IOrderSubsidiesLogDao.insert",record);
 	}
 
 
@@ -28,14 +28,14 @@ public class OrderSubsidiesLogDao extends DaoBase implements IOrderSubsidiesLogD
    */
 	@Override
 	public List<OrderSubsidiesLog> GetOrderOptionLog(Long orderId) {
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IOrderSubsidiesLogDao.GetOrderOptionLog", 
+		return getReadOnlySqlSessionUtil().selectList("IOrderSubsidiesLogDao.GetOrderOptionLog", 
 				orderId);
 	}
 
 
 	@Override
 	public List<OrderSubsidiesLog> GetFastOrderOptionLog(Long orderId) {
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IOrderSubsidiesLogDao.GetFastOrderOptionLog", 
+		return getReadOnlySqlSessionUtil().selectList("IOrderSubsidiesLogDao.GetFastOrderOptionLog", 
 				orderId);
 	}
 

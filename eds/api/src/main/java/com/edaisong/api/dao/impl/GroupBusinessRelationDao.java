@@ -60,29 +60,29 @@ public class GroupBusinessRelationDao extends DaoBase implements IGroupBusinessR
 	@Override
 	public PagedResponse<GroupBusinessRelationModel> getBusinessBindList(PagedBizBindsReq req) {
 		return getReadOnlySqlSessionUtil()
-				.selectPageList("com.edaisong.api.dao.inter.IGroupBusinessRelationDao.getBusinessBindList", req);
+				.selectPageList("IGroupBusinessRelationDao.getBusinessBindList", req);
 	}
 
 	@Override
 	public boolean removeBusinessBind(BusinessBindOptionReq req) {
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IGroupBusinessRelationDao.removeBusinessBind", req) > 0;
+				.update("IGroupBusinessRelationDao.removeBusinessBind", req) > 0;
 	}
 
 	public boolean addBusinessBind(BusinessBindOptionReq req){
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IGroupBusinessRelationDao.addBusinessBind", req) > 0;
+				.update("IGroupBusinessRelationDao.addBusinessBind", req) > 0;
 	}
 
 	@Override
 	public boolean checkHaveBind(BusinessBindOptionReq req) {
 		return ((int)getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IGroupBusinessRelationDao.checkHaveBind", req)) > 0;
+				.selectOne("IGroupBusinessRelationDao.checkHaveBind", req)) > 0;
 	}
 
 	@Override
 	public PagedResponse<GroupBusinessRelationModel> getBusinessList(PagedBizBindsReq req) {
 		return getReadOnlySqlSessionUtil()
-				.selectPageList("com.edaisong.api.dao.inter.IGroupBusinessRelationDao.getBusinessList", req);
+				.selectPageList("IGroupBusinessRelationDao.getBusinessList", req);
 	}
 }

@@ -16,20 +16,20 @@ public class OrderRegionLogDao extends DaoBase implements IOrderRegionLogDao {
 	@Override
 	public int insert(OrderRegionLog record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderRegionLogDao.insert", record);
+				"IOrderRegionLogDao.insert", record);
 	}
 
 	@Override
 	public List<OrderRegionLog> getList(Long businessId) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderRegionLogDao.getList",
+				"IOrderRegionLogDao.getList",
 				businessId);
 	}
 
 	@Override
 	public PagedResponse<OrderRegionLog> getPagedList(
 			PagedBusinessMessageReq req) {
-		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IOrderRegionLogDao.getPagedList", req);
+		return getReadOnlySqlSessionUtil().selectPageList("IOrderRegionLogDao.getPagedList", req);
 	}
 
 }

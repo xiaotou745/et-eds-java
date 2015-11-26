@@ -36,7 +36,7 @@ public class AuthorityMenuClassDao extends DaoBase implements
 		if (result==null||result.size()==0) {
 			List<MenuEntity> list = getReadOnlySqlSessionUtil()
 					.selectList(
-							"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getMenuListByUserID",
+							"IAuthorityMenuClassDao.getMenuListByUserID",
 							accountId);
 			redisService.set(key, list);
 			return list;
@@ -49,7 +49,7 @@ public class AuthorityMenuClassDao extends DaoBase implements
 	public List<MenuEntity> getAuthSettingList(int userID) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getAuthSettingList",
+						"IAuthorityMenuClassDao.getAuthSettingList",
 						userID);
 	}
 
@@ -57,7 +57,7 @@ public class AuthorityMenuClassDao extends DaoBase implements
 	public List<MenuEntity> getRoleAuthSettingList(int roleID) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getRoleAuthSettingList",
+						"IAuthorityMenuClassDao.getRoleAuthSettingList",
 						roleID);
 	}
 
@@ -65,7 +65,7 @@ public class AuthorityMenuClassDao extends DaoBase implements
 	public List<AuthorityMenuClass> getListMenuByParId(int parId) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getListMenuByParId",
+						"IAuthorityMenuClassDao.getListMenuByParId",
 						parId);
 	}
 
@@ -73,7 +73,7 @@ public class AuthorityMenuClassDao extends DaoBase implements
 	public AuthorityMenuClass getMenuById(int id) {
 		return getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.getMenuById",
+						"IAuthorityMenuClassDao.getMenuById",
 						id);
 	}
 
@@ -81,7 +81,7 @@ public class AuthorityMenuClassDao extends DaoBase implements
 	public boolean addMenu(AuthorityMenuClass req) {
 		return getMasterSqlSessionUtil()
 				.insert(
-						"com.edaisong.api.dao.inter.IAuthorityMenuClassDao.addMenu",
+						"IAuthorityMenuClassDao.addMenu",
 						req) > 0;
 	}
 

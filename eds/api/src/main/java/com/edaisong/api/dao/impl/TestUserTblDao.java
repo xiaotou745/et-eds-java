@@ -14,11 +14,11 @@ import com.edaisong.entity.domain.TestUserRecord;
 @Repository
 public class TestUserTblDao extends DaoBase implements ITestUserTblDao {
 
-	private final static String SELECT_ALL_TEST_USERS = "com.edaisong.api.dao.inter.ITestUserTblDao.selectAllTestUsers";
-	private final static String INSERT_STATEMENT = "com.edaisong.api.dao.inter.ITestUserTblDao.insert";
-	private final static String DELETE_STATEMENT = "com.edaisong.api.dao.inter.ITestUserTblDao.deleteByPhoneNo";
-	private final static String SELECT_BY_PRIMARY_KEY_STATEMENT = "com.edaisong.api.dao.inter.ITestUserTblDao.selectByPrimaryKey";
-	private final static String UPDATE_BY_PRIMARY_KEY_STATEMENT = "com.edaisong.api.dao.inter.ITestUserTblDao.updateByPrimaryKey";
+	private final static String SELECT_ALL_TEST_USERS = "ITestUserTblDao.selectAllTestUsers";
+	private final static String INSERT_STATEMENT = "ITestUserTblDao.insert";
+	private final static String DELETE_STATEMENT = "ITestUserTblDao.deleteByPhoneNo";
+	private final static String SELECT_BY_PRIMARY_KEY_STATEMENT = "ITestUserTblDao.selectByPrimaryKey";
+	private final static String UPDATE_BY_PRIMARY_KEY_STATEMENT = "ITestUserTblDao.updateByPrimaryKey";
 
 	@Override
 	public int deleteByPrimaryKey(Integer id) {

@@ -60,7 +60,7 @@ public class ClienterMessageDao extends DaoBase implements IClienterMessageDao {
 	@Override
 	public ClienterMessage getLatestMessage(int clienterId) {
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IClienterMessageDao.getLatestMessage"
+				.selectOne("IClienterMessageDao.getLatestMessage"
 						, clienterId);
 	}
 

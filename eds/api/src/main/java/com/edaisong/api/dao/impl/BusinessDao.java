@@ -44,7 +44,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req) {
 		PagedResponse<BusinessModel> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.edaisong.api.dao.inter.IBusinessDao.getBusinessList",
+						"IBusinessDao.getBusinessList",
 						req);
 		return model;
 	}
@@ -60,7 +60,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public BusinessModel getBusiness(Long id) {
 		BusinessModel model = getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dao.inter.IBusinessDao.getBusiness",
+						"IBusinessDao.getBusiness",
 						id);
 		return model;
 	}
@@ -69,7 +69,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public BusinessDetailModel getBusinessDetailByID(int businessID) {
 		return getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.edaisong.api.dao.inter.IBusinessDao.getBusinessDetailByID",
+						"IBusinessDao.getBusinessDetailByID",
 						businessID);
 	}
 
@@ -77,14 +77,14 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public List<BusinessOptionLog> getOpLogByBusinessID(int businessID) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dao.inter.IBusinessDao.getOpLogByBusinessID",
+						"IBusinessDao.getOpLogByBusinessID",
 						businessID);
 	}
 
 	@Override
 	public int modifyBusiness(BusinessModifyModel detailModel) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IBusinessDao.modifyBusiness",
+				"IBusinessDao.modifyBusiness",
 				detailModel);
 	}
 
@@ -94,12 +94,12 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		paramMap.put("phoneNo", phoneNo);
 		paramMap.put("password", password);
 
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getBusinessByPhoneNoAndPwd",paramMap);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getBusinessByPhoneNoAndPwd",paramMap);
 	}
 
 	@Override
 	public boolean addLoginLog(BusinessLoginLog log) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessDao.addLogingLog",log) > 0;
+		return getMasterSqlSessionUtil().insert("IBusinessDao.addLogingLog",log) > 0;
 	}
 /**
 	 * 更新 商户 余额，可提现余额
@@ -115,7 +115,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		parasMap.put("Money", money);
 		parasMap.put("Id", businessId);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IBusinessDao.updateForWithdraw",
+				.update("IBusinessDao.updateForWithdraw",
 						parasMap);
 
 	}
@@ -125,14 +125,14 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	 */
 	@Override
 	public Business getById(int businessId) { 
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getById",businessId);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getById",businessId);
 }
 
 	
 	@Override
 	public int modifyExpress(List<BusinessExpressRelation> listData) {
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IBusinessDao.modifyExpress",
+				.update("IBusinessDao.modifyExpress",
 						listData);
 	}
 
@@ -142,7 +142,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		parasMap.put("businessID", businessID);
 		parasMap.put("status", status);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IBusinessDao.updateAuditStatus",
+				.update("IBusinessDao.updateAuditStatus",
 						parasMap);
 	}
 
@@ -152,13 +152,13 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		parasMap.put("businessID", businessID);
 		parasMap.put("lastLoginTime", loginTime);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IBusinessDao.updateLastLoginTime",
+				.update("IBusinessDao.updateLastLoginTime",
 						parasMap);
 	}
 
 	@Override
 	public BusinessRechargeDetailModel getRechargeDetail(String orderNo) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getRechargeDetail", orderNo);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getRechargeDetail", orderNo);
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 		parasMap.put("businessId", businessId);
 		parasMap.put("isBind", isBind);
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IBusinessDao.updateBusinessIsBind",parasMap) > 0;
+				"IBusinessDao.updateBusinessIsBind",parasMap) > 0;
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	 */
 	@Override
 	public BusinessStatus getUserStatus(int userid) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getUserStatus", userid);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getUserStatus", userid);
 	}
 	
 	/**
@@ -191,7 +191,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	 */
 	@Override
 	public  Integer getPushOrderType(Long businessId){
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getPushOrderType", businessId);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getPushOrderType", businessId);
 	}
 	
 	/**
@@ -204,39 +204,39 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	 */
 	@Override
 	public List<InStoreTask> getInStoreTaskStroes(InStoreTaskReq para){
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IBusinessDao.getInStoreTaskStroes", para);
+		return getReadOnlySqlSessionUtil().selectList("IBusinessDao.getInStoreTaskStroes", para);
 	}
 
 	@Override
 	public int bindClienter(BindClienterBusiness bindClienterBusiness) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessDao.bindClienterBusiness",bindClienterBusiness);
+		return getMasterSqlSessionUtil().insert("IBusinessDao.bindClienterBusiness",bindClienterBusiness);
 	}
 
 	@Override
 	public BusinessClienterRelation getClienterBind(BindClienterBusiness bindClienterBusiness) {
-		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getClienterBind",bindClienterBusiness);
+		return getMasterSqlSessionUtil().selectOne("IBusinessDao.getClienterBind",bindClienterBusiness);
 	}
 
 	@Override
 	public List<OrderRespModel> getMyOrdeB(MyOrderBReq myOrderBReq) {
 		PagedResponse<OrderRespModel> lists= getMasterSqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IBusinessDao.getMyOrdeB", myOrderBReq);
+				"IBusinessDao.getMyOrdeB", myOrderBReq);
 		return lists.getResultList();
 	}
 
 	@Override
 	public MyOrderBResp getOrderCountTotal(MyOrderBReq myOrderBReq) { 
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getOrderCountTotal",myOrderBReq);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getOrderCountTotal",myOrderBReq);
 	}
 
 	@Override
 	public MyOrderDetailBResp getMyOrderDetailB(OrderDetailBReq orderGrabBReq) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getMyOrderDetailB",orderGrabBReq);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getMyOrderDetailB",orderGrabBReq);
 	}
 
 	@Override
 	public BusinessBasicInfoModel getBusinessInfo(BusinessReq businessReq) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getBusinessInfo",businessReq);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getBusinessInfo",businessReq);
 	}
 	
 	  /**
@@ -246,7 +246,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	   */
 	@Override
 	public	boolean isExist(String phone){
-		Integer count= getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.isExist",phone);
+		Integer count= getReadOnlySqlSessionUtil().selectOne("IBusinessDao.isExist",phone);
 		return count>0;
 	}
 	/**
@@ -259,7 +259,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	@Override
 	public boolean businessModiyPhone(BCheckCodeReq model) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IBusinessDao.businessModiyPhone",model) > 0;
+				"IBusinessDao.businessModiyPhone",model) > 0;
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	 */
 	@Override
 	public int getOrderCountInfoByBusinessId(int businessId) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getOrderCountInfoByBusinessId", businessId);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getOrderCountInfoByBusinessId", businessId);
 	}
 	/**
 	 * 通过分组ID获取商家策略ID
@@ -278,11 +278,11 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	 */
 	@Override
 	public int getStrategyIdByGroupId(int groupId) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IBusinessDao.getStrategyIdByGroupId", groupId);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getStrategyIdByGroupId", groupId);
 	}
 
 	@Override
 	public int register(BusinessRegisterReq req) { 
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessDao.register",req);
+		return getMasterSqlSessionUtil().insert("IBusinessDao.register",req);
 	}
 }

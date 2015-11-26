@@ -16,7 +16,7 @@ public class OptLogDao extends DaoBase implements IOptLogDao {
 	* */
 	@Override
 	public void insert(OptLog req) {
-		getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IOptLog.insert",req);
+		getMasterSqlSessionUtil().insert("IOptLog.insert",req);
 	}
 
 }

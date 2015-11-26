@@ -37,7 +37,7 @@ double masterPirce=entityMaster.getDistributionPrice();
 					class="table table-striped table-bordered table-hover dataTables-example">
 					<tbody>
 						<tr>
-							<td><input type="text" value=<%=masterKM %> id="masterKM"/> 公里内 <input type="text" value="<%=masterKG %>" id="mastetKG" /> 公斤以下 <input
+							<td><input type="text" value=<%=masterKM %> id="masterKM"/> 公里内 <input type="text" value="<%=masterKG %>" id="masterKG" /> 公斤以下 <input
 								type="text" value="<%=masterPirce%>" id="masterPrice"/> 元配送费</td>
 						</tr>
 						<tr>
@@ -64,7 +64,7 @@ double masterPirce=entityMaster.getDistributionPrice();
 		$("#btnupdate").click(function(){
 		
 			var masterKM=parseInt($("#masterKM").val().trim());
-			var mastetKG=parseInt($("#mastetKG").val().trim());
+			var masterKG=parseInt($("#masterKG").val().trim());
 			var masterPrice=parseFloat($("#masterPrice").val().trim());
 			var oneKM=parseInt($("#oneKM").val().trim());
 			var oneDistributionPrice=parseFloat($("#oneDistributionPrice").val().trim());
@@ -78,19 +78,19 @@ double masterPirce=entityMaster.getDistributionPrice();
 			var hidoneDistributionPrice=$("#hidoneDistributionPrice").val().trim();
 			var hidtwoKG= $("#hidtwoKG").val().trim();
 			var hidtwogetDistributionPrice= $("#hidtwogetDistributionPrice").val().trim();
-			if(masterKM<0 || mastetKG<0 || masterPrice<0 || oneKM<0 || oneDistributionPrice<0 || twoKG<0 || twoDistributionPrice<0) {
+			if(masterKM<0 || masterKG<0 || masterPrice<0 || oneKM<0 || oneDistributionPrice<0 || twoKG<0 || twoDistributionPrice<0) {
 				alert("保存值不能为空不能小于零");
 				return;
 			}
 			var isUpdate ="0";
 			var logMsg="";
 			if(hidmasterKM==masterKM && 
-			   hidmasterKG==mastetKG && 
+			   hidmasterKG==masterKG && 
 			   hidmasterPirce==masterPrice) {
 				isUpdate+="1";
 				}
 				else{
-					logMsg="将原值公里 "+hidmasterKM+" 改为"+masterKM+" ,原值公斤 "+hidmasterKG+" 改为 "+mastetKG+" ,原值金额 "+hidmasterPirce+" 改为 "+masterPrice;
+					logMsg="将原值公里 "+hidmasterKM+" 改为"+masterKM+" ,原值公斤 "+hidmasterKG+" 改为 "+masterKG+" ,原值金额 "+hidmasterPirce+" 改为 "+masterPrice;
 				}
 			   if(hidoneKM==oneKM && hidoneDistributionPrice==oneDistributionPrice){
 				   isUpdate+="2";
@@ -108,7 +108,7 @@ double masterPirce=entityMaster.getDistributionPrice();
 				   alert("该操作没有任何值可更改的!");return;
 				}
 			$.post("<%=Config.adminUrl%>/admintools/updatetaskdistributionconfig",
-				{masterKM:masterKM,mastetKG:mastetKG,masterPrice:masterPrice,
+				{masterKM:masterKM,masterKG:masterKG,masterPrice:masterPrice,
 				oneKM:oneKM,oneDistributionPrice:oneDistributionPrice,
 				twoKG:twoKG,twoDistributionPrice:twoDistributionPrice,
 				isUpdate:isUpdate,logMsg:logMsg},

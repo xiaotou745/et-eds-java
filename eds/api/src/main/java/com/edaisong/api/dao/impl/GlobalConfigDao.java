@@ -23,7 +23,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 	@Override
 	public List<GlobalConfigModel> getGlobalConfigByGroupId(Integer id) {
 
-		String statement = "com.edaisong.api.dao.inter.IGlobalConfigDao.getGlobalGroupConfig";
+		String statement = "IGlobalConfigDao.getGlobalGroupConfig";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("groupid", id);
 		List<GlobalConfigModel> model = getReadOnlySqlSessionUtil().selectList(
@@ -37,7 +37,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 	 */
 	@Override
 	public int update(ConfigSaveReq par) {
-		String statement = "com.edaisong.api.dao.inter.IGlobalConfigDao.saveConfigValue";
+		String statement = "IGlobalConfigDao.saveConfigValue";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", par.getId());
 		paramMap.put("parvalue", par.getConfigValue());
@@ -49,7 +49,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 	 */
 	@Override
 	public int insert(GlobalConfig par) {
-		String statement = "com.edaisong.api.dao.inter.IGlobalConfigDao.insert";
+		String statement = "IGlobalConfigDao.insert";
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("keyname", par.getKeyname());
 		paramMap.put("value", par.getValue());
@@ -62,14 +62,14 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 	public PagedResponse<GlobalConfigModel> getPagedGlobalConfigModels(PagedGlobalConfigReq search) {
 		PagedResponse<GlobalConfigModel> result = new PagedResponse<GlobalConfigModel>();
 		result = getReadOnlySqlSessionUtil().selectPageList(
-				"com.edaisong.api.dao.inter.IGlobalConfigDao.getPagedGlobalConfigModels", search);
+				"IGlobalConfigDao.getPagedGlobalConfigModels", search);
 		return result;
 	}
 
 	@Override
 	public GlobalConfigModel getGlobalConfigByPrimaryId(Integer id) {
 		GlobalConfigModel model = getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IGlobalConfigDao.getGlobalConfigByPrimaryId", id);
+				"IGlobalConfigDao.getGlobalConfigByPrimaryId", id);
 		return model;
 	}
 	
@@ -87,7 +87,7 @@ public class GlobalConfigDao extends DaoBase implements IGlobalConfigDao {
 //		Map<String, Object> paramMap = new HashMap<>();
 //		paramMap.put("GroupId", groupId);
 //		model = getMasterSqlSessionUtil().selectOne(
-//				"com.edaisong.api.dao.inter.IGlobalConfigDao.query",
+//				"IGlobalConfigDao.query",
 //				paramMap);
 //		
 //		return model;   	

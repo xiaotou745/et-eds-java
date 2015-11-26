@@ -15,18 +15,18 @@ public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao {
 	@Override
 	public int insertList(List<OrderGrabChild> record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IOrderGrabChildDao.insertList", record);
+				"IOrderGrabChildDao.insertList", record);
 	}	
 	@Override
 	public int updateByPrimaryKeySelective(OrderGrabChild record) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderGrabChildDao.updateByPrimaryKeySelective", record);
+				"IOrderGrabChildDao.updateByPrimaryKeySelective", record);
 	}
 	
 	@Override
 	public int updateByGraborderidSelective(OrderGrabChild record) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderGrabChildDao.updateByGraborderidSelective", record);
+				"IOrderGrabChildDao.updateByGraborderidSelective", record);
 	}
 	
 
@@ -35,28 +35,28 @@ public class OrderGrabChildDao extends DaoBase implements IOrderGrabChildDao {
 	public List<OrderGrabChild> selectByGrabOrderId(Long grabOrderId) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dao.inter.IOrderGrabChildDao.selectByGrabOrderId",
+						"IOrderGrabChildDao.selectByGrabOrderId",
 						grabOrderId);
 	}
 	
 	@Override
 	public OrderGrabChild selectTop1ByGrabOrderId(Long grabOrderId) {
 		return getMasterSqlSessionUtil().selectOne(
-						"com.edaisong.api.dao.inter.IOrderGrabChildDao.selectTop1ByGrabOrderId",
+						"IOrderGrabChildDao.selectTop1ByGrabOrderId",
 						grabOrderId);
 	}
 	
 	@Override
 	public List<OrderGrabChild>  selectCompletedOrderByGrabOrderId(Long grabOrderId) {
 		return getMasterSqlSessionUtil().selectList(
-						"com.edaisong.api.dao.inter.IOrderGrabChildDao.selectCompletedOrderByGrabOrderId",
+						"IOrderGrabChildDao.selectCompletedOrderByGrabOrderId",
 						grabOrderId);
 	}
 	
 	@Override
 	public OrderGrabChild selectByPrimaryKey(Integer id) {
 		return getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderGrabChildDao.selectByPrimaryKey", id);
+				"IOrderGrabChildDao.selectByPrimaryKey", id);
 	}
 	
 	@Override

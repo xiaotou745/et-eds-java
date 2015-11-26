@@ -21,13 +21,13 @@ public class AuthorityAccountMenuSetDao extends DaoBase implements IAuthorityAcc
 	@Override
 	public List<Integer> getMenuIdsByAccountId(Integer id) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IAuthorityAccountMenuSetDao.getMenuIdsByAccountId",id);
+				"IAuthorityAccountMenuSetDao.getMenuIdsByAccountId",id);
 	}
 
 	@Override
 	public boolean modifyAuthList(List<AuthorityAccountMenuSet> authList) {
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IAuthorityAccountMenuSetDao.modifyAuthList",
+				.update("IAuthorityAccountMenuSetDao.modifyAuthList",
 						authList) > 0;
 
 	}

@@ -16,27 +16,27 @@ public class GroupBusinessRechargeDao extends DaoBase implements
 	@Override
 	public int insert(GroupBusinessRecharge record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.edaisong.api.dao.inter.IGroupBusinessRechargeDao.insert",
+				"IGroupBusinessRechargeDao.insert",
 				record);
 	}
 
 	@Override
 	public int update(GroupBusinessRecharge record) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IGroupBusinessRechargeDao.update",
+				"IGroupBusinessRechargeDao.update",
 				record);
 	}
 
 	@Override
 	public GroupBusinessRecharge getByOrderNo(String orderNO) {
 		return getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IGroupBusinessRechargeDao.getByOrderNo",
+				"IGroupBusinessRechargeDao.getByOrderNo",
 				orderNO);
 	}
 
 	@Override
 	public List<GroupBusinessBalance> getGroupBalance(int groupBusinessID) {
-		return getMasterSqlSessionUtil().selectList("com.edaisong.api.dao.inter.IGroupBusinessRechargeDao.getGroupBalance", groupBusinessID);
+		return getMasterSqlSessionUtil().selectList("IGroupBusinessRechargeDao.getGroupBalance", groupBusinessID);
 	}
 
 }

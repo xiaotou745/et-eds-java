@@ -41,7 +41,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		paramMap.put("status", record.getStatus());	
 		//其它的暂时没有写
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateByPrimaryKeySelective",
+				.update("IClienterDao.updateByPrimaryKeySelective",
 						paramMap);
 	}
 
@@ -63,7 +63,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		paramMap.put("withwardId", 0);	
 		
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateMoneyById",
+				.update("IClienterDao.updateMoneyById",
 						paramMap);
 	}	
 	
@@ -71,7 +71,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	public PagedResponse<ClienterModel> query(PagedClienterReq req) {
 		PagedResponse<ClienterModel> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.edaisong.api.dao.inter.IClienterDao.query",
+						"IClienterDao.query",
 						req);
 		return model;	
 	}
@@ -83,7 +83,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	 */
 	@Override
 	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {		
-		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IClienterDao.getBusinessClienters", req);
+		return getReadOnlySqlSessionUtil().selectPageList("IClienterDao.getBusinessClienters", req);
 	}
 
     /**
@@ -99,7 +99,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		parasMap.put("Money", amount);
 		parasMap.put("Id", clienterId);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateCAccountBalance",
+				.update("IClienterDao.updateCAccountBalance",
 						parasMap);
 	}
 
@@ -116,7 +116,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		parasMap.put("Money", amount);
 		parasMap.put("Id", clienterId);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateCAllowWithdrawPrice",
+				.update("IClienterDao.updateCAllowWithdrawPrice",
 						parasMap);
 	}
 	/**
@@ -133,7 +133,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		parasMap.put("Money", amount);
 		parasMap.put("Id", clienterId);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateCBalanceAndWithdraw",
+				.update("IClienterDao.updateCBalanceAndWithdraw",
 						parasMap);
 	}
 
@@ -143,7 +143,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		parasMap.put("clienterId", clienterId);
 		parasMap.put("isBind", isBind);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateClienterIsBind",
+				.update("IClienterDao.updateClienterIsBind",
 						parasMap) > 0;
 	}
 
@@ -155,21 +155,21 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	public PagedResponse<ClienterBindInfoModel> getClienterBindInfoList(PagedClienterSearchReq req) {
 		return getReadOnlySqlSessionUtil()
-				.selectPageList("com.edaisong.api.dao.inter.IClienterDao.getClienterBindInfoList",
+				.selectPageList("IClienterDao.getClienterBindInfoList",
 						req);
 	}
 
 	@Override
 	public List<ImportClienterInfo> getInfosByPhones(List<String> phoneNos) {
 		return getReadOnlySqlSessionUtil()
-				.selectList("com.edaisong.api.dao.inter.IClienterDao.getInfosByPhones",
+				.selectList("IClienterDao.getInfosByPhones",
 						phoneNos);
 	}
 
 	@Override
 	public String getNameByPhone(String phoneNo) {
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IClienterDao.getNameByPhone",
+				.selectOne("IClienterDao.getNameByPhone",
 						phoneNo);
 	}
 
@@ -179,18 +179,18 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		map.put("phoneNo", phoneNo);
 		map.put("trueName", trueName);
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IClienterDao.getId",
+				.selectOne("IClienterDao.getId",
 						map);
 	}
 
 	@Override
 	public Clienter selectByPrimaryKey(Integer id) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.selectByPrimaryKey",id);
+		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.selectByPrimaryKey",id);
 	}
 
 	@Override
 	public Clienter selectByPrimaryKeyWrite(Integer id) {
-		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.selectByPrimaryKey",id);
+		return getMasterSqlSessionUtil().selectOne("IClienterDao.selectByPrimaryKey",id);
 	}
 	/**
 	 * 获取用户状态信息
@@ -202,28 +202,28 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	public ClienterStatus getUserStatus(int userid) {
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IClienterDao.getUserStatus",
+				.selectOne("IClienterDao.getUserStatus",
 						userid);
 	}
 
 	@Override
 	public List<MyBusinessModel> getMyBusiness(MyBusinessReq myBusinessReq) { 
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IClienterDao.getMyBusiness",myBusinessReq);
+		return getReadOnlySqlSessionUtil().selectList("IClienterDao.getMyBusiness",myBusinessReq);
 	}
 
 	@Override
 	public MyBusinessResp getServiceBusinessTotal(MyBusinessReq myBusinessReq) {
-		return	getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.getServiceBusinessTotal",myBusinessReq);
+		return	getReadOnlySqlSessionUtil().selectOne("IClienterDao.getServiceBusinessTotal",myBusinessReq);
 		 
 	}
 
 	@Override
 	public ClienterUserStatusResp getUserStatus(UserStatusReq req) {
-		return	getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.getUserStatusForFlash",req);
+		return	getReadOnlySqlSessionUtil().selectOne("IClienterDao.getUserStatusForFlash",req);
 	}
 
 	@Override
 	public int modifyVehicle(ModifyVehicleReq req) {
-		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IClienterDao.modifyVehicle",req);
+		return getMasterSqlSessionUtil().update("IClienterDao.modifyVehicle",req);
 	} 
 }

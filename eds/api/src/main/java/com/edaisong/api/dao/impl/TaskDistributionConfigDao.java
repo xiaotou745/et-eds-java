@@ -19,7 +19,7 @@ public class TaskDistributionConfigDao extends DaoBase implements ITaskDistribut
 	 * */
 	@Override
 	public List<TaskDistributionConfig> query() {
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.ITaskDistributionConfigDao.query");
+		return getReadOnlySqlSessionUtil().selectList("ITaskDistributionConfigDao.query");
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class TaskDistributionConfigDao extends DaoBase implements ITaskDistribut
 	 * */
 	@Override
 	public int update(TaskDistributionConfig req) {
-		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.ITaskDistributionConfigDao.update",req);
+		return getMasterSqlSessionUtil().update("ITaskDistributionConfigDao.update",req);
 	}
 
 }
