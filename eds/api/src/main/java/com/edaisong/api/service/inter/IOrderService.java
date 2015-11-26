@@ -337,5 +337,14 @@ public interface IOrderService {
 		 * @Date 20150827
 		 * @return
 		 */
-	 ShanSongOrderListModel getShanSongOrderByNo(String ordernNo);
+	   ShanSongOrderListModel getShanSongOrderByNo(String ordernNo);
+		/**
+		 * 闪送管理后台取消订单
+		 * 
+		 * @author CaoHeYang
+		 * @param auditOkOrde
+		 * @date 20151126
+		 * @return
+		 */
+		ResponseBase shanSongCancelOrder(OptOrder cancelOrder);
 }

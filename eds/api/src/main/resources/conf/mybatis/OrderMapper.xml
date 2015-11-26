@@ -624,7 +624,7 @@
 				Remark = #{remark,jdbcType=NVARCHAR},
 			</if>
 			<if test="status != null">
-				Status = #{status,jdbcType=TINYINT},
+				Status = #{status,jdbcType=INTEGER},
 			</if>
 			<if test="clienterid != null">
 				clienterId = #{clienterid,jdbcType=INTEGER},
@@ -1108,6 +1108,9 @@
 		JOIN OrderOther (NOLOCK) ord ON ord.OrderId = ab.Id
 		JOIN business (NOLOCK) c ON c.id = ab.businessId
 		WHERE ab.Id =#{orderId,jdbcType=INTEGER} 
+		<if test="platform != null">
+			and ab.Platform=#{platform,jdbcType=INTEGER} 
+		</if>
 	</select>
 
 	<!--商家后台 订单详情页面基础数据 add by caoheyang 20150804 -->
@@ -1845,7 +1848,7 @@ where
 			</foreach>
 		</if>
   </select>
-  	<!-- 后台E单订单列表页面 add by caoheyang 20151124 -->
+  	<!-- 后台E单订单详情页面 add by caoheyang 20151124 -->
 <select id="getShanSongOrderByNo" resultType="com.edaisong.entity.domain.ShanSongOrderListModel"
 		parameterType="java.lang.String">
 select 	 a.Id ,a.OrderNo ,a.PickUpAddress,a.BusinessId ,a.ReceviceAddress ,a.clienterId ,a.PickupCode ,
@@ -1853,7 +1856,7 @@ a.[status],a.Amount,a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
 a.ReceviceName ,  a.[PubDate],
 ISNULL(c.TrueName,'匿名') ClienterName,
 ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
-ISNULL( b.PhoneNo ,'无') BusinessPhoneNo ,a.Remark,a.ProductName
+ISNULL( b.PhoneNo ,'无') BusinessPhoneNo ,a.Remark,a.ProductName,a.IsEnable 
 from  dbo.[order] (nolock) a
 join business b with ( nolock ) on b.Id = a.businessId and a.Platform=3
 left join dbo.clienter (nolock) c on a.ClienterId = c.Id

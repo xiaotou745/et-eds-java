@@ -6,10 +6,15 @@ package com.edaisong.core.enums;
  *
  */
 public enum ShanSongOrderStatus {
-	/*
+
+	/**
 	 * 待接入
 	 */
 	WaitPay(-5, "待支付"),
+	/**
+	 * 待接入
+	 */
+	PayClose(-6, "交易关闭"),
 	/**
 	 * 订单新增 
 	 */

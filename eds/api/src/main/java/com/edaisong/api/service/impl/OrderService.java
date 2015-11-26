@@ -55,6 +55,7 @@ import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderOperationCommon;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
+import com.edaisong.core.enums.ShanSongOrderStatus;
 import com.edaisong.core.enums.Strategy;
 import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
@@ -2047,5 +2048,112 @@ public class OrderService implements IOrderService {
 		return orderListModel;
 	}
  
- 
+ /**
+	 * 闪送管理后台取消订单
+	 * 
+	 * @author CaoHeYang
+	 * @param cancelOrder
+	 * @date 20151126
+	 * @return
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public ResponseBase shanSongCancelOrder(OptOrder cancelOrder) {
+		ResponseBase responseBase = new ResponseBase();
+		OrderListModel orderModel = orderDao.getOrderByNoId(
+				cancelOrder.getOrderNo(), cancelOrder.getOrderId());
+		if (orderModel == null) {
+			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
+			responseBase.setMessage("未查询到订单信息！");
+			return responseBase;
+		}
+		orderModel.setOptUserName(cancelOrder.getOptUserName()); // 操作人
+		orderModel.setRemark(cancelOrder.getOptLog()); // 操作日志
+		if (orderModel.getStatus() == ShanSongOrderStatus.Cancel.value()||orderModel.getStatus() ==
+				ShanSongOrderStatus.PayClose.value()) {
+			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
+			responseBase.setMessage("订单已为取消或交易关闭状态，不能再次取消操作！");
+			return responseBase;
+		}
+
+		if (orderModel.getIsJoinWithdraw() == 1) {
+			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
+			responseBase.setMessage("订单已分账，不能取消订单！");
+			return responseBase;
+		}
+		Integer orderTaskPayStatus = orderChildDao
+				.getOrderTaskPayStatus(cancelOrder.getOrderId());
+		// 线上结算 餐费未线上支付模式并且餐费有支付
+		if (orderModel.getMealsSettleMode() == MealsSettleMode.LineOn.value()
+				&& orderTaskPayStatus > 0 && !orderModel.getIsPay()) {
+			responseBase.setResponseCode(ResponseCode.PARAMETER_NULL_ERROR);
+			responseBase.setMessage("餐费有支付，不能取消订单！");
+			return responseBase;
+		}
+		//取消订单还是交易关闭
+		int cancelStatus=orderModel.getStatus()==ShanSongOrderStatus.WaitPay.value() ?ShanSongOrderStatus.PayClose.value():
+			ShanSongOrderStatus.Cancel.value();  
+		
+		// 取消订单
+		Order tempCanelOrder = new Order();
+		tempCanelOrder.setId(cancelOrder.getOrderId());
+		tempCanelOrder.setStatus(cancelStatus);
+		orderDao.updateByPrimaryKeySelective(tempCanelOrder);
+		// 记录取消订单日志
+		OrderSubsidiesLog record = new OrderSubsidiesLog();
+		record.setOrderid(cancelOrder.getOrderId());
+		record.setOrderstatus(cancelStatus);
+		record.setOptid(cancelOrder.getOptUserId());
+		record.setPrice(orderModel.getOrderCommission()); // 佣金
+		record.setOptname(cancelOrder.getOptUserName());
+		record.setPlatform(SuperPlatform.ManagementBackGround.value());
+		record.setRemark(cancelOrder.getOptUserName() + "通过后台管理系统取消订单,用户操作描述：【"
+				+ cancelOrder.getOptLog() + "】");
+		orderSubsidiesLogDao.insert(record);
+		// 更新取消订单时间
+		OrderOther orderOther = new OrderOther();
+		orderOther.setOrderid(cancelOrder.getOrderId());
+		orderOther.setCancelTime(new Date());
+		orderOtherDao.updateByPrimaryKeySelective(orderOther);
+		// 已完成订单 子订单全部已支付
+		if (orderModel.getStatus() == OrderStatus.Complite.value()
+				&& orderTaskPayStatus == 2
+				&& orderModel.getHadUploadCount() == orderModel
+						.getNeedUploadCount()) // 已完成订单
+		{
+			// 更新骑士余额 插流水
+			ClienterMoney clienterMoney = new ClienterMoney();
+			clienterMoney.setClienterId(orderModel.getClienterId());
+			clienterMoney.setAmount(-orderModel.getOrderCommission());
+			clienterMoney
+					.setStatus(ClienterBalanceRecordStatus.Success.value());
+			clienterMoney
+					.setRecordType(ClienterBalanceRecordRecordType.CancelOrder
+							.value());
+			clienterMoney.setOperator(cancelOrder.getOptUserName());
+			clienterMoney.setWithwardId((long) orderModel.getId()); // 订单id
+			clienterMoney.setRelationNo(orderModel.getOrderNo()); // 关联单号
+			clienterMoney.setRemark(orderModel.getRemark());
+			clienterService.updateCBalanceAndWithdraw(clienterMoney);
+		}
+		//非 未支付状态下需要加商户余额
+		if (orderModel.getStatus() != ShanSongOrderStatus.WaitPay.value()) {
+			// 更新商家余额可提现金额 插流水
+			BusinessMoney businessMoney = new BusinessMoney();
+			businessMoney.setAmount(orderModel.getSettleMoney());// 金额
+			businessMoney.setBusinessId(orderModel.getBusinessId());// 商户Id
+			businessMoney.setStatus((short) BusinessBalanceRecordStatus.Success
+					.value());
+			businessMoney
+					.setRecordType((short) BusinessBalanceRecordRecordType.CancelOrder
+							.value()); // 取消订单
+			businessMoney.setOperator(cancelOrder.getOptUserName());
+			businessMoney.setWithwardId((long) orderModel.getId()); // 订单id
+			businessMoney.setRelationNo(orderModel.getOrderNo()); // 关联单号
+			businessMoney.setRemark(orderModel.getRemark()); // 注释
+			businessService.updateBBalanceAndWithdraw(businessMoney);
+		}
+		responseBase.setMessage("订单取消成功");
+		return responseBase;
+	}
 }
