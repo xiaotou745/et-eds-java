@@ -51,7 +51,11 @@
 			<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getPickupCode())%></td>
 			<td>	<%=ShanSongOrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
-			<td><a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a></td>
+			<td>  
+			<%if(data.get(i).getFormType()==0){%>
+			<a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a>
+			<%}%>
+			</td>
 		</tr>
 		<%
 			}
