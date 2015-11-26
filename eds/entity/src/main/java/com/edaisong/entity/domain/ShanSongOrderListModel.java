@@ -4,6 +4,8 @@ public class ShanSongOrderListModel extends OrderListModel {
 	private Double weight;
 	private String pickupCode;
 	private int formType;
+	private String pubName;
+	private String pubPhoneNo;
 
 	/**
 	 * 重量
@@ -18,8 +20,6 @@ public class ShanSongOrderListModel extends OrderListModel {
 	public void setWeight(Double weight) {
 		this.weight = weight;
 	}
-
-	
 
 	/**
 	 * 取货码
@@ -51,6 +51,42 @@ public class ShanSongOrderListModel extends OrderListModel {
 	 */
 	public void setFormType(int formType) {
 		this.formType = formType;
+	}
+
+	/**
+	 * 发货人
+	 * 
+	 * @return
+	 */
+	public String getPubName() {
+		return pubName;
+	}
+
+	/**
+	 * 发货人
+	 * 
+	 * @param pubName
+	 */
+	public void setPubName(String pubName) {
+		this.pubName = pubName;
+	}
+
+	/**
+	 * 发货人电话
+	 * 
+	 * @return
+	 */
+	public String getPubPhoneNo() {
+		return pubPhoneNo;
+	}
+
+	/**
+	 * 发货人电话
+	 * 
+	 * @param pubPhoneNo
+	 */
+	public void setPubPhoneNo(String pubPhoneNo) {
+		this.pubPhoneNo = pubPhoneNo;
 	}
 
 }

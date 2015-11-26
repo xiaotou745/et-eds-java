@@ -477,4 +477,21 @@ public class OrderDao extends DaoBase implements IOrderDao {
 				"com.edaisong.api.dao.inter.IOrderDao.exportShanSongOrder", 
 				search);
 	}
+	
+	/**
+	 * 根据订单号/订单id查订单信息
+	 * 
+	 * @author CaoHeYang
+	 * @param ordernNo
+	 *            订单号
+	 * @param orderId
+	 *            订单id
+	 * @Date 20150827
+	 * @return
+	 */
+	@Override
+	public  ShanSongOrderListModel getShanSongOrderByNo(String ordernNo){
+		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderDao.getShanSongOrderByNo"
+				, ordernNo);
+	}
 }
