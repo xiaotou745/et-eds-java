@@ -57,7 +57,7 @@
 				<td>配送费：<%=ParseHelper.ShowString(detail.getAmount())%></td>
 			</tr>
 			<tr class="trclass">
-				<td colspan="2">物品信息：</td>
+				<td colspan="2">物品信息：<%=ParseHelper.ShowString(detail.getProductName())%></td>
 				<td>备注:<%=ParseHelper.ShowString(detail.getRemark())%></td>
 			</tr>
 		</table>
@@ -94,7 +94,6 @@
 			<tr class="trclass">
 				<td>骑士姓名：<%=ParseHelper.ShowString(detail.getClienterName())%></td>
 				<td>骑士电话：<%=ParseHelper.ShowString(detail.getClienterPhoneNo())%></td>
-				<td></td>
 				<td></td>
 			</tr>
 		</table>

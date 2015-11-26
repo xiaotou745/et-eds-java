@@ -6,7 +6,7 @@ public class ShanSongOrderListModel extends OrderListModel {
 	private int formType;
 	private String pubName;
 	private String pubPhoneNo;
-
+     private String productName;
 	/**
 	 * 重量
 	 */
@@ -89,4 +89,18 @@ public class ShanSongOrderListModel extends OrderListModel {
 		this.pubPhoneNo = pubPhoneNo;
 	}
 
+	/**
+	 * 商品名称
+	 * @return
+	 */
+	public String getProductName() {
+		return productName;
+	}
+    /**
+     * 商品名称
+     * @param productName
+     */
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 }
