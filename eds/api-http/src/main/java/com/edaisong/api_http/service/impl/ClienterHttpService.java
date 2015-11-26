@@ -13,12 +13,16 @@ import com.edaisong.api_http.service.inter.IClienterHttpService;
 import com.edaisong.core.enums.OrderGrabEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.enums.returnenums.RemoveRelationReturnEnum;
+import com.edaisong.entity.Clienter;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.MyOrderHadFinishCModel;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.HadFinishOrderReq;
+import com.edaisong.entity.req.ModifyVehicleReq;
 import com.edaisong.entity.req.MyBusinessReq;
+import com.edaisong.entity.req.UserStatusReq;
+import com.edaisong.entity.resp.ClienterUserStatusResp;
 import com.edaisong.entity.resp.HadFinishOrderResp;
 import com.edaisong.entity.resp.MyBusinessResp;
 import com.edaisong.entity.resp.MyOrderGrabCResp;
@@ -82,5 +86,26 @@ public class ClienterHttpService implements IClienterHttpService {
     		res.setMessage(HttpReturnRnums.Fail.desc());
         }
 	    return res; 
+	}
+	@Override
+	public HttpResultModel<Object> getUserStatus(UserStatusReq req) {
+		HttpResultModel<Object> res = new HttpResultModel<Object>(); 
+		res.setStatus(HttpReturnRnums.Success.value());
+		res.setMessage(HttpReturnRnums.Success.desc());
+		ClienterUserStatusResp clienter = iClienterService.getUserStatus(req);
+		res.setResult(clienter);		
+		return res;
+	}
+	@Override
+	public HttpResultModel<Object> modifyVehicle(ModifyVehicleReq req) {
+		HttpResultModel<Object> res = new HttpResultModel<Object>(); 
+		res.setStatus(HttpReturnRnums.Success.value());
+		res.setMessage(HttpReturnRnums.Success.desc());
+		int modifyResult = iClienterService.modifyVehicle(req);
+		if(modifyResult <=0 ){
+			res.setStatus(HttpReturnRnums.Fail.value());
+			res.setMessage(HttpReturnRnums.Fail.desc());
+		}
+		return res;
 	} 
 }

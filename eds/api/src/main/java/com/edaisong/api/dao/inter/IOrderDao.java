@@ -11,6 +11,7 @@ import com.edaisong.entity.domain.BusinessOrderSummaryModel;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
+import com.edaisong.entity.domain.ExportShanSongOrder;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
@@ -318,5 +319,15 @@ public interface IOrderDao {
 	 * @return
 	 */
 	PagedResponse<ShanSongOrderListModel> getShanSongOrders(PagedOrderSearchReq search);
-	
+	/**
+	 * 导出订单
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20151125
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+
+	 List<ExportShanSongOrder> exportShanSongOrder(PagedOrderSearchReq search); 
 }

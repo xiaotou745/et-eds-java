@@ -34,27 +34,6 @@
 				data = new ArrayList<ShanSongOrderListModel>();
 			}
 			for (int i = 0; i < data.size(); i++) {
-				double distance = data.get(i).getGrabToCompleteDistance();
-				String grabToCompleteStyle = "";
-				String grabToCompleteStr = "";
-				if (distance == -1)//抢单和完成的坐标有一个未知时
-				{
-					grabToCompleteStyle = "color:black";
-					grabToCompleteStr = "未知";
-				} else if (distance == 0.0)//抢单和完成的坐标重合
-				{
-					grabToCompleteStyle = "color:red;font-weight:900";
-					grabToCompleteStr = "重合";
-				} else //抢单和完成的坐标不重合
-				{
-					grabToCompleteStyle = "color:green";
-					grabToCompleteStr = "不重合";
-				}
-				int diffHour = 0;
-				String val = diffHour > 10 && data.get(i).getStatus() == 0 ? "red"
-						: diffHour > 8 && data.get(i).getStatus() == 0 ? "blue"
-								: diffHour > 5 && data.get(i).getStatus() == 0 ? "yellow"
-										: "none";
 		%>
 		<tr>
 			<td><%=i + 1%></td>

@@ -1216,7 +1216,7 @@ select  ISNULL(b.Id,0) as ClienterId ,
         ISNULL(MIN (b.HeadPhoto),'') as ClienterPhoto
 from    dbo.[order] (nolock)a
         LEFT join dbo.clienter (nolock) b on a.clienterId = b.Id
-where   a.Status = 1   and businessId=#{businessId}  and a.[Platform] = 1 
+where   a.Status = 1   and businessId=#{businessId}  and a.[Platform] = #{platform}
 and a.PubDate>=@startDate and a.PubDate <![CDATA[ <]]> @endDate
 group by b.Id ,
         b.PhoneNo ,
@@ -1250,7 +1250,7 @@ from    ( select    CONVERT(VARCHAR(100), DATEADD(dd, number, @sdate), 23) as Mo
                             COUNT(distinct clienterId) as ServiceClienterCount ,
                             CONVERT(VARCHAR(100), PubDate, 23) as OrderDate
                     from    dbo.[order] (nolock)
-                    where   Status = 1 and businessId=#{businessId} and [Platform] = 1 
+                    where   Status = 1 and businessId=#{businessId} and [Platform] = #{platform} 
                     and PubDate>=@startDate and PubDate  <![CDATA[ <]]>  @endDate
                     group by CONVERT(VARCHAR(100), PubDate, 23)
                   ) as b on a.MonthDate = b.OrderDate
@@ -1272,7 +1272,7 @@ select  isnull(SUM(ISNULL(ordercount,0)),0) as OrderCount ,
 from    dbo.[order] (nolock) 
 where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
-        and businessId=#{businessId} and [Platform] = 1 
+        and businessId=#{businessId} and [Platform] = #{platform} 
 	</select>
 
     <!-- C端任务统计接口  天数据列表  wangxudan 20150910 -->
@@ -1305,7 +1305,7 @@ LEFT JOIN (  SELECT
 				SUM(OrderCount) TotalCount
 		FROM dbo.[order] o WITH(NOLOCK)
 		join  OrderOther oo  WITH(NOLOCK) ON o.id=oo.OrderId
-		WHERE o.clienterId=#{clienterId} AND o.Status = 1 and o.[Platform] = 1 
+		WHERE o.clienterId=#{clienterId} AND o.Status = 1 and o.[Platform] = #{platform}  
 		GROUP BY  Convert (VARCHAR(10),o.PubDate,120)
 		) tbl ON tbl.PubDate=tbldate.MonthDate
 WHERE tbldate.MonthDate <![CDATA[ <=]]>GETDATE()
@@ -1333,7 +1333,7 @@ join  OrderOther oo  WITH(NOLOCK) ON o.id=oo.OrderId
 where   Status = 1
         and o.PubDate >= @startDate and o.PubDate <![CDATA[ <]]> @endDate
         and o.clienterId=#{clienterId}  
-		and o.[Platform] = 1 
+		and o.[Platform] = #{platform} 
 	</select>
 		<!--  移动端 订单列表  add by caoheyang 20150910-->
 	<select id="queryOrder" resultType="com.edaisong.entity.domain.QueryOrder"
@@ -1763,6 +1763,9 @@ GROUP BY a.id ,
 		<if test="orderPubStart != null and orderPubStart!=''">
 			and a.PubDate>= ''${orderPubStart} 00:00:00''
 		</if>
+	    <if test="businessCity != null and businessCity !=''">
+			and b.city  = ''${businessCity}''
+		</if>
 		<if test="orderPubEnd != null and orderPubEnd!=''">
          <![CDATA[ and a.PubDate<=]]>
 			''${orderPubEnd} 23:59:59''
@@ -1770,8 +1773,8 @@ GROUP BY a.id ,
 		<if test="authorityCityNameList != null">
 			and b.city in
 			<foreach item="item" index="index" collection="authorityCityNameList"
-				open="(''" separator="'',''" close="'')">
-				#{item}
+				open="(" separator="," close=")">
+				''${item}''
 			</foreach>
 		</if>
 	</sql>
@@ -1798,4 +1801,31 @@ GROUP BY a.id ,
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
+	
+	<!-- 闪送导出订单 add by caoheyang 20151125 -->
+	  <select id="exportShanSongOrder" resultType="com.edaisong.entity.domain.ExportShanSongOrder"
+  		 parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
+select 	 a.Id ,a.OrderNo ,a.PickUpAddress,a.BusinessId ,
+   a.ReceviceAddress ,a.clienterId ,a.PickupCode ,
+   a.[Status] ,a.FormType,a.Amount,a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
+   a.ReceviceName , CONVERT(VARCHAR(100),  a.[PubDate], 120) as PubDate,  e.PayType,
+ISNULL(c.TrueName,'匿名') ClienterName,
+ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
+ISNULL( b.PhoneNo ,'无') BusinessPhoneNo 
+from ( select  Id,OrderNo,PubDate,PickUpAddress,BusinessId,ReceviceAddress,ISNULL(ClienterId, 0) clienterId ,
+            PickupCode ,[Status] ,0 FormType,Amount,Weight, KM,RecevicePhoneNo,ReceviceName,' 'PubName,'' PubPhoneNo
+  from      dbo.[order] (nolock) where Platform=3
+  union all
+  select 0 Id ,OrderNo , PubDate ,PubAddress as PickUpAddress,BusinessId ,
+         ReceviceAddress ,0 as clienterId ,TakeCode as PickupCode ,
+         -1  [Status] ,1 FormType,Amount,Weight,KM,PubName,PubPhoneNo,RecevicePhoneNo,
+         ReceviceName
+  from    OrderDraft (nolock)
+) a
+join business b with ( nolock ) on b.Id = a.businessId
+left join dbo.clienter (nolock) c on a.ClienterId = c.Id
+left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
+LEFT join dbo.OrderChild e ( nolock ) on  a.Id=d.OrderId
+
+  </select>
 </mapper>

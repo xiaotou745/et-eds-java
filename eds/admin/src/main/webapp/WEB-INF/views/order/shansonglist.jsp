@@ -52,9 +52,10 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">选择城市:</label>
+							<label class="col-sm-4 control-label">发单城市:</label>
 							<div class="col-sm-8">
-							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部") %>
+								<input type="text" class="form-control" name="businessCity"  id="businessCity"/>
+						<%-- 	  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部") %> --%>
 							</div>
 						</div>
 					</div>
@@ -180,23 +181,21 @@ width: 100%;
 		    var superManPhone = $("#txtSuperManPhone").val();
 	        var txtSuperManName = $("#txtSuperManName").val();
 	        var txtBusinessPhone = $("#txtBusinessPhone").val();
-	        var txtBusinessName = $("#txtBusinessName").val();
 	        var txtOrderPubStart = $("#txtOrderPubStart").val();
 	        var txtOrderPubEnd = $("#txtOrderPubEnd").val();
 	        var businessCity = $("#businessCity").val();
 	        var orderStatus = $("#orderStatus").val();
-	        var groupId = $("#groupId").val();
 	        if (txtOrderPubStart == "" || txtOrderPubEnd == "") {
 	        	layer.alert('请输入时间范围!', {
 				    icon: 2
 				});
 	            return;
 	        }
-	        var url = "<%=basePath%>/order/exportorder?superManPhone=" + superManPhone 
+	        var url = "<%=basePath%>/order/exportshansongorder?superManPhone=" + superManPhone 
 	        		+ "&superManName=" + txtSuperManName + "&businessPhone=" + txtBusinessPhone
-	        		+ "&businessName=" + txtBusinessName + "&orderStatus=" + orderStatus 
+	        		 + "&orderStatus=" + orderStatus 
 	        		+ "&businessCity=" + businessCity + "&orderPubStart=" + txtOrderPubStart 
-	        		+ "&orderPubEnd=" + txtOrderPubEnd + "&groupId=" + groupId;
+	        		+ "&orderPubEnd=" + txtOrderPubEnd;
 	        window.location.href = url;
 	        return true;
 	});

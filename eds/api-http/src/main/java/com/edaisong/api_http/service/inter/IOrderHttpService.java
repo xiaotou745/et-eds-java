@@ -9,11 +9,14 @@ import javax.ws.rs.Produces;
 
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
+import com.edaisong.entity.OrderDraft;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.req.OrderChildCancelReq;
+import com.edaisong.entity.req.OrderDraftReq;
+import com.edaisong.entity.req.OrderDraftGetReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderReq;
@@ -22,6 +25,7 @@ import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
+import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
@@ -53,7 +57,7 @@ public interface IOrderHttpService {
 	
 	
 	/**
-	 * 发布订单
+	 * 发布订单 
 	 * @author 胡灵波
 	 * @date 2015年10月30日 11:29:00
 	 * @version 1.0
@@ -64,10 +68,36 @@ public interface IOrderHttpService {
 	@Path("/push")
 	public HttpResultModel<OrderResp> Push(OrderReq req);	
 
+	
 	@POST
 	@Path("/cancelOrderChild")
 	public HttpResultModel<OrderGrabResp> CancelOrderChild(OrderChildCancelReq  req);	
 	
+
+	/**
+	 * 发布订单(闪送模式) 
+	 * @author 胡灵波
+	 * @date 2015年11月24日 13:24:18
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/flashpush")
+	public HttpResultModel<OrderDraftResp> FlashPush(OrderDraftReq req);
+	
+
+	/**
+	 * 获取未生效订单(闪送模式) 
+	 * @author 胡灵波
+	 * @date 2015年11月25日 17:57:44
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/getorderdraft")
+	public HttpResultModel<OrderDraft> GetOrderDraft(OrderDraftGetReq req);
 	/**
 	 * B端任务统计接口
 	 * 

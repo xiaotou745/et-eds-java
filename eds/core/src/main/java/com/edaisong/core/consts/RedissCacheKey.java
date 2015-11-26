@@ -18,7 +18,10 @@ public class RedissCacheKey {
     public static final String Order_TimeSpan = "jOrder_TimeSpan_";//商家发单时间戳
     public static final String Menu_Auth = "Menu_Auth_";//用户有权限的菜单
     public static final String GlobalConfig_Key ="GlobalConfig_%s_0";
-    
+  /// <summary>
+    /// 商家端注册
+    /// </summary>
+    public static final String RegisterCount_B = "RegisterCount_B_%s";
 //    public static final String GlobalConfig_PushRadius = "GlobalConfig_PushRadius_{0}";
 //    public static final String GlobalConfig_AllFinishedOrderUploadTimeInterval = "GlobalConfig_AllFinishedOrderUploadTimeInterval_{0}";
 //    public static final String GlobalConfig_SearchClienterLocationTimeInterval = "GlobalConfig_SearchClienterLocationTimeInterval_{0}";
