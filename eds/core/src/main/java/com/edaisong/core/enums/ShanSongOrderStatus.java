@@ -10,11 +10,11 @@ public enum ShanSongOrderStatus {
 	/**
 	 * 待接入
 	 */
-	WaitPay(-5, "待支付"),
+	WaitPay(50, "待支付"),
 	/**
 	 * 待接入
 	 */
-	PayClose(-6, "交易关闭"),
+	PayClose(51, "交易关闭"),
 	/**
 	 * 订单新增 
 	 */
