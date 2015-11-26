@@ -14,7 +14,9 @@ import com.edaisong.api.service.inter.ITaskDistributionConfigService;
 import com.edaisong.core.enums.OptLogEnum;
 import com.edaisong.entity.OptLog;
 import com.edaisong.entity.TaskDistributionConfig;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.TaskDistributionConfigReq;
+import com.edaisong.entity.resp.TaskDistributionConfigResp;
 
 @Service
 public class TaskDistributionConfigService implements
@@ -25,6 +27,42 @@ public class TaskDistributionConfigService implements
 
 	@Autowired
 	private IOptLogDao optLogDao;
+
+	/**
+	 * @author haichao
+	 * @date 2015年11月26日 09:54:08
+	 * 获取普通任务配送费配置
+	 * */
+	@Override
+	public HttpResultModel<TaskDistributionConfigResp> getTaskDistributionConfig() {
+		HttpResultModel<TaskDistributionConfigResp> resultModel=new HttpResultModel<TaskDistributionConfigResp>();
+		List<TaskDistributionConfig> list= taskDistributionConfigDao.query();//获取所有配送费配置 
+		if(list==null || list.size()!=3)
+		{
+			resultModel.setMessage("任务配送费配置错误");
+			resultModel.setResult(null);
+			resultModel.setStatus(0);
+			return resultModel;
+		}
+		
+		//开始组装
+		TaskDistributionConfigResp response=new TaskDistributionConfigResp();
+		
+		TaskDistributionConfig config= list.get(0);
+		response.setMasterKM(config.getkM());
+		response.setMasterKG(config.getkG());
+		response.setMasterPrice(config.getDistributionPrice());
+		
+		config =list.get(1);
+		response.setOneKM(config.getkM());
+		response.setOneDistributionPrice(config.getDistributionPrice());
+		config=list.get(2);
+		response.setTwoKG(config.getkG());
+		response.setTwoDistributionPrice(config.getDistributionPrice());
+		
+		resultModel.setResult(response);
+		return resultModel;
+	}
 
 	/**
 	 * @author haichao
@@ -48,7 +86,7 @@ public class TaskDistributionConfigService implements
 				// 更新主
 				conf = new TaskDistributionConfig();
 				conf.setkM(req.getMasterKM());
-				conf.setkG(req.getMastetKG());
+				conf.setkG(req.getMasterKG());
 				conf.setDistributionPrice(req.getMasterPrice());
 				conf.setId(1);
 				taskDistributionConfigDao.update(conf);

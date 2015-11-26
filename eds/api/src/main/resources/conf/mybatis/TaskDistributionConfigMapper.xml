@@ -15,4 +15,5 @@
   <update id="update" parameterType="com.edaisong.entity.TaskDistributionConfig">
   	update dbo.TaskDistributionConfig set KM= #{kM,jdbcType=INTEGER},KG=#{kG,jdbcType=INTEGER},DistributionPrice= #{distributionPrice,jdbcType=DOUBLE} where Id=#{id,jdbcType=INTEGER}
   </update>
+  
 </mapper>
