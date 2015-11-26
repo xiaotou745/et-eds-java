@@ -219,11 +219,11 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 
 	@Override
 	public ClienterUserStatusResp getUserStatus(UserStatusReq req) {
-		return	getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.getUserStatusForFlash",req);
+		return	getReadOnlySqlSessionUtil().selectOne("IClienterDao.getUserStatusForFlash",req);
 	}
 
 	@Override
 	public int modifyVehicle(ModifyVehicleReq req) {
-		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IClienterDao.modifyVehicle",req);
+		return getMasterSqlSessionUtil().update("IClienterDao.modifyVehicle",req);
 	} 
 }

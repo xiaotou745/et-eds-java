@@ -56,7 +56,7 @@ public class AccountCityRelationDao extends DaoBase implements IAccountCityRelat
 	 */
 	@Override
 	public List<String> getAuthorityCitys(int userId){
-	 return  getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IAccountCityRelationDao.getAuthorityCitys", userId);
+	 return  getReadOnlySqlSessionUtil().selectList("IAccountCityRelationDao.getAuthorityCitys", userId);
 	} 
 	
 

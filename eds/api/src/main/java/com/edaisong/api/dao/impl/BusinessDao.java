@@ -283,6 +283,6 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 
 	@Override
 	public int register(BusinessRegisterReq req) { 
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IBusinessDao.register",req);
+		return getMasterSqlSessionUtil().insert("IBusinessDao.register",req);
 	}
 }

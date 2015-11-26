@@ -474,7 +474,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	@Override
 	public List<ExportShanSongOrder> exportShanSongOrder(PagedOrderSearchReq search) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderDao.exportShanSongOrder", 
+				"IOrderDao.exportShanSongOrder", 
 				search);
 	}
 	
@@ -491,7 +491,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	 */
 	@Override
 	public  ShanSongOrderListModel getShanSongOrderByNo(String ordernNo){
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IOrderDao.getShanSongOrderByNo"
+		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.getShanSongOrderByNo"
 				, ordernNo);
 	}
 }
