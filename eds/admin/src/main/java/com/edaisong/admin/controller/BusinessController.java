@@ -185,11 +185,12 @@ public class BusinessController {
 		String defaultPic = PropertyUtils.getProperty("ImageServicePath");
 		String imageBusinessPath = PropertyUtils.getProperty("ImageBusinessServicePath");
 		String originSize = "_0_0";
-		String bigFileName = defaultPic + "/nopic.jpg";
-		String bigFileNameb = defaultPic + "/nopic.jpg";
-		String checkPicUrl = defaultPic + "/nopic.jpg";
-		String businessLicensePic = defaultPic + "/nopic.jpg";
+		String bigFileName = defaultPic + "nopic.jpg";
+		String bigFileNameb = defaultPic + "nopic.jpg";
+		String checkPicUrl = defaultPic + "nopic.jpg";
+		String businessLicensePic = defaultPic + "nopic.jpg";
 		if (detail.getCheckpicurl() != null && !detail.getCheckpicurl().isEmpty()) {
+			detail.setCheckpicurl(detail.getCheckpicurl().trim());
 			int fileLastDot = detail.getCheckpicurl().lastIndexOf('.');
 			String fileHandHouZhui = detail.getCheckpicurl().substring(fileLastDot, detail.getCheckpicurl().length());
 			checkPicUrl = imageBusinessPath + detail.getCheckpicurl();
@@ -197,6 +198,7 @@ public class BusinessController {
 
 		}
 		if (detail.getBusinesslicensepic() != null && !detail.getBusinesslicensepic().isEmpty()) {
+			detail.setBusinesslicensepic(detail.getBusinesslicensepic().trim());
 			int fileLastDotb = detail.getBusinesslicensepic().lastIndexOf('.');
 			String fileHandHouZhuib = detail.getBusinesslicensepic().substring(fileLastDotb,
 					detail.getBusinesslicensepic().length());

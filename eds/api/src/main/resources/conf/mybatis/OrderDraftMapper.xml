@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderDraftDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderDraft" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="OrderNo" property="orderno" jdbcType="NVARCHAR" />
+    <result column="PubName" property="pubname" jdbcType="NVARCHAR" />
+    <result column="PubDate" property="pubdate" jdbcType="TIMESTAMP" />
+    <result column="PubLongitude" property="publongitude" jdbcType="DOUBLE" />
+    <result column="PubLatitude" property="publatitude" jdbcType="DOUBLE" />
+    <result column="PubPhoneNo" property="pubphoneno" jdbcType="NVARCHAR" />
+    <result column="PubAddress" property="pubaddress" jdbcType="NVARCHAR" />
+    <result column="TakeType" property="taketype" jdbcType="SMALLINT" />
+    <result column="TakeTime" property="taketime" jdbcType="TIMESTAMP" />
+    <result column="TakeCode" property="takecode" jdbcType="NVARCHAR" />
+    <result column="TakeLongitude" property="takelongitude" jdbcType="DOUBLE" />
+    <result column="TakeLatitude" property="takelatitude" jdbcType="DOUBLE" />
+    <result column="ReceviceName" property="recevicename" jdbcType="NVARCHAR" />
+    <result column="RecevicePhoneNo" property="recevicephoneno" jdbcType="NVARCHAR" />
+    <result column="ReceviceAddress" property="receviceaddress" jdbcType="NVARCHAR" />
+    <result column="ReceviceCity" property="recevicecity" jdbcType="NVARCHAR" />
+    <result column="ReceviceLongitude" property="recevicelongitude" jdbcType="DOUBLE" />
+    <result column="ReceviceLatitude" property="recevicelatitude" jdbcType="DOUBLE" />
+    <result column="ReceiveProvince" property="receiveprovince" jdbcType="NVARCHAR" />
+    <result column="ReceiveArea" property="receivearea" jdbcType="NVARCHAR" />
+    <result column="ReceiveProvinceCode" property="receiveprovincecode" jdbcType="NVARCHAR" />
+    <result column="ReceiveCityCode" property="receivecitycode" jdbcType="NVARCHAR" />
+    <result column="ReceiveAreaCode" property="receiveareacode" jdbcType="NVARCHAR" />
+    <result column="IsPay" property="ispay" jdbcType="BIT" />
+    <result column="ProductName" property="productname" jdbcType="NVARCHAR" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+    <result column="Amount" property="amount" jdbcType="DECIMAL" />
+    <result column="businessId" property="businessid" jdbcType="INTEGER" />
+    <result column="Weight" property="weight" jdbcType="DECIMAL" />
+    <result column="KM" property="km" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, OrderNo, PubName, PubDate, PubLongitude, PubLatitude, PubPhoneNo, PubAddress, 
+    TakeType, TakeTime, TakeCode, TakeLongitude, TakeLatitude, ReceviceName, RecevicePhoneNo, 
+    ReceviceAddress, ReceviceCity, ReceviceLongitude, ReceviceLatitude, ReceiveProvince, 
+    ReceiveArea, ReceiveProvinceCode, ReceiveCityCode, ReceiveAreaCode, IsPay, ProductName, 
+    Remark, Amount, businessId, Weight, KM
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderDraft
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from OrderDraft
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.OrderDraft" >
+    insert into OrderDraft (Id, OrderNo, PubName, 
+      PubDate, PubLongitude, PubLatitude, 
+      PubPhoneNo, PubAddress, TakeType, 
+      TakeTime, TakeCode, TakeLongitude, 
+      TakeLatitude, ReceviceName, RecevicePhoneNo, 
+      ReceviceAddress, ReceviceCity, ReceviceLongitude, 
+      ReceviceLatitude, ReceiveProvince, ReceiveArea, 
+      ReceiveProvinceCode, ReceiveCityCode, 
+      ReceiveAreaCode, IsPay, ProductName, 
+      Remark, Amount, businessId, 
+      Weight, KM)
+    values (#{id,jdbcType=INTEGER}, #{orderno,jdbcType=NVARCHAR}, #{pubname,jdbcType=NVARCHAR}, 
+      #{pubdate,jdbcType=TIMESTAMP}, #{publongitude,jdbcType=DOUBLE}, #{publatitude,jdbcType=DOUBLE}, 
+      #{pubphoneno,jdbcType=NVARCHAR}, #{pubaddress,jdbcType=NVARCHAR}, #{taketype,jdbcType=SMALLINT}, 
+      #{taketime,jdbcType=TIMESTAMP}, #{takecode,jdbcType=NVARCHAR}, #{takelongitude,jdbcType=DOUBLE}, 
+      #{takelatitude,jdbcType=DOUBLE}, #{recevicename,jdbcType=NVARCHAR}, #{recevicephoneno,jdbcType=NVARCHAR}, 
+      #{receviceaddress,jdbcType=NVARCHAR}, #{recevicecity,jdbcType=NVARCHAR}, #{recevicelongitude,jdbcType=DOUBLE}, 
+      #{recevicelatitude,jdbcType=DOUBLE}, #{receiveprovince,jdbcType=NVARCHAR}, #{receivearea,jdbcType=NVARCHAR}, 
+      #{receiveprovincecode,jdbcType=NVARCHAR}, #{receivecitycode,jdbcType=NVARCHAR}, 
+      #{receiveareacode,jdbcType=NVARCHAR}, #{ispay,jdbcType=BIT}, #{productname,jdbcType=NVARCHAR}, 
+      #{remark,jdbcType=NVARCHAR}, #{amount,jdbcType=DECIMAL}, #{businessid,jdbcType=INTEGER}, 
+      #{weight,jdbcType=DECIMAL}, #{km,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.OrderDraft" >
+    insert into OrderDraft
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orderno != null" >
+        OrderNo,
+      </if>
+      <if test="pubname != null" >
+        PubName,
+      </if>
+      <if test="pubdate != null" >
+        PubDate,
+      </if>
+      <if test="publongitude != null" >
+        PubLongitude,
+      </if>
+      <if test="publatitude != null" >
+        PubLatitude,
+      </if>
+      <if test="pubphoneno != null" >
+        PubPhoneNo,
+      </if>
+      <if test="pubaddress != null" >
+        PubAddress,
+      </if>
+      <if test="taketype != null" >
+        TakeType,
+      </if>
+      <if test="taketime != null" >
+        TakeTime,
+      </if>
+      <if test="takecode != null" >
+        TakeCode,
+      </if>
+      <if test="takelongitude != null" >
+        TakeLongitude,
+      </if>
+      <if test="takelatitude != null" >
+        TakeLatitude,
+      </if>
+      <if test="recevicename != null" >
+        ReceviceName,
+      </if>
+      <if test="recevicephoneno != null" >
+        RecevicePhoneNo,
+      </if>
+      <if test="receviceaddress != null" >
+        ReceviceAddress,
+      </if>
+      <if test="recevicecity != null" >
+        ReceviceCity,
+      </if>
+      <if test="recevicelongitude != null" >
+        ReceviceLongitude,
+      </if>
+      <if test="recevicelatitude != null" >
+        ReceviceLatitude,
+      </if>
+      <if test="receiveprovince != null" >
+        ReceiveProvince,
+      </if>
+      <if test="receivearea != null" >
+        ReceiveArea,
+      </if>
+      <if test="receiveprovincecode != null" >
+        ReceiveProvinceCode,
+      </if>
+      <if test="receivecitycode != null" >
+        ReceiveCityCode,
+      </if>
+      <if test="receiveareacode != null" >
+        ReceiveAreaCode,
+      </if>
+      <if test="ispay != null" >
+        IsPay,
+      </if>
+      <if test="productname != null" >
+        ProductName,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="amount != null" >
+        Amount,
+      </if>
+      <if test="businessid != null" >
+        businessId,
+      </if>
+      <if test="weight != null" >
+        Weight,
+      </if>
+      <if test="km != null" >
+        KM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderno != null" >
+        #{orderno,jdbcType=NVARCHAR},
+      </if>
+      <if test="pubname != null" >
+        #{pubname,jdbcType=NVARCHAR},
+      </if>
+      <if test="pubdate != null" >
+        #{pubdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publongitude != null" >
+        #{publongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="publatitude != null" >
+        #{publatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pubphoneno != null" >
+        #{pubphoneno,jdbcType=NVARCHAR},
+      </if>
+      <if test="pubaddress != null" >
+        #{pubaddress,jdbcType=NVARCHAR},
+      </if>
+      <if test="taketype != null" >
+        #{taketype,jdbcType=SMALLINT},
+      </if>
+      <if test="taketime != null" >
+        #{taketime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="takecode != null" >
+        #{takecode,jdbcType=NVARCHAR},
+      </if>
+      <if test="takelongitude != null" >
+        #{takelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="takelatitude != null" >
+        #{takelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="recevicename != null" >
+        #{recevicename,jdbcType=NVARCHAR},
+      </if>
+      <if test="recevicephoneno != null" >
+        #{recevicephoneno,jdbcType=NVARCHAR},
+      </if>
+      <if test="receviceaddress != null" >
+        #{receviceaddress,jdbcType=NVARCHAR},
+      </if>
+      <if test="recevicecity != null" >
+        #{recevicecity,jdbcType=NVARCHAR},
+      </if>
+      <if test="recevicelongitude != null" >
+        #{recevicelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="recevicelatitude != null" >
+        #{recevicelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="receiveprovince != null" >
+        #{receiveprovince,jdbcType=NVARCHAR},
+      </if>
+      <if test="receivearea != null" >
+        #{receivearea,jdbcType=NVARCHAR},
+      </if>
+      <if test="receiveprovincecode != null" >
+        #{receiveprovincecode,jdbcType=NVARCHAR},
+      </if>
+      <if test="receivecitycode != null" >
+        #{receivecitycode,jdbcType=NVARCHAR},
+      </if>
+      <if test="receiveareacode != null" >
+        #{receiveareacode,jdbcType=NVARCHAR},
+      </if>
+      <if test="ispay != null" >
+        #{ispay,jdbcType=BIT},
+      </if>
+      <if test="productname != null" >
+        #{productname,jdbcType=NVARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="businessid != null" >
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="km != null" >
+        #{km,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.OrderDraft" >
+    update OrderDraft
+    <set >
+      <if test="orderno != null" >
+        OrderNo = #{orderno,jdbcType=NVARCHAR},
+      </if>
+      <if test="pubname != null" >
+        PubName = #{pubname,jdbcType=NVARCHAR},
+      </if>
+      <if test="pubdate != null" >
+        PubDate = #{pubdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publongitude != null" >
+        PubLongitude = #{publongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="publatitude != null" >
+        PubLatitude = #{publatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pubphoneno != null" >
+        PubPhoneNo = #{pubphoneno,jdbcType=NVARCHAR},
+      </if>
+      <if test="pubaddress != null" >
+        PubAddress = #{pubaddress,jdbcType=NVARCHAR},
+      </if>
+      <if test="taketype != null" >
+        TakeType = #{taketype,jdbcType=SMALLINT},
+      </if>
+      <if test="taketime != null" >
+        TakeTime = #{taketime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="takecode != null" >
+        TakeCode = #{takecode,jdbcType=NVARCHAR},
+      </if>
+      <if test="takelongitude != null" >
+        TakeLongitude = #{takelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="takelatitude != null" >
+        TakeLatitude = #{takelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="recevicename != null" >
+        ReceviceName = #{recevicename,jdbcType=NVARCHAR},
+      </if>
+      <if test="recevicephoneno != null" >
+        RecevicePhoneNo = #{recevicephoneno,jdbcType=NVARCHAR},
+      </if>
+      <if test="receviceaddress != null" >
+        ReceviceAddress = #{receviceaddress,jdbcType=NVARCHAR},
+      </if>
+      <if test="recevicecity != null" >
+        ReceviceCity = #{recevicecity,jdbcType=NVARCHAR},
+      </if>
+      <if test="recevicelongitude != null" >
+        ReceviceLongitude = #{recevicelongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="recevicelatitude != null" >
+        ReceviceLatitude = #{recevicelatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="receiveprovince != null" >
+        ReceiveProvince = #{receiveprovince,jdbcType=NVARCHAR},
+      </if>
+      <if test="receivearea != null" >
+        ReceiveArea = #{receivearea,jdbcType=NVARCHAR},
+      </if>
+      <if test="receiveprovincecode != null" >
+        ReceiveProvinceCode = #{receiveprovincecode,jdbcType=NVARCHAR},
+      </if>
+      <if test="receivecitycode != null" >
+        ReceiveCityCode = #{receivecitycode,jdbcType=NVARCHAR},
+      </if>
+      <if test="receiveareacode != null" >
+        ReceiveAreaCode = #{receiveareacode,jdbcType=NVARCHAR},
+      </if>
+      <if test="ispay != null" >
+        IsPay = #{ispay,jdbcType=BIT},
+      </if>
+      <if test="productname != null" >
+        ProductName = #{productname,jdbcType=NVARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+      <if test="amount != null" >
+        Amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="businessid != null" >
+        businessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        Weight = #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="km != null" >
+        KM = #{km,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.OrderDraft" >
+    update OrderDraft
+    set OrderNo = #{orderno,jdbcType=NVARCHAR},
+      PubName = #{pubname,jdbcType=NVARCHAR},
+      PubDate = #{pubdate,jdbcType=TIMESTAMP},
+      PubLongitude = #{publongitude,jdbcType=DOUBLE},
+      PubLatitude = #{publatitude,jdbcType=DOUBLE},
+      PubPhoneNo = #{pubphoneno,jdbcType=NVARCHAR},
+      PubAddress = #{pubaddress,jdbcType=NVARCHAR},
+      TakeType = #{taketype,jdbcType=SMALLINT},
+      TakeTime = #{taketime,jdbcType=TIMESTAMP},
+      TakeCode = #{takecode,jdbcType=NVARCHAR},
+      TakeLongitude = #{takelongitude,jdbcType=DOUBLE},
+      TakeLatitude = #{takelatitude,jdbcType=DOUBLE},
+      ReceviceName = #{recevicename,jdbcType=NVARCHAR},
+      RecevicePhoneNo = #{recevicephoneno,jdbcType=NVARCHAR},
+      ReceviceAddress = #{receviceaddress,jdbcType=NVARCHAR},
+      ReceviceCity = #{recevicecity,jdbcType=NVARCHAR},
+      ReceviceLongitude = #{recevicelongitude,jdbcType=DOUBLE},
+      ReceviceLatitude = #{recevicelatitude,jdbcType=DOUBLE},
+      ReceiveProvince = #{receiveprovince,jdbcType=NVARCHAR},
+      ReceiveArea = #{receivearea,jdbcType=NVARCHAR},
+      ReceiveProvinceCode = #{receiveprovincecode,jdbcType=NVARCHAR},
+      ReceiveCityCode = #{receivecitycode,jdbcType=NVARCHAR},
+      ReceiveAreaCode = #{receiveareacode,jdbcType=NVARCHAR},
+      IsPay = #{ispay,jdbcType=BIT},
+      ProductName = #{productname,jdbcType=NVARCHAR},
+      Remark = #{remark,jdbcType=NVARCHAR},
+      Amount = #{amount,jdbcType=DECIMAL},
+      businessId = #{businessid,jdbcType=INTEGER},
+      Weight = #{weight,jdbcType=DECIMAL},
+      KM = #{km,jdbcType=DOUBLE}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

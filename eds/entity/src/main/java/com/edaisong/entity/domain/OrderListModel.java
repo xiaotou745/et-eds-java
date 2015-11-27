@@ -46,7 +46,7 @@ public class OrderListModel {
     private String receiveCityCode ;
     private String receiveAreaCode ;
     private int orderType ;
-    private double kM ;
+    private double km ;
     private int guoJuQty ;
     private int luJuQty ;
     private String songCanDate ;
@@ -606,15 +606,15 @@ public class OrderListModel {
     /**
      * 
      */
-	public double getkM() {
-		return kM;
+	public double getKm() {
+		return km;
 	}
 
     /**
      * 
      */
-	public void setkM(double kM) {
-		this.kM = kM;
+	public void setKm(double km) {
+		this.km = km;
 	}
 
     /**

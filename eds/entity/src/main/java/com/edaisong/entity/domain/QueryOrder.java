@@ -41,8 +41,7 @@ public class QueryOrder {
 	private int hadUploadCount;
 	private int orderCommission;
 	private String distance="--"; 
-	private Double distance_OrderBy=9999999.0;
-
+	private Double distance_OrderBy=9999999.0; 
 	/**
 	 * 订单Id
 	 */
@@ -565,5 +564,4 @@ public class QueryOrder {
 	public void setDistance_OrderBy(Double distance_OrderBy) {
 		this.distance_OrderBy = distance_OrderBy;
 	}
-
 }

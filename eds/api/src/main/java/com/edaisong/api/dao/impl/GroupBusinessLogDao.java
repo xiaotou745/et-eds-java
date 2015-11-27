@@ -13,14 +13,13 @@ public class GroupBusinessLogDao extends DaoBase implements IGroupBusinessLogDao
 	@Override
 	public List<GroupBusinessLog> getList(int id) {  
 		List<GroupBusinessLog> result = getReadOnlySqlSessionUtil().selectList( 
-				"com.edaisong.api.dao.inter.IGroupBusinessLogDao.getList", id);
+				"IGroupBusinessLogDao.getList", id);
 		return result;
 	 
 	}
 
 	@Override
 	public int insert(GroupBusinessLog gbl) {
-		 
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IGroupBusinessLogDao.insert",gbl);
+		return getMasterSqlSessionUtil().insert("IGroupBusinessLogDao.insert",gbl);
 	} 
 }

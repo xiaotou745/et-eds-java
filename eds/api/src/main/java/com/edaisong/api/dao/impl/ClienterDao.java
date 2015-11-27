@@ -8,26 +8,23 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
-import com.edaisong.api.dao.inter.IClienterDao;
-import com.edaisong.core.util.ParseHelper;
-import com.edaisong.core.util.StringUtils;
-import com.edaisong.entity.Clienter;
-import com.edaisong.entity.ClienterBalanceRecord;
+import com.edaisong.api.dao.inter.IClienterDao; 
+import com.edaisong.entity.Clienter; 
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
-import com.edaisong.entity.domain.MyBusinessModel;
-import com.edaisong.entity.domain.MyOrderHadFinishCModel;
-import com.edaisong.entity.req.ClienterOptionReq;
-import com.edaisong.entity.req.HadFinishOrderReq;
+import com.edaisong.entity.domain.MyBusinessModel; 
+import com.edaisong.entity.req.ClienterOptionReq; 
+import com.edaisong.entity.req.ModifyVehicleReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedBusinessClientersReq;
 import com.edaisong.entity.req.PagedClienterSearchReq;
-import com.edaisong.entity.resp.HadFinishOrderResp;
+import com.edaisong.entity.req.UserStatusReq;
+import com.edaisong.entity.resp.ClienterUserStatusResp; 
 import com.edaisong.entity.resp.MyBusinessResp;
 
 
@@ -44,7 +41,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		paramMap.put("status", record.getStatus());	
 		//其它的暂时没有写
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateByPrimaryKeySelective",
+				.update("IClienterDao.updateByPrimaryKeySelective",
 						paramMap);
 	}
 
@@ -66,7 +63,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		paramMap.put("withwardId", 0);	
 		
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateMoneyById",
+				.update("IClienterDao.updateMoneyById",
 						paramMap);
 	}	
 	
@@ -74,7 +71,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	public PagedResponse<ClienterModel> query(PagedClienterReq req) {
 		PagedResponse<ClienterModel> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.edaisong.api.dao.inter.IClienterDao.query",
+						"IClienterDao.query",
 						req);
 		return model;	
 	}
@@ -86,7 +83,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	 */
 	@Override
 	public PagedResponse<BusinessClientersModel> getBusinessClienters(PagedBusinessClientersReq req) {		
-		return getReadOnlySqlSessionUtil().selectPageList("com.edaisong.api.dao.inter.IClienterDao.getBusinessClienters", req);
+		return getReadOnlySqlSessionUtil().selectPageList("IClienterDao.getBusinessClienters", req);
 	}
 
     /**
@@ -102,7 +99,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		parasMap.put("Money", amount);
 		parasMap.put("Id", clienterId);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateCAccountBalance",
+				.update("IClienterDao.updateCAccountBalance",
 						parasMap);
 	}
 
@@ -119,7 +116,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		parasMap.put("Money", amount);
 		parasMap.put("Id", clienterId);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateCAllowWithdrawPrice",
+				.update("IClienterDao.updateCAllowWithdrawPrice",
 						parasMap);
 	}
 	/**
@@ -136,7 +133,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		parasMap.put("Money", amount);
 		parasMap.put("Id", clienterId);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateCBalanceAndWithdraw",
+				.update("IClienterDao.updateCBalanceAndWithdraw",
 						parasMap);
 	}
 
@@ -146,7 +143,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		parasMap.put("clienterId", clienterId);
 		parasMap.put("isBind", isBind);
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateClienterIsBind",
+				.update("IClienterDao.updateClienterIsBind",
 						parasMap) > 0;
 	}
 
@@ -158,21 +155,21 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	public PagedResponse<ClienterBindInfoModel> getClienterBindInfoList(PagedClienterSearchReq req) {
 		return getReadOnlySqlSessionUtil()
-				.selectPageList("com.edaisong.api.dao.inter.IClienterDao.getClienterBindInfoList",
+				.selectPageList("IClienterDao.getClienterBindInfoList",
 						req);
 	}
 
 	@Override
 	public List<ImportClienterInfo> getInfosByPhones(List<String> phoneNos) {
 		return getReadOnlySqlSessionUtil()
-				.selectList("com.edaisong.api.dao.inter.IClienterDao.getInfosByPhones",
+				.selectList("IClienterDao.getInfosByPhones",
 						phoneNos);
 	}
 
 	@Override
 	public String getNameByPhone(String phoneNo) {
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IClienterDao.getNameByPhone",
+				.selectOne("IClienterDao.getNameByPhone",
 						phoneNo);
 	}
 
@@ -182,18 +179,18 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		map.put("phoneNo", phoneNo);
 		map.put("trueName", trueName);
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IClienterDao.getId",
+				.selectOne("IClienterDao.getId",
 						map);
 	}
 
 	@Override
 	public Clienter selectByPrimaryKey(Integer id) {
-		return getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.selectByPrimaryKey",id);
+		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.selectByPrimaryKey",id);
 	}
 
 	@Override
 	public Clienter selectByPrimaryKeyWrite(Integer id) {
-		return getMasterSqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.selectByPrimaryKey",id);
+		return getMasterSqlSessionUtil().selectOne("IClienterDao.selectByPrimaryKey",id);
 	}
 	/**
 	 * 获取用户状态信息
@@ -205,18 +202,28 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	public ClienterStatus getUserStatus(int userid) {
 		return getReadOnlySqlSessionUtil()
-				.selectOne("com.edaisong.api.dao.inter.IClienterDao.getUserStatus",
+				.selectOne("IClienterDao.getUserStatus",
 						userid);
 	}
 
 	@Override
 	public List<MyBusinessModel> getMyBusiness(MyBusinessReq myBusinessReq) { 
-		return getReadOnlySqlSessionUtil().selectList("com.edaisong.api.dao.inter.IClienterDao.getMyBusiness",myBusinessReq);
+		return getReadOnlySqlSessionUtil().selectList("IClienterDao.getMyBusiness",myBusinessReq);
 	}
 
 	@Override
 	public MyBusinessResp getServiceBusinessTotal(MyBusinessReq myBusinessReq) {
-		return	getReadOnlySqlSessionUtil().selectOne("com.edaisong.api.dao.inter.IClienterDao.getServiceBusinessTotal",myBusinessReq);
+		return	getReadOnlySqlSessionUtil().selectOne("IClienterDao.getServiceBusinessTotal",myBusinessReq);
 		 
+	}
+
+	@Override
+	public ClienterUserStatusResp getUserStatus(UserStatusReq req) {
+		return	getReadOnlySqlSessionUtil().selectOne("IClienterDao.getUserStatusForFlash",req);
+	}
+
+	@Override
+	public int modifyVehicle(ModifyVehicleReq req) {
+		return getMasterSqlSessionUtil().update("IClienterDao.modifyVehicle",req);
 	} 
 }

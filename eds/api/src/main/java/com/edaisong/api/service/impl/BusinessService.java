@@ -45,6 +45,7 @@ import com.edaisong.entity.domain.TagRelationModel;
 import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.req.BCheckCodeReq;
 import com.edaisong.entity.req.BusinessMoney;
+import com.edaisong.entity.req.BusinessRegisterReq;
 import com.edaisong.entity.req.ModifyTagReq;
 import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.GetPushOrderTypeReq;
@@ -407,6 +408,9 @@ public class BusinessService implements IBusinessService {
 				.getWithwardId()); // 关联单id
 		businessBalanceRecord.setRelationno(businessMoney.getRelationNo()); // 关联单号
 		businessBalanceRecord.setRemark(businessMoney.getRemark()); // 注释
+		businessBalanceRecord.setGroupid(0);
+		businessBalanceRecord.setGroupamount(0);
+		businessBalanceRecord.setGroupafterbalance(0);
 		businessBalanceRecordDao.insert(businessBalanceRecord);
 	}
 	/***
@@ -503,5 +507,10 @@ public class BusinessService implements IBusinessService {
 	@Override
 	public boolean businessModiyPhone(BCheckCodeReq req){
 	      return iBusinessDao.businessModiyPhone(req);
+	}
+
+	@Override
+	public int register(BusinessRegisterReq req) { 
+		return iBusinessDao.register(req);
 	}
 }

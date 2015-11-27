@@ -12,7 +12,7 @@ public class ActionLogDao extends DaoBase implements IActionLogDao {
 	@Override
 	public void writeActionLog(ActionLog logEngity) {
 		getMasterSqlSessionUtil().insert(
-				"com.edaisong.toolsapi.dao.inter.IActionLogDao.WriteActionLog",
+				"IActionLogDao.WriteActionLog",
 				logEngity);
 
 	}
@@ -20,7 +20,7 @@ public class ActionLogDao extends DaoBase implements IActionLogDao {
 	@Override
 	public void writeLog2DB(String msg) {
 		getMasterSqlSessionUtil().insert(
-				"com.edaisong.toolsapi.dao.inter.IActionLogDao.WriteActionLog",
+				"IActionLogDao.WriteActionLog",
 				msg);
 
 	}

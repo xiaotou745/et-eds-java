@@ -18,7 +18,7 @@ public class ClienterForzenLogDao extends DaoBase implements IClienterForzenLogD
 
 	@Override
 	public int insert(ClienterForzenLog record) { 
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IClienterForzenLogDao.insert", record);
+		return getMasterSqlSessionUtil().insert("IClienterForzenLogDao.insert", record);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ClienterForzenLogDao extends DaoBase implements IClienterForzenLogD
 	@Override
 	public List<ClienterForzenLog> getList(int id) {
 		List<ClienterForzenLog> forzenLogList = getReadOnlySqlSessionUtil().selectList( 
-				"com.edaisong.api.dao.inter.IClienterForzenLogDao.getList", id);
+				"IClienterForzenLogDao.getList", id);
 		return forzenLogList;
 	}
 

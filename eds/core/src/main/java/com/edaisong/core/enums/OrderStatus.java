@@ -27,10 +27,17 @@ public enum OrderStatus {
 	 */
 	Taking(4, "已取货"),
 	/*
+	 * 闪送未支付
+	 */
+	Draft(50, "闪送未支付")	,
+	/*
 	 * 待接入
 	 */
-	Wait(30, "待接入")
-	;
+	DraftCancel(51, "取消闪送未支付"),
+		/*
+	 * 待接入
+	 */
+	Wait(30, "待接入")	;
 	private int value = 0;
 	private String desc;
 	private OrderStatus(int value, String desc) { // 必须是private的，否则编译错误

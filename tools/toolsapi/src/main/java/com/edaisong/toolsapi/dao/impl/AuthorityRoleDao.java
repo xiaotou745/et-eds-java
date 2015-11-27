@@ -12,17 +12,17 @@ public class AuthorityRoleDao extends DaoBase implements IAuthorityRoleDao{
 
 	@Override
 	public int insert(AuthorityRole record) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.toolsapi.dao.inter.IAuthorityRoleDao.insert", record);
+		return getMasterSqlSessionUtil().insert("IAuthorityRoleDao.insert", record);
 	}
 
 	@Override
 	public int update(AuthorityRole record) {
-	    return getMasterSqlSessionUtil().insert("com.edaisong.toolsapi.dao.inter.IAuthorityRoleDao.update", record);
+	    return getMasterSqlSessionUtil().insert("IAuthorityRoleDao.update", record);
 	}
 
 	@Override
 	public List<AuthorityRole> selectList() {
-		 return getReadOnlySqlSessionUtil().selectList("com.edaisong.toolsapi.dao.inter.IAuthorityRoleDao.selectList");
+		 return getReadOnlySqlSessionUtil().selectList("IAuthorityRoleDao.selectList");
 	}
 
 }

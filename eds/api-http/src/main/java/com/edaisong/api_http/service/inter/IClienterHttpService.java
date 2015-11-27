@@ -7,7 +7,9 @@ import javax.ws.rs.Produces;
 
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.ClienterBindOptionReq;
+import com.edaisong.entity.req.ModifyVehicleReq;
 import com.edaisong.entity.req.MyBusinessReq;
+import com.edaisong.entity.req.UserStatusReq;
 import com.edaisong.entity.resp.MyBusinessResp;
 
 @Path("/clienter")
@@ -30,4 +32,18 @@ public interface IClienterHttpService {
 	@Path("/unbindmybusiness")
 	public HttpResultModel<Object> unbindMyBusiness(ClienterBindOptionReq clienterBindOptionReq);
 	
+	/*
+	 * 获取骑士用户信息 闪送模式  wangchao
+	 */
+	@POST
+	@Path("/getuserstatus")
+	public HttpResultModel<Object> getUserStatus(UserStatusReq req);
+	
+	/*
+	 * 修改交通工具  闪送模式  wangchao
+	 */
+	@POST
+	@Path("/modifyvehicle")
+	HttpResultModel<Object> modifyVehicle(ModifyVehicleReq req);
+	 
 }

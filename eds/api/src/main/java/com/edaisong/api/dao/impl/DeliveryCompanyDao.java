@@ -61,7 +61,7 @@ public class DeliveryCompanyDao extends DaoBase implements IDeliveryCompanyDao {
 	public List<DeliveryCompany> getDeliveryCompanyList() {
 		List<DeliveryCompany> list = getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.edaisong.api.dao.inter.IDeliveryCompanyDao.getDeliveryCompanyList");
+						"IDeliveryCompanyDao.getDeliveryCompanyList");
 		return list;
 
 	}
@@ -71,7 +71,7 @@ public class DeliveryCompanyDao extends DaoBase implements IDeliveryCompanyDao {
 			PagedDeliveryStatisticsReq search) {
 		return getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.edaisong.api.dao.inter.IDeliveryCompanyDao.getStatisticsList",
+						"IDeliveryCompanyDao.getStatisticsList",
 						search);
 	}
 

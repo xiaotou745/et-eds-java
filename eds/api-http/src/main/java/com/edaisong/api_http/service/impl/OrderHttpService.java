@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.service.inter.IOrderChildService;
+import com.edaisong.api.service.inter.IOrderDraftService;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
@@ -18,16 +19,21 @@ import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.enums.returnenums.InStoreTaskReturnEnum;
 import com.edaisong.entity.OrderChild;
+import com.edaisong.entity.OrderDraft;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder; 
 import com.edaisong.entity.req.OrderChildCancelReq;
+import com.edaisong.entity.req.OrderDraftReq;
+import com.edaisong.entity.req.OrderDraftGetReq;
+import com.edaisong.entity.req.OrderDraftReturnReq;
 import com.edaisong.entity.req.OrderGrabReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;  
+import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
@@ -35,6 +41,7 @@ import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
+import com.edaisong.entity.req.OrderDraftReq;
 
 /**
  * 订单模块
@@ -57,9 +64,12 @@ public class OrderHttpService implements IOrderHttpService {
 	@Autowired
 	private IOrderChildService orderChildService;
 	
+	@Autowired
+	private IOrderDraftService orderDraftService;
 
-	/**
-	 * 发布订单 
+
+	/**快单模式
+	 * 发布订单  
 	 * @author 胡灵波
 	 * @date 2015年10月30日 11:29:00
 	 * @version 1.0
@@ -84,6 +94,13 @@ public class OrderHttpService implements IOrderHttpService {
 		return resp;
 	}	
 
+    /**
+     * 取消订单 （取消前一天智能调度发单且未被抢单的子订单时）
+     * @param 日期
+     * @author 胡灵波
+     * @Date 2015年11月5日 11:40:37
+     * @return
+     */
 	@Override
 	public HttpResultModel<OrderGrabResp> CancelOrderChild(OrderChildCancelReq  req)
 	{
@@ -91,6 +108,64 @@ public class OrderHttpService implements IOrderHttpService {
 		return resp;
 	}	
 	
+	// region 闪送模式
+	
+	/**闪送模式
+	 * 发布订单
+	 * @author 胡灵波
+	 * @date 2015年11月24日 13:24:18
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderResp> FlashPush(OrderDraftReq req)
+	{
+		HttpResultModel<OrderResp> resp=new HttpResultModel<OrderResp>();
+		
+		try
+		{
+			resp=orderService.FlashPushOrder(req);	
+		}
+		catch(TransactionalRuntimeException err)
+		{
+			resp.setMessage(err.getMessage());
+			resp.setStatus(HttpReturnRnums.ParaError.value());
+		}			
+	
+		return resp;	
+	}	
+
+	/**闪送模式
+	 * 确定发布订单回调
+	 * @author 胡灵波
+	 * @date 2015年11月25日 11:51:28
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderResp> ReturnFlashPush(OrderDraftReturnReq req)
+	{
+		orderService.ReturnFlashPush(req);
+		return null;
+	}	
+
+	/**闪送模式
+	 * 获取未生效订单
+	 * @author 胡灵波
+	 * @date 2015年11月25日 17:56:41
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderDraft> GetOrderDraft(OrderDraftGetReq req)
+	{				
+		return 	orderDraftService.selectByPrimaryKey(req.getId());		
+	}	
+	
+	// endregion
 	/**
 	 * B端任务统计接口
 	 * 

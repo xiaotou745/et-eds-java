@@ -17,48 +17,48 @@ public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
 	@Override
 	public List<OrderRegion> getOrderRegion(OrderRegionReq orderRegionReq) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderRegionDao.getOrderRegion", orderRegionReq);
+				"IOrderRegionDao.getOrderRegion", orderRegionReq);
 	}
 				
 	@Override
 	public int updateCountByPrimaryKeySelective(OrderRegion record) {	
 		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IOrderRegionDao.updateCountByPrimaryKeySelective",
+				.update("IOrderRegionDao.updateCountByPrimaryKeySelective",
 						record);
 	}
 	
 	@Override
 	public Integer updateRegionList(List<OrderRegion> regionList) {
-		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderRegionDao.updateRegionList", regionList);
+		return getMasterSqlSessionUtil().update("IOrderRegionDao.updateRegionList", regionList);
 	}
 
 	@Override
 	public Integer insert(OrderRegion region) {
-		return getMasterSqlSessionUtil().insert("com.edaisong.api.dao.inter.IOrderRegionDao.insert", region);
+		return getMasterSqlSessionUtil().insert("IOrderRegionDao.insert", region);
 	}
 
 	@Override
 	public OrderRegion getById(Integer id) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderRegionDao.getById", id);
+				"IOrderRegionDao.getById", id);
 	}
 	
 	@Override
 	public OrderRegion getByIdWrite(Integer id) {
 		return getMasterSqlSessionUtil().selectOne(
-				"com.edaisong.api.dao.inter.IOrderRegionDao.getByIdWirte", id);
+				"IOrderRegionDao.getByIdWirte", id);
 	}
 
 	@Override
 	public List<OrderRegion> getByParentId(Integer parentId) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderRegionDao.getByParentId", parentId);
+				"IOrderRegionDao.getByParentId", parentId);
 	}
 
 	@Override
 	public int deleteByIds(List<Integer> idList) {
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderRegionDao.deleteByIds", idList);
+				"IOrderRegionDao.deleteByIds", idList);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
 		paramMap.put("hasChilds", hasChilds);
 		paramMap.put("idList", idList);
 		return getMasterSqlSessionUtil().update(
-				"com.edaisong.api.dao.inter.IOrderRegionDao.updateHasChildByIds", paramMap);
+				"IOrderRegionDao.updateHasChildByIds", paramMap);
 	}
 
 	
@@ -85,12 +85,12 @@ public class OrderRegionDao extends DaoBase implements IOrderRegionDao {
 	 */
     public List<InStoreOrderRegionInfo> getInStoreOrderRegions(InStoreTaskReq para){
     	return getReadOnlySqlSessionUtil().selectList(
-				"com.edaisong.api.dao.inter.IOrderRegionDao.getInStoreOrderRegions", para);
+				"IOrderRegionDao.getInStoreOrderRegions", para);
     }
 
 	@Override
 	public int updateAllHasChild() {
-		return getMasterSqlSessionUtil().update("com.edaisong.api.dao.inter.IOrderRegionDao.updateAllHasChild");
+		return getMasterSqlSessionUtil().update("IOrderRegionDao.updateAllHasChild");
 	}
     
 

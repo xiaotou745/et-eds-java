@@ -739,5 +739,21 @@ where   bcr.ClienterId = #{clienterId,jdbcType=INTEGER} and bcr.AuditStatus = #{
   		AND a.[ClienterId]=${clienterId}
   	</if>
   </select>
-  
+  <!-- 闪送模式 获取骑士用户信息 wangchao -->
+	<select id="getUserStatusForFlash" resultType="com.edaisong.entity.resp.ClienterUserStatusResp" parameterType="com.edaisong.entity.req.UserStatusReq" >
+    	SELECT Id,PhoneNo,ISNULL(LoginName,'') LoginName ,vehicleName FROM dbo.clienter(nolock)
+where Id = #{userId,jdbcType=INTEGER}
+  	</select>
+  	<!-- 闪送模式 修改骑士交通工具  wangchao -->
+  	<update id="modifyVehicle" parameterType="com.edaisong.entity.req.ModifyVehicleReq">
+		update dbo.clienter 
+			set vehicleName = #{vehicleName,jdbcType=NVARCHAR} output  
+			#{clienterId,jdbcType=INTEGER},
+			#{clienterId,jdbcType=INTEGER},
+			#{clienterName,jdbcType=NVARCHAR},
+			getdate(), 
+			1,'交通工具'+convert(nvarchar,Deleted.vehicleName)+'修改为'+convert(nvarchar,Inserted.vehicleName)
+			into dbo.ClienterOptionLog(ClienterId,OptId,OptName,InsertTime,[Platform],Remark)
+				where Id = #{clienterId,jdbcType=INTEGER}
+	</update>
 </mapper>

@@ -21,6 +21,7 @@ private Date operateTime;
 private String remark;
 private String noDesc;
 private int isOrder;
+private int platform;
 public double getAmount() {
 	return amount;
 }
@@ -74,5 +75,11 @@ public int getIsOrder() {
 }
 public void setIsOrder(int isOrder) {
 	this.isOrder = isOrder;
+}
+public int getPlatform() {
+	return platform;
+}
+public void setPlatform(int platform) {
+	this.platform = platform;
 }
 }
