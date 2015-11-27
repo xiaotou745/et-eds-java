@@ -127,6 +127,22 @@
 		MealsSettleMode,
 		FinishDateLength, FinishAll, RealOrderCommission,GroupBusinessID,BaseCommission
 	</sql>
+	  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.Order" parameterType="java.lang.Integer" >
+    select 
+    Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
+    ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
+    Status, clienterId, businessId, ReceviceCity, ReceviceLongitude, ReceviceLatitude, 
+    OrderFrom, OriginalOrderId, OriginalOrderNo, Quantity, Weight, ReceiveProvince, ReceiveArea, 
+    ReceiveProvinceCode, ReceiveCityCode, ReceiveAreaCode, OrderType, KM, GuoJuQty, LuJuQty, 
+    SongCanDate, OrderCount, CommissionRate, Payment, CommissionFormulaMode, Adjustment, 
+    BusinessCommission, SettleMoney, DealCount, PickupCode, OtherCancelReason, CommissionType, 
+    CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
+    FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
+    DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
+    Platform, PubName, PubPhoneNo, PubAddress, TakeType, TakeCode, ProductName
+    from [order]  nolock
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
 	<!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展 CaoHeYang 20150804 -->
 	<select id="getOneByCriteria" resultMap="BaseResultMap"
 		parameterType="com.edaisong.entity.Order">
@@ -417,19 +433,10 @@
       </if>
       <if test="taketype != null" >
         TakeType,
-      </if>
-      <if test="taketime != null" >
-        TakeTime,
-      </if>
+      </if> 
       <if test="takecode != null" >
         TakeCode,
-      </if>
-      <if test="takelongitude != null" >
-        TakeLongitude,
-      </if>
-      <if test="takelatitude != null" >
-        TakeLatitude,
-      </if>
+      </if>     
       <if test="productname != null" >
         ProductName,
       </if>
@@ -617,19 +624,10 @@
       </if>
        <if test="taketype != null" >
         #{taketype,jdbcType=SMALLINT},
-      </if>
-      <if test="taketime != null" >
-        #{taketime,jdbcType=TIMESTAMP},
-      </if>
+      </if>     
       <if test="takecode != null" >
         #{takecode,jdbcType=NVARCHAR},
-      </if>
-      <if test="takelongitude != null" >
-        #{takelongitude,jdbcType=DOUBLE},
-      </if>
-      <if test="takelatitude != null" >
-        #{takelatitude,jdbcType=DOUBLE},
-      </if>
+      </if>    
       <if test="productname != null" >
         #{productname,jdbcType=NVARCHAR},
       </if>

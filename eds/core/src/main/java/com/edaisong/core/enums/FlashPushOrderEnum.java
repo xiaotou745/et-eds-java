@@ -1,12 +1,12 @@
 package com.edaisong.core.enums;
 
 /**
- * 闪送发单返回值
+ * 闪送发单
  * @author 胡灵波
  * 2015年11月25日 15:39:28
  *
  */
-public enum OrderDraftReturn {
+public enum FlashPushOrderEnum {
 	/**
 	 * 
 	 */
@@ -68,7 +68,7 @@ public enum OrderDraftReturn {
 	private int value = 0;
 	private String desc;
 
-	private OrderDraftReturn(int value, String desc) { // 必须是private的，否则编译错误
+	private FlashPushOrderEnum(int value, String desc) { // 必须是private的，否则编译错误
 		this.value = value;
 		this.desc = desc;
 	}

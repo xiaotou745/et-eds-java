@@ -52,7 +52,8 @@ import com.edaisong.core.enums.ClienterStatusEnum;
 import com.edaisong.core.enums.DeductCommissionType;
 import com.edaisong.core.enums.MealsSettleMode;
 import com.edaisong.core.enums.OrderAuditStatus;
-import com.edaisong.core.enums.OrderDraftReturn;
+import com.edaisong.core.enums.FlashPushOrderEnum;
+import com.edaisong.core.enums.OrderDetailGet;
 import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderOperationCommon;
 import com.edaisong.core.enums.OrderStatus;
@@ -104,6 +105,7 @@ import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
+import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
 import com.edaisong.entity.req.OrderDraftReturnReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
@@ -120,6 +122,7 @@ import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
+import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderPushResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
@@ -465,272 +468,9 @@ public class OrderService implements IOrderService {
 	}
 
 
-	/**快单模式  api调用
-	 * 发布订单功能 
-	 * 
-	 * @param req
-	 * @return
-	 * @author 胡灵波
-	 * @Date 2015年10月30日 11:45:19
-	 */
-	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public HttpResultModel<OrderResp> PushOrder(OrderReq req) {
-
-		req.setOrderfrom(OrderFrom.FastOrder.value());
-		req.setPlatform(2);
-		req.setIspay(true);
-		
-		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
-
-		if(req.getOrdercount()>50)
-		{
-			resp.setStatus(PublishOrderReturnEnum.PushOrderCountErr.value());
-			resp.setMessage(PublishOrderReturnEnum.PushOrderCountErr.desc());
-			return resp;
-		}
-		//发单时判断 该商户下的以及区域是否够九个，不够提示 wangchao增加判断
-		OrderRegionReq orrOrderRegionReq = new OrderRegionReq();
-		orrOrderRegionReq.setBusinessId(req.getBusinessid());
-		orrOrderRegionReq.setStatus(1);
-		List<OrderRegion> listOrderRegions= orderRegionDao.getOrderRegion(orrOrderRegionReq); 
-		if(listOrderRegions == null ){
-			resp.setStatus(PublishOrderReturnEnum.PushErrRegionNotEnough.value());
-			resp.setMessage(PublishOrderReturnEnum.PushErrRegionNotEnough.desc());
-			return resp;
-		}else{
-			List<OrderRegion> firstOrderRegionList=	listOrderRegions.stream().filter(k->k.getParentid().equals(0)).collect(Collectors.toList());
-			if(firstOrderRegionList.size()!=9){
-				resp.setStatus(PublishOrderReturnEnum.PushErrRegionNotEnough.value());
-				resp.setMessage(PublishOrderReturnEnum.PushErrRegionNotEnough.desc());
-				return resp;
-			}
-		}
-		
-		// 时间戳
-		if (req.getTimeSpan() != null && !req.getTimeSpan().equals("")) {
-						if (isExistByBusinessId(req)) {
-							resp.setStatus(PublishOrderReturnEnum.OrderHasExist.value());
-							resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc());
-							return resp;
-						}
-		}
-		
-		if(req.getBusinessid()==null)
-		{
-			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
-			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
-			return resp;
-		}
-				
-		// 获取商户信息讯(读串)
-		BusinessModel businessModel = businessDao.getBusiness((long) req
-				.getBusinessid());
-		if(businessModel==null)
-		{
-			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
-			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
-			return resp;
-		}
-		// 字符串转化为列表
-		List<OrderRegionReq> list = converAnswerFormString(req.getListOrderRegionStr());
-		req.setListOrderRegion(list);//赋值
-		if (list == null || list.size() < 1) {
-					resp.setStatus(PublishOrderReturnEnum.OrderRegionNull.value());
-					resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());
-					return resp;
-		}	
-
-		PublishOrderReturnEnum returnEnum = verificationPushOrder(req,
-				businessModel);
-		if (returnEnum != PublishOrderReturnEnum.VerificationSuccess) {
-			resp.setStatus(returnEnum.value());
-			resp.setMessage(returnEnum.desc());
-			return resp;
-		}
-
-		// 订单主表		
-		Order order = fillOrder(req, businessModel);
-		order.setStatus((byte) OrderStatus.Cancel.value());
-		int orderId = orderDao.insert(order);
-		if (orderId <= 0) {
-			throw new TransactionalRuntimeException("保存订单出错");
-		}
-
-		// 写入订单Other表
-		OrderOther orderOther = fillOrderOther(req, order, businessModel);
-		int orderOtherId = orderOtherDao.insert(orderOther);
-		if (orderOtherId <= 0) {
-			throw new TransactionalRuntimeException("保存订单其它出错");
-		}
-		// 写入订单明细表
-		List<OrderChild> listOrderChild = fillOrderChildApi(req, businessModel,
-				order);
-		int orderChildID = orderChildDao.insertList(listOrderChild);
-		if (orderChildID <= 0) {
-			throw new TransactionalRuntimeException("保存订单明细出错");
-		}	
-
-		// 扣除商家结算费
-		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
-		balanceRecord.setBusinessid(req.getBusinessid());
-		if (order.getGroupbusinessid() > 0) {
-			balanceRecord.setAmount(0d);
-			balanceRecord.setGroupamount(order.getSettlemoney());
-			balanceRecord.setGroupid(order.getGroupbusinessid());
-			balanceRecord.setBalance(businessModel.getBalanceprice());
-		} else {
-			balanceRecord.setAmount(order.getSettlemoney());
-			balanceRecord.setGroupamount(0);
-			balanceRecord.setGroupid(0);
-		}
-
-		balanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success
-				.value());
-		balanceRecord
-				.setRecordtype((short) BusinessBalanceRecordRecordType.PublishOrder
-						.value());
-		balanceRecord.setOperator(businessModel.getName());
-		balanceRecord.setWithwardid((long) order.getId());
-		balanceRecord.setRelationno(order.getOrderno());
-		balanceRecord.setRemark("配送费支出金额");
-		int bbcId = businessService.updateForWithdrawC(0, balanceRecord);	
-
-		// 记录发单日志
-		OrderSubsidiesLog record = new OrderSubsidiesLog();
-		record.setOrderid(order.getId());
-		record.setOrderstatus(OrderStatus.New.value());
-		record.setOptid(req.getBusinessid());
-		record.setPrice(0d);
-		record.setOptname(businessModel.getName());
-		record.setRemark(TaskStatus.PublishOrder.desc());
-		record.setPlatform(SuperPlatform.NewApiPush.value());
-		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);
-		if (ordersubsidiesId <= 0) {
-			throw new TransactionalRuntimeException("记录订单日志错误");
-		}
-
-		// 记录补贴日志
-		if (order.getAdjustment() > 0) {
-			OrderSubsidiesLog adjustRecord = new OrderSubsidiesLog();
-			adjustRecord.setOrderid(order.getId());
-			adjustRecord.setPrice(order.getAdjustment());
-			adjustRecord.setOrderstatus(OrderStatus.New.value());
-			adjustRecord.setOptid(req.getBusinessid());
-			adjustRecord.setOptname(TaskStatus.PublishOrder.desc());
-			adjustRecord.setRemark("补贴加钱,订单金额:" + order.getAmount()
-					+ "-佣金补贴策略id:" + order.getCommissionformulamode());
-			adjustRecord.setPlatform(SuperPlatform.Business.value());
-			int orderSubsidieslogId = orderSubsidiesLogDao.insert(adjustRecord);
-			if (orderSubsidieslogId <= 0)
-				throw new TransactionalRuntimeException("记录补贴日志错误");
-		}
-
-		resp.setStatus(PublishOrderReturnEnum.Success.value());
-		resp.setMessage(PublishOrderReturnEnum.Success.desc());
-		return resp;
-	}
+	
     // endregion 
-	
-	// region 间送模式
-	/**api调用
-	 * 发布订单功能 
-	 * 
-	 * @param req
-	 * @return
-	 * @author 胡灵波
-	 * @Date 2015年10月30日 11:45:19
-	 */
-	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public HttpResultModel<OrderResp> FlashPushOrder(OrderDraftReq req) {
 
-		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
-
-		OrderDraftReturn returnEnum = verificationFlashPushOrder(req);
-		if (returnEnum != OrderDraftReturn.VerificationSuccess) {
-			resp.setStatus(returnEnum.value());
-			resp.setMessage(returnEnum.desc());
-			return resp;
-		}
-		BusinessModel businessModel=new BusinessModel(); 
-		if(req.getIslogin())
-		{
-			businessModel = businessDao.getBusiness((long) req.getBusinessid());
-		}
-		else
-		{
-			//创建
-		}
-
-		// 订单主表		
-		Order order = fillFlashPushOrder(req, businessModel);	
-		int orderId = orderDao.insert(order);
-		if (orderId <= 0) {
-			throw new TransactionalRuntimeException("保存订单出错");
-		}
-
-		// 写入订单Other表
-		OrderOther orderOther = fillFlashPushOrderOther(req, order, businessModel);
-		int orderOtherId = orderOtherDao.insert(orderOther);
-		if (orderOtherId <= 0) {
-			throw new TransactionalRuntimeException("保存订单其它出错");
-		}
-		// 写入订单明细表
-		List<OrderChild> listOrderChild = fillFlashPushOrderChild(req, businessModel,
-				order);
-		int orderChildID = orderChildDao.insertList(listOrderChild);
-		if (orderChildID <= 0) {
-			throw new TransactionalRuntimeException("保存订单明细出错");
-		}	
-
-		// 记录发单日志
-		OrderSubsidiesLog record = new OrderSubsidiesLog();
-		record.setOrderid(order.getId());
-		record.setOrderstatus(OrderStatus.New.value());
-		record.setOptid(req.getBusinessid());
-		record.setPrice(0d);
-		record.setOptname(businessModel.getName());
-		record.setRemark(TaskStatus.PublishOrder.desc());
-		record.setPlatform(SuperPlatform.NewApiPush.value());
-		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);
-		if (ordersubsidiesId <= 0) {
-			throw new TransactionalRuntimeException("记录订单日志错误");
-		}
-
-		// 记录补贴日志
-		if (order.getAdjustment() > 0) {
-			OrderSubsidiesLog adjustRecord = new OrderSubsidiesLog();
-			adjustRecord.setOrderid(order.getId());
-			adjustRecord.setPrice(order.getAdjustment());
-			adjustRecord.setOrderstatus(OrderStatus.New.value());
-			adjustRecord.setOptid(req.getBusinessid());
-			adjustRecord.setOptname(TaskStatus.PublishOrder.desc());
-			adjustRecord.setRemark("补贴加钱,订单金额:" + order.getAmount()
-					+ "-佣金补贴策略id:" + order.getCommissionformulamode());
-			adjustRecord.setPlatform(SuperPlatform.Business.value());
-			int orderSubsidieslogId = orderSubsidiesLogDao.insert(adjustRecord);
-			if (orderSubsidieslogId <= 0)
-				throw new TransactionalRuntimeException("记录补贴日志错误");
-		}
-
-		resp.setStatus(PublishOrderReturnEnum.Success.value());
-		resp.setMessage(PublishOrderReturnEnum.Success.desc());
-		return resp;
-	}
-	/**闪送模式   api回调
-	 * 确认订单功能 
-	 * 
-	 * @param req
-	 * @return
-	 * @author 胡灵波
-	 * @Date 2015年11月26日 10:39:18
-	 */
-	public HttpResultModel<OrderResp> ReturnFlashPush(OrderDraftReturnReq req)
-	{
-		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
-		return resp;
-	}
-	
-	// endregion
 	/**
 	 * 判断该商家是否在30s内已经发过订单
 	 * 
@@ -1680,62 +1420,7 @@ public class OrderService implements IOrderService {
 
 		return PublishOrderReturnEnum.VerificationSuccess;
 	}
-	/** 闪送
-	 * api发单数据验证
-	 * 
-	 * @author 胡灵波
-	 * @param req
-	 * @Date 2015年11月26日 13:38:18
-	 * @return
-	 */
-	private OrderDraftReturn verificationFlashPushOrder(OrderDraftReq req) {
-		if(req.getPubname()==null || req.getPubname().equals(""))
-		{
-			return OrderDraftReturn.PubNameIsNULL;
-		}
-		if(req.getPubphoneno()==null || req.getPubphoneno().equals(""))
-		{	
-			return OrderDraftReturn.PubPhoneNoIsNULL;
-		}
-		if(req.getPubaddress()==null || req.getPubaddress().equals(""))
-		{			
-			return OrderDraftReturn.PubAddressIsNULL;
-		}
-		if(req.getTaketype()==null)
-		{	
-			return OrderDraftReturn.TakeTypeIsNULL;
-		}		
-		if(req.getRecevicename()==null || req.getRecevicename().equals(""))
-		{
-			return OrderDraftReturn.ReceviceNameIsNULL;
-		}
-		if(req.getRecevicephoneno()==null || req.getRecevicephoneno().equals(""))
-		{
-			return OrderDraftReturn.RecevicePhoneNoIsNull;
-		}
-		if(req.getReceviceaddress()==null || req.getReceviceaddress().equals(""))
-		{		
-			return OrderDraftReturn.ReceviceAddressIsNull;
-		}	
-		if(req.getProductname()==null || req.getProductname().equals(""))
-		{		
-			return OrderDraftReturn.ProductNameIsNull;
-		}
-//		if(req.getAmount()==null)
-//		{		
-//			return OrderDraftReturn.AmountIsNull;
-//		}
-//		if(req.getWeight()==null )
-//		{			
-//			return OrderDraftReturn.WeightIsNull;
-//		}
-		if(req.getKm()==null)
-		{			
-			return OrderDraftReturn.KMIsNull;
-		}
-		
-		return OrderDraftReturn.VerificationSuccess;
-	}
+	
 	/**
 	 * 发布订单根据请求参数，商家信息装配订单信息(后台，api)
 	 * 
@@ -2167,8 +1852,396 @@ public class OrderService implements IOrderService {
 		return orderListModel;
 	}
  
- /**
-	 * 闪送管理后台取消订单
+ 
+
+	// region 普通械式
+	// endregion 
+	
+	// region 快单模式
+    /**
+	 * 发布订单功能  快单模式 api
+	 * 
+	 * @param req
+	 * @return
+	 * @author 胡灵波
+	 * @Date 2015年10月30日 11:45:19
+	 */
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public HttpResultModel<OrderResp> PushOrder(OrderReq req) {
+
+		req.setOrderfrom(OrderFrom.FastOrder.value());
+		req.setPlatform(2);
+		req.setIspay(true);
+		
+		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
+
+		if(req.getOrdercount()>50)
+		{
+			resp.setStatus(PublishOrderReturnEnum.PushOrderCountErr.value());
+			resp.setMessage(PublishOrderReturnEnum.PushOrderCountErr.desc());
+			return resp;
+		}
+		//发单时判断 该商户下的以及区域是否够九个，不够提示 wangchao增加判断
+		OrderRegionReq orrOrderRegionReq = new OrderRegionReq();
+		orrOrderRegionReq.setBusinessId(req.getBusinessid());
+		orrOrderRegionReq.setStatus(1);
+		List<OrderRegion> listOrderRegions= orderRegionDao.getOrderRegion(orrOrderRegionReq); 
+		if(listOrderRegions == null ){
+			resp.setStatus(PublishOrderReturnEnum.PushErrRegionNotEnough.value());
+			resp.setMessage(PublishOrderReturnEnum.PushErrRegionNotEnough.desc());
+			return resp;
+		}else{
+			List<OrderRegion> firstOrderRegionList=	listOrderRegions.stream().filter(k->k.getParentid().equals(0)).collect(Collectors.toList());
+			if(firstOrderRegionList.size()!=9){
+				resp.setStatus(PublishOrderReturnEnum.PushErrRegionNotEnough.value());
+				resp.setMessage(PublishOrderReturnEnum.PushErrRegionNotEnough.desc());
+				return resp;
+			}
+		}
+		
+		// 时间戳
+		if (req.getTimeSpan() != null && !req.getTimeSpan().equals("")) {
+						if (isExistByBusinessId(req)) {
+							resp.setStatus(PublishOrderReturnEnum.OrderHasExist.value());
+							resp.setMessage(PublishOrderReturnEnum.OrderHasExist.desc());
+							return resp;
+						}
+		}
+		
+		if(req.getBusinessid()==null)
+		{
+			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
+			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
+			return resp;
+		}
+				
+		// 获取商户信息讯(读串)
+		BusinessModel businessModel = businessDao.getBusiness((long) req
+				.getBusinessid());
+		if(businessModel==null)
+		{
+			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
+			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
+			return resp;
+		}
+		// 字符串转化为列表
+		List<OrderRegionReq> list = converAnswerFormString(req.getListOrderRegionStr());
+		req.setListOrderRegion(list);//赋值
+		if (list == null || list.size() < 1) {
+					resp.setStatus(PublishOrderReturnEnum.OrderRegionNull.value());
+					resp.setMessage(PublishOrderReturnEnum.OrderRegionNull.desc());
+					return resp;
+		}	
+
+		PublishOrderReturnEnum returnEnum = verificationPushOrder(req,
+				businessModel);
+		if (returnEnum != PublishOrderReturnEnum.VerificationSuccess) {
+			resp.setStatus(returnEnum.value());
+			resp.setMessage(returnEnum.desc());
+			return resp;
+		}
+
+		// 订单主表		
+		Order order = fillOrder(req, businessModel);
+		order.setStatus((byte) OrderStatus.Cancel.value());
+		int orderId = orderDao.insert(order);
+		if (orderId <= 0) {
+			throw new TransactionalRuntimeException("保存订单出错");
+		}
+
+		// 写入订单Other表
+		OrderOther orderOther = fillOrderOther(req, order, businessModel);
+		int orderOtherId = orderOtherDao.insert(orderOther);
+		if (orderOtherId <= 0) {
+			throw new TransactionalRuntimeException("保存订单其它出错");
+		}
+		// 写入订单明细表
+		List<OrderChild> listOrderChild = fillOrderChildApi(req, businessModel,
+				order);
+		int orderChildID = orderChildDao.insertList(listOrderChild);
+		if (orderChildID <= 0) {
+			throw new TransactionalRuntimeException("保存订单明细出错");
+		}	
+
+		// 扣除商家结算费
+		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
+		balanceRecord.setBusinessid(req.getBusinessid());
+		if (order.getGroupbusinessid() > 0) {
+			balanceRecord.setAmount(0d);
+			balanceRecord.setGroupamount(order.getSettlemoney());
+			balanceRecord.setGroupid(order.getGroupbusinessid());
+			balanceRecord.setBalance(businessModel.getBalanceprice());
+		} else {
+			balanceRecord.setAmount(order.getSettlemoney());
+			balanceRecord.setGroupamount(0);
+			balanceRecord.setGroupid(0);
+		}
+
+		balanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success
+				.value());
+		balanceRecord
+				.setRecordtype((short) BusinessBalanceRecordRecordType.PublishOrder
+						.value());
+		balanceRecord.setOperator(businessModel.getName());
+		balanceRecord.setWithwardid((long) order.getId());
+		balanceRecord.setRelationno(order.getOrderno());
+		balanceRecord.setRemark("配送费支出金额");
+		int bbcId = businessService.updateForWithdrawC(0, balanceRecord);	
+
+		// 记录发单日志
+		OrderSubsidiesLog record = new OrderSubsidiesLog();
+		record.setOrderid(order.getId());
+		record.setOrderstatus(OrderStatus.New.value());
+		record.setOptid(req.getBusinessid());
+		record.setPrice(0d);
+		record.setOptname(businessModel.getName());
+		record.setRemark(TaskStatus.PublishOrder.desc());
+		record.setPlatform(SuperPlatform.NewApiPush.value());
+		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);
+		if (ordersubsidiesId <= 0) {
+			throw new TransactionalRuntimeException("记录订单日志错误");
+		}
+
+		// 记录补贴日志
+		if (order.getAdjustment() > 0) {
+			OrderSubsidiesLog adjustRecord = new OrderSubsidiesLog();
+			adjustRecord.setOrderid(order.getId());
+			adjustRecord.setPrice(order.getAdjustment());
+			adjustRecord.setOrderstatus(OrderStatus.New.value());
+			adjustRecord.setOptid(req.getBusinessid());
+			adjustRecord.setOptname(TaskStatus.PublishOrder.desc());
+			adjustRecord.setRemark("补贴加钱,订单金额:" + order.getAmount()
+					+ "-佣金补贴策略id:" + order.getCommissionformulamode());
+			adjustRecord.setPlatform(SuperPlatform.Business.value());
+			int orderSubsidieslogId = orderSubsidiesLogDao.insert(adjustRecord);
+			if (orderSubsidieslogId <= 0)
+				throw new TransactionalRuntimeException("记录补贴日志错误");
+		}
+
+		resp.setStatus(PublishOrderReturnEnum.Success.value());
+		resp.setMessage(PublishOrderReturnEnum.Success.desc());
+		return resp;
+	}
+	// endregion
+	
+	// region 闪送模式
+	
+	/**
+	 * 发布订单功能  闪送模式 api
+	 * 
+	 * @param req
+	 * @return
+	 * @author 胡灵波
+	 * @Date 2015年10月30日 11:45:19
+	 */
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public HttpResultModel<OrderResp> FlashPushOrder(OrderDraftReq req) {
+
+		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
+
+		FlashPushOrderEnum returnEnum = verificationFlashPushOrder(req);
+		if (returnEnum != FlashPushOrderEnum.VerificationSuccess) {
+			resp.setStatus(returnEnum.value());
+			resp.setMessage(returnEnum.desc());
+			return resp;
+		}
+		BusinessModel businessModel=new BusinessModel(); 
+		if(req.getIslogin())
+		{
+			businessModel = businessDao.getBusiness((long) req.getBusinessid());
+		}
+		else
+		{
+			//创建
+		}
+
+		// 订单主表		
+		Order order = fillFlashPushOrder(req, businessModel);	
+		int orderId = orderDao.insert(order);
+		if (orderId <= 0) {
+			throw new TransactionalRuntimeException("保存订单出错");
+		}
+
+		// 写入订单Other表
+		OrderOther orderOther = fillFlashPushOrderOther(req, order, businessModel);
+		int orderOtherId = orderOtherDao.insert(orderOther);
+		if (orderOtherId <= 0) {
+			throw new TransactionalRuntimeException("保存订单其它出错");
+		}
+		// 写入订单明细表
+		List<OrderChild> listOrderChild = fillFlashPushOrderChild(req, businessModel,
+				order);
+		int orderChildID = orderChildDao.insertList(listOrderChild);
+		if (orderChildID <= 0) {
+			throw new TransactionalRuntimeException("保存订单明细出错");
+		}	
+
+		// 记录发单日志
+		OrderSubsidiesLog record = new OrderSubsidiesLog();
+		record.setOrderid(order.getId());
+		record.setOrderstatus(OrderStatus.New.value());
+		record.setOptid(req.getBusinessid());
+		record.setPrice(0d);
+		record.setOptname(businessModel.getName());
+		record.setRemark(TaskStatus.PublishOrder.desc());
+		record.setPlatform(SuperPlatform.NewApiPush.value());
+		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);
+		if (ordersubsidiesId <= 0) {
+			throw new TransactionalRuntimeException("记录订单日志错误");
+		}
+
+		// 记录补贴日志
+		if (order.getAdjustment() > 0) {
+			OrderSubsidiesLog adjustRecord = new OrderSubsidiesLog();
+			adjustRecord.setOrderid(order.getId());
+			adjustRecord.setPrice(order.getAdjustment());
+			adjustRecord.setOrderstatus(OrderStatus.New.value());
+			adjustRecord.setOptid(req.getBusinessid());
+			adjustRecord.setOptname(TaskStatus.PublishOrder.desc());
+			adjustRecord.setRemark("补贴加钱,订单金额:" + order.getAmount()
+					+ "-佣金补贴策略id:" + order.getCommissionformulamode());
+			adjustRecord.setPlatform(SuperPlatform.Business.value());
+			int orderSubsidieslogId = orderSubsidiesLogDao.insert(adjustRecord);
+			if (orderSubsidieslogId <= 0)
+				throw new TransactionalRuntimeException("记录补贴日志错误");
+		}
+
+		resp.setStatus(PublishOrderReturnEnum.Success.value());
+		resp.setMessage(PublishOrderReturnEnum.Success.desc());
+		return resp;
+	}
+	
+	/** 
+	 * 获取订单详情  闪送模式 api
+	 * 
+	 * @author 胡灵波
+	 * @param req
+	 * @Date 2015年11月27日 12:03:02
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req) {		
+		HttpResultModel<OrderDetailResp> resp=new HttpResultModel<OrderDetailResp>(); 
+		OrderDetailResp odResp=new OrderDetailResp();
+		int orderId=req.getOrderId();		
+		if (orderId<1)
+		{
+			resp.setStatus(OrderDetailGet.OrderIdIsNULL.value());
+			resp.setMessage(OrderDetailGet.OrderIdIsNULL.desc());
+			return resp;
+		}
+
+		Order oModel=orderDao.selectByPrimaryKey(orderId);
+		OrderOther ooModel= orderOtherDao.selectByOrderId(orderId);		
+		List<OrderChild> ocList=orderChildDao.getOrderChildByOrderId(orderId);
+		odResp.setId(oModel.getId());
+		odResp.setOrderno(oModel.getOrderno());
+		odResp.setPickupaddress(oModel.getPickupaddress());
+		odResp.setPubdate(oModel.getPubdate());
+		odResp.setRecevicename(oModel.getRecevicename());
+		odResp.setRecevicephoneno(oModel.getRecevicephoneno());
+		odResp.setReceviceaddress(oModel.getReceviceaddress());
+		odResp.setActualdonedate(oModel.getActualdonedate());
+		odResp.setIspay(oModel.getIspay());
+		odResp.setAmount(oModel.getAmount());
+		odResp.setOrdercommission(oModel.getOrdercommission());
+		odResp.setDistribsubsidy(oModel.getDistribsubsidy());
+		odResp.setWebsitesubsidy(oModel.getWebsitesubsidy());
+		odResp.setRemark(oModel.getRemark());	 
+		odResp.setStatus(oModel.getStatus());	 
+		odResp.setClienterid(oModel.getClienterid());	 
+		odResp.setBusinessid(oModel.getBusinessid());	 
+		odResp.setRecevicecity(oModel.getRecevicecity());	 
+		odResp.setRecevicelongitude(oModel.getRecevicelongitude());	 
+		odResp.setRecevicelatitude(oModel.getRecevicelatitude());			
+		odResp.setOrderfrom(oModel.getId());	 
+		odResp.setOriginalorderid(oModel.getOriginalorderid());	 
+		odResp.setOriginalorderno(oModel.getOriginalorderno());	 
+		odResp.setQuantity(oModel.getQuantity());	 
+		odResp.setWeight(oModel.getWeight());	 
+		odResp.setReceiveprovince(oModel.getReceiveprovince());	 
+		odResp.setReceivearea(oModel.getReceivearea());	 
+		odResp.setReceiveprovincecode(oModel.getReceiveprovincecode());	 
+		odResp.setReceivecitycode(oModel.getReceivecitycode());	 
+		odResp.setReceiveareacode(oModel.getReceiveareacode());	 
+		odResp.setOrdertype(oModel.getOrdertype());	 
+		odResp.setKm(oModel.getKm());		
+		odResp.setGuojuqty(oModel.getGuojuqty());	 
+		odResp.setLujuqty(oModel.getLujuqty());	 
+		odResp.setSongcandate(oModel.getSongcandate());	 
+		odResp.setOrdercount(oModel.getOrdercount());		
+		odResp.setCommissionrate(oModel.getCommissionrate());	 
+		odResp.setPayment(oModel.getPayment());	 
+		odResp.setCommissionformulamode(oModel.getCommissionformulamode());	 
+		odResp.setAdjustment(oModel.getAdjustment());	
+		odResp.setBusinesscommission(oModel.getBusinesscommission());			
+		odResp.setSettlemoney(oModel.getSettlemoney());	 
+		odResp.setDealcount(oModel.getDealcount());	 
+		if(req.getClienterId()!=null && req.getClienterId()>0)
+		{
+			odResp.setPickupcode("");
+		}
+		else
+		{
+			odResp.setPickupcode(oModel.getPickupcode());
+		}
+		odResp.setOthercancelreason(oModel.getOthercancelreason());	 		
+		odResp.setCommissiontype(oModel.getCommissiontype());	 
+		odResp.setCommissionfixvalue(oModel.getCommissionfixvalue());	 
+		odResp.setBusinessgroupid(oModel.getBusinessgroupid());			
+		odResp.setTimespan(oModel.getTimespan());	 
+		odResp.setInvoice(oModel.getInvoice());	 
+		odResp.setBusinessreceivable(oModel.getBusinessreceivable());	 
+		odResp.setMealssettlemode(oModel.getMealssettlemode());	 
+		odResp.setFinishdatelength(oModel.getFinishdatelength());	 
+		odResp.setFinishall(oModel.getFinishall());	 
+		odResp.setRealordercommission(oModel.getRealordercommission());	 
+		odResp.setGroupbusinessid(oModel.getGroupbusinessid());	 
+		odResp.setBasecommission(oModel.getBasecommission());	 
+		odResp.setPlatform(oModel.getPlatform());	 
+		odResp.setPubname(oModel.getPubname());	 
+		odResp.setPubphoneno(oModel.getPubphoneno());
+		odResp.setPubaddress(oModel.getPubaddress());	
+		odResp.setTaketype(oModel.getTaketype());	
+		//odResp.setTaketime(oModel.getTaketime());	
+		odResp.setTakecode(oModel.getTakecode());	
+		//odResp.setTakelongitude(oModel.getTakelongitude());	
+		//odResp.setTakelatitude(oModel.getTakelatitude());	
+		odResp.setProductname(oModel.getProductname());
+			
+		odResp.setListOrderChild(ocList);
+
+		odResp.setNeeduploadcount(ooModel.getNeeduploadcount());	
+		odResp.setReceiptpic(ooModel.getReceiptpic());
+		odResp.setHaduploadcount(ooModel.getHaduploadcount());
+		odResp.setIsjoinwithdraw(ooModel.getIsjoinwithdraw());
+		odResp.setPublongitude(ooModel.getPublongitude());
+		odResp.setPublatitude(ooModel.getPublatitude());
+		odResp.setGrabtime(ooModel.getGrabtime());
+		odResp.setGrablongitude(ooModel.getGrablongitude());
+		odResp.setGrablatitude(ooModel.getGrablatitude());
+		odResp.setCompletelongitude(ooModel.getCompletelongitude());
+		odResp.setCompletelatitude(ooModel.getCompletelatitude());
+		odResp.setTaketime(ooModel.getTaketime());
+		odResp.setTakelongitude(ooModel.getTakelongitude());
+		odResp.setTakelatitude(ooModel.getTakelatitude());
+		odResp.setPubtograbdistance(ooModel.getPubtograbdistance());
+		odResp.setGrabtocompletedistance(ooModel.getGrabtocompletedistance());
+		odResp.setPubtocompletedistance(ooModel.getPubtocompletedistance());
+		odResp.setOnekeypuborder(ooModel.getOnekeypuborder());
+		odResp.setIsnotrealorder(ooModel.getIsnotrealorder());
+		odResp.setIsorderchecked(ooModel.getIsorderchecked());
+		odResp.setCancelTime(ooModel.getCancelTime());
+		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());
+		
+		resp.setStatus(OrderDetailGet.Success.value());
+		resp.setMessage(OrderDetailGet.Success.desc()); 
+		resp.setResult(odResp);
+		return resp;
+	}
+    
+	/**
+	 * 闪送管理后台取消订单 闪送械式 管理后台
 	 * 
 	 * @author CaoHeYang
 	 * @param cancelOrder
@@ -2275,7 +2348,64 @@ public class OrderService implements IOrderService {
 		responseBase.setMessage("订单取消成功");
 		return responseBase;
 	}
-/**
+	/** 
+	 * api发单数据验证  闪送模式
+	 * 
+	 * @author 胡灵波
+	 * @param req
+	 * @Date 2015年11月26日 13:38:18
+	 * @return
+	 */
+	private FlashPushOrderEnum verificationFlashPushOrder(OrderDraftReq req) {
+		if(req.getPubname()==null || req.getPubname().equals(""))
+		{
+			return FlashPushOrderEnum.PubNameIsNULL;
+		}
+		if(req.getPubphoneno()==null || req.getPubphoneno().equals(""))
+		{	
+			return FlashPushOrderEnum.PubPhoneNoIsNULL;
+		}
+		if(req.getPubaddress()==null || req.getPubaddress().equals(""))
+		{			
+			return FlashPushOrderEnum.PubAddressIsNULL;
+		}
+		if(req.getTaketype()==null)
+		{	
+			return FlashPushOrderEnum.TakeTypeIsNULL;
+		}		
+		if(req.getRecevicename()==null || req.getRecevicename().equals(""))
+		{
+			return FlashPushOrderEnum.ReceviceNameIsNULL;
+		}
+		if(req.getRecevicephoneno()==null || req.getRecevicephoneno().equals(""))
+		{
+			return FlashPushOrderEnum.RecevicePhoneNoIsNull;
+		}
+		if(req.getReceviceaddress()==null || req.getReceviceaddress().equals(""))
+		{		
+			return FlashPushOrderEnum.ReceviceAddressIsNull;
+		}	
+		if(req.getProductname()==null || req.getProductname().equals(""))
+		{		
+			return FlashPushOrderEnum.ProductNameIsNull;
+		}
+//		if(req.getAmount()==null)
+//		{		
+//			return OrderDraftReturn.AmountIsNull;
+//		}
+//		if(req.getWeight()==null )
+//		{			
+//			return OrderDraftReturn.WeightIsNull;
+//		}
+		if(req.getKm()==null)
+		{			
+			return FlashPushOrderEnum.KMIsNull;
+		}
+		
+		return FlashPushOrderEnum.VerificationSuccess;
+	}
+	
+	/**
 	 * 
 	 * 
 	 * @author 胡灵波
@@ -2293,14 +2423,11 @@ public class OrderService implements IOrderService {
 		order.setPubdate(new Date());	
 		order.setPubphoneno(req.getPubphoneno());//发货人手机号
 		order.setPubaddress(req.getPubaddress());//发货人地址 
-		order.setTaketype(req.getTaketype());//取货状态默认0立即，1预约
-		order.setTaketime(req.getTaketime());//取货时间
+		order.setTaketype(req.getTaketype());//取货状态默认0立即，1预约	
 		Random random = new Random();
 	    int x = random.nextInt(899999);
 		x = x+100000;
-		order.setTakecode(String.valueOf(x));//取货吗	
-		order.setTakelongitude(null);//取货经度
-		order.setTakelatitude(null);//取货维度
+		order.setTakecode(String.valueOf(x));//取货吗			
 		order.setRecevicename(req.getRecevicename());//收货人姓名
 		order.setRecevicephoneno(req.getRecevicephoneno());//收货人手机号
 		order.setReceviceaddress(req.getReceviceaddress());//收货人地址
@@ -2317,9 +2444,7 @@ public class OrderService implements IOrderService {
 		order.setAmount(req.getAmount());//金额				
 		order.setWeight(req.getWeight());//订单总重量
 		order.setKm(req.getKm());//	距离		
-		
-
-		
+	
 		order.setOrderfrom(req.getOrderfrom());
 		order.setStatus((byte) OrderStatus.DraftCancel.value());		
 		order.setOrdercount(0);		
@@ -2329,7 +2454,6 @@ public class OrderService implements IOrderService {
 		order.setRecevicelatitude(0d);
 		order.setTimespan(null);	
 		
-
 		order.setCommissionformulamode(businessModel.getStrategyId());
 		order.setBusinesscommission(businessModel.getBusinesscommission());
 		order.setBusinessgroupid(businessModel.getBusinessgroupid());
@@ -2374,8 +2498,9 @@ public class OrderService implements IOrderService {
 
 		return order;
 	}
-	/**闪送模式
-	 * api发布订单组织OrderOther对象
+	
+	/**
+	 * api发布订单组织OrderOther对象  闪送模式 
 	 * 
 	 * @author 胡灵波
 	 * @param req
@@ -2388,6 +2513,9 @@ public class OrderService implements IOrderService {
 		orderOther.setOrderid(order.getId());
 		orderOther.setNeeduploadcount(0);
 		orderOther.setHaduploadcount(0);
+		orderOther.setTaketime(req.getTaketime());
+		orderOther.setTakelongitude((double)0);
+		orderOther.setTakelatitude((double)0);		
 		orderOther.setPublongitude(req.getPublongitude());
 		orderOther.setPublatitude(req.getPublatitude());
 		orderOther.setOnekeypuborder(businessModel.getOnekeypuborder());
@@ -2396,9 +2524,8 @@ public class OrderService implements IOrderService {
 
 		return orderOther;
 	}
-	
-	/**闪送
-	 * 商家发单 插入子订单
+	/**
+	 * 商家发单 插入子订单  闪送模式
 	 * 
 	 * @param req
 	 * @param businessModel
@@ -2441,4 +2568,6 @@ public class OrderService implements IOrderService {
 			listOrderChild.add(child);			
 			
 			return listOrderChild;
-		}	}
+		}	
+	// endregion
+}

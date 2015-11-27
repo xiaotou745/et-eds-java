@@ -13,6 +13,8 @@ public interface IOrderOtherDao {
     int insertSelective(OrderOther record);
 
     OrderOther selectByPrimaryKey(Integer id);
+    
+    OrderOther selectByOrderId(Integer orderId);
 
     int updateByPrimaryKeySelective(OrderOther record);
 

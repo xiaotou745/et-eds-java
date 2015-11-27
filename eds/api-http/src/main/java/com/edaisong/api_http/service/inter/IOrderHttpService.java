@@ -15,6 +15,7 @@ import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
 import com.edaisong.entity.req.OrderChildCancelReq;
+import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
 import com.edaisong.entity.req.OrderDraftGetReq;
 import com.edaisong.entity.req.OrderDraftReturnReq;
@@ -26,6 +27,7 @@ import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
+import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
@@ -69,7 +71,14 @@ public interface IOrderHttpService {
 	@Path("/push")
 	public HttpResultModel<OrderResp> Push(OrderReq req);	
 
-	
+	/**  
+	 * 发布订单  快单模式
+	 * @author 胡灵波
+	 * @date 2015年10月30日 11:29:00
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
 	@POST
 	@Path("/cancelOrderChild")
 	public HttpResultModel<OrderGrabResp> CancelOrderChild(OrderChildCancelReq  req);	
@@ -83,36 +92,21 @@ public interface IOrderHttpService {
 	 * @param req
 	 * @return
 	 */
-//	@POST
-//	@Path("/flashpush")
-//	public HttpResultModel<OrderDraftResp> FlashPush(OrderDraftReq req);
 	@POST
 	@Path("/flashpush")
 	public HttpResultModel<OrderResp> FlashPush(OrderDraftReq req);
-	
 	/**
-	 * 确定发布订单回调(闪送模式) 
+	 * 获取订单详情(闪送模式) 
 	 * @author 胡灵波
-	 * @date 2015年11月25日 11:51:28
+	 * @date 2015年11月27日 11:45:36
 	 * @version 1.0
 	 * @param req
 	 * @return
 	 */
 	@POST
-	@Path("/returnflashpush")
-	public HttpResultModel<OrderResp> ReturnFlashPush(OrderDraftReturnReq req);
+	@Path("/getorderdetails")
+	public HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req);	
 
-	/**
-	 * 获取未生效订单(闪送模式) 
-	 * @author 胡灵波
-	 * @date 2015年11月25日 17:57:44
-	 * @version 1.0
-	 * @param req
-	 * @return
-	 */
-	@POST
-	@Path("/getorderdraft")
-	public HttpResultModel<OrderDraft> GetOrderDraft(OrderDraftGetReq req);
 	/**
 	 * B端任务统计接口
 	 * 

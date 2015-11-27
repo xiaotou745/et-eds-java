@@ -25,6 +25,7 @@ import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder; 
 import com.edaisong.entity.req.OrderChildCancelReq;
+import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
 import com.edaisong.entity.req.OrderDraftGetReq;
 import com.edaisong.entity.req.OrderDraftReturnReq;
@@ -33,6 +34,7 @@ import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;  
+import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
@@ -136,34 +138,21 @@ public class OrderHttpService implements IOrderHttpService {
 		return resp;	
 	}	
 
-	/**闪送模式
-	 * 确定发布订单回调
-	 * @author 胡灵波
-	 * @date 2015年11月25日 11:51:28
-	 * @version 1.0
-	 * @param req
-	 * @return
-	 */
-	@Override
-	public HttpResultModel<OrderResp> ReturnFlashPush(OrderDraftReturnReq req)
-	{
-		orderService.ReturnFlashPush(req);
-		return null;
-	}	
 
 	/**闪送模式
-	 * 获取未生效订单
+	 * 获取订单详情
 	 * @author 胡灵波
-	 * @date 2015年11月25日 17:56:41
+	 * @date 2015年11月27日 11:46:38
 	 * @version 1.0
 	 * @param req
 	 * @return
 	 */
 	@Override
-	public HttpResultModel<OrderDraft> GetOrderDraft(OrderDraftGetReq req)
-	{				
-		return 	orderDraftService.selectByPrimaryKey(req.getId());		
-	}	
+	public HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req)
+	{
+		HttpResultModel<OrderDetailResp> resp=new HttpResultModel<OrderDetailResp>();
+		return orderService.GetOrderDetails(req);
+	}
 	
 	// endregion
 	/**
