@@ -95,7 +95,7 @@ public class ParseHelper {
 	 * @throws ParseException
 	 */
 	public static Date ToDate(String o) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		if (o.length()==10) {
 			sdf = new SimpleDateFormat("yyyy-MM-dd");
 		}else if(o.length()<10) {
@@ -119,7 +119,7 @@ public class ParseHelper {
 	 */
 	public static Date ToDate(String o, String strFormat) throws ParseException {
 		if (strFormat == null || strFormat.isEmpty()) {
-			strFormat = "yyyy-MM-dd hh:MM:ss";
+			strFormat = "yyyy-MM-dd HH:mm:ss";
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat(strFormat);
 		Date defaultDate = sdf.parse(o);
