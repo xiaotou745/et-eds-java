@@ -14,7 +14,7 @@ public class QueryOrderReq extends PagedRequestBase {
 	private Integer status;
 	private Double longitude;
 	private Double latitude;
-
+	private int platform;
 	/**
 	 * 日期 可空
 	 * 
@@ -136,5 +136,16 @@ public class QueryOrderReq extends PagedRequestBase {
 	public void setorderBy(int orderBy) {
 		this.orderBy = orderBy;
 	}
+
+public int getPlatform() {
+	if(platform == 0){
+		return 1;
+	}
+	return platform;
+}
+
+public void setPlatform(int platform) {
+	this.platform = platform;
+}
 	
 }

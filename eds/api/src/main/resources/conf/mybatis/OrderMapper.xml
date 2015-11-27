@@ -1468,7 +1468,7 @@ where   Status = 1
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderWhere">
-		1=1 and o.IsEnable=1  and o.[Platform]=1 
+		1=1 and o.IsEnable=1  and o.[Platform]=  ${platform} 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 
