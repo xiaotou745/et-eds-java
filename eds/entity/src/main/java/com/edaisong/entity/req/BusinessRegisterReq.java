@@ -12,7 +12,10 @@ public class BusinessRegisterReq {
   
     private String ssid;
     private String timespan;
-    
+    /*
+     * 注册来源,默认1原注册商户;2闪送商户
+     */
+    private int registerFrom;
 	public String getPhoneNo() {
 		return phoneNo;
 	}
@@ -59,5 +62,13 @@ public class BusinessRegisterReq {
 
 	public void setTimespan(String timespan) {
 		this.timespan = timespan;
+	}
+
+	public int getRegisterFrom() {
+		return registerFrom;
+	}
+
+	public void setRegisterFrom(int registerFrom) {
+		this.registerFrom = registerFrom;
 	}
 }

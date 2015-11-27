@@ -482,6 +482,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 		}
 		String uuid = UUID.randomUUID().toString();
 		req.setAppkey(uuid);
+		req.setRegisterFrom(2);  //闪送模式注册
  		int s = businessService.register(req);
  		if(s<=0){
  			return res.setStatus(RegisterBEnum.Fail.value()).setMessage
