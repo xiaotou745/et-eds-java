@@ -72,8 +72,10 @@ function funGetRedis(mtype,mkey){
 	else{
 		sType = $("input[name='sType']:checked").val();
 	}
-	$.post("<%=Config.adminurl%>/admintools/redisdo",{key:key,sType:sType},function(d){
+	var param={"appName":$("#selappname").val(),"key":key,"sType":sType};
+	$.post("<%=Config.adminurl%>/admintools/redisdo",param,function(d){
 		if(d==""){
+			alert("结果为空");
 			$("#Content").html("");
 			return;
 		}
