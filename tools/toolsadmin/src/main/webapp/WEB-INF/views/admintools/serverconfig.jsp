@@ -10,6 +10,7 @@
 
 List<String> appNameList = (List<String>) request.getAttribute("appNameList");
 %>
+<script src="<%=basePath%>/js/util.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 <div class="row">
 		<div class="col-lg-12">
@@ -35,7 +36,7 @@ List<String> appNameList = (List<String>) request.getAttribute("appNameList");
 			    <div class="row">
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id="btnSearch" style="margin-left:3px;">查询</button>
-	            <button type="button" class="btn btn-w-m btn-primary" style="margin-left:3px;" data-toggle="modal" data-target="#myModal" id="addapp">添加APP</button>
+	            <button type="button" class="btn btn-w-m btn-primary" style="margin-left:3px;" data-toggle="modal" data-target="#myModal" id="addapp">添加配置项</button>
 					</div>
 			</div>
 			</form>
@@ -57,13 +58,13 @@ List<String> appNameList = (List<String>) request.getAttribute("appNameList");
 	    <h4 class="modal-title">用户操作</h4>
 	</div>
 <div class="modal-body">
-系统名称:<input type="text" id="appname" class="form-control"/><br/><br/>
-服务器类型: <%=HtmlHelper.getSelect("configtype", EnumHelper.GetEnumItems(ServerType.class), "desc", "value",null,null,"") %><br/><br/>
-机器ip(或域名):<input type="text" id="host" class="form-control"/><br/><br/>
-端口号:<input type="text" id="port" class="form-control"/><br/><br/>
-数据库名称:<input type="text" id="dataBase" class="form-control"/><br/><br/>
-用户名:<input type="text" id="userName" class="form-control"/><br/><br/>
-密码:<input type="text" id="passWord" class="form-control"/><br/><br/>
+系统名称:<input type="text" id="appname" class="form-control"/> 
+服务器类型: <%=HtmlHelper.getSelect("configtype", EnumHelper.GetEnumItems(ServerType.class), "desc", "value",null,null,"") %>
+机器ip(或域名):<input type="text" id="host" class="form-control"/>
+端口号:<input type="text" id="port" class="form-control"/>
+<div id="dbdiv">数据库名称:<input type="text" id="dataBase" class="form-control"/></div>
+用户名:<input type="text" id="userName" class="form-control"/>
+密码:<input type="text" id="passWord" class="form-control"/>
 </div>
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -87,12 +88,28 @@ var jss={
 				$("#content").html(d);
 			});
 		}
-	}
+	};
 	
 jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+$("#configtype").change(function(){
+	$("#dataBase").val("");
+	if(isNeedDataBase()){
+		$("#dbdiv").show();
+	}else{
+		$("#dbdiv").hide();
+	}
+});
+function isNeedDataBase(){
+	var selType=$("#configtype").val();
+	if(selType==0||selType==1||selType==6){//sql server,mysql,mongo
+		return true;
+	}else{
+		return false;
+	}
+};
 function reset(){
 	$("#appname").val("");
 	$("#host").val("");
@@ -100,19 +117,22 @@ function reset(){
 	$("#dataBase").val("");
 	$("#userName").val("");
 	$("#passWord").val("");
-}
-var oldvalue;
+};
+var oldvalue=null;
 function modifyApp(id,name,configtype,configvalue) {
 	$("#appid").val(id);
 	$("#appname").val(name);
 	$("#configtype").val(configtype);
-	var obj = eval(configvalue);
+	var realValue=base64decode(configvalue);
+	var obj = eval('('+realValue+')');
 	$("#host").val(obj.host);
 	$("#port").val(obj.port);
-	if(configtype==0||paramaters.configtype==2){
+	if(isNeedDataBase()){
 		$("#dataBase").val(obj.dataBase);
+		$("#dbdiv").show();
 	}else{
 		$("#dataBase").val("");
+		$("#dbdiv").hide();
 	}
 	
 	$("#userName").val(obj.userName);
@@ -120,11 +140,11 @@ function modifyApp(id,name,configtype,configvalue) {
 	
 	$("#optype").val(0);//0表示修改，1表示新增
 	
-	var oldvalue=getValue();
+	oldvalue=getValue();
 	$('#myModal').modal('show');
 	$("#appname").attr("disabled","disabled");
 	$("#configtype").attr("disabled","disabled");
-}
+};
 function deleteApp(id) {
 	if(!confirm("确定要删除？")){
 		return;
@@ -132,36 +152,39 @@ function deleteApp(id) {
 	var paramaters = {
 			"id" :  id
 		};
-		var url = "<%=basePath%>/admintools/deleteApp";
-		$.ajax({
-			type : 'POST',
-			url : url,
-			data : paramaters,
-			success : function(result) {
-				if (result>0) {
-					alert("操作成功");
-					window.location.href = window.location.href;
-				} else {
-					alert("操作失败");
-				}
+	var url = "<%=basePath%>/admintools/deleteApp";
+	$.ajax({
+		type : 'POST',
+		url : url,
+		data : paramaters,
+		success : function(result) {
+			if (result>0) {
+				alert("操作成功");
+				window.location.href = window.location.href;
+			} else {
+				alert("操作失败");
 			}
-		});
-
-}
+		}
+	});
+};
 function getValue(){
+	var dbName="";
+	if(isNeedDataBase()){
+		dbName=$("#dataBase").val().trim();
+	}
 	var paramaters = {
 			"id":$("#appid").val(),
 			"appname" :  $("#appname").val().trim(),
 			"configtype" : $("#configtype").val().trim(),
 			"host" : $("#host").val().trim(),
 			"port" : $("#port").val().trim(),
-			"dataBase" : $("#dataBase").val().trim(),
+			"dataBase" : dbName,
 			"userName" : $("#userName").val().trim(),
 			"passWord" : $("#passWord").val().trim(),
 			"optype":$("#optype").val()
 		};
 	return paramaters;
-}
+};
 $("#saveapp").click(function(){
 	var paramaters=getValue();
 	if(paramaters.appname==""){
@@ -181,19 +204,21 @@ $("#saveapp").click(function(){
 		return;
 	}
 	//只有数据库和mongo才需要填写数据库名称
-	if((paramaters.configtype==0||paramaters.configtype==2)&&
-		paramaters.dataBase==""){
+	if(isNeedDataBase() && paramaters.dataBase==""){
 		alert("数据库名称不能为空");
 		return;
 	}
-	if(paramaters.userName==""){
-		alert("用户名不能为空");
-		return;
+	if(paramaters.configtype==0){
+		if(paramaters.userName==""){
+			alert("用户名不能为空");
+			return;
+		}
+		if(paramaters.passWord==""){
+			alert("密码不能为空");
+			return;
+		}
 	}
-	if(paramaters.passWord==""){
-		alert("密码不能为空");
-		return;
-	}
+	
 	if(paramaters.optype=="0"){
 		//修改时，需要判断是否真正的修改了数据
 		if(paramaters.host==oldvalue.host&&
@@ -223,7 +248,8 @@ $("#saveapp").click(function(){
 });
 $("#addapp").click(function(){
 	reset();
-	$("#optype").val(1);
+	$("#optype").val("1");
+	$("#configtype").val("0");
 	$("#appname").removeAttr("disabled");
 	$("#configtype").removeAttr("disabled");
 });

@@ -4,19 +4,45 @@
 <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.toolscore.util.HtmlHelper"%>
+<%
+List<String> appNameList = (List<String>) request.getAttribute("appNameList");
+%>
 <script src="<%=Config.adminurl%>/js/bootstrap-treeview.js"></script>
-<div class="wrapper wrapper-content animated fadeInRight">
-
-	<div class="row">
+<div class="wrapper wrapper-content animated fadeInRight form-horizontal">
+<div class="row">
 		<div class="col-lg-12">
-			<div class="input-group" style="margin-bottom: 5px;">
-				<input type="text" placeholder="请输入Redis键"
-					class="input-sm form-control" id="txtKey" name="key"
-					style="width: 250px; height: 34px;" value="" />
-查询类型：<input type="radio" value="1" name="sType" checked="checked" id="selmh" />模糊查询 
-<input type="radio" value="2" name="sType" id="seljz"/>精准查询
-				<button type="button" class="btn btn-w-m btn-primary" id="btnSearch"
-					style="margin-left: 3px;">查询</button>
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">系统名称:</label>
+							<div class="col-sm-8">
+							   <%=HtmlHelper.getSelect("selappname", appNameList, "", "",null,null,"全部")%>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Redis键:</label>
+							<div class="col-sm-8">
+							  		<input type="text" placeholder="请输入Redis键"
+					class="form-control" id="txtKey" name="key"  value="" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label"> 查询类型:</label>
+							<div class="col-sm-8">
+							<input type="radio" value="1" name="sType" checked="checked" id="selmh" />模糊查询 
+							<input type="radio" value="2" name="sType" id="seljz"/>精准查询
+							</div>
+						</div>
+					</div>
+				</div>
+			    <div class="row">
+						<div class="col-lg-3">
+						<button type="button" class="btn btn-w-m btn-primary" id="btnSearch" style="margin-left:3px;">查询</button>
+					</div>
 			</div>
 		</div>
 	</div>

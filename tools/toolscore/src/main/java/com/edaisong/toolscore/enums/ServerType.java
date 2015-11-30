@@ -8,33 +8,33 @@ package com.edaisong.toolscore.enums;
  */
 public enum ServerType  {
 	/**
-	 * SqlServer数据库
+	 * SqlServer
 	 */
-	SqlServer(0, "SqlServer数据库"),
+	SqlServer(0, "SqlServer"),
 //	/**
-//	 * MySql数据库
+//	 * MySql
 //	 */
-//	MySql(1, "MySql数据库"),
+//	MySql(1, "MySql"),
 	/**
-	 * Redis缓存
+	 * Redis
 	 */
-	Redis(2, "Redis缓存"),
+	Redis(2, "Redis"),
 //	/**
-//	 * MemoryCache缓存
+//	 * MemoryCache
 //	 */
-//	MemoryCache(3, "MemoryCache缓存"),
+//	MemoryCache(3, "MemoryCache"),
 //	/**
-//	 * RabbitMq消息队列
+//	 * RabbitMq
 //	 */
-//	RabbitMq(4, "RabbitMq消息队列"),
+//	RabbitMq(4, "RabbitMq"),
+//	/**
+//	 * ActiveMq
+//	 */
+//	ActiveMq(5, "ActiveMq"),
 	/**
-	 * ActiveMq消息队列
+	 * MongoDb
 	 */
-	ActiveMq(5, "ActiveMq消息队列"),
-	/**
-	 * MongoDb数据库
-	 */
-	MongoDb(6, "MongoDb数据库");
+	MongoDb(6, "MongoDb");
 
 	private int value = 0;
 	private String desc;

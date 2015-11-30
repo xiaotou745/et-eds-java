@@ -54,6 +54,7 @@ public class AdminToolsController {
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "redis查询工具"); 
 		view.addObject("viewPath", "admintools/redismanage");
+		view.addObject("appNameList", getappNameList(ServerType.Redis,null));
 		return view;
 	}
 	/**

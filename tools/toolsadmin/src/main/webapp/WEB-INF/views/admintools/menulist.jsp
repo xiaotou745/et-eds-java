@@ -21,7 +21,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">系统名称:</label>
 							<div class="col-sm-8">
-							   <%=HtmlHelper.getSelect("appname", appNameList, "", "",null,"","全部")%>
+							   <%=HtmlHelper.getSelect("appname", appNameList, "", "",null,null,"全部")%>
 							</div>
 						</div>
 					</div>

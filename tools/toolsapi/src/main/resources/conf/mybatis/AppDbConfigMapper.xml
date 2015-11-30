@@ -38,7 +38,7 @@
 	</sql> 
 <select id="query" resultType="com.edaisong.toolsentity.AppDbConfig" parameterType="com.edaisong.toolsentity.req.PagedAppDbConfigReq" statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
-		' Id desc ',
+		' appname,configtype ',
 		' Id, AppName, ConfigValue, ConfigType, CreateTime, UpdateTime, CreateName, UpdateName',
 		' AppDbConfig(nolock) ',
 		'<include refid="queryWhere" />',
