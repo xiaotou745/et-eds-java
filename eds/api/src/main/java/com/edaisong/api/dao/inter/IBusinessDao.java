@@ -30,8 +30,10 @@ import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.req.PagedBusinessReq;
 import com.edaisong.entity.resp.MyOrderBResp;
 import com.edaisong.entity.resp.MyOrderDetailBResp;
+import com.edaisong.entity.Business;
 
 public interface IBusinessDao {
+    int insertSelective(Business record);
 	/**
 	 * 获取分页的商家列表
 	 * @return
@@ -165,6 +167,8 @@ public interface IBusinessDao {
 		   * @return
 		   */
 		  boolean isExist(String phone);
+		  
+		  int getId(String phone);
 			/**
 			 * 门店修改绑定手机号
 			 * @author CaoHeYang

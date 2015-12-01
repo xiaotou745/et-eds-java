@@ -62,7 +62,24 @@ public enum FlashPushOrderEnum {
 	/**
 	 * 距离不能为空
 	 */
-	KMIsNull(-11, "距离不能为空");	
+	KMIsNull(-11, "距离不能为空"),
+
+	/**
+	 * 未登录时输入的手机号
+	 */
+	BusinessPhonenoIsNull(-12, "未登录时输入的手机号"),
+	/**
+	 * 未登录时输入的验证码
+	 */
+	VerificationCodeIsNull(-13, "未登录时输入的验证码"),
+	/**
+	 * 未登录时输入的验证码错误
+	 */
+	VerificationCodeErr(-14, "未登录时输入的验证码错误"),
+	/**
+	 * 创建商户失败
+	 */
+	CreateBusinessErr(-15, "创建商户失败");	
 	
 
 	private int value = 0;

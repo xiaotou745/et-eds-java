@@ -69,9 +69,10 @@ public class OrderHttpService implements IOrderHttpService {
 	@Autowired
 	private IOrderDraftService orderDraftService;
 
+	// region 快单模式
 
-	/**快单模式
-	 * 发布订单  
+	/**
+	 * 发布订单  快单模式
 	 * @author 胡灵波
 	 * @date 2015年10月30日 11:29:00
 	 * @version 1.0
@@ -97,7 +98,8 @@ public class OrderHttpService implements IOrderHttpService {
 	}	
 
     /**
-     * 取消订单 （取消前一天智能调度发单且未被抢单的子订单时）
+     * 取消订单  快单模式
+     * 测试  暂时不用  取消前一天智能调度发单且未被抢单的子订单时
      * @param 日期
      * @author 胡灵波
      * @Date 2015年11月5日 11:40:37
@@ -109,6 +111,8 @@ public class OrderHttpService implements IOrderHttpService {
 		HttpResultModel<OrderGrabResp> resp= orderChildService.cancelOrderChild(req);			
 		return resp;
 	}	
+	
+	// endreigon 
 	
 	// region 闪送模式
 	

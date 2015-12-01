@@ -90,8 +90,67 @@ public class Business implements Serializable{
     private Integer isOrderChecked;
     
     private Integer isAllowCashPay;
+    
     private Integer pushOrderType;
-  
+    
+    private Integer registerFrom;
+    
+    private String timespan;
+    
+    private String appkey;
+    
+    private Integer isallowcashpay;
+    
+    private Short pushordertype;
+    
+	public Short getPushordertype() {
+		return pushordertype;
+	}
+
+	public void setPushordertype(Short pushordertype) {
+		this.pushordertype = pushordertype;
+	}
+
+	public Integer getIsallowcashpay() {
+		return isallowcashpay;
+	}
+
+	public void setIsallowcashpay(Integer isallowcashpay) {
+		this.isallowcashpay = isallowcashpay;
+	}
+
+	public String getAppkey() {
+		return appkey;
+	}
+
+	public void setAppkey(String appkey) {
+		this.appkey = appkey;
+	}
+
+	public Date getLastlogintime() {
+		return lastlogintime;
+	}
+
+	public void setLastlogintime(Date lastlogintime) {
+		this.lastlogintime = lastlogintime;
+	}
+
+	public String getTimespan() {
+		return timespan;
+	}
+
+	public void setTimespan(String timespan) {
+		this.timespan = timespan;
+	}
+
+	public Integer getRegisterFrom() {
+		return registerFrom;
+	}
+
+	public void setRegisterFrom(Integer registerFrom) {
+		this.registerFrom = registerFrom;
+	}
+
 	public Integer getPushOrderType() {
 		return pushOrderType;
 	}

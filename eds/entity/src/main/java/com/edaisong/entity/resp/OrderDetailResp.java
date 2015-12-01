@@ -7,7 +7,7 @@ import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.OrderChild;;
 
 /**
- * 商户发布订单
+ * 获取订单详情
  * @author 胡灵波
  * @Date 2015年11月27日 11:44:38
  */
@@ -508,14 +508,6 @@ public class OrderDetailResp extends ResponseBase{
 		this.taketype = taketype;
 	}
 
-	public String getTakecode() {
-		return takecode;
-	}
-
-	public void setTakecode(String takecode) {
-		this.takecode = takecode;
-	}
-
 	public String getProductname() {
 		return productname;
 	}
@@ -830,9 +822,7 @@ public class OrderDetailResp extends ResponseBase{
 	    
 	    private String pubaddress;
 
-	    private Short taketype;	 
-
-	    private String takecode;
+	    private Short taketype;	 	 
 
 	    private String productname;
 

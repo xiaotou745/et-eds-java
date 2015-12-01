@@ -139,7 +139,7 @@
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
     DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
-    Platform, PubName, PubPhoneNo, PubAddress, TakeType, TakeCode, ProductName
+    Platform, PubName, PubPhoneNo,  TakeType,  ProductName
     from [order]  nolock
     where Id = #{id,jdbcType=INTEGER}
   </select>
@@ -427,16 +427,10 @@
             </if>
             <if test="pubphoneno != null" >
         PubPhoneNo,
-      </if>
-      <if test="pubaddress != null" >
-        PubAddress,
-      </if>
+      </if>    
       <if test="taketype != null" >
         TakeType,
-      </if> 
-      <if test="takecode != null" >
-        TakeCode,
-      </if>     
+      </if>    
       <if test="productname != null" >
         ProductName,
       </if>
@@ -618,16 +612,11 @@
       </if>
 			 <if test="pubphoneno != null" >
         #{pubphoneno,jdbcType=NVARCHAR},
-      </if>
-      <if test="pubaddress != null" >
-        #{pubaddress,jdbcType=NVARCHAR},
-      </if>
+      </if>  
        <if test="taketype != null" >
         #{taketype,jdbcType=SMALLINT},
-      </if>     
-      <if test="takecode != null" >
-        #{takecode,jdbcType=NVARCHAR},
       </if>    
+  
       <if test="productname != null" >
         #{productname,jdbcType=NVARCHAR},
       </if>
