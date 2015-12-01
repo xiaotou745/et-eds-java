@@ -1,6 +1,10 @@
 package com.edaisong.toolsadmin.controller;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.toolsadmin.common.UserContext;
+import com.edaisong.toolsapi.common.SQLServerUtil;
+import com.edaisong.toolsapi.common.MybatisUtil;
+import com.edaisong.toolsapi.common.RedisUtil;
 import com.edaisong.toolsapi.redis.RedisService;
 import com.edaisong.toolsapi.service.inter.IAppDbConfigService;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
@@ -25,6 +32,7 @@ import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.common.ResponseBase;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
+import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.req.PagedAccountReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 /**
@@ -35,8 +43,6 @@ import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 @Controller
 @RequestMapping("admintools")
 public class AdminToolsController {
-	@Autowired
-	private RedisService redisService;
 	@Autowired
 	private IAuthorityMenuClassService authorityMenuClassService;
 	@Autowired
@@ -54,6 +60,7 @@ public class AdminToolsController {
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "redis查询工具"); 
 		view.addObject("viewPath", "admintools/redismanage");
+		view.addObject("appNameList", getappNameList(ServerType.Redis,null));
 		return view;
 	}
 	/**
@@ -65,13 +72,29 @@ public class AdminToolsController {
 	 */
 	@RequestMapping("redisdo")
 	@ResponseBody
-	public String redisdo(String key,String sType) {
-		if(sType.equals("1")){
-			Set<String> mSet=redisService.keys(key);
-			return String.join(",", mSet);
-		}else {
-			return redisService.get(key, String.class, false);
+	public String redisdo(String appName,String key,String sType) {
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.Redis,appName);
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			RedisUtil redisUtil=new RedisUtil(conInfo);
+			if(sType.equals("1")){
+				Set<String> mSet=redisUtil.keys(key);
+				return String.join(",", mSet);
+			}else {
+				Object m= redisUtil.get(key, Object.class, false);
+				if (m==null) {
+					return "";
+				}
+				if (m instanceof List) {
+					List<Object> mt=(ArrayList<Object>)m;
+					List<String> jsonList=mt.stream().map(t->JsonUtil.obj2string(t)).collect(Collectors.toList());
+					return String.join(",", jsonList);
+				}else {
+					return JsonUtil.obj2string(m);
+				}
+			}
 		}
+		return "";
 	}
 	/**
 	 * 菜单管理
@@ -152,6 +175,17 @@ public class AdminToolsController {
 	 * @return
 	 */
 	private List<String> getappNameList(ServerType serverType,String appName){
+		List<AppDbConfig> resp = getAppConfigList(serverType,appName);
+		List<String> appNameList =resp.stream().map(t->t.getAppname()).distinct().collect(Collectors.toList());
+		return appNameList;
+	}
+	/**
+	 * 查询配置了给定类型的服务器的设置list
+	 * @param serverType
+	 * @param appName
+	 * @return
+	 */
+	private List<AppDbConfig> getAppConfigList(ServerType serverType,String appName){
 		PagedAppDbConfigReq req=new PagedAppDbConfigReq();
 		if (serverType!=null) {
 			req.setConfigtype(serverType.value());
@@ -159,9 +193,7 @@ public class AdminToolsController {
 		if (appName!=null&&!appName.isEmpty()) {
 			req.setAppname(appName);
 		}
-		List<AppDbConfig> resp = appDbConfigService.queryList(req);
-		List<String> appNameList =resp.stream().map(t->t.getAppname()).distinct().collect(Collectors.toList());
-		return appNameList;
+		return appDbConfigService.queryList(req);	
 	}
 	/**
 	 * app数据库配置分页
@@ -201,10 +233,34 @@ public class AdminToolsController {
 		req.setConfigvalue(JsonUtil.obj2string(conInfo));
 		req.setCreatename(context.getUserName());
 		req.setUpdatename(context.getUserName());
+		boolean isPass=checkConnection(conInfo,ServerType.getEnum(req.getConfigtype()));
+		if (!isPass) {
+			return -1;
+		}
 		if (optype.equals(0)) {//0表示修改，1表示新增
 			return appDbConfigService.updateById(req);
 		}else {
 			return appDbConfigService.insert(req);
+		}
+	}
+	private boolean checkConnection(ConnectionInfo conInfo,ServerType serverType){
+		try {
+			switch (serverType) {
+			case SqlServer:
+				List<Map<String, String>> tList=MybatisUtil.dynamicSelectList(conInfo, "select * from AuthorityMenuClass with(nolock) where id=0");
+				break;
+			case Redis:
+				RedisUtil redisUtil=new RedisUtil(conInfo);
+				Object m= redisUtil.get("abc", Object.class, false);
+				break;
+			case MongoDb:
+				break;
+			default:
+				break;
+			}	
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 	/**

@@ -18,6 +18,7 @@ import com.edaisong.core.enums.BSendCodeType;
 import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.enums.BusinessOrderEnum;
 import com.edaisong.core.enums.ClienterBindBusinessEnum;
+import com.edaisong.core.enums.GroupEnum;
 import com.edaisong.core.enums.RegisterBEnum;
 import com.edaisong.core.enums.returnenums.BusinessModiyPhoneReturnEnum;
 import com.edaisong.core.enums.returnenums.GetMyServiceClientersReturnEnum;
@@ -460,7 +461,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 			return res.setStatus(RegisterBEnum.VerCodeNull.value()).setMessage
 					(RegisterBEnum.VerCodeNull.desc());
 		} 
-		String key = String.format(RedissCacheKey.RegisterCount_B,req.getPhoneNo());
+		String key = String.format(RedissCacheKey.RegisterCount_B,req.getPhoneNo());	
 		int excuteCount=redisService.get(key, Integer.class);
 		if(excuteCount>=10){
 			return res.setMessage(RegisterBEnum.CountError.desc()).setStatus(RegisterBEnum.CountError.value());
@@ -482,7 +483,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 		}
 		String uuid = UUID.randomUUID().toString();
 		req.setAppkey(uuid);
-		req.setRegisterFrom(2);  //闪送模式注册
+		req.setGroupId(GroupEnum.ShanSongMoShi.value());  //闪送模式注册
  		int s = businessService.register(req);
  		if(s<=0){
  			return res.setStatus(RegisterBEnum.Fail.value()).setMessage

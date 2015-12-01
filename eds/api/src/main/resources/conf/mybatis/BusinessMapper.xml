@@ -1016,7 +1016,7 @@ where   phoneNo= #{phone}
 			order="AFTER">
 			select @@IDENTITY as id
 		</selectKey>
-		 insert into dbo.business (City,PhoneNo,Password,Timespan,Appkey,RegisterFrom)
-values( '',#{phoneNo,jdbcType=NVARCHAR},#{passWord,jdbcType=NVARCHAR},#{timespan,jdbcType=NVARCHAR},#{appkey,jdbcType=NVARCHAR},#{registerFrom,jdbcType=INTEGER});
+		 insert into dbo.business (City,PhoneNo,Password,Timespan,Appkey,GroupId)
+values( '',#{phoneNo,jdbcType=NVARCHAR},#{passWord,jdbcType=NVARCHAR},#{timespan,jdbcType=NVARCHAR},#{appkey,jdbcType=NVARCHAR},#{groupId,jdbcType=INTEGER});
 	</insert> 
 </mapper>
