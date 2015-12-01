@@ -337,4 +337,23 @@ public class OrderController {
 		model.addObject("isShowAuditBtn", isShowAuditBtn(orderListModel));
 		return model;
 	}
+	
+	/**
+	 * 取消订单
+	 * 该方法在订单超时列表页也调用
+	 * @author CaoHeYang
+	 * @param auditOkOrder
+	 * @Date 20150828
+	 * @return
+	 */
+	@RequestMapping(value="shansongcancelorder",method= {RequestMethod.POST})
+	@ResponseBody
+	public ResponseBase shansongcancelorder(OptOrder cancelorder){
+		cancelorder.setOptUserId(UserContext.getCurrentContext(request).getId());
+		cancelorder.setOptUserName(UserContext.getCurrentContext(request).getLoginName());
+		ResponseBase responseBase= orderService.shanSongCancelOrder(cancelorder);
+		return responseBase;
+	}
+	
+	
 }

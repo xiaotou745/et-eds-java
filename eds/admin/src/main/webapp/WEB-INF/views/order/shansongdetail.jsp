@@ -131,6 +131,62 @@
 			</table>
 		</div>
 	</fieldset>
+	<fieldset>
+	<input type="hidden"
+		value="<%=ParseHelper.ShowString(detail.getOrderNo())%>"
+		id="OrderNo" /> <input type="hidden"
+		value="<%=ParseHelper.ShowString(detail.getId())%>"
+		id="OrderId" /> <input type="hidden"
+		value="<%=ParseHelper.ShowString(detail.getIsEnable())%>"
+		id="IsEnable" />
+		<%
+		if (detail.getStatus()!=ShanSongOrderStatus.Cancel.value()&&detail.getStatus()!=ShanSongOrderStatus.PayClose.value()) 
+		{
+	%>
+	<div class="SearchMd" style="float: left">
+		<table border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td><input type="button" value="取消订单" class="searchBtn"
+					id="btnCancel" /></td>
+			</tr>
+		</table>
+	</div>
+	<%
+		}
+	%>
+		</fieldset>
+		<div tabindex="-1" class="modal inmodal" id="OrderOptionShow"
+		role="dialog" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content animated bounceInRight">
+				<div class="modal-header">
+					<button class="close" type="button" data-dismiss="modal">
+						<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+					</button>
+					<h4 class="modal-title">取消订单</h4>
+				</div>
+				<small class="font-bold">
+					<div class="modal-body">
+						<fieldset>
+							<br>
+							<div class="control-group">
+								<label>操作描述：</label>
+								<div class="controls">
+									<textarea cols="45" rows="5" id="orderOptionLog"></textarea>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+						<button class="btn btn-primary" type="button" id="btnSave">保存</button>
+					</div>
+				</small>
+			</div>
+			<small class="font-bold"> </small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
 </div>
 <script>
    //取消订单按钮
@@ -161,7 +217,7 @@
 		},function(){
 			$.ajax({
 				type : 'POST',
-				url :  "<%=basePath%>/order/cancelorder",
+				url :  "<%=basePath%>/order/shansongcancelorder",
 				data :  {
 				    "orderId" : orderId,
 					"optLog" : orderOptionLog,

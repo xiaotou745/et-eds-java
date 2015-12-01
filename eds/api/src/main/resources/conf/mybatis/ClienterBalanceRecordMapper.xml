@@ -262,8 +262,10 @@ where  WithwardId= #{id,jdbcType=BIGINT} and Remark='无效订单'
         END AS NoDesc ,
         CASE WHEN RecordType IN ( 1,2,11 ) THEN 1
              ELSE 0
-        END AS IsOrder
+        END AS IsOrder ,
+        o.[Platform]  
  FROM   dbo.ClienterBalanceRecord AS bbr ( NOLOCK )
+ join dbo.[order] (nolock) on o.OrderNo = bbr.RelationNo  
  WHERE  bbr.id=#{recordId,jdbcType=INTEGER}
  		AND ClienterId=#{clienterId,jdbcType=INTEGER}
 	</select>

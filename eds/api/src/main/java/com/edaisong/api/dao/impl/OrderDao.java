@@ -173,6 +173,11 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		return getReadOnlySqlSessionUtil().selectPageList("IOrderDao.customerGetOrders", req);
 	}
 
+	@Override
+	public Order selectByPrimaryKey(int id) 
+	{
+		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.selectByPrimaryKey", id);
+	}
 	 /**
 	  *  根据订单号/订单id查订单信息
 	  * @author CaoHeYang

@@ -22,6 +22,9 @@ import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq; 
+import com.edaisong.entity.req.OrderDetailReq;
+import com.edaisong.entity.req.OrderDraftReq;
+import com.edaisong.entity.req.OrderDraftReturnReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
@@ -32,6 +35,7 @@ import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
+import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
@@ -138,6 +142,31 @@ public interface IOrderService {
 	 * @return
 	 */
 	HttpResultModel<OrderResp> PushOrder(OrderReq req);
+	
+	
+	// region 闪送模式
+	/**
+	 * 发布订单 api调用 闪送模式 
+	 * 
+	 * @param req
+	 *            参数
+	 * @author 胡灵波
+	 * @Date 2015年8月6日 09:51:47
+	 * @return
+	 */
+	HttpResultModel<OrderResp> FlashPushOrder(OrderDraftReq req);
+	
+	/**
+	 * 获取订单详情  闪送模式 api
+	 * 
+	 * @param req
+	 *            参数
+	 * @author hulingbo
+	 * @Date 2015年11月27日 11:50:01
+	 * @return
+	 */
+	HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req);
+	// endregion 
 
 	/**
 	 * 商户发单，点击按纽钱查询商户余额信息，以及该订单的结算信息
@@ -337,5 +366,14 @@ public interface IOrderService {
 		 * @Date 20150827
 		 * @return
 		 */
-	 ShanSongOrderListModel getShanSongOrderByNo(String ordernNo);
+	   ShanSongOrderListModel getShanSongOrderByNo(String ordernNo);
+		/**
+		 * 闪送管理后台取消订单
+		 * 
+		 * @author CaoHeYang
+		 * @param auditOkOrde
+		 * @date 20151126
+		 * @return
+		 */
+		ResponseBase shanSongCancelOrder(OptOrder cancelOrder);
 }

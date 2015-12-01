@@ -722,7 +722,7 @@ where   phoneNo= #{phone}  and GroupId=0
 			order="AFTER">
 			select @@IDENTITY as id
 		</selectKey>
-		 insert into dbo.business (City,PhoneNo,Password,Timespan,Appkey)
-values( '',#{phoneNo,jdbcType=NVARCHAR},#{passWord,jdbcType=NVARCHAR},#{timespan,jdbcType=NVARCHAR},#{appkey,jdbcType=NVARCHAR});
+		 insert into dbo.business (City,PhoneNo,Password,Timespan,Appkey,RegisterFrom)
+values( '',#{phoneNo,jdbcType=NVARCHAR},#{passWord,jdbcType=NVARCHAR},#{timespan,jdbcType=NVARCHAR},#{appkey,jdbcType=NVARCHAR},#{registerFrom,jdbcType=INTEGER});
 	</insert> 
 </mapper>

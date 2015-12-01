@@ -38,7 +38,7 @@ public interface IOrderChildDao {
      */
     List<OrderChild> getOrderChildByOrderInfo(String orderNo,int businessId);
     
-    
+    List<OrderChild> getOrderChildByOrderId(int orderId);
    /**
     *  获取任务支付状态（0：未支付 1：部分支付 2：已支付）
     *  @author CaoHeYang
@@ -49,5 +49,5 @@ public interface IOrderChildDao {
     int   getOrderTaskPayStatus(int orderId); 
 
    
-    OrderChild selectByPrimaryKey(Integer id);
+    OrderChild selectByPrimaryKey(Integer id);    
 }

@@ -61,6 +61,7 @@ public interface IOrderDao {
 	 */
 	PagedResponse<OrderListModel> getOrders(PagedOrderSearchReq search);
 
+	Order selectByPrimaryKey(int id); 
 	 /**
 	  * 根据订单号/订单id查订单信息
 	  * @author CaoHeYang

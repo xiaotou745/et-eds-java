@@ -213,6 +213,13 @@ update dbo.OrderChild set status=3 output inserted.Id
     where Id = #{id,jdbcType=BIGINT}
   </select>
   
+    <select id="getOrderChildByOrderId" resultType="com.edaisong.entity.OrderChild" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderChild
+    where orderid = #{orderid,jdbcType=BIGINT}
+  </select>
+  
 	<!-- 根据订单号 骑士id 查询子订单详情集合 add by caoheyang 20150804 -->
 	<select id="getOrderChildByOrderInfo" parameterType="java.util.Map"
 		resultType="com.edaisong.entity.OrderChild">

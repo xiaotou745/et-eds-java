@@ -5,6 +5,26 @@ import java.util.Date;
 
 public class OrderDraftReq {
 	private  Boolean islogin;
+	private Integer orderfrom;
+	private Integer platform;
+	
+	public Integer getOrderfrom() {
+		return orderfrom;
+	}
+
+	public void setOrderfrom(Integer orderfrom) {
+		this.orderfrom = orderfrom;
+	}
+
+	public Integer getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Integer platform) {
+		this.platform = platform;
+	}
+
+
     
     public Boolean getIslogin() {
 		return islogin;
@@ -68,11 +88,11 @@ public class OrderDraftReq {
 
     private String remark;
 
-    private BigDecimal amount;
+    private double amount;
 
     private Integer businessid;
 
-    private BigDecimal weight;
+    private double weight;
 
     private Double km;
 
@@ -292,11 +312,11 @@ public class OrderDraftReq {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public BigDecimal getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -308,11 +328,11 @@ public class OrderDraftReq {
         this.businessid = businessid;
     }
 
-    public BigDecimal getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(BigDecimal weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 

@@ -38,10 +38,14 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao {
 
 	@Override
 	public OrderOther selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		return getReadOnlySqlSessionUtil().selectOne("IOrderOtherDao.selectByPrimaryKey", id);
 	}
-
+	@Override
+	public OrderOther selectByOrderId(Integer orderId)
+	{
+		return getReadOnlySqlSessionUtil().selectOne("IOrderOtherDao.selectByOrderId", orderId);
+	}
+	
 	@Override
 	public int updateByPrimaryKeySelective(OrderOther record) {
 		return getMasterSqlSessionUtil()

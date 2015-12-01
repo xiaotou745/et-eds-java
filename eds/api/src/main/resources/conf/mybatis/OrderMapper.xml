@@ -127,6 +127,22 @@
 		MealsSettleMode,
 		FinishDateLength, FinishAll, RealOrderCommission,GroupBusinessID,BaseCommission
 	</sql>
+	  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.Order" parameterType="java.lang.Integer" >
+    select 
+    Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
+    ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
+    Status, clienterId, businessId, ReceviceCity, ReceviceLongitude, ReceviceLatitude, 
+    OrderFrom, OriginalOrderId, OriginalOrderNo, Quantity, Weight, ReceiveProvince, ReceiveArea, 
+    ReceiveProvinceCode, ReceiveCityCode, ReceiveAreaCode, OrderType, KM, GuoJuQty, LuJuQty, 
+    SongCanDate, OrderCount, CommissionRate, Payment, CommissionFormulaMode, Adjustment, 
+    BusinessCommission, SettleMoney, DealCount, PickupCode, OtherCancelReason, CommissionType, 
+    CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
+    FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
+    DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
+    Platform, PubName, PubPhoneNo, PubAddress, TakeType, TakeCode, ProductName
+    from [order]  nolock
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
 	<!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展 CaoHeYang 20150804 -->
 	<select id="getOneByCriteria" resultMap="BaseResultMap"
 		parameterType="com.edaisong.entity.Order">
@@ -406,11 +422,29 @@
 			<if test="platform != null">
 				platform,
 			</if>
+			 <if test="pubname != null" >
+             PubName,
+            </if>
+            <if test="pubphoneno != null" >
+        PubPhoneNo,
+      </if>
+      <if test="pubaddress != null" >
+        PubAddress,
+      </if>
+      <if test="taketype != null" >
+        TakeType,
+      </if> 
+      <if test="takecode != null" >
+        TakeCode,
+      </if>     
+      <if test="productname != null" >
+        ProductName,
+      </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderno != null">
 				#{orderno,jdbcType=NVARCHAR},
-			</if>
+			</if>	
 			<if test="pickupaddress != null">
 				#{pickupaddress,jdbcType=NVARCHAR},
 			</if>
@@ -579,6 +613,24 @@
 			<if test="platform != null">
 				#{platform,jdbcType=INTEGER},
 			</if>
+					<if test="pubname != null" >
+        #{pubname,jdbcType=NVARCHAR},
+      </if>
+			 <if test="pubphoneno != null" >
+        #{pubphoneno,jdbcType=NVARCHAR},
+      </if>
+      <if test="pubaddress != null" >
+        #{pubaddress,jdbcType=NVARCHAR},
+      </if>
+       <if test="taketype != null" >
+        #{taketype,jdbcType=SMALLINT},
+      </if>     
+      <if test="takecode != null" >
+        #{takecode,jdbcType=NVARCHAR},
+      </if>    
+      <if test="productname != null" >
+        #{productname,jdbcType=NVARCHAR},
+      </if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Order">
@@ -1108,6 +1160,9 @@
 		JOIN OrderOther (NOLOCK) ord ON ord.OrderId = ab.Id
 		JOIN business (NOLOCK) c ON c.id = ab.businessId
 		WHERE ab.Id =#{orderId,jdbcType=INTEGER} 
+		<if test="platform != null">
+			and ab.Platform=#{platform,jdbcType=INTEGER} 
+		</if>
 	</select>
 
 	<!--商家后台 订单详情页面基础数据 add by caoheyang 20150804 -->
@@ -1413,7 +1468,7 @@ where   Status = 1
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderWhere">
-		1=1 and o.IsEnable=1  and o.[Platform]=1 
+		1=1 and o.IsEnable=1  and o.[Platform]=  ${platform} 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 
@@ -1845,7 +1900,7 @@ where
 			</foreach>
 		</if>
   </select>
-  	<!-- 后台E单订单列表页面 add by caoheyang 20151124 -->
+  	<!-- 后台E单订单详情页面 add by caoheyang 20151124 -->
 <select id="getShanSongOrderByNo" resultType="com.edaisong.entity.domain.ShanSongOrderListModel"
 		parameterType="java.lang.String">
 select 	 a.Id ,a.OrderNo ,a.PickUpAddress,a.BusinessId ,a.ReceviceAddress ,a.clienterId ,a.PickupCode ,
@@ -1853,7 +1908,7 @@ a.[status],a.Amount,a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
 a.ReceviceName ,  a.[PubDate],
 ISNULL(c.TrueName,'匿名') ClienterName,
 ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
-ISNULL( b.PhoneNo ,'无') BusinessPhoneNo ,a.Remark,a.ProductName
+ISNULL( b.PhoneNo ,'无') BusinessPhoneNo ,a.Remark,a.ProductName,a.IsEnable 
 from  dbo.[order] (nolock) a
 join business b with ( nolock ) on b.Id = a.businessId and a.Platform=3
 left join dbo.clienter (nolock) c on a.ClienterId = c.Id

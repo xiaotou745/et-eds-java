@@ -408,6 +408,9 @@ public class BusinessService implements IBusinessService {
 				.getWithwardId()); // 关联单id
 		businessBalanceRecord.setRelationno(businessMoney.getRelationNo()); // 关联单号
 		businessBalanceRecord.setRemark(businessMoney.getRemark()); // 注释
+		businessBalanceRecord.setGroupid(0);
+		businessBalanceRecord.setGroupamount(0);
+		businessBalanceRecord.setGroupafterbalance(0);
 		businessBalanceRecordDao.insert(businessBalanceRecord);
 	}
 	/***
