@@ -40,11 +40,13 @@ public class RedisUtil {
 		factory.setUsePool(true);
 		factory.setHostName(conInfo.getHost());
 		factory.setPort(conInfo.getPort());
+		factory.afterPropertiesSet();
 		RedisTemplate<String, Object> template=new RedisTemplate<String, Object>();
 		template.setConnectionFactory(factory);
 		StringRedisSerializer serializer=new StringRedisSerializer();
 		template.setKeySerializer(serializer);
 		template.setHashKeySerializer(serializer);
+		template.afterPropertiesSet();
 		return template;
 	}
 	private ValueOperations<String, Object> getOperation() {

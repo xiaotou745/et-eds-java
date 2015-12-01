@@ -40,7 +40,7 @@
 {call Sp_CustomPage2015_V1(
 		' appname,configtype ',
 		' Id, AppName, ConfigValue, ConfigType, CreateTime, UpdateTime, CreateName, UpdateName',
-		' AppDbConfig(nolock) ',
+		' AppDbConfig with (nolock) ',
 		'<include refid="queryWhere" />',
 		#{pageSize,mode=IN,jdbcType=INTEGER},
 		#{currentPage,mode=IN,jdbcType=INTEGER}
@@ -49,10 +49,19 @@
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)} 
   </select>
+     <sql id="queryListWhere">
+		1=1
+		<if test="appname != null and appname!=''">
+			and appname = '${appname}'
+		</if>
+		<if test="configtype != null and configtype>=0">
+			and configtype =${configtype}
+		</if>
+	</sql> 
     <select id="queryList" resultType="com.edaisong.toolsentity.AppDbConfig" parameterType="com.edaisong.toolsentity.req.PagedAppDbConfigReq" >
     select 
     AppName, ConfigValue, ConfigType
-    from AppDbConfig(nolock) where 
-    <include refid="queryWhere" />
+    from AppDbConfig (nolock) where 
+    <include refid="queryListWhere" />
   </select>
 </mapper>

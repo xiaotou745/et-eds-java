@@ -240,8 +240,10 @@ $("#saveapp").click(function(){
 				if (result>0) {
 					alert("操作成功");
 					window.location.href = window.location.href;
-				} else {
+				} else if(result==0){
 					alert("操作失败:已经存在系统名称为"+paramaters.appname+",服务器类型为"+$("#configtype option:selected").html()+"的配置项");
+				}else{
+					alert("配置有误，服务器无法连接，请重试");
 				}
 			}
 		});
