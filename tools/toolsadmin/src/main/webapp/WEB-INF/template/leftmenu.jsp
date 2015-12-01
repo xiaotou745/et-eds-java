@@ -13,6 +13,7 @@
 <%@page import="com.edaisong.toolsentity.domain.MenuEntity"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
+
 IAuthorityMenuClassService menuService = SpringBeanHelper.getCustomBeanByType(IAuthorityMenuClassService.class);
 	
 	UserContext context = UserContext.getCurrentContext(request);
@@ -71,9 +72,12 @@ IAuthorityMenuClassService menuService = SpringBeanHelper.getCustomBeanByType(IA
 									<ul class="nav nav-second-level">
 										<%
 								for (MenuEntity submenu : data) {
+									if(submenu.getUrl().indexOf("http")>=0){%>
+										<li><a href="<%=submenu.getUrl()%>"><%=submenu.getMenuname()%></a></li>	
+									<%}else{
 									%>
 									<li <%=viewPath.equals(submenu.getUrl().substring(1))?"class='active'":""%>><a href="<%=basePath+submenu.getUrl()%>"><%=submenu.getMenuname()%></a></li>
-									<%}%>
+									<%}}%>
 								</ul></li>
 							<%
 							}	

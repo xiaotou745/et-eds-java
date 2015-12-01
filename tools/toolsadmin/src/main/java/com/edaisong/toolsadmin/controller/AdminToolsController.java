@@ -27,6 +27,7 @@ import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.StringUtils;
 import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.AppDbConfig;
+import com.edaisong.toolsentity.AppVersion;
 import com.edaisong.toolsentity.AuthorityMenuClass;
 import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
@@ -152,6 +153,18 @@ public class AdminToolsController {
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "版本控制");
 		view.addObject("viewPath", "admintools/appversion");
+		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
+		return view;
+	}
+	@RequestMapping("appversiondo")
+	public ModelAndView appversiondo(String appName,PagedRequestBase req) {
+		ModelAndView view = new ModelAndView("admintools/appversiondo");
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			PagedResponse<AppVersion> resp=MybatisUtil.getSqlSessionUtil(conInfo).selectPageList("IAppVersionDao.query", req);
+			view.addObject("listData", resp);
+		}
 		return view;
 	}
 	/**
