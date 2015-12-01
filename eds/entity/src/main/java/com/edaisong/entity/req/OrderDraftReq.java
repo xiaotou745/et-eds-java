@@ -4,39 +4,18 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class OrderDraftReq {
-	private  Boolean islogin;
-	private Integer orderfrom;
-	private Integer platform;
 	
-	public Integer getOrderfrom() {
-		return orderfrom;
-	}
-
-	public void setOrderfrom(Integer orderfrom) {
-		this.orderfrom = orderfrom;
-	}
-
-	public Integer getPlatform() {
-		return platform;
-	}
-
-	public void setPlatform(Integer platform) {
-		this.platform = platform;
-	}
-
-
+	
+    private Integer businessid;
     
-    public Boolean getIslogin() {
-		return islogin;
-	}
+    private String businessphoneno;
+    
+    private String verificationcode;
+	
+	private Integer orderfrom;
+	
+	private Integer platform;			
 
-	public void setIslogin(Boolean islogin) {
-		this.islogin = islogin;
-	}
-
-	private Integer id;
-
-    private String orderno;
 
     private String pubname;
 
@@ -90,27 +69,41 @@ public class OrderDraftReq {
 
     private double amount;
 
-    private Integer businessid;
-
-    private double weight;
+	private double weight;
 
     private Double km;
+    
+    public String getVerificationcode() {
+		return verificationcode;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public void setVerificationcode(String verificationcode) {
+		this.verificationcode = verificationcode;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public String getBusinessphoneno() {
+		return businessphoneno;
+	}
 
-    public String getOrderno() {
-        return orderno;
-    }
+	public void setBusinessphoneno(String businessphoneno) {
+		this.businessphoneno = businessphoneno;
+	}
+    public Integer getOrderfrom() {
+		return orderfrom;
+	}
 
-    public void setOrderno(String orderno) {
-        this.orderno = orderno == null ? null : orderno.trim();
-    }
+	public void setOrderfrom(Integer orderfrom) {
+		this.orderfrom = orderfrom;
+	}
+
+	public Integer getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Integer platform) {
+		this.platform = platform;
+	}
+ 
 
     public String getPubname() {
         return pubname;

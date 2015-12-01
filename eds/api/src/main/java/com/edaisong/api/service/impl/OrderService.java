@@ -34,6 +34,7 @@ import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
+import com.edaisong.api.redis.NetRedisService;
 import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IClienterService;
@@ -63,9 +64,11 @@ import com.edaisong.core.enums.Strategy;
 import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
+import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
+import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.GroupBusiness;
@@ -99,6 +102,7 @@ import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.domain.ShanSongOrderListModel;
+import com.edaisong.entity.req.BusinessRegisterReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
@@ -167,6 +171,9 @@ public class OrderService implements IOrderService {
 
 	@Autowired
 	private IOrderGrabDao iOrderGrabDao;
+	
+	@Autowired
+	private NetRedisService netRedisService;
  
 	/**
 	 * 后台订单列表页面
@@ -2039,20 +2046,68 @@ public class OrderService implements IOrderService {
 
 		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
 
+		//验证
 		FlashPushOrderEnum returnEnum = verificationFlashPushOrder(req);
 		if (returnEnum != FlashPushOrderEnum.VerificationSuccess) {
 			resp.setStatus(returnEnum.value());
 			resp.setMessage(returnEnum.desc());
 			return resp;
 		}
+		
+		//已登 录商户 未登录商户
 		BusinessModel businessModel=new BusinessModel(); 
-		if(req.getIslogin())
+		if(req.getBusinessid()!=null && req.getBusinessid()>0)
 		{
 			businessModel = businessDao.getBusiness((long) req.getBusinessid());
 		}
 		else
 		{
-			//创建
+			if(req.getBusinessphoneno()==null || req.getBusinessphoneno().equals(""))
+			{
+				resp.setStatus(FlashPushOrderEnum.BusinessPhonenoIsNull.value());
+				resp.setMessage(FlashPushOrderEnum.BusinessPhonenoIsNull.desc());
+				return resp;
+			}
+			/*if(req.getVerificationcode()==null || req.getVerificationcode().equals(""))
+			{
+				resp.setStatus(FlashPushOrderEnum.VerificationCodeIsNull.value());
+				resp.setMessage(FlashPushOrderEnum.VerificationCodeIsNull.desc());
+				return resp;
+			}
+			
+			String key = String.format(RedissCacheKey.PostRegisterInfo_B, req.getBusinessphoneno());
+			String verificationCode= netRedisService.get(key, String.class);
+			if(!verificationCode.equals(req.getVerificationcode()))
+			{
+				resp.setStatus(FlashPushOrderEnum.VerificationCodeErr.value());
+				resp.setMessage(FlashPushOrderEnum.VerificationCodeErr.desc());
+				return resp;
+			}		*/
+			
+			int selectBId=businessDao.getId(req.getBusinessphoneno());
+			if(selectBId>0)
+			{
+				businessModel = businessDao.getBusiness((long) selectBId);
+			}
+			else
+			{
+				//创建
+				Business bModel=new Business();
+				bModel.setName(req.getBusinessphoneno());//姓名
+				bModel.setPhoneno(req.getBusinessphoneno());
+				bModel.setPhoneno2(req.getBusinessphoneno());
+				bModel.setPassword(MD5Util.MD5(req.getVerificationcode().trim()));				
+				bModel.setStatus((byte)1);//审核通过
+				bModel.setRegisterFrom(2);//注册来源				
+				int bId= businessDao.insertSelective(bModel);
+				if(bId<1)
+				{
+					resp.setStatus(FlashPushOrderEnum.CreateBusinessErr.value());
+					resp.setMessage(FlashPushOrderEnum.CreateBusinessErr.desc());
+					return resp;				
+				}
+				businessModel = businessDao.getBusiness((long) bModel.getId());
+			}		
 		}
 
 		// 订单主表		
@@ -2200,13 +2255,9 @@ public class OrderService implements IOrderService {
 		odResp.setBasecommission(oModel.getBasecommission());	 
 		odResp.setPlatform(oModel.getPlatform());	 
 		odResp.setPubname(oModel.getPubname());	 
-		odResp.setPubphoneno(oModel.getPubphoneno());
-		odResp.setPubaddress(oModel.getPubaddress());	
-		odResp.setTaketype(oModel.getTaketype());	
-		//odResp.setTaketime(oModel.getTaketime());	
-		odResp.setTakecode(oModel.getTakecode());	
-		//odResp.setTakelongitude(oModel.getTakelongitude());	
-		//odResp.setTakelatitude(oModel.getTakelatitude());	
+		odResp.setPubphoneno(oModel.getPubphoneno());		
+		odResp.setTaketype(oModel.getTaketype());			
+		odResp.setPickupcode(oModel.getTakecode());	
 		odResp.setProductname(oModel.getProductname());
 			
 		odResp.setListOrderChild(ocList);
@@ -2416,13 +2467,21 @@ public class OrderService implements IOrderService {
 	 */
 	private Order fillFlashPushOrder(OrderDraftReq req, BusinessModel businessModel) {
 		Order order = new Order();
-		order.setOrderno(OrderNoHelper.generateOrderCode(req.getBusinessid()));
+		order.setOrderno(OrderNoHelper.generateOrderCode(businessModel.getId()));
 		req.setOrderfrom(OrderFrom.FlashOrder.value());
-		req.setPlatform(3);//闪送		
+		req.setPlatform(3);//闪送	
+		order.setOrderfrom(req.getOrderfrom());
+		order.setStatus((byte) OrderStatus.Draft.value());		
+		order.setOrdercount(0);		
+		order.setBusinessid(req.getBusinessid());		
+		order.setTimespan(null);	
+		order.setIspay(false);
+		order.setBusinessid(businessModel.getId());
+		
 		order.setPubname(req.getPubname());//发货人
-		order.setPubdate(new Date());	
+		order.setPubdate(new Date());//发货日期	
 		order.setPubphoneno(req.getPubphoneno());//发货人手机号
-		order.setPubaddress(req.getPubaddress());//发货人地址 
+		order.setPickupaddress(req.getPubaddress());//发货人地址 		
 		order.setTaketype(req.getTaketype());//取货状态默认0立即，1预约	
 		Random random = new Random();
 	    int x = random.nextInt(899999);
@@ -2444,16 +2503,7 @@ public class OrderService implements IOrderService {
 		order.setAmount(req.getAmount());//金额				
 		order.setWeight(req.getWeight());//订单总重量
 		order.setKm(req.getKm());//	距离		
-	
-		order.setOrderfrom(req.getOrderfrom());
-		order.setStatus((byte) OrderStatus.DraftCancel.value());		
-		order.setOrdercount(0);		
-		order.setBusinessid(req.getBusinessid());
-		order.setPickupaddress(businessModel.getAddress());
-		order.setRecevicelongitude(0d);
-		order.setRecevicelatitude(0d);
-		order.setTimespan(null);	
-		
+
 		order.setCommissionformulamode(businessModel.getStrategyId());
 		order.setBusinesscommission(businessModel.getBusinesscommission());
 		order.setBusinessgroupid(businessModel.getBusinessgroupid());
@@ -2546,6 +2596,7 @@ public class OrderService implements IOrderService {
 			child.setOrderid(order.getId());
 			child.setTotalprice(req.getAmount());
 			child.setGoodprice(req.getAmount());
+			child.setPaystyle((short)3);
 			child.setPaystatus((short)0);
 			child.setOriginalorderno("");
 			child.setWxcodeurl("");
@@ -2554,7 +2605,7 @@ public class OrderService implements IOrderService {
 			child.setThirdpaystatus((short) 0);
 				
 			//以下属性是智能调度用到的属性
-			child.setBusinessid(req.getBusinessid());
+			child.setBusinessid(businessModel.getId());
 			child.setStatus((short)0);
 			child.setOrderRegionOneId(0);
 			child.setOrderRegionTwoId(0);

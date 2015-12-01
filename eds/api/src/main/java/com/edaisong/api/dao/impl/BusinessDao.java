@@ -41,6 +41,13 @@ import com.edaisong.entity.resp.MyOrderDetailBResp;
 public class BusinessDao extends DaoBase implements IBusinessDao {
 
 	@Override
+	public int insertSelective(Business record)
+	{
+		return getMasterSqlSessionUtil().insert(
+				"IBusinessDao.insertSelective",
+				record); 
+	}
+	@Override
 	public PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req) {
 		PagedResponse<BusinessModel> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
@@ -248,6 +255,19 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	public	boolean isExist(String phone){
 		Integer count= getReadOnlySqlSessionUtil().selectOne("IBusinessDao.isExist",phone);
 		return count>0;
+	}
+	
+	  /**
+	   * 商户是否已存在 存在返回id
+	   * @param phone
+	   * @return
+	   */
+	@Override
+	public	int getId(String phone){
+		Integer id= getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getId",phone);
+		if(id==null) return 0;
+		
+		return Integer.valueOf(id);
 	}
 	/**
 	 * 门店修改绑定手机号

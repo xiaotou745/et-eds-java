@@ -135,13 +135,6 @@ public class Order {
 		this.pubphoneno = pubphoneno;
 	}
 
-	public String getPubaddress() {
-		return pubaddress;
-	}
-
-	public void setPubaddress(String pubaddress) {
-		this.pubaddress = pubaddress;
-	}
 
 	public Short getTaketype() {
 		return taketype;
@@ -192,8 +185,7 @@ public class Order {
 	}
 
 	private String pubname;
-    private String pubphoneno;
-    private String pubaddress;
+    private String pubphoneno;    
 
     private Short taketype;
 
