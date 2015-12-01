@@ -1171,7 +1171,7 @@ public class OrderService implements IOrderService {
 																		// 天数据列表
 		serviceClienters.forEach(action -> action
 				.setClienterPhoto(
-					 	ParseHelper.ToString(action.getClienterPhoto(), "")==""?"": 
+					 	ParseHelper.ToString(action.getClienterPhoto(), "").equals("")?"": 
 						PropertyUtils.getProperty("ImageClienterServicePath")+ action.getClienterPhoto()));
 		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
 			List<ServiceClienter> temp = serviceClienters
@@ -1930,7 +1930,7 @@ public class OrderService implements IOrderService {
 																		// 天数据列表
 		serviceClienters.forEach(action -> action
 				.setClienterPhoto(
-					 	ParseHelper.ToString(action.getClienterPhoto(), "")==""?"": 
+					 	ParseHelper.ToString(action.getClienterPhoto(), "").equals("")?"": 
 						PropertyUtils.getProperty("ImageClienterServicePath")+ action.getClienterPhoto()));
 		for (DaySatisticsB daySatisticsB : daySatisticsBs) {
 			List<ServiceClienter> temp = serviceClienters

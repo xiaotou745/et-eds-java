@@ -460,7 +460,7 @@ public class BusinessService implements IBusinessService {
 		if(orderRespModels!=null &&orderRespModels.size() > 0){		
 //			orderRespModels.forEach(action -> action.setClienterHeadPhoto((PropertyUtils.getProperty("ImageClienterServicePath") + action.getClienterHeadPhoto())));
 			orderRespModels.forEach(action -> action.setClienterHeadPhoto(
-						ParseHelper.ToString(action.getClienterHeadPhoto(), "")==""?"": PropertyUtils.getProperty("ImageClienterServicePath") + action.getClienterHeadPhoto()
+						ParseHelper.ToString(action.getClienterHeadPhoto(), "").equals("")?"": PropertyUtils.getProperty("ImageClienterServicePath") + action.getClienterHeadPhoto()
 					));
 		}
 		MyOrderBResp myOrderBResp = new MyOrderBResp();

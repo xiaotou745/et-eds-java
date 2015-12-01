@@ -99,7 +99,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 		String year=par.getMonthInfo().split("-")[0];//年
 		String month=par.getMonthInfo().split("-")[1];//月
 		String endDate="";
-		if(month=="12")
+		if(month.equals("12"))
 		{
 			year=String.valueOf(Integer.parseInt(year, 10)+1);//十二月将年+1
 			endDate=year+"-01-01 00:00:00";//结束时间为 2016-01-01 00:00:00
