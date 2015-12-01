@@ -222,7 +222,11 @@ public class OrderRegionController {
 	 * @return
 	 */
 	@RequestMapping("todayone")
-	public ModelAndView todayList(Long businessid) {	
+	public ModelAndView todayList(Long businessid) {
+		BusinessModel bus=businessService.getBusiness(businessid);
+		if (bus==null) {
+			throw new RuntimeException("没找到businessid="+businessid+"的商户");
+		}
 		ModelAndView model = new ModelAndView("orderregion/todayone");
 		String json=JsonUtil.obj2string(getRegionSettings(businessid.intValue()));
 		model.addObject("regionjson", json);
@@ -233,7 +237,6 @@ public class OrderRegionController {
 		String detailJson=JsonUtil.obj2string(detailData);
 		model.addObject("totalJson", totalJson);
 		model.addObject("detailJson", detailJson);
-		BusinessModel bus=businessService.getBusiness(businessid);
 		String businessLat=bus.getLatitude()+";"+bus.getLongitude();
 		model.addObject("businessLat", businessLat);
 		model.addObject("businessid", businessid);

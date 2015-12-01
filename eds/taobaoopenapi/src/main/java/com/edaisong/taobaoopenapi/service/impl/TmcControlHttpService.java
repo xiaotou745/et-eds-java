@@ -34,6 +34,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 			@Override
 			public void onMessage(Message message, MessageStatus status) throws Exception {
 				if (message.getTopic() == TaoBaoConsts.OrderDispatch) {
+					orderDispatch(message.getContent());
 
 				} else if (message.getTopic() == TaoBaoConsts.OrderClose) {
 					orderClose(message.getContent());
@@ -50,12 +51,13 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 	/**
 	 * 订单指派通知消息(TMC)
 	 * 
-	 * @author CaoHeYang
-	 * @date 20151113
+	 * @author 胡灵波
+	 * @date 2015年11月23日 11:37:54
 	 */
-	private void orderDispatch() {
-
+	private void orderDispatch(String data) {
+		String r= HttpUtil.sendPost(PropertyUtils.getProperty("TaoBaoOrderDispatch"), "data="+AES.aesEncrypt(data));
 	}
+
 
 	/**
 	 * 订单关闭通知消息(TMC)

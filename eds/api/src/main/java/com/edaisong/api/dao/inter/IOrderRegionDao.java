@@ -13,6 +13,7 @@ public interface IOrderRegionDao {
 	List<OrderRegion> getByParentId(Integer parentId);
     int deleteByIds(List<Integer> idList);
     int updateHasChildByIds(Integer hasChilds,List<Integer> idList);
+    int updateAllHasChild();
 	Integer updateRegionList(List<OrderRegion> regionList);
 	Integer insert(OrderRegion region);
     

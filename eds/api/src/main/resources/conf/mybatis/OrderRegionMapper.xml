@@ -57,6 +57,17 @@
 			#{item}
 			</foreach>
   </update>
+  <update id="updateAllHasChild">
+        UPDATE  OrderRegion
+        SET     HasChild = 1
+        WHERE   id IN ( SELECT  ParentId
+                        FROM    dbo.OrderRegion
+                        WHERE   ParentId > 0
+                                AND status = 1 )
+                AND dbo.OrderRegion.HasChild = 0
+                AND dbo.OrderRegion.ParentId = 0
+                AND STATUS = 1 
+  </update>
   <insert id="insert" parameterType="com.edaisong.entity.OrderRegion" >
   <selectKey resultType="java.lang.Integer" keyProperty="id"
 			order="AFTER">
