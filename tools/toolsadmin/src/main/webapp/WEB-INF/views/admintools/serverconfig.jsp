@@ -65,6 +65,7 @@ List<String> appNameList = (List<String>) request.getAttribute("appNameList");
 <div id="dbdiv">数据库名称:<input type="text" id="dataBase" class="form-control"/></div>
 用户名:<input type="text" id="userName" class="form-control"/>
 密码:<input type="text" id="passWord" class="form-control"/>
+<span id="tip" style="color:red"></span>
 </div>
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -101,6 +102,19 @@ $("#configtype").change(function(){
 	}else{
 		$("#dbdiv").hide();
 	}
+	var selType=$("#configtype").val();
+	switch(selType){
+	case "0":
+		$("#port").val("1433");//sqlserver默认端口
+		break;
+	case "2":
+		$("#port").val("6379");//redis默认端口
+		break;
+	case "6":
+		$("#port").val("27017");//mongodb默认端口
+		break;
+	}
+
 });
 function isNeedDataBase(){
 	var selType=$("#configtype").val();
@@ -120,6 +134,7 @@ function reset(){
 };
 var oldvalue=null;
 function modifyApp(id,name,configtype,configvalue) {
+	$("#tip").html("");
 	$("#appid").val(id);
 	$("#appname").val(name);
 	$("#configtype").val(configtype);
@@ -230,28 +245,31 @@ $("#saveapp").click(function(){
 			return;
 		}
 	}
-	
-		var url = "<%=basePath%>/admintools/saveapp";
-		$.ajax({
-			type : 'POST',
-			url : url,
-			data : paramaters,
-			success : function(result) {
-				if (result>0) {
-					alert("操作成功");
-					window.location.href = window.location.href;
-				} else if(result==0){
-					alert("操作失败:已经存在系统名称为"+paramaters.appname+",服务器类型为"+$("#configtype option:selected").html()+"的配置项");
-				}else{
-					alert("配置有误，服务器无法连接，请重试");
-				}
+	$("#tip").html("正在校验服务器是否可以连接。。");
+	var url = "<%=basePath%>/admintools/saveapp";
+	$.ajax({
+		type : 'POST',
+		url : url,
+		data : paramaters,
+		success : function(result) {
+			$("#tip").html("");
+			if (result>0) {
+				alert("操作成功");
+				window.location.href = window.location.href;
+			} else if(result==0){
+				alert("操作失败:已经存在系统名称为"+paramaters.appname+",服务器类型为"+$("#configtype option:selected").html()+"的配置项");
+			}else{
+				alert("配置有误，服务器无法连接，请重试");
 			}
-		});
+		}
+	});
 });
 $("#addapp").click(function(){
 	reset();
+	$("#tip").html("");
 	$("#optype").val("1");
 	$("#configtype").val("0");
+	$("#configtype").change();
 	$("#appname").removeAttr("disabled");
 	$("#configtype").removeAttr("disabled");
 });

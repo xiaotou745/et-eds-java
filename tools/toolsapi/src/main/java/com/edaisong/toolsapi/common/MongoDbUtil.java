@@ -8,7 +8,19 @@ import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
 import com.mongodb.MongoClientURI;
 
+/**
+ * mongodb帮助类（连接指定的数据库）
+ * @author hailongzhao
+ *
+ */
 public class MongoDbUtil {
+	/**
+	 * 根据连接信息创建mongodb连接客户端
+	 * @param conInfo
+	 * @author hailongzhao
+	 * @date 20151201
+	 * @return
+	 */
    public MongoTemplate getMongoTemplate(ConnectionInfo conInfo){
 		try {
 			//"mongodb://user:pass@localhost:port/database"

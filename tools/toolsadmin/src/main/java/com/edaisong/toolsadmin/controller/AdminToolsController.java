@@ -2,6 +2,7 @@ package com.edaisong.toolsadmin.controller;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.toolsadmin.common.UserContext;
-import com.edaisong.toolsapi.common.DaoUtil;
+import com.edaisong.toolsapi.common.SQLServerUtil;
+import com.edaisong.toolsapi.common.MybatisUtil;
 import com.edaisong.toolsapi.common.RedisUtil;
 import com.edaisong.toolsapi.redis.RedisService;
 import com.edaisong.toolsapi.service.inter.IAppDbConfigService;
@@ -30,6 +32,7 @@ import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.common.ResponseBase;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
+import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.req.PagedAccountReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 /**
@@ -244,8 +247,7 @@ public class AdminToolsController {
 		try {
 			switch (serverType) {
 			case SqlServer:
-				Statement ste= DaoUtil.createStatement(conInfo);
-				ste.execute("select * from AuthorityMenuClass where id=1");
+				List<Map<String, String>> tList=MybatisUtil.dynamicSelectList(conInfo, "select * from AuthorityMenuClass with(nolock) where id=0");
 				break;
 			case Redis:
 				RedisUtil redisUtil=new RedisUtil(conInfo);
