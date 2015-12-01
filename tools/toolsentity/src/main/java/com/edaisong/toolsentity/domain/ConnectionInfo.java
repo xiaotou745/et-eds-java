@@ -1,12 +1,12 @@
 package com.edaisong.toolsentity.domain;
 
+
 public class ConnectionInfo {
 	private String host;
 	private int port;
 	private String dataBase;
 	private String userName;
 	private String passWord;
-	private String url;
 	public String getHost() {
 		return host;
 	}
@@ -20,12 +20,6 @@ public class ConnectionInfo {
 		this.port = port;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
 	public String getUserName() {
 		return userName;
 	}

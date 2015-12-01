@@ -108,6 +108,20 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 	     return result;
 
 	}
+	  /**
+     * 根据订单信息查询 子订单集合 
+     * @param orderNo 订单号     * 
+     * @author hulingbo
+     * @Date 2015年11月27日 14:51:46
+     * @return
+     */
+	@Override
+	public List<OrderChild> getOrderChildByOrderId(int orderId) {	
+		List<OrderChild> result=getReadOnlySqlSessionUtil().selectList("IOrderChildDao.getOrderChildByOrderId"
+				 , orderId);
+	     return result;
+
+	}
 	   /**
 	    *  获取任务支付状态（0：未支付 1：部分支付 2：已支付）
 	    *  @author CaoHeYang
