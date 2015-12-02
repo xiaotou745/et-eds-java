@@ -342,7 +342,7 @@ public class AdminToolsController {
 					{
 						return "查询时SQL不可以带UPDATE关键字";
 					}
-					if(sql.toUpperCase().indexOf("INSERT")>=0)
+					if(sql.toUpperCase().indexOf("INSERT ")>=0)
 					{
 						return "查询时SQL不可以带INSERT关键字";
 					}
@@ -360,8 +360,8 @@ public class AdminToolsController {
 				if(type.equals("2"))
 				{
 					//非查询SQL
-					//int res=SQLServerUtil.executeUpdate(conInfo, sql);
-					int res=MybatisUtil.dynamicUpdateDb(conInfo, sql);
+					int res=SQLServerUtil.executeUpdate(conInfo, sql);
+					//int res=MybatisUtil.dynamicUpdateDb(conInfo, sql);
 					return "执行成功,影响行数:"+res;
 				}
 			}
