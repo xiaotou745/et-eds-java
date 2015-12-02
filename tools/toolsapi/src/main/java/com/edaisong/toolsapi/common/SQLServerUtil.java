@@ -114,10 +114,11 @@ public class SQLServerUtil {
 			while (rs.next()) {
 				Map<String, String> rowMap = new HashMap<>();
 				for (int j = 0; j < colCount; j++) {
-				    columnName = rsmd.getColumnName(j);
+				    columnName = rsmd.getColumnName(j+1);
 					columnValue = rs.getString(columnName);
 					rowMap.put(columnName, columnValue);
 				}
+				result.add(rowMap);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("ResultSet转换为List时出错:" + e.getMessage());
