@@ -41,7 +41,6 @@
 			<td><a href="javascript:void;" onclick="ViewDetail('<%=data.get(i).getId()%>',0)"><%=data.get(i).getVersion() %></a></td>
 			<td><%=data.get(i).getIsmust()==1?"是":"否"%></td>
 			<td title='<%=data.get(i).getMessage()%>'><%=data.get(i).getMessage().length()>15?(data.get(i).getMessage().substring(0, 15)+"..."):data.get(i).getMessage()%></td>
-			<td><%=data.get(i).getPlatform()==1?"Android":"IOS"%></td>
 			<td><%=data.get(i).getIstiming()==1?"定时发布":"实时发布"%></td>
 			<td><%=data.get(i).getPubstatus()==0?"待发布":(data.get(i).getPubstatus()==1?"已发布":"取消发布")%></td>			
 			<td><%=data.get(i).getAppsource()==0?"易代送商户版":"智能调度平台"%></td>		
@@ -52,7 +51,7 @@
 					  <a href="javascript:void(0)" onclick="ViewDetail('<%=data.get(i).getId()%>',1)">编辑</a>
 					  <a href="javascript:void(0)" onclick="ViewDetail('<%=data.get(i).getId()%>',2)">取消发布</a>
 				<%}%>
-</td>
+			</td>
 		</tr>
 		<%
 			}

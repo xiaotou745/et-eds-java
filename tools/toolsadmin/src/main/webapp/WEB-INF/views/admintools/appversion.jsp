@@ -96,7 +96,7 @@ $(function(){
 				return;
 			}
 			var data={"appName":$("#selappname").val(),"currentPage":currentPage};
-			$.post("<%=basePath%>/admintools/listdo",data, function(d) {
+			$.post("<%=basePath%>/admintools/appversiondo",data, function(d) {
 				$("#content").html(d);
 			});
 		}
@@ -231,12 +231,12 @@ $(function(){
 			$("#optype").val(type);
 			getdetail(id);
 			if(type==0){
-				$("input[type='text']").arrr("disable",true);
-				$("input[type='radio']").arrr("disable",true);
+				$("input[type='text']").attr("disabled",true);
+				$("input[type='radio']").attr("disabled",true);
 				$("#saveversion").hide();
 			}else{
-				$("input[type='text']").arrr("disable",false);
-				$("input[type='radio']").arrr("disable",false);
+				$("input[type='text']").attr("disabled",false);
+				$("input[type='radio']").attr("disabled",false);
 				$("#saveversion").show();
 			}
 			$("#myModal").modal('show');
