@@ -261,7 +261,7 @@ public class AdminToolsController {
 		try {
 			switch (serverType) {
 			case SqlServer:
-				List<Map<String, String>> tList=MybatisUtil.dynamicSelectList(conInfo, "select * from AuthorityMenuClass with(nolock) where id=0");
+				List<Map<String, String>> tList=MybatisUtil.dynamicSelectList(conInfo, "SELECT 1");
 				break;
 			case Redis:
 				RedisUtil redisUtil=new RedisUtil(conInfo);
