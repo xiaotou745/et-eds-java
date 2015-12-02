@@ -1,6 +1,7 @@
 package com.edaisong.toolsadmin.controller;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -313,9 +314,86 @@ public class AdminToolsController {
 	@RequestMapping("sql")
 	public ModelAndView sql() {
 		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "sql工具");
 		view.addObject("viewPath", "admintools/sql");
 		return view;
+	}
+	/**
+	 * 执行sql语句 
+	 * 茹化肖
+	 * 2015年12月2日10:14:18
+	 * @return
+	 */
+	@RequestMapping("execsql")
+	@ResponseBody
+	public String execSQl(String sql,String type, String appName)
+	{
+		try {
+			List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//获取数据库配置
+			if (appConfig.size()>0) 
+			{
+				ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+				if(type.equals("1"))
+				{
+					//查询SQL
+					if(sql.toUpperCase().indexOf("UPDATE")>=0)
+					{
+						return "查询时SQL不可以带UPDATE关键字";
+					}
+					if(sql.toUpperCase().indexOf("INSERT")>=0)
+					{
+						return "查询时SQL不可以带INSERT关键字";
+					}
+					if(sql.toUpperCase().indexOf("DELETE")>=0)
+					{
+						return "查询时SQL不可以带DELETE关键字";
+					}
+					if(sql.toUpperCase().indexOf("NOLOCK")<=0)
+					{
+						return "查询时SQL必须加NOLOCK关键字";
+					}
+					return List2Table(SQLServerUtil.executeResultSet(conInfo, sql))	;
+					//return List2Table(MybatisUtil.dynamicSelectList(conInfo, sql))	;
+				}
+				if(type.equals("2"))
+				{
+					//非查询SQL
+					//int res=SQLServerUtil.executeUpdate(conInfo, sql);
+					int res=MybatisUtil.dynamicUpdateDb(conInfo, sql);
+					return "执行成功,影响行数:"+res;
+				}
+			}
+			return"";
+		} catch (Exception e) {
+			return "出错了!!!错误信息:"+e.getMessage();
+		}
+	}
+	
+	private String List2Table(List<Map<String, String>> listMap)
+	{
+		StringBuilder sbBuilder=new StringBuilder();
+		sbBuilder.append("<table class=\"table table-striped table-bordered table-hover dataTables-example\"><thead>");
+		if (listMap.size()==0) {
+			return "没有查到数据";
+		}
+		Map<String, String> map=listMap.get(0);
+		Set<String> sets=map.keySet();//获取所有的key
+		sbBuilder.append("<tr>");
+		for (String str : sets) {//生成表头
+			sbBuilder.append("<th>"+str+"</th>");	
+		}
+		sbBuilder.append("</tr>");
+		sbBuilder.append("</thead><tbody>");
+		for (Map<String, String> maps : listMap) {//生成行数据
+			sbBuilder.append("<tr>");
+			for (String key : sets) {
+				sbBuilder.append("<td>"+String.valueOf(maps.get(key))+"</td>");
+			}
+			sbBuilder.append("</tr>");
+		}
+		sbBuilder.append("</tbody></table>");
+		return sbBuilder.toString();
 	}
 }
