@@ -354,6 +354,10 @@ public class AdminToolsController {
 					{
 						return "查询时SQL必须加NOLOCK关键字";
 					}
+					if(sql.toUpperCase().indexOf("SELECT TOP")<0)
+					{
+						return "查询时SQL必须加TOP关键字";
+					}
 					return List2Table(SQLServerUtil.executeResultSet(conInfo, sql))	;
 					//return List2Table(MybatisUtil.dynamicSelectList(conInfo, sql))	;
 				}
