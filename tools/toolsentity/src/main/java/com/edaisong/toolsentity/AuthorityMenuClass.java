@@ -14,8 +14,18 @@ public class AuthorityMenuClass implements Serializable{
     private String url;
 
     private Boolean isbutton;
+    
+    private String authCode;
 
-    public Integer getId() {
+    public String getAuthCode() {
+		return authCode==null?"":authCode;
+	}
+
+	public void setAuthCode(String authCode) {
+		this.authCode = authCode;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -48,7 +58,7 @@ public class AuthorityMenuClass implements Serializable{
     }
 
     public String getUrl() {
-        return url;
+        return url==null?"":url;
     }
 
     public void setUrl(String url) {

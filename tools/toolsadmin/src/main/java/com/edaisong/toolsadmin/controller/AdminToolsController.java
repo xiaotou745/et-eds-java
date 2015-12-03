@@ -106,15 +106,31 @@ public class AdminToolsController {
 	 */
 	@RequestMapping("menulist")
 	public ModelAndView menuList(Integer parId) {
-		parId = (parId == null ? 0 : parId);
-		List<AuthorityMenuClass> resp = authorityMenuClassService.getListMenuByParId(parId);
+		
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "菜单管理");
 		view.addObject("viewPath", "admintools/menulist");
-		view.addObject("listData", resp);
-		view.addObject("currentMenu", authorityMenuClassService.getMenuById(parId));
 		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
+		return view;
+	}
+	/**
+	 * 菜单列表
+	 * @author 茹化肖
+	 * @date 20151118
+	 * @return
+	 */
+	@RequestMapping("menulistdo")
+	public ModelAndView menuListdo(Integer parId,String appName) {
+		ModelAndView view = new ModelAndView("admintools/menulistdo");
+		parId = (parId == null ? 0 : parId);
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			List<AuthorityMenuClass> resp=MybatisUtil.getSqlSessionUtil(conInfo).selectList("IAuthorityMenuClassDao.getListMenuByParId", parId);
+			view.addObject("listData", resp);//数据列表
+			view.addObject("ParId",parId);//父级ID
+		}
 		return view;
 	}
 	/**
