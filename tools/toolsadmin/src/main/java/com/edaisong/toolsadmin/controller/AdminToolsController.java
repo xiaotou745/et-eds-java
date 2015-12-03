@@ -1,7 +1,9 @@
 package com.edaisong.toolsadmin.controller;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collector;
@@ -27,6 +29,7 @@ import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.StringUtils;
 import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.AppDbConfig;
+import com.edaisong.toolsentity.AppVersion;
 import com.edaisong.toolsentity.AuthorityMenuClass;
 import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
@@ -152,7 +155,60 @@ public class AdminToolsController {
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "版本控制");
 		view.addObject("viewPath", "admintools/appversion");
+		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
 		return view;
+	}
+	@RequestMapping("appversiondo")
+	public ModelAndView appversiondo(String appName,PagedRequestBase req) {
+		ModelAndView view = new ModelAndView("admintools/appversiondo");
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			PagedResponse<AppVersion> resp=MybatisUtil.getSqlSessionUtil(conInfo).selectPageList("IAppVersionDao.query", req);
+			view.addObject("listData", resp);
+		}
+		return view;
+	}
+	@RequestMapping("cancelversionpublish")
+	@ResponseBody
+	public int cancelVersionPublish(String appName,long id,HttpServletRequest request) {
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
+		if (appConfig.size()>0) {
+			UserContext context=UserContext.getCurrentContext(request);
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("id", id);
+			params.put("userName", context.getUserName());
+			return MybatisUtil.getSqlSessionUtil(conInfo).update("IAppVersionDao.updateStatusById", params);
+		}
+		return 0;
+	}
+	@RequestMapping("getversionbyid")
+	@ResponseBody
+	public AppVersion getVersionById(String appName,long id,HttpServletRequest request) {
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			return MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAppVersionDao.selectById", id);
+		}
+		return null;
+	}
+	@RequestMapping("saveversion")
+	@ResponseBody
+	public int saveVersion(String appName,AppVersion version,int opType,HttpServletRequest request) {
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
+		if (appConfig.size()>0) {
+			UserContext context=UserContext.getCurrentContext(request);
+			version.setCreateby(context.getUserName());
+			version.setUpdateby(context.getUserName());
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			if (opType==0) {
+				return MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAppVersionDao.insert", version);
+			}else {
+				return MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAppVersionDao.update", version);
+			}
+		}
+		return 0;
 	}
 	/**
 	 * app数据库配置
@@ -247,7 +303,7 @@ public class AdminToolsController {
 		try {
 			switch (serverType) {
 			case SqlServer:
-				List<Map<String, String>> tList=MybatisUtil.dynamicSelectList(conInfo, "select * from AuthorityMenuClass with(nolock) where id=0");
+				List<Map<String, String>> tList=MybatisUtil.dynamicSelectList(conInfo, "SELECT 1");
 				break;
 			case Redis:
 				RedisUtil redisUtil=new RedisUtil(conInfo);
@@ -300,9 +356,86 @@ public class AdminToolsController {
 	@RequestMapping("sql")
 	public ModelAndView sql() {
 		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "sql工具");
 		view.addObject("viewPath", "admintools/sql");
 		return view;
+	}
+	/**
+	 * 执行sql语句 
+	 * 茹化肖
+	 * 2015年12月2日10:14:18
+	 * @return
+	 */
+	@RequestMapping("execsql")
+	@ResponseBody
+	public String execSQl(String sql,String type, String appName)
+	{
+		try {
+			List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//获取数据库配置
+			if (appConfig.size()>0) 
+			{
+				ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+				if(type.equals("1"))
+				{
+					//查询SQL
+					if(sql.toUpperCase().indexOf("UPDATE")>=0)
+					{
+						return "查询时SQL不可以带UPDATE关键字";
+					}
+					if(sql.toUpperCase().indexOf("INSERT ")>=0)
+					{
+						return "查询时SQL不可以带INSERT关键字";
+					}
+					if(sql.toUpperCase().indexOf("DELETE")>=0)
+					{
+						return "查询时SQL不可以带DELETE关键字";
+					}
+					if(sql.toUpperCase().indexOf("NOLOCK")<=0)
+					{
+						return "查询时SQL必须加NOLOCK关键字";
+					}
+					return List2Table(SQLServerUtil.executeResultSet(conInfo, sql))	;
+					//return List2Table(MybatisUtil.dynamicSelectList(conInfo, sql))	;
+				}
+				if(type.equals("2"))
+				{
+					//非查询SQL
+					int res=SQLServerUtil.executeUpdate(conInfo, sql);
+					//int res=MybatisUtil.dynamicUpdateDb(conInfo, sql);
+					return "执行成功,影响行数:"+res;
+				}
+			}
+			return"";
+		} catch (Exception e) {
+			return "出错了!!!错误信息:"+e.getMessage();
+		}
+	}
+	
+	private String List2Table(List<Map<String, String>> listMap)
+	{
+		StringBuilder sbBuilder=new StringBuilder();
+		sbBuilder.append("<table class=\"table table-striped table-bordered table-hover dataTables-example\"><thead>");
+		if (listMap.size()==0) {
+			return "没有查到数据";
+		}
+		Map<String, String> map=listMap.get(0);
+		Set<String> sets=map.keySet();//获取所有的key
+		sbBuilder.append("<tr>");
+		for (String str : sets) {//生成表头
+			sbBuilder.append("<th>"+str+"</th>");	
+		}
+		sbBuilder.append("</tr>");
+		sbBuilder.append("</thead><tbody>");
+		for (Map<String, String> maps : listMap) {//生成行数据
+			sbBuilder.append("<tr>");
+			for (String key : sets) {
+				sbBuilder.append("<td>"+String.valueOf(maps.get(key))+"</td>");
+			}
+			sbBuilder.append("</tr>");
+		}
+		sbBuilder.append("</tbody></table>");
+		return sbBuilder.toString();
 	}
 }
