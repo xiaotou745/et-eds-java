@@ -10,7 +10,7 @@ public enum PublishOrderReturnEnum {
 	/**
 	 * 
 	 */
-	Success(1,""),
+	Success(1,"发单成功"),
 	/**
 	 * 验证成功
 	 */
