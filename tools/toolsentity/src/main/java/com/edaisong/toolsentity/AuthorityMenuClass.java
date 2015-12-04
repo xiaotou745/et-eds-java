@@ -4,20 +4,23 @@ import java.io.Serializable;
 
 public class AuthorityMenuClass implements Serializable{
     private Integer id;
-
     private Integer parid;
-
     private String menuname;
-
     private Boolean belock;
-
     private String url;
-
     private Boolean isbutton;
-    
     private String authCode;
+    private String javaUrl;
 
-    public String getAuthCode() {
+    public String getJavaUrl() {
+		return javaUrl;
+	}
+
+	public void setJavaUrl(String javaUrl) {
+		this.javaUrl = javaUrl;
+	}
+
+	public String getAuthCode() {
 		return authCode==null?"":authCode;
 	}
 
