@@ -52,7 +52,7 @@
     </trim>
   </insert>
   
-  <insert id="insertTest"  parameterType="java.util.Map" >
-  	INSERT INTO testTbl (val) VALUES (#{val,jdbcType=STRING})
+  <insert id="insertTest"  parameterType="java.lang.String" >
+  	insert into testTbl (val) values (#{val,jdbcType=NVARCHAR})
   </insert>
 </mapper>
