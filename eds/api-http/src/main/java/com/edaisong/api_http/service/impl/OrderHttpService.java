@@ -14,6 +14,7 @@ import com.edaisong.api.service.inter.IOrderChildService;
 import com.edaisong.api.service.inter.IOrderDraftService;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderService;
+import com.edaisong.api.service.inter.IOrderTipService;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
@@ -69,6 +70,10 @@ public class OrderHttpService implements IOrderHttpService {
 	
 	@Autowired
 	private IOrderDraftService orderDraftService;
+	
+	
+	@Autowired
+	private IOrderTipService orderTipService;
 
 	// region 快单模式
 
@@ -169,10 +174,14 @@ public class OrderHttpService implements IOrderHttpService {
 	 */
 	@Override
 	public HttpResultModel<OrderTipDetailResp> GetOrderTipDetails() {
-		// TODO Auto-generated method stub
 		
-		HttpResultModel<OrderTipDetailResp> re=new HttpResultModel<OrderTipDetailResp>();
-		return re;
+		OrderTipDetailResp resp=new OrderTipDetailResp();
+		resp.setList(orderTipService.getList());
+		
+		
+		HttpResultModel<OrderTipDetailResp> hrm=new HttpResultModel<OrderTipDetailResp>();
+		hrm.setResult(resp);
+		return hrm;
 	}	
 
 

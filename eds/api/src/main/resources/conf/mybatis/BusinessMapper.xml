@@ -246,7 +246,7 @@
       <if test="isOrderChecked != null" >
         IsOrderChecked,
       </if>
-      <if test="isallowcashpay != null" >
+      <if test="isAllowCashPay != null" >
         IsAllowCashPay,
       </if>
       <if test="lastlogintime != null" >
