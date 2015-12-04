@@ -39,6 +39,7 @@ import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.OrderTipDetailResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
 import com.edaisong.entity.req.OrderStatisticsCReq;
@@ -157,7 +158,24 @@ public class OrderHttpService implements IOrderHttpService {
 		HttpResultModel<OrderDetailResp> resp=new HttpResultModel<OrderDetailResp>();
 		return orderService.GetOrderDetails(req);
 	}
-	
+
+	/**
+	 * 获取订单详情 闪送模式
+	 * @author 胡灵波
+	 * @date 2015年12月3日 13:36:24
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderTipDetailResp> GetOrderTipDetails() {
+		// TODO Auto-generated method stub
+		
+		HttpResultModel<OrderTipDetailResp> re=new HttpResultModel<OrderTipDetailResp>();
+		return re;
+	}	
+
+
 	// endregion
 	/**
 	 * B端任务统计接口

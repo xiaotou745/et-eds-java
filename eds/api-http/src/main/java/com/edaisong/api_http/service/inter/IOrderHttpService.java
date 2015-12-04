@@ -32,6 +32,7 @@ import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.OrderTipDetailResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
@@ -108,9 +109,18 @@ public interface IOrderHttpService {
 	@Path("/getorderdetails")
 	public HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req);
 	
-	
-	// endregion
-	
+	/**
+	 * 获取小费详情(闪送模式) 
+	 * @author 胡灵波
+	 * @date 2015年12月3日 11:57:01
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/getordertipdetails")
+	public HttpResultModel<OrderTipDetailResp> GetOrderTipDetails();
+	// endregion	
 	
 
 	/**
