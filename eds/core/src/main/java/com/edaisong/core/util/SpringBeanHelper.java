@@ -12,7 +12,7 @@ public class SpringBeanHelper {
 			ctx_bean = ContextLoader.getCurrentWebApplicationContext();
 			//web站点启动后，ctx_bean才会有值。如果是api调用，则会返回null
 			if (ctx_bean == null) {
-				ctx_bean = new ClassPathXmlApplicationContext("conf/core/dev-context.xml");
+				ctx_bean = new ClassPathXmlApplicationContext("/applicationContext.xml");
 				if (ctx_bean == null) {
 					throw new RuntimeException("没有获取到springcontext");
 				}
