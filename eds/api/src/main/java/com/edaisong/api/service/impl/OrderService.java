@@ -2045,7 +2045,7 @@ public class OrderService implements IOrderService {
 	public HttpResultModel<OrderResp> FlashPushOrder(OrderDraftReq req) {
 
 		HttpResultModel<OrderResp> resp = new HttpResultModel<OrderResp>();
-
+		OrderResp oResp=new OrderResp();
 		//验证
 		FlashPushOrderEnum returnEnum = verificationFlashPushOrder(req);
 		if (returnEnum != FlashPushOrderEnum.VerificationSuccess) {
@@ -2108,7 +2108,7 @@ public class OrderService implements IOrderService {
 				}
 				businessModel = businessDao.getBusiness((long) bModel.getId());
 			}		
-		}
+		}		
 
 		// 订单主表		
 		Order order = fillFlashPushOrder(req, businessModel);	
@@ -2160,7 +2160,9 @@ public class OrderService implements IOrderService {
 			if (orderSubsidieslogId <= 0)
 				throw new TransactionalRuntimeException("记录补贴日志错误");
 		}
-
+		
+		oResp.setBusinessId(businessModel.getId());
+		resp.setResult(oResp);
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
 		resp.setMessage(PublishOrderReturnEnum.Success.desc());
 		return resp;
