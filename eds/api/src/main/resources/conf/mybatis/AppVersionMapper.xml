@@ -1,128 +1,85 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edaisong.api.dao.inter.IAppVersionDao" >
-  <resultMap id="BaseResultMap" type="com.edaisong.entity.AppVersion" >
-    <id column="ID" property="id" jdbcType="INTEGER" />
-    <result column="Version" property="version" jdbcType="NVARCHAR" />
-    <result column="IsMust" property="ismust" jdbcType="BIT" />
-    <result column="UpdateUrl" property="updateurl" jdbcType="NVARCHAR" />
-    <result column="Message" property="message" jdbcType="NVARCHAR" />
-    <result column="PlatForm" property="platform" jdbcType="TINYINT" />
-    <result column="UserType" property="usertype" jdbcType="TINYINT" />
-    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
-  </resultMap>
   <sql id="Base_Column_List" >
-    ID, Version, IsMust, UpdateUrl, Message, PlatForm, UserType, CreateDate
+id,version,ismust,updateurl,message,platform,usertype,createdate,
+createby,updateDate,updateby,istiming,timingdate,pubstatus,appsource
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="getByID" resultType="com.edaisong.entity.AppVersion" 
+  parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from AppVersion
+    from AppVersion with(nolock)
     where ID = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from AppVersion
-    where ID = #{id,jdbcType=INTEGER}
+  <delete id="cancel" parameterType="java.util.Map" >
+    update AppVersion set pubstatus=2 ,updateDate=getdate,updateby=#{userName,jdbcType=NVARCHAR} 
+    where ID = #{id,jdbcType=INTEGER} and pubstatus=1
   </delete>
   <insert id="insert" parameterType="com.edaisong.entity.AppVersion" >
-    insert into AppVersion (ID, Version, IsMust, 
-      UpdateUrl, Message, PlatForm, 
-      UserType, CreateDate)
-    values (#{id,jdbcType=INTEGER}, #{version,jdbcType=NVARCHAR}, #{ismust,jdbcType=BIT}, 
-      #{updateurl,jdbcType=NVARCHAR}, #{message,jdbcType=NVARCHAR}, #{platform,jdbcType=TINYINT}, 
-      #{usertype,jdbcType=TINYINT}, #{createdate,jdbcType=TIMESTAMP})
+    insert into AppVersion (version,ismust,updateurl,message,platform,usertype,createdate,
+createby,updateDate,updateby,istiming,timingdate,pubstatus,appsource)
+    values (#{version,jdbcType=NVARCHAR}, 
+			#{ismust,jdbcType=INTEGER}, 
+			  #{updateurl,jdbcType=NVARCHAR}, 
+			  #{message,jdbcType=NVARCHAR},
+			   #{platform,jdbcType=INTEGER}, 
+			  #{usertype,jdbcType=INTEGER}, 
+			  getdate(),
+			  #{createby,jdbcType=NVARCHAR},
+			  getdate(),
+			  #{updateby,jdbcType=NVARCHAR},
+			  #{istiming,jdbcType=INTEGER},
+			  #{timingdate,jdbcType=TIMESTAMP},
+			  #{pubstatus,jdbcType=INTEGER}, 
+			  #{appsource,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.AppVersion" >
-    insert into AppVersion
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        ID,
-      </if>
-      <if test="version != null" >
-        Version,
-      </if>
-      <if test="ismust != null" >
-        IsMust,
-      </if>
-      <if test="updateurl != null" >
-        UpdateUrl,
-      </if>
-      <if test="message != null" >
-        Message,
-      </if>
-      <if test="platform != null" >
-        PlatForm,
-      </if>
-      <if test="usertype != null" >
-        UserType,
-      </if>
-      <if test="createdate != null" >
-        CreateDate,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=NVARCHAR},
-      </if>
-      <if test="ismust != null" >
-        #{ismust,jdbcType=BIT},
-      </if>
-      <if test="updateurl != null" >
-        #{updateurl,jdbcType=NVARCHAR},
-      </if>
-      <if test="message != null" >
-        #{message,jdbcType=NVARCHAR},
-      </if>
-      <if test="platform != null" >
-        #{platform,jdbcType=TINYINT},
-      </if>
-      <if test="usertype != null" >
-        #{usertype,jdbcType=TINYINT},
-      </if>
-      <if test="createdate != null" >
-        #{createdate,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.AppVersion" >
-    update AppVersion
-    <set >
-      <if test="version != null" >
-        Version = #{version,jdbcType=NVARCHAR},
-      </if>
-      <if test="ismust != null" >
-        IsMust = #{ismust,jdbcType=BIT},
-      </if>
-      <if test="updateurl != null" >
-        UpdateUrl = #{updateurl,jdbcType=NVARCHAR},
-      </if>
-      <if test="message != null" >
-        Message = #{message,jdbcType=NVARCHAR},
-      </if>
-      <if test="platform != null" >
-        PlatForm = #{platform,jdbcType=TINYINT},
-      </if>
-      <if test="usertype != null" >
-        UserType = #{usertype,jdbcType=TINYINT},
-      </if>
-      <if test="createdate != null" >
-        CreateDate = #{createdate,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where ID = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.AppVersion" >
+  <update id="update" parameterType="com.edaisong.entity.AppVersion" >
     update AppVersion
     set Version = #{version,jdbcType=NVARCHAR},
-      IsMust = #{ismust,jdbcType=BIT},
+      IsMust = #{ismust,jdbcType=INTEGER},
       UpdateUrl = #{updateurl,jdbcType=NVARCHAR},
       Message = #{message,jdbcType=NVARCHAR},
-      PlatForm = #{platform,jdbcType=TINYINT},
-      UserType = #{usertype,jdbcType=TINYINT},
-      CreateDate = #{createdate,jdbcType=TIMESTAMP}
+      PlatForm = #{platform,jdbcType=INTEGER},
+      UserType = #{usertype,jdbcType=INTEGER},
+      updateDate = getdate(),
+      updateby=#{updateby,jdbcType=NVARCHAR},
+      istiming = #{istiming,jdbcType=INTEGER},
+      timingdate = #{timingdate,jdbcType=TIMESTAMP},
+      pubstatus = #{pubstatus,jdbcType=INTEGER},
+       appsource = #{appsource,jdbcType=INTEGER}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+  <select id="queryAppVersion" resultType="com.edaisong.entity.AppVersion" 
+  parameterType="com.edaisong.entity.common.PagedRequestBase" statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+		' Id desc ',
+		' id,version,ismust,updateurl,message,platform,usertype,createdate,
+			createby,updateDate,updateby,istiming,timingdate,pubstatus,appsource',
+		' AppVersion(nolock) ',
+		' 1=1 ',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)} 
+  </select>
+  <update id="modify">
+       UPDATE AppVersion 
+       SET PubStatus=1
+       WHERE  PubStatus=0 AND getdate()>TimingDate
+  </update>
+
+  
+  <!--  app 版本控制 查询升级信息 add by caoheyang 20151013 -->
+   <select id="getVersionCheck" resultType="com.edaisong.entity.AppVersion" 
+   parameterType="com.edaisong.entity.req.VersionCheckReq" >
+	SELECT TOP 1 [Version],IsMust,UpdateUrl,[Message] FROM dbo.AppVersion with(nolock) 
+	WHERE PubStatus<![CDATA[<]]>>2
+	and [PlatForm]=#{platForm,jdbcType=TINYINT}
+	AND UserType=#{userType,jdbcType=TINYINT} and TimingDate  <![CDATA[< getdate()]]>
+	ORDER BY [Version] DESC
+  </select>
 </mapper>

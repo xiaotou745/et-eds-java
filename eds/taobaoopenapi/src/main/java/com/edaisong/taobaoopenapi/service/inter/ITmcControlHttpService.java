@@ -23,5 +23,5 @@ public interface ITmcControlHttpService {
 	 * tmc 获取通知
 	 * @throws LinkException 
 	 */
-	public  void main1() throws LinkException;
+	public  void main() throws LinkException;
 }

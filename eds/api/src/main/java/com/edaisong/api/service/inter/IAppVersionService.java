@@ -1,4 +1,4 @@
-package com.edaisong.api.dao.inter;
+package com.edaisong.api.service.inter;
 
 import com.edaisong.entity.AppVersion;
 import com.edaisong.entity.common.PagedRequestBase;
@@ -6,7 +6,8 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.VersionCheckReq;
 
 
-public interface IAppVersionDao {
+public interface IAppVersionService {
+
 	public AppVersion getVersionCheck(VersionCheckReq req);
 	public  PagedResponse<AppVersion>  queryAppVersion(PagedRequestBase req);
 

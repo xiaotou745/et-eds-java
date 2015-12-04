@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api_http.entity.TestServiceReq;
 import com.edaisong.api_http.entity.TestServiceResp;
-import com.edaisong.api_http.service.inter.ITestService;
+import com.edaisong.api_http.service.inter.IHttpTestService;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 
 @Service
-public class TestService implements ITestService {
+public class HttpTestService implements IHttpTestService {
 
 	@Autowired
 	private IBusinessService businessService;

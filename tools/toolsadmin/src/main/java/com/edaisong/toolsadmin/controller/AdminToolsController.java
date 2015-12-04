@@ -31,7 +31,6 @@ import com.edaisong.toolscore.util.ParseHelper;
 import com.edaisong.toolscore.util.StringUtils;
 import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.AppDbConfig;
-import com.edaisong.toolsentity.AppVersion;
 import com.edaisong.toolsentity.AuthorityMenuClass;
 import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
@@ -161,80 +160,7 @@ public class AdminToolsController {
 		
 		return resp;
 	}
-	/**
-	 * app版本控制
-	 * @author hailongzhao
-	 * @date 20151118
-	 * @return
-	 */
-	@RequestMapping("appversion")
-	public ModelAndView appversion() {
-		ModelAndView view = new ModelAndView("adminView");
-		view.addObject("subtitle", "APP控制");
-		view.addObject("currenttitle", "版本控制");
-		view.addObject("viewPath", "admintools/appversion");
-		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
-		return view;
-	}
-	@RequestMapping("appversiondo")
-	public ModelAndView appversiondo(String appName,PagedRequestBase req) {
-		ModelAndView view = new ModelAndView("admintools/appversiondo");
-		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
-		if (appConfig.size()>0) {
-			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
-		    MybatisUtil.getSqlSessionUtil(conInfo).update("IAppVersionDao.updateStatus");
-			PagedResponse<AppVersion> resp=MybatisUtil.getSqlSessionUtil(conInfo).selectPageList("IAppVersionDao.query", req);
-			view.addObject("listData", resp);
-		}
-		return view;
-	}
-	@RequestMapping("cancelversionpublish")
-	@ResponseBody
-	public int cancelVersionPublish(String appName,long id,HttpServletRequest request) {
-		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
-		if (appConfig.size()>0) {
-			UserContext context=UserContext.getCurrentContext(request);
-			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("id", id);
-			params.put("userName", context.getUserName());
-			return MybatisUtil.getSqlSessionUtil(conInfo).update("IAppVersionDao.updateStatusById", params);
-		}
-		return 0;
-	}
-	@RequestMapping("getversionbyid")
-	@ResponseBody
-	public AppVersion getVersionById(String appName,long id,HttpServletRequest request) {
-		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
-		if (appConfig.size()>0) {
-			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
-			return MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAppVersionDao.selectById", id);
-		}
-		return null;
-	}
-	@RequestMapping("saveversion")
-	@ResponseBody
-	public int saveVersion(String appName,AppVersion version,int opType,HttpServletRequest request) {
-		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
-		if (appConfig.size()>0) {
-			UserContext context=UserContext.getCurrentContext(request);
-			version.setCreateby(context.getUserName());
-			version.setUpdateby(context.getUserName());
-			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
-			if (opType==3) {
-				if (version.getIstiming()==1) {
-					version.setPubstatus(0);
-				}else {
-					version.setPubstatus(1);
-					version.setTimingdate(new Date());
-				}
-				return MybatisUtil.getSqlSessionUtil(conInfo).insert("IAppVersionDao.insert", version);
-			}else {
-				return MybatisUtil.getSqlSessionUtil(conInfo).update("IAppVersionDao.update", version);
-			}
-		}
-		return 0;
-	}
+	
 	/**
 	 * app数据库配置
 	 * @author hailongzhao

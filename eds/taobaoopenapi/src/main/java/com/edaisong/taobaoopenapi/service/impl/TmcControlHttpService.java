@@ -21,21 +21,18 @@ import com.taobao.top.link.LinkException;
  *
  */
 @Service
-public class TmcControlHttpService {// implements ITmcControlHttpService
+public class TmcControlHttpService implements ITmcControlHttpService {
 	/**
 	 * tmc 获取通知
 	 * 
 	 * @throws LinkException
 	 */
-
-	// public void main1() throws LinkException {
-	public static void main(String[] args) throws LinkException {
-		TmcClient client = new TmcClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey,
-				TaoBaoConsts.AppSecret, TaoBaoConsts.GroupName);
+	@Override
+	public void main() throws LinkException {
+		TmcClient client = new TmcClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret, TaoBaoConsts.GroupName);
 		client.setMessageHandler(new MessageHandler() {
 			@Override
-			public void onMessage(Message message, MessageStatus status)
-					throws Exception {
+			public void onMessage(Message message, MessageStatus status) throws Exception {
 				if (message.getTopic() == TaoBaoConsts.OrderDispatch) {
 					orderDispatch(message.getContent());
 				} else if (message.getTopic() == TaoBaoConsts.OrderClose) {
@@ -56,10 +53,9 @@ public class TmcControlHttpService {// implements ITmcControlHttpService
 	 * @author hulingbo
 	 * @date 2015年12月3日 12:05:08
 	 */
-	private static void orderDispatch(String data) {
-		String r = HttpUtil.sendPost(
-				PropertyUtils.getProperty("TaoBaoOrderDispatch"),
-				"data=" + AES.aesEncrypt(data));
+	private void orderDispatch(String data) {
+		String r= HttpUtil.sendPost(PropertyUtils.getProperty("TaoBaoOrderDispatch"), "data="+AES.aesEncrypt(data));
+	    
 	}
 
 	/**
@@ -68,11 +64,9 @@ public class TmcControlHttpService {// implements ITmcControlHttpService
 	 * @author CaoHeYang
 	 * @date 20151113
 	 */
-	private static void orderClose(String data) {
-		String r = HttpUtil.sendPost(
-				PropertyUtils.getProperty("TaoBaoCloseOrder"),
-				"data=" + AES.aesEncrypt(data));
-		// TODo 不成功时写日志
+	private void orderClose(String data) {
+	    String r= HttpUtil.sendPost(PropertyUtils.getProperty("TaoBaoCloseOrder"), "data="+AES.aesEncrypt(data));
+	    //TODo 不成功时写日志
 	}
 
 	/**
