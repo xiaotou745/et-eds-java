@@ -31,6 +31,7 @@
 	<jaxrs:server id="myService" address="/">
 		<jaxrs:serviceBeans>
 			<ref bean="taoBaoOrderHttpService" />
+			<ref bean="tmcControlHttpService" />
 		</jaxrs:serviceBeans>
 			<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
 		<jaxrs:inInterceptors>
