@@ -1,5 +1,8 @@
 package com.edaisong.admin.controller;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.UserContext;
+import com.edaisong.api.service.inter.IAppVersionService;
 import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.ITaskDistributionConfigService;
 import com.edaisong.entity.BusinessMessage;
@@ -22,6 +26,9 @@ import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.ConfigSaveReq;
 import com.edaisong.entity.req.PagedGlobalConfigReq;
 import com.edaisong.entity.req.TaskDistributionConfigReq;
+import com.edaisong.entity.AppVersion;
+import com.edaisong.entity.common.PagedRequestBase;
+
 /*
  * 管理员工具
  * 茹化肖
@@ -35,6 +42,8 @@ public class AdminToolsController {
 	private IGlobalConfigService globalConfigService;
 	@Autowired
 	private ITaskDistributionConfigService taskDistributionConfigService;
+	@Autowired
+	IAppVersionService appVersionService;
 	@RequestMapping("list")
 	public ModelAndView globalConfigManager(HttpServletRequest request, HttpServletResponse res){
 		ModelAndView model = new ModelAndView("adminView");
@@ -88,5 +97,62 @@ public class AdminToolsController {
 		req.setOptId(UserContext.getCurrentContext(request).getId());
 		req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 		return taskDistributionConfigService.update(req);
+	}
+	/**
+	 * app版本控制
+	 * @author hailongzhao
+	 * @date 20151118
+	 * @return
+	 */
+	@RequestMapping("appversion")
+	public ModelAndView appversion() {
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "管理员");
+		view.addObject("currenttitle", "版本控制");
+		view.addObject("viewPath", "admintools/appversion");
+		appVersionService.modify();
+		return view;
+	}
+	@RequestMapping("appversiondo")
+	public ModelAndView appversiondo(PagedRequestBase req) {
+		ModelAndView view = new ModelAndView("admintools/appversiondo");
+		PagedResponse<AppVersion> resp=appVersionService.queryAppVersion(req);
+		view.addObject("listData", resp);
+		return view;
+	}
+
+	@RequestMapping("cancelversionpublish")
+	@ResponseBody
+	public int cancelVersionPublish(int id, HttpServletRequest request) {
+		UserContext context = UserContext.getCurrentContext(request);
+		return appVersionService.cancel(id, context.getUserName());
+	}
+
+	@RequestMapping("getversionbyid")
+	@ResponseBody
+	public AppVersion getVersionById(int id, HttpServletRequest request) {
+		return appVersionService.getByID(id);
+	}
+
+	@RequestMapping("saveversion")
+	@ResponseBody
+	public int saveVersion(AppVersion version, int opType,
+			HttpServletRequest request) {
+		UserContext context = UserContext.getCurrentContext(request);
+		version.setCreateby(context.getUserName());
+		version.setUpdateby(context.getUserName());
+
+		if (opType == 3) {
+			if (version.getIstiming() == 1) {
+				version.setPubstatus(0);
+			} else {
+				version.setPubstatus(1);
+				version.setTimingdate(new Date());
+			}
+			return appVersionService.insert(version);
+
+		} else {
+			return appVersionService.update(version);
+		}
 	}
 }

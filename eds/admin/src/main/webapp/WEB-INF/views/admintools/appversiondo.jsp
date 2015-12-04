@@ -1,12 +1,17 @@
-<%@page import="com.edaisong.toolscore.util.ParseHelper"%>
+<%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<%@page import="com.edaisong.toolsentity.common.PagedResponse"%>
-<%@page import="com.edaisong.toolscore.util.PageHelper"%>
+<%@page import="com.edaisong.entity.common.PagedResponse"%>
+<%@page import="com.edaisong.core.util.PageHelper"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.edaisong.toolsentity.AppVersion"%>
-
+<%@page import="com.edaisong.entity.AppVersion"%>
+<%@page import="com.edaisong.admin.common.UserContext"%>
+<%
+	UserContext context=UserContext.getCurrentContext(request);
+boolean canEdit=context.isHasAuth(73);
+boolean canCancel=context.isHasAuth(74);
+%>
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
@@ -47,10 +52,13 @@
 			<td><%=ParseHelper.ToDateString(data.get(i).getTimingdate())%></td>		
 			<td><%=data.get(i).getUpdateby()%></td>		
 			<td>
-				<% if(data.get(i).getIstiming()==1&&data.get(i).getPubstatus()==0){%>
+				<% if(data.get(i).getIstiming()==1&&data.get(i).getPubstatus()==0){
+				if(canEdit){%>
 					  <a href="javascript:void(0)" onclick="ViewDetail('<%=data.get(i).getId()%>',1)">编辑</a>
+				<%}
+				if(canCancel){%>
 					  <a href="javascript:void(0)" onclick="ViewDetail('<%=data.get(i).getId()%>',2)">取消发布</a>
-				<%}%>
+				<%}}%>
 			</td>
 		</tr>
 		<%
