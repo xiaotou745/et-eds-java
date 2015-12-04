@@ -20,7 +20,7 @@
 	<!-- <import resource="classpath:conf/core/devtest-context.xml" /> -->
 	<!-- <import resource="file:D:/conf/dev-context.xml" /> -->
 	<context:component-scan base-package="com.edaisong.admin.*" />
-	<mvc:annotation-driven>
+	<mvc:annotation-driven conversion-service="conversionService">
 		<mvc:message-converters>
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
 				<property name="supportedMediaTypes">
@@ -49,7 +49,20 @@
 	<!-- 全局异常 -->
 	<!-- <bean id="exceptionResolver" class="com.edaisong.api.common.GlobalExceptionHandler" 
 		/> -->
-
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">    
+         <property name="registerDefaultFormatters" value="false"/>
+         <property name="formatterRegistrars">    
+             <set>    
+                 <bean class="org.springframework.format.datetime.DateFormatterRegistrar">    
+                    <property name="formatter">
+                    	<bean  class="org.springframework.format.datetime.DateFormatter">
+                    	 <property name="pattern" value="yyyy-MM-dd HH:mm:ss"/>
+                    	  </bean> 
+                 	</property>    
+                 </bean> 
+             </set>    
+         </property>    
+     </bean> 
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="definitions">
 			<list>

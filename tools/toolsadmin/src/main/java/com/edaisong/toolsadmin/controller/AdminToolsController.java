@@ -1,6 +1,7 @@
 package com.edaisong.toolsadmin.controller;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import com.edaisong.toolsapi.service.inter.IAppDbConfigService;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
 import com.edaisong.toolscore.enums.ServerType;
 import com.edaisong.toolscore.util.JsonUtil;
+import com.edaisong.toolscore.util.ParseHelper;
 import com.edaisong.toolscore.util.StringUtils;
 import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.AppDbConfig;
@@ -164,6 +166,7 @@ public class AdminToolsController {
 		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
 		if (appConfig.size()>0) {
 			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+		    MybatisUtil.getSqlSessionUtil(conInfo).update("IAppVersionDao.updateStatus");
 			PagedResponse<AppVersion> resp=MybatisUtil.getSqlSessionUtil(conInfo).selectPageList("IAppVersionDao.query", req);
 			view.addObject("listData", resp);
 		}
@@ -202,10 +205,16 @@ public class AdminToolsController {
 			version.setCreateby(context.getUserName());
 			version.setUpdateby(context.getUserName());
 			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
-			if (opType==0) {
-				return MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAppVersionDao.insert", version);
+			if (opType==3) {
+				if (version.getIstiming()==1) {
+					version.setPubstatus(0);
+				}else {
+					version.setPubstatus(1);
+					version.setTimingdate(new Date());
+				}
+				return MybatisUtil.getSqlSessionUtil(conInfo).insert("IAppVersionDao.insert", version);
 			}else {
-				return MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAppVersionDao.update", version);
+				return MybatisUtil.getSqlSessionUtil(conInfo).update("IAppVersionDao.update", version);
 			}
 		}
 		return 0;
