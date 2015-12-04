@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.toolsadmin.common.MenuHelper;
 import com.edaisong.toolsadmin.common.UserContext;
 import com.edaisong.toolsapi.common.SQLServerUtil;
 import com.edaisong.toolsapi.common.MybatisUtil;
@@ -36,6 +37,7 @@ import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.common.ResponseBase;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
+import com.edaisong.toolsentity.domain.MenuDetail;
 import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.req.PagedAccountReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
@@ -123,17 +125,42 @@ public class AdminToolsController {
 	 * @return
 	 */
 	@RequestMapping("menulistdo")
-	public ModelAndView menuListdo(Integer parId,String appName) {
-		ModelAndView view = new ModelAndView("admintools/menulistdo");
-		parId = (parId == null ? 0 : parId);
+	@ResponseBody
+	public String menuListdo(String appName) {
 		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
 		if (appConfig.size()>0) {
 			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
-			List<AuthorityMenuClass> resp=MybatisUtil.getSqlSessionUtil(conInfo).selectList("IAuthorityMenuClassDao.getListMenuByParId", parId);
-			view.addObject("listData", resp);//数据列表
-			view.addObject("ParId",parId);//父级ID
+			List<MenuEntity> menuList = MybatisUtil.getSqlSessionUtil(conInfo).selectList("IAuthorityMenuClassDao.getListMenuAll");
+			return MenuHelper.getAuthJson(menuList);
 		}
-		return view;
+		return "";
+		
+		
+	}
+	/**
+	 * 菜单详情
+	 * @author 茹化肖
+	 * @date 20151118
+	 * @return
+	 */
+	@RequestMapping("menudetail")
+	@ResponseBody
+	public String menudetail(String appName,int parId) {
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			MenuDetail detail = new MenuDetail();
+			if(appName.equals("e代送"))
+			{
+				detail=MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAuthorityMenuClassDao.menudetailjava",parId);
+			}
+			else
+			{
+				detail=MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAuthorityMenuClassDao.menudetail",parId);
+			}
+			return JsonUtil.obj2string(detail);
+		}
+		return "";
 	}
 	/**
 	 * 添加菜单
@@ -143,22 +170,13 @@ public class AdminToolsController {
 	 */
 	@RequestMapping("addnewmenu")
 	@ResponseBody
-	public ResponseBase addNewMenu(AuthorityMenuClass req){
-		ResponseBase resp = new ResponseBase();
-		if(StringUtils.isEmpty(req.getMenuname())){
-			resp.setMessage("请填写菜单名称");
-		}else{
-			int curId = req.getParid() == null ? 0 : req.getParid();
-			req.setParid(curId);
-			req.setBelock(false);
-			authorityMenuClassService.addMenu(req);
-			
-			resp.setMessage("添加菜单成功");
-			resp.setResponseCode(1);
+	public int addNewMenu(AuthorityMenuClass req,String appName ){
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			return MybatisUtil.getSqlSessionUtil(conInfo).insert("IAuthorityMenuClassDao.addMenu", req);
 		}
-		
-		
-		return resp;
+		return 0;
 	}
 	
 	/**

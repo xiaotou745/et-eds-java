@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.management.ManagementFactory;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.edaisong.core.util.QuartzManager;
@@ -16,11 +17,13 @@ import com.edaisong.core.util.QuartzManager;
  */
 
 public class Main {
+	public static ApplicationContext contentApp = new ClassPathXmlApplicationContext(
+			"applicationContext.xml");
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception {
 		/* 加载定时任务 */
 		writePID();// 生成PID
-		new ClassPathXmlApplicationContext("applicationContext.xml");
+		
 		try {
 			String job_name = "动态任务调度";
 			System.out.println("【系统启动】开始(每1秒输出一次)...");
@@ -30,7 +33,7 @@ public class Main {
 
 			QuartzManager.addJob(job_name,
 					com.edaisong.edsservice.service.OrderService.class,
-					"0/1 * * * * ?");
+					"0/10 * * * * ?");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

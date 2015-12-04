@@ -18,10 +18,15 @@ import com.taobao.top.link.LinkException;
  * @author CaoHeYang
  * @date 20151113
  */
+@Path("/taobao")
+@Consumes("application/json")
+@Produces("application/json; charset=utf-8")
 public interface ITmcControlHttpService {
 	/**
 	 * tmc 获取通知
 	 * @throws LinkException 
 	 */
+	@POST
+	@Path("/main")
 	public  void main() throws LinkException;
 }
