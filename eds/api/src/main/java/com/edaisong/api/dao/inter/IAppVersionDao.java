@@ -1,17 +1,18 @@
 package com.edaisong.api.dao.inter;
 
 import com.edaisong.entity.AppVersion;
+import com.edaisong.entity.common.PagedRequestBase;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.VersionCheckReq;
+
 
 public interface IAppVersionDao {
-    int deleteByPrimaryKey(Integer id);
+	public AppVersion getVersionCheck(VersionCheckReq req);
+	public  PagedResponse<AppVersion>  queryAppVersion(PagedRequestBase req);
 
-    int insert(AppVersion record);
-
-    int insertSelective(AppVersion record);
-
-    AppVersion selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(AppVersion record);
-
-    int updateByPrimaryKey(AppVersion record);
+	AppVersion getByID(int id);
+	int insert(AppVersion record);
+	int update(AppVersion record);
+	int cancel(int id,String userName);
+	int modify();
 }
