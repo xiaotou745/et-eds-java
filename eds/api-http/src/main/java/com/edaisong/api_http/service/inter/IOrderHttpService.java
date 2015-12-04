@@ -84,6 +84,7 @@ public interface IOrderHttpService {
 	public HttpResultModel<OrderGrabResp> CancelOrderChild(OrderChildCancelReq  req);	
 	
 
+	// region 闪送模式
 	/**
 	 * 发布订单(闪送模式) 
 	 * @author 胡灵波
@@ -105,7 +106,12 @@ public interface IOrderHttpService {
 	 */
 	@POST
 	@Path("/getorderdetails")
-	public HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req);	
+	public HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req);
+	
+	
+	// endregion
+	
+	
 
 	/**
 	 * B端任务统计接口

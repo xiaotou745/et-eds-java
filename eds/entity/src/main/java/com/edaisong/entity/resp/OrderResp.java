@@ -8,13 +8,13 @@ import com.edaisong.entity.common.ResponseBase;
  * @Date 2015年8月6日 09:48:17
  */
 public class OrderResp extends ResponseBase{
-	private Integer id;
+	private Integer businessId;
 
-	public Integer getId() {
-		return id;
+	public Integer getBusinessId() {
+		return businessId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	} 
+	public void setBusinessId(Integer businessId) {
+		this.businessId = businessId;
+	}	
 }

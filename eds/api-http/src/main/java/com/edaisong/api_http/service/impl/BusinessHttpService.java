@@ -312,7 +312,7 @@ public class BusinessHttpService implements IBusinessHttpService {
 		String phoneNo = req.getPhoneNo();
 		String Content = "";
 		HttpResultModel<Object> res = new HttpResultModel<Object>();
-		if (phoneNo==null||phoneNo.isEmpty()||CommonValidator.validPhoneNumber( phoneNo)) {
+		if (phoneNo==null||phoneNo.isEmpty()||!CommonValidator.validPhoneNumber( phoneNo)) {
 			return res.setStatus(SendSmsReturnType.PhoneError.value()).setMessage(SendSmsReturnType.PhoneError.desc());
 		}
 		else if (req.getMessageType() !=0&&req.getMessageType() !=1) {  //修改绑定手机号验证新手机号

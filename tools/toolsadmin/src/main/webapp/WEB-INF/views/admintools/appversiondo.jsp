@@ -47,7 +47,7 @@
 			<td><%=ParseHelper.ToDateString(data.get(i).getTimingdate())%></td>		
 			<td><%=data.get(i).getUpdateby()%></td>		
 			<td>
-				<% if(data.get(i).getIstiming()==1&&data.get(i).getPubstatus()==1){%>
+				<% if(data.get(i).getIstiming()==1&&data.get(i).getPubstatus()==0){%>
 					  <a href="javascript:void(0)" onclick="ViewDetail('<%=data.get(i).getId()%>',1)">编辑</a>
 					  <a href="javascript:void(0)" onclick="ViewDetail('<%=data.get(i).getId()%>',2)">取消发布</a>
 				<%}%>
