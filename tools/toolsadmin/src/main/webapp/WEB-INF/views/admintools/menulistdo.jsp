@@ -14,17 +14,25 @@
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
 	List<AuthorityMenuClass> data = (List<AuthorityMenuClass>) request.getAttribute("listData");
 	int parid = (int) request.getAttribute("ParId");
+	int jibie=(int)request.getAttribute("Jibie");
+	int nowjibie=jibie+1;
 %>
 <script>
 var parid=<%=parid%>;
+$('#parid').val(parid);
+var j_b=<%=jibie%>;
+$('#Cdjibie').val(j_b+1);
 </script>
-<table class="table table-striped table-bordered table-hover dataTables-example">
+
+<% if(jibie==1)
+	{
+	%>
+	<table class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
 		<tr>
 			<th>编号</th>
 			<th>菜单名称</th>
 			<th>AuthCode</th>
-			<th>URL</th>
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -40,8 +48,9 @@ var parid=<%=parid%>;
 			<td><%=data.get(i).getId()%></td>
 			<td><%=data.get(i).getMenuname()%></td>
 			<td><%=data.get(i).getAuthCode()%></td>
-			<td><%=data.get(i).getUrl()%></td>
-			<td><a href="javascript:void(0)">修改</a><a href="javascript:void(0)" onclick="getList(<%=data.get(i).getId()%>)">查看子菜单</a></td>
+			<td>
+			<a href="javascript:void(0)">修改</a>  
+			<a href="javascript:void(0)" onclick="getList(<%=data.get(i).getId()%>)">查看子菜单</a></td>
 			</tr>
 			<%
 		}
@@ -49,13 +58,67 @@ var parid=<%=parid%>;
 	%>
 	</tbody>
 </table>
+	<%
+	}
+	else if(jibie==2)
+	{
+	  %>
+		<table class="table table-striped table-bordered table-hover dataTables-example">
+		<thead>
+			<tr>
+				<th>编号</th>
+				<th>菜单名称</th>
+				<th>AuthCode</th>
+				<th>URL</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% 
+			if(data!=null)
+			{
+
+			for(int i=0;i<data.size();i++)
+			{
+				%>
+				<tr>
+				<td><%=data.get(i).getId()%></td>
+				<td><%=data.get(i).getMenuname()%></td>
+				<td><%=data.get(i).getAuthCode()%></td>
+				<td><%=data.get(i).getUrl()%></td>
+				<td>
+				<a href="javascript:void(0)">修改</a>  
+				<a href="javascript:void(0)" onclick="getList(<%=data.get(i).getId()%>)">查看按钮</a></td>
+				</tr>
+				<%
+			}
+		}
+		%>
+		</tbody>
+	</table>
+		<%
+	}%>
+
 <script>
-if(parid==0)
+if(j_b==1)
 {
 	$('#cdname').html('一级菜单');
+	$('#addmenubutton').hide();
+	$('#addmenu').show();
+	$('#returnpre').hide();
+}
+else if(j_b==2)
+{
+	$('#addmenubutton').hide();
+	$('#addmenu').show();
+	$('#returnpre').show();
+	$('#cdname').html('二级菜单');
 }
 else
 {
-	$('#cdname').html('二级菜单');
+	$('#addmenubutton').show();
+	$('#addmenu').hide();
+	$('#returnpre').show();
+	$('#cdname').html('二级菜单按钮');
 }
 </script>
