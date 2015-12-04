@@ -55,6 +55,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 	 */
 	private void orderDispatch(String data) {
 		String r= HttpUtil.sendPost(PropertyUtils.getProperty("TaoBaoOrderDispatch"), "data="+AES.aesEncrypt(data));
+	    
 	}
 
 	/**

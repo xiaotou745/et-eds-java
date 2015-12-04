@@ -5,47 +5,38 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.management.ManagementFactory;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.edaisong.core.util.QuartzManager;
-import com.edaisong.edsservice.service.MainJob;
 
 /**
- * quartz服务 2015年11月5日 11:03:43 窦海超
- * **/
+ * @author haichao
+ *
+ */
 
 public class Main {
+	public static ApplicationContext contentApp = new ClassPathXmlApplicationContext(
+			"applicationContext.xml");
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception {
 		/* 加载定时任务 */
 		writePID();// 生成PID
-		SimpleDateFormat DateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		Date d = new Date();
-		String returnstr = DateFormat.format(d);
-
-		MainJob job = new MainJob();
-		String job_name = "11";
+		
 		try {
-			System.out.println(returnstr + "【系统启动】");
-			QuartzManager.addJob(job_name, job, "0/2 * * * * ?"); // 每2秒钟执行一次
+			String job_name = "动态任务调度";
+			System.out.println("【系统启动】开始(每1秒输出一次)...");
+			// QuartzManager.addJob(job_name,
+			// com.edaisong.edsservice.service.QuartzJob.class,
+			// "0/1 * * * * ?");
 
-			// Thread.sleep(10000);
-			// System.out.println("【修改时间】");
-			// QuartzManager.modifyJobTime(job_name,"0/10 * * * * ?");
-			// Thread.sleep(20000);
-			// System.out.println("【移除定时】");
-			// QuartzManager.removeJob(job_name);
-			// Thread.sleep(10000);
-			//
-			// System.out.println("/n【添加定时任务】");
-			// QuartzManager.addJob(job_name,job,"0/5 * * * * ?");
+			QuartzManager.addJob(job_name,
+					com.edaisong.edsservice.service.OrderService.class,
+					"0/10 * * * * ?");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		// new ClassPathXmlApplicationContext("applicationContext.xml");
 	}
 
 	private static void writePID() throws IOException {
