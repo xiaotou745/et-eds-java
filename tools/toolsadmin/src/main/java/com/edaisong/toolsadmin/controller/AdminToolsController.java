@@ -1,6 +1,7 @@
 package com.edaisong.toolsadmin.controller;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import com.edaisong.toolsapi.service.inter.IAppDbConfigService;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
 import com.edaisong.toolscore.enums.ServerType;
 import com.edaisong.toolscore.util.JsonUtil;
+import com.edaisong.toolscore.util.ParseHelper;
 import com.edaisong.toolscore.util.StringUtils;
 import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.AppDbConfig;
@@ -107,15 +109,31 @@ public class AdminToolsController {
 	 */
 	@RequestMapping("menulist")
 	public ModelAndView menuList(Integer parId) {
-		parId = (parId == null ? 0 : parId);
-		List<AuthorityMenuClass> resp = authorityMenuClassService.getListMenuByParId(parId);
+		
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "菜单管理");
 		view.addObject("viewPath", "admintools/menulist");
-		view.addObject("listData", resp);
-		view.addObject("currentMenu", authorityMenuClassService.getMenuById(parId));
 		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
+		return view;
+	}
+	/**
+	 * 菜单列表
+	 * @author 茹化肖
+	 * @date 20151118
+	 * @return
+	 */
+	@RequestMapping("menulistdo")
+	public ModelAndView menuListdo(Integer parId,String appName) {
+		ModelAndView view = new ModelAndView("admintools/menulistdo");
+		parId = (parId == null ? 0 : parId);
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			List<AuthorityMenuClass> resp=MybatisUtil.getSqlSessionUtil(conInfo).selectList("IAuthorityMenuClassDao.getListMenuByParId", parId);
+			view.addObject("listData", resp);//数据列表
+			view.addObject("ParId",parId);//父级ID
+		}
 		return view;
 	}
 	/**
@@ -164,6 +182,7 @@ public class AdminToolsController {
 		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);
 		if (appConfig.size()>0) {
 			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+		    MybatisUtil.getSqlSessionUtil(conInfo).update("IAppVersionDao.updateStatus");
 			PagedResponse<AppVersion> resp=MybatisUtil.getSqlSessionUtil(conInfo).selectPageList("IAppVersionDao.query", req);
 			view.addObject("listData", resp);
 		}
@@ -202,10 +221,16 @@ public class AdminToolsController {
 			version.setCreateby(context.getUserName());
 			version.setUpdateby(context.getUserName());
 			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
-			if (opType==0) {
-				return MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAppVersionDao.insert", version);
+			if (opType==3) {
+				if (version.getIstiming()==1) {
+					version.setPubstatus(0);
+				}else {
+					version.setPubstatus(1);
+					version.setTimingdate(new Date());
+				}
+				return MybatisUtil.getSqlSessionUtil(conInfo).insert("IAppVersionDao.insert", version);
 			}else {
-				return MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAppVersionDao.update", version);
+				return MybatisUtil.getSqlSessionUtil(conInfo).update("IAppVersionDao.update", version);
 			}
 		}
 		return 0;
@@ -395,6 +420,10 @@ public class AdminToolsController {
 					if(sql.toUpperCase().indexOf("NOLOCK")<=0)
 					{
 						return "查询时SQL必须加NOLOCK关键字";
+					}
+					if(sql.toUpperCase().indexOf("SELECT TOP")<0)
+					{
+						return "查询时SQL必须加TOP关键字";
 					}
 					return List2Table(SQLServerUtil.executeResultSet(conInfo, sql))	;
 					//return List2Table(MybatisUtil.dynamicSelectList(conInfo, sql))	;

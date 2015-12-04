@@ -22,7 +22,7 @@ createby,updateDate,updateby,istiming,timingdate,pubstatus,appsource)
       #{updateurl,jdbcType=NVARCHAR}, #{message,jdbcType=NVARCHAR}, #{platform,jdbcType=INTEGER}, 
       #{usertype,jdbcType=INTEGER}, getdate(),
       #{createby,jdbcType=NVARCHAR},getdate(),#{updateby,jdbcType=NVARCHAR},
-      #{istiming,jdbcType=INTEGER},      #{timingdate,jdbcType=TIMESTAMP},
+      #{istiming,jdbcType=INTEGER},#{timingdate,jdbcType=TIMESTAMP},
       #{pubstatus,jdbcType=INTEGER}, #{appsource,jdbcType=INTEGER}
       )
   </insert>
@@ -56,4 +56,9 @@ createby,updateDate,updateby,istiming,timingdate,pubstatus,appsource ',
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)} 
   </select>
+  <update id="updateStatus">
+       UPDATE AppVersion 
+       SET PubStatus=1
+       WHERE  IsTiming=1 AND PubStatus=0 AND getdate()>TimingDate
+  </update>
 </mapper>
