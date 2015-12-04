@@ -70,9 +70,9 @@ FROM    AuthorityMenuClass a WITH ( NOLOCK )
                   ) t ON a.Id = t.MenuId 
   where a.BeLock = CAST(0 AS BIT)	
   </select>
-  
+  <!-- 根据菜单父级ID查询子菜单 茹化肖 -->
   <select id="getListMenuByParId" resultMap="BaseResultMap" parameterType="int">
-  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton FROM AuthorityMenuClass with(nolock) where ParId=#{parId,jdbcType=INTEGER} and BeLock = CAST(0 AS BIT)	 
+  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,AuthCode FROM AuthorityMenuClass with(nolock) where ParId=#{parId,jdbcType=INTEGER} and BeLock = CAST(0 AS BIT)	 
   </select>
   
     <select id="getMenuById" resultMap="BaseResultMap" parameterType="int">

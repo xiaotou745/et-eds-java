@@ -8,8 +8,6 @@
 <%@page import="com.edaisong.toolscore.util.HtmlHelper"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.toolsadmin.url");
-	List<AuthorityMenuClass> data = (List<AuthorityMenuClass>) request.getAttribute("listData");
-	AuthorityMenuClass currentMenu = (AuthorityMenuClass) request.getAttribute("currentMenu");
 	List<String> appNameList = (List<String>) request.getAttribute("appNameList");
 %>
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -29,7 +27,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">菜单名称:</label>
 							<div class="col-sm-8">
-							 <%=currentMenu==null?"一级菜单":currentMenu.getMenuname()%>
+							<span id="cdname">aaa</span>
 							</div>
 						</div>
 					</div>
@@ -43,97 +41,16 @@
 			</form>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="ibox-content" id="content"></div>
-		</div>
+
+	<div class="ibox-content" id="content">
 	</div>
-	
+
 </div>
 
-
-<div class="wrapper wrapper-content animated fadeInRight">
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="ibox-content" id="content">
-				<table
-					class="table table-striped table-bordered table-hover dataTables-example">
-					<%
-						if(currentMenu==null){//如果是一级菜单
-					%>
-					<thead>
-						<tr>
-							<th>编号</th>
-							<th>菜单名称</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<%
-							for (int i = 0; i < data.size(); i++) {
-						%>
-						<tr class="info">
-							<td><%=data.get(i).getId()%></td>
-							<td><%=ParseHelper.ShowString(data.get(i).getMenuname())%></td>
-							<td>
-								<button type="button" class="btn btn-default btn-sm">修改</button>
-								<button type="button" class="btn btn-default btn-sm">查看子菜单</button>
-							</td>
-						</tr>
-						<%
-							}
-						%>
-					</tbody>
-					<%
-						//如果是子菜单
-					%>
-					<%
-						}else{
-					%>
-					<thead>
-						<tr>
-							<th>编号</th>
-							<th>菜单名称</th>
-							<th>旧版后台菜单地址</th>
-							<th>新版后台菜单地址</th>
-							<th>父级菜单</th>
-							<th>是否按钮</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<%
-							for (int i = 0; i < data.size(); i++) {
-						%>
-						<tr class="info">
-							<td><%=data.get(i).getId()%></td>
-							<td><%=ParseHelper.ShowString(data.get(i).getMenuname())%></td>
-							<td><%=data.get(i).getUrl()%></td>
-							<td><%=data.get(i).getUrl()%></td>
-							<td><%=data.get(i).getParid()%></td>
-							<td><%=data.get(i).getIsbutton()%></td>
-							<td>
-								<button type="button" class="btn btn-default btn-sm">修改</button>
-								<button type="button" class="btn btn-default btn-sm">添加按钮</button>
-							</td>
-						</tr>
-						<%
-							}
-						%>
-					</tbody>
-
-					<%
-						}
-					%>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
 
 <!-- 新增菜单 -->
 <form method="POST" action="#" class="form-horizontal" id="searchForm">
-<input type="hidden" name="curId" value="<%=currentMenu == null ? 0 : currentMenu.getId() %>" />
+<%-- <input type="hidden" name="curId" value="<%=currentMenu == null ? 0 : currentMenu.getId() %>" /> --%>
 <div tabindex="-1" class="modal inmodal" id="addNewMenu"
 	role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
@@ -154,9 +71,6 @@
 						</div>
 					</fieldset>
 				</div>
-				<%
-					if(currentMenu != null){
-				%>
 				<div class="modal-body">
 					<fieldset>
 						<br>
@@ -184,7 +98,6 @@
 						</div>
 					</fieldset>
 				</div>
-				<%} %>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 					<button class="btn btn-primary" type="button"
@@ -199,6 +112,20 @@
 </form>
 
 <script>
+	$('#btnSearch').click(function(){
+		getList(0);
+	});
+	function getList(parId)
+	{
+		var url="<%=basePath%>/admintools/menulistdo";
+		var par={
+				"parId":parId,
+				"appName":$('#appname').val()
+		};
+		$.post(url,par,function(d){
+			$('#content').html(d);
+		});
+	}
 	function addNewMenu(){
 		$('#addNewMenu').modal('show');
 	}
@@ -210,10 +137,11 @@
 			return;
 		}
 		var data=$("#searchForm").serialize();
-		$.post("<%=basePath%>/admintools/addNewMenu",data,function(d){
+		$.post("<%=basePath%>/admintools/addnewmenu",data,function(d){
 			alert(d);
 			location.reload();
 		});
 	}
+	getList(0);
 </script>
 
