@@ -30,7 +30,7 @@
 
 	<jaxrs:server id="myService" address="/">
 		<jaxrs:serviceBeans>
-			<ref bean="testService" />
+	<!-- 		<ref bean="testService" /> -->
 			<ref bean="commonService" />
 			<ref bean="messageHttpService" />
 			<ref bean="orderHttpService" />
