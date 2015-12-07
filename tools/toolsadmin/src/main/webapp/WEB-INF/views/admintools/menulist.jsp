@@ -46,7 +46,7 @@
 <td >
 <div style="margin-top:-45px;" id="detail">
 	<div class="controls">
-				<button class="btn btn-success" type="button">编辑菜单</button>
+				<button class="btn btn-success" type="button" id="editbutton">编辑</button>
 				<button class="btn btn-success" type="button" id="new2ji">新增二级菜单</button>
 				<button class="btn btn-success" type="button" id="newbutton">新增按钮</button>
 	</div>
@@ -243,8 +243,134 @@
 	</div>
 	<small class="font-bold"> </small>
 </div>
+
+<!-- 编辑 -->
+<div tabindex="-1" class="modal inmodal" id="edit1ji" role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+					
+				</button>
+				<h4 class="modal-title">编辑一级菜单</h4>
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+						<br>
+						<input id="edit1hide" type="hidden"/>
+						<div class="control-group">
+							<label>菜单名称：</label> <input name="menuName" id="edit1jimenuName" type="text"/>
+						</div>
+						<div class="control-group">
+							<label>是否锁定：</label> 
+							<input name="edit1radion" id="edit1radionY" type="radio" value=1/>是
+							<input name="edit1radion" id="edit1radionN"  type="radio" value=0/>否
+						</div>
+						<div class="control-group">
+							<label>AuthCode：</label> <input name="menuName" id="edit1AuthCode" type="text"/>
+						</div>
+					</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button"
+						id="btnRechargeCommit" onclick="edit1jiSave()">保存</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>
+</div>
+
+<!-- 编辑2级菜单 -->
+<div tabindex="-1" class="modal inmodal" id="edit2ji" role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+					
+				</button>
+				<h4 class="modal-title">编辑二级菜单</h4>
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+						<br>
+						<input id="edit2hide" type="hidden"/>
+						<div class="control-group">
+							<label>菜单名称：</label> <input name="menuName" id="edit2jimenuName" type="text"/>
+						</div>
+						<div class="control-group">
+							<label>URL：</label> <input name="menuName" id="edit2jiurl" type="text"/>
+						</div>
+						<div class="control-group">
+							<label>是否锁定：</label> 
+							<input name="edit2radion" id="edit2radionY" type="radio" value=1/>是
+							<input name="edit2radion" id="edit2radionN"  type="radio" value=0/>否
+						</div>
+						<div class="control-group">
+							<label>AuthCode：</label> <input name="menuName" id="edit2AuthCode" type="text"/>
+						</div>
+					</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button"
+						id="btnRechargeCommit" onclick="edit2jiSave()">保存</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>
+</div>
+<!-- 编辑3级菜单 -->
+<div tabindex="-1" class="modal inmodal" id="edit3ji" role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+					
+				</button>
+				<h4 class="modal-title">编辑按钮</h4>
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+						<br>
+						<input id="edit3hide" type="hidden"/>
+						<div class="control-group">
+							<label>按钮名称：</label> <input name="menuName" id="edit3jimenuName" type="text"/>
+						</div>
+						<div class="control-group">
+							<label>是否锁定：</label> 
+							<input name="edit3radion" id="edit3radionY" type="radio" value=1/>是
+							<input name="edit3radion" id="edit3radionN"  type="radio" value=0/>否
+						</div>
+						<div class="control-group">
+							<label>AuthCode：</label> <input name="menuName" id="edit3AuthCode" type="text"/>
+						</div>
+					</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button"
+						id="btnRechargeCommit" onclick="edit3jiSave()">保存</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>
+</div>
 <script>
 //构建空间树
+
 $('#detail').hide();
 var detail="";
 var $checkableTree;
@@ -300,7 +426,7 @@ var jss={
 				"parId":currId
 		};
 		$.post("<%=basePath%>/admintools/menudetail",par,function(da){
-			console.log(da);
+			//console.log(da);
 			var d=jQuery.parseJSON(da);
 			detail=d;
 			if(d.jibie==1)
@@ -322,18 +448,150 @@ var jss={
 			$('#ParId').val(d.parid);
 			$('#MenuName').val(d.menuname);
 			$('#BeLock').val(d.belock);
-			$('#Url').val(d.url);
+			if($('#appname').val()=="e代送"){$('#Url').val(d.javaUrl);}else{$('#Url').val(d.url);}
 			$('#IsButton').val(d.isbutton);
 			$('#AuthCode').val(d.authCode);
 			$('#ParMenuName').val(d.parMenuName);
 		});
 	}
 	//编辑菜单
-	function editCaidan()
-	{
+	$('#editbutton').click(function(){
+		if(detail.jibie==1)
+		{
+			$('#edit1hide').val(detail.id);
+			$('#edit1jimenuName').val(detail.menuname);
+			$('#edit1AuthCode').val(detail.authCode);
+			if(detail.belock==true)
+			{
+				$('#edit1radionY').attr("checked","checked");
+			}
+			else
+			{
+				$('#edit1radionN').attr("checked","checked");
+			}
+			$('#edit1ji').modal('show');
+		}
+		else if(detail.jibie==2)
+		{
+			$('#edit2hide').val(detail.id);
+			$('#edit2jimenuName').val(detail.menuname);
+			$('#edit2AuthCode').val(detail.authCode);
+			if($('#appname').val()=="e代送"){
+				$('#edit2jiurl').val(detail.javaUrl);
+			}else{
+				$('#edit2jiurl').val(detail.url);
+			}
+			if(detail.belock==true)
+			{
+				$('#edit2radionY').attr("checked","checked");
+			}
+			else
+			{
+				$('#edit2radionN').attr("checked","checked");
+			}
+			$('#edit2ji').modal('show');
+		}
+		else
+		{
+			$('#edit3hide').val(detail.id);
+			$('#edit3jimenuName').val(detail.menuname);
+			$('#edit3AuthCode').val(detail.authCode);
+			if(detail.belock==true)
+			{
+				$('#edit3radionY').attr("checked","checked");
+			}
+			else
+			{
+				$('#edit3radionN').attr("checked","checked");
+			}
+			$('#edit3ji').modal('show')
+		}
+	});
+	//1级菜单编辑保存
+	function edit1jiSave(){
+		var menuname=$('#edit1jimenuName').val();
+		var authcode=$('#edit1AuthCode').val();
+		var chec=$("input[name='edit1radion']:checked").val();
+		var belock=(chec==1||chec=='1')?1:0;
+		if(menuname == ''){
+			alert("请输入菜单名称!");
+			return;
+		}
+		if(authcode == ''){
+			alert("请输入AuthCode!");
+			return;
+		}
+		var par={
+				"id":$('#edit1hide').val(),
+				"menuname":menuname,
+				"authCode":authcode,
+				"belock":belock,
+				"appName":$('#appname').val()}
+		postedit(par);
+	}
+	//2级菜单编辑保存
+	function edit2jiSave(){
+		var menuname=$('#edit2jimenuName').val();
+		var authcode=$('#edit2AuthCode').val();
+		var chec=$("input[name='edit2radion']:checked").val();
+		var url=$('#edit2jiurl').val();
+		var belock=(chec==1||chec=='1')?1:0;
+		if(menuname == ''){
+			alert("请输入菜单名称!");
+			return;
+		}
+		if(authcode == ''){
+			alert("请输入AuthCode!");
+			return;
+		}
+		if(url == ''){
+			alert("请输入URL!");
+			return;
+		}
+		var par={
+				"id":$('#edit2hide').val(),
+				"menuname":menuname,
+				"authCode":authcode,
+				"url":url,
+				"belock":belock,
+				"appName":$('#appname').val()}
+		var par2={
+				"id":$('#edit2hide').val(),
+				"menuname":menuname,
+				"authCode":authcode,
+				"javaUrl":url,
+				"belock":belock,
+				"appName":$('#appname').val()}
+		if($('#appname').val()=="e代送"){
+			postedit(par2);
+		}else{
+			postedit(par);
+		}
 		
 	}
 	
+	//3级菜单编辑保存
+	function edit3jiSave(){
+		var menuname=$('#edit3jimenuName').val();
+		var authcode=$('#edit3AuthCode').val();
+		var chec=$("input[name='edit3radion']:checked").val();
+		var belock=(chec==1||chec=='1')?1:0;
+		if(menuname == ''){
+			alert("请输入菜单名称!");
+			return;
+		}
+		if(authcode == ''){
+			alert("请输入AuthCode!");
+			return;
+		}
+		var par={
+				"id":$('#edit3hide').val(),
+				"menuname":menuname,
+				"authCode":authcode,
+				"belock":belock,
+				"appName":$('#appname').val()}
+		postedit(par);
+	}
 	//新增菜单
 	$('#addNewMenu').click(function(){
 		$('#addNewMenubox').modal('show');
@@ -387,8 +645,17 @@ var jss={
 				"authCode":authcode,
 				"url":url,
 				"appName":$('#appname').val()};
+		var par2={"parid":detail.id,
+				"menuname":menuName,
+				"authCode":authcode,
+				"javaUrl":url,
+				"appName":$('#appname').val()};
+		if($('#appname').val()=="e代送"){
+			postsave(par2);
+		}else{
+			postsave(par);
+		}
 		
-		postsave(par);
 	}
 	//保存2级菜单
 	function save3ji(){
@@ -425,6 +692,24 @@ var jss={
 				}
 			else{
 				alert('添加菜单失败!');
+				}
+		});
+	}
+	//编辑保存菜单
+	function postedit(par)
+	{
+		$.post("<%=basePath%>/admintools/editmenu",par,function(d){
+			if(d>0){
+				alert('编辑菜单成功!');
+				$('#edit1ji').modal('hide');
+				$('#edit2ji').modal('hide');
+				$('#edit3ji').modal('hide');
+				detail="";
+				$('#detail').hide();
+				jss.search(0);
+				}
+			else{
+				alert('编辑菜单失败!');
 				}
 		});
 	}

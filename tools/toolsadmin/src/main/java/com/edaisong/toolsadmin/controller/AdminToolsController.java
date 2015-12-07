@@ -178,6 +178,22 @@ public class AdminToolsController {
 		}
 		return 0;
 	}
+	/**
+	 * 编辑菜单
+	 * @author 茹化肖
+	 * @date 20151118
+	 * @return
+	 */
+	@RequestMapping("editmenu")
+	@ResponseBody
+	public int editMenu(AuthorityMenuClass req,String appName ){
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			return MybatisUtil.getSqlSessionUtil(conInfo).update("IAuthorityMenuClassDao.updateMenu", req);
+		}
+		return 0;
+	}
 	
 	/**
 	 * app数据库配置

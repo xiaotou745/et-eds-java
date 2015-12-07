@@ -113,7 +113,7 @@ WHERE amc.id=#{parId,jdbcType=INTEGER}
   	SELECT Id,ParId,MenuName,BeLock,Url,IsButton FROM AuthorityMenuClass with(nolock) where Id=#{Id,jdbcType=INTEGER} 
   </select>
   <!-- 新增菜单 茹化肖 -->
-  <insert id="addMenu" parameterType="com.edaisong.toolsentity.AuthorityMenuClass">
+  <insert id="addMenu"  >
    INSERT INTO dbo.AuthorityMenuClass
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="parid != null" >
@@ -163,4 +163,29 @@ WHERE amc.id=#{parId,jdbcType=INTEGER}
       </if>
     </trim>
   </insert>
+  <!-- 编辑菜单 茹化肖 -->
+  <update id="updateMenu" parameterType="com.edaisong.toolsentity.AuthorityMenuClass">
+  UPDATE  dbo.AuthorityMenuClass SET 
+  	  <trim suffixOverrides="," > 
+      <if test="menuname != null" >
+       MenuName=#{menuname,jdbcType=NVARCHAR},
+      </if>
+      <if test="belock != null" >
+         BeLock=#{belock,jdbcType=BIT},
+      </if>
+      <if test="url != null" >
+        Url= #{url,jdbcType=NVARCHAR},
+      </if>
+      <if test="isbutton != null" >
+         IsButton= #{isbutton,jdbcType=BIT},
+      </if>
+      <if test="javaUrl != null" >
+         JavaUrl =#{javaUrl,jdbcType=NVARCHAR},
+      </if>
+      <if test="authCode != null" >
+         AuthCode= #{authCode,jdbcType=NVARCHAR},
+      </if> 
+      </trim>
+      WHERE ID=#{id,jdbcType=INTEGER}
+  </update>
 </mapper>
