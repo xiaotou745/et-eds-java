@@ -14,10 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.toolsadmin.common.MenuHelper;
 import com.edaisong.toolsadmin.common.UserContext;
 import com.edaisong.toolsapi.common.SQLServerUtil;
 import com.edaisong.toolsapi.common.MybatisUtil;
@@ -26,6 +28,7 @@ import com.edaisong.toolsapi.redis.RedisService;
 import com.edaisong.toolsapi.service.inter.IAppDbConfigService;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
 import com.edaisong.toolscore.enums.ServerType;
+import com.edaisong.toolscore.security.AES;
 import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.ParseHelper;
 import com.edaisong.toolscore.util.StringUtils;
@@ -36,6 +39,7 @@ import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.common.ResponseBase;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
+import com.edaisong.toolsentity.domain.MenuDetail;
 import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.req.PagedAccountReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
@@ -123,17 +127,42 @@ public class AdminToolsController {
 	 * @return
 	 */
 	@RequestMapping("menulistdo")
-	public ModelAndView menuListdo(Integer parId,String appName) {
-		ModelAndView view = new ModelAndView("admintools/menulistdo");
-		parId = (parId == null ? 0 : parId);
+	@ResponseBody
+	public String menuListdo(String appName) {
 		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
 		if (appConfig.size()>0) {
 			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
-			List<AuthorityMenuClass> resp=MybatisUtil.getSqlSessionUtil(conInfo).selectList("IAuthorityMenuClassDao.getListMenuByParId", parId);
-			view.addObject("listData", resp);//数据列表
-			view.addObject("ParId",parId);//父级ID
+			List<MenuEntity> menuList = MybatisUtil.getSqlSessionUtil(conInfo).selectList("IAuthorityMenuClassDao.getListMenuAll");
+			return MenuHelper.getAuthJson(menuList);
 		}
-		return view;
+		return "";
+		
+		
+	}
+	/**
+	 * 菜单详情
+	 * @author 茹化肖
+	 * @date 20151118
+	 * @return
+	 */
+	@RequestMapping("menudetail")
+	@ResponseBody
+	public String menudetail(String appName,int parId) {
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			MenuDetail detail = new MenuDetail();
+			if(appName.equals("e代送"))
+			{
+				detail=MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAuthorityMenuClassDao.menudetailjava",parId);
+			}
+			else
+			{
+				detail=MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAuthorityMenuClassDao.menudetail",parId);
+			}
+			return JsonUtil.obj2string(detail);
+		}
+		return "";
 	}
 	/**
 	 * 添加菜单
@@ -143,22 +172,29 @@ public class AdminToolsController {
 	 */
 	@RequestMapping("addnewmenu")
 	@ResponseBody
-	public ResponseBase addNewMenu(AuthorityMenuClass req){
-		ResponseBase resp = new ResponseBase();
-		if(StringUtils.isEmpty(req.getMenuname())){
-			resp.setMessage("请填写菜单名称");
-		}else{
-			int curId = req.getParid() == null ? 0 : req.getParid();
-			req.setParid(curId);
-			req.setBelock(false);
-			authorityMenuClassService.addMenu(req);
-			
-			resp.setMessage("添加菜单成功");
-			resp.setResponseCode(1);
+	public int addNewMenu(AuthorityMenuClass req,String appName ){
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			return MybatisUtil.getSqlSessionUtil(conInfo).insert("IAuthorityMenuClassDao.addMenu", req);
 		}
-		
-		
-		return resp;
+		return 0;
+	}
+	/**
+	 * 编辑菜单
+	 * @author 茹化肖
+	 * @date 20151118
+	 * @return
+	 */
+	@RequestMapping("editmenu")
+	@ResponseBody
+	public int editMenu(AuthorityMenuClass req,String appName ){
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			return MybatisUtil.getSqlSessionUtil(conInfo).update("IAuthorityMenuClassDao.updateMenu", req);
+		}
+		return 0;
 	}
 	
 	/**
@@ -392,5 +428,40 @@ public class AdminToolsController {
 		}
 		sbBuilder.append("</tbody></table>");
 		return sbBuilder.toString();
+	}
+	/**
+	 * 
+	 * AES加密解密
+	 * 茹化肖
+	 * 2015年12月7日16:40:30
+	 * @return
+	 */
+	@RequestMapping("aes")
+	public ModelAndView aes()
+	{
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "APP控制");
+		view.addObject("currenttitle", "AES加解密");
+		view.addObject("viewPath", "admintools/aes");
+		return view;
+	}
+	/**
+	 * 
+	 * AES加密解密
+	 * 茹化肖
+	 * 2015年12月7日16:40:30
+	 * @return
+	 */
+	@RequestMapping("aesdo")
+	@ResponseBody
+	public String aesdo(int type,String str)
+	{
+		if(type==1)//加密
+		{
+			return AES.aesEncrypt(str);
+		}
+		else {//解密
+			return AES.aesDecrypt(str);
+		}
 	}
 }

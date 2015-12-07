@@ -14,6 +14,7 @@ import com.edaisong.api.service.inter.IOrderChildService;
 import com.edaisong.api.service.inter.IOrderDraftService;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderService;
+import com.edaisong.api.service.inter.IOrderTipService;
 import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
@@ -39,6 +40,7 @@ import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.OrderTipDetailResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
 import com.edaisong.entity.req.OrderStatisticsCReq;
@@ -68,6 +70,10 @@ public class OrderHttpService implements IOrderHttpService {
 	
 	@Autowired
 	private IOrderDraftService orderDraftService;
+	
+	
+	@Autowired
+	private IOrderTipService orderTipService;
 
 	// region 快单模式
 
@@ -157,7 +163,28 @@ public class OrderHttpService implements IOrderHttpService {
 		HttpResultModel<OrderDetailResp> resp=new HttpResultModel<OrderDetailResp>();
 		return orderService.GetOrderDetails(req);
 	}
-	
+
+	/**
+	 * 获取订单详情 闪送模式
+	 * @author 胡灵波
+	 * @date 2015年12月3日 13:36:24
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderTipDetailResp> GetOrderTipDetails() {
+		
+		OrderTipDetailResp resp=new OrderTipDetailResp();
+		resp.setList(orderTipService.getList());
+		
+		
+		HttpResultModel<OrderTipDetailResp> hrm=new HttpResultModel<OrderTipDetailResp>();
+		hrm.setResult(resp);
+		return hrm;
+	}	
+
+
 	// endregion
 	/**
 	 * B端任务统计接口

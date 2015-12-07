@@ -1,5 +1,7 @@
 package eds.tools.toolsapi;
 
+import com.edaisong.toolscore.security.AES;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -33,6 +35,9 @@ public class AppTest
      */
     public void testApp()
     {
+    	String aaString="茹化肖";
+    	String  aString=AES.aesEncrypt(aaString);
+    	String bString=AES.aesDecrypt(aString);
         assertTrue( true );
     }
 }

@@ -7,6 +7,10 @@ package com.edaisong.core.consts;
  */
 public class TaoBaoConsts {
 	/**
+	 * tmcuri
+	 */
+	public final static String TMCUri = "ws://mc.api.taobao.com/";
+	/**
 	 * uri
 	 */
 	public final static String Uri = "http://gw.api.taobao.com/router/rest/";
