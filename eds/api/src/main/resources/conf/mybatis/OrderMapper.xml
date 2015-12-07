@@ -434,6 +434,9 @@
       <if test="productname != null" >
         ProductName,
       </if>
+      <if test="tipamount != null">
+				TipAmount,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderno != null">
@@ -620,6 +623,9 @@
       <if test="productname != null" >
         #{productname,jdbcType=NVARCHAR},
       </if>
+      		<if test="tipamount != null">
+				#{tipamount,jdbcType=DECIMAL},
+			</if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.Order">
@@ -793,6 +799,7 @@
 			<if test="basecommission != null">
 				basecommission = #{basecommission,jdbcType=NUMERIC},
 			</if>
+		
 		</set>
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
