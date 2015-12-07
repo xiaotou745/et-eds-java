@@ -1,6 +1,5 @@
 package com.edaisong.taobaoopenapi.service.impl;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +8,8 @@ import com.edaisong.core.security.AES;
 import com.edaisong.core.util.HttpUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
-import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
 import com.edaisong.taobaoopenapi.service.inter.ITmcControlHttpService;
-import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.internal.tmc.Message;
