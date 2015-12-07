@@ -9,6 +9,7 @@ import com.edaisong.core.security.AES;
 import com.edaisong.core.util.HttpUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
 import com.edaisong.taobaoopenapi.service.inter.ITmcControlHttpService;
 import com.taobao.api.ApiException;
@@ -64,10 +65,10 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 		String r = HttpUtil.sendPost(PropertyUtils.getProperty("TaoBaoOrderDispatch"), "data=" + AES.aesEncrypt(data));
 		try {
 			JSONObject jsonObject = new JSONObject(r);
-			if (jsonObject.get("Status").toString() == "1") {
+			if (jsonObject.getInt("Status") == 1) {
 				TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
 				WaimaiOrderAckRequest req = new WaimaiOrderAckRequest();
-				req.setDeliveryOrderNo(ParseHelper.ToLong(jsonObject.get("Result"), 0));
+				req.setDeliveryOrderNo(ParseHelper.ToLong(jsonObject.getLong("Result"), 0));
 				WaimaiOrderAckResponse response = client.execute(req, "6102406e99c58f1bdaf2d37b1ca7cd133a84e0087e3a7422532754203");
 				TaoBaoResponseBase resp = new TaoBaoResponseBase();
 				resp.setIs_success(response.getAckOrderResult().getSuccess());
