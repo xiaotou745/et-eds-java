@@ -43,7 +43,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	/**
 	 * 
 	 */
-	private String sessionKey = "ss";
+	private String sessionKey = "6102406e99c58f1bdaf2d37b1ca7cd133a84e0087e3a7422532754203";
 	/**
 	 * 
 	 */
