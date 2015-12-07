@@ -12,8 +12,8 @@
 	        d.name DistrictName,
 	       -- f.code AS fcode,
 	        --f.name AS fname,
-	        d.IsPublic
-	     
+	        d.IsPublic,
+	        d.IsHot 	     
 	from     PublicProvinceCity d with ( nolock )
 	        join PublicProvinceCity c with ( nolock ) on d.parentid = c.code 
 	        join PublicProvinceCity p with ( nolock ) on c.parentid = p.code

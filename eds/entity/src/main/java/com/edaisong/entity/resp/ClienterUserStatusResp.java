@@ -9,6 +9,7 @@ public class ClienterUserStatusResp {
     
     private String vehicleName;
     
+    private int vehicleId;
     
 	public String getPhoneno() {
 		return phoneno;
@@ -40,6 +41,14 @@ public class ClienterUserStatusResp {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public int getVehicleId() {
+		return vehicleId;
+	}
+
+	public void setVehicleId(int vehicleId) {
+		this.vehicleId = vehicleId;
 	}
 
 	
