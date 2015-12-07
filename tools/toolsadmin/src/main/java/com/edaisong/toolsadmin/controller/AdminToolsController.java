@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +28,7 @@ import com.edaisong.toolsapi.redis.RedisService;
 import com.edaisong.toolsapi.service.inter.IAppDbConfigService;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
 import com.edaisong.toolscore.enums.ServerType;
+import com.edaisong.toolscore.security.AES;
 import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.ParseHelper;
 import com.edaisong.toolscore.util.StringUtils;
@@ -426,5 +428,40 @@ public class AdminToolsController {
 		}
 		sbBuilder.append("</tbody></table>");
 		return sbBuilder.toString();
+	}
+	/**
+	 * 
+	 * AES加密解密
+	 * 茹化肖
+	 * 2015年12月7日16:40:30
+	 * @return
+	 */
+	@RequestMapping("aes")
+	public ModelAndView aes()
+	{
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "APP控制");
+		view.addObject("currenttitle", "AES加解密");
+		view.addObject("viewPath", "admintools/aes");
+		return view;
+	}
+	/**
+	 * 
+	 * AES加密解密
+	 * 茹化肖
+	 * 2015年12月7日16:40:30
+	 * @return
+	 */
+	@RequestMapping("aesdo")
+	@ResponseBody
+	public String aesdo(int type,String str)
+	{
+		if(type==1)//加密
+		{
+			return AES.aesEncrypt(str);
+		}
+		else {//解密
+			return AES.aesDecrypt(str);
+		}
 	}
 }
