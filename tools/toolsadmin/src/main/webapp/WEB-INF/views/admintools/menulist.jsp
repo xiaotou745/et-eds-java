@@ -370,6 +370,7 @@
 </div>
 <script>
 //构建空间树
+
 $('#detail').hide();
 var detail="";
 var $checkableTree;
@@ -447,7 +448,7 @@ var jss={
 			$('#ParId').val(d.parid);
 			$('#MenuName').val(d.menuname);
 			$('#BeLock').val(d.belock);
-			$('#Url').val(d.url);
+			if($('#appname').val()=="e代送"){$('#Url').val(d.javaUrl);}else{$('#Url').val(d.url);}
 			$('#IsButton').val(d.isbutton);
 			$('#AuthCode').val(d.authCode);
 			$('#ParMenuName').val(d.parMenuName);
@@ -455,7 +456,6 @@ var jss={
 	}
 	//编辑菜单
 	$('#editbutton').click(function(){
-		console.log(detail);
 		if(detail.jibie==1)
 		{
 			$('#edit1hide').val(detail.id);
@@ -473,11 +473,14 @@ var jss={
 		}
 		else if(detail.jibie==2)
 		{
-
 			$('#edit2hide').val(detail.id);
 			$('#edit2jimenuName').val(detail.menuname);
 			$('#edit2AuthCode').val(detail.authCode);
-			$('#edit2jiurl').val(detail.url);
+			if($('#appname').val()=="e代送"){
+				$('#edit2jiurl').val(detail.javaUrl);
+			}else{
+				$('#edit2jiurl').val(detail.url);
+			}
 			if(detail.belock==true)
 			{
 				$('#edit2radionY').attr("checked","checked");
@@ -552,10 +555,22 @@ var jss={
 				"url":url,
 				"belock":belock,
 				"appName":$('#appname').val()}
-		postedit(par);
+		var par2={
+				"id":$('#edit2hide').val(),
+				"menuname":menuname,
+				"authCode":authcode,
+				"javaUrl":url,
+				"belock":belock,
+				"appName":$('#appname').val()}
+		if($('#appname').val()=="e代送"){
+			postedit(par2);
+		}else{
+			postedit(par);
+		}
+		
 	}
 	
-	//2级菜单编辑保存
+	//3级菜单编辑保存
 	function edit3jiSave(){
 		var menuname=$('#edit3jimenuName').val();
 		var authcode=$('#edit3AuthCode').val();
@@ -630,8 +645,17 @@ var jss={
 				"authCode":authcode,
 				"url":url,
 				"appName":$('#appname').val()};
+		var par2={"parid":detail.id,
+				"menuname":menuName,
+				"authCode":authcode,
+				"javaUrl":url,
+				"appName":$('#appname').val()};
+		if($('#appname').val()=="e代送"){
+			postsave(par2);
+		}else{
+			postsave(par);
+		}
 		
-		postsave(par);
 	}
 	//保存2级菜单
 	function save3ji(){
