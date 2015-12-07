@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="com.edaisong.toolsapi.dao.inter.IRolePrivilegeDao">
+ 
+    <resultMap type="com.edaisong.toolsentity.domain.RolePrivilege" id="baseResultMap">
+        <id property="id" column="Id" jdbcType="INTEGER"></id>
+        <result property="roleId" column="RoleId" jdbcType="INTEGER" />
+        <result property="menuId" column="MenuId" jdbcType="INTEGER" />
+    </resultMap>
+ 
+    <sql id="baseColumnList">
+        rp.Id,rp.RoleId,rp.MenuId
+    </sql>
+ 
+    <insert id="insert" parameterType="com.edaisong.toolsentity.domain.RolePrivilege"  useGeneratedKeys="true" keyProperty="id">
+        insert into RolePrivilege(RoleId,MenuId)
+        values(
+            #{roleId,jdbcType=INTEGER},
+            #{menuId,jdbcType=INTEGER}
+        )
+    </insert>
+    
+    <insert id="insertBatch" parameterType="java.util.List">  
+	    insert into RolePrivilege(RoleId,MenuId)  
+	    values  
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (#{item.roleId},#{item.menuId})  
+	    </foreach>  
+	</insert>  
+ 
+    <update id="update" parameterType="com.edaisong.toolsentity.domain.RolePrivilege">
+        update RolePrivilege
+        set RoleId=#{roleId,jdbcType=INTEGER},
+            MenuId=#{menuId,jdbcType=INTEGER}
+        where Id=#{id,jdbcType=INTEGER}
+    </update>
+ 
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from RolePrivilege where Id=#{id,jdbcType=INTEGER}
+    </delete>
+    
+    <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+        delete from RolePrivilege where RoleId=#{roleId,jdbcType=INTEGER}
+    </delete>
+ 
+    <select id="getById" resultMap="baseResultMap" parameterType="java.lang.Integer">
+        select <include refid="baseColumnList"></include> from RolePrivilege rp(nolock) where Id=#{id,jdbcType=INTEGER}
+    </select>
+ 
+    <select id="getByRoleId" resultMap="baseResultMap" parameterType="java.lang.Integer">
+        select <include refid="baseColumnList"></include> from RolePrivilege rp(nolock) where rp.RoleId=#{roleId,jdbcType=INTEGER}
+    </select>
+ 
+</mapper>

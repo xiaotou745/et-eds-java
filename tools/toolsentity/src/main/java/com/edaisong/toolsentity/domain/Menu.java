@@ -1,5 +1,6 @@
 package com.edaisong.toolsentity.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Date;
  * @date 2015-11-19 17:15:25
  *
  */
-public class Menu {
+public class Menu implements Serializable {
 	/**
 	 * 菜单ID
 	 */
@@ -41,16 +42,6 @@ public class Menu {
 	private Integer orderBy;
 
 	/**
-	 * Controller
-	 */
-	private String controller;
-
-	/**
-	 * Action
-	 */
-	private String action;
-
-	/**
 	 * 是否在新窗口中打开
 	 */
 	private Boolean openNewWindow;
@@ -64,6 +55,11 @@ public class Menu {
 	 * 创建时间
 	 */
 	private Date createTime;
+
+	/**
+	 * Jva ViewPath路径
+	 */
+	private String viewPath;
 
 	/**
 	 * 获取菜单ID
@@ -168,40 +164,6 @@ public class Menu {
 	}
 
 	/**
-	 * 获取Controller
-	 */
-	public String getController() {
-		return controller;
-	}
-
-	/**
-	 * 设置Controller
-	 * 
-	 * @param controller
-	 *            Controller
-	 */
-	public void setController(String controller) {
-		this.controller = controller;
-	}
-
-	/**
-	 * 获取Action
-	 */
-	public String getAction() {
-		return action;
-	}
-
-	/**
-	 * 设置Action
-	 * 
-	 * @param action
-	 *            Action
-	 */
-	public void setAction(String action) {
-		this.action = action;
-	}
-
-	/**
 	 * 获取是否在新窗口中打开
 	 */
 	public Boolean getOpenNewWindow() {
@@ -250,5 +212,24 @@ public class Menu {
 	 */
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	/**
+	 * 获取 java viewpath
+	 * 
+	 * @return 返回 java viewpath
+	 */
+	public String getViewPath() {
+		return viewPath;
+	}
+
+	/**
+	 * 设置 java viewpath
+	 * 
+	 * @param viewPath
+	 *            java viewpath
+	 */
+	public void setViewPath(String viewPath) {
+		this.viewPath = viewPath;
 	}
 }

@@ -1,9 +1,9 @@
-
+@import url("../../../fonts.googleapis.com/css@family=Open+Sans_3A300,400,600,700&lang=en");
 /*
  *
  *   INSPINIA - Responsive Admin Theme
  *   version 2.0
- *   @import url("../../../fonts.googleapis.com/css@family=Open+Sans_3A300,400,600,700&lang=en");
+ *
 */
 h1,
 h2,
@@ -2996,7 +2996,7 @@ video {
   position: relative;
 }
 .modal-dialog {
-  z-index: 1200;
+  z-index: 2050;
 }
 .modal-body {
   padding: 20px 30px 30px 30px;
@@ -3073,15 +3073,15 @@ ol.unstyled {
   color: #e5e6e7;
 }
 /* FOOTER */
-/* .footer { */
-/*   background: none repeat scroll 0 0 white; */
-/*   border-top: 1px solid #e7eaec; */
-/*   bottom: 0; */
-/*   left: 0; */
-/*   padding: 10px 20px; */
-/*   position: absolute; */
-/*   right: 0; */
-/* } */
+.footer {
+  background: none repeat scroll 0 0 white;
+  border-top: 1px solid #e7eaec;
+  bottom: 0;
+  left: 0;
+  padding: 10px 20px;
+  position: absolute;
+  right: 0;
+}
 .footer.fixed_full {
   position: fixed;
   bottom: 0;

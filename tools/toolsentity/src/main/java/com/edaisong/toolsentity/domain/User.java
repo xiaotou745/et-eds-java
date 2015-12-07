@@ -1,15 +1,15 @@
 package com.edaisong.toolsentity.domain;
-
+ 
 import java.util.Date;
-
+ 
 /**
- * 实体类User. (属性说明自动提取数据库字段的描述信息)
- * @author wangyuchuan
- * @date 2015-11-19 17:37:04
- *
- */
+ * 实体类User. (属性说明自动提取数据库字段的描述信息)
+ * @author wangyuchuan
+ * @date 2015-11-25 15:03:50
+ *
+ */
 public class User {
-	/**
+    /**
      * 用户ID
      */
     private Integer id;

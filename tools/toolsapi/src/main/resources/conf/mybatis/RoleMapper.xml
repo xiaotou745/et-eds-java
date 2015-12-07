@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="com.edaisong.toolsapi.dao.inter.IRoleDao">
+ 
+    <resultMap type="com.edaisong.toolsentity.domain.Role" id="baseResultMap">
+        <id property="id" column="Id" jdbcType="INTEGER"></id>
+        <result property="name" column="Name" jdbcType="NVARCHAR" />
+        <result property="isAdmin" column="IsAdmin" jdbcType="BIT" />
+        <result property="canRemove" column="CanRemove" jdbcType="BIT" />
+        <result property="createBy" column="CreateBy" jdbcType="NVARCHAR" />
+        <result property="createTime" column="CreateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+ 
+    <sql id="baseColumnList">
+        r.Id,r.Name,r.IsAdmin,r.CanRemove,r.CreateBy,r.CreateTime
+    </sql>
+ 
+    <insert id="insert" parameterType="com.edaisong.toolsentity.domain.Role" useGeneratedKeys="true" keyProperty="id">
+        insert into Role(Name,CreateBy)
+        values(
+            #{name,jdbcType=NVARCHAR},
+            #{createBy,jdbcType=NVARCHAR}
+        )
+    </insert>
+ 
+    <update id="update" parameterType="com.edaisong.toolsentity.domain.Role">
+        update Role
+        set Name=#{name,jdbcType=NVARCHAR}
+        where Id=#{id,jdbcType=INTEGER}
+    </update>
+ 
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from Role where Id=#{id,jdbcType=INTEGER} and CanRemove=1
+    </delete>
+ 
+    <select id="getById" resultMap="baseResultMap" parameterType="java.lang.Integer">
+        select <include refid="baseColumnList"></include> from Role r(nolock) where Id=#{id,jdbcType=INTEGER}
+    </select>
+ 
+    <select id="getAll" resultMap="baseResultMap">
+        select <include refid="baseColumnList"></include> from Role r(nolock)
+    </select>
+ 
+</mapper>

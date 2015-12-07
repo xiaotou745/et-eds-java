@@ -28,8 +28,8 @@ public class MenuDao extends DaoBase implements IMenuDao {
 	 */
 	@Override
 	public int insert(Menu menu) {
-		return getMasterSqlSessionUtil()
-				.insert("com.edaisong.toolsapi.dao.inter.IMenuDao.insert", menu);
+		getMasterSqlSessionUtil().insert("com.edaisong.toolsapi.dao.inter.IMenuDao.insert", menu);
+		return menu.getId();
 	}
 
 	/**
@@ -73,8 +73,7 @@ public class MenuDao extends DaoBase implements IMenuDao {
 
 	@Override
 	public List<Menu> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return getMasterSqlSessionUtil().selectList("com.edaisong.toolsapi.dao.inter.IMenuDao.getAll");
 	}
 
 }

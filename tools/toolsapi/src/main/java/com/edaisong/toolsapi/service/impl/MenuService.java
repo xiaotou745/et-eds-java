@@ -1,9 +1,12 @@
 package com.edaisong.toolsapi.service.impl;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.edaisong.toolsentity.domain.Menu;
+import com.edaisong.toolsapi.service.ServiceCacheProvider;
 import com.edaisong.toolsapi.service.inter.IMenuService;
 import com.edaisong.toolsapi.dao.inter.IMenuDao;
 
@@ -18,6 +21,8 @@ import com.edaisong.toolsapi.dao.inter.IMenuDao;
 public class MenuService implements IMenuService {
 	@Autowired
 	private IMenuDao menuDao;
+	@Autowired
+	private ServiceCacheProvider serviceCache;
 
 	/**
 	 * 新增一条记录
@@ -29,7 +34,9 @@ public class MenuService implements IMenuService {
 	 * @return 返回新增对象的自增Id
 	 */
 	public Integer create(Menu menu) {
-		return menuDao.insert(menu);
+		int id = menuDao.insert(menu);
+		serviceCache.refreshMenusInCache();
+		return id;
 	}
 
 	/**
@@ -42,6 +49,7 @@ public class MenuService implements IMenuService {
 	 */
 	public void modify(Menu menu) {
 		menuDao.update(menu);
+		serviceCache.refreshMenusInCache();
 	}
 
 	/**
@@ -54,6 +62,7 @@ public class MenuService implements IMenuService {
 	 */
 	public void remove(Integer id) {
 		menuDao.delete(id);
+		serviceCache.refreshMenusInCache();
 	}
 
 	/**
@@ -65,13 +74,13 @@ public class MenuService implements IMenuService {
 	 *            菜单ID
 	 */
 	public Menu getById(Integer id) {
-		return menuDao.getById(id);
+		List<Menu> allMenus = getAll();
+		return allMenus.stream().filter(m->m.getId()==id).findFirst().get();
 	}
 
 	@Override
 	public List<Menu> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return serviceCache.getAllMenusFromCache();
 	}
 
 }

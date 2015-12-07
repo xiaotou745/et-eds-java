@@ -2,36 +2,52 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edaisong.toolsapi.dao.inter.IMenuDao">
-	<resultMap type="com.edaisong.toolsentity.Menu" id="BaseResultMap">
+	<resultMap type="com.edaisong.toolsentity.domain.Menu" id="baseResultMap">
 		<id property="id" column="Id" jdbcType="INTEGER"></id>
 		<result property="name" column="Name" jdbcType="NVARCHAR" />
 		<result property="parentId" column="ParentId" jdbcType="INTEGER" />
 		<result property="url" column="Url" jdbcType="VARCHAR" />
 		<result property="icon" column="Icon" jdbcType="VARCHAR" />
 		<result property="orderBy" column="OrderBy" jdbcType="INTEGER" />
-		<result property="controller" column="Controller" jdbcType="VARCHAR" />
-		<result property="action" column="Action" jdbcType="VARCHAR" />
 		<result property="openNewWindow" column="OpenNewWindow" jdbcType="BIT" />
 		<result property="createBy" column="CreateBy" jdbcType="VARCHAR" />
 		<result property="createTime" column="CreateTime" jdbcType="TIMESTAMP" />
+		<result property="viewPath" column="ViewPath" jdbcType="VARCHAR" />
 	</resultMap>
-	<sql id="base_column_list">
-		m.Id, m.Name, m.ParentId, m.Url, m.Icon, m.OrderBy,
-		m.Controller, m.Action, m.OpenNewWindow, m.CreateBy,
-		m.CreateTime
+	<sql id="baseColumnList">
+		m.Id, m.Name, m.ParentId, m.Url, m.ViewPath, m.Icon, m.OrderBy,
+		m.OpenNewWindow, m.CreateBy,m.CreateTime
 	</sql>
-	<insert id="insert" parameterType="com.edaisong.toolsentity.Menu">
-		insert into Menu ( Name, ParentId, Url, Icon, OrderBy, Controller, Action,
-			OpenNewWindow, CreateBy )
+	<insert id="insert" parameterType="com.edaisong.toolsentity.domain.Menu">
+		insert into Menu ( Name, ParentId, Url, ViewPath, Icon, OrderBy,OpenNewWindow, CreateBy )
 		values ( #{name,jdbcType=NVARCHAR},
 			#{parentId,jdbcType=INTEGER},
 			#{url,jdbcType=VARCHAR},
+			#{viewPath,jdbcType=VARCHAR},
 			#{icon,jdbcType=VARCHAR},
 			#{orderBy,jdbcType=INTEGER},
-			#{controller,jdbcType=VARCHAR},
-			#{action,jdbcType=VARCHAR},
 			#{openNewWindow,jdbcType=BIT},
 			#{createBy,jdbcType=NVARCHAR}
 		)
 	</insert>
+	<update id="update" parameterType="com.edaisong.toolsentity.domain.Menu">
+		update  menu
+		set  Name=#{name,jdbcType=NVARCHAR},
+			 ParentId=#{parentId,jdbcType=INTEGER},
+			 Url=#{url,jdbcType=VARCHAR},
+			 ViewPath=#{viewPath,jdbcType=VARCHAR},
+			 Icon=#{icon,jdbcType=VARCHAR},
+			 OrderBy=#{orderBy,jdbcType=INTEGER},
+			 OpenNewWindow=#{openNewWindow,jdbcType=BIT}
+		where  Id=#{id,jdbcType=INTEGER}
+	</update>
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from menu where Id=#{id,jdbcType=INTEGER}
+	</delete>
+	<select id="getById" resultMap="baseResultMap" parameterType="java.lang.Integer">
+		select <include refid="baseColumnList"></include> from Menu m(nolock) where Id=#{id,jdbcType=INTEGER}
+	</select>
+	<select id="getAll" resultMap="baseResultMap">
+		select <include refid="baseColumnList"></include> from Menu m(nolock)
+	</select>
 </mapper>

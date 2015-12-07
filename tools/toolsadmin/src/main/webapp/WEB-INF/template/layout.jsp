@@ -13,36 +13,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><tiles:getAsString name="title" /></title>
 
-
-
 <link rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css" />
+<link rel="stylesheet" href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
 <link rel="stylesheet" href="<%=basePath%>/font-awesome/css/font-awesome.min.css" />
 <link rel="stylesheet" href="<%=basePath%>/css/animate.css" />
 <link rel="stylesheet" href="<%=basePath%>/css/style.css" />
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/dataTables/dataTables.bootstrap.css" />
-<link href="<%=basePath%>/css/admin.css" rel="stylesheet" />
+<%-- <link href="<%=basePath%>/css/admin.css" rel="stylesheet" /> --%>
 
 <!-- Mainly scripts -->
 <script src="<%=basePath%>/js/jquery-2.1.1.js"></script>
+<!-- jQuery UI -->
+<script src="<%=basePath%>/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Custom and plugin javascript -->
+<script src="<%=basePath%>/js/inspinia.js"></script>
 <script src="<%=basePath%>/js/bootstrap.min.js"></script>
 <script src="<%=basePath%>/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="<%=basePath%>/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="<%=basePath%>/My97DatePicker/WdatePicker.js"></script>
-
-<link href="<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.css" rel="stylesheet" />
-<link href="<%=basePath%>/js/jquery.uploadify-v2.1.0/example/css/default.css" rel="stylesheet" />
-<script src="<%=basePath%>/js/jquery.uploadify-v2.1.0/swfobject.js"></script> 
-<script src="<%=basePath%>/js/jquery.uploadify-v2.1.0/jquery.uploadify.v2.1.0.min.js"></script> 
-
-<!-- Custom and plugin javascript -->
-<script src="<%=basePath%>/js/inspinia.js"></script>
-
-<!-- jQuery UI -->
-<script src="<%=basePath%>/js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
 <!-- 第三方弹窗js -->
-<script src="<%=basePath%>/js/layer.js"></script>
-
+<%-- <script src="<%=basePath%>/js/layer.js"></script> --%>
+<script type="text/javascript">
+	window.basePath="<%=basePath%>";
+</script>
 <script>
     $(document).ajaxError( function(event, jqXHR, options, errorMsg){
    	 var content="内部服务器错误";
@@ -112,11 +104,9 @@
 		});
 	});
 </script>
-<tiles:insertAttribute name="header_js" ignore="true"></tiles:insertAttribute>
-<tiles:insertAttribute name="header_css" ignore="true"></tiles:insertAttribute>
+<tiles:insertAttribute name="header_js_css" ignore="true"></tiles:insertAttribute>
 </head>
 <body>
-
 	<div id="wrapper">
 		<tiles:insertAttribute name="leftmenu"></tiles:insertAttribute>
 		<div id="page-wrapper" class="gray-bg dashbard-1">
@@ -124,17 +114,11 @@
 				<tiles:insertAttribute name="header"></tiles:insertAttribute>
 			</div>
 			<tiles:insertAttribute name="breadcrumbs"></tiles:insertAttribute>
-			<div class="row">
-				<div class="col-lg-12">
-					<tiles:insertAttribute name="body"></tiles:insertAttribute>
-
-				</div>
-			</div>
-			<div class="row">
-				<div class="">
-					<tiles:insertAttribute name="footer" ignore="true"></tiles:insertAttribute>
-				</div>
-			</div>
+			
+			<div class="wrapper wrapper-content">
+	               <tiles:insertAttribute name="body"></tiles:insertAttribute>
+	           </div>
+			<tiles:insertAttribute name="footer" ignore="true"></tiles:insertAttribute>
 		</div>
 		<div tabindex="-1" class="modal inmodal" id="gloablErrorDiv" role="dialog"
 			aria-hidden="true" style="display: none;">
@@ -162,5 +146,6 @@
 			<small class="font-bold"> </small>
 		</div>
 	</div>
+	<tiles:insertAttribute name="footer_js_css" ignore="true"></tiles:insertAttribute>
 </body>
 </html>

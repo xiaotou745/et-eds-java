@@ -4,6 +4,7 @@
 <%@ page import="java.io.*"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.toolsadmin.url");
+System.out.println("test");
     //response.setStatus(HttpServletResponse.SC_OK);
 %>
 <script src="<%=basePath%>/js/jquery-2.1.1.js"></script>

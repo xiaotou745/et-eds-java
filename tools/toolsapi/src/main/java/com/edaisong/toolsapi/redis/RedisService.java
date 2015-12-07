@@ -1,14 +1,15 @@
 package com.edaisong.toolsapi.redis;
- 
-import java.util.Set;
-import java.util.concurrent.TimeUnit; 
 
-import org.springframework.beans.factory.annotation.Autowired; 
-import org.springframework.data.redis.core.RedisTemplate; 
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.stereotype.Service; 
+import org.springframework.stereotype.Service;
 
 import com.edaisong.toolscore.util.PropertyUtils;
+
 @Service
 public class RedisService {
 
@@ -66,9 +67,9 @@ public class RedisService {
 	/**
 	 * 获取Redis值， isSuffxKey=false时不加redis版本及前缀
 	 * */
-	public <T> T get(String key, Class<T> type,Boolean isSuffxKey) {
+	public <T> T get(String key, Class<T> type, Boolean isSuffxKey) {
 		ValueOperations<String, Object> operation = getOperation();
-		Object object = operation.get(isSuffxKey?suffxKey(key):key);
+		Object object = operation.get(isSuffxKey ? suffxKey(key) : key);
 
 		// TODO: 这里没有判断object的类型是否是T，之后再加；
 		return (T) object;
@@ -78,9 +79,9 @@ public class RedisService {
 	 * 获取Redis值， isSuffxKey=true+版本及前缀
 	 * */
 	public <T> T get(String key, Class<T> type) {
-		return get(key,type,true);
+		return get(key, type, true);
 	}
-	
+
 	public void remove(String keyPattern) {
 		Set<String> removeKeys = redisTemplate.keys(suffxKey(keyPattern));
 		redisTemplate.delete(removeKeys);
@@ -94,8 +95,17 @@ public class RedisService {
 	 * @author haichao
 	 * @date 2015年9月29日 13:10:05
 	 * */
-	public Set<String> keys(String keyPattern){
-		return redisTemplate.keys("*"+keyPattern+"*");
+	public Set<String> keys(String keyPattern) {
+		return redisTemplate.keys("*" + keyPattern + "*");
+	}
+
+	/**
+	 * 获取所有的键
+	 * 
+	 * @return 获取redis中所有的键
+	 */
+	public Set<String> allKeys() {
+		return redisTemplate.keys("java_" + PropertyUtils.getProperty("GlobalVersion") + "*");
 	}
 
 	/**
@@ -107,7 +117,15 @@ public class RedisService {
 	 * @return
 	 */
 	private String suffxKey(String orginKey) {
-		return "java_" + PropertyUtils.getProperty("GlobalVersion") + "_"
-				+ orginKey;
+		return "java_" + PropertyUtils.getProperty("GlobalVersion") + "_" + orginKey;
+	}
+
+	/**
+	 * 获取key后缀或前缀
+	 * 
+	 * @return 返回通用的key的后缀或前缀
+	 */
+	public String getSuffxKey() {
+		return "java_" + PropertyUtils.getProperty("GlobalVersion") + "_";
 	}
 }
