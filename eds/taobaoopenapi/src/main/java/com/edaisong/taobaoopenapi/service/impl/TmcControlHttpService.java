@@ -36,19 +36,19 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 	 */
 	@Override
 	public void main() throws LinkException {
-		TmcClient client = new TmcClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret, TaoBaoConsts.GroupName);
+		TmcClient client = new TmcClient(TaoBaoConsts.TMCUri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret, TaoBaoConsts.GroupName);
 		client.setMessageHandler(new MessageHandler() {
 			@Override
 			public void onMessage(Message message, MessageStatus status) throws Exception {
-				if (message.getTopic() == TaoBaoConsts.OrderDispatch) {
+				System.out.println(message.getTopic());
+				
+				if (message.getTopic().equals(TaoBaoConsts.OrderDispatch) ) {
 					orderDispatch(message.getContent());
-				} else if (message.getTopic() == TaoBaoConsts.OrderClose) {
+				} else if (message.getTopic().equals(TaoBaoConsts.OrderClose) ) {
 					orderClose(message.getContent());
-				} else if (message.getTopic() == TaoBaoConsts.OuterOrderDispatch) {
+				} else if (message.getTopic().equals(TaoBaoConsts.OuterOrderDispatch)) {
 
 				}
-				String msg = message.getContent();
-				System.out.println(msg);
 			}
 		});
 		client.connect();
