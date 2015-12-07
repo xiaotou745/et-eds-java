@@ -12,10 +12,12 @@
 
 <%
 	String basePath = PropertyUtils.getProperty("java.toolsadmin.url");
-	if(!UserIndentity.getIndentity(request).isLogin()){
+	UserIndentity currentUser = UserIndentity.getIndentity(request);
+	if(!currentUser.isLogin()){
 		response.sendRedirect(basePath +"/");
 		return;
 	}
+	List<Integer> lstUserMenuIds = MenuUtils.getCurrentUserPrivileges(currentUser.getUserId());
 	String viewPath = request.getAttribute("viewPath").toString();
 	List<Menu> topMenus = MenuUtils.getTopMenus();
 %>
@@ -40,17 +42,27 @@
 			</li>
             <%for(Menu menu:topMenus){
             	String topClass="";
+            	boolean hasChild = false;
             	List<Menu> childs = MenuUtils.getChildMenus(menu.getId());
             	for(Menu child: childs){
+            		if(lstUserMenuIds.contains(child.getId())){
+            			hasChild = true;
+            		}
             		if(child.getViewPath().toLowerCase().equals(viewPath)){
             			topClass = " class='active'";
             		}
+            	}
+            	if(!hasChild){
+            		continue;
             	}
             	if(childs.size()>0){%>
             		<li <%=topClass%>>
 	                    <a href=""><i class="<%=menu.getIcon()%>"></i> <span class="nav-label"><%=menu.getName() %></span><span class="fa arrow"></span></a>
 	                    <ul class="nav nav-second-level">
 	                    	<%for(Menu childMenu:childs){
+	                    		if(!lstUserMenuIds.contains(childMenu.getId())){
+	                    			continue;
+	                    		}
 	                    		String childClass = viewPath.toLowerCase().equals(childMenu.getViewPath().toLowerCase())?" class='active'":"";
 	                    	%>
 	                    		<li <%=childClass%>><a href="<%=basePath + childMenu.getUrl()%>"><%=childMenu.getName() %></a></li>

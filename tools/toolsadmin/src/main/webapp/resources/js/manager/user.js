@@ -1,5 +1,5 @@
 $(function(){
-	initCheck();
+	initCheckBox();
 	$("#tblContainer").delegate(".J_Remove", "click", function() {
         if (!confirm("确定要删除此用户吗?此操作不可恢复.")) {
             return;
@@ -57,13 +57,6 @@ $(function(){
 	});
 	$("#btnSaveRole").bind("click", saveRoles);
 });
-//复选框
-function initCheck() {
-    $('.i-checks').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
-    });
-}
 function saveRoles() {
     var arrRoleIds = [];
     $("#modalRoles").find(":checkbox").each(function(i, item) {

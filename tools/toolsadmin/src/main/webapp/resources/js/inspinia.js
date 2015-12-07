@@ -5,8 +5,7 @@
  *
  */
 
-$(document).ready(function () {
-
+$(document).ready(function () {	 
     // Add body-small class if window less than 768px
     if ($(this).width() < 769) {
         $('body').addClass('body-small')
@@ -153,7 +152,12 @@ $(document).ready(function () {
     })
 });
 
-
+function initCheckBox(){
+	$('.i-checks').iCheck({
+	    checkboxClass: 'icheckbox_square-green',
+	    radioClass: 'iradio_square-green',
+	});
+}
 // Minimalize menu when screen is less than 768px
 $(window).bind("resize", function () {
     if ($(this).width() < 769) {

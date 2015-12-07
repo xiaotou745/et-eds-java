@@ -163,7 +163,7 @@ public class ServiceCacheProvider {
 		for (User user : lstUsers) {
 			List<Integer> userRoleIds = ListUtils.str2intlist(user.getRoleIds(), ",");
 			if (userRoleIds.contains(roleId)) {
-				lstUserIds.add(roleId);
+				lstUserIds.add(user.getId());
 			}
 		}
 		String redisKey = String.format(ServiceCacheKeys.ROLE_USERIDS_CACHE_KEY, roleId);

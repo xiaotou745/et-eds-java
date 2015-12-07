@@ -19,6 +19,33 @@ public class UserIndentity {
 	}
 
 	/**
+	 * 获取当前登录用户的ID
+	 * 
+	 * @return 如果当前未登录，则返回0，否则返回当前登录用户ID
+	 */
+	public Integer getUserId() {
+		return this.loginUser == null ? 0 : this.loginUser.getId();
+	}
+
+	/**
+	 * 获取当前登录用户的登录名
+	 * 
+	 * @return 如果当前未登录，则返回空字符串，否则返回当前登录用户的登录账号
+	 */
+	public String getLoginName() {
+		return this.loginUser == null ? "" : this.loginUser.getLoginName();
+	}
+
+	/**
+	 * 获取当前登录用户的用户名
+	 * 
+	 * @return 如果当前未登录，则返回空字符串，否则返回当前登录用户的用户名
+	 */
+	public String getUserName() {
+		return this.loginUser == null ? "" : this.loginUser.getUserName();
+	}
+
+	/**
 	 * 是否已登录
 	 * 
 	 * @return 如果已登录，返回true,否则返回false;

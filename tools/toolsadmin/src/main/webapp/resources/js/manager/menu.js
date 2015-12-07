@@ -1,6 +1,6 @@
 $(function() {
 	$(".J_Second").hide();
-	initCheck();
+	initCheckBox();
 	initFormValidate();
 
 	$("#form1").find("[name=selParentId]").bind("change", function() {
@@ -53,14 +53,6 @@ $(function() {
 		});
 	});
 });
-
-// 复选框
-function initCheck() {
-	$('.i-checks').iCheck({
-		checkboxClass : 'icheckbox_square-green',
-		radioClass : 'iradio_square-green',
-	});
-}
 
 function initFormValidate() {
 	var rules = {

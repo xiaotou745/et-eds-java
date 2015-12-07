@@ -19,4 +19,5 @@ public class DaoBase {
 	public SqlSessionUtil getMasterSqlSessionUtil() {
 		return SqlSessionUtil.wapperSession(superManSqlServerSessionFactory);
 	}
+	
 }
