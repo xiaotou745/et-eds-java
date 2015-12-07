@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.edaisong.api.dao.inter.OrderTipMapper" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderTipDao" >
   <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderTip" >
     <id column="Id" property="id" jdbcType="INTEGER" />
     <result column="Amount" property="amount" jdbcType="DECIMAL" />
@@ -17,6 +17,11 @@
     <include refid="Base_Column_List" />
     from OrderTip
     where Id = #{id,jdbcType=INTEGER}
+  </select>
+       <select id="getList" resultType="com.edaisong.entity.OrderTip"  >      
+   SELECT      Id, Amount, CreateName, CreateTime, ModifyName, ModifyTime
+   FROM     [OrderTip]  WITH ( NOLOCK )         
+   WHERE    1 = 1  
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from OrderTip

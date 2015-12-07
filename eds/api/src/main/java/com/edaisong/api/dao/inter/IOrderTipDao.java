@@ -1,6 +1,10 @@
 package com.edaisong.api.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.OrderTip;
+import com.edaisong.entity.domain.BusinessBalanceRecordModel;
+import com.edaisong.entity.req.PagedTransDetailReq;
 
 public interface IOrderTipDao {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +18,7 @@ public interface IOrderTipDao {
     int updateByPrimaryKeySelective(OrderTip record);
 
     int updateByPrimaryKey(OrderTip record);
+    
+	public List<OrderTip> getList();
+		
 }
