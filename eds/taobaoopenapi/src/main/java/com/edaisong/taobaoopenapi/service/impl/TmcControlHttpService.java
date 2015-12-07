@@ -37,9 +37,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 		TmcClient client = new TmcClient(TaoBaoConsts.TMCUri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret, TaoBaoConsts.GroupName);
 		client.setMessageHandler(new MessageHandler() {
 			@Override
-			public void onMessage(Message message, MessageStatus status) throws Exception {
-				System.out.println(message.getTopic());
-				
+			public void onMessage(Message message, MessageStatus status) throws Exception {				
 				if (message.getTopic().equals(TaoBaoConsts.OrderDispatch) ) {
 					orderDispatch(message.getContent());
 				} else if (message.getTopic().equals(TaoBaoConsts.OrderClose) ) {
