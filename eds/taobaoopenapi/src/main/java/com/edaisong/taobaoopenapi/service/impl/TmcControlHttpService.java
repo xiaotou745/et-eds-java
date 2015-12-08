@@ -1,6 +1,5 @@
 package com.edaisong.taobaoopenapi.service.impl;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,6 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
 import com.edaisong.taobaoopenapi.service.inter.ITmcControlHttpService;
-import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.internal.tmc.Message;
@@ -39,9 +37,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 		TmcClient client = new TmcClient(TaoBaoConsts.TMCUri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret, TaoBaoConsts.GroupName);
 		client.setMessageHandler(new MessageHandler() {
 			@Override
-			public void onMessage(Message message, MessageStatus status) throws Exception {
-				System.out.println(message.getTopic());
-				
+			public void onMessage(Message message, MessageStatus status) throws Exception {				
 				if (message.getTopic().equals(TaoBaoConsts.OrderDispatch) ) {
 					orderDispatch(message.getContent());
 				} else if (message.getTopic().equals(TaoBaoConsts.OrderClose) ) {
@@ -64,10 +60,10 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 		String r = HttpUtil.sendPost(PropertyUtils.getProperty("TaoBaoOrderDispatch"), "data=" + AES.aesEncrypt(data));
 		try {
 			JSONObject jsonObject = new JSONObject(r);
-			if (jsonObject.get("Status").toString() == "1") {
+			if (jsonObject.getInt("Status") == 1) {
 				TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
 				WaimaiOrderAckRequest req = new WaimaiOrderAckRequest();
-				req.setDeliveryOrderNo(ParseHelper.ToLong(jsonObject.get("Result"), 0));
+				req.setDeliveryOrderNo(ParseHelper.ToLong(jsonObject.getLong("Result"), 0));
 				WaimaiOrderAckResponse response = client.execute(req, "6102406e99c58f1bdaf2d37b1ca7cd133a84e0087e3a7422532754203");
 				TaoBaoResponseBase resp = new TaoBaoResponseBase();
 				resp.setIs_success(response.getAckOrderResult().getSuccess());

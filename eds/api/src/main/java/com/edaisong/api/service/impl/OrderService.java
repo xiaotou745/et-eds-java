@@ -34,6 +34,7 @@ import com.edaisong.api.dao.inter.IOrderGrabDao;
 import com.edaisong.api.dao.inter.IOrderOtherDao;
 import com.edaisong.api.dao.inter.IOrderRegionDao;
 import com.edaisong.api.dao.inter.IOrderSubsidiesLogDao;
+import com.edaisong.api.dao.inter.IOrderTipCostDao;
 import com.edaisong.api.redis.NetRedisService;
 import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService;
@@ -78,6 +79,7 @@ import com.edaisong.entity.OrderDetail;
 import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderSubsidiesLog;
+import com.edaisong.entity.OrderTipCost;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.Location;
 import com.edaisong.entity.common.PagedResponse;
@@ -174,6 +176,9 @@ public class OrderService implements IOrderService {
 	
 	@Autowired
 	private NetRedisService netRedisService;
+	
+	@Autowired
+	private IOrderTipCostDao orderTipCostDao;
  
 	/**
 	 * 后台订单列表页面
@@ -2160,6 +2165,18 @@ public class OrderService implements IOrderService {
 			if (orderSubsidieslogId <= 0)
 				throw new TransactionalRuntimeException("记录补贴日志错误");
 		}
+		/*//订单小费
+		if(req.getTipamount()>0)
+		{
+			OrderTipCost otcModel=new OrderTipCost();
+			otcModel.setOrderid(order.getId());
+			otcModel.setAmount(req.getTipamount());
+			otcModel.setCreatename(businessModel.getName());			
+			
+			int otcId=orderTipCostDao.insertSelective(otcModel);
+			if (otcId <= 0)
+				throw new TransactionalRuntimeException("记录小费错误");
+		}*/
 		
 		oResp.setBusinessId(businessModel.getId());
 		resp.setResult(oResp);
@@ -2234,13 +2251,14 @@ public class OrderService implements IOrderService {
 		odResp.setBusinesscommission(oModel.getBusinesscommission());			
 		odResp.setSettlemoney(oModel.getSettlemoney());	 
 		odResp.setDealcount(oModel.getDealcount());	 
-		if(req.getClienterId()!=null && req.getClienterId()>0)
+		if(req.getBusinessId()!=null && req.getBusinessId()>0)
 		{
-			odResp.setPickupcode("");
+			odResp.setPickupcode(oModel.getPickupcode());
+			
 		}
 		else
 		{
-			odResp.setPickupcode(oModel.getPickupcode());
+			odResp.setPickupcode("");
 		}
 		odResp.setOthercancelreason(oModel.getOthercancelreason());	 		
 		odResp.setCommissiontype(oModel.getCommissiontype());	 
@@ -2488,7 +2506,7 @@ public class OrderService implements IOrderService {
 		Random random = new Random();
 	    int x = random.nextInt(899999);
 		x = x+100000;
-		order.setTakecode(String.valueOf(x));//取货吗			
+		order.setPickupcode(String.valueOf(x));//取货吗			
 		order.setRecevicename(req.getRecevicename());//收货人姓名
 		order.setRecevicephoneno(req.getRecevicephoneno());//收货人手机号
 		order.setReceviceaddress(req.getReceviceaddress());//收货人地址
@@ -2502,7 +2520,7 @@ public class OrderService implements IOrderService {
 		order.setReceiveareacode(null);////收货区域 代码	
 		order.setProductname(req.getProductname());//物品名称
 		order.setRemark(req.getRemark());//备注
-		order.setAmount(req.getAmount());//金额				
+		order.setAmount((double)0);//金额				
 		order.setWeight(req.getWeight());//订单总重量
 		order.setKm(req.getKm());//	距离		
 
@@ -2525,10 +2543,11 @@ public class OrderService implements IOrderService {
 		orderCommission.setDistribSubsidy(businessModel.getDistribsubsidy());
 		orderCommission.setOrderCount(0);
 		orderCommission.setStrategyId(businessModel.getStrategyId());
+		
 		OrderPriceBaseProvider orderPriceService = CommissionFactory
 				.GetCommission(businessModel.getStrategyId());
-		order.setOrdercommission(orderPriceService
-				.getCurrenOrderCommission(orderCommission));
+//		order.setOrdercommission(orderPriceService
+//				.getCurrenOrderCommission(orderCommission));
 		order.setWebsitesubsidy(orderPriceService
 				.getOrderWebSubsidy(orderCommission));
 		order.setCommissionrate(orderPriceService
@@ -2536,8 +2555,12 @@ public class OrderService implements IOrderService {
 		order.setAdjustment(orderPriceService.getAdjustment(orderCommission));
 		order.setBasecommission(orderPriceService
 				.getBaseCommission(orderCommission));
-		Double settleMoney=0.0;
+		//扣商家
+		Double settleMoney=req.getAmount();
+		if(req.getTipamount()>0)
+			settleMoney+=req.getTipamount();
 		order.setSettlemoney(settleMoney);
+		order.setOrdercommission(settleMoney);
 		// 如果当前商家的余额不够支付订单了，则消费集团的金额
 		if (businessModel.getGroupBusinessID() > 0
 				&& businessModel.getBalanceprice() < settleMoney) {
@@ -2547,7 +2570,7 @@ public class OrderService implements IOrderService {
 		order.setBusinessreceivable(Double.valueOf(0));// 退还商家金额
 	    order.setBusinessreceivable((double)0);	
 		order.setPlatform(req.getPlatform());// 新平台
-
+        order.setTipamount(req.getTipamount());
 		return order;
 	}
 	

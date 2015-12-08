@@ -22,11 +22,12 @@ public class AES {
 	 */
 	public static String aesEncrypt(String str) {
 		try {
+			str=new String(str.getBytes("UTF-8"),"UTF-8");
 			String password = AES_KEY;
 			SecretKeySpec skeySpec = new SecretKeySpec(password.getBytes(), "AES");
 			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-			byte[] bs=cipher.doFinal(str.getBytes());
+			byte[] bs=cipher.doFinal(str.getBytes("UTF-8"));
 			byte[] bs64= Base64.getEncoder().encode(bs);
 			String strTmp = new String(bs64);
 			return strTmp;
@@ -81,13 +82,5 @@ public class AES {
 			ex.printStackTrace();
 		}
 		return str;*/
-	}
-
-	public static void main(String[] args) {
-		String str = "易代送";
-		String encrypt = aesEncrypt(str);
-		System.out.println("99999999999" + encrypt);
-		System.out.println("11111111111" + aesDecrypt(encrypt));
-
 	}
 }

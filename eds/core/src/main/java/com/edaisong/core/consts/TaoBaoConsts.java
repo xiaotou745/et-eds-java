@@ -13,7 +13,7 @@ public class TaoBaoConsts {
 	/**
 	 * uri
 	 */
-	public final static String Uri = "http://gw.api.taobao.com/router/rest/";
+	public final static String Uri = "http://gw.api.taobao.com/router/rest";
 
 	/**
 	 * AppKey
