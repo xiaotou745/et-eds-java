@@ -49,8 +49,17 @@ public class OrderOther {
     
     private Date cancelTime;
     private Integer isAllowCashPay;
+    private Date expecteddelivery;
 
-    public Date getCancelTime() {
+    public Date getExpecteddelivery() {
+		return expecteddelivery;
+	}
+
+	public void setExpecteddelivery(Date expecteddelivery) {
+		this.expecteddelivery = expecteddelivery;
+	}
+
+	public Date getCancelTime() {
 		return cancelTime;
 	}
 

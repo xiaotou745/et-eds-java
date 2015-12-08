@@ -51,15 +51,6 @@ public class MongoService {
 		DBCollection collection = mongoTemplate.getCollection(tableName);
 		DBObject dbobjct = (DBObject) JSON.parse(jsonInfo);
 		collection.insert(dbobjct);
-		  List<DBObject> list =collection.getIndexInfo();  
-		  for (DBObject dbObject : list) {
-			  System.out.println(dbObject);
-		}
-//		  collection.createIndex(new BasicDBObject("sourceSys", 1));  
-//		  collection.createIndex(new BasicDBObject("requestType", 1));  
-//		  collection.createIndex(new BasicDBObject("methodName", 1));  
-//		  collection.createIndex(new BasicDBObject("requestTime", 1));  
-//		  collection.createIndex(new BasicDBObject("exception", 1));  
 	}
 
 	public void selectAll() throws Exception {
@@ -94,6 +85,7 @@ public class MongoService {
 
 
 		DBCollection collection = mongoTemplate.getCollection(tableName);
+		createIndex(collection);
 		DBCursor querycursor = collection.find(req.getQueryObject());
 		result.setTotalRecord(querycursor.count());
 		int totalPage=0;
@@ -119,7 +111,23 @@ public class MongoService {
 		result.setResultList(dataList);
 		return result;
 	}
-
+	/**
+	 * 第一次查询时，创建索引
+	 * @author hailongzhao
+	 * @date 20151208
+	 * @param collection
+	 */
+	private void createIndex(DBCollection collection){
+			List<DBObject> list = collection.getIndexInfo();
+			if (list.size() == 1) {
+				collection.createIndex(new BasicDBObject("sourceSys", 1));
+				collection.createIndex(new BasicDBObject("requestType", 1));
+				collection.createIndex(new BasicDBObject("requestUrl", 1));
+				collection.createIndex(new BasicDBObject("methodName", 1));
+				collection.createIndex(new BasicDBObject("requestTime", 1));
+				collection.createIndex(new BasicDBObject("stackTrace", 1));
+			}
+	}
 	/**
 	 * 更新操作 更新一条记录
 	 * 
