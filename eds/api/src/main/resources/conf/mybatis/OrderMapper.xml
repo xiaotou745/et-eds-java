@@ -1493,7 +1493,7 @@ where   Status = 1
               else 0
             end),0) takingCount
        from    dbo.[order] (nolock)
-       where businessId=${businessId} and [Platform]=1 
+       where businessId=${businessId} and [Platform]=#{platform} 
 	</select>
 	<!-- 骑士端我的任务 addby caoheyang 20150914 -->
 		<select id="queryOrderC" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderCResp">
@@ -1507,7 +1507,7 @@ where   Status = 1
               else 0
             end),0) takingCount
        from    dbo.[order] (nolock)
-       where  clienterId=${clienterId} and [Platform]=1 
+       where  clienterId=${clienterId} and [Platform]=#{platform} 
 	</select>
 		<!--   c端查询待取货订单（会计算距离） 订单列表  add by caoheyang 20150910-->
 	<select id="queryDeliveryOrderC" resultType="com.edaisong.entity.domain.QueryOrder"
@@ -1538,7 +1538,7 @@ where   Status = 1
         o.OrderCount ,
         o.IsPay ,
         o.OrderNo ,
-        o.PickUpAddress ,
+        case when o.[Platform]= 1 then b.[Address]  when o.[Platform]=3 then o.PickUpAddress else b.[Address] end PickUpAddress,
         CONVERT(VARCHAR(5), o.PubDate, 108) as PubDate ,
         case  isnull(o.ReceviceAddress,'''')  
 		when  '''' then ''附近3公里左右，由商户指定''
@@ -1567,6 +1567,7 @@ where   Status = 1
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
         b.GroupId ,
+        o.KM,o.[Weight],
         round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${latitude},${longitude},4326)),0)  as distance_OrderBy  ,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
@@ -1581,7 +1582,7 @@ where   Status = 1
 	</sql>
 	<!--    c端查询待取货订单（会计算距离） 订单列表add by caoheyang 20150910 -->
 	<sql id="queryDeliveryOrderCWhere">
-		1=1 and o.IsEnable=1 
+		1=1 and o.IsEnable=1 and o.[platform]=#{platform} 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 
