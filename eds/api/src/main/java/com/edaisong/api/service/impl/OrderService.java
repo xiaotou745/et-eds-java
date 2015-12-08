@@ -1073,6 +1073,7 @@ public class OrderService implements IOrderService {
 					.getDistance_OrderBy() * 0.001).setScale(2,
 					BigDecimal.ROUND_HALF_UP).doubleValue()
 					+ "km"));
+			orders.forEach(action -> action.setKmWeightStr(action.getKm()+"/"+action.getWeight()));
 			m.setOrders(orders);
 		} else { // 不需要计算骑士距离门店距离
 			m.setOrders(orderDao.queryOrder(query));

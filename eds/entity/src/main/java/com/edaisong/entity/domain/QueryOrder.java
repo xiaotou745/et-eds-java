@@ -42,6 +42,8 @@ public class QueryOrder {
 	private int orderCommission;
 	private String distance="--"; 
 	private Double distance_OrderBy=9999999.0; 
+	private double km;
+	private double weight;
 	private String kmWeightStr;
 	/**
 	 * 订单Id
@@ -572,5 +574,21 @@ public String getKmWeightStr() {
 
 public void setKmWeightStr(String kmWeightStr) {
 	this.kmWeightStr = kmWeightStr;
+}
+
+public double getKm() {
+	return km;
+}
+
+public void setKm(double km) {
+	this.km = km;
+}
+
+public double getWeight() {
+	return weight;
+}
+
+public void setWeight(double weight) {
+	this.weight = weight;
 }
 }
