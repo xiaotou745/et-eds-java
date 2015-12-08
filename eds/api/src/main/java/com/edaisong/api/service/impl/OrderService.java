@@ -2251,13 +2251,14 @@ public class OrderService implements IOrderService {
 		odResp.setBusinesscommission(oModel.getBusinesscommission());			
 		odResp.setSettlemoney(oModel.getSettlemoney());	 
 		odResp.setDealcount(oModel.getDealcount());	 
-		if(req.getClienterId()!=null && req.getClienterId()>0)
+		if(req.getBusinessId()!=null && req.getBusinessId()>0)
 		{
-			odResp.setPickupcode("");
+			odResp.setPickupcode(oModel.getPickupcode());
+			
 		}
 		else
 		{
-			odResp.setPickupcode(oModel.getPickupcode());
+			odResp.setPickupcode("");
 		}
 		odResp.setOthercancelreason(oModel.getOthercancelreason());	 		
 		odResp.setCommissiontype(oModel.getCommissiontype());	 
