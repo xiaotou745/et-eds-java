@@ -1073,6 +1073,7 @@ public class OrderService implements IOrderService {
 					.getDistance_OrderBy() * 0.001).setScale(2,
 					BigDecimal.ROUND_HALF_UP).doubleValue()
 					+ "km"));
+			orders.forEach(action -> action.setKmWeightStr(action.getKm()+"/"+action.getWeight()));
 			m.setOrders(orders);
 		} else { // 不需要计算骑士距离门店距离
 			m.setOrders(orderDao.queryOrder(query));
@@ -2251,13 +2252,14 @@ public class OrderService implements IOrderService {
 		odResp.setBusinesscommission(oModel.getBusinesscommission());			
 		odResp.setSettlemoney(oModel.getSettlemoney());	 
 		odResp.setDealcount(oModel.getDealcount());	 
-		if(req.getClienterId()!=null && req.getClienterId()>0)
+		if(req.getBusinessId()!=null && req.getBusinessId()>0)
 		{
-			odResp.setPickupcode("");
+			odResp.setPickupcode(oModel.getPickupcode());
+			
 		}
 		else
 		{
-			odResp.setPickupcode(oModel.getPickupcode());
+			odResp.setPickupcode("");
 		}
 		odResp.setOthercancelreason(oModel.getOthercancelreason());	 		
 		odResp.setCommissiontype(oModel.getCommissiontype());	 
