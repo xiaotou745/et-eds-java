@@ -14,6 +14,7 @@ package com.edaisong.core.util;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -65,6 +66,30 @@ public class QuartzManager {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	/**
+	 * @author haichao
+	 * @date 2015年12月8日 14:39:58  判断当前调度是否存在
+	 *  state的值代表该任务触发器的状态：
+		STATE_BLOCKED 	4
+		STATE_COMPLETE 	2
+		STATE_ERROR 	3
+		STATE_NONE 	-1
+		STATE_NORMAL 	0
+		STATE_PAUSED 	1
+	 * */
+	@SuppressWarnings("unchecked")
+	public static int checkJob(String jobName) {
+		try {
+			Scheduler scheduler = gSchedulerFactory.getScheduler();
+			int state = scheduler.getTriggerState(jobName, TRIGGER_GROUP_NAME);
+			return state;
+		} catch (SchedulerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 3;
 	}
 
 	/**
@@ -123,13 +148,15 @@ public class QuartzManager {
 	public static void modifyJobTime(String jobName, String time) {
 		try {
 			Scheduler sched = gSchedulerFactory.getScheduler();
-			CronTrigger trigger = (CronTrigger) sched.getTrigger(jobName,TRIGGER_GROUP_NAME);
+			CronTrigger trigger = (CronTrigger) sched.getTrigger(jobName,
+					TRIGGER_GROUP_NAME);
 			if (trigger == null) {
 				return;
 			}
 			String oldTime = trigger.getCronExpression();
 			if (!oldTime.equalsIgnoreCase(time)) {
-				JobDetail jobDetail = sched.getJobDetail(jobName,JOB_GROUP_NAME);
+				JobDetail jobDetail = sched.getJobDetail(jobName,
+						JOB_GROUP_NAME);
 				Class objJobClass = jobDetail.getJobClass();
 				removeJob(jobName);
 				addJob(jobName, objJobClass, time);
@@ -157,7 +184,8 @@ public class QuartzManager {
 			String triggerGroupName, String time) {
 		try {
 			Scheduler sched = gSchedulerFactory.getScheduler();
-			CronTrigger trigger = (CronTrigger) sched.getTrigger(triggerName,triggerGroupName);
+			CronTrigger trigger = (CronTrigger) sched.getTrigger(triggerName,
+					triggerGroupName);
 			if (trigger == null) {
 				return;
 			}
