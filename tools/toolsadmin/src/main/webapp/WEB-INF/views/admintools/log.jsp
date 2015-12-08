@@ -130,7 +130,6 @@ int month=a.get(Calendar.MONTH);
 </div>
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-	    <button type="button" id="saveapp" class="btn btn-primary">保存</button>
 	</div>
     </div>
 </div>
