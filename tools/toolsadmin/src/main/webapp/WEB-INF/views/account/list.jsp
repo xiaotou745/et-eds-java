@@ -10,19 +10,36 @@
 List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleData");
 %>
 <script src="<%=basePath%>/js/bootstrap-treeview.js"></script>
-<div class="wrapper wrapper-content animated fadeInRight">
+<div
+	class="wrapper wrapper-content animated fadeInRight form-horizontal">
 
 	<div class="row">
-	    <div class="col-lg-12">
-	        <div class="input-group" style="margin-bottom:5px;">
-	            <input type="text" placeholder="请输入登录名称" class="input-sm form-control" id="txtKeyword" style="width:250px;height:34px;" value=""/>
-	            <button type="button" class="btn btn-w-m btn-primary" id=btnSearch style="margin-left:3px;">查询</button>
-	            <button type="button" class="btn btn-w-m btn-primary" style="margin-left:3px;" data-toggle="modal" data-target="#myModal" id="addUser">添加用户</button>
-	        </div>
-	    </div>
+		<div class="col-lg-12">
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">登录名称:</label>
+						<div class="col-sm-8">
+							<input type="text" placeholder="请输入登录名称"
+								class="input-sm form-control" id="txtKeyword"
+								style="width: 250px; height: 34px;" value="" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3">
+					<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+						style="margin-left: 3px;">查询</button>
+					<button type="button" class="btn btn-w-m btn-primary"
+						style="margin-left: 3px;" data-toggle="modal"
+						data-target="#myModal" id="addUser">添加用户</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
- 
+
 <div id="content">
 	
 </div>
@@ -72,7 +89,7 @@ List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleD
 	</div>
 </div>
 <div class="modal inmodal fade" id="myModal" tabindex="-1" role="dialog"  aria-hidden="true">
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-sm">
     <div class="modal-content">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -80,11 +97,10 @@ List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleD
 	</div>
 <div class="modal-body">
 
-真实姓名：<input id="txtUserName"/><br/><br/>
-登录名称：<input id="txtLoginName"/><br/><br/>
-登录密码：<input type="password" id="txtPwd"/><br/><br/>
-确认密码：<input type="password" id="txtConfirmPwd"/><br/><br/>
-<br/>
+真实姓名：<input id="txtUserName" class="form-control"/><br/>
+登录名称：<input id="txtLoginName" class="form-control"/><br/>
+登录密码：<input type="password" id="txtPwd" class="form-control"/><br/>
+确认密码：<input type="password" id="txtConfirmPwd" class="form-control"/><br/>
 是否启用：<input type="radio" value="1" name="radstatus" id="radyes" checked/>
 	  <label for="radyes">启用</label>
 	  <input type="radio" value="0" name="radstatus" id="radno"/>
@@ -124,6 +140,33 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+function modify(id) {
+	var paramaters = {
+			"userId" :  id
+		};
+		var url = "<%=basePath%>/account/getuserinfo";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				$("#txtUserName").val(result.username);
+				$("#txtLoginName").val(result.loginname);
+				$("#txtPwd").val();
+				$("#txtConfirmPwd").val();
+				if(result.status==1){
+					$("#radyes").prop('checked','checked')
+				}
+				else{
+					$("#radno").prop('checked','checked')
+				}
+			    userid=id;
+				optype=1;
+		        $('#myModal').modal('show');
+			}
+		});
+
+}
 function updateuser(){
 	if($("#txtUserName").val()==""){
 		alert("用户名不能为空");
