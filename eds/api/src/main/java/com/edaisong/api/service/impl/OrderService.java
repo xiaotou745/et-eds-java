@@ -2304,6 +2304,7 @@ public class OrderService implements IOrderService {
 		odResp.setIsorderchecked(ooModel.getIsorderchecked());
 		odResp.setCancelTime(ooModel.getCancelTime());
 		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());
+		odResp.setExpecteddelivery(ooModel.getExpecteddelivery());
 		
 		resp.setStatus(OrderDetailGet.Success.value());
 		resp.setMessage(OrderDetailGet.Success.desc()); 
@@ -2521,7 +2522,7 @@ public class OrderService implements IOrderService {
 		order.setProductname(req.getProductname());//物品名称
 		order.setRemark(req.getRemark());//备注
 		double amount=req.getAmount();
-		if(req.getTipamount()>0)
+		if(req.getTipamount()!=null && req.getTipamount()>0)
 			amount+=req.getTipamount();
 		order.setAmount(amount);//加小费金  金额				
 		order.setWeight(req.getWeight());//订单总重量
