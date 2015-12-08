@@ -54,12 +54,6 @@
                             <input type="text" name="txtUrl" class="form-control input-sm" placeholder="Url" />
                         </div>
                     </div>
-					<div class="form-group J_Second">
-                        <label class="control-label col-sm-2">ViewPath</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="txtViewPath" class="form-control input-sm" placeholder="JavaViewPath" required="required" />
-                        </div>
-                    </div>
                     <div class="form-group J_First">
                         <label class="control-label col-sm-2">Icon</label>
                         <div class="col-sm-10">

@@ -26,6 +26,7 @@
         t.Id,t.PriorityLevel,t.Type,t.UserId,t.[User],t.Status,t.Title,t.Content,
         t.WhoId,t.Who,t.PubTime,t.StartTime,t.TaskTime,t.CompleteTime,t.IsEnable
     </sql>
+    
  
     <insert id="insert" parameterType="com.edaisong.toolsentity.domain.Tasks" useGeneratedKeys="true" keyProperty="id">
         insert into Tasks(PriorityLevel,Type,UserId,[User],Title,Content)
@@ -83,5 +84,46 @@
 		where t.IsEnable=1
 			and (t.Type=2 or (t.Type=1 and t.UserId=#{userId,jdbcType=INTEGER}))
     </select>
+    
+    <select id="select" resultMap="baseResultMap" parameterType="com.edaisong.toolsentity.req.TasksQueryReq">
+    	select <include refid="baseColumnList"></include>
+    	from Tasks t(nolock)
+    	<include refid="selectWhere"></include>
+    </select>
  
+  	<sql id="selectWhere">
+		where 1=1
+		<if test="userId>=0">
+			and t.UserId=${userId}
+		</if>
+		<if test="type!=null and type!=''">
+			and t.type =${type}
+		</if>
+		<choose>
+			<when test="timeType==0">
+				<if test="startTime!=null and startTime!=''">
+					and t.PubTime >= '${startTime}'
+				</if>
+				<if test="endTime != null and endTime != ''">
+					<![CDATA[and t.PubTime <= '${endTime}']]>
+				</if>
+			</when>
+			<when test="timeType==1">
+				<if test="startTime!=null and startTime!=''">
+					and t.StartTime >= '${startTime}'
+				</if>
+				<if test="endTime != null and endTime != ''">
+					<![CDATA[and t.StartTime <= '${endTime}']]>
+				</if>
+			</when>
+			<when test="timeType==2">
+				<if test="startTime!=null and startTime!=''">
+					and dateadd(hh,t.TaskTime,t.StartTime) >= '${startTime}'
+				</if>
+				<if test="endTime != null and endTime != ''">
+					<![CDATA[and dateadd(hh,t.TaskTime,t.StartTime) <= '${endTime}']]>
+				</if>
+			</when>
+		</choose>
+	</sql>
 </mapper>

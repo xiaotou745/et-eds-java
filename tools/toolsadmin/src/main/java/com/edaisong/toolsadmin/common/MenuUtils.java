@@ -31,6 +31,10 @@ public class MenuUtils {
 	public static List<Menu> getAllMenus() {
 		return menuService.getAll();
 	}
+	
+	public static boolean hasMenus(){
+		return menuService.getAll().size()>0;
+	}
 
 	/**
 	 * 获取一级菜单

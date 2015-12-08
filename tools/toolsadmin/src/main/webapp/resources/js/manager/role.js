@@ -73,7 +73,6 @@ function initJsTree() {
             data: { roleId: roleId },
             dataType: "json",
             success: function (resp) {
-            	console.log(resp);
                 if (!resp.iserror) {
                     $("#menusContainer").jstree().uncheck_all();
                     $("#menusContainer").jstree().check_node(resp.data);

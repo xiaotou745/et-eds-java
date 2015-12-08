@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.toolsentity.common.RequestBase;
 import com.edaisong.toolsentity.domain.Tasks;
 import com.edaisong.toolsentity.req.TaskChangeStatusReq;
 import com.edaisong.toolsentity.req.TasksStatus;
@@ -91,5 +92,10 @@ public class TasksService implements ITasksService {
 		} else if (statusReq.getTargetStatus().equals(TasksStatus.Completed.value())) {
 			tasksDao.toCompleted(statusReq.getTaskId());
 		}
+	}
+
+	@Override
+	public List<Tasks> query(RequestBase queryReq) {
+		return tasksDao.select(queryReq);
 	}
 }

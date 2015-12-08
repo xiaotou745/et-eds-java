@@ -18,7 +18,7 @@
 		return;
 	}
 	List<Integer> lstUserMenuIds = MenuUtils.getCurrentUserPrivileges(currentUser.getUserId());
-	String viewPath = request.getAttribute("viewPath").toString();
+	String url = request.getAttribute("servletPath").toString();
 	List<Menu> topMenus = MenuUtils.getTopMenus();
 %>
 <nav class="navbar-default navbar-static-side" role="navigation">
@@ -48,7 +48,7 @@
             		if(lstUserMenuIds.contains(child.getId())){
             			hasChild = true;
             		}
-            		if(child.getViewPath().toLowerCase().equals(viewPath)){
+            		if(child.getUrl().toLowerCase().equals(url)){
             			topClass = " class='active'";
             		}
             	}
@@ -63,7 +63,7 @@
 	                    		if(!lstUserMenuIds.contains(childMenu.getId())){
 	                    			continue;
 	                    		}
-	                    		String childClass = viewPath.toLowerCase().equals(childMenu.getViewPath().toLowerCase())?" class='active'":"";
+	                    		String childClass = url.toLowerCase().equals(childMenu.getUrl().toLowerCase())?" class='active'":"";
 	                    	%>
 	                    		<li <%=childClass%>><a href="<%=basePath + childMenu.getUrl()%>"><%=childMenu.getName() %></a></li>
 	                    	<%}%>

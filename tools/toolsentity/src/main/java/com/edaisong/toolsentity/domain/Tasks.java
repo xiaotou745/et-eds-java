@@ -2,6 +2,10 @@ package com.edaisong.toolsentity.domain;
 
 import java.util.Date;
 
+import com.edaisong.toolscore.enums.TaskStatus;
+import com.edaisong.toolscore.util.DateTime;
+import com.edaisong.toolsentity.req.TasksStatus;
+
 /**
  * 实体类Tasks. (属性说明自动提取数据库字段的描述信息)
  * 
@@ -320,5 +324,27 @@ public class Tasks {
 
 	public void setTaskTime(Integer taskTime) {
 		this.taskTime = taskTime;
+	}
+
+	/**
+	 * 获取预计完成时间
+	 * 
+	 * @return 返回预计完成时间
+	 */
+	public Date getExpectCompleteTime() {
+		if (getStartTime() == null) {
+			return getStartTime();
+		}
+		return DateTime.parse(getStartTime()).addHours(getTaskTime()).getTime();
+	}
+
+	public boolean isCompleteTimeout() {
+		if(getStatus().equals(TasksStatus.Completed.value())){
+			return getCompleteTime().compareTo(getExpectCompleteTime()) > 0;
+		}else if(getStatus().equals(TasksStatus.InProcess.value())){
+			return DateTime.Now.compareTo(getExpectCompleteTime()) > 0;
+		}else{
+			return true;
+		}
 	}
 }

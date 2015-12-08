@@ -7,8 +7,10 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.toolsapi.common.DaoBase;
+import com.edaisong.toolsentity.common.RequestBase;
 import com.edaisong.toolsentity.domain.Tasks;
 import com.edaisong.toolsentity.req.TaskChangeStatusReq;
+import com.edaisong.toolsentity.req.TasksQueryReq;
 import com.edaisong.toolsentity.req.TasksStatus;
 import com.edaisong.toolsapi.dao.inter.ITasksDao;
 
@@ -79,15 +81,14 @@ public class TasksDao extends DaoBase implements ITasksDao {
 	public List<Tasks> getByUserId(Integer userId) {
 		return getMasterSqlSessionUtil().selectList("com.edaisong.toolsapi.dao.inter.ITasksDao.getByUserId", userId);
 	}
-/*
-	@Override
-	public void updateStatus(Integer taskId, TasksStatus targetStatus) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", taskId);
-		params.put("status", targetStatus.value());
-		getMasterSqlSessionUtil().delete("com.edaisong.toolsapi.dao.inter.ITasksDao.updateStatus", params);
-	}
-*/
+
+	/*
+	 * @Override public void updateStatus(Integer taskId, TasksStatus
+	 * targetStatus) { Map<String, Object> params = new HashMap<String,
+	 * Object>(); params.put("id", taskId); params.put("status",
+	 * targetStatus.value()); getMasterSqlSessionUtil().delete(
+	 * "com.edaisong.toolsapi.dao.inter.ITasksDao.updateStatus", params); }
+	 */
 	@Override
 	public void toToDo(Integer taskId) {
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -97,7 +98,7 @@ public class TasksDao extends DaoBase implements ITasksDao {
 		params.put("who", "");
 		params.put("startTime", null);
 		params.put("taskTime", 0);
-		
+
 		getMasterSqlSessionUtil().update("com.edaisong.toolsapi.dao.inter.ITasksDao.toToDoInProcess", params);
 	}
 
@@ -116,5 +117,10 @@ public class TasksDao extends DaoBase implements ITasksDao {
 	@Override
 	public void toCompleted(Integer taskId) {
 		getMasterSqlSessionUtil().update("com.edaisong.toolsapi.dao.inter.ITasksDao.toCompleted", taskId);
+	}
+
+	@Override
+	public List<Tasks> select(RequestBase queryReq) {
+		return getMasterSqlSessionUtil().selectList("com.edaisong.toolsapi.dao.inter.ITasksDao.select", queryReq);
 	}
 }

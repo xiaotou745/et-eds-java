@@ -28,8 +28,7 @@
 			for (Menu rootMenu : rootMenus) {%>
 			<tr data-id="<%=rootMenu.getId()%>" data-opennewwindow="<%=rootMenu.getOpenNewWindow() %>"
 				data-orderby="<%=rootMenu.getOrderBy()%>"
-				data-parentid="<%=rootMenu.getParentId()%>"
-				data-viewpath="<%=rootMenu.getViewPath()%>">
+				data-parentid="<%=rootMenu.getParentId()%>">
 				<td width="10px"><a class="J_Toggle" data-show="true"><i class="fa fa-minus"></i></a></td>
 				<td><a data-toggle="modal" data-type="2" href="#modalMenus"><strong class="text-navy" name="name"><%=rootMenu.getName()%></strong></a></td>
 				<td name="url"><%=rootMenu.getUrl()%></td>
@@ -41,8 +40,7 @@
 				<tr parentid="<%=child.getParentId()%>" data-id="<%=child.getId()%>"
 					data-opennewwindow="<%=child.getOpenNewWindow() %>"
 					data-orderby="<%=child.getOrderBy()%>" 
-					data-parentid="<%=child.getParentId()%>"
-					data-viewpath="<%=child.getViewPath()%>">
+					data-parentid="<%=child.getParentId()%>">
 					<td></td>
 					<td><a data-toggle="modal" href="#modalMenus" data-type="2" name="name"><%=child.getName()%></a></td>
 					<td><code name="url"><%=child.getUrl()%></code></td>

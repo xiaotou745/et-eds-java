@@ -6317,6 +6317,7 @@ body.skin-3 {
 .skin-3 .nav.nav-tabs > li.active {
   background: transparent;
 }
+.driver-v {border-left: 2px solid #B3AAAA; height:20px;}
 @media (min-width: 768px) {
   #page-wrapper {
     position: inherit;

@@ -2,8 +2,10 @@ package com.edaisong.toolsapi.dao.inter;
 
 import java.util.List;
 
+import com.edaisong.toolsentity.common.RequestBase;
 import com.edaisong.toolsentity.domain.Tasks;
 import com.edaisong.toolsentity.req.TaskChangeStatusReq;
+import com.edaisong.toolsentity.req.TasksQueryReq;
 import com.edaisong.toolsentity.req.TasksStatus;
 
 /**
@@ -67,7 +69,7 @@ public interface ITasksDao {
 	 * @param targetStatus
 	 *            目标状态
 	 */
-//	void updateStatus(Integer taskId, TasksStatus targetStatus);
+	// void updateStatus(Integer taskId, TasksStatus targetStatus);
 
 	/**
 	 * 更改状态
@@ -75,7 +77,7 @@ public interface ITasksDao {
 	 * @param statusReq
 	 *            状态参数
 	 */
-//	void updateStatus(TaskChangeStatusReq statusReq);
+	// void updateStatus(TaskChangeStatusReq statusReq);
 
 	/**
 	 * 删除一条记录
@@ -105,4 +107,13 @@ public interface ITasksDao {
 	 * @return 返回指定用户的任务列表
 	 */
 	List<Tasks> getByUserId(Integer userId);
+
+	/**
+	 * 查询
+	 * 
+	 * @param queryReq
+	 *            查询条件
+	 * @return 返回满足查询条件的任务列表
+	 */
+	List<Tasks> select(RequestBase queryReq);
 }

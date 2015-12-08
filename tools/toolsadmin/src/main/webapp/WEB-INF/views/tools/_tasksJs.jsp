@@ -4,9 +4,11 @@
 	String basePath = PropertyUtils.getProperty("java.toolsadmin.url");
 %>
 <link href="<%=basePath %>/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="<%=basePath %>/css/plugins/datapicker/datepicker3.css" rel="stylesheet"></link>
 <script src="<%=basePath %>/js/plugins/iCheck/icheck.min.js"> </script>
 <script src="<%=basePath %>/js/plugins/validate/jquery.validate.min.js"> </script>
 <script src="<%=basePath %>/js/plugins/validate/messages_zh.js"> </script>
+<script src="<%=basePath %>/js/plugins/datapicker/bootstrap-datepicker.js"> </script>
 <link href="<%=basePath %>/css/plugins/mobiscroll/mobiscroll.custom-2.5.2.min.css" rel="stylesheet">
 <script src="<%=basePath %>/js/plugins/mobiscroll/mobiscroll.custom-2.5.2.min.js"> </script>
 <script src="<%=basePath %>/js/plugins/mobiscroll/mobiscroll.datetime-2.5.1.js"> </script>

@@ -3,6 +3,7 @@
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@page import="java.util.List" %>
 <%@page import="com.edaisong.toolscore.util.EnumHelper"%>
+<%@page import="com.edaisong.toolscore.util.DateTime"%>
 <%@page import="com.edaisong.toolsentity.req.TaskPrivilege" %>
 <%@page import="com.edaisong.toolsentity.view.TasksViewModel" %>
 <%@page import="com.edaisong.toolsentity.domain.User" %>
@@ -17,25 +18,30 @@
             	<div class="form-group">
                     <label class="control-label">所属：</label>
                     <div class="radio i-checks">
-                        <label><input type="radio" value="1" name="typeq" checked="checked"> <i></i> 个人</label>
+                    	<label><input type="radio" value="" name="typeq" checked="checked"> <i></i> 全部</label>
+                        <label><input type="radio" value="1" name="typeq"> <i></i> 个人</label>
                         <label><input type="radio" value="2" name="typeq"> <i></i> 公司</label>
                     </div>
                 </div>
-                <!-- <div class="divider"></div> -->
-                <!-- <br/> -->
-                <div class="form-group">
-                    <label class="control-label">创建时间：</label>
+                <div class="form-group m-l-md">
+                    <!-- <label class="control-label">创建时间：</label> -->
+                    <select class="input-sm form-control" id="selTimeType" >
+                    	<option value="0">创建时间</option>
+                    	<option value="1">开始时间</option>
+                    	<option value="2">要求完成时间</option>
+                    </select>
                     <div class="input-daterange input-group" id="datepicker">
-                        <input type="text" id="starttime" class="input-sm form-control" name="start" value="" />
+                        <input type="text" id="start" class="input-sm form-control" name="start" value="<%=DateTime.getInstance().getDate().addDays(-30).toString("yyyy-MM-dd") %>" />
                         <span class="input-group-addon">to</span>
-                        <input type="text" id="overtime" class="input-sm form-control" name="end" value="" />
+                        <input type="text" id="end" class="input-sm form-control" name="end" value="<%=DateTime.getInstance().getDate().toString("yyyy-MM-dd") %>" />
                         <span class="input-group-btn">
                             <button type="button" id="btnQuery" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
                         </span>
                     </div>
                 </div>
-
-                <a class="btn btn-primary pull-right" type="button" href="#modalTask" data-toggle="modal" data-type="1" data-whatever="创建任务"><i class="fa fa-check"></i>&nbsp;新增任务</a>
+                <div class="form-group m-l-lg">
+               		<a class="btn btn-primary" type="button" href="#modalTask" data-toggle="modal" data-type="1" data-whatever="创建任务"><i class="fa fa-check"></i>&nbsp;新增任务</a>
+                </div>
             </form>
         </div>
     </div>

@@ -18,7 +18,7 @@ $(function() {
 	});
 	$('#modalMenus').on('show.bs.modal', function(event) {
 		var button = $(event.relatedTarget); // Button that triggered the
-												// modal
+		// modal
 		var modal = $(this);
 		initModal(modal, button);
 	});
@@ -68,17 +68,13 @@ function initFormValidate() {
 		},
 		txtUrl : {
 			required : true
-		},
-		txtViewPath:{
-			required:true
 		}
 	};
 	var messages = {
 		txtName : "请输入菜单名称",
 		txtOrderBy : "请输入排序数字",
 		txtIcon : "父菜单必须指定一个icon",
-		txtUrl : "子菜单必须有Url",
-		txtViewPath:"viewpath必须填啊，跟选中项有关"
+		txtUrl : "子菜单必须有Url"
 	}
 	$("#form1").validate({
 		rules : rules,
@@ -121,12 +117,10 @@ function getModel() {
 		url : form.find("[name=txtUrl]").val(),
 		icon : form.find("[name=txtIcon]").val(),
 		orderBy : form.find("[name=txtOrderBy]").val(),
-		viewPath:form.find("[name=txtViewPath]").val(),
 		openNewWindow : form.find("[name=chkOpenNewWindow]").is(":checked")
 	};
 	if (menu.parentId == 0) {// 一级菜单
 		menu.url = "";
-		menu.viewPath="";
 		menu.openNewWindow = false;
 	} else {
 		menu.icon = "";
@@ -141,7 +135,7 @@ function initModal(modal, button) {
 		modal.find("[name=Id]").val(0);
 		modal.find(":text").val("");
 		modal.find("[name=selParentId]").val(
-		modal.find("[name=selParentId] option:first").val());
+				modal.find("[name=selParentId] option:first").val());
 	} else if (operateType == 2) { // 编辑
 		var $tr = button.parents("tr");
 		modal.find("[name=Id]").val($tr.data("id"));
@@ -150,7 +144,6 @@ function initModal(modal, button) {
 		modal.find("[name=selParentId]").trigger("change");
 		modal.find("[name=txtOrderBy]").val($tr.data("orderby"));
 		modal.find("[name=txtUrl]").val($tr.find("[name=url]").text());
-		modal.find("[name=txtViewPath]").val($tr.data("viewpath"));
 		modal.find("[name=txtIcon]").val($tr.find("[name=icon]").text());
 
 		var openNewWindow = $tr.data("opennewwindow");

@@ -57,11 +57,6 @@ public class Menu implements Serializable {
 	private Date createTime;
 
 	/**
-	 * Jva ViewPath路径
-	 */
-	private String viewPath;
-
-	/**
 	 * 获取菜单ID
 	 */
 	public Integer getId() {
@@ -212,24 +207,5 @@ public class Menu implements Serializable {
 	 */
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
-	}
-
-	/**
-	 * 获取 java viewpath
-	 * 
-	 * @return 返回 java viewpath
-	 */
-	public String getViewPath() {
-		return viewPath;
-	}
-
-	/**
-	 * 设置 java viewpath
-	 * 
-	 * @param viewPath
-	 *            java viewpath
-	 */
-	public void setViewPath(String viewPath) {
-		this.viewPath = viewPath;
 	}
 }

@@ -1,11 +1,14 @@
 package com.edaisong.toolsadmin.controller;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.time.DateUtils;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -19,11 +22,14 @@ import com.edaisong.toolsapi.redis.RedisService;
 import com.edaisong.toolsapi.service.inter.ITasksService;
 import com.edaisong.toolsapi.service.inter.IUserService;
 import com.edaisong.toolscore.util.AjaxResult;
+import com.edaisong.toolscore.util.DateTime;
 import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.ParseHelper;
+import com.edaisong.toolsentity.common.RequestBase;
 import com.edaisong.toolsentity.domain.Tasks;
 import com.edaisong.toolsentity.domain.User;
 import com.edaisong.toolsentity.req.TaskChangeStatusReq;
+import com.edaisong.toolsentity.req.TasksQueryReq;
 import com.edaisong.toolsentity.req.TasksStatus;
 import com.edaisong.toolsentity.view.TasksViewModel;
 
@@ -107,9 +113,13 @@ public class ToolsController {
 		viewModel.setUsers(allUsers);
 
 		Integer userId = UserIndentity.getIndentity(request).getUserId();
-		List<Tasks> lstTasks = tasksService.getByUserId(userId);
+		TasksQueryReq queryReq = new TasksQueryReq();
+		queryReq.setUserId(userId);
+		queryReq.setStartTime(DateTime.getInstance().getDate().addDays(-30).toString());
+		queryReq.setEndTime(DateTime.getInstance().getDate().addDays(1).toString());
+		List<Tasks> lstTasks = tasksService.query(queryReq);
+
 		viewModel.setTasks(lstTasks);
-		
 		viewModel.setCurUserId(userId);
 
 		model.addObject("dataOfModel", viewModel);
@@ -118,14 +128,19 @@ public class ToolsController {
 	}
 
 	@RequestMapping("tasks/refresh")
-	public ModelAndView taskRefresh(HttpServletRequest request) {
+	public ModelAndView taskRefresh(HttpServletRequest request, TasksQueryReq queryReq) {
+		System.out.println("parameters:" + JsonUtil.obj2string(queryReq));
 		ModelAndView model = new ModelAndView("tools/_taskslist");
 
 		TasksViewModel viewModel = new TasksViewModel();
 
 		Integer userId = UserIndentity.getIndentity(request).getUserId();
+		queryReq.setUserId(userId);
+		queryReq.setStartTime(DateTime.parse(queryReq.getStartTime(), "yyyy-MM-dd").getDate().toString());
+		queryReq.setEndTime(DateTime.parse(queryReq.getEndTime(), "yyyy-MM-dd").addDays(1).getDate().toString());
+		System.out.println("parameters2:" + JsonUtil.obj2string(queryReq));
+		List<Tasks> lstTasks = tasksService.query(queryReq);
 
-		List<Tasks> lstTasks = tasksService.getByUserId(userId);
 		viewModel.setTasks(lstTasks);
 		model.addObject("dataOfModel", viewModel);
 		return model;
@@ -176,7 +191,7 @@ public class ToolsController {
 			return AjaxResult.Error("参数错误");
 		}
 		Tasks task = tasksService.getById(statusParams.getTaskId());
-		if(task.getStatus().equals(statusParams.getTargetStatus())){
+		if (task.getStatus().equals(statusParams.getTargetStatus())) {
 			return AjaxResult.Error("状态不用更改");
 		}
 		if (task.getStatus().equals(TasksStatus.toDo.value())

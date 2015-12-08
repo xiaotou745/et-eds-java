@@ -29,7 +29,7 @@
             	<%for(Tasks task : model.getByStatus(TasksStatus.toDo.value())){%>
             		<li data-id="<%=task.getId() %>" data-status="<%=task.getStatus() %>" data-type="<%=task.getType() %>" class="danger-element">
 	                    <h3><%=task.getTitle() %></h3>
-	                    <span><%=task.getContent() %></span>
+	                    <pre><%=task.getContent() %></pre>
 	                    <div class="agile-detail">
 	                        <a href="javascript:;" class="pull-right J_Remove"><i class="fa fa-trash-o"></i></a>
 	                        <a href="#modalTask" data-toggle="modal" data-type="2" data-whatever="修改任务" class="pull-right J_Edit m-r-sm"><i class="fa fa-edit"></i></a>
@@ -48,14 +48,20 @@
             <!-- <p class="small"><i class="fa fa-hand-o-up"></i> 真的可以拖拽啊.</p> -->
             <hr/>
             <ul data-status="2" class="sortable-list connectList agile-list ui-sortable">
-            	<%for(Tasks task : model.getByStatus(TasksStatus.InProcess.value())){%>
+            	<%for(Tasks task : model.getByStatus(TasksStatus.InProcess.value())){
+            		String timeOutText1 = task.isCompleteTimeout()?"延期":"正常";
+            		String timeOutClass1 = task.isCompleteTimeout()?"text-danger":"text-navy";%>
             		<li data-id="<%=task.getId() %>" data-status="<%=task.getStatus() %>" data-type="<%=task.getType() %>" class="warning-element">
-	                    <h3><%=task.getTitle() %></h3>
-	                    <span><%=task.getContent() %></span>
+	                    <h3><%=task.getTitle() %> - <small class="text-danger"><%=task.getWho() %></small>
+	                    	<small class="pull-right m-t-xs"><strong><%=task.getTaskTime() %>(小时)</strong></small></h3>
+	                    <pre><%=task.getContent() %></pre>
 	                    <div class="agile-detail">
+	                    	<strong class="pull-right <%=timeOutClass1%>"><%=timeOutText1 %></strong>
+	                        预计开始时间:<i class="fa fa-clock-o"></i> <%=ParseHelper.ToDateString(task.getStartTime()) %>
+	                    	<br/>
 	                        <a href="javascript:;" class="pull-right J_Remove"><i class="fa fa-trash-o"></i></a>
 	                        <a href="#modalTask" data-toggle="modal" data-type="2" data-whatever="修改任务" class="pull-right J_Edit m-r-sm"><i class="fa fa-edit"></i></a>
-	                        <i class="fa fa-clock-o"></i> <%=ParseHelper.ToDateString(task.getPubTime()) %>
+	                        计划完成时间:<i class="fa fa-clock-o"></i> <%=ParseHelper.ToDateString(task.getExpectCompleteTime()) %><br/>
 	                    </div>
                 	</li>
             	<%} %>
@@ -70,13 +76,19 @@
             <!-- <p class="small"><i class="fa fa-hand-o-up"></i> 确实可以拖拽.</p> -->
             <hr/>
             <ul data-status="3" class="sortable-list connectList agile-list ui-sortable">
-            	<%for(Tasks task : model.getByStatus(TasksStatus.Completed.value())){%>
+            	<%for(Tasks task : model.getByStatus(TasksStatus.Completed.value())){
+            		String timeOutText = task.isCompleteTimeout()?"延期":"正常";
+            		String timeOutClass = task.isCompleteTimeout()?"text-danger":"text-navy";
+            	%>
             		<li data-id="<%=task.getId() %>" data-status="<%=task.getStatus() %>" data-type="<%=task.getType() %>" class="success-element">
-	                    <h3><%=task.getTitle() %></h3>
-	                    <span><%=task.getContent() %></span>
+	                    <h3><%=task.getTitle() %> - <small class="text-danger"><%=task.getWho() %></small>
+	                    	<small class="pull-right m-t-xs"><strong><%=task.getTaskTime() %>(小时)</strong></small>
+	                    </h3>
+	                    <pre><%=task.getContent() %></pre>
 	                    <div class="agile-detail">
-                            <a href="javascript:;" class="pull-right btn btn-xs btn-white J_Hide">Hide</a>
-	                        <i class="fa fa-clock-o"></i> <%=ParseHelper.ToDateString(task.getPubTime()) %>
+                            计划完成时间:<i class="fa fa-clock-o"></i> <%=ParseHelper.ToDateString(task.getExpectCompleteTime()) %><br/>
+	                        实际完成时间:<i class="fa fa-clock-o"></i> <%=ParseHelper.ToDateString(task.getCompleteTime()) %>
+	                        <strong class="pull-right <%=timeOutClass%>"><%=timeOutText %></strong>
 	                    </div>
                 	</li>
             	<%} %>

@@ -12,18 +12,16 @@
 		<result property="openNewWindow" column="OpenNewWindow" jdbcType="BIT" />
 		<result property="createBy" column="CreateBy" jdbcType="VARCHAR" />
 		<result property="createTime" column="CreateTime" jdbcType="TIMESTAMP" />
-		<result property="viewPath" column="ViewPath" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="baseColumnList">
-		m.Id, m.Name, m.ParentId, m.Url, m.ViewPath, m.Icon, m.OrderBy,
+		m.Id, m.Name, m.ParentId, m.Url, m.Icon, m.OrderBy,
 		m.OpenNewWindow, m.CreateBy,m.CreateTime
 	</sql>
 	<insert id="insert" parameterType="com.edaisong.toolsentity.domain.Menu">
-		insert into Menu ( Name, ParentId, Url, ViewPath, Icon, OrderBy,OpenNewWindow, CreateBy )
+		insert into Menu ( Name, ParentId, Url, Icon, OrderBy,OpenNewWindow, CreateBy )
 		values ( #{name,jdbcType=NVARCHAR},
 			#{parentId,jdbcType=INTEGER},
 			#{url,jdbcType=VARCHAR},
-			#{viewPath,jdbcType=VARCHAR},
 			#{icon,jdbcType=VARCHAR},
 			#{orderBy,jdbcType=INTEGER},
 			#{openNewWindow,jdbcType=BIT},
@@ -35,7 +33,6 @@
 		set  Name=#{name,jdbcType=NVARCHAR},
 			 ParentId=#{parentId,jdbcType=INTEGER},
 			 Url=#{url,jdbcType=VARCHAR},
-			 ViewPath=#{viewPath,jdbcType=VARCHAR},
 			 Icon=#{icon,jdbcType=VARCHAR},
 			 OrderBy=#{orderBy,jdbcType=INTEGER},
 			 OpenNewWindow=#{openNewWindow,jdbcType=BIT}

@@ -3,12 +3,11 @@
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@page import="java.util.List" %>
 <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
+<%@page import="com.edaisong.toolsadmin.common.MenuUtils"%>
 <%@page import="com.edaisong.toolsentity.domain.Menu" %>
 <%@page import="com.edaisong.toolsentity.domain.Role" %>
 <%
 	String basePath = PropertyUtils.getProperty("java.toolsadmin.url");
-	List<Menu> allMenus = (List<Menu>) request.getAttribute("dataOfMenus");
-	List<Menu> rootMenus = (List<Menu>) request.getAttribute("dataOfRootMenus");
 	List<Role> allRoles = (List<Role>) request.getAttribute("dataOfRoles");
 %>
 <div class="row">
@@ -44,15 +43,12 @@
                                 </div>
                                 <div class="panel-body">
                                     <div id="menusContainer">
-                                    	<%if(rootMenus!=null && rootMenus.size()>0){
-                                    		for(Menu rootMenu:rootMenus){%>
+                                    	<%if(MenuUtils.hasMenus()){
+                                    		for(Menu rootMenu:MenuUtils.getTopMenus()){%>
                                     			<ul>
                                     				<li id="<%=rootMenu.getId() %>" class="jstree-open"><%=rootMenu.getName() %>
                                     				<ul>
-                                    				<%for(Menu child:allMenus){
-                                    					if(child.getParentId()!=rootMenu.getId()){
-                                    						continue;
-                                    					}%>
+                                    				<%for(Menu child:MenuUtils.getChildMenus(rootMenu.getId())){%>
                                     					<li id="<%=child.getId()%>"><%=child.getName()%></li>
                                     				<%} %>
                                     				</ul>

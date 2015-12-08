@@ -53,7 +53,7 @@ public class TasksViewModel {
 					.sorted((t1, t2) -> t2.getPriorityLevel() - t1.getPriorityLevel()).collect(Collectors.toList());
 		} else {
 			return myTasks.stream().filter(t -> t.getStatus().equals(status))
-					.sorted((t1, t2) -> t1.getCompleteTime().compareTo(t2.getCompleteTime()))
+					.sorted((t1, t2) -> t2.getCompleteTime().compareTo(t1.getCompleteTime()))
 					.collect(Collectors.toList());
 		}
 	}

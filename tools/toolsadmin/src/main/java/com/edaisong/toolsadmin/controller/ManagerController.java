@@ -161,14 +161,7 @@ public class ManagerController {
 
 	@RequestMapping("/role")
 	public ModelAndView role() {
-		List<Menu> allMenus = menuService.getAll();
 		List<Role> allRoles = roleService.getAll();
-		if (allMenus == null) {
-			allMenus = new ArrayList<Menu>();
-		}
-
-		List<Menu> rootMenus = allMenus.stream().filter(m -> m.getParentId() == 0)
-				.sorted((m1, m2) -> (m1.getParentId() - m2.getParentId())).collect(Collectors.toList());
 		Role current = null;
 		if (allRoles != null && allRoles.size() > 0) {
 			current = allRoles.get(0);
@@ -180,8 +173,6 @@ public class ManagerController {
 		model.addObject("footerJs", "manager/_roleJs");
 
 		model.addObject("dataOfRoles", allRoles);
-		model.addObject("dataOfMenus", allMenus);
-		model.addObject("dataOfRootMenus", rootMenus);
 		model.addObject("dataOfCurrentRole", current);
 		return model;
 	}
