@@ -62,7 +62,7 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 		System.out.println("未解密的入参:" + encryptMsg);
 		System.out.println("解密后的入参:" + decryptMsg);
 		logCustomerInfo(message, encryptMsg, decryptMsg);
-		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0) {
+		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0&&decryptMsg!=null&&!decryptMsg.isEmpty()) {
 			throw new RuntimeException("传递的入参是加密后的字符串，但是apihttp项目暂未开启AES解密");
 		}
 	}

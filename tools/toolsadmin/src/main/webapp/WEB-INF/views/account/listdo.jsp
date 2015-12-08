@@ -52,32 +52,3 @@
 <%=PageHelper.getPage(data.getPageSize(),
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
-<script type="text/javascript">
-    function modify(id) {
-    	var paramaters = {
-    			"userId" :  id
-    		};
-    		var url = "<%=basePath%>/account/getuserinfo";
-    		$.ajax({
-    			type : 'POST',
-    			url : url,
-    			data : paramaters,
-    			success : function(result) {
-    				$("#txtUserName").val(result.userName);
-    				$("#txtLoginName").val(result.loginName);
-    				$("#txtPwd").val();
-    				$("#txtConfirmPwd").val();
-    				if(result.status==1){
-    					$("#radyes").prop('checked','checked')
-    				}
-    				else{
-    					$("#radno").prop('checked','checked')
-    				}
-    			    userid=id;
-    				optype=1;
-    		        $('#myModal').modal('show');
-    			}
-    		});
-
-    }
-    </script>

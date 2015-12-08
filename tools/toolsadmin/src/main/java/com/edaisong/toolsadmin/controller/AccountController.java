@@ -39,8 +39,6 @@ import com.edaisong.toolsentity.domain.SimpleUserInfoModel;
 import com.edaisong.toolsentity.req.PagedAccountReq;
 import com.edaisong.toolsentity.req.UpdatePwdReq;
 
-
-//import java.util.function.Predicate;
 @Controller
 @RequestMapping("account")
 public class AccountController {
@@ -74,7 +72,11 @@ public class AccountController {
 		view.addObject("listData", resp);
 		return view;
 	}
-	
+	@RequestMapping("getuserinfo")
+	@ResponseBody
+	public Account getUserInfo(HttpServletRequest request,int userId) {
+		return accountService.getByID(userId);
+	}
 	@RequestMapping("code")
 	public ModelAndView code(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView("account/code");

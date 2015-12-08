@@ -7,13 +7,7 @@ import java.util.List;
 import com.edaisong.entity.OrderChild;
 
 public class OrderDetailReq {
-	private Integer orderId;
-
-    private Integer businessId;
-    
-    private Integer clienterId;
-    
-	    public Integer getOrderId() {
+	public Integer getOrderId() {
 		return orderId;
 	}
 
@@ -29,13 +23,10 @@ public class OrderDetailReq {
 		this.businessId = businessId;
 	}
 
-	public Integer getClienterId() {
-		return clienterId;
-	}
+	private Integer orderId;
 
-	public void setClienterId(Integer clienterId) {
-		this.clienterId = clienterId;
-	}
+    private Integer businessId;    
+  
 
 
 	    

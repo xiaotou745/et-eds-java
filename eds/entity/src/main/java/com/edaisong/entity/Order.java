@@ -119,7 +119,18 @@ public class Order {
     private Double basecommission;
     private Integer platform;
     
-    public String getPubname() {
+    private Double tipamount;
+    
+    
+    public Double getTipamount() {
+		return tipamount;
+	}
+
+	public void setTipamount(Double tipamount) {
+		this.tipamount = tipamount;
+	}
+
+	public String getPubname() {
 		return pubname;
 	}
 
