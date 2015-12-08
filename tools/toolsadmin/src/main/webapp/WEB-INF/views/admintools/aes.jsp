@@ -12,7 +12,7 @@ String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
 <div class="row">
 		<div class="col-lg-12">
 				<div class="row">
-							<label class="col-sm-4 control-label" style="color:red">加密时将需加密的字符串串填写至加密串区域,点击加密.解密时将串填写至解密串区域,点击解密</label>
+							<label class="col-sm-4 control-label" style="color:red">加密时将需加密的字符串串填写至加密串区域,点击加密.<br/>解密时将串填写至解密串区域,点击解密</label>
 				</div>
 				<div class="row">
 					<div class="col-lg-3">
