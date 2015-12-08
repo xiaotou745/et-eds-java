@@ -40,7 +40,11 @@ function base64encode(str){
  * @param {Object} str 
  */  
 function base64decode(str){  
-    var c1, c2, c3, c4;  
+	return utf8to16(decode(str));
+}
+//真正的解码方法
+function decode(str){
+	var c1, c2, c3, c4;  
     var i, len, out;  
     len = str.length;  
     i = 0;  
@@ -84,8 +88,8 @@ function base64decode(str){
             break;  
         out += String.fromCharCode(((c3 & 0x03) << 6) | c4);  
     }  
-    return out;  
-}  
+    return out; 
+}
 /** 
  * utf16转utf8 
  * @param {Object} str 

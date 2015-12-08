@@ -52,7 +52,7 @@
 			<td><%=ParseHelper.ToDateString(list.get(i).getUpdatetime(), "") %></td>
 			<td><%=list.get(i).getUpdatename()%></td>
 			<td><a href="javascript:void(0)" onclick="modifyApp(<%=list.get(i).getId()%>,'<%=list.get(i).getAppname()%>','<%=list.get(i).getConfigtype()%>','<%=base64ConfigValue%>')">修改</a>
-			<a href="javascript:void(0)" onclick="deleteApp(<%=list.get(i).getId()%>)">删除</a>
+			<br/><a href="javascript:void(0)" onclick="deleteApp(<%=list.get(i).getId()%>)">删除</a>
 			</td>
 		</tr>
 		<%

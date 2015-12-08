@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IQuartzServiceDao" >
+<resultMap id="BaseResultMap" type="com.edaisong.entity.QuartzServiceModel" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Name" property="name" jdbcType="NVARCHAR" />
+    <result column="ExecTime" property="execTime" jdbcType="NVARCHAR" />
+  </resultMap>
+  <select id="query" resultMap="BaseResultMap">
+ 	SELECT Id,FilePath,Packages,Name,ExecTime,IsStart,Remark FROM QuartzService qs(nolock)
+  </select>
+
+</mapper>

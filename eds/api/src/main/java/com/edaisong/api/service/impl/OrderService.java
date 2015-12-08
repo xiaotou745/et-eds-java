@@ -1072,7 +1072,7 @@ public class OrderService implements IOrderService {
 					.getDistance_OrderBy() + "m" : new BigDecimal(action
 					.getDistance_OrderBy() * 0.001).setScale(2,
 					BigDecimal.ROUND_HALF_UP).doubleValue()
-					+ "km"));
+					+ "km")); 
 			m.setOrders(orders);
 		} else { // 不需要计算骑士距离门店距离
 			m.setOrders(orderDao.queryOrder(query));
@@ -2251,13 +2251,14 @@ public class OrderService implements IOrderService {
 		odResp.setBusinesscommission(oModel.getBusinesscommission());			
 		odResp.setSettlemoney(oModel.getSettlemoney());	 
 		odResp.setDealcount(oModel.getDealcount());	 
-		if(req.getClienterId()!=null && req.getClienterId()>0)
+		if(req.getBusinessId()!=null && req.getBusinessId()>0)
 		{
-			odResp.setPickupcode("");
+			odResp.setPickupcode(oModel.getPickupcode());
+			
 		}
 		else
 		{
-			odResp.setPickupcode(oModel.getPickupcode());
+			odResp.setPickupcode("");
 		}
 		odResp.setOthercancelreason(oModel.getOthercancelreason());	 		
 		odResp.setCommissiontype(oModel.getCommissiontype());	 
@@ -2519,7 +2520,10 @@ public class OrderService implements IOrderService {
 		order.setReceiveareacode(null);////收货区域 代码	
 		order.setProductname(req.getProductname());//物品名称
 		order.setRemark(req.getRemark());//备注
-		order.setAmount((double)0);//金额				
+		double amount=req.getAmount();
+		if(req.getTipamount()>0)
+			amount+=req.getTipamount();
+		order.setAmount(amount);//加小费金  金额				
 		order.setWeight(req.getWeight());//订单总重量
 		order.setKm(req.getKm());//	距离		
 
@@ -2556,8 +2560,6 @@ public class OrderService implements IOrderService {
 				.getBaseCommission(orderCommission));
 		//扣商家
 		Double settleMoney=req.getAmount();
-		if(req.getTipamount()>0)
-			settleMoney+=req.getTipamount();
 		order.setSettlemoney(settleMoney);
 		order.setOrdercommission(settleMoney);
 		// 如果当前商家的余额不够支付订单了，则消费集团的金额
@@ -2639,7 +2641,7 @@ public class OrderService implements IOrderService {
 			child.setBaseCommission(0d);
 			child.setWebsiteSubsidy(0d);
 			child.setAdjustment(0d);
-			child.setPlatform(1);
+			child.setPlatform(3);
 			listOrderChild.add(child);			
 			
 			return listOrderChild;
