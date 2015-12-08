@@ -43,7 +43,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	/**
 	 * 
 	 */
-	private String sessionKey = "ss";
+	private String sessionKey = "6102406e99c58f1bdaf2d37b1ca7cd133a84e0087e3a7422532754203";
 	/**
 	 * 
 	 */
@@ -66,7 +66,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 			resp.setError_code(response.getAckOrderResult().getErrorCode());
 			resp.setError_msg(response.getAckOrderResult().getErrorMsg());
 			return resp;
-		} catch (ApiException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -96,7 +96,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 			resp.setError_code(response.getDeliveryUpdateResult().getErrorCode());
 			resp.setError_msg(response.getDeliveryUpdateResult().getErrorMsg());
 			return resp;
-		} catch (ApiException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -123,7 +123,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 			resp.setError_msg(response.getDeliveryOrderResult().getErrorMsg());
 			resp.setResult(response.getDeliveryOrderResult().getResult());
 			return resp;
-		} catch (ApiException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -149,7 +149,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 			resp.setError_code(response.getDeliveryOrderResult().getErrorCode());
 			resp.setError_msg(response.getDeliveryOrderResult().getErrorMsg());
 			resp.setResult(response.getDeliveryOrderResult().getResult());
-		} catch (ApiException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -176,7 +176,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 			resp.setError_code(response.getDeliveryLocationResult().getErrorCode());
 			resp.setError_msg(response.getDeliveryLocationResult().getErrorMsg());
 			resp.setResult(response.getDeliveryLocationResult().getResult());
-		} catch (ApiException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

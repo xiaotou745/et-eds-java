@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IOrderTipCostDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.OrderTipCost" >
+    <result column="Id" property="id" jdbcType="INTEGER" />
+    <result column="OrderId" property="orderid" jdbcType="INTEGER" />
+    <result column="Amount" property="amount" jdbcType="DECIMAL" />
+    <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.edaisong.entity.OrderTipCost" >
+    insert into OrderTipCost (Id, OrderId, Amount, 
+      CreateName, CreateTime)
+    values (#{id,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
+      #{createname,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.OrderTipCost" >
+    insert into OrderTipCost
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orderid != null" >
+        OrderId,
+      </if>
+      <if test="amount != null" >
+        Amount,
+      </if>
+      <if test="createname != null" >
+        CreateName,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createname != null" >
+        #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

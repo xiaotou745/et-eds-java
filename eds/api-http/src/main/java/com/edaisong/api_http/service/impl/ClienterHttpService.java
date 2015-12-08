@@ -11,6 +11,7 @@ import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api_http.service.inter.IClienterHttpService;
 import com.edaisong.core.enums.OrderGrabEnum;
+import com.edaisong.core.enums.VehicleEnum;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.enums.returnenums.RemoveRelationReturnEnum;
 import com.edaisong.entity.Clienter;
@@ -93,6 +94,7 @@ public class ClienterHttpService implements IClienterHttpService {
 		res.setStatus(HttpReturnRnums.Success.value());
 		res.setMessage(HttpReturnRnums.Success.desc());
 		ClienterUserStatusResp clienter = iClienterService.getUserStatus(req);
+		clienter.setVehicleId(VehicleEnum.getEnum(clienter.getVehicleName()).value());
 		res.setResult(clienter);		
 		return res;
 	}
@@ -101,6 +103,7 @@ public class ClienterHttpService implements IClienterHttpService {
 		HttpResultModel<Object> res = new HttpResultModel<Object>(); 
 		res.setStatus(HttpReturnRnums.Success.value());
 		res.setMessage(HttpReturnRnums.Success.desc());
+		req.setVehicleName(VehicleEnum.getEnum(req.getVehicleId()).desc());
 		int modifyResult = iClienterService.modifyVehicle(req);
 		if(modifyResult <=0 ){
 			res.setStatus(HttpReturnRnums.Fail.value());

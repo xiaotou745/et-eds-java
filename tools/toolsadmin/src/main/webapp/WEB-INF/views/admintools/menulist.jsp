@@ -627,7 +627,7 @@ var jss={
 	function save2ji(){
 		var menuName = $("#2jimenuName").val();
 		var authcode=$("#2jiAuthCode").val();
-		var url=$("#2jiAuthCode").val();
+		var url=$("#2jiUrl").val();
 		if(menuName == ''){
 			alert("请输入菜单名称!");
 			return;

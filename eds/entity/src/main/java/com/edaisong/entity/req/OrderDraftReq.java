@@ -73,7 +73,18 @@ public class OrderDraftReq {
 
     private Double km;
     
-    public String getVerificationcode() {
+    private Double tipamount;    
+    
+    
+    public Double getTipamount() {
+		return tipamount;
+	}
+
+	public void setTipamount(Double tipamount) {
+		this.tipamount = tipamount;
+	}
+
+	public String getVerificationcode() {
 		return verificationcode;
 	}
 
