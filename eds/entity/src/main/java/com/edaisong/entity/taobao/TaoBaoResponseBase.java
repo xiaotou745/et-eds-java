@@ -6,7 +6,7 @@ package com.edaisong.entity.taobao;
  * @date 2015年11月13日 14:48:49
  */
 public class TaoBaoResponseBase {
-	private boolean is_success;
+	private Boolean is_success;
 	private String error_code;
 	private String error_msg;
 	private Boolean result;
@@ -16,7 +16,7 @@ public class TaoBaoResponseBase {
 	 * 
 	 * @return
 	 */
-	public boolean isIs_success() {
+	public Boolean isIs_success() {
 		return is_success;
 	}
 
@@ -25,7 +25,7 @@ public class TaoBaoResponseBase {
 	 * 
 	 * @param is_success
 	 */
-	public void setIs_success(boolean is_success) {
+	public void setIs_success(Boolean is_success) {
 		this.is_success = is_success;
 	}
 
