@@ -38,12 +38,14 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 			String interceptSwith = PropertyUtils.getProperty("InterceptSwith");// "1"// 开启加密										
 			if (interceptSwith.equals("1")) {
 				System.out.println("已开启AES解密拦截器");
-				if (inputMsg.indexOf("data")<0) {
+				if (inputMsg.indexOf("data")<0&&inputMsg!=null&&!inputMsg.isEmpty()) {
 					throw new RuntimeException("传递的入参是没有加密的字符串，但是apihttp项目开启了AES解密");
 				}
-				AesParameterReq req = JsonUtil.str2obj(inputMsg,AesParameterReq.class);
-				encryptMsg = req.getData();
-				decryptMsg = AES.aesDecrypt(StringUtils.trimRight(req.getData(), "\n"));// AES解密
+				if (inputMsg!=null&&!inputMsg.isEmpty()) {
+					AesParameterReq req = JsonUtil.str2obj(inputMsg,AesParameterReq.class);
+					encryptMsg = req.getData();
+					decryptMsg = AES.aesDecrypt(StringUtils.trimRight(req.getData(), "\n"));// AES解密
+				}
 			} else {
 				encryptMsg = inputMsg;
 				decryptMsg = inputMsg;
