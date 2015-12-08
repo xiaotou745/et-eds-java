@@ -1,16 +1,24 @@
 package com.edaisong.toolsapi.mongo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.toolscore.util.JsonUtil;
+import com.edaisong.toolsentity.common.PagedResponse;
+import com.edaisong.toolsentity.domain.ActionLog;
+import com.edaisong.toolsentity.req.PagedMongoLogReq;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.QueryOperators;
 import com.mongodb.util.JSON;
 
-//@Service
+@Service
 public class MongoService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -43,6 +51,15 @@ public class MongoService {
 		DBCollection collection = mongoTemplate.getCollection(tableName);
 		DBObject dbobjct = (DBObject) JSON.parse(jsonInfo);
 		collection.insert(dbobjct);
+		  List<DBObject> list =collection.getIndexInfo();  
+		  for (DBObject dbObject : list) {
+			  System.out.println(dbObject);
+		}
+//		  collection.createIndex(new BasicDBObject("sourceSys", 1));  
+//		  collection.createIndex(new BasicDBObject("requestType", 1));  
+//		  collection.createIndex(new BasicDBObject("methodName", 1));  
+//		  collection.createIndex(new BasicDBObject("requestTime", 1));  
+//		  collection.createIndex(new BasicDBObject("exception", 1));  
 	}
 
 	public void selectAll() throws Exception {
@@ -63,16 +80,44 @@ public class MongoService {
 	 * 
 	 * @throws Exception
 	 */
-	public void selectPart() throws Exception {
-		DBCollection collection = mongoTemplate.getCollection("user");
-		// 可以直接put
-		BasicDBObject queryObject = new BasicDBObject();
-		queryObject.put("id", 1);
-		DBCursor querycursor = collection.find(queryObject);
-		System.out.println("条件查询如下：");
-		while (querycursor.hasNext()) {
-			System.out.println(querycursor.next());
+	public PagedResponse<ActionLog> selectPart(String tableName,PagedMongoLogReq req) throws Exception {
+		if (req.getCurrentPage()==0) {
+			req.setCurrentPage(1);  //默认第一页
 		}
+		if(req.getPageSize()==0){
+			req.setPageSize(15);  //默认页容量
+		}
+		PagedResponse<ActionLog> result=new PagedResponse<ActionLog>();
+
+		result.setCurrentPage(req.getCurrentPage());
+		result.setPageSize(req.getPageSize());
+
+
+		DBCollection collection = mongoTemplate.getCollection(tableName);
+		DBCursor querycursor = collection.find(req.getQueryObject());
+		result.setTotalRecord(querycursor.count());
+		int totalPage=0;
+		int modPage=result.getTotalRecord()%req.getPageSize();
+		if (modPage==0) {
+			totalPage=result.getTotalRecord()/req.getPageSize();
+		}else {
+			totalPage=result.getTotalRecord()/req.getPageSize()+1;
+		}
+		result.setTotalPage(totalPage);
+		
+		querycursor=querycursor.skip((req.getCurrentPage()-1)*req.getPageSize()).limit(req.getPageSize());
+		if (req.getSortObject()!=null) {
+			querycursor = querycursor.sort(req.getSortObject());
+		}
+		List<ActionLog> dataList=new ArrayList<ActionLog>();
+		String json="";
+		while (querycursor.hasNext()) {
+			json=JsonUtil.obj2string(querycursor.next());
+			ActionLog log=JsonUtil.str2obj(json, ActionLog.class);
+			dataList.add(log);
+		}
+		result.setResultList(dataList);
+		return result;
 	}
 
 	/**
