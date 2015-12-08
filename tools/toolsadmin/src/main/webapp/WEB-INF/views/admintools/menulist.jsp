@@ -37,7 +37,7 @@
 				<button class="btn btn-success" id="btnExpanAll" type="button">展开/折叠</button>
 				<button class="btn btn-success" type="button" id="addNewMenu">新增菜单</button>
 			</div>
-			<div class="controls">
+			<div class="controls" style="height:600px; overflow:auto; ">
 				<div class="test treeview" id="treeview11"></div>
 			</div>
 		</div>
