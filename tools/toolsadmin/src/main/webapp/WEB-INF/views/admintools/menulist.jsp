@@ -6,9 +6,10 @@
 <%@page import="com.edaisong.toolsentity.AuthorityMenuClass"%>
 <%@page import="com.edaisong.toolscore.util.EnumHelper"%>
 <%@page import="com.edaisong.toolscore.util.HtmlHelper"%>
+<%@page import="com.edaisong.toolsentity.domain.SelectAppModel"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.toolsadmin.url");
-	List<String> appNameList = (List<String>) request.getAttribute("appNameList");
+	List<SelectAppModel> appNameList = (List<SelectAppModel>) request.getAttribute("appNameList");
 %>
 <script src="<%=basePath%>/js/bootstrap-treeview.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -20,7 +21,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">系统名称:</label>
 							<div class="col-sm-8">
-							   <%=HtmlHelper.getSelect("appname", appNameList, "", "",null,null,"全部")%>
+							   <%=HtmlHelper.getSelect("appname", appNameList, "appName", "dbName",null,null,"全部")%>
 							</div>
 						</div>
 					</div>
@@ -376,9 +377,10 @@ var detail="";
 var $checkableTree;
 var jss={
 		search:function(currentPage){
+			$('#detail').hide();
 			var url="<%=basePath%>/admintools/menulistdo";
 			var par={
-					"appName":$('#appname').val(),
+					"appName":$('#appname option:selected').text(),
 			};
 			$.post(url,par,function(result){
 				if (result!="")
@@ -422,7 +424,7 @@ var jss={
 		var currId=$checkableTree.treeview('getChecked')[0].id;
 		var IsButton=$checkableTree.treeview('getChecked')[0].isbutton;
 		var par={
-				"appName":$('#appname').val(),
+				"appName":$('#appname option:selected').text(),
 				"parId":currId
 		};
 		$.post("<%=basePath%>/admintools/menudetail",par,function(da){
@@ -448,7 +450,7 @@ var jss={
 			$('#ParId').val(d.parid);
 			$('#MenuName').val(d.menuname);
 			$('#BeLock').val(d.belock);
-			if($('#appname').val()=="e代送"){$('#Url').val(d.javaUrl);}else{$('#Url').val(d.url);}
+			if($('#appname option:selected').val().toLowerCase()=="superman"){$('#Url').val(d.javaUrl);}else{$('#Url').val(d.url);}
 			$('#IsButton').val(d.isbutton);
 			$('#AuthCode').val(d.authCode);
 			$('#ParMenuName').val(d.parMenuName);
@@ -476,7 +478,7 @@ var jss={
 			$('#edit2hide').val(detail.id);
 			$('#edit2jimenuName').val(detail.menuname);
 			$('#edit2AuthCode').val(detail.authCode);
-			if($('#appname').val()=="e代送"){
+			if($('#appname option:selected').val().toLowerCase()=="superman"){
 				$('#edit2jiurl').val(detail.javaUrl);
 			}else{
 				$('#edit2jiurl').val(detail.url);
@@ -526,7 +528,7 @@ var jss={
 				"menuname":menuname,
 				"authCode":authcode,
 				"belock":belock,
-				"appName":$('#appname').val()}
+				"appName":$('#appname option:selected').text()}
 		postedit(par);
 	}
 	//2级菜单编辑保存
@@ -554,15 +556,15 @@ var jss={
 				"authCode":authcode,
 				"url":url,
 				"belock":belock,
-				"appName":$('#appname').val()}
+				"appName":$('#appname option:selected').text()}
 		var par2={
 				"id":$('#edit2hide').val(),
 				"menuname":menuname,
 				"authCode":authcode,
 				"javaUrl":url,
 				"belock":belock,
-				"appName":$('#appname').val()}
-		if($('#appname').val()=="e代送"){
+				"appName":$('#appname option:selected').text()}
+		if($('#appname option:selected').val().toLowerCase()=="superman"){
 			postedit(par2);
 		}else{
 			postedit(par);
@@ -589,7 +591,7 @@ var jss={
 				"menuname":menuname,
 				"authCode":authcode,
 				"belock":belock,
-				"appName":$('#appname').val()}
+				"appName":$('#appname option:selected').text()}
 		postedit(par);
 	}
 	//新增菜单
@@ -620,7 +622,7 @@ var jss={
 		var par={"parid":0,
 				"menuname":menuName,
 				"authCode":authcode,
-				"appName":$('#appname').val()};
+				"appName":$('#appname option:selected').text()};
 		postsave(par);
 	}
 	//保存2级菜单
@@ -644,13 +646,13 @@ var jss={
 				"menuname":menuName,
 				"authCode":authcode,
 				"url":url,
-				"appName":$('#appname').val()};
+				"appName":$('#appname option:selected').text()};
 		var par2={"parid":detail.id,
 				"menuname":menuName,
 				"authCode":authcode,
 				"javaUrl":url,
-				"appName":$('#appname').val()};
-		if($('#appname').val()=="e代送"){
+				"appName":$('#appname option:selected').text()};
+		if($('#appname option:selected').val().toLowerCase()=="superman"){
 			postsave(par2);
 		}else{
 			postsave(par);
@@ -673,7 +675,7 @@ var jss={
 				"menuname":menuName,
 				"authCode":authcode,
 				"isbutton":1,
-				"appName":$('#appname').val()};
+				"appName":$('#appname option:selected').text()};
 		
 		postsave(par);
 	}
