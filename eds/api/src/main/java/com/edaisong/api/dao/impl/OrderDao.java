@@ -499,4 +499,16 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.getShanSongOrderByNo"
 				, ordernNo);
 	}
+
+	@Override
+	public QueryOrderBResp shanSongQueryOrderCountB(QueryOrderReq query) {
+		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.shanSongQueryOrderCountB", query);
+	}
+
+	@Override
+	public List<QueryOrder> shanSongQueryOrderB(QueryOrderReq query) {
+		PagedResponse<QueryOrder> result=  getReadOnlySqlSessionUtil().selectPageList(
+				"IOrderDao.shanSongQueryOrderB", query);
+		return result.getResultList();
+	}
 }

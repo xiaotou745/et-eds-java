@@ -89,6 +89,7 @@ import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
+import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
@@ -2646,4 +2647,26 @@ public class OrderService implements IOrderService {
 			return listOrderChild;
 		}	
 	// endregion
+
+	@Override
+	public HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryOrderReq query) {
+		HttpResultModel<QueryOrderBResp> resultModel = new HttpResultModel<QueryOrderBResp>();
+		// 验证商家状态
+		BusinessStatus b=  businessDao.getUserStatus(query.getBusinessId());
+		if(b != null){
+			if (b.getStatus() != BusinessStatusEnum.AuditPass.value()) {
+				resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
+				resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+				return resultModel;
+			}
+		}else{
+			resultModel.setStatus(QueryOrderReturnEnum.BusinessNotExist.value());
+			resultModel.setMessage(QueryOrderReturnEnum.BusinessNotExist.desc());
+			return resultModel;
+		}
+		QueryOrderBResp queryOrderBResp = orderDao.shanSongQueryOrderCountB(query);
+		queryOrderBResp.setOrders(orderDao.shanSongQueryOrderB(query));
+		resultModel.setResult(queryOrderBResp);
+		return resultModel;
+	}
 }

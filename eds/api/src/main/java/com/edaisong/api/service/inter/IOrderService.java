@@ -376,4 +376,14 @@ public interface IOrderService {
 		 * @return
 		 */
 		ResponseBase shanSongCancelOrder(OptOrder cancelOrder);
+		
+		/**
+		 * B 端首页 闪送订单列表
+		 * @author CaoHeYang
+		 * @date 20150910
+		 * @param data 
+		 * @return
+		 */
+	    HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryOrderReq query) ;
+	    
 }

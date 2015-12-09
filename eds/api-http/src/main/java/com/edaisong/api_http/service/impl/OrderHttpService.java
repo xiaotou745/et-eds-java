@@ -373,4 +373,21 @@ public class OrderHttpService implements IOrderHttpService {
 		}
 		return orderService.getCompliteOrderGrab(para,0);
 	}
+
+	@Override
+	public HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(
+			QueryOrderReq para) {
+		if ( para.getBusinessId() == null
+				|| para.getBusinessId() == 0
+				|| (para.getStatus() != OrderStatus.New.value() && para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
+						.value() && para.getStatus()!=OrderStatus.Draft.value())) {
+			HttpResultModel<QueryOrderBResp> result=new HttpResultModel<QueryOrderBResp>();
+			result.setStatus(HttpReturnRnums.ParaError.value());
+			result.setMessage(HttpReturnRnums.ParaError.desc());
+			return result;   
+		}
+		para.setDateInfo(null);
+		para.setClienterId(null);
+		return orderService.shanSongQueryOrderB(para);
+	}
 }
