@@ -34,7 +34,6 @@ import com.edaisong.toolsentity.domain.ConnectionInfo;
 import com.edaisong.toolsentity.domain.MenuDetail;
 import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.domain.SelectAppModel;
-import com.edaisong.toolsentity.req.PagedAccountReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 import com.edaisong.toolsentity.req.PagedMongoLogReq;
 import com.mongodb.BasicDBObject;
