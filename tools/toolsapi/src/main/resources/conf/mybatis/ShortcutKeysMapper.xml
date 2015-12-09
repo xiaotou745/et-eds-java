@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.edaisong.toolsapi.dao.inter.IShortcutKeysDao">
+
+	<resultMap type="com.edaisong.toolsentity.domain.ShortcutKeys" id="baseResultMap">
+		<id property="id" column="Id" jdbcType="INTEGER"></id>
+		<result property="toolsName" column="ToolsName" jdbcType="NVARCHAR" />
+		<result property="key" column="Key" jdbcType="VARCHAR" />
+		<result property="desc" column="Desc" jdbcType="NVARCHAR" />
+		<result property="isCommonUse" column="IsCommonUse" jdbcType="BIT" />
+		<result property="createBy" column="CreateBy" jdbcType="NVARCHAR" />
+		<result property="createTime" column="CreateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="baseColumnList">
+		sk.Id,sk.ToolsName,sk.[Key],sk.[Desc],sk.IsCommonUse,sk.CreateBy,sk.CreateTime
+	</sql>
+
+	<insert id="insert" parameterType="com.edaisong.toolsentity.domain.ShortcutKeys" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into ShortcutKeys(ToolsName,[Key],[Desc],IsCommonUse,CreateBy)
+		values(
+		#{toolsName,jdbcType=NVARCHAR},
+		#{key,jdbcType=VARCHAR},
+		#{desc,jdbcType=NVARCHAR},
+		#{isCommonUse,jdbcType=BIT},
+		#{createBy,jdbcType=NVARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.edaisong.toolsentity.domain.ShortcutKeys">
+		update ShortcutKeys
+		set ToolsName=#{toolsName,jdbcType=NVARCHAR},
+		[Key]=#{key,jdbcType=VARCHAR},
+		[Desc]=#{desc,jdbcType=NVARCHAR},
+		IsCommonUse=#{isCommonUse,jdbcType=BIT}
+		where Id=#{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from ShortcutKeys where Id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<select id="getById" resultMap="baseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="baseColumnList"></include>
+		from ShortcutKeys sk(nolock) where Id=#{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getByToolName" resultMap="baseResultMap" parameterType="java.lang.String">
+		select <include refid="baseColumnList"></include> 
+		from ShortcutKeys sk(nolock) where sk.ToolsName=#{toolsName,jdbcType=NVARCHAR}
+		order by sk.isCommonUse desc
+	</select>
+	
+	<select id="getToolNames" resultType="java.lang.String">
+		select distinct ToolsName from ShortcutKeys (nolock)
+	</select>
+
+	<select id="select" resultMap="baseResultMap">
+		select
+		<include refid="baseColumnList"></include>
+		from ShortcutKeys sk(nolock) where <include refid="where"></include>
+		order by sk.IsCommonUse desc
+	</select>
+	
+	<sql id="where">
+		1=1
+		<if test="toolsName != null and toolsName != ''">
+			and sk.ToolsName = '${toolsName}'
+		</if>
+	</sql>
+
+</mapper>
