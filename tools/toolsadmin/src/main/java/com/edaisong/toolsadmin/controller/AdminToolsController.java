@@ -1,20 +1,16 @@
 package com.edaisong.toolsadmin.controller;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.Calendar;
 import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collector;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,26 +20,25 @@ import com.edaisong.toolsadmin.common.UserContext;
 import com.edaisong.toolsapi.common.SQLServerUtil;
 import com.edaisong.toolsapi.common.MybatisUtil;
 import com.edaisong.toolsapi.common.RedisUtil;
-import com.edaisong.toolsapi.redis.RedisService;
+import com.edaisong.toolsapi.mongo.MongoService;
 import com.edaisong.toolsapi.service.inter.IAppDbConfigService;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
 import com.edaisong.toolscore.enums.ServerType;
 import com.edaisong.toolscore.security.AES;
 import com.edaisong.toolscore.util.JsonUtil;
-import com.edaisong.toolscore.util.ParseHelper;
-import com.edaisong.toolscore.util.StringUtils;
-import com.edaisong.toolsentity.Account;
 import com.edaisong.toolsentity.AppDbConfig;
 import com.edaisong.toolsentity.AuthorityMenuClass;
-import com.edaisong.toolsentity.common.PagedRequestBase;
 import com.edaisong.toolsentity.common.PagedResponse;
-import com.edaisong.toolsentity.common.ResponseBase;
+import com.edaisong.toolsentity.domain.ActionLog;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
 import com.edaisong.toolsentity.domain.MenuDetail;
 import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.domain.SelectAppModel;
 import com.edaisong.toolsentity.req.PagedAccountReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
+import com.edaisong.toolsentity.req.PagedMongoLogReq;
+import com.mongodb.BasicDBObject;
+
 /**
  * 控制其他app
  * @author hailongzhao
@@ -56,6 +51,8 @@ public class AdminToolsController {
 	private IAuthorityMenuClassService authorityMenuClassService;
 	@Autowired
 	private IAppDbConfigService appDbConfigService;
+	@Autowired
+	private MongoService mongoService;
 	/**
 	 * 根据key模糊查询或精确查询
 	 * @param key
@@ -118,7 +115,7 @@ public class AdminToolsController {
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "菜单管理");
 		view.addObject("viewPath", "admintools/menulist");
-		view.addObject("appNameList", getConnList());
+		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
 		return view;
 	}
 	/**
@@ -352,6 +349,60 @@ public class AdminToolsController {
 		view.addObject("viewPath", "admintools/log");
 		return view;
 	}
+	/**
+	 * 日志分析
+	 * @author hailongzhao
+	 * @date 20151118
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("logdo")
+	public ModelAndView logdo(PagedMongoLogReq req) throws Exception {
+		ModelAndView view = new ModelAndView("admintools/logdo");
+		fillQuery(req);
+		PagedResponse<ActionLog> resp=mongoService.selectPart(getMongoTableName(req.getMonthInfo()), req);
+		view.addObject("listData", resp);
+		return view;
+	}
+	/**
+	 * 根据月份生产mongo中的表名称
+	 * @param monthInfo
+	 * @author hailongzhao
+	 * @date 20151208
+	 * @return
+	 */
+    private String getMongoTableName(String monthInfo){
+    	Calendar a=Calendar.getInstance();
+    	return "logtb_"+a.get(Calendar.YEAR)+"_"+monthInfo;
+    }
+    /**
+     * 根据页面上的查询条件组织对monmgo的查询request
+     * @author hailongzhao
+     * @date 20151208
+     * @param req
+     */
+    private void fillQuery(PagedMongoLogReq req){
+		BasicDBObject query=new BasicDBObject();
+        query.put("sourceSys", req.getSourceSys());
+		if (req.getRequestType()>-1) {
+	        query.put("requestType", req.getRequestType());
+		}
+		if (req.getExceptionShowType()==1) {//只看正常
+			query.put("stackTrace", "");
+		}
+		else if (req.getExceptionShowType()==2) {//只看异常
+			query.put("stackTrace", new BasicDBObject("$ne", ""));//stackTrace!=""
+		}
+		if (req.getRequestUrl()!=null&&!req.getRequestUrl().isEmpty()) {
+			//类似于sql中的like
+			Pattern pattern = Pattern.compile("^.*" + req.getRequestUrl()+ ".*$", Pattern.CASE_INSENSITIVE); 
+			query.put("requestUrl", pattern);
+		}
+		req.setQueryObject(query);
+		BasicDBObject sort=new BasicDBObject();
+		sort.put("executeTime", -1);//按照执行时间倒序（1是升序，-1是降序）
+		req.setSortObject(sort);
+    }
 	/**
 	 * sql查询工具
 	 * @author hailongzhao

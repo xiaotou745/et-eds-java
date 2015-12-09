@@ -43,12 +43,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	/**
 	 * 
 	 */
-	private String sessionKey = "6102406e99c58f1bdaf2d37b1ca7cd133a84e0087e3a7422532754203";
-	/**
-	 * 
-	 */
-	 TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
-
+	private String sessionKey = "6100326184627d82ebfa6e1a6e44dfc0881cd93d40ee3222532754203";
 	/**
 	 * 确认接单接口(API)
 	 * @author CaoHeYang
@@ -57,6 +52,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 */
 	@Override
 	public TaoBaoResponseBase ask(TaoBaoAsk r) {
+		 TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
 		WaimaiOrderAckRequest req=new WaimaiOrderAckRequest();
 		req.setDeliveryOrderNo(r.getDeliveryOrderNo());
 		try {
@@ -80,6 +76,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 */
 	@Override
 	public TaoBaoResponseBase update(TaoBaoUpdate r) {
+		 TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
 		WaimaiDeliveryUpdateRequest request=new WaimaiDeliveryUpdateRequest ();
 		Gps gps=MapUtils.bd09_To_Gcj02(ParseHelper.ToDouble(r.getLat(), 0d),ParseHelper.ToDouble(r.getLng(), 0d));
 		request.setDeliveryOrderNo(r.getDeliveryOrderNo());
@@ -110,6 +107,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 */
 	@Override
 	public TaoBaoResponseBase pickUp(TaoBaoPickUp r) {
+		 TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
 		WaimaiDeliveryPickupRequest req=new WaimaiDeliveryPickupRequest();
 		Gps gps=MapUtils.bd09_To_Gcj02(ParseHelper.ToDouble(r.getLat(), 0d),ParseHelper.ToDouble(r.getLng(), 0d));
 		req.setDeliveryOrderNo(r.getDeliveryOrderNo());
@@ -117,7 +115,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 		req.setLat(gps.getWgLat()+"");
 		try {
 			WaimaiDeliveryPickupResponse response = client.execute(req, sessionKey);
-			TaoBaoResponseBase resp = new TaoBaoResponseBase();
+			TaoBaoResponseBase resp = new TaoBaoResponseBase();			
 			resp.setIs_success(response.getDeliveryOrderResult().getIsSuccess());
 			resp.setError_code(response.getDeliveryOrderResult().getErrorCode());
 			resp.setError_msg(response.getDeliveryOrderResult().getErrorMsg());
@@ -137,6 +135,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 */
 	@Override
 	public TaoBaoResponseBase confirm(TaoBaoConfirm r) {
+		 TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
 		WaimaiDeliveryConfirmRequest req=new WaimaiDeliveryConfirmRequest() ;
 		Gps gps=MapUtils.bd09_To_Gcj02(ParseHelper.ToDouble(r.getLat(), 0d),ParseHelper.ToDouble(r.getLng(), 0d));
 		req.setDeliveryOrderNo(r.getDeliveryOrderNo());
@@ -149,6 +148,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 			resp.setError_code(response.getDeliveryOrderResult().getErrorCode());
 			resp.setError_msg(response.getDeliveryOrderResult().getErrorMsg());
 			resp.setResult(response.getDeliveryOrderResult().getResult());
+			return resp;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -163,6 +163,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	 */
 	@Override
 	public TaoBaoResponseBase locationUpdate(TaoBaoLocationUpdate r) {	
+		 TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
 		WaimaiDeliveryLocationUpdateRequest req =new WaimaiDeliveryLocationUpdateRequest ();
 		Gps gps=MapUtils.bd09_To_Gcj02(ParseHelper.ToDouble(r.getLat(), 0d),ParseHelper.ToDouble(r.getLng(), 0d));
 		req.setDelivererPhone(r.getDelivererPhone());
@@ -176,6 +177,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 			resp.setError_code(response.getDeliveryLocationResult().getErrorCode());
 			resp.setError_msg(response.getDeliveryLocationResult().getErrorMsg());
 			resp.setResult(response.getDeliveryLocationResult().getResult());
+			return resp;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -871,5 +871,13 @@ public class OrderDetailResp extends ResponseBase{
 	    private Date cancelTime;
 	    
 	    private Integer isAllowCashPay;
+	    private Date expecteddelivery;
+		public Date getExpecteddelivery() {
+			return expecteddelivery;
+		}
+
+		public void setExpecteddelivery(Date expecteddelivery) {
+			this.expecteddelivery = expecteddelivery;
+		}
 
 }

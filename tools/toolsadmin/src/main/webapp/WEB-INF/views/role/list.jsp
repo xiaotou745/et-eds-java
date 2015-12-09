@@ -81,7 +81,7 @@
 	    <h4 class="modal-title">修改角色</h4>
 	</div>
 <div class="modal-body">
-  角色名称：<input id="roleName"/><br/><br/>
+  角色名称：<input id="roleName" class="form-control"/><br/>
 是否启用：<input type="radio" value="0" name="radstatus" id="radyes"/>
 	  <label for="radyes">启用</label>
 	  <input type="radio" value="1" name="radstatus" id="radno"/>
