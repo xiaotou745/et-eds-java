@@ -344,4 +344,8 @@ public interface IOrderDao {
 		 * @return
 		 */
 	 ShanSongOrderListModel getShanSongOrderByNo(String ordernNo);
+
+		QueryOrderBResp shanSongQueryOrderCountB(QueryOrderReq query);
+
+		List<QueryOrder> shanSongQueryOrderB(QueryOrderReq query);
 }

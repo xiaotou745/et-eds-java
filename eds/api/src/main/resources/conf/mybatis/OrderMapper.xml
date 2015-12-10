@@ -1450,7 +1450,7 @@ where   Status = 1
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
-        b.GroupId ,
+        b.GroupId ,o.paltform,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
@@ -1507,7 +1507,7 @@ where   Status = 1
               else 0
             end),0) takingCount
        from    dbo.[order] (nolock)
-       where  clienterId=${clienterId} and [Platform]=#{platform} 
+       where  clienterId=${clienterId} and [Platform]=${platform} 
 	</select>
 		<!--   c端查询待取货订单（会计算距离） 订单列表  add by caoheyang 20150910-->
 	<select id="queryDeliveryOrderC" resultType="com.edaisong.entity.domain.QueryOrder"
@@ -1582,7 +1582,7 @@ where   Status = 1
 	</sql>
 	<!--    c端查询待取货订单（会计算距离） 订单列表add by caoheyang 20150910 -->
 	<sql id="queryDeliveryOrderCWhere">
-		1=1 and o.IsEnable=1 and o.[platform]=#{platform} 
+		1=1 and o.IsEnable=1 and o.[platform]=${platform} 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 
@@ -1912,5 +1912,115 @@ left join dbo.clienter (nolock) c on a.ClienterId = c.Id
 left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId 
 where a.orderno=#{ordernNo}
 </select>
-  
+<!--闪送商家端我的任务 addby wangchao -->
+	<select id="shanSongQueryOrderCountB" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderBResp">
+	     select  ISNULL(SUM(CASE Status
+              when 0 then 1
+              else 0
+            end),0) newCount ,
+        ISNULL(SUM(CASE Status
+              when 2 then 1
+              else 0
+            end),0) deliveryCount ,
+        ISNULL(SUM(CASE Status
+              when 4 then 1
+              else 0
+            end),0) takingCount,
+        ISNULL(SUM(CASE Status
+              when 50 then 1
+              else 0
+            end),0) waitPayCount 
+       from    dbo.[order] (nolock)
+       where businessId=${businessId} and [Platform]=${platform} 
+	</select>
+	<select id="shanSongQueryOrderB" resultType="com.edaisong.entity.domain.QueryOrder"
+		parameterType="com.edaisong.entity.req.QueryOrderReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		'
+		<if test="orderBy  ==0 ">
+			o.PubDate asc
+		</if>
+		 <if test="orderBy  ==1 ">
+			o.ActualDoneDate desc
+		</if>
+		',
+		'
+		<include refid="shanSongqueryOrderColums" />
+		',
+		'
+		<include refid="shanSongqueryOrderFrom" />
+		',
+		'
+		<include refid="shanSongqueryOrderWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+	<sql id="shanSongqueryOrderColums">
+		 CONVERT(VARCHAR(5), o.ActualDoneDate, 108) as ActualDoneDate ,
+        o.Amount ,
+        o.OrderCount ,
+        o.IsPay ,
+        o.OrderNo ,
+        o.PickUpAddress ,
+        CONVERT(VARCHAR(5), o.PubDate, 108) as PubDate ,
+        case   isnull(o.ReceviceAddress,'''')  
+		when  '''' then ''附近3公里左右，由商户指定''
+		else o.ReceviceAddress end as ReceviceAddress,
+        o.ReceviceName ,
+        o.RecevicePhoneNo ,
+        o.ReceviceCity ,
+        o.Remark ,
+        o.Status ,
+        o.ReceviceLongitude ,
+        o.ReceviceLatitude ,
+        b.Id as BusinessId ,
+        b.Name as BusinessName ,
+        b.PhoneNo as BusinessPhone ,
+        b.PhoneNo2 as BusinessPhone2 ,
+        --b.Name as PickUpName ,   -- 去掉 
+        c.TrueName as SuperManName ,
+        c.PhoneNo as SuperManPhone ,
+        o.OrderFrom ,
+        o.id as OrderId ,
+        o.MealsSettleMode ,
+        b.Longitude ,
+        b.Latitude ,
+        REPLACE(b.City, ''市'', '''') as pickUpCity ,
+        ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
+        ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
+        o.OrderCommission ,
+        b.GroupId ,o.platform,
+        ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
+	</sql>
+	<!--   移动端 订单列表add by caoheyang 20150910 -->
+	<sql id="shanSongqueryOrderFrom">
+		 [order] (nolock) as o
+        join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
+        join business (nolock) as b on o.businessId = b.Id
+        left join clienter (nolock) as c on o.clienterId = c.Id
+        left join dbo.[group] (nolock) g on o.OrderFrom = g.Id
+                                            and g.IsValid = 1 
+	</sql>
+	<!--   移动端 订单列表add by caoheyang 20150910 -->
+	<sql id="shanSongqueryOrderWhere">
+		1=1 and o.IsEnable=1  and o.[Platform]=  ${platform} 
+	   <if test="clienterId != null and  clienterId !=0 ">
+			and o.clienterId=${clienterId}
+		</if> 
+		<if test="businessId != null and  businessId !=0 ">
+			and o.businessId=${businessId}
+		</if> 
+		 <if test="status != null"> 
+			and o.status=${status} 
+		</if> 
+		<if test="dateInfo != null">
+			and  CONVERT(VARCHAR(100), PubDate, 23)=''${dateInfo}''
+		</if> 
+	</sql>
 </mapper>

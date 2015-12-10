@@ -234,4 +234,12 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/getcompliteordergrabb")
 	public HttpResultModel<List<QueryOrder>> getCompliteOrderGrabB(QueryOrderReq para);
+	/**
+	 *  
+	 * @author wangchao
+	 * @return 闪送B端 商家我的订单
+	 */
+	@POST
+	@Path("/shansongqueryorderb")
+	HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryOrderReq query) ;
 }
