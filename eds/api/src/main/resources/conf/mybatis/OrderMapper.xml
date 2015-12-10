@@ -1507,7 +1507,7 @@ where   Status = 1
               else 0
             end),0) takingCount
        from    dbo.[order] (nolock)
-       where  clienterId=${clienterId} and [Platform]=#{platform} 
+       where  clienterId=${clienterId} and [Platform]=${platform} 
 	</select>
 		<!--   c端查询待取货订单（会计算距离） 订单列表  add by caoheyang 20150910-->
 	<select id="queryDeliveryOrderC" resultType="com.edaisong.entity.domain.QueryOrder"
@@ -1582,7 +1582,7 @@ where   Status = 1
 	</sql>
 	<!--    c端查询待取货订单（会计算距离） 订单列表add by caoheyang 20150910 -->
 	<sql id="queryDeliveryOrderCWhere">
-		1=1 and o.IsEnable=1 and o.[platform]=#{platform} 
+		1=1 and o.IsEnable=1 and o.[platform]=${platform} 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 
