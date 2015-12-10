@@ -33,6 +33,7 @@ import com.edaisong.toolsentity.domain.ActionLog;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
 import com.edaisong.toolsentity.domain.MenuDetail;
 import com.edaisong.toolsentity.domain.MenuEntity;
+import com.edaisong.toolsentity.domain.SelectAppModel;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 import com.edaisong.toolsentity.req.PagedMongoLogReq;
 import com.mongodb.BasicDBObject;
@@ -136,6 +137,23 @@ public class AdminToolsController {
 		
 	}
 	/**
+	 * 将配置文件转conn集合
+	 * 茹化肖
+	 * @param list
+	 * @return
+	 */
+	private List<SelectAppModel> getConnList(){
+		List<SelectAppModel> lista=new ArrayList<SelectAppModel>();
+		List<AppDbConfig> list=getAppConfigList(ServerType.SqlServer,null);
+		for (int i = 0; i < list.size(); i++) {
+			SelectAppModel selectAppModel=new SelectAppModel();
+			selectAppModel.setAppName(list.get(i).getAppname());
+			selectAppModel.setDbName(JsonUtil.str2obj(list.get(i).getConfigvalue(), ConnectionInfo.class).getDataBase());
+			lista.add(selectAppModel);
+		}
+		return lista;
+	}
+	/**
 	 * 菜单详情
 	 * @author 茹化肖
 	 * @date 20151118
@@ -148,7 +166,7 @@ public class AdminToolsController {
 		if (appConfig.size()>0) {
 			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
 			MenuDetail detail = new MenuDetail();
-			if(appName.equals("e代送"))
+			if(conInfo.getDataBase().toLowerCase().equals("superman"))
 			{
 				detail=MybatisUtil.getSqlSessionUtil(conInfo).selectOne("IAuthorityMenuClassDao.menudetailjava",parId);
 			}
