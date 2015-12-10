@@ -44,6 +44,7 @@ public class QueryOrder {
 	private Double distance_OrderBy=9999999.0; 
 	private double km;
 	private double weight;
+	private int platform;
 	/**
 	 * 订单Id
 	 */
@@ -581,5 +582,13 @@ public double getWeight() {
 
 public void setWeight(double weight) {
 	this.weight = weight;
+}
+
+public int getPlatform() {
+	return platform;
+}
+
+public void setPlatform(int platform) {
+	this.platform = platform;
 }
 }
