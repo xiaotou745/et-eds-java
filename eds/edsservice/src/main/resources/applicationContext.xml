@@ -6,8 +6,8 @@
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
-
-	<import resource="classpath:conf/core/dev-context.xml" />
+	<!-- 引入toolsapi中的配置文件，用于获取服务配置信息 -->
+<import resource="classpath:conf/core/dev-context.xml" />
 	<!-- <import resource="classpath:conf/core/test-context.xml" /> -->
 	<!-- <import resource="classpath:conf/core/pro-context.xml" /> -->
 	<!-- mvn clean install -DskipTests=true -->
@@ -16,6 +16,6 @@
 	<!-- ignore-resource-not-found="true" location="classpath*:constant.properties" 
 		/> -->
 
-	<context:component-scan base-package="com.edaisong.edsservice.service.*" />
+<!-- 	<context:component-scan base-package="com.edaisong.edsservice.service.*" /> -->
 
 </beans> 
