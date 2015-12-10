@@ -1,5 +1,6 @@
 package com.edaisong.edsservice.service;
 
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -12,32 +13,33 @@ import javax.print.attribute.standard.JobName;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.edaisong.api.service.impl.QuartzService;
-import com.edaisong.api.service.impl.TestDouService;
-import com.edaisong.api.service.inter.IQuartzService;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.QuartzManager;
+import com.edaisong.edsservice.Main;
 import com.edaisong.entity.QuartzServiceModel;
 
+
 public class QuartzJob implements Job {
-	public static ApplicationContext contentApp = new ClassPathXmlApplicationContext(
-			"applicationContext.xml");
-
-	@Autowired
-	IQuartzService quartzService;
-
+	private static String oldConfigs="";
 	/**
 	 * 任务调度测试方法 窦海超 2015年12月3日 13:07:54
 	 * */
 	@Override
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
-
-		QuartzService service = contentApp.getBean(QuartzService.class);
-		List<QuartzServiceModel> list = service.query();
+	
+		List<QuartzServiceModel> list = Main.service.query();
+		String newConfigs=JsonUtil.obj2string(list);
+		if (oldConfigs.equals("")) {
+			oldConfigs=newConfigs;
+		}else {
+			if (oldConfigs.equals(newConfigs)) {
+				return;
+			}
+		}
 		for (QuartzServiceModel item : list) {
 			mainJob(item);
 		}
@@ -49,25 +51,28 @@ public class QuartzJob implements Job {
 	 * */
 	private void mainJob(QuartzServiceModel item) {
 		try {
-			int qzState = QuartzManager.checkJob(item.getName());// 获取调度状态
+			String jobName = item.getName().replace("#", "");
+			jobName += ("#"+item.getFilePath());
+			jobName += ("#"+item.getPackages());
+			
+			int qzState = QuartzManager.checkJob(jobName);// 获取调度状态
 			int dbStatus = item.getIsStart();// 0关闭，1开启
-			String jobName = item.getName();
+
 			if (dbStatus == 0 && qzState == 0) {
 				QuartzManager.removeJob(jobName);// 判断quartz和数据库里的是否相同，不同要把调度里的关闭掉
 				return;
 			}
+			
 			if (dbStatus == 1 && qzState == -1) {
-				URL url = new URL("file:" + item.getFilePath());
-				@SuppressWarnings("resource")
-				URLClassLoader myClassLoader = new URLClassLoader(
-						new URL[] { url });
-				Class<?> clazz = myClassLoader.loadClass(item.getPackages());
-				QuartzManager.addJob(item.getName(), clazz, item.getExecTime());// 如果库里是开启，本地没开启就新增服务
+				QuartzManager.addJob(jobName, ChildJob.class, item.getExecTime());// 如果库里是开启，本地没开启就新增服务
 				return;
 			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
+			if (dbStatus == 1 && qzState != -1) {
+				//如果库里是开启的，且本地已经添加过，则修改执行频率（方法内部会判断是否发生了变更）
+				QuartzManager.modifyJobTime(jobName, item.getExecTime());
+				return;
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
