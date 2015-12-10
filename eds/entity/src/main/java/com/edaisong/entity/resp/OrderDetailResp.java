@@ -872,6 +872,28 @@ public class OrderDetailResp extends ResponseBase{
 	    
 	    private Integer isAllowCashPay;
 	    private Date expecteddelivery;
+	    
+	    public Double getPubtocurrentdistance() {
+			return pubtocurrentdistance;
+		}
+
+		public void setPubtocurrentdistance(Double pubtocurrentdistance) {
+			this.pubtocurrentdistance = pubtocurrentdistance;
+		}
+
+		public Double getRecevicetocurrentdistance() {
+			return recevicetocurrentdistance;
+		}
+
+		public void setRecevicetocurrentdistance(Double recevicetocurrentdistance) {
+			this.recevicetocurrentdistance = recevicetocurrentdistance;
+		}
+
+		private Double pubtocurrentdistance;
+	    
+	    private Double recevicetocurrentdistance;
+	    
+	    
 		public Date getExpecteddelivery() {
 			return expecteddelivery;
 		}
@@ -879,5 +901,58 @@ public class OrderDetailResp extends ResponseBase{
 		public void setExpecteddelivery(Date expecteddelivery) {
 			this.expecteddelivery = expecteddelivery;
 		}
+		
+		
+	    public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getPhoneno() {
+			return phoneno;
+		}
+
+		public void setPhoneno(String phoneno) {
+			this.phoneno = phoneno;
+		}
+
+		public String getPhoneno2() {
+			return phoneno2;
+		}
+
+		public void setPhoneno2(String phoneno2) {
+			this.phoneno2 = phoneno2;
+		}
+
+		public String getAddress() {
+			return address;
+		}
+
+		public void setAddress(String address) {
+			this.address = address;
+		}
+
+		public String getLandline() {
+			return landline;
+		}
+
+		public void setLandline(String landline) {
+			this.landline = landline;
+		}
+
+		private String name;
+
+	    private String phoneno;
+
+	    private String phoneno2;
+
+	    private String address;
+	    
+	    private String landline;	  
+
+	
 
 }
