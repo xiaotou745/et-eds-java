@@ -952,6 +952,18 @@ public class OrderDetailResp extends ResponseBase{
 	    private String address;
 	    
 	    private String landline;	  
+	    
+	    private int iscomplain;
+	    
+	    
+	    public int getIscomplain() {
+			return iscomplain;
+		}
+
+		public void setIscomplain(int iscomplain) {
+			this.iscomplain = iscomplain;
+		}
+
 
 	
 
