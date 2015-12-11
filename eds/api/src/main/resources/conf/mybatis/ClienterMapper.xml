@@ -752,7 +752,7 @@ where Id = #{userId,jdbcType=INTEGER}
 			#{clienterId,jdbcType=INTEGER},
 			#{clienterName,jdbcType=NVARCHAR},
 			getdate(), 
-			1,'交通工具'+convert(nvarchar,Deleted.vehicleName)+'修改为'+convert(nvarchar,Inserted.vehicleName)
+			1,'交通工具'+isnull(convert(nvarchar,Deleted.vehicleName),'')+'修改为'+isnull(convert(nvarchar,Inserted.vehicleName),'') 
 			into dbo.ClienterOptionLog(ClienterId,OptId,OptName,InsertTime,[Platform],Remark)
 				where Id = #{clienterId,jdbcType=INTEGER}
 	</update>

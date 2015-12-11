@@ -5,17 +5,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.management.ManagementFactory;
-import java.util.List;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.edaisong.api.service.impl.QuartzService;
-import com.edaisong.api.service.impl.TestDouService;
-import com.edaisong.api.service.inter.IQuartzService;
 import com.edaisong.core.util.QuartzManager;
-import com.edaisong.entity.QuartzServiceModel;
+
+
 
 /**
  * @author haichao
@@ -23,10 +22,11 @@ import com.edaisong.entity.QuartzServiceModel;
  */
 
 public class Main {
-	@Autowired
-	static IQuartzService quartzService;
-
+	public static ApplicationContext contentApp = new ClassPathXmlApplicationContext("applicationContext.xml");
+	public static QuartzService service = contentApp.getBean(QuartzService.class);
 	public static void main(String[] args) throws Exception {
+
+		
 		/* 加载定时任务 */
 		writePID();// 生成PID
 

@@ -121,8 +121,18 @@ public class Order {
     
     private Double tipamount;
     
+    private int iscomplain;
     
-    public Double getTipamount() {
+    
+    public int getIscomplain() {
+		return iscomplain;
+	}
+
+	public void setIscomplain(int iscomplain) {
+		this.iscomplain = iscomplain;
+	}
+
+	public Double getTipamount() {
 		return tipamount;
 	}
 

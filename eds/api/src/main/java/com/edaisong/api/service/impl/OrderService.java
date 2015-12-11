@@ -2209,6 +2209,8 @@ public class OrderService implements IOrderService {
 		Order oModel=orderDao.selectByPrimaryKey(orderId);
 		OrderOther ooModel= orderOtherDao.selectByOrderId(orderId);		
 		List<OrderChild> ocList=orderChildDao.getOrderChildByOrderId(orderId);
+		BusinessModel businessModel = businessDao.getBusiness((long) oModel.getBusinessid());		
+		
 		odResp.setId(oModel.getId());
 		odResp.setOrderno(oModel.getOrderno());
 		odResp.setPickupaddress(oModel.getPickupaddress());
@@ -2280,6 +2282,7 @@ public class OrderService implements IOrderService {
 		odResp.setTaketype(oModel.getTaketype());			
 		odResp.setPickupcode(oModel.getTakecode());	
 		odResp.setProductname(oModel.getProductname());
+		odResp.setIscomplain(oModel.getIscomplain());
 			
 		odResp.setListOrderChild(ocList);
 
@@ -2306,7 +2309,16 @@ public class OrderService implements IOrderService {
 		odResp.setCancelTime(ooModel.getCancelTime());
 		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());
 		odResp.setExpecteddelivery(ooModel.getExpecteddelivery());
+		odResp.setPubtocurrentdistance(0.0);
+		odResp.setRecevicetocurrentdistance(0.0);	
 		
+		odResp.setName(businessModel.getName());
+		odResp.setPhoneno(businessModel.getPhoneno());
+		odResp.setPhoneno2(businessModel.getPhoneno2());
+		odResp.setAddress(businessModel.getAddress());
+		odResp.setLandline(businessModel.getLandline());  
+		odResp.setCity(businessModel.getCity());		
+
 		resp.setStatus(OrderDetailGet.Success.value());
 		resp.setMessage(OrderDetailGet.Success.desc()); 
 		resp.setResult(odResp);

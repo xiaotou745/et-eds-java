@@ -1,18 +1,16 @@
-package com.edaisong.edsservice.service;
+package com.edaisong.api.quartzservice;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Service;
 
 import com.edaisong.api.service.impl.TestDouService;
 
-@Service
-public class OrderService implements Job {
+public class TestJob implements Job {
 	public static ApplicationContext contentApp = new ClassPathXmlApplicationContext(
-			"applicationContext.xml");
+			"conf/core/dev-context.xml");
 	@Override
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
