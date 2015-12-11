@@ -16,4 +16,10 @@ public interface IQuartzServiceDao {
 	 * 2015年12月4日 17:51:08
 	 * */
 	List<QuartzServiceModel> query();
+	
+	/**
+	 * @author haichao
+	 * @date 2015年12月10日 10:18:44 修改服务状态
+	 * */
+	int updateStatus(int id,int status);
 }

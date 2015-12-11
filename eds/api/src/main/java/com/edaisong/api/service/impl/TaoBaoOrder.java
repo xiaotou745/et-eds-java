@@ -32,5 +32,11 @@ public class TaoBaoOrder implements ITaoBaoOrder {
 		});
 		client.connect();
 	}
+
+	@Override
+	public String getAccessToken() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
