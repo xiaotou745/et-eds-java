@@ -8,7 +8,96 @@ public class TaoBaoAccessTokenResp {
 	private int expires_in;
 	
 	private String refresh_token;
+	
+	private int re_expires_in;
+	
+	private int r1_expires_in;
+	
+	private int r2_expires_in;
+	
+	private int w1_expires_in;
+	
+	private int w2_expires_in;
+	
+	private String taobao_user_nick;
+	
+	private String taobao_user_id;
+	
+	private String sub_taobao_user_id;
+	
+	private String sub_taobao_user_nick;
+	public int getRe_expires_in() {
+		return re_expires_in;
+	}
 
+	public void setRe_expires_in(int re_expires_in) {
+		this.re_expires_in = re_expires_in;
+	}
+
+	public int getR1_expires_in() {
+		return r1_expires_in;
+	}
+
+	public void setR1_expires_in(int r1_expires_in) {
+		this.r1_expires_in = r1_expires_in;
+	}
+
+	public int getR2_expires_in() {
+		return r2_expires_in;
+	}
+
+	public void setR2_expires_in(int r2_expires_in) {
+		this.r2_expires_in = r2_expires_in;
+	}
+
+	public int getW1_expires_in() {
+		return w1_expires_in;
+	}
+
+	public void setW1_expires_in(int w1_expires_in) {
+		this.w1_expires_in = w1_expires_in;
+	}
+
+	public int getW2_expires_in() {
+		return w2_expires_in;
+	}
+
+	public void setW2_expires_in(int w2_expires_in) {
+		this.w2_expires_in = w2_expires_in;
+	}
+
+	public String getTaobao_user_nick() {
+		return taobao_user_nick;
+	}
+
+	public void setTaobao_user_nick(String taobao_user_nick) {
+		this.taobao_user_nick = taobao_user_nick;
+	}
+
+	public String getTaobao_user_id() {
+		return taobao_user_id;
+	}
+
+	public void setTaobao_user_id(String taobao_user_id) {
+		this.taobao_user_id = taobao_user_id;
+	}
+
+	public String getSub_taobao_user_id() {
+		return sub_taobao_user_id;
+	}
+
+	public void setSub_taobao_user_id(String sub_taobao_user_id) {
+		this.sub_taobao_user_id = sub_taobao_user_id;
+	}
+
+	public String getSub_taobao_user_nick() {
+		return sub_taobao_user_nick;
+	}
+
+	public void setSub_taobao_user_nick(String sub_taobao_user_nick) {
+		this.sub_taobao_user_nick = sub_taobao_user_nick;
+	} 
+	
 	public String getAccess_token() {
 		return access_token;
 	}
