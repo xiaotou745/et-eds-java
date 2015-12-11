@@ -622,6 +622,8 @@ var jss={
 		var par={"parid":0,
 				"menuname":menuName,
 				"authCode":authcode,
+				"belock":0,
+				"isbutton":0,
 				"appName":$('#appname option:selected').text()};
 		postsave(par);
 	}
@@ -646,11 +648,15 @@ var jss={
 				"menuname":menuName,
 				"authCode":authcode,
 				"url":url,
+				"belock":0,
+				"isbutton":0,
 				"appName":$('#appname option:selected').text()};
 		var par2={"parid":detail.id,
 				"menuname":menuName,
 				"authCode":authcode,
 				"javaUrl":url,
+				"belock":0,
+				"isbutton":0,
 				"appName":$('#appname option:selected').text()};
 		if($('#appname option:selected').val().toLowerCase()=="superman"){
 			postsave(par2);
@@ -659,7 +665,7 @@ var jss={
 		}
 		
 	}
-	//保存2级菜单
+	//保存3级菜单
 	function save3ji(){
 		var menuName = $("#3jimenuName").val();
 		var authcode=$("#3jiAuthCode").val();
@@ -675,6 +681,7 @@ var jss={
 				"menuname":menuName,
 				"authCode":authcode,
 				"isbutton":1,
+				"belock":0,
 				"appName":$('#appname option:selected').text()};
 		
 		postsave(par);
