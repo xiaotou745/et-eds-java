@@ -1450,7 +1450,7 @@ where   Status = 1
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
-        b.GroupId ,o.platform,
+        b.GroupId ,o.[Platform],
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
@@ -1762,7 +1762,7 @@ GROUP BY a.id ,
 		  SELECT    COUNT(0) AS num
   FROM      dbo.[order] a ( NOLOCK )
             JOIN dbo.OrderChild b ( NOLOCK ) ON a.Id = b.OrderId
-  WHERE     a.Platform = 2
+  WHERE     a.[Platform] = 2
             AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
             AND ( b.OrderRegionOneId = #{regionId}
                   OR b.OrderRegionTwoId = #{regionId}
@@ -1858,7 +1858,7 @@ ISNULL(c.TrueName,'匿名') ClienterName,
 ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
 ISNULL( b.PhoneNo ,'无') BusinessPhoneNo 
 from  dbo.[order] (nolock) a 
-join business b with ( nolock ) on b.Id = a.businessId and  a.Platform=3
+join business b with ( nolock ) on b.Id = a.businessId and  a.[Platform]=3
 left join dbo.clienter (nolock) c on a.ClienterId = c.Id
 left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
 LEFT join dbo.OrderChild e ( nolock ) on  a.Id=d.OrderId
@@ -1907,7 +1907,7 @@ ISNULL(c.TrueName,'匿名') ClienterName,
 ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
 ISNULL( b.PhoneNo ,'无') BusinessPhoneNo ,a.Remark,a.ProductName,a.IsEnable 
 from  dbo.[order] (nolock) a
-join business b with ( nolock ) on b.Id = a.businessId and a.Platform=3
+join business b with ( nolock ) on b.Id = a.businessId and a.[Platform]=3
 left join dbo.clienter (nolock) c on a.ClienterId = c.Id
 left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId 
 where a.orderno=#{ordernNo}
@@ -1995,7 +1995,7 @@ where a.orderno=#{ordernNo}
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
-        b.GroupId ,o.platform,
+        b.GroupId ,o.[Platform],
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
