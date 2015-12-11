@@ -12,7 +12,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.edaisong.api.service.impl.QuartzService;
-import com.edaisong.core.util.QuartzManager;
+import com.edaisong.core.quartz.QuartzManager;
+
 
 
 
