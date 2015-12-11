@@ -2282,6 +2282,7 @@ public class OrderService implements IOrderService {
 		odResp.setTaketype(oModel.getTaketype());			
 		odResp.setPickupcode(oModel.getTakecode());	
 		odResp.setProductname(oModel.getProductname());
+		odResp.setIscomplain(oModel.getIscomplain());
 			
 		odResp.setListOrderChild(ocList);
 
@@ -2316,6 +2317,7 @@ public class OrderService implements IOrderService {
 		odResp.setPhoneno2(businessModel.getPhoneno2());
 		odResp.setAddress(businessModel.getAddress());
 		odResp.setLandline(businessModel.getLandline());  
+		odResp.setCity(businessModel.getCity());		
 
 		resp.setStatus(OrderDetailGet.Success.value());
 		resp.setMessage(OrderDetailGet.Success.desc()); 
