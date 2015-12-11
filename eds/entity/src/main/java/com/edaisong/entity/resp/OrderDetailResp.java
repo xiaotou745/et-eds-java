@@ -952,6 +952,16 @@ public class OrderDetailResp extends ResponseBase{
 	    private String address;
 	    
 	    private String landline;	  
+	    private String city;
+	    public String getCity() {
+	        return city;
+	    }
+
+	    public void setCity(String city) {
+	        this.city = city == null ? null : city.trim();
+	    }
+
+	    
 	    
 	    private int iscomplain;
 	    
