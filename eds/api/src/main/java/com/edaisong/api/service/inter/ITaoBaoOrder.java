@@ -1,5 +1,6 @@
 package com.edaisong.api.service.inter;
 
+import com.edaisong.entity.taobao.req.TaoBaoAccessTokenReq;
 import com.taobao.top.link.LinkException;
 
 public interface ITaoBaoOrder {
@@ -12,5 +13,5 @@ public interface ITaoBaoOrder {
 	 * */
 	void releaseOrder() throws LinkException;
 	
-	String getAccessToken();
+	String getAccessToken(TaoBaoAccessTokenReq taoBaoAccessTokenReq);
 }

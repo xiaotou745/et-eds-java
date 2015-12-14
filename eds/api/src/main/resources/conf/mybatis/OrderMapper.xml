@@ -1270,7 +1270,7 @@ select  ISNULL(b.Id,0) as ClienterId ,
         ISNULL(MIN (b.HeadPhoto),'') as ClienterPhoto
 from    dbo.[order] (nolock)a
         LEFT join dbo.clienter (nolock) b on a.clienterId = b.Id
-where   a.Status = 1   and businessId=#{businessId}  and a.[Platform] = #{platform}
+where   a.Status = 1   and businessId=#{businessId}  and a.[Platform] IN(${platform})
 and a.PubDate>=@startDate and a.PubDate <![CDATA[ <]]> @endDate
 group by b.Id ,
         b.PhoneNo ,
@@ -1304,7 +1304,7 @@ from    ( select    CONVERT(VARCHAR(100), DATEADD(dd, number, @sdate), 23) as Mo
                             COUNT(distinct clienterId) as ServiceClienterCount ,
                             CONVERT(VARCHAR(100), PubDate, 23) as OrderDate
                     from    dbo.[order] (nolock)
-                    where   Status = 1 and businessId=#{businessId} and [Platform] = #{platform} 
+                    where   Status = 1 and businessId=#{businessId} and [Platform] IN(${platform}) 
                     and PubDate>=@startDate and PubDate  <![CDATA[ <]]>  @endDate
                     group by CONVERT(VARCHAR(100), PubDate, 23)
                   ) as b on a.MonthDate = b.OrderDate
@@ -1326,7 +1326,7 @@ select  isnull(SUM(ISNULL(ordercount,0)),0) as OrderCount ,
 from    dbo.[order] (nolock) 
 where   Status = 1
         and PubDate >= @startDate and PubDate <![CDATA[ <]]> @endDate
-        and businessId=#{businessId} and [Platform] = #{platform} 
+        and businessId=#{businessId} and [Platform] IN( ${platform} ) 
 	</select>
 
     <!-- C端任务统计接口  天数据列表  wangxudan 20150910 -->
@@ -1359,7 +1359,7 @@ LEFT JOIN (  SELECT
 				SUM(OrderCount) TotalCount
 		FROM dbo.[order] o WITH(NOLOCK)
 		join  OrderOther oo  WITH(NOLOCK) ON o.id=oo.OrderId
-		WHERE o.clienterId=#{clienterId} AND o.Status = 1 and o.[Platform] = #{platform}  
+		WHERE o.clienterId=#{clienterId} AND o.Status = 1 and o.[Platform] IN( ${platform})  
 		GROUP BY  Convert (VARCHAR(10),o.PubDate,120)
 		) tbl ON tbl.PubDate=tbldate.MonthDate
 WHERE tbldate.MonthDate <![CDATA[ <=]]>GETDATE()
@@ -1387,7 +1387,7 @@ join  OrderOther oo  WITH(NOLOCK) ON o.id=oo.OrderId
 where   Status = 1
         and o.PubDate >= @startDate and o.PubDate <![CDATA[ <]]> @endDate
         and o.clienterId=#{clienterId}  
-		and o.[Platform] = #{platform} 
+		and o.[Platform] IN( ${platform}) 
 	</select>
 		<!--  移动端 订单列表  add by caoheyang 20150910-->
 	<select id="queryOrder" resultType="com.edaisong.entity.domain.QueryOrder"
@@ -1453,7 +1453,7 @@ where   Status = 1
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
-        b.GroupId ,o.platform,
+        b.GroupId ,o.[Platform],
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
@@ -1467,7 +1467,7 @@ where   Status = 1
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderWhere">
-		1=1 and o.IsEnable=1  and o.[Platform]=  ${platform} 
+		1=1 and o.IsEnable=1  and o.[Platform] IN( ${platform}) 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 
@@ -1496,7 +1496,7 @@ where   Status = 1
               else 0
             end),0) takingCount
        from    dbo.[order] (nolock)
-       where businessId=${businessId} and [Platform]=#{platform} 
+       where businessId=${businessId} and [Platform] IN( ${platform} )
 	</select>
 	<!-- 骑士端我的任务 addby caoheyang 20150914 -->
 		<select id="queryOrderC" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderCResp">
@@ -1510,7 +1510,7 @@ where   Status = 1
               else 0
             end),0) takingCount
        from    dbo.[order] (nolock)
-       where  clienterId=${clienterId} and [Platform]=${platform} 
+       where  clienterId=${clienterId} and [Platform] IN( ${platform} )
 	</select>
 		<!--   c端查询待取货订单（会计算距离） 订单列表  add by caoheyang 20150910-->
 	<select id="queryDeliveryOrderC" resultType="com.edaisong.entity.domain.QueryOrder"
@@ -1585,7 +1585,7 @@ where   Status = 1
 	</sql>
 	<!--    c端查询待取货订单（会计算距离） 订单列表add by caoheyang 20150910 -->
 	<sql id="queryDeliveryOrderCWhere">
-		1=1 and o.IsEnable=1 and o.[platform]=${platform} 
+		1=1 and o.IsEnable=1 and o.[platform] IN(${platform}) 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 
@@ -1765,7 +1765,7 @@ GROUP BY a.id ,
 		  SELECT    COUNT(0) AS num
   FROM      dbo.[order] a ( NOLOCK )
             JOIN dbo.OrderChild b ( NOLOCK ) ON a.Id = b.OrderId
-  WHERE     a.Platform = 2
+  WHERE     a.[Platform] = 2
             AND CONVERT(VARCHAR(10), a.PubDate, 120) = CONVERT(VARCHAR(10), GETDATE(), 120)
             AND ( b.OrderRegionOneId = #{regionId}
                   OR b.OrderRegionTwoId = #{regionId}
@@ -1861,7 +1861,7 @@ ISNULL(c.TrueName,'匿名') ClienterName,
 ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
 ISNULL( b.PhoneNo ,'无') BusinessPhoneNo 
 from  dbo.[order] (nolock) a 
-join business b with ( nolock ) on b.Id = a.businessId and  a.Platform=3
+join business b with ( nolock ) on b.Id = a.businessId and  a.[Platform]=3
 left join dbo.clienter (nolock) c on a.ClienterId = c.Id
 left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
 LEFT join dbo.OrderChild e ( nolock ) on  a.Id=d.OrderId
@@ -1910,7 +1910,7 @@ ISNULL(c.TrueName,'匿名') ClienterName,
 ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
 ISNULL( b.PhoneNo ,'无') BusinessPhoneNo ,a.Remark,a.ProductName,a.IsEnable 
 from  dbo.[order] (nolock) a
-join business b with ( nolock ) on b.Id = a.businessId and a.Platform=3
+join business b with ( nolock ) on b.Id = a.businessId and a.[Platform]=3
 left join dbo.clienter (nolock) c on a.ClienterId = c.Id
 left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId 
 where a.orderno=#{ordernNo}
@@ -1934,7 +1934,7 @@ where a.orderno=#{ordernNo}
               else 0
             end),0) waitPayCount 
        from    dbo.[order] (nolock)
-       where businessId=${businessId} and [Platform]=${platform} 
+       where businessId=${businessId} and [Platform] IN(${platform}) 
 	</select>
 	<select id="shanSongQueryOrderB" resultType="com.edaisong.entity.domain.QueryOrder"
 		parameterType="com.edaisong.entity.req.QueryOrderReq"
@@ -1998,7 +1998,7 @@ where a.orderno=#{ordernNo}
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
-        b.GroupId ,o.platform,
+        b.GroupId ,o.[Platform],
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
@@ -2012,7 +2012,7 @@ where a.orderno=#{ordernNo}
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="shanSongqueryOrderWhere">
-		1=1 and o.IsEnable=1  and o.[Platform]=  ${platform} 
+		1=1 and o.IsEnable=1  and o.[Platform]  IN( ${platform} ) 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 

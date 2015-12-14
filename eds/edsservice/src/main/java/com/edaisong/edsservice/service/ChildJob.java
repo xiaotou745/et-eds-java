@@ -12,7 +12,9 @@ import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.edaisong.core.inter.IJobDo;
+import com.edaisong.api.common.IJobDo;
+
+
 
 public class ChildJob implements Job {
 
@@ -21,15 +23,20 @@ public class ChildJob implements Job {
 			throws JobExecutionException {
 		String jobName = context.getJobDetail().getName();
 		String[] detail = jobName.split("#");
-		int index = detail[2].lastIndexOf(".");
-		String beanName = detail[2].substring(index + 1);
+
+		String beanName = detail[1];
+		int index = beanName.lastIndexOf(".");
+		if (index>0) {
+			 beanName = beanName.substring(index + 1);
+		}
+		
 		if (!Character.isLowerCase(beanName.charAt(0))) {
 			beanName = Character.toLowerCase(beanName.charAt(0))
 					+ beanName.substring(1);
 		}
 		try {
 			IJobDo obj = (IJobDo) getBean(detail[1], beanName);
-			obj.execute();
+			obj.run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

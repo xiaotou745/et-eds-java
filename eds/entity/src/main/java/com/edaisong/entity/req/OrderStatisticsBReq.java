@@ -10,7 +10,7 @@ package com.edaisong.entity.req;
 public class OrderStatisticsBReq {
 	private String monthInfo;
 	private int businessId;
-	private int platform;
+	private String platform;
 	/**
 	 * 月份
 	 * 
@@ -47,14 +47,14 @@ public class OrderStatisticsBReq {
 		this.businessId = businessId;
 	}
 
-	public int getPlatform() {
-		if(platform == 0){
-			return 1;
+	public String getPlatform() {
+		if(platform == ""){
+			return "1,3";
 		}
 		return platform;
 	}
 
-	public void setPlatform(int platform) {
+	public void setPlatform(String platform) {
 		this.platform = platform;
 	}
 

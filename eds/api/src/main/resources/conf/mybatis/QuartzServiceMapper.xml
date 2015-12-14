@@ -1,17 +1,78 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edaisong.api.dao.inter.IQuartzServiceDao">
-	<resultMap id="BaseResultMap" type="com.edaisong.entity.QuartzServiceModel">
-		<id column="Id" property="id" jdbcType="INTEGER" />
-		<result column="Name" property="name" jdbcType="NVARCHAR" />
-		<result column="ExecTime" property="execTime" jdbcType="NVARCHAR" />
-	</resultMap>
-	<select id="query" resultMap="BaseResultMap">
-		SELECT Id,FilePath,Packages,Name,ExecTime,IsStart,Remark FROM QuartzService
-		qs(nolock)
+	<sql id="Base_Column_List">
+	 Id,beanName,Name,ExecTime,IsStart,Remark,createTime,createName,updateTime,updateName,firstFireTime
+	</sql>
+	<select id="selectById" resultType="com.edaisong.entity.QuartzServiceModel">
+    select 
+    <include refid="Base_Column_List" />
+    from QuartzService with(nolock)
+    where Id = #{id,jdbcType=INTEGER}
 	</select>
-	<update id="updateStatus" parameterType="java.util.Map">
-		update dbo.QuartzService set IsStart=#{status,jdbcType=INTEGER} where
-		id=#{id,jdbcType=INTEGER}
+	<insert id="insert" parameterType="com.edaisong.entity.QuartzServiceModel">
+	if not exists(select 1 from QuartzService where beanName=#{beanName} or Name=#{name})
+		insert into QuartzService(
+		beanName,Name,ExecTime,IsStart,Remark,createTime,createName,updateTime,updateName,firstFireTime
+		) values(#{beanName,jdbcType=NVARCHAR},
+		#{name,jdbcType=NVARCHAR},
+		#{execTime,jdbcType=NVARCHAR},
+		0,
+		#{remark,jdbcType=NVARCHAR},
+		getdate(),
+		#{createName,jdbcType=NVARCHAR},
+		getdate(),
+		#{updateName,jdbcType=NVARCHAR},
+		null
+		)
+	</insert>
+	<update id="updateStatus" parameterType="com.edaisong.entity.req.QuartzUpdateReq">
+		update dbo.QuartzService 
+		<set >
+      <if test="status != null" >
+        IsStart=#{status,jdbcType=INTEGER},
+        updateTime=getdate(),
+		updateName=#{updateName,jdbcType=NVARCHAR},
+      </if>
+      <if test="firstFireTime != null" >
+        firstFireTime = #{firstFireTime,jdbcType=TIMESTAMP}
+      </if>
+    </set>
+	where id=#{id,jdbcType=INTEGER}
 	</update>
+	<update id="update" parameterType="com.edaisong.entity.QuartzServiceModel">
+	if not exists(select 1 from QuartzService where id!=#{id} and  (beanName=#{beanName} or Name=#{name}))
+		update dbo.QuartzService set 
+		name=#{name,jdbcType=NVARCHAR},
+		ExecTime=#{execTime,jdbcType=NVARCHAR},
+		remark=#{remark,jdbcType=NVARCHAR},
+		updateTime=getdate(),
+		updateName=#{updateName,jdbcType=NVARCHAR}
+		where id=#{id,jdbcType=INTEGER} and IsStart=0
+	</update>
+	<sql id="pagedQueryWhere">
+		1=1
+		<if test="status != null and status>=0">
+			and IsStart=${status}
+		</if>
+	</sql>
+	<select id="pagedQuery" resultType="com.edaisong.entity.QuartzServiceModel"
+		parameterType="com.edaisong.entity.req.PagedQuartzServiceReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' id desc ',
+		'
+		<include refid="Base_Column_List" />
+		',
+		'QuartzService with(nolock)',
+		'
+		<include refid="pagedQueryWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 </mapper>

@@ -1,11 +1,10 @@
-package com.edaisong.api.service.impl;
+package com.edaisong.api.quartzservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.common.IJobDo;
 import com.edaisong.api.dao.inter.ITestDao;
-import com.edaisong.api.service.inter.ITestDouService;
-import com.edaisong.core.inter.IJobDo;
 
 @Service
 public class TestDouService  implements IJobDo{
@@ -18,7 +17,7 @@ public class TestDouService  implements IJobDo{
 		testDao.insert(val);
 	}
 	@Override
-	public void execute() {
+	public void run() {
 		testDao.insert("1000");
 		
 	}
