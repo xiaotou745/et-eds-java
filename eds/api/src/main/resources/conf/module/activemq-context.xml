@@ -43,10 +43,18 @@
 			<value>logqueue</value>
 		</constructor-arg>
 	</bean>
+		<!--这个是服务的队列目的地 -->
+	<bean id="serviceLogQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg>
+			<value>servicelogqueue</value>
+		</constructor-arg>
+	</bean>
 	<!--这个是主题目的地，一对多的 -->
 	<bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
 		<constructor-arg value="topic" />
 	</bean>
+	<!-- 消息监听器 -->
+	<bean id="serviceLogMessageListener" class="com.edaisong.api.activemq.ServiceLogMessageListener" />
 	<!-- 消息监听器 -->
 	<bean id="consumerMessageListener" class="com.edaisong.api.activemq.LogConsumerMessageListener" />
 	<!-- 消息监听容器 -->
@@ -54,6 +62,12 @@
 		<property name="connectionFactory" ref="mqConnectionFactory" />
 		<property name="destination" ref="queueDestination" />
 		<property name="messageListener" ref="consumerMessageListener" />
+	</bean>
+		<!-- 消息监听容器 -->
+	<bean id="serviceJmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="mqConnectionFactory" />
+		<property name="destination" ref="serviceLogQueueDestination" />
+		<property name="messageListener" ref="serviceLogMessageListener" />
 	</bean>
 <!-- 	<bean id="sessionAwareQueue" class="org.apache.activemq.command.ActiveMQQueue"> -->
 <!-- 		<constructor-arg> -->

@@ -16,7 +16,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.edaisong.core.quartz.QuartzManager;
+import com.edaisong.api.common.QuartzManager;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.edsservice.Main;
 import com.edaisong.entity.QuartzServiceModel;
@@ -53,8 +53,7 @@ public class QuartzJob implements Job {
 	 * */
 	private void mainJob(QuartzServiceModel item) {
 		try {
-			String jobName = item.getName().replace("#", "");
-			jobName += ("#"+item.getBeanName());
+			String jobName = item.getBeanName();
 			
 			int qzState = QuartzManager.checkJob(jobName);// 获取调度状态
 			int dbStatus = item.getIsStart();// 0关闭，1开启

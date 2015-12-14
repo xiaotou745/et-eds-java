@@ -12,7 +12,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.edaisong.core.quartz.IJobDo;
+import com.edaisong.api.common.IJobDo;
 
 
 

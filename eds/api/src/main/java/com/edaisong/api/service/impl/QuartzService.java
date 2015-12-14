@@ -2,14 +2,15 @@ package com.edaisong.api.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.api.common.ChildJob;
+import com.edaisong.api.common.QuartzManager;
 import com.edaisong.api.dao.inter.IQuartzServiceDao;
 import com.edaisong.api.service.inter.IQuartzService;
-import com.edaisong.core.quartz.QuartzManager;
-import com.edaisong.core.quartz.ChildJob;
 import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.QuartzServiceModel;
 import com.edaisong.entity.common.PagedResponse;
@@ -49,7 +50,24 @@ public class QuartzService implements IQuartzService {
 	@Override
 	public PagedResponse<QuartzServiceModel> pagedQuery(
 			PagedQuartzServiceReq req) {
-		return quartzServiceDao.pagedQuery(req);
+		PagedResponse<QuartzServiceModel> result= quartzServiceDao.pagedQuery(req);
+		List<QuartzServiceModel> temp=result.getResultList().stream().filter(t->t.getIsStart()==1).collect(Collectors.toList());
+		QuartzUpdateReq updateReq=new QuartzUpdateReq();
+		for (QuartzServiceModel item : temp) {
+			int status=QuartzManager.checkJob(item.getBeanName());
+			if (status==-1) {
+				try {
+					QuartzManager.addJob(item.getBeanName(), ChildJob.class, item.getExecTime());// 如果库里是开启，本地没开启就新增服务
+				} catch (Exception e) {
+					item.setIsStart(0);
+					updateReq.setId(item.getId());
+					updateReq.setStatus(0);
+					updateReq.setUpdateName(item.getUpdateName());
+					quartzServiceDao.updateStatus(updateReq);
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override

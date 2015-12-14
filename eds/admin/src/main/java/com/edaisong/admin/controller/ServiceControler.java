@@ -1,24 +1,20 @@
 package com.edaisong.admin.controller;
 
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.velocity.app.event.ReferenceInsertionEventHandler.referenceInsertExecutor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IQuartzService;
-import com.edaisong.core.quartz.QuartzManager;
 import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.QuartzServiceModel;
-import com.edaisong.entity.common.PagedRequestBase;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.PagedQuartzServiceReq;
 import com.edaisong.entity.req.QuartzUpdateReq;

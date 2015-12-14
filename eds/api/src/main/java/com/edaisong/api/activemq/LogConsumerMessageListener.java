@@ -18,8 +18,6 @@ import com.edaisong.core.util.SystemUtils;
 
 public class LogConsumerMessageListener implements MessageListener {   
     @Autowired
-	private MongoTemplate mongoTemplate;
-    @Autowired
     private MongoService mongoService;
     public void onMessage(Message message) {   
         try {   
