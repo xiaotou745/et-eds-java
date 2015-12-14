@@ -48,7 +48,7 @@ public class OrderStatisticsBReq {
 	}
 
 	public String getPlatform() {
-		if(platform == ""){
+		if(platform == null ||platform == ""){
 			return "1,3";
 		}
 		return platform;
