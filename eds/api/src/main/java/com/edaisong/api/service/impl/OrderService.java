@@ -2182,6 +2182,18 @@ public class OrderService implements IOrderService {
 		}*/
 		
 		oResp.setBusinessId(businessModel.getId());
+		oResp.setStatus(businessModel.getStatus());
+		oResp.setCity(businessModel.getCity());
+		oResp.setDistrictid(businessModel.getDistrictid());
+		oResp.setDistrict(businessModel.getDistrict());
+		oResp.setAddress(businessModel.getAddress());
+		oResp.setLandline(businessModel.getLandline());
+		oResp.setName(businessModel.getName());
+		oResp.setCityid(businessModel.getCityid());
+		oResp.setPhoneno(businessModel.getPhoneno());
+		oResp.setDistribsubsidy(businessModel.getDistribsubsidy());
+		oResp.setOriginalbusiid(businessModel.getOriginalbusiid());
+		oResp.setAppkey(businessModel.getAppkey());		
 		resp.setResult(oResp);
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
 		resp.setMessage(PublishOrderReturnEnum.Success.desc());
