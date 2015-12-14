@@ -16,11 +16,19 @@
 	<!-- ignore-resource-not-found="true" location="classpath*:constant.properties" 
 		/> -->
 	<import resource="classpath:conf/module/mongo-context.xml" />
+
+	<bean id="serviceLogMessageListener" class="com.edaisong.api.activemq.ServiceLogMessageListener" />
 	<bean id="consumerMessageListener" class="com.edaisong.api.activemq.LogConsumerMessageListener" />
-	<bean id="jmsServiceContainer"
+	<bean id="jmsContainer"
 		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="mqConnectionFactory" />
 		<property name="destination" ref="queueDestination" />
 		<property name="messageListener" ref="consumerMessageListener" />
+	</bean>
+	<bean id="serviceJmsContainer"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="mqConnectionFactory" />
+		<property name="destination" ref="serviceLogQueueDestination" />
+		<property name="messageListener" ref="serviceLogMessageListener" />
 	</bean>
 </beans> 

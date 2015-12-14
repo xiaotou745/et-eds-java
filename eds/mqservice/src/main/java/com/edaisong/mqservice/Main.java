@@ -11,13 +11,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.edaisong.api.activemq.ActiveMqService;
 import com.edaisong.core.util.JsonUtil;
-import com.edaisong.core.util.QuartzManager;
 import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.domain.ActionLog;
 
 public class Main {
 	public static ApplicationContext contentApp = new ClassPathXmlApplicationContext(
 			"applicationContext.xml");
+
 	// public static QuartzService service =
 	// contentApp.getBean(QuartzService.class);
 
