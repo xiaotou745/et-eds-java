@@ -2181,7 +2181,9 @@ public class OrderService implements IOrderService {
 				throw new TransactionalRuntimeException("记录小费错误");
 		}*/
 		
+		oResp.setMealssettlemode(order.getMealssettlemode());		
 		oResp.setOrderId(order.getId());
+		oResp.setIsAllowCashPay(businessModel.getIsAllowCashPay());
 		oResp.setBusinessId(businessModel.getId());
 		oResp.setStatus(businessModel.getStatus());
 		oResp.setCity(businessModel.getCity());
