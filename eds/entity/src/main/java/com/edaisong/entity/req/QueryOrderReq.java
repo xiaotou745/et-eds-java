@@ -138,7 +138,7 @@ public class QueryOrderReq extends PagedRequestBase {
 	}
 
 public String getPlatform() {
-	if(platform == ""){
+	if(platform == null || platform == "" ){
 		return "1,3";
 	}
 	return platform;
