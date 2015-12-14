@@ -10,6 +10,10 @@ import com.edaisong.entity.common.ResponseBase;
  * @Date 2015年8月6日 09:48:17
  */
 public class OrderResp extends ResponseBase{
+	
+	private Integer orderId;
+
+
 		private Integer businessId;
 	
 
@@ -19,9 +23,8 @@ public class OrderResp extends ResponseBase{
 
 		public void setBusinessId(Integer businessId) {
 			this.businessId = businessId;
-		}
+		}	
 		
-		private Integer orderId;
 		
 
 			public Integer getOrderId() {
