@@ -3,7 +3,7 @@
 set projectPullPath=D:\eds.java
 set projectPath=%projectPullPath%\eds\admin
 
-set exePath=D:\test
+set exePath=D:\eds.java\tools\upload2linux
 
 d:
 cd %projectPullPath%
