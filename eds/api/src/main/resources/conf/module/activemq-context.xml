@@ -50,22 +50,6 @@
 		</constructor-arg>
 	</bean>
 	
-	<!-- 消息监听器 -->
-	<bean id="serviceLogMessageListener" class="com.edaisong.api.activemq.ServiceLogMessageListener" />
-	<!-- 消息监听器 -->
-	<bean id="consumerMessageListener" class="com.edaisong.api.activemq.LogConsumerMessageListener" />
-	<!-- 消息监听容器 -->
-	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-		<property name="connectionFactory" ref="mqConnectionFactory" />
-		<property name="destination" ref="queueDestination" />
-		<property name="messageListener" ref="consumerMessageListener" />
-	</bean>
-		<!-- 消息监听容器 -->
-	<bean id="serviceJmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-		<property name="connectionFactory" ref="mqConnectionFactory" />
-		<property name="destination" ref="serviceLogQueueDestination" />
-		<property name="messageListener" ref="serviceLogMessageListener" />
-	</bean>
 <!-- 	<bean id="sessionAwareQueue" class="org.apache.activemq.command.ActiveMQQueue"> -->
 <!-- 		<constructor-arg> -->
 <!-- 			<value>sessionAwareQueue</value> -->
