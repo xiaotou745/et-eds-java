@@ -78,7 +78,11 @@ public enum PublishOrderReturnEnum {
 	 * 发布度单不能超过50个
 	 */
 	PushOrderCountErr(-15, "发布订单不能超过50个"),
-	PushErrRegionNotEnough(-16, "发单失败,配送区域不足9个");
+	PushErrRegionNotEnough(-16, "发单失败,配送区域不足9个"),
+	/**
+	 * 小费金额错误
+	 */
+	OrderTipamountErr(-17, "小费金额错误");
 	
 
 	private int value = 0;

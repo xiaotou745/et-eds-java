@@ -25,6 +25,7 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder; 
+import com.edaisong.entity.req.OrderBlancePayReq;
 import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
@@ -35,6 +36,7 @@ import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;  
+import com.edaisong.entity.resp.OrderBlancePayResp;
 import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
@@ -134,7 +136,6 @@ public class OrderHttpService implements IOrderHttpService {
 	public HttpResultModel<OrderResp> FlashPush(OrderDraftReq req)
 	{
 
-
 		HttpResultModel<OrderResp> resp=new HttpResultModel<OrderResp>();
 		
 		try
@@ -150,6 +151,21 @@ public class OrderHttpService implements IOrderHttpService {
 		return resp;	
 	}	
 
+	/**
+	 * 余额付款 闪送模式
+	 * @author 胡灵波
+	 * @date 2015年12月14日 11:12:23
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderBlancePayResp> OrderBalancePay(OrderBlancePayReq req)
+	{
+		HttpResultModel<OrderBlancePayResp> resp=new HttpResultModel<OrderBlancePayResp>();		
+		return orderService.OrderBalancePay(req);
+	}
+	
 
 	/**闪送模式
 	 * 获取订单详情
@@ -166,8 +182,9 @@ public class OrderHttpService implements IOrderHttpService {
 		return orderService.GetOrderDetails(req);
 	}
 
+
 	/**
-	 * 获取订单详情 闪送模式
+	 * 获取小费订单详情 闪送模式
 	 * @author 胡灵波
 	 * @date 2015年12月3日 13:36:24
 	 * @version 1.0

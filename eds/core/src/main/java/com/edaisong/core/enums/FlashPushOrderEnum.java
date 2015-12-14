@@ -79,7 +79,15 @@ public enum FlashPushOrderEnum {
 	/**
 	 * 创建商户失败
 	 */
-	CreateBusinessErr(-15, "创建商户失败");	
+	CreateBusinessErr(-15, "创建商户失败"),
+	/**
+	 * 订单不能为空
+	 */
+	OrderIdIsNull(-16, "订单不能为空"),
+	/**
+	 * 订单已付款
+	 */
+	OrderIdIsPay(-17, "订单已付款");	
 	
 
 	private int value = 0;

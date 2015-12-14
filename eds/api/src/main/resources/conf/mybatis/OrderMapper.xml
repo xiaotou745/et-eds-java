@@ -139,7 +139,7 @@
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
     DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
-    Platform, PubName, PubPhoneNo,  TakeType,  ProductName
+    Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount
     from [order]  nolock
     where Id = #{id,jdbcType=INTEGER}
   </select>
@@ -657,6 +657,9 @@
 			</if>
 			<if test="amount != null">
 				Amount = #{amount,jdbcType=NUMERIC},
+			</if>
+				<if test="tipamount != null">
+				tipamount = #{tipamount,jdbcType=DOUBLE},
 			</if>
 			<if test="ordercommission != null">
 				OrderCommission = #{ordercommission,jdbcType=NUMERIC},
