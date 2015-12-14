@@ -35,6 +35,6 @@
 	<import resource="classpath:conf/module/spring-datasource.xml" />
 	<import resource="classpath:conf/module/redis-context.xml" />
 	<import resource="classpath:conf/module/activemq-context.xml" />
-	<import resource="classpath:conf/module/mongo-context.xml" />
+<!-- 	<import resource="classpath:conf/module/mongo-context.xml" /> -->
 	<context:component-scan base-package="com.edaisong.api" />
 </beans>

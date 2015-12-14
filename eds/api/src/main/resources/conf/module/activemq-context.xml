@@ -40,7 +40,7 @@
 	<!--这个是队列目的地 -->
 	<bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg>
-			<value>logqueue</value>
+			<value>logqueueinfo</value>
 		</constructor-arg>
 	</bean>
 	<!--这个是主题目的地，一对多的 -->
@@ -48,13 +48,13 @@
 		<constructor-arg value="topic" />
 	</bean>
 	<!-- 消息监听器 -->
-	<bean id="consumerMessageListener" class="com.edaisong.api.activemq.LogConsumerMessageListener" />
+<!-- 	<bean id="consumerMessageListener" class="com.edaisong.api.activemq.LogConsumerMessageListener" /> -->
 	<!-- 消息监听容器 -->
-	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-		<property name="connectionFactory" ref="mqConnectionFactory" />
-		<property name="destination" ref="queueDestination" />
-		<property name="messageListener" ref="consumerMessageListener" />
-	</bean>
+<!-- 	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer"> -->
+<!-- 		<property name="connectionFactory" ref="mqConnectionFactory" /> -->
+<!-- 		<property name="destination" ref="queueDestination" /> -->
+<!-- 		<property name="messageListener" ref="consumerMessageListener" /> -->
+<!-- 	</bean> -->
 <!-- 	<bean id="sessionAwareQueue" class="org.apache.activemq.command.ActiveMQQueue"> -->
 <!-- 		<constructor-arg> -->
 <!-- 			<value>sessionAwareQueue</value> -->
