@@ -13,6 +13,12 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
+/**
+ * 上传指定目录下的文件到linux服务器上的指定目录下
+ * @author hailongzhao
+ * @date 20151214
+ *
+ */
 public class Upload2Linux {
 
 	private static final Properties prop = new Properties();
