@@ -57,7 +57,7 @@ List<QuartzServiceModel> data = responsePageList.getResultList();
 			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime())%></td>
 			<td><%=data.get(i).getUpdateName()%></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getUpdateTime())%></td>
-			<td><a href="javascript:void(0)" onclick="jss.updateStatus('<%=data.get(i).getId()%>',<%=data.get(i).getIsStart()%>)">
+			<td><a href="javascript:void(0)" onclick="updateStatus('<%=data.get(i).getId()%>',<%=data.get(i).getIsStart()%>)">
 			<%=data.get(i).getIsStart()==1?"停止":"启动"%></a>
 			<%if(data.get(i).getIsStart()==0){%>
 				<br/>

@@ -101,30 +101,30 @@
 					$("#content").html(d);
 				});
 
-			},
-		updateStatus:function(id,status){
-			if(!window.confirm("是否确认更改?")) return;
-			var realstatus= status==0?1:0;//这里取反，启动就禁用，禁用就更新启动
-			
-			$.ajax({
-				type : 'get',
-				url : "<%=basePath%>/service/updatestatus",
-				data : {"id":id,"status":realstatus},
-				success : function(d) {
-					if(d==1){
-			            window.location.href = "<%=basePath%>/service/list";   
-					}else if(d==-1){
-						alert("beanName有误，无法启动服务");
-					}	
-				}
-			});
-		}
+			}
 	};
 
 	jss.search(1);
 	$("#btnSearch").click(function(){
 		jss.search(1);
 	});
+	function updateStatus(id,status){
+		if(!window.confirm("是否确认更改?")) return;
+		var realstatus= status==0?1:0;//这里取反，启动就禁用，禁用就更新启动
+		
+		$.ajax({
+			type : 'get',
+			url : "<%=basePath%>/service/updatestatus",
+			data : {"id":id,"status":realstatus},
+			success : function(d) {
+				if(d==1){
+		            window.location.href = "<%=basePath%>/service/list";   
+				}else if(d==-1){
+					alert("beanName有误，无法启动服务");
+				}	
+			}
+		});
+	}
 	$("#add").click(function(){
 		$("#optype").val("1");//0表示修改，1表示新增
 		$("#appid").val("0");

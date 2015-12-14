@@ -9,7 +9,7 @@
  * @date 2014-6-26 下午03:15:52
  * @version V2.0
  */
-package com.edaisong.core.quartz;
+package com.edaisong.api.common;
 
 import java.util.Date;
 
