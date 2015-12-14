@@ -2194,6 +2194,8 @@ public class OrderService implements IOrderService {
 		oResp.setDistribsubsidy(businessModel.getDistribsubsidy());
 		oResp.setOriginalbusiid(businessModel.getOriginalbusiid());
 		oResp.setAppkey(businessModel.getAppkey());		
+		oResp.setBalanceprice(businessModel.getBalanceprice());		
+		
 		resp.setResult(oResp);
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
 		resp.setMessage(PublishOrderReturnEnum.Success.desc());
