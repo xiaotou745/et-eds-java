@@ -111,6 +111,7 @@ import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.ClienterMoney;
+import com.edaisong.entity.req.OrderBlancePayReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
@@ -128,6 +129,7 @@ import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
+import com.edaisong.entity.resp.OrderBlancePayResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderPushResp;
@@ -2179,13 +2181,168 @@ public class OrderService implements IOrderService {
 				throw new TransactionalRuntimeException("记录小费错误");
 		}*/
 		
+		oResp.setOrderId(order.getId());
 		oResp.setBusinessId(businessModel.getId());
+		oResp.setStatus(businessModel.getStatus());
+		oResp.setCity(businessModel.getCity());
+		oResp.setDistrictid(businessModel.getDistrictid());
+		oResp.setDistrict(businessModel.getDistrict());
+		oResp.setAddress(businessModel.getAddress());
+		oResp.setLandline(businessModel.getLandline());
+		oResp.setName(businessModel.getName());
+		oResp.setCityid(businessModel.getCityid());
+		oResp.setPhoneno(businessModel.getPhoneno());
+		oResp.setDistribsubsidy(businessModel.getDistribsubsidy());
+		oResp.setOriginalbusiid(businessModel.getOriginalbusiid());
+		oResp.setAppkey(businessModel.getAppkey());		
+		oResp.setBalanceprice(businessModel.getBalanceprice());		
+		
 		resp.setResult(oResp);
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
 		resp.setMessage(PublishOrderReturnEnum.Success.desc());
 		return resp;
 	}
 	
+	/**
+	 * 余额支付 闪送模式 
+	 * 
+	 * @param req
+	 *            参数
+	 * @author 胡灵波
+	 * @Date 2015年12月14日 11:24:01
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderBlancePayResp> OrderBalancePay(OrderBlancePayReq req)
+	{
+		HttpResultModel<OrderBlancePayResp> resp = new HttpResultModel<OrderBlancePayResp>();
+		
+		OrderBlancePayResp obpResp=new OrderBlancePayResp();
+		if(req.getOrderId()<1)
+		{
+			resp.setStatus(FlashPushOrderEnum.OrderIdIsNull.value());
+			resp.setMessage(FlashPushOrderEnum.OrderIdIsNull.desc());
+			return resp;
+		}
+		// 获取商户信息讯(读串)
+		BusinessModel businessModel = businessDao.getBusiness((long) req
+				.getBusinessId());
+		if(businessModel==null)
+		{
+			resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
+			resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
+			return resp;
+		}
+		
+		Order oModel=orderDao.selectByPrimaryKey(req.getOrderId());
+		if(oModel==null)
+		{
+			resp.setStatus(FlashPushOrderEnum.OrderIdIsNull.value());
+			resp.setMessage(FlashPushOrderEnum.OrderIdIsNull.desc());
+			return resp;
+		}
+
+		if(req.getType()==1)
+		{
+			if(oModel.getStatus()!=50)
+			{
+				resp.setStatus(FlashPushOrderEnum.OrderIdIsPay.value());
+				resp.setMessage(FlashPushOrderEnum.OrderIdIsPay.desc());
+				return resp;
+			}
+			// 扣除商家结算费
+			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
+			balanceRecord.setBusinessid(oModel.getBusinessid());
+			double amount=oModel.getAmount()+oModel.getTipamount();
+			balanceRecord.setAmount(amount);
+			balanceRecord.setGroupamount(0);
+			balanceRecord.setGroupid(0);
+			balanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success
+					.value());
+			balanceRecord
+					.setRecordtype((short) BusinessBalanceRecordRecordType.PublishOrder
+							.value());
+			balanceRecord.setOperator(businessModel.getName());
+			balanceRecord.setWithwardid((long) oModel.getId());
+			balanceRecord.setRelationno(oModel.getOrderno());
+			balanceRecord.setRemark("配送费支出金额");
+			int bbcId = businessService.updateForWithdrawC(0, balanceRecord);		
+			if(bbcId<0)
+				throw new TransactionalRuntimeException("记录商户流水错误");
+			
+			//更新订单状态
+			Order order=new Order();
+			order.setIspay(true);
+			order.setStatus((byte)0);
+			order.setId(req.getOrderId());
+			int oId=orderDao.updateByPrimaryKeySelective(order);
+			if(oId<0)
+				throw new TransactionalRuntimeException("更新订单状态错误");
+			
+			//小费 	
+			if(oModel.getTipamount()>0)
+			{
+				OrderTipCost otcModel=new OrderTipCost();
+				otcModel.setOrderid(oModel.getId());
+				otcModel.setAmount(oModel.getTipamount());
+				otcModel.setCreatename(businessModel.getName());		
+				int otcId=orderTipCostDao.insertSelective(otcModel);
+				if (otcId <= 0)
+					throw new TransactionalRuntimeException("记录小费错误");			
+			}			
+		}
+		else
+		{//抢单
+			if(req.getTipamount()<=0)
+			{
+				resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
+				resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
+				return resp;
+			}
+			
+			// 扣除商家结算费
+			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
+			balanceRecord.setBusinessid(oModel.getBusinessid());
+			double amount=req.getTipamount();
+			balanceRecord.setAmount(amount);
+			balanceRecord.setGroupamount(0);
+			balanceRecord.setGroupid(0);
+			balanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success
+							.value());
+			balanceRecord
+								.setRecordtype((short) BusinessBalanceRecordRecordType.PublishOrder
+										.value());
+			balanceRecord.setOperator(businessModel.getName());
+			balanceRecord.setWithwardid((long) oModel.getId());
+			balanceRecord.setRelationno(oModel.getOrderno());
+			balanceRecord.setRemark("配送费支出金额");
+			int bbcId = businessService.updateForWithdrawC(0, balanceRecord);		
+			if(bbcId<0)
+				throw new TransactionalRuntimeException("记录商户流水错误");
+			
+			//小费 			
+			OrderTipCost otcModel=new OrderTipCost();
+			otcModel.setOrderid(oModel.getId());
+			otcModel.setAmount(req.getTipamount());
+			otcModel.setCreatename(businessModel.getName());		
+			int otcId=orderTipCostDao.insertSelective(otcModel);
+			if (otcId <= 0)
+				throw new TransactionalRuntimeException("记录小费错误");
+				
+			Order order2=new Order();			
+			double amount2=oModel.getTipamount()+ req.getTipamount();
+			order2.setTipamount(amount2);		
+			order2.setId(req.getOrderId());
+			int oId2=orderDao.updateByPrimaryKeySelective(order2);
+			if(oId2<0)
+				throw new TransactionalRuntimeException("更新订单小费错误");
+		}	
+
+		
+
+		
+		return resp;			
+	}
 	/** 
 	 * 获取订单详情  闪送模式 api
 	 * 
@@ -2282,6 +2439,7 @@ public class OrderService implements IOrderService {
 		odResp.setTaketype(oModel.getTaketype());			
 		odResp.setPickupcode(oModel.getTakecode());	
 		odResp.setProductname(oModel.getProductname());
+		odResp.setIscomplain(oModel.getIscomplain());
 			
 		odResp.setListOrderChild(ocList);
 
@@ -2316,6 +2474,7 @@ public class OrderService implements IOrderService {
 		odResp.setPhoneno2(businessModel.getPhoneno2());
 		odResp.setAddress(businessModel.getAddress());
 		odResp.setLandline(businessModel.getLandline());  
+		odResp.setCity(businessModel.getCity());		
 
 		resp.setStatus(OrderDetailGet.Success.value());
 		resp.setMessage(OrderDetailGet.Success.desc()); 
@@ -2532,10 +2691,7 @@ public class OrderService implements IOrderService {
 		order.setReceiveareacode(null);////收货区域 代码	
 		order.setProductname(req.getProductname());//物品名称
 		order.setRemark(req.getRemark());//备注
-		double amount=req.getAmount();
-		if(req.getTipamount()!=null && req.getTipamount()>0)
-			amount+=req.getTipamount();
-		order.setAmount(amount);//加小费金  金额				
+		order.setAmount(req.getAmount());//金额				
 		order.setWeight(req.getWeight());//订单总重量
 		order.setKm(req.getKm());//	距离		
 

@@ -16,10 +16,12 @@ import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.edaisong.api.common.QuartzManager;
 import com.edaisong.core.util.JsonUtil;
-import com.edaisong.core.util.QuartzManager;
 import com.edaisong.edsservice.Main;
 import com.edaisong.entity.QuartzServiceModel;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.PagedQuartzServiceReq;
 
 
 public class QuartzJob implements Job {
@@ -30,8 +32,8 @@ public class QuartzJob implements Job {
 	@Override
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
-	
-		List<QuartzServiceModel> list = Main.service.query();
+		PagedQuartzServiceReq req=new PagedQuartzServiceReq();
+		PagedResponse<QuartzServiceModel> list = Main.service.pagedQuery(req);
 		String newConfigs=JsonUtil.obj2string(list);
 		if (oldConfigs.equals("")) {
 			oldConfigs=newConfigs;
@@ -40,7 +42,7 @@ public class QuartzJob implements Job {
 				return;
 			}
 		}
-		for (QuartzServiceModel item : list) {
+		for (QuartzServiceModel item : list.getResultList()) {
 			mainJob(item);
 		}
 	}
@@ -51,9 +53,7 @@ public class QuartzJob implements Job {
 	 * */
 	private void mainJob(QuartzServiceModel item) {
 		try {
-			String jobName = item.getName().replace("#", "");
-			jobName += ("#"+item.getFilePath());
-			jobName += ("#"+item.getPackages());
+			String jobName = item.getBeanName();
 			
 			int qzState = QuartzManager.checkJob(jobName);// 获取调度状态
 			int dbStatus = item.getIsStart();// 0关闭，1开启

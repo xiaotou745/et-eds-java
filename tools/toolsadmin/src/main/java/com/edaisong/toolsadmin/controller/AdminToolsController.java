@@ -114,7 +114,7 @@ public class AdminToolsController {
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "菜单管理");
 		view.addObject("viewPath", "admintools/menulist");
-		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
+		view.addObject("appNameList", getConnList());
 		return view;
 	}
 	/**

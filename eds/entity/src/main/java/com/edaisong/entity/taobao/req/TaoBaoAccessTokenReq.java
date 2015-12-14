@@ -6,6 +6,7 @@ public class TaoBaoAccessTokenReq {
 	
 	private String redirect_uri;
 	
+	private String code;
 	private String state;
 	
 	private String view;
@@ -60,5 +61,13 @@ public class TaoBaoAccessTokenReq {
 
 	public void setGrant_type(String grant_type) {
 		this.grant_type = grant_type;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

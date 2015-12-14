@@ -11,8 +11,10 @@ import java.net.URLClassLoader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.edaisong.api.common.QuartzManager;
 import com.edaisong.api.service.impl.QuartzService;
-import com.edaisong.core.util.QuartzManager;
+
+
 
 
 

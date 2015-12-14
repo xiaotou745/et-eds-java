@@ -21,6 +21,7 @@ import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
+import com.edaisong.entity.req.OrderBlancePayReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq; 
 import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
@@ -34,6 +35,7 @@ import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
+import com.edaisong.entity.resp.OrderBlancePayResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderResp;
@@ -155,6 +157,17 @@ public interface IOrderService {
 	 * @return
 	 */
 	HttpResultModel<OrderResp> FlashPushOrder(OrderDraftReq req);
+	
+	/**
+	 * 余额支付 闪送模式 
+	 * 
+	 * @param req
+	 *            参数
+	 * @author 胡灵波
+	 * @Date 2015年12月14日 11:24:01
+	 * @return
+	 */
+	HttpResultModel<OrderBlancePayResp> OrderBalancePay(OrderBlancePayReq req);
 	
 	/**
 	 * 获取订单详情  闪送模式 api

@@ -7,7 +7,7 @@ package com.edaisong.entity.req;
 public class OrderStatisticsCReq {
 	private String monthInfo;
 	private int clienterId;
-	private int platform;
+	private String platform;
 	/**
 	 * 年月
 	 * 
@@ -44,11 +44,14 @@ public class OrderStatisticsCReq {
 		this.clienterId = clienterId;
 	}
 
-	public int getPlatform() {
+	public String getPlatform() {
+		if(platform == null ||platform == ""){
+			return "1,3";
+		}
 		return platform;
 	}
 
-	public void setPlatform(int platform) {
+	public void setPlatform(String platform) {
 		this.platform = platform;
 	}
 }
