@@ -14,6 +14,7 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.resp.MyOrderGrabDetailCResp;
+import com.edaisong.entity.req.OrderBlancePayReq;
 import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
@@ -27,6 +28,7 @@ import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
+import com.edaisong.entity.resp.OrderBlancePayResp;
 import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
@@ -97,6 +99,17 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/flashpush")
 	public HttpResultModel<OrderResp> FlashPush(OrderDraftReq req);
+	/**
+	 * 发布订单 余额支付  闪送模式
+	 * @author 胡灵波
+	 * @date 2015年12月14日 11:21:34
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/orderbalancepay")
+	public HttpResultModel<OrderBlancePayResp> OrderBalancePay(OrderBlancePayReq req);
 	/**
 	 * 获取订单详情(闪送模式) 
 	 * @author 胡灵波
