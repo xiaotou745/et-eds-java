@@ -2181,6 +2181,7 @@ public class OrderService implements IOrderService {
 				throw new TransactionalRuntimeException("记录小费错误");
 		}*/
 		
+		oResp.setOrderId(order.getId());
 		oResp.setBusinessId(businessModel.getId());
 		oResp.setStatus(businessModel.getStatus());
 		oResp.setCity(businessModel.getCity());
