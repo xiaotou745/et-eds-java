@@ -27,12 +27,15 @@ cd %exePath%\unzipwar
 
 jar -xf %exePath%\war\admin-0.0.1-SNAPSHOT.war
 
-echo 开始复制到last目录下
 
-xcopy %exePath%\unzipwar %exePath%\last\ /e /y
 
 cd %exePath%\copytools
 
 echo 开始上传到linux
 java -jar ftptools-0.0.1-SNAPSHOT.jar
+
+
+echo 开始备份到last目录下
+pause
+xcopy %exePath%\unzipwar %exePath%\last\ /e /y
 pause
