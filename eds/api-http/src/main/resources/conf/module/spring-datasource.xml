@@ -14,9 +14,7 @@
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx.xsd
     	">
-<!-- 		<context:property-placeholder location="classpath:conf/custom/env.properties" -->
-<!-- 		ignore-unresolvable="true" /> -->
-		
+
 	<bean id="superManSqlServerDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="${jdbc.sqlserver.driver}" />
 		<property name="url" value="${jdbc.sqlserver.url}" />
@@ -29,15 +27,7 @@
 		<property name="username" value="${jdbc.readonlysqlserver.username}" />
 		<property name="password" value="${jdbc.readonlysqlserver.password}" />
 	</bean>
-<!-- 	<bean id="superManLogSqlServerDataSource" class="org.apache.commons.dbcp.BasicDataSource"> -->
-<!-- 		<property name="driverClassName" value="${jdbc.logsqlserver.driver}" /> -->
-<!-- 		<property name="url" value="${jdbc.logsqlserver.url}" /> -->
-<!-- 		<property name="username" value="${jdbc.logsqlserver.username}" /> -->
-<!-- 		<property name="password" value="${jdbc.logsqlserver.password}" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="superManLogSqlServerSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> -->
-<!-- 		<property name="dataSource" ref="superManLogSqlServerDataSource" /> -->
-<!-- 	</bean> -->
+
 	<bean id="superManSqlServerSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="superManSqlServerDataSource" />
 		<property name="mapperLocations" value="classpath:conf/mybatis/*.xml" /> 

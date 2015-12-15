@@ -50,14 +50,14 @@ public enum FlashPushOrderEnum {
 	 */
 	ProductNameIsNull(-8, "物品名称不能为空"),
 	/**
-	 * 金额不能为空
+	 * 金额错误
 	 */
-	AmountIsNull(-9, "金额不能为空"),
+	AmountIsErr(-9, "金额错误"),
 	
 	/**
-	 * 重量不能为空
+	 * 重量错误
 	 */
-	WeightIsNull(-10, "重量不能为空"),
+	WeightIsErr(-10, "重量错误"),
 	
 	/**
 	 * 距离不能为空
@@ -87,7 +87,15 @@ public enum FlashPushOrderEnum {
 	/**
 	 * 订单已付款
 	 */
-	OrderIdIsPay(-17, "订单已付款");	
+	OrderIdIsPay(-17, "订单已付款"),
+	/**
+	 * 取货时间错误
+	 */
+	TaketimeErr(-18, "取货时间错误"),
+	/**
+	 * 子订单Id不能为空
+	 */
+	OrderChildId(-19, "子订单Id不能为空");	
 	
 
 	private int value = 0;

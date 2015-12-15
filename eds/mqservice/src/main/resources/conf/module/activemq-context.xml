@@ -11,9 +11,11 @@
 		http://www.springframework.org/schema/util/spring-util-3.2.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
 	<bean id="targetMqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="${activemq.url}" />
 	</bean>
+
 	<bean id="mqConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
 		<property name="targetConnectionFactory" ref="targetMqConnectionFactory" />
 	</bean>
@@ -21,6 +23,7 @@
 	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="mqConnectionFactory" />
 	</bean>
+
 	<bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg>
 			<value>logqueue</value>
@@ -30,5 +33,21 @@
 		<constructor-arg>
 			<value>servicelogqueue</value>
 		</constructor-arg>
+	</bean>
+	
+	<bean id="serviceLogMessageListener" class="com.edaisong.api.activemq.ServiceLogMessageListener" />
+
+	<bean id="consumerMessageListener" class="com.edaisong.api.activemq.LogConsumerMessageListener" />
+
+	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="mqConnectionFactory" />
+		<property name="destination" ref="queueDestination" />
+		<property name="messageListener" ref="consumerMessageListener" />
+	</bean>
+
+	<bean id="serviceJmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="mqConnectionFactory" />
+		<property name="destination" ref="serviceLogQueueDestination" />
+		<property name="messageListener" ref="serviceLogMessageListener" />
 	</bean>
 </beans>  

@@ -392,8 +392,8 @@
       <if test="lastlogintime != null" >
         #{lastlogintime,jdbcType=TIMESTAMP},
       </if>
-      <if test="pushordertype != null" >
-        #{pushordertype,jdbcType=SMALLINT},
+      <if test="pushOrderType != null" >
+        #{pushOrderType,jdbcType=SMALLINT},
       </if>
       <if test="registerFrom != null" >
         #{registerFrom,jdbcType=INTEGER},

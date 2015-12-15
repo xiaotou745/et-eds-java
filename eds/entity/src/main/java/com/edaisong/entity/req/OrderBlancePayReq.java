@@ -20,8 +20,18 @@ public class OrderBlancePayReq {
 	}
 
 	private Integer orderId;
+	
+	private Integer orderChildId;
 
-    private Integer businessId;  
+    public Integer getOrderChildId() {
+		return orderChildId;
+	}
+
+	public void setOrderChildId(Integer orderChildId) {
+		this.orderChildId = orderChildId;
+	}
+
+	private Integer businessId;  
     
     private Double tipamount;
     
