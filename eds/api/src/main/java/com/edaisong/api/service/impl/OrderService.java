@@ -2147,7 +2147,7 @@ public class OrderService implements IOrderService {
 		record.setPrice(0d);
 		record.setOptname(businessModel.getName());
 		record.setRemark(TaskStatus.PublishOrder.desc());
-		record.setPlatform(SuperPlatform.NewApiPush.value());
+		record.setPlatform(SuperPlatform.SSApiPush.value());
 		int ordersubsidiesId = orderSubsidiesLogDao.insert(record);
 		if (ordersubsidiesId <= 0) {
 			throw new TransactionalRuntimeException("记录订单日志错误");
