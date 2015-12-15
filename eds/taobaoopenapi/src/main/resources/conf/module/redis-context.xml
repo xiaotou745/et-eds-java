@@ -11,24 +11,21 @@
 		http://www.springframework.org/schema/util/spring-util-3.2.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
-<!-- 		<context:property-placeholder location="classpath:conf/custom/env.properties" -->
-<!-- 		ignore-unresolvable="true" /> -->
-	<!-- 配置Jedis的 缓冲池 -->
+
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
 		p:maxTotal="${redis.max-total}" p:maxIdle="${redis.max-idle}"
 		p:maxWaitMillis="${redis.max-wait-millis}">
 	</bean>
-	<!-- 配置Jedis connection -->
+
 	<bean id="redisconnectionFactory"
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
 		p:poolConfig-ref="jedisPoolConfig" p:hostName="${redis.host}" p:port="${redis.port}"
 		p:usePool="true">
 	</bean>
 
-	<!-- 配置 redisTemplate 利用Stringserializer -->
+
 	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
 		p:connectionFactory-ref="redisconnectionFactory">
-		<!-- 使用string主要是key 在redis端用命令好读 不然默认的序列化没办法读 -->
 		<property name="keySerializer">
 			<bean
 				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
@@ -38,10 +35,8 @@
 				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
 		</property>
 	</bean>  
-		<!-- 配置 redisTemplate 利用Stringserializer -->
 	<bean id="netRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
 		p:connectionFactory-ref="redisconnectionFactory">
-		<!-- 使用string主要是key 在redis端用命令好读 不然默认的序列化没办法读 -->
 		<property name="keySerializer">
 			<bean
 				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
