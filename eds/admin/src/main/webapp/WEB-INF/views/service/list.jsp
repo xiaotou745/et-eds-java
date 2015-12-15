@@ -190,7 +190,7 @@
 				return;
 			}
 		}
-		checkCron(paramaters);
+		saveInfo(paramaters);
 		
 	});
 	function saveInfo(paramaters){
@@ -201,34 +201,26 @@
 			data : paramaters,
 			success : function(result) {
 				$("#tip").html("");
-				if (result>0) {
+				switch(result){
+				case 1:
 					alert("操作成功");
-				}else{
+					window.location.href = window.location.href;
+					break;
+				case 0:
 					if(paramaters.optype=="0"){
-					   alert("操作失败:当前服务处于启动状态或修改后的服务名称或bean名称与现有的服务相同，不能修改");
+						 alert("操作失败:当前服务处于启动状态或修改后的服务名称或bean名称与现有的服务相同，不能修改");
 					}else{
 						 alert("操作失败:新增的服务名称或bean名称与现有的服务相同");
 					}
-				}
-				window.location.href = window.location.href;
-			}
-		});
-	}
-	function checkCron(paramaters){
-		var url = "<%=basePath%>/service/checkcron";
-		$.ajax({
-			type : 'POST',
-			url : url,
-			data : {"cron":paramaters.execTime},
-			success : function(result) {
-				$("#tip").html("");
-				if (result>0) {
-					saveInfo(paramaters);
-				} else{
+					break;
+				case -1:
+					alert("beanName有误，不能保存");
+					break;
+				case -2:
 					alert("cron表达式校验失败，请检查");
+					break;
 				}
 			}
 		});
-		
 	}
 </script>

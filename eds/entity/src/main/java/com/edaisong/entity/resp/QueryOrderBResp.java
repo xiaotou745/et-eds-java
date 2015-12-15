@@ -26,6 +26,8 @@ public class QueryOrderBResp {
 	private int deliveryCount;
 	private int takingCount;
 	private int waitPayCount; //待支付数量
+	private int hadCompleteCount; //已完成数量
+	
 /**
  *  待接单数量
  * @return
@@ -75,5 +77,13 @@ public int getWaitPayCount() {
 
 public void setWaitPayCount(int waitPayCount) {
 	this.waitPayCount = waitPayCount;
+}
+
+public int getHadCompleteCount() {
+	return hadCompleteCount;
+}
+
+public void setHadCompleteCount(int hadCompleteCount) {
+	this.hadCompleteCount = hadCompleteCount;
 }
 }

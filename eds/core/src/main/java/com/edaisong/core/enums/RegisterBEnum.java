@@ -1,7 +1,5 @@
 package com.edaisong.core.enums;
 
-import org.junit.internal.runners.statements.Fail;
-
 public enum RegisterBEnum {
 	/**
 	 * 手机号码无效
