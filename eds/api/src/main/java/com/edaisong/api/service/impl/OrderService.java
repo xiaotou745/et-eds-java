@@ -2076,16 +2076,17 @@ public class OrderService implements IOrderService {
 				resp.setMessage(FlashPushOrderEnum.BusinessPhonenoIsNull.desc());
 				return resp;
 			}
-			/*if(req.getVerificationcode()==null || req.getVerificationcode().equals(""))
+			if(req.getVerificationcode()==null || req.getVerificationcode().equals(""))
 			{
 				resp.setStatus(FlashPushOrderEnum.VerificationCodeIsNull.value());
 				resp.setMessage(FlashPushOrderEnum.VerificationCodeIsNull.desc());
 				return resp;
 			}
-			
+			//验证吗
 			String key = String.format(RedissCacheKey.PostRegisterInfo_B, req.getBusinessphoneno());
 			String verificationCode= netRedisService.get(key, String.class);
-			if(!verificationCode.equals(req.getVerificationcode()))
+			
+			/*if(verificationCode==null || !verificationCode.equals(req.getVerificationcode()))
 			{
 				resp.setStatus(FlashPushOrderEnum.VerificationCodeErr.value());
 				resp.setMessage(FlashPushOrderEnum.VerificationCodeErr.desc());
@@ -2226,6 +2227,12 @@ public class OrderService implements IOrderService {
 			resp.setMessage(FlashPushOrderEnum.OrderIdIsNull.desc());
 			return resp;
 		}
+		if(req.getOrderChildId()<1)
+		{
+			resp.setStatus(FlashPushOrderEnum.OrderChildId.value());
+			resp.setMessage(FlashPushOrderEnum.OrderChildId.desc());
+			return resp;
+		}
 		// 获取商户信息讯(读串)
 		BusinessModel businessModel = businessDao.getBusiness((long) req
 				.getBusinessId());
@@ -2280,6 +2287,14 @@ public class OrderService implements IOrderService {
 			int oId=orderDao.updateByPrimaryKeySelective(order);
 			if(oId<0)
 				throw new TransactionalRuntimeException("更新订单状态错误");
+			
+			//PayStatus
+			OrderChild orderchild=new OrderChild();
+			orderchild.setPaystatus((short)1);			
+			orderchild.setId((long)req.getOrderChildId());
+			int ocId=orderChildDao.updateByPrimaryKeySelective(orderchild);
+			if(oId<0)
+				throw new TransactionalRuntimeException("更新子订单状态错误");
 			
 			//小费 	
 			if(oModel.getTipamount()>0)
@@ -2632,18 +2647,22 @@ public class OrderService implements IOrderService {
 		{		
 			return FlashPushOrderEnum.ProductNameIsNull;
 		}
-//		if(req.getAmount()==null)
-//		{		
-//			return OrderDraftReturn.AmountIsNull;
-//		}
-//		if(req.getWeight()==null )
-//		{			
-//			return OrderDraftReturn.WeightIsNull;
-//		}
+		if(req.getAmount()<=0)
+		{		
+			return FlashPushOrderEnum.AmountIsErr;
+		}
+		if(req.getWeight()<1 )
+		{			
+			return FlashPushOrderEnum.WeightIsErr;
+		}
 		if(req.getKm()==null)
 		{			
 			return FlashPushOrderEnum.KMIsNull;
 		}
+		if(req.getTaketime()==null)
+		{
+			return FlashPushOrderEnum.TaketimeErr;
+		}		
 		
 		return FlashPushOrderEnum.VerificationSuccess;
 	}
