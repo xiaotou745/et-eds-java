@@ -44,6 +44,7 @@ public class QueryOrder {
 	private Double distance_OrderBy=9999999.0; 
 	private double km;
 	private double weight;
+	private String pickupCode;
 	private int platform;
 	/**
 	 * 订单Id
@@ -590,5 +591,13 @@ public int getPlatform() {
 
 public void setPlatform(int platform) {
 	this.platform = platform;
+}
+
+public String getPickupCode() {
+	return pickupCode;
+}
+
+public void setPickupCode(String pickupCode) {
+	this.pickupCode = pickupCode;
 }
 }
