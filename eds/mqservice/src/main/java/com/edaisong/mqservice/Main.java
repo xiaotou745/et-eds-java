@@ -8,11 +8,13 @@ import java.lang.management.ManagementFactory;
 
 //import javax.sound.midi.Receiver;
 
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.edaisong.api.activemq.ActiveMqService;
 import com.edaisong.core.util.JsonUtil;
+import com.edaisong.core.util.SystemUtils;
 import com.edaisong.entity.domain.ActionLog;
 
 public class Main {
@@ -24,7 +26,7 @@ public class Main {
 		/* 加载定时任务 */
 		writePID();// 生成PID
 //		writeLog();
-
+	
 	}
 
 	/**

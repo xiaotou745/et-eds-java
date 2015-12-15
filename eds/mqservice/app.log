@@ -240,3 +240,6 @@
 [2015-12-14 16:38:03 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/module/mongo-context.xml]
 [2015-12-14 16:38:04 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
 [2015-12-14 16:38:04 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-12-15 19:58:34 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@277c0f21: startup date [Tue Dec 15 19:58:34 CST 2015]; root of context hierarchy
+[2015-12-15 19:58:34 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2015-12-15 19:58:34 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
