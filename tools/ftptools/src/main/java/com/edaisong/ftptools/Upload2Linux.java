@@ -63,6 +63,12 @@ public class Upload2Linux {
             sftp = (ChannelSftp) channel;
             File file = new File(src);    
             upload(sftp,file,dst);
+            
+            String configSrc=src+"/WEB-INF/web.xml";
+            String configDst=dst+"/WEB-INF/web.xml";
+	       	System.out.println("复制"+configSrc+"到"+configDst);
+	        sftp.put(configSrc, configDst, ChannelSftp.OVERWRITE);  
+            
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -91,6 +97,11 @@ public class Upload2Linux {
         }      
     }  
     private static boolean isNeedUpload(String src) throws Exception{
+    	if (src.endsWith("pom.properties")||
+    		src.endsWith("MANIFEST.MF")||
+    		src.endsWith("web.xml")) {
+			return false;
+		}
 		String warPath = prop.getProperty("warsrc").replace("/", "\\");
 		if (src.startsWith(warPath)) {
 			return true;
