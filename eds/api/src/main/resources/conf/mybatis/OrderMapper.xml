@@ -1916,7 +1916,7 @@ left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
 where a.orderno=#{ordernNo}
 </select>
 <!--闪送商家端我的任务 addby wangchao -->
-	<select id="shanSongQueryOrderCountB" parameterType="com.edaisong.entity.req.QueryOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderBResp">
+	<select id="shanSongQueryOrderCountB" parameterType="com.edaisong.entity.req.QueryShanSongOrderReq"   resultType="com.edaisong.entity.resp.QueryOrderBResp">
 	     select  ISNULL(SUM(CASE Status
               when 0 then 1
               else 0
@@ -1941,7 +1941,7 @@ where a.orderno=#{ordernNo}
        where businessId=${businessId} and [Platform] IN(${platform}) 
 	</select>
 	<select id="shanSongQueryOrderB" resultType="com.edaisong.entity.domain.QueryOrder"
-		parameterType="com.edaisong.entity.req.QueryOrderReq"
+		parameterType="com.edaisong.entity.req.QueryShanSongOrderReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
 		'
