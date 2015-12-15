@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
-
 import com.edaisong.api.service.inter.ITaoBaoOrder;
 import com.edaisong.core.consts.TaoBaoConsts;
 import com.edaisong.entity.taobao.req.TaoBaoAccessTokenReq;
