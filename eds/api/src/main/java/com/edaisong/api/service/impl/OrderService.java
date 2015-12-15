@@ -2438,8 +2438,7 @@ public class OrderService implements IOrderService {
 		odResp.setPlatform(oModel.getPlatform());	 
 		odResp.setPubname(oModel.getPubname());	 
 		odResp.setPubphoneno(oModel.getPubphoneno());		
-		odResp.setTaketype(oModel.getTaketype());			
-		odResp.setPickupcode(oModel.getTakecode());	
+		odResp.setTaketype(oModel.getTaketype()); 
 		odResp.setProductname(oModel.getProductname());
 		odResp.setIscomplain(oModel.getIscomplain());
 			
