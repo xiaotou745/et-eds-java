@@ -56,7 +56,11 @@ public enum SuperPlatform {
 	/**
 	 * 区域系统取消订单
 	 */
-	NewSystemCancel(301, "区域系统取消订单");
+	NewSystemCancel(301, "区域系统取消订单"),
+	/**
+	 * 闪送发单
+	 */
+	SSApiPush(401, "闪送发单");
 	
 	private int value = 0;
 	private String desc;

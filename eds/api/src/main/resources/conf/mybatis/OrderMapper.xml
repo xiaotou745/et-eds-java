@@ -1932,7 +1932,11 @@ where a.orderno=#{ordernNo}
         ISNULL(SUM(CASE Status
               when 50 then 1
               else 0
-            end),0) waitPayCount 
+            end),0) waitPayCount ,
+            ISNULL(SUM(CASE Status
+              when 1 then 1
+              else 0
+            end),0) hadCompleteCount  
        from    dbo.[order] (nolock)
        where businessId=${businessId} and [Platform] IN(${platform}) 
 	</select>
@@ -1998,7 +2002,7 @@ where a.orderno=#{ordernNo}
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
-        b.GroupId ,o.[Platform],
+        b.GroupId ,o.[Platform],o.KM,o.[Weight],o.PickupCode,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
