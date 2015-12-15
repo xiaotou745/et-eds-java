@@ -82,6 +82,9 @@ public class ServiceControler {
 	@ResponseBody
 	@RequestMapping(value="save")
 	public int save(QuartzServiceModel record,int optype,HttpServletRequest request) {
+		if(!quartzService.checkCron(record.getExecTime())){
+			return -2;
+		}
 		String beanName=getBeanName(record.getBeanName());
 		try {
 			SpringBeanHelper.getCustomBean(beanName);
@@ -111,17 +114,5 @@ public class ServiceControler {
 		}
 		return result;
 	}
-	/**
-	 * 检查cron表达式是否有效
-	 * @param cron
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value="checkcron")
-	public int checkCron(String cron) {
-		if(quartzService.checkCron(cron)){
-			return 1;
-		}
-		return 0;
-	}
+
 }
