@@ -64,7 +64,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 				TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey, TaoBaoConsts.AppSecret);
 				WaimaiOrderAckRequest req = new WaimaiOrderAckRequest();
 				req.setDeliveryOrderNo(ParseHelper.ToLong(jsonObject.getLong("Result"), 0));
-				WaimaiOrderAckResponse response = client.execute(req, "6100326184627d82ebfa6e1a6e44dfc0881cd93d40ee3222532754203");
+				WaimaiOrderAckResponse response = client.execute(req, TaoBaoConsts.SessionKey);
 				TaoBaoResponseBase resp = new TaoBaoResponseBase();
 				resp.setIs_success(response.getAckOrderResult().getSuccess());
 				resp.setError_code(response.getAckOrderResult().getErrorCode());
