@@ -6,38 +6,25 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.management.ManagementFactory;
 
+//import javax.sound.midi.Receiver;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.edaisong.api.activemq.ActiveMqService;
 import com.edaisong.core.util.JsonUtil;
-import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.domain.ActionLog;
 
 public class Main {
-	public static ApplicationContext contentApp = new ClassPathXmlApplicationContext(
-			"applicationContext.xml");
 
-	// public static QuartzService service =
-	// contentApp.getBean(QuartzService.class);
+	private static ApplicationContext contentApp = new ClassPathXmlApplicationContext(
+			"applicationContext.xml");
 
 	public static void main(String[] args) throws Exception {
 		/* 加载定时任务 */
 		writePID();// 生成PID
-		// ApplicationContext contentApp = new ClassPathXmlApplicationContext(
-		// "applicationContext.xml");
-		// try {
-		// String job_name = "MQ日志处理主程序";
-		// System.out.println("【系统启动】开始(只运行一次)...");
-		while (true) {
-			writeLog();
-			Thread.sleep(10000);
-		}
-		// QuartzManager.addJob(job_name,com.edaisong.mqservice.impl.MqJob.class,
-		// "0/10 * * * * ?");// 0/10 * * * * ? 0 0/1 * * * ?
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
+//		writeLog();
+
 	}
 
 	/**
@@ -47,8 +34,6 @@ public class Main {
 	 * @author haichao
 	 * */
 	private static void writeLog() {
-		// ApplicationContext contentApp = new ClassPathXmlApplicationContext(
-		// "applicationContext.xml");
 		ActiveMqService service = contentApp.getBean(ActiveMqService.class);
 		ActionLog logEngity = new ActionLog();
 		logEngity.setUserID(-1);
@@ -70,10 +55,8 @@ public class Main {
 		logEngity.setExecuteTime((long) 3412312);
 		logEngity.setRequestTime("2015-12-14");
 		logEngity.setRequestEndTime("2015-12-15");
-		// logServiceBLL.SystemActionLog(logEngity);
 		String jsonMsg = JsonUtil.obj2string(logEngity);
 		service.asynSendMessage(jsonMsg);
-
 	}
 
 	private static void writePID() throws IOException {
