@@ -14,8 +14,7 @@
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx.xsd
     	">
-<!-- 		<context:property-placeholder location="classpath:conf/custom/env.properties" -->
-<!-- 		ignore-unresolvable="true" /> -->
+
 		
 	<bean id="superManSqlServerDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="${jdbc.sqlserver.driver}" />

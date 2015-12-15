@@ -43,7 +43,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 	/**
 	 * 
 	 */
-	private String sessionKey = "6100326184627d82ebfa6e1a6e44dfc0881cd93d40ee3222532754203";
+	//private String sessionKey = "6100326184627d82ebfa6e1a6e44dfc0881cd93d40ee3222532754203";
 	/**
 	 * 确认接单接口(API)
 	 * @author CaoHeYang
@@ -56,7 +56,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 		WaimaiOrderAckRequest req=new WaimaiOrderAckRequest();
 		req.setDeliveryOrderNo(r.getDeliveryOrderNo());
 		try {
-			WaimaiOrderAckResponse response = client.execute(req, sessionKey);
+			WaimaiOrderAckResponse response = client.execute(req, TaoBaoConsts.SessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
 			resp.setIs_success(response.getAckOrderResult().getSuccess());
 			resp.setError_code(response.getAckOrderResult().getErrorCode());
@@ -87,7 +87,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 		request.setCardNo(r.getCardNo());
 		request.setDelivererId(r.getDelivererId());
 		try {
-			WaimaiDeliveryUpdateResponse response = client.execute(request, sessionKey);
+			WaimaiDeliveryUpdateResponse response = client.execute(request, TaoBaoConsts.SessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
 			resp.setIs_success(response.getDeliveryUpdateResult().getSuccess());
 			resp.setError_code(response.getDeliveryUpdateResult().getErrorCode());
@@ -114,7 +114,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 		req.setLng(gps.getWgLon()+"");
 		req.setLat(gps.getWgLat()+"");
 		try {
-			WaimaiDeliveryPickupResponse response = client.execute(req, sessionKey);
+			WaimaiDeliveryPickupResponse response = client.execute(req, TaoBaoConsts.SessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();			
 			resp.setIs_success(response.getDeliveryOrderResult().getIsSuccess());
 			resp.setError_code(response.getDeliveryOrderResult().getErrorCode());
@@ -142,7 +142,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 		req.setLng(gps.getWgLon()+"");
 		req.setLat(gps.getWgLat()+"");
 		try {
-			WaimaiDeliveryConfirmResponse response = client.execute(req, sessionKey);
+			WaimaiDeliveryConfirmResponse response = client.execute(req, TaoBaoConsts.SessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
 			resp.setIs_success(response.getDeliveryOrderResult().getIsSuccess());
 			resp.setError_code(response.getDeliveryOrderResult().getErrorCode());
@@ -171,7 +171,7 @@ public class TaoBaoOrderHttpService implements ITaoBaoOrderHttpService {
 		req.setLng(gps.getWgLon()+"");
 		req.setLat(gps.getWgLat()+"");
 		try {
-			WaimaiDeliveryLocationUpdateResponse response = client.execute(req, sessionKey);
+			WaimaiDeliveryLocationUpdateResponse response = client.execute(req, TaoBaoConsts.SessionKey);
 			TaoBaoResponseBase resp = new TaoBaoResponseBase();
 			resp.setIs_success(response.getDeliveryLocationResult().getIsSuccess());
 			resp.setError_code(response.getDeliveryLocationResult().getErrorCode());

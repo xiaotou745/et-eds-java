@@ -24,6 +24,11 @@ public class TaoBaoConsts {
 	 */
 	public final static String AppSecret = "ce0f4f3668d039b6db74aa82904cca43";
 	/**
+	 * SessionKey
+	 */
+	public final static String SessionKey = "6100326184627d82ebfa6e1a6e44dfc0881cd93d40ee3222532754203";
+	
+	/**
 	 * GroupName
 	 */
 	public final static String GroupName="default";
