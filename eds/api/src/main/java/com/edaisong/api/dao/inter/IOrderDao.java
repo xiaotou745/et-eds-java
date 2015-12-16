@@ -31,6 +31,7 @@ import com.edaisong.entity.req.PagedBusTaskListReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.req.QueryShanSongOrderReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
@@ -345,7 +346,7 @@ public interface IOrderDao {
 		 */
 	 ShanSongOrderListModel getShanSongOrderByNo(String ordernNo);
 
-		QueryOrderBResp shanSongQueryOrderCountB(QueryOrderReq query);
+		QueryOrderBResp shanSongQueryOrderCountB(QueryShanSongOrderReq query);
 
-		List<QueryOrder> shanSongQueryOrderB(QueryOrderReq query);
+		List<QueryOrder> shanSongQueryOrderB(QueryShanSongOrderReq query);
 }

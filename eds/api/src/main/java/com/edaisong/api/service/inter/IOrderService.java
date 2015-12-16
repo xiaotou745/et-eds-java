@@ -33,6 +33,7 @@ import com.edaisong.entity.req.PagedBusTaskListReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.req.QueryShanSongOrderReq;
 import com.edaisong.entity.resp.BusinessBalanceInfoResp;
 import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderBlancePayResp;
@@ -397,6 +398,6 @@ public interface IOrderService {
 		 * @param data 
 		 * @return
 		 */
-	    HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryOrderReq query) ;
+	    HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryShanSongOrderReq query) ;
 	    
 }

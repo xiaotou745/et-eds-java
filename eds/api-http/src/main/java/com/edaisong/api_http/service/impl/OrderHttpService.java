@@ -36,6 +36,7 @@ import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;  
+import com.edaisong.entity.req.QueryShanSongOrderReq;
 import com.edaisong.entity.resp.OrderBlancePayResp;
 import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderDraftResp;
@@ -393,7 +394,7 @@ public class OrderHttpService implements IOrderHttpService {
 
 	@Override
 	public HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(
-			QueryOrderReq para) {
+			QueryShanSongOrderReq para) {
 		if ( para.getBusinessId() == null
 				|| para.getBusinessId() == 0
 				|| (para.getStatus() != OrderStatus.New.value() && para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
