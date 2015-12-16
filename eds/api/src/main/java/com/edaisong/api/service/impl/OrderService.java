@@ -2485,7 +2485,7 @@ public class OrderService implements IOrderService {
 		odResp.setIsorderchecked(ooModel.getIsorderchecked());
 		odResp.setCancelTime(ooModel.getCancelTime());
 		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());
-		odResp.setExpecteddelivery(ooModel.getExpecteddelivery());
+		odResp.setExpectedDelivery(ooModel.getExpecteddelivery());
 		odResp.setPubtocurrentdistance(0.0);
 		odResp.setRecevicetocurrentdistance(0.0);	
 		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());
@@ -2736,7 +2736,7 @@ public class OrderService implements IOrderService {
 				.getCommissionfixvalue());
 		orderCommission.setCommissionType(businessModel.getCommissiontype());
 		orderCommission.setDistribSubsidy(businessModel.getDistribsubsidy());
-		orderCommission.setOrderCount(0);
+		orderCommission.setOrderCount(1);
 		orderCommission.setStrategyId(businessModel.getStrategyId());
 		
 		OrderPriceBaseProvider orderPriceService = CommissionFactory

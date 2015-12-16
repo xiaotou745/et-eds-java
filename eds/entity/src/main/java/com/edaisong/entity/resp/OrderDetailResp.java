@@ -870,9 +870,7 @@ public class OrderDetailResp extends ResponseBase{
 	    
 	    private Date cancelTime;
 	    
-	    private Integer isAllowCashPay;
-	    private Date expecteddelivery;
-	    
+	    private Integer isAllowCashPay; 
 	    public Double getPubtocurrentdistance() {
 			return pubtocurrentdistance;
 		}
@@ -892,16 +890,6 @@ public class OrderDetailResp extends ResponseBase{
 		private Double pubtocurrentdistance;
 	    
 	    private Double recevicetocurrentdistance;
-	    
-	    
-		public Date getExpecteddelivery() {
-			return expecteddelivery;
-		}
-
-		public void setExpecteddelivery(Date expecteddelivery) {
-			this.expecteddelivery = expecteddelivery;
-		}
-		
 		
 	    public String getName() {
 			return name;
@@ -973,7 +961,8 @@ public class OrderDetailResp extends ResponseBase{
 		public void setIscomplain(int iscomplain) {
 			this.iscomplain = iscomplain;
 		}
-
+		private Date expectedTakeTime;
+		private Date expectedDelivery;
 		public Date getExpectedTakeTime() {
 			return expectedTakeTime;
 		}
@@ -982,7 +971,11 @@ public class OrderDetailResp extends ResponseBase{
 			this.expectedTakeTime = expectedTakeTime;
 		}
 
-		private Date expectedTakeTime;
-	
+		public Date getExpectedDelivery() {
+			return expectedDelivery;
+		}
 
+		public void setExpectedDelivery(Date expectedDelivery) {
+			this.expectedDelivery = expectedDelivery;
+		}
 }
