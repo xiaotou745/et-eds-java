@@ -37,7 +37,7 @@
 	<import resource="classpath:conf/module/activemq-context.xml" />
 <!--     <import resource="classpath:conf/module/mongo-context.xml" /> -->
     
-	<context:component-scan base-package="com.edaisong.api.activemq" />
-	<context:component-scan base-package="com.edaisong.api.common" />
-	<context:component-scan base-package="com.edaisong.api.redis" />
+	<bean id="activeMqService" class="com.edaisong.api.activemq.ActiveMqService" />
+	<bean id="logServiceBLL" class="com.edaisong.api.common.LogServiceBLL" />
+	<bean id="redisService" class="com.edaisong.api.redis.RedisService" />
 </beans>

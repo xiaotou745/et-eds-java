@@ -1,6 +1,8 @@
 package com.edaisong.api.dao.impl;
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -44,6 +46,11 @@ public class QuartzServiceDao extends DaoBase implements IQuartzServiceDao {
 	public int update(QuartzServiceModel record) {
 		return getMasterSqlSessionUtil().update(
 				"IQuartzServiceDao.update", record);
+	}
+
+	@Override
+	public List<QuartzServiceModel> queryStartList() {
+		return getReadOnlySqlSessionUtil().selectList("IQuartzServiceDao.queryStartList");
 	}
 
 }

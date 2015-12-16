@@ -50,24 +50,7 @@ public class QuartzService implements IQuartzService {
 	@Override
 	public PagedResponse<QuartzServiceModel> pagedQuery(
 			PagedQuartzServiceReq req) {
-		PagedResponse<QuartzServiceModel> result= quartzServiceDao.pagedQuery(req);
-		List<QuartzServiceModel> temp=result.getResultList().stream().filter(t->t.getIsStart()==1).collect(Collectors.toList());
-		QuartzUpdateReq updateReq=new QuartzUpdateReq();
-		for (QuartzServiceModel item : temp) {
-			int status=QuartzManager.checkJob(item.getBeanName());
-			if (status==-1) {
-				try {
-					QuartzManager.addJob(item.getBeanName(), ChildJob.class, item.getExecTime());// 如果库里是开启，本地没开启就新增服务
-				} catch (Exception e) {
-					item.setIsStart(0);
-					updateReq.setId(item.getId());
-					updateReq.setStatus(0);
-					updateReq.setUpdateName(item.getUpdateName());
-					quartzServiceDao.updateStatus(updateReq);
-				}
-			}
-		}
-		return result;
+		return quartzServiceDao.pagedQuery(req);
 	}
 
 	@Override
@@ -83,5 +66,29 @@ public class QuartzService implements IQuartzService {
 	@Override
 	public boolean checkCron(String cron) {
 		return QuartzManager.isValidExpression(cron);
+	}
+
+	@Override
+	public void startAllDBList(String userName) {
+		List<QuartzServiceModel> temp= quartzServiceDao.queryStartList();
+		QuartzUpdateReq updateReq=new QuartzUpdateReq();
+		for (QuartzServiceModel item : temp) {
+			int status=QuartzManager.checkJob(item.getBeanName());
+			if (status==-1) {
+				try {
+					SpringBeanHelper.getCustomBean(item.getBeanName());
+					QuartzManager.addJob(item.getBeanName(), ChildJob.class, item.getExecTime());// 如果库里是开启，本地没开启就新增服务
+					
+					Date firstFireTime=QuartzManager.getFirstFireTime(item.getExecTime());
+					updateReq.setFirstFireTime(firstFireTime);
+					updateReq.setStatus(1);
+				} catch (Exception e) {
+					updateReq.setStatus(0);
+				}
+				updateReq.setId(item.getId());
+				updateReq.setUpdateName(userName);
+				quartzServiceDao.updateStatus(updateReq);
+			}
+		}
 	}
 }
