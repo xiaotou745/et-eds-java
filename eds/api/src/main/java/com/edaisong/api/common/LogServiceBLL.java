@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.edaisong.api.activemq.ActiveMqService;
-import com.edaisong.api.dao.inter.IActionLogDao;
+
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.SystemUtils;
@@ -17,8 +17,6 @@ import com.edaisong.entity.domain.ServiceLog;
 
 @Component
 public class LogServiceBLL {
-	@Autowired
-	private IActionLogDao iActionLogDao;
 	@Autowired
 	private ActiveMqService activeMqService;
 
