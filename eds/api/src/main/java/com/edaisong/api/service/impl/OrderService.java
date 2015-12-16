@@ -2488,9 +2488,11 @@ public class OrderService implements IOrderService {
 		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());
 		odResp.setExpectedDelivery(ooModel.getExpecteddelivery());
 		//取货之前，骑士到商户的距离
-		odResp.setPubtocurrentdistance(MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),businessModel.getLongitude(),businessModel.getLatitude()));
+		double a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),businessModel.getLongitude(),businessModel.getLatitude());
+		odResp.setPubtocurrentdistance(a/1000);
 		//取货之后，骑士到客户的距离
-		odResp.setRecevicetocurrentdistance(MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),oModel.getRecevicelongitude(),oModel.getRecevicelatitude()));	
+		double b = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),oModel.getRecevicelongitude(),oModel.getRecevicelatitude());
+		odResp.setRecevicetocurrentdistance(b/1000);	
 		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());
 		odResp.setName(businessModel.getName());
 		odResp.setPhoneno(businessModel.getPhoneno());

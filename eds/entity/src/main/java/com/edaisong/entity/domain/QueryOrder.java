@@ -47,6 +47,7 @@ public class QueryOrder {
 	private String pickupCode;
 	private int platform;
 	private String grabTime;
+	private String pubName;
 	/**
 	 * 订单Id
 	 */
@@ -608,5 +609,13 @@ public String getGrabTime() {
 
 public void setGrabTime(String grabTime) {
 	this.grabTime = grabTime;
+}
+
+public String getPubName() {
+	return pubName;
+}
+
+public void setPubName(String pubName) {
+	this.pubName = pubName;
 }
 }
