@@ -2092,7 +2092,7 @@ public class OrderService implements IOrderService {
 				resp.setStatus(FlashPushOrderEnum.VerificationCodeErr.value());
 				resp.setMessage(FlashPushOrderEnum.VerificationCodeErr.desc());
 				return resp;
-			}		*/
+			}*/
 			
 			int selectBId=businessDao.getId(req.getBusinessphoneno());
 			if(selectBId>0)
@@ -2103,11 +2103,11 @@ public class OrderService implements IOrderService {
 			{
 				//创建
 				Business bModel=new Business();
-				bModel.setName(req.getBusinessphoneno());//姓名
+				bModel.setName("");//姓名
 				bModel.setPhoneno(req.getBusinessphoneno());
 				bModel.setPhoneno2(req.getBusinessphoneno());
 				bModel.setPassword(MD5Util.MD5(req.getVerificationcode().trim()));				
-				bModel.setStatus((byte)1);//审核通过
+				bModel.setStatus((byte)0);//审核未通过
 				bModel.setRegisterFrom(2);//注册来源				
 				int bId= businessDao.insertSelective(bModel);
 				if(bId<1)
@@ -2129,7 +2129,7 @@ public class OrderService implements IOrderService {
 
 		// 写入订单Other表
 		OrderOther orderOther = fillFlashPushOrderOther(req, order, businessModel);
-		int orderOtherId = orderOtherDao.insert(orderOther);
+		int orderOtherId = orderOtherDao.insertSelective(orderOther);
 		if (orderOtherId <= 0) {
 			throw new TransactionalRuntimeException("保存订单其它出错");
 		}
@@ -2660,7 +2660,7 @@ public class OrderService implements IOrderService {
 		{			
 			return FlashPushOrderEnum.KMIsNull;
 		}
-		if(req.getTaketime()==null)
+		if(req.getTaketype()==1 && req.getTaketime()==null)
 		{
 			return FlashPushOrderEnum.TaketimeErr;
 		}		
@@ -2778,7 +2778,15 @@ public class OrderService implements IOrderService {
 		orderOther.setOrderid(order.getId());
 		orderOther.setNeeduploadcount(0);
 		orderOther.setHaduploadcount(0);
-		orderOther.setTaketime(req.getTaketime());
+		if(req.getTaketype()==1)
+		{
+			//orderOther.setTaketime(req.getTaketime());
+			orderOther.setExpectedtaketime(req.getTaketime());
+		}
+		else 
+		{
+			orderOther.setExpectedtaketime(new Date());
+		}
 		orderOther.setTakelongitude((double)0);
 		orderOther.setTakelatitude((double)0);		
 		orderOther.setPublongitude(req.getPublongitude());

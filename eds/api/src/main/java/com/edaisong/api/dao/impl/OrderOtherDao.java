@@ -32,8 +32,9 @@ public class OrderOtherDao extends DaoBase implements IOrderOtherDao {
 
 	@Override
 	public int insertSelective(OrderOther record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().insert(
+				"IOrderOtherDao.insertSelective",
+				record);
 	}
 
 	@Override

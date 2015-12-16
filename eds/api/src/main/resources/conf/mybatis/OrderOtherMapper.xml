@@ -139,6 +139,9 @@
       <if test="isorderchecked != null" >
         isorderchecked,
       </if>
+       <if test="expectedtaketime != null" >
+        expectedtaketime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -209,6 +212,9 @@
       </if>
       <if test="isorderchecked != null" >
         #{isorderchecked,jdbcType=INTEGER},
+      </if>
+         <if test="expectedtaketime != null" >
+        #{expectedtaketime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>

@@ -48,10 +48,23 @@ public class OrderOther {
     private Integer isorderchecked;
     
     private Date cancelTime;
+    
     private Integer isAllowCashPay;
+    
     private Date expecteddelivery;
+    
+    private Date expectedtaketime;
+    
 
-    public Date getExpecteddelivery() {
+    public Date getExpectedtaketime() {
+		return expectedtaketime;
+	}
+
+	public void setExpectedtaketime(Date expectedtaketime) {
+		this.expectedtaketime = expectedtaketime;
+	}
+
+	public Date getExpecteddelivery() {
 		return expecteddelivery;
 	}
 
