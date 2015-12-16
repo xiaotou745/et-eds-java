@@ -30,7 +30,7 @@
     Id, OrderId, NeedUploadCount, ReceiptPic, HadUploadCount, IsJoinWithdraw, PubLongitude, 
     PubLatitude, GrabTime, GrabLongitude, GrabLatitude, CompleteLongitude, CompleteLatitude, 
     TakeTime, TakeLongitude, TakeLatitude, PubToGrabDistance, GrabToCompleteDistance, 
-    PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked,ExpectedDelivery
+    PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked,ExpectedDelivery,ExpectedTakeTime 
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

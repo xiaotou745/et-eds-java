@@ -2488,7 +2488,7 @@ public class OrderService implements IOrderService {
 		odResp.setExpecteddelivery(ooModel.getExpecteddelivery());
 		odResp.setPubtocurrentdistance(0.0);
 		odResp.setRecevicetocurrentdistance(0.0);	
-		
+		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());
 		odResp.setName(businessModel.getName());
 		odResp.setPhoneno(businessModel.getPhoneno());
 		odResp.setPhoneno2(businessModel.getPhoneno2());

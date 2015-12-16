@@ -974,7 +974,15 @@ public class OrderDetailResp extends ResponseBase{
 			this.iscomplain = iscomplain;
 		}
 
+		public Date getExpectedTakeTime() {
+			return expectedTakeTime;
+		}
 
+		public void setExpectedTakeTime(Date expectedTakeTime) {
+			this.expectedTakeTime = expectedTakeTime;
+		}
+
+		private Date expectedTakeTime;
 	
 
 }
