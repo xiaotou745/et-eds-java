@@ -1,16 +1,11 @@
 package com.edaisong.taobaoopenapi.service.impl;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import com.edaisong.core.consts.TaoBaoConsts;
 import com.edaisong.core.entity.Gps;
-import com.edaisong.core.security.AES;
-import com.edaisong.core.util.HttpUtil;
 import com.edaisong.core.util.MapUtils;
 import com.edaisong.core.util.ParseHelper;
-import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
 import com.edaisong.entity.taobao.req.TaoBaoAsk;
 import com.edaisong.entity.taobao.req.TaoBaoConfirm;
@@ -18,7 +13,6 @@ import com.edaisong.entity.taobao.req.TaoBaoLocationUpdate;
 import com.edaisong.entity.taobao.req.TaoBaoPickUp;
 import com.edaisong.entity.taobao.req.TaoBaoUpdate;
 import com.edaisong.taobaoopenapi.service.inter.ITaoBaoOrderHttpService;
-import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.WaimaiDeliveryConfirmRequest;
