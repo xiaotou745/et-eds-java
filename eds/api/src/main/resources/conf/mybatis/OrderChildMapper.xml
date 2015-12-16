@@ -213,6 +213,13 @@ update dbo.OrderChild set status=3 output inserted.Id
     where Id = #{id,jdbcType=BIGINT}
   </select>
   
+    <select id="selectByOrderId" resultType="com.edaisong.entity.OrderChild" parameterType="java.lang.Long" >
+    select top 1
+    <include refid="Base_Column_List" />
+    from OrderChild
+    where orderid = #{orderid,jdbcType=BIGINT}
+  </select>
+  
     <select id="getOrderChildByOrderId" resultType="com.edaisong.entity.OrderChild" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

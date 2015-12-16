@@ -2227,13 +2227,16 @@ public class OrderService implements IOrderService {
 			resp.setStatus(FlashPushOrderEnum.OrderIdIsNull.value());
 			resp.setMessage(FlashPushOrderEnum.OrderIdIsNull.desc());
 			return resp;
-		}
-		if(req.getOrderChildId()<1)
+		}		
+		OrderChild ocModel= orderChildDao.selectByOrderId(req.getOrderId());
+		if(ocModel==null )
 		{
 			resp.setStatus(FlashPushOrderEnum.OrderChildId.value());
 			resp.setMessage(FlashPushOrderEnum.OrderChildId.desc());
 			return resp;
 		}
+		req.setOrderChildId(ocModel.getId().intValue());		
+		
 		// 获取商户信息讯(读串)
 		BusinessModel businessModel = businessDao.getBusiness((long) req
 				.getBusinessId());
