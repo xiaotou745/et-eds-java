@@ -25,8 +25,10 @@ public enum BSendCodeType {
     /**
 	 * 修改绑定手机号验证新手机号
 	 */
-    ModifyPhoneNewPhone(5,"修改绑定手机号验证新手机号");
+    ModifyPhoneNewPhone(5,"修改绑定手机号验证新手机号"),
     
+	NoLoginPhone(6,"未登录发单");
+	
 	private int value = 0;
 	private String desc;
 	private BSendCodeType(int value, String desc) { // 必须是private的，否则编译错误
