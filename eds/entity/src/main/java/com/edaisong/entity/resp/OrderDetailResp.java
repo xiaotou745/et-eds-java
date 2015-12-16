@@ -870,9 +870,7 @@ public class OrderDetailResp extends ResponseBase{
 	    
 	    private Date cancelTime;
 	    
-	    private Integer isAllowCashPay;
-	    private Date expecteddelivery;
-	    
+	    private Integer isAllowCashPay; 
 	    public Double getPubtocurrentdistance() {
 			return pubtocurrentdistance;
 		}
@@ -892,16 +890,6 @@ public class OrderDetailResp extends ResponseBase{
 		private Double pubtocurrentdistance;
 	    
 	    private Double recevicetocurrentdistance;
-	    
-	    
-		public Date getExpecteddelivery() {
-			return expecteddelivery;
-		}
-
-		public void setExpecteddelivery(Date expecteddelivery) {
-			this.expecteddelivery = expecteddelivery;
-		}
-		
 		
 	    public String getName() {
 			return name;
