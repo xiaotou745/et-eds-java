@@ -2736,7 +2736,7 @@ public class OrderService implements IOrderService {
 				.getCommissionfixvalue());
 		orderCommission.setCommissionType(businessModel.getCommissiontype());
 		orderCommission.setDistribSubsidy(businessModel.getDistribsubsidy());
-		orderCommission.setOrderCount(0);
+		orderCommission.setOrderCount(1);
 		orderCommission.setStrategyId(businessModel.getStrategyId());
 		
 		OrderPriceBaseProvider orderPriceService = CommissionFactory

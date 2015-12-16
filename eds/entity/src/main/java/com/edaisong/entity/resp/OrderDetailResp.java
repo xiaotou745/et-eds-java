@@ -973,7 +973,8 @@ public class OrderDetailResp extends ResponseBase{
 		public void setIscomplain(int iscomplain) {
 			this.iscomplain = iscomplain;
 		}
-
+		private Date expectedTakeTime;
+		private Date expectedDelivery;
 		public Date getExpectedTakeTime() {
 			return expectedTakeTime;
 		}
@@ -982,7 +983,15 @@ public class OrderDetailResp extends ResponseBase{
 			this.expectedTakeTime = expectedTakeTime;
 		}
 
-		private Date expectedTakeTime;
+		public Date getExpectedDelivery() {
+			return expectedDelivery;
+		}
+
+		public void setExpectedDelivery(Date expectedDelivery) {
+			this.expectedDelivery = expectedDelivery;
+		}
+
+		
 	
 
 }
