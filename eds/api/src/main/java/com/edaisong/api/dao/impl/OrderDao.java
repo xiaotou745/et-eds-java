@@ -39,6 +39,7 @@ import com.edaisong.entity.req.PagedBusTaskListReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.QueryOrderReq;
+import com.edaisong.entity.req.QueryShanSongOrderReq;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
@@ -501,12 +502,12 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	}
 
 	@Override
-	public QueryOrderBResp shanSongQueryOrderCountB(QueryOrderReq query) {
+	public QueryOrderBResp shanSongQueryOrderCountB(QueryShanSongOrderReq query) {
 		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.shanSongQueryOrderCountB", query);
 	}
 
 	@Override
-	public List<QueryOrder> shanSongQueryOrderB(QueryOrderReq query) {
+	public List<QueryOrder> shanSongQueryOrderB(QueryShanSongOrderReq query) {
 		PagedResponse<QueryOrder> result=  getReadOnlySqlSessionUtil().selectPageList(
 				"IOrderDao.shanSongQueryOrderB", query);
 		return result.getResultList();

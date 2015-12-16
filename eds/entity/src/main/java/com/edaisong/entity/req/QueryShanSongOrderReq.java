@@ -2,12 +2,7 @@ package com.edaisong.entity.req;
 
 import com.edaisong.entity.common.PagedRequestBase;
 
-/**
- * 
- * @author CaoHeYang
- *
- */
-public class QueryOrderReq extends PagedRequestBase {
+public class QueryShanSongOrderReq  extends PagedRequestBase {
 	private String dateInfo;
 	private Integer clienterId;
 	private Integer businessId;
@@ -139,7 +134,7 @@ public class QueryOrderReq extends PagedRequestBase {
 
 public String getPlatform() {
 	if(platform == null || platform == "" ){
-		return "1";
+		return "1,3";
 	}
 	return platform;
 }
@@ -147,5 +142,4 @@ public String getPlatform() {
 public void setPlatform(String platform) {
 	this.platform = platform;
 }
-	
 }

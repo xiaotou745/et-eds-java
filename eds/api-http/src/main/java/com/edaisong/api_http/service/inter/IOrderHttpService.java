@@ -28,6 +28,7 @@ import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
+import com.edaisong.entity.req.QueryShanSongOrderReq;
 import com.edaisong.entity.resp.OrderBlancePayResp;
 import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderDraftResp;
@@ -254,5 +255,5 @@ public interface IOrderHttpService {
 	 */
 	@POST
 	@Path("/shansongqueryorderb")
-	HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryOrderReq query) ;
+	HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryShanSongOrderReq query) ;
 }
