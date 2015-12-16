@@ -89,6 +89,12 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao {
 				"IOrderChildDao.selectByPrimaryKey", id);
 	}	  
 	
+	@Override
+	public OrderChild selectByOrderId(Integer orderid)
+	{
+		return getMasterSqlSessionUtil().selectOne(
+				"IOrderChildDao.selectByOrderId", orderid);
+	}	
 	  /**
      * 根据订单信息查询 子订单集合 
      * @param orderNo 订单号

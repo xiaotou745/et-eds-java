@@ -10,14 +10,13 @@
 		http://www.springframework.org/schema/aop
 		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
     	">
-	 <bean id="propertyConfigurer"
+	<bean id="propertyPlaceholderConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="order" value="1" />
 		<property name="locations">
 			<list>
-				<!-- 测试用的配置环境 -->
-				<value>classpath:conf/custom/test-conf.properties</value>
-				<value>classpath:conf/custom/test-env.properties</value>
+				<value>classpath:conf/core/current-conf.properties</value>
+				<value>classpath:conf/core/current-env.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -32,9 +31,9 @@
 		</property>
 	</bean>
 	<!-- 相当于将spring-datasource.xml和当前文档合并在一起，或者将这两个文件的内容合并在一起 -->
-	<import resource="classpath:conf/module/spring-datasource.xml" />
-	<import resource="classpath:conf/module/redis-context.xml" />
+<!-- 	<import resource="classpath:conf/module/spring-datasource.xml" /> -->
+<!-- 	<import resource="classpath:conf/module/redis-context.xml" /> -->
 	<import resource="classpath:conf/module/activemq-context.xml" />
-    <import resource="classpath:conf/module/mongo-context.xml" />
-	<context:component-scan base-package="com.edaisong.api" />
+	<import resource="classpath:conf/module/mongo-context.xml" />
+<!-- 	<context:component-scan base-package="com.edaisong.api" /> -->
 </beans>

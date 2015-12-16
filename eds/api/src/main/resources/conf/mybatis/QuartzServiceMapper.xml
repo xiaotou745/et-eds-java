@@ -75,4 +75,10 @@
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
+	<select id="queryStartList"  resultType="com.edaisong.entity.QuartzServiceModel" >
+	 select 
+    <include refid="Base_Column_List" />
+    from QuartzService with(nolock)
+    where IsStart = 1
+  </select>
 </mapper>

@@ -50,4 +50,6 @@ public interface IOrderChildDao {
 
    
     OrderChild selectByPrimaryKey(Integer id);    
+    
+    OrderChild selectByOrderId(Integer orderId);
 }
