@@ -66,6 +66,7 @@ import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
 import com.edaisong.core.security.MD5Util;
+import com.edaisong.core.util.MapUtils;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
@@ -2486,8 +2487,10 @@ public class OrderService implements IOrderService {
 		odResp.setCancelTime(ooModel.getCancelTime());
 		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());
 		odResp.setExpectedDelivery(ooModel.getExpecteddelivery());
-		odResp.setPubtocurrentdistance(0.0);
-		odResp.setRecevicetocurrentdistance(0.0);	
+		//取货之前，骑士到商户的距离
+		odResp.setPubtocurrentdistance(MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),businessModel.getLongitude(),businessModel.getLatitude()));
+		//取货之后，骑士到客户的距离
+		odResp.setRecevicetocurrentdistance(MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),oModel.getRecevicelongitude(),oModel.getRecevicelatitude()));	
 		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());
 		odResp.setName(businessModel.getName());
 		odResp.setPhoneno(businessModel.getPhoneno());
