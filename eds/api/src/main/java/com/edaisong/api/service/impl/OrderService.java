@@ -1081,7 +1081,7 @@ public class OrderService implements IOrderService {
 			m.setOrders(orders);
 		} else { // 不需要计算骑士距离门店距离
 			m.setOrders(orderDao.queryOrder(query));
-		}
+		} 
 		resultModel.setResult(m);
 		return resultModel;
 	}

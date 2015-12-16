@@ -1440,8 +1440,7 @@ where   Status = 1
         b.Id as BusinessId ,
         b.Name as BusinessName ,
         b.PhoneNo as BusinessPhone ,
-        b.PhoneNo2 as BusinessPhone2 ,
-        --b.Name as PickUpName ,   -- 去掉 
+        b.PhoneNo2 as BusinessPhone2 , 
         c.TrueName as SuperManName ,
         c.PhoneNo as SuperManPhone ,
         o.OrderFrom ,
@@ -1453,7 +1452,8 @@ where   Status = 1
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
-        b.GroupId ,o.[Platform],oo.GrabTime,o.PubName,
+        b.GroupId ,o.[Platform],oo.GrabTime,
+        o.PubName,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
@@ -1556,8 +1556,7 @@ where   Status = 1
         b.Id as BusinessId ,
         b.Name as BusinessName ,
         b.PhoneNo as BusinessPhone ,
-        b.PhoneNo2 as BusinessPhone2 ,
-        --b.Name as PickUpName ,   -- 去掉 
+        b.PhoneNo2 as BusinessPhone2 , 
         c.TrueName as SuperManName ,
         c.PhoneNo as SuperManPhone ,
         o.OrderFrom ,
@@ -1570,7 +1569,7 @@ where   Status = 1
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
         b.GroupId ,
-        o.KM,o.[Weight],oo.GrabTime,
+        o.KM,o.[Weight],oo.GrabTime,o.PubName,
         round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${latitude},${longitude},4326)),0)  as distance_OrderBy  ,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
@@ -1989,8 +1988,7 @@ where a.orderno=#{ordernNo}
         b.Id as BusinessId ,
         b.Name as BusinessName ,
         b.PhoneNo as BusinessPhone ,
-        b.PhoneNo2 as BusinessPhone2 ,
-        --b.Name as PickUpName ,   -- 去掉 
+        b.PhoneNo2 as BusinessPhone2 , 
         c.TrueName as SuperManName ,
         c.PhoneNo as SuperManPhone ,
         o.OrderFrom ,
@@ -2001,7 +1999,7 @@ where a.orderno=#{ordernNo}
         REPLACE(b.City, ''市'', '''') as pickUpCity ,
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
-        o.OrderCommission ,
+        o.OrderCommission ,o.PubName,
         b.GroupId ,o.[Platform],o.KM,o.[Weight],o.PickupCode,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
