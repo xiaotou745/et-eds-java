@@ -65,10 +65,12 @@ public class Upload2Linux {
             upload(sftp,file,dst);
             
             String configSrc=src+"/WEB-INF/web.xml";
-            String configDst=dst+"/WEB-INF/web.xml";
-	       	System.out.println("复制"+configSrc+"到"+configDst);
-	        sftp.put(configSrc, configDst, ChannelSftp.OVERWRITE);  
-            
+            File configSrcFile = new File(configSrc);   
+            if (configSrcFile.exists()) {
+                String configDst=dst+"/WEB-INF/web.xml";
+    	       	System.out.println("复制"+configSrc+"到"+configDst);
+    	        sftp.put(configSrc, configDst, ChannelSftp.OVERWRITE);  
+			}
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
