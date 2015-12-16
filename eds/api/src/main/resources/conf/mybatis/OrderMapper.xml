@@ -1453,7 +1453,7 @@ where   Status = 1
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
-        b.GroupId ,o.[Platform],
+        b.GroupId ,o.[Platform],oo.GrabTime,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
@@ -1570,7 +1570,7 @@ where   Status = 1
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
         b.GroupId ,
-        o.KM,o.[Weight],
+        o.KM,o.[Weight],oo.GrabTime,
         round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${latitude},${longitude},4326)),0)  as distance_OrderBy  ,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>

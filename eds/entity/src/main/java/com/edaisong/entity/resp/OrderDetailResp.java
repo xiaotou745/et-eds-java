@@ -978,8 +978,4 @@ public class OrderDetailResp extends ResponseBase{
 		public void setExpectedDelivery(Date expectedDelivery) {
 			this.expectedDelivery = expectedDelivery;
 		}
-
-		
-	
-
 }
