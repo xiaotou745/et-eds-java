@@ -2692,7 +2692,7 @@ public class OrderService implements IOrderService {
 		req.setPlatform(3);//闪送	
 		order.setOrderfrom(req.getOrderfrom());
 		order.setStatus((byte) OrderStatus.Draft.value());		
-		order.setOrdercount(0);		
+		order.setOrdercount(1);		
 		order.setBusinessid(req.getBusinessid());		
 		order.setTimespan(null);	
 		order.setIspay(false);
@@ -2741,7 +2741,7 @@ public class OrderService implements IOrderService {
 				.getCommissionfixvalue());
 		orderCommission.setCommissionType(businessModel.getCommissiontype());
 		orderCommission.setDistribSubsidy(businessModel.getDistribsubsidy());
-		orderCommission.setOrderCount(1);
+		orderCommission.setOrderCount(0);
 		orderCommission.setStrategyId(businessModel.getStrategyId());
 		
 		OrderPriceBaseProvider orderPriceService = CommissionFactory
