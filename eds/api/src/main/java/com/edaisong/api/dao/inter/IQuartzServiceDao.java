@@ -13,6 +13,7 @@ import com.edaisong.entity.req.QuartzUpdateReq;
  */
 public interface IQuartzServiceDao {
 	PagedResponse<QuartzServiceModel> pagedQuery(PagedQuartzServiceReq req);
+	List<QuartzServiceModel> queryStartList();
 	QuartzServiceModel selectById(long id);
 	int insert(QuartzServiceModel record);
 	int update(QuartzServiceModel record);
