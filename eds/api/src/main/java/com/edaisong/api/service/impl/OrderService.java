@@ -2,6 +2,7 @@ package com.edaisong.api.service.impl;
 
 import java.lang.Double;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -140,6 +141,7 @@ import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
+import java.text.DecimalFormat;
 
 @Service
 public class OrderService implements IOrderService {
@@ -2489,10 +2491,10 @@ public class OrderService implements IOrderService {
 		odResp.setExpectedDelivery(ooModel.getExpecteddelivery());
 		//取货之前，骑士到商户的距离
 		double a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(businessModel.getLongitude(),0),ParseHelper.ToDouble(businessModel.getLatitude(),0));
-		odResp.setPubtocurrentdistance(a/1000);
+		odResp.setPubtocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(a/1000),0));
 		//取货之后，骑士到客户的距离
 		double b = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(oModel.getRecevicelongitude(),0),ParseHelper.ToDouble(oModel.getRecevicelatitude(),0));
-		odResp.setRecevicetocurrentdistance(b/1000);	
+		odResp.setRecevicetocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(b/1000),0));	
 		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());
 		odResp.setName(businessModel.getName());
 		odResp.setPhoneno(businessModel.getPhoneno());
