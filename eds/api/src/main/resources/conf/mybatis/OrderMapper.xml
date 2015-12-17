@@ -129,12 +129,12 @@
 	</sql>
 	  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.Order" parameterType="java.lang.Integer" >
     select 
-    Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
-    ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
+    Id, OrderNo, PickUpAddress,  convert(varchar(16),PubDate,120) PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
+    convert(varchar(16),ActualDoneDate,120) ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
     Status, clienterId, businessId, ReceviceCity, ReceviceLongitude, ReceviceLatitude, 
     OrderFrom, OriginalOrderId, OriginalOrderNo, Quantity, Weight, ReceiveProvince, ReceiveArea, 
     ReceiveProvinceCode, ReceiveCityCode, ReceiveAreaCode, OrderType, KM, GuoJuQty, LuJuQty, 
-    SongCanDate, OrderCount, CommissionRate, Payment, CommissionFormulaMode, Adjustment, 
+    convert(varchar(16),SongCanDate,120) SongCanDate, OrderCount, CommissionRate, Payment, CommissionFormulaMode, Adjustment, 
     BusinessCommission, SettleMoney, DealCount, PickupCode, OtherCancelReason, CommissionType, 
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
