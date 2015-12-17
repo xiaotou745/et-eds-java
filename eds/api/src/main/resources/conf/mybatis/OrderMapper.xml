@@ -129,19 +129,19 @@
 	</sql>
 	  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.Order" parameterType="java.lang.Integer" >
     select 
-    Id, OrderNo, PickUpAddress,  convert(varchar(16),PubDate,120) PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
-    convert(varchar(16),ActualDoneDate,120) ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
+    Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
+     ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
     Status, clienterId, businessId, ReceviceCity, ReceviceLongitude, ReceviceLatitude, 
     OrderFrom, OriginalOrderId, OriginalOrderNo, Quantity, Weight, ReceiveProvince, ReceiveArea, 
     ReceiveProvinceCode, ReceiveCityCode, ReceiveAreaCode, OrderType, KM, GuoJuQty, LuJuQty, 
-    convert(varchar(16),SongCanDate,120) SongCanDate, OrderCount, CommissionRate, Payment, CommissionFormulaMode, Adjustment, 
+    SongCanDate, OrderCount, CommissionRate, Payment, CommissionFormulaMode, Adjustment, 
     BusinessCommission, SettleMoney, DealCount, PickupCode, OtherCancelReason, CommissionType, 
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
     DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
     Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount
     from [order]  nolock
-    where Id = #{id,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER} 
   </select>
 	<!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展 CaoHeYang 20150804 -->
 	<select id="getOneByCriteria" resultMap="BaseResultMap"
@@ -1575,7 +1575,7 @@ where   Status = 1
         o.OrderCommission ,
         b.GroupId ,
         o.KM,o.[Weight],
-        oo.GrabTime,
+        CONVERT(VARCHAR(16), oo.GrabTime,120) GrabTime,
         o.PubName,
         round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${latitude},${longitude},4326)),0)  as distance_OrderBy  ,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
@@ -1975,13 +1975,13 @@ where a.orderno=#{ordernNo}
 		)}
 	</select>
 	<sql id="shanSongqueryOrderColums">
-		 CONVERT(VARCHAR(5), o.ActualDoneDate, 108) as ActualDoneDate ,
+		 CONVERT(VARCHAR(16), o.ActualDoneDate, 120) as ActualDoneDate ,
         o.Amount ,
         o.OrderCount ,
         o.IsPay ,
         o.OrderNo ,
         o.PickUpAddress ,
-        CONVERT(VARCHAR(5), o.PubDate, 108) as PubDate ,
+        CONVERT(VARCHAR(16), o.PubDate, 120) as PubDate ,
         case   isnull(o.ReceviceAddress,'''')  
 		when  '''' then ''附近3公里左右，由商户指定''
 		else o.ReceviceAddress end as ReceviceAddress,
