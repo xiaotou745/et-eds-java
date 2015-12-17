@@ -2440,6 +2440,7 @@ public class OrderService implements IOrderService {
 		odResp.setBusinesscommission(oModel.getBusinesscommission());			
 		odResp.setSettlemoney(oModel.getSettlemoney());	 
 		odResp.setDealcount(oModel.getDealcount());	 
+		odResp.setClienterPhoneNo(clienter.getPhoneno()); 
 		if(req.getBusinessId()!=null && req.getBusinessId()>0)
 		{
 			odResp.setPickupcode(oModel.getPickupcode());

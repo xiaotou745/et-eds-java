@@ -16,7 +16,7 @@ public class OrderDetailResp extends ResponseBase{
 	    public int getId() {
 		return id;
 	}
-	 
+	private String clienterPhoneNo;
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -29,7 +29,7 @@ public class OrderDetailResp extends ResponseBase{
 		this.orderno = orderno;
 	}
 
-	public String getPickupaddress() {
+	public String getPickupaddress() { 
 		return pickupaddress;
 	}
 
@@ -62,6 +62,7 @@ public class OrderDetailResp extends ResponseBase{
 	}
 
 	public String getReceviceaddress() {
+		if(receviceaddress == null){return "附近3公里，由商户指定";}
 		return receviceaddress;
 	}
 
@@ -988,5 +989,13 @@ public class OrderDetailResp extends ResponseBase{
 
 		public void setClienterName(String clienterName) {
 			this.clienterName = clienterName;
+		}
+
+		public String getClienterPhoneNo() {
+			return clienterPhoneNo;
+		}
+
+		public void setClienterPhoneNo(String clienterPhoneNo) {
+			this.clienterPhoneNo = clienterPhoneNo;
 		}
 }
