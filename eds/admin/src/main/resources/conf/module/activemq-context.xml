@@ -23,12 +23,12 @@
 	</bean>
 	<bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg>
-			<value>logqueue</value>
+			<value>logqueueinfo</value>
 		</constructor-arg>
 	</bean>
 	<bean id="serviceLogQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg>
-			<value>servicelogqueue</value>
+			<value>servicelogqueueinfo</value>
 		</constructor-arg>
 	</bean>
 </beans>  
