@@ -1798,7 +1798,7 @@ GROUP BY a.id ,
 	</sql>
 	<!--  后台E单订单列表页面 动态查询条件 add by caoheyang 20151124 -->
 	<sql id="getShanSongOrdersColumsWhere">
-		1=1
+		1=1 and a.[platform]=3 
 		<if test="businessPhone != null and businessPhone!='' ">
 			and b.PhoneNo=''${businessPhone}''
 		</if>
