@@ -398,7 +398,7 @@ public class OrderHttpService implements IOrderHttpService {
 		if ( para.getBusinessId() == null
 				|| para.getBusinessId() == 0
 				|| (para.getStatus() != OrderStatus.New.value() && para.getStatus() != OrderStatus.Taking.value() && para.getStatus() != OrderStatus.Delivery
-						.value() && para.getStatus()!=OrderStatus.Draft.value() && para.getStatus()!=OrderStatus.Complite.value())) {
+						.value() && para.getStatus()!=OrderStatus.Draft.value() && para.getStatus()!=OrderStatus.Complite.value() && para.getStatus()!=OrderStatus.Cancel.value())) {
 			HttpResultModel<QueryOrderBResp> result=new HttpResultModel<QueryOrderBResp>();
 			result.setStatus(HttpReturnRnums.ParaError.value());
 			result.setMessage(HttpReturnRnums.ParaError.desc());

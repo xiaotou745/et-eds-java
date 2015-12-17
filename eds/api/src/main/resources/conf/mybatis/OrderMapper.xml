@@ -869,7 +869,9 @@
 
 	<!-- 后台订单列表页面 查询列集合 add by caoheyang 20150728 -->
 	<sql id="GetOrdersColums">
-		o.[Id] ,o.[OrderNo] , o.[PickUpAddress] ,o.[PubDate] ,o.[ReceviceName]
+		o.[Id] ,o.[OrderNo] , o.[PickUpAddress] ,
+		o.[PubDate] ,
+		o.[ReceviceName]
 		,o.[RecevicePhoneNo] ,o.[ReceviceAddress] ,
 		o.[ActualDoneDate] ,o.[IsPay] , o.[Amount] , o.[OrderCommission] ,
 		o.[RealOrderCommission] , o.[DistribSubsidy] , o.[WebsiteSubsidy]
@@ -879,7 +881,9 @@
 		o.[OriginalOrderId] ,o.[OriginalOrderNo] , o.[Quantity] ,o.[Weight] ,
 		o.[ReceiveProvince] , o.[ReceiveArea] , o.[ReceiveProvinceCode]
 		,o.[ReceiveCityCode] ,o.[ReceiveAreaCode] ,
-		o.[SongCanDate] , o.[OrderCount] ,o.[CommissionRate] ,c.TrueName ClienterName ,
+		o.[SongCanDate] ,
+		 o.[OrderCount] ,o.[CommissionRate] ,
+		 c.TrueName ClienterName ,
 		c.PhoneNo ClienterPhoneNo , b.Name BusinessName ,b.PhoneNo
 		BusinessPhoneNo ,
 		b.Address BusinessAddress ,
