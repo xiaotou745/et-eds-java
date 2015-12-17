@@ -66,7 +66,7 @@ public class PropertyUtils {
 		if (locations[0] instanceof ClassPathResource) {
 			ClassPathResource location = (ClassPathResource) locations[0];
 			res.add("0");
-			res.add("/" + location.getPath());
+			res.add("" + location.getPath());
 		} else if (locations[0] instanceof UrlResource) {
 			UrlResource location = (UrlResource) locations[0];
 			res.add("1");

@@ -12,10 +12,11 @@ import com.edaisong.entity.OrderChild;;
  * @Date 2015年11月27日 11:44:38
  */
 public class OrderDetailResp extends ResponseBase{
+	private String clienterName;
 	    public int getId() {
 		return id;
 	}
-
+	private String clienterPhoneNo;
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -28,7 +29,7 @@ public class OrderDetailResp extends ResponseBase{
 		this.orderno = orderno;
 	}
 
-	public String getPickupaddress() {
+	public String getPickupaddress() { 
 		return pickupaddress;
 	}
 
@@ -61,6 +62,7 @@ public class OrderDetailResp extends ResponseBase{
 	}
 
 	public String getReceviceaddress() {
+		if(receviceaddress == null){return "附近3公里，由商户指定";}
 		return receviceaddress;
 	}
 
@@ -133,6 +135,7 @@ public class OrderDetailResp extends ResponseBase{
 	}
 
 	public Integer getClienterid() {
+		if(clienterid == null){return 0;}
 		return clienterid;
 	}
 
@@ -977,5 +980,23 @@ public class OrderDetailResp extends ResponseBase{
 
 		public void setExpectedDelivery(Date expectedDelivery) {
 			this.expectedDelivery = expectedDelivery;
+		}
+
+		public String getClienterName() {
+			if(clienterName == null){return "";}
+			return clienterName;
+		}
+
+		public void setClienterName(String clienterName) {
+			this.clienterName = clienterName;
+		}
+
+		public String getClienterPhoneNo() {
+			if(clienterPhoneNo == null){return "";}
+			return clienterPhoneNo;
+		}
+
+		public void setClienterPhoneNo(String clienterPhoneNo) {
+			this.clienterPhoneNo = clienterPhoneNo;
 		}
 }

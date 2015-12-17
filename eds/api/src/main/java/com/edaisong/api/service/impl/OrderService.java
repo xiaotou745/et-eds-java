@@ -73,6 +73,7 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
+import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.Order;
@@ -141,6 +142,7 @@ import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
+
 import java.text.DecimalFormat;
 
 @Service
@@ -428,7 +430,7 @@ public class OrderService implements IOrderService {
 		// 扣除商家结算费
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 		balanceRecord.setBusinessid(req.getBusinessid());
-		if (order.getGroupbusinessid() > 0) {
+		if (order.getGroupbusinessid()!=null&&order.getGroupbusinessid() > 0) {
 			balanceRecord.setAmount(0d);
 			balanceRecord.setGroupamount(order.getSettlemoney());
 			balanceRecord.setGroupid(order.getGroupbusinessid());
@@ -2391,7 +2393,11 @@ public class OrderService implements IOrderService {
 		OrderOther ooModel= orderOtherDao.selectByOrderId(orderId);		
 		List<OrderChild> ocList=orderChildDao.getOrderChildByOrderId(orderId);
 		BusinessModel businessModel = businessDao.getBusiness((long) oModel.getBusinessid());		
-		
+		Clienter clienter= clienterDao.selectByPrimaryKey(oModel.getClienterid());
+		if(clienter !=null){
+			odResp.setClienterName(clienter.getTruename());
+			odResp.setClienterPhoneNo(clienter.getPhoneno()); 
+		}
 		odResp.setId(oModel.getId());
 		odResp.setOrderno(oModel.getOrderno());
 		odResp.setPickupaddress(oModel.getPickupaddress());
@@ -2406,7 +2412,7 @@ public class OrderService implements IOrderService {
 		odResp.setDistribsubsidy(oModel.getDistribsubsidy());
 		odResp.setWebsitesubsidy(oModel.getWebsitesubsidy());
 		odResp.setRemark(oModel.getRemark());	 
-		odResp.setStatus(oModel.getStatus());	 
+		odResp.setStatus(oModel.getStatus());	
 		odResp.setClienterid(oModel.getClienterid());	 
 		odResp.setBusinessid(oModel.getBusinessid());	 
 		odResp.setRecevicecity(oModel.getRecevicecity());	 
