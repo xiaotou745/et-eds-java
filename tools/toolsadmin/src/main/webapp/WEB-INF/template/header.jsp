@@ -11,7 +11,7 @@
     </div>
     <ul class="nav navbar-top-links navbar-right">
         <li>
-            <span class="m-r-sm text-muted welcome-message">欢迎您使用人人地推管理系统.</span>
+            <span class="m-r-sm text-muted welcome-message">欢迎您使用e代送工具后台管理系统.</span>
         </li>
         <li>
             <a href="<%=basePath %>/account/logoff">

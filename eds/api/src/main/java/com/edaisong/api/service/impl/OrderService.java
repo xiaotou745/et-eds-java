@@ -430,7 +430,7 @@ public class OrderService implements IOrderService {
 		// 扣除商家结算费
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 		balanceRecord.setBusinessid(req.getBusinessid());
-		if (order.getGroupbusinessid() > 0) {
+		if (order.getGroupbusinessid()!=null&&order.getGroupbusinessid() > 0) {
 			balanceRecord.setAmount(0d);
 			balanceRecord.setGroupamount(order.getSettlemoney());
 			balanceRecord.setGroupid(order.getGroupbusinessid());
