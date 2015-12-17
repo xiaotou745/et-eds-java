@@ -81,7 +81,8 @@ public class Upload2Linux {
         return list;
     }
     private static void upload(ChannelSftp sftp,File file,String dst) throws Exception{      
-        if(file.isDirectory()){             
+        if(file.isDirectory()){
+        	createDir(sftp,dst);
             String[] files = file.list();             
             for (int i = 0; i < files.length; i++) {      
                 File file1 = new File(file.getPath()+"\\"+files[i] );      
