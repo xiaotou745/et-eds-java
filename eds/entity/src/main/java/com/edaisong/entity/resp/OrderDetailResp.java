@@ -134,6 +134,7 @@ public class OrderDetailResp extends ResponseBase{
 	}
 
 	public Integer getClienterid() {
+		if(clienterid == null){return 0;}
 		return clienterid;
 	}
 
@@ -981,6 +982,7 @@ public class OrderDetailResp extends ResponseBase{
 		}
 
 		public String getClienterName() {
+			if(clienterName == null){return "";}
 			return clienterName;
 		}
 
