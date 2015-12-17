@@ -12,10 +12,11 @@ import com.edaisong.entity.OrderChild;;
  * @Date 2015年11月27日 11:44:38
  */
 public class OrderDetailResp extends ResponseBase{
+	private String clienterName;
 	    public int getId() {
 		return id;
 	}
-
+	 
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -977,5 +978,13 @@ public class OrderDetailResp extends ResponseBase{
 
 		public void setExpectedDelivery(Date expectedDelivery) {
 			this.expectedDelivery = expectedDelivery;
+		}
+
+		public String getClienterName() {
+			return clienterName;
+		}
+
+		public void setClienterName(String clienterName) {
+			this.clienterName = clienterName;
 		}
 }
