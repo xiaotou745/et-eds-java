@@ -1420,7 +1420,7 @@ where   Status = 1
 	</select>	
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderColums">
-		 CONVERT(VARCHAR(5), o.ActualDoneDate, 108) as ActualDoneDate ,
+		o.ActualDoneDate ,
         o.Amount ,
         o.OrderCount ,
         o.IsPay ,
@@ -1536,7 +1536,7 @@ where   Status = 1
 	</select>	
 	<!--  c端查询待取货订单（会计算距离） -->
 	<sql id="queryDeliveryOrderCColums">
-		 CONVERT(VARCHAR(5), o.ActualDoneDate, 108) as ActualDoneDate ,
+		o.ActualDoneDate ,
         o.Amount ,
         o.OrderCount ,
         o.IsPay ,
