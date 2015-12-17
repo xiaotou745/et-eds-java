@@ -1420,13 +1420,13 @@ where   Status = 1
 	</select>	
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderColums">
-		o.ActualDoneDate ,
+		CONVERT(VARCHAR(16), o.ActualDoneDate, 120) ActualDoneDate ,
         o.Amount ,
         o.OrderCount ,
         o.IsPay ,
         o.OrderNo ,
         o.PickUpAddress ,
-        o.PubDate ,
+        CONVERT(VARCHAR(16), o.PubDate, 120) PubDate ,
         case   isnull(o.ReceviceAddress,'''')  
 		when  '''' then ''附近3公里左右，由商户指定''
 		else o.ReceviceAddress end as ReceviceAddress,
@@ -1452,7 +1452,8 @@ where   Status = 1
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
-        b.GroupId ,o.[Platform],oo.GrabTime,
+        b.GroupId ,o.[Platform],
+        CONVERT(VARCHAR(16), oo.GrabTime, 120) GrabTime,
         o.PubName,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
@@ -1536,13 +1537,13 @@ where   Status = 1
 	</select>	
 	<!--  c端查询待取货订单（会计算距离） -->
 	<sql id="queryDeliveryOrderCColums">
-		o.ActualDoneDate ,
+		CONVERT(VARCHAR(16), o.ActualDoneDate, 120) ActualDoneDate ,
         o.Amount ,
         o.OrderCount ,
         o.IsPay ,
         o.OrderNo ,
         case when o.[Platform]= 1 then b.[Address]  when o.[Platform]=3 then o.PickUpAddress else b.[Address] end PickUpAddress,
-        CONVERT(VARCHAR(5), o.PubDate, 108) as PubDate ,
+        CONVERT(VARCHAR(16), o.PubDate, 120) as PubDate ,
         case  isnull(o.ReceviceAddress,'''')  
 		when  '''' then ''附近3公里左右，由商户指定''
 		else o.ReceviceAddress end as ReceviceAddress,
@@ -1569,7 +1570,9 @@ where   Status = 1
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
         b.GroupId ,
-        o.KM,o.[Weight],oo.GrabTime,o.PubName,
+        o.KM,o.[Weight],
+        oo.GrabTime,
+        o.PubName,
         round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${latitude},${longitude},4326)),0)  as distance_OrderBy  ,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
