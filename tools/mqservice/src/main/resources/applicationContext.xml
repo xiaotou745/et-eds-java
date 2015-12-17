@@ -7,8 +7,15 @@
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<import resource="classpath:conf/core/current-context.xml" />
 
+	
+	<import resource="classpath:conf/core/current-context.xml" />
+	
+	<bean id="activeMqService" class="com.edaisong.api.activemq.ActiveMqService" />
+	<bean id="logServiceBLL" class="com.edaisong.api.common.LogServiceBLL" />
+	<bean id="redisService" class="com.edaisong.api.redis.RedisService" />
+    <bean id="mongoService" class="com.edaisong.api.mongo.MongoService" />
+	
 	<bean id="serviceLogMessageListener" class="com.edaisong.api.activemq.ServiceLogMessageListener" />
 	<bean id="consumerMessageListener" class="com.edaisong.api.activemq.LogConsumerMessageListener" />
 	<bean id="jmsContainer"
