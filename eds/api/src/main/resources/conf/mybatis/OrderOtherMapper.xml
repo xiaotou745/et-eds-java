@@ -28,13 +28,16 @@
   </resultMap>
   <sql id="Base_Column_List" >
     Id, OrderId, NeedUploadCount, ReceiptPic, HadUploadCount, IsJoinWithdraw, PubLongitude, 
-    PubLatitude,  convert(varchar(16),GrabTime,120) GrabTime, GrabLongitude, GrabLatitude, CompleteLongitude, CompleteLatitude, 
-     convert(varchar(16),TakeTime,120) TakeTime, TakeLongitude, TakeLatitude, PubToGrabDistance, GrabToCompleteDistance, convert(varchar(16),CancelTime,120) CancelTime,
-    PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked,ExpectedDelivery,convert(varchar(16),ExpectedTakeTime，120) ExpectedTakeTime
+    PubLatitude,  GrabTime, GrabLongitude, GrabLatitude, CompleteLongitude, CompleteLatitude, 
+    TakeTime, TakeLongitude, TakeLatitude, PubToGrabDistance, GrabToCompleteDistance,  CancelTime,
+    PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked,ExpectedDelivery, ExpectedTakeTime
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
+    Id, OrderId, NeedUploadCount, ReceiptPic, HadUploadCount, IsJoinWithdraw, PubLongitude, 
+    PubLatitude,  GrabTime, GrabLongitude, GrabLatitude, CompleteLongitude, CompleteLatitude, 
+    TakeTime, TakeLongitude, TakeLatitude, PubToGrabDistance, GrabToCompleteDistance,  CancelTime,
+    PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked,ExpectedDelivery, ExpectedTakeTime
     from OrderOther
     where Id = #{id,jdbcType=INTEGER}
   </select>
