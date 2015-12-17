@@ -27,7 +27,7 @@
 
 	<bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg>
-			<value>logqueue</value>
+			<value>logqueueinfo</value>
 		</constructor-arg>
 	</bean>
 </beans>  

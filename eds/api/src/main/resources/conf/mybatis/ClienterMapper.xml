@@ -31,7 +31,7 @@
 		resultType="com.edaisong.entity.Clienter">
 		select
 		<include refid="Base_Column_List" />
-		from clienter
+		from clienter(nolock)
 		where Id = #{id,jdbcType=INTEGER}
 	</select>
 

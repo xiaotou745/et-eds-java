@@ -46,6 +46,8 @@ public class QueryOrder {
 	private double weight;
 	private String pickupCode;
 	private int platform;
+	private String grabTime;
+	private String pubName;
 	/**
 	 * 订单Id
 	 */
@@ -599,5 +601,21 @@ public String getPickupCode() {
 
 public void setPickupCode(String pickupCode) {
 	this.pickupCode = pickupCode;
+}
+
+public String getGrabTime() {
+	return grabTime;
+}
+
+public void setGrabTime(String grabTime) {
+	this.grabTime = grabTime;
+}
+
+public String getPubName() {
+	return pubName;
+}
+
+public void setPubName(String pubName) {
+	this.pubName = pubName;
 }
 }

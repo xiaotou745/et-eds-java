@@ -2,6 +2,7 @@ package com.edaisong.api.service.impl;
 
 import java.lang.Double;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -66,11 +67,13 @@ import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
 import com.edaisong.core.security.MD5Util;
+import com.edaisong.core.util.MapUtils;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
+import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.Order;
@@ -139,6 +142,8 @@ import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
+
+import java.text.DecimalFormat;
 
 @Service
 public class OrderService implements IOrderService {
@@ -425,7 +430,7 @@ public class OrderService implements IOrderService {
 		// 扣除商家结算费
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 		balanceRecord.setBusinessid(req.getBusinessid());
-		if (order.getGroupbusinessid() > 0) {
+		if (order.getGroupbusinessid()!=null&&order.getGroupbusinessid() > 0) {
 			balanceRecord.setAmount(0d);
 			balanceRecord.setGroupamount(order.getSettlemoney());
 			balanceRecord.setGroupid(order.getGroupbusinessid());
@@ -1080,7 +1085,7 @@ public class OrderService implements IOrderService {
 			m.setOrders(orders);
 		} else { // 不需要计算骑士距离门店距离
 			m.setOrders(orderDao.queryOrder(query));
-		}
+		} 
 		resultModel.setResult(m);
 		return resultModel;
 	}
@@ -2388,7 +2393,11 @@ public class OrderService implements IOrderService {
 		OrderOther ooModel= orderOtherDao.selectByOrderId(orderId);		
 		List<OrderChild> ocList=orderChildDao.getOrderChildByOrderId(orderId);
 		BusinessModel businessModel = businessDao.getBusiness((long) oModel.getBusinessid());		
-		
+		Clienter clienter= clienterDao.selectByPrimaryKey(oModel.getClienterid());
+		if(clienter !=null){
+			odResp.setClienterName(clienter.getTruename());
+			odResp.setClienterPhoneNo(clienter.getPhoneno()); 
+		}
 		odResp.setId(oModel.getId());
 		odResp.setOrderno(oModel.getOrderno());
 		odResp.setPickupaddress(oModel.getPickupaddress());
@@ -2403,7 +2412,7 @@ public class OrderService implements IOrderService {
 		odResp.setDistribsubsidy(oModel.getDistribsubsidy());
 		odResp.setWebsitesubsidy(oModel.getWebsitesubsidy());
 		odResp.setRemark(oModel.getRemark());	 
-		odResp.setStatus(oModel.getStatus());	 
+		odResp.setStatus(oModel.getStatus());	
 		odResp.setClienterid(oModel.getClienterid());	 
 		odResp.setBusinessid(oModel.getBusinessid());	 
 		odResp.setRecevicecity(oModel.getRecevicecity());	 
@@ -2485,10 +2494,14 @@ public class OrderService implements IOrderService {
 		odResp.setIsorderchecked(ooModel.getIsorderchecked());
 		odResp.setCancelTime(ooModel.getCancelTime());
 		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());
-		odResp.setExpecteddelivery(ooModel.getExpecteddelivery());
-		odResp.setPubtocurrentdistance(0.0);
-		odResp.setRecevicetocurrentdistance(0.0);	
-		
+		odResp.setExpectedDelivery(ooModel.getExpecteddelivery());
+		//取货之前，骑士到商户的距离
+		double a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(businessModel.getLongitude(),0),ParseHelper.ToDouble(businessModel.getLatitude(),0));
+		odResp.setPubtocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(a/1000),0));
+		//取货之后，骑士到客户的距离
+		double b = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(oModel.getRecevicelongitude(),0),ParseHelper.ToDouble(oModel.getRecevicelatitude(),0));
+		odResp.setRecevicetocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(b/1000),0));	
+		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());
 		odResp.setName(businessModel.getName());
 		odResp.setPhoneno(businessModel.getPhoneno());
 		odResp.setPhoneno2(businessModel.getPhoneno2());
@@ -2687,7 +2700,7 @@ public class OrderService implements IOrderService {
 		req.setPlatform(3);//闪送	
 		order.setOrderfrom(req.getOrderfrom());
 		order.setStatus((byte) OrderStatus.Draft.value());		
-		order.setOrdercount(0);		
+		order.setOrdercount(1);		
 		order.setBusinessid(req.getBusinessid());		
 		order.setTimespan(null);	
 		order.setIspay(false);

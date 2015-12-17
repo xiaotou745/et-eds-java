@@ -130,7 +130,7 @@
 	  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.Order" parameterType="java.lang.Integer" >
     select 
     Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
-    ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
+     ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
     Status, clienterId, businessId, ReceviceCity, ReceviceLongitude, ReceviceLatitude, 
     OrderFrom, OriginalOrderId, OriginalOrderNo, Quantity, Weight, ReceiveProvince, ReceiveArea, 
     ReceiveProvinceCode, ReceiveCityCode, ReceiveAreaCode, OrderType, KM, GuoJuQty, LuJuQty, 
@@ -141,7 +141,7 @@
     DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
     Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount
     from [order]  nolock
-    where Id = #{id,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER} 
   </select>
 	<!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展 CaoHeYang 20150804 -->
 	<select id="getOneByCriteria" resultMap="BaseResultMap"
@@ -869,7 +869,9 @@
 
 	<!-- 后台订单列表页面 查询列集合 add by caoheyang 20150728 -->
 	<sql id="GetOrdersColums">
-		o.[Id] ,o.[OrderNo] , o.[PickUpAddress] ,o.[PubDate] ,o.[ReceviceName]
+		o.[Id] ,o.[OrderNo] , o.[PickUpAddress] ,
+		o.[PubDate] ,
+		o.[ReceviceName]
 		,o.[RecevicePhoneNo] ,o.[ReceviceAddress] ,
 		o.[ActualDoneDate] ,o.[IsPay] , o.[Amount] , o.[OrderCommission] ,
 		o.[RealOrderCommission] , o.[DistribSubsidy] , o.[WebsiteSubsidy]
@@ -879,7 +881,9 @@
 		o.[OriginalOrderId] ,o.[OriginalOrderNo] , o.[Quantity] ,o.[Weight] ,
 		o.[ReceiveProvince] , o.[ReceiveArea] , o.[ReceiveProvinceCode]
 		,o.[ReceiveCityCode] ,o.[ReceiveAreaCode] ,
-		o.[SongCanDate] , o.[OrderCount] ,o.[CommissionRate] ,c.TrueName ClienterName ,
+		o.[SongCanDate] ,
+		 o.[OrderCount] ,o.[CommissionRate] ,
+		 c.TrueName ClienterName ,
 		c.PhoneNo ClienterPhoneNo , b.Name BusinessName ,b.PhoneNo
 		BusinessPhoneNo ,
 		b.Address BusinessAddress ,
@@ -1420,13 +1424,13 @@ where   Status = 1
 	</select>	
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderColums">
-		 CONVERT(VARCHAR(5), o.ActualDoneDate, 108) as ActualDoneDate ,
+		CONVERT(VARCHAR(16), o.ActualDoneDate, 120) ActualDoneDate ,
         o.Amount ,
         o.OrderCount ,
         o.IsPay ,
         o.OrderNo ,
         o.PickUpAddress ,
-        CONVERT(VARCHAR(5), o.PubDate, 108) as PubDate ,
+        CONVERT(VARCHAR(16), o.PubDate, 120) PubDate ,
         case   isnull(o.ReceviceAddress,'''')  
 		when  '''' then ''附近3公里左右，由商户指定''
 		else o.ReceviceAddress end as ReceviceAddress,
@@ -1440,8 +1444,7 @@ where   Status = 1
         b.Id as BusinessId ,
         b.Name as BusinessName ,
         b.PhoneNo as BusinessPhone ,
-        b.PhoneNo2 as BusinessPhone2 ,
-        --b.Name as PickUpName ,   -- 去掉 
+        b.PhoneNo2 as BusinessPhone2 , 
         c.TrueName as SuperManName ,
         c.PhoneNo as SuperManPhone ,
         o.OrderFrom ,
@@ -1454,6 +1457,8 @@ where   Status = 1
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,
         b.GroupId ,o.[Platform],
+        CONVERT(VARCHAR(16), oo.GrabTime, 120) GrabTime,
+        o.PubName,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
@@ -1536,13 +1541,13 @@ where   Status = 1
 	</select>	
 	<!--  c端查询待取货订单（会计算距离） -->
 	<sql id="queryDeliveryOrderCColums">
-		 CONVERT(VARCHAR(5), o.ActualDoneDate, 108) as ActualDoneDate ,
+		CONVERT(VARCHAR(16), o.ActualDoneDate, 120) ActualDoneDate ,
         o.Amount ,
         o.OrderCount ,
         o.IsPay ,
         o.OrderNo ,
         case when o.[Platform]= 1 then b.[Address]  when o.[Platform]=3 then o.PickUpAddress else b.[Address] end PickUpAddress,
-        CONVERT(VARCHAR(5), o.PubDate, 108) as PubDate ,
+        CONVERT(VARCHAR(16), o.PubDate, 120) as PubDate ,
         case  isnull(o.ReceviceAddress,'''')  
 		when  '''' then ''附近3公里左右，由商户指定''
 		else o.ReceviceAddress end as ReceviceAddress,
@@ -1556,8 +1561,7 @@ where   Status = 1
         b.Id as BusinessId ,
         b.Name as BusinessName ,
         b.PhoneNo as BusinessPhone ,
-        b.PhoneNo2 as BusinessPhone2 ,
-        --b.Name as PickUpName ,   -- 去掉 
+        b.PhoneNo2 as BusinessPhone2 , 
         c.TrueName as SuperManName ,
         c.PhoneNo as SuperManPhone ,
         o.OrderFrom ,
@@ -1571,6 +1575,8 @@ where   Status = 1
         o.OrderCommission ,
         b.GroupId ,
         o.KM,o.[Weight],
+        CONVERT(VARCHAR(16), oo.GrabTime,120) GrabTime,
+        o.PubName,
         round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(geography::Point(${latitude},${longitude},4326)),0)  as distance_OrderBy  ,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
@@ -1792,7 +1798,7 @@ GROUP BY a.id ,
 	</sql>
 	<!--  后台E单订单列表页面 动态查询条件 add by caoheyang 20151124 -->
 	<sql id="getShanSongOrdersColumsWhere">
-		1=1
+		1=1 and a.[platform]=3 
 		<if test="businessPhone != null and businessPhone!='' ">
 			and b.PhoneNo=''${businessPhone}''
 		</if>
@@ -1969,13 +1975,13 @@ where a.orderno=#{ordernNo}
 		)}
 	</select>
 	<sql id="shanSongqueryOrderColums">
-		 CONVERT(VARCHAR(5), o.ActualDoneDate, 108) as ActualDoneDate ,
+		 CONVERT(VARCHAR(16), o.ActualDoneDate, 120) as ActualDoneDate ,
         o.Amount ,
         o.OrderCount ,
         o.IsPay ,
         o.OrderNo ,
         o.PickUpAddress ,
-        CONVERT(VARCHAR(5), o.PubDate, 108) as PubDate ,
+        CONVERT(VARCHAR(16), o.PubDate, 120) as PubDate ,
         case   isnull(o.ReceviceAddress,'''')  
 		when  '''' then ''附近3公里左右，由商户指定''
 		else o.ReceviceAddress end as ReceviceAddress,
@@ -1989,8 +1995,7 @@ where a.orderno=#{ordernNo}
         b.Id as BusinessId ,
         b.Name as BusinessName ,
         b.PhoneNo as BusinessPhone ,
-        b.PhoneNo2 as BusinessPhone2 ,
-        --b.Name as PickUpName ,   -- 去掉 
+        b.PhoneNo2 as BusinessPhone2 , 
         c.TrueName as SuperManName ,
         c.PhoneNo as SuperManPhone ,
         o.OrderFrom ,
@@ -2001,7 +2006,7 @@ where a.orderno=#{ordernNo}
         REPLACE(b.City, ''市'', '''') as pickUpCity ,
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
-        o.OrderCommission ,
+        o.OrderCommission ,o.PubName,
         b.GroupId ,o.[Platform],o.KM,o.[Weight],o.PickupCode,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>

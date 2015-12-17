@@ -7,6 +7,13 @@ import java.util.List;
 import com.edaisong.entity.OrderChild;
 
 public class OrderDetailReq {
+	private Integer orderId;
+
+    private Integer businessId;    
+  
+    private double longitude;
+    
+    private double latitude;
 	public Integer getOrderId() {
 		return orderId;
 	}
@@ -23,12 +30,19 @@ public class OrderDetailReq {
 		this.businessId = businessId;
 	}
 
-	private Integer orderId;
+	public double getLongitude() {
+		return longitude;
+	}
 
-    private Integer businessId;    
-  
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
 
+	public double getLatitude() {
+		return latitude;
+	}
 
-	    
-
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}  
 }
