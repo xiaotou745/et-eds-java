@@ -2396,6 +2396,7 @@ public class OrderService implements IOrderService {
 		Clienter clienter= clienterDao.selectByPrimaryKey(oModel.getClienterid());
 		if(clienter !=null){
 			odResp.setClienterName(clienter.getTruename());
+			odResp.setClienterPhoneNo(clienter.getPhoneno()); 
 		}
 		odResp.setId(oModel.getId());
 		odResp.setOrderno(oModel.getOrderno());
@@ -2440,7 +2441,6 @@ public class OrderService implements IOrderService {
 		odResp.setBusinesscommission(oModel.getBusinesscommission());			
 		odResp.setSettlemoney(oModel.getSettlemoney());	 
 		odResp.setDealcount(oModel.getDealcount());	 
-		odResp.setClienterPhoneNo(clienter.getPhoneno()); 
 		if(req.getBusinessId()!=null && req.getBusinessId()>0)
 		{
 			odResp.setPickupcode(oModel.getPickupcode());

@@ -992,6 +992,7 @@ public class OrderDetailResp extends ResponseBase{
 		}
 
 		public String getClienterPhoneNo() {
+			if(clienterPhoneNo == null){return "";}
 			return clienterPhoneNo;
 		}
 
