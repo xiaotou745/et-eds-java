@@ -596,14 +596,22 @@ var jss={
 	}
 	//新增菜单
 	$('#addNewMenu').click(function(){
+		//清除数据
+		$("#1jimenuName").val('');
+		$("#1jiAuthCode").val('');
 		$('#addNewMenubox').modal('show');
 	});
 	//新增2级菜单
 	$('#new2ji').click(function(){
+		$("#2jimenuName").val('');
+		$("#2jiAuthCode").val('');
+		$("#2jiUrl").val('');
 		$('#addNewMenubox2ji').modal('show');
 	});
 	//新增按钮
 	$('#newbutton').click(function(){
+		$("#3jimenuName").val('');
+		$("#3jiAuthCode").val('');
 		$('#addNewMenubox3ji').modal('show');
 	});
 	//保存1级菜单
