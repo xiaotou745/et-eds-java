@@ -2421,7 +2421,7 @@ public class OrderService implements IOrderService {
 		odResp.setRecevicecity(oModel.getRecevicecity());	 
 		odResp.setRecevicelongitude(oModel.getRecevicelongitude());	 
 		odResp.setRecevicelatitude(oModel.getRecevicelatitude());			
-		odResp.setOrderfrom(oModel.getId());	 
+		odResp.setOrderfrom(oModel.getOrderfrom());	 
 		odResp.setOriginalorderid(oModel.getOriginalorderid());	 
 		odResp.setOriginalorderno(oModel.getOriginalorderno());	 
 		odResp.setQuantity(oModel.getQuantity());	 
