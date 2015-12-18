@@ -20,7 +20,7 @@ public class OrderDetailResp extends ResponseBase{
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	private double balancePrice;
 	public String getOrderno() {
 		return orderno;
 	}
@@ -998,5 +998,13 @@ public class OrderDetailResp extends ResponseBase{
 
 		public void setClienterPhoneNo(String clienterPhoneNo) {
 			this.clienterPhoneNo = clienterPhoneNo;
+		}
+
+		public double getBalancePrice() {
+			return balancePrice;
+		}
+
+		public void setBalancePrice(double balancePrice) {
+			this.balancePrice = balancePrice;
 		}
 }
