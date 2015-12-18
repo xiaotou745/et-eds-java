@@ -16,7 +16,7 @@ appNameList.add("business");
 appNameList.add("taobaoopenapi");
 appNameList.add("renrenadmin");
 Calendar a=Calendar.getInstance();
-int month=a.get(Calendar.MONTH);
+int month=a.get(Calendar.MONTH)+1;
 
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
