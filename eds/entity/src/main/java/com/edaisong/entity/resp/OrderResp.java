@@ -11,8 +11,18 @@ import com.edaisong.entity.common.ResponseBase;
  */
 public class OrderResp extends ResponseBase{
 	
-	private Integer orderId;
+	   private Integer orderId;
+	   
+	   private String pickupcode;
 
+
+		public String getPickupcode() {
+		return pickupcode;
+	}
+
+	public void setPickupcode(String pickupcode) {
+		this.pickupcode = pickupcode;
+	}
 
 		private Integer businessId;
 	
