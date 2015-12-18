@@ -2092,12 +2092,12 @@ public class OrderService implements IOrderService {
 			String key = String.format(RedissCacheKey.PostRegisterInfo_B, req.getBusinessphoneno());
 			String verificationCode= netRedisService.get(key, String.class);
 			
-			/*if(verificationCode==null || !verificationCode.equals(req.getVerificationcode()))
+			if(verificationCode==null || !verificationCode.equals(req.getVerificationcode()))
 			{
 				resp.setStatus(FlashPushOrderEnum.VerificationCodeErr.value());
 				resp.setMessage(FlashPushOrderEnum.VerificationCodeErr.desc());
 				return resp;
-			}*/
+			}
 			
 			int selectBId=businessDao.getId(req.getBusinessphoneno());
 			if(selectBId>0)
@@ -2190,6 +2190,7 @@ public class OrderService implements IOrderService {
 		
 		oResp.setMealssettlemode(order.getMealssettlemode());		
 		oResp.setOrderId(order.getId());
+		oResp.setPickupcode(order.getPickupcode());
 		oResp.setIsAllowCashPay(businessModel.getIsAllowCashPay());
 		oResp.setBusinessId(businessModel.getId());
 		oResp.setStatus(businessModel.getStatus());
@@ -2204,7 +2205,7 @@ public class OrderService implements IOrderService {
 		oResp.setDistribsubsidy(businessModel.getDistribsubsidy());
 		oResp.setOriginalbusiid(businessModel.getOriginalbusiid());
 		oResp.setAppkey(businessModel.getAppkey());		
-		oResp.setBalanceprice(businessModel.getBalanceprice());		
+		oResp.setBalanceprice(businessModel.getBalanceprice());		   
 		
 		resp.setResult(oResp);
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
@@ -2418,7 +2419,7 @@ public class OrderService implements IOrderService {
 		odResp.setRecevicecity(oModel.getRecevicecity());	 
 		odResp.setRecevicelongitude(oModel.getRecevicelongitude());	 
 		odResp.setRecevicelatitude(oModel.getRecevicelatitude());			
-		odResp.setOrderfrom(oModel.getId());	 
+		odResp.setOrderfrom(oModel.getOrderfrom());	 
 		odResp.setOriginalorderid(oModel.getOriginalorderid());	 
 		odResp.setOriginalorderno(oModel.getOriginalorderno());	 
 		odResp.setQuantity(oModel.getQuantity());	 
