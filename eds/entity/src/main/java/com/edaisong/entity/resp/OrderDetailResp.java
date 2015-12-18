@@ -208,6 +208,7 @@ public class OrderDetailResp extends ResponseBase{
 	}
 
 	public Double getWeight() {
+		if(weight == null){return 0.0;}
 		return weight;
 	}
 
@@ -264,6 +265,7 @@ public class OrderDetailResp extends ResponseBase{
 	}
 
 	public Double getKm() {
+		if(km == null){return 0.0;}
 		return km;
 	}
 
