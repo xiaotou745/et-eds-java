@@ -2508,7 +2508,8 @@ public class OrderService implements IOrderService {
 		odResp.setPhoneno2(businessModel.getPhoneno2());
 		odResp.setAddress(businessModel.getAddress());
 		odResp.setLandline(businessModel.getLandline());  
-		odResp.setCity(businessModel.getCity());		
+		odResp.setCity(businessModel.getCity());
+		odResp.setBalancePrice(businessModel.getBalanceprice());
 
 		resp.setStatus(OrderDetailGet.Success.value());
 		resp.setMessage(OrderDetailGet.Success.desc()); 
