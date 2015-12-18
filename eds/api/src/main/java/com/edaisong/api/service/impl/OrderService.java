@@ -2222,6 +2222,7 @@ public class OrderService implements IOrderService {
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public HttpResultModel<OrderBlancePayResp> OrderBalancePay(OrderBlancePayReq req)
 	{
 		HttpResultModel<OrderBlancePayResp> resp = new HttpResultModel<OrderBlancePayResp>();
@@ -2268,6 +2269,24 @@ public class OrderService implements IOrderService {
 				resp.setMessage(FlashPushOrderEnum.OrderIdIsPay.desc());
 				return resp;
 			}
+			//更新订单状态
+			Order order=new Order();
+			order.setIspay(true);
+			order.setStatus((byte)0);
+			order.setId(req.getOrderId());
+			int oId=orderDao.updateByPrimaryKeySelective(order);
+			if(oId<0)
+				throw new TransactionalRuntimeException("更新订单状态错误");
+			
+			//PayStatus
+			OrderChild orderchild=new OrderChild();
+			orderchild.setPaystatus((short)1);	
+			orderchild.setPaytype((short)0);//余额
+			orderchild.setId((long)req.getOrderChildId());
+			int ocId=orderChildDao.updateByPrimaryKeySelective(orderchild);
+			if(oId<0)
+				throw new TransactionalRuntimeException("更新子订单状态错误");
+			
 			// 扣除商家结算费
 			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 			balanceRecord.setBusinessid(oModel.getBusinessid());
@@ -2286,36 +2305,17 @@ public class OrderService implements IOrderService {
 			balanceRecord.setRemark("配送费支出金额");
 			int bbcId = businessService.updateForWithdrawC(0, balanceRecord);		
 			if(bbcId<0)
-				throw new TransactionalRuntimeException("记录商户流水错误");
-			
-			//更新订单状态
-			Order order=new Order();
-			order.setIspay(true);
-			order.setStatus((byte)0);
-			order.setId(req.getOrderId());
-			int oId=orderDao.updateByPrimaryKeySelective(order);
-			if(oId<0)
-				throw new TransactionalRuntimeException("更新订单状态错误");
-			
-			//PayStatus
-			OrderChild orderchild=new OrderChild();
-			orderchild.setPaystatus((short)1);			
-			orderchild.setId((long)req.getOrderChildId());
-			int ocId=orderChildDao.updateByPrimaryKeySelective(orderchild);
-			if(oId<0)
-				throw new TransactionalRuntimeException("更新子订单状态错误");
-			
-			//小费 	
-			if(oModel.getTipamount()>0)
-			{
-				OrderTipCost otcModel=new OrderTipCost();
-				otcModel.setOrderid(oModel.getId());
-				otcModel.setAmount(oModel.getTipamount());
-				otcModel.setCreatename(businessModel.getName());		
-				int otcId=orderTipCostDao.insertSelective(otcModel);
-				if (otcId <= 0)
-					throw new TransactionalRuntimeException("记录小费错误");			
-			}			
+				throw new TransactionalRuntimeException("记录商户流水错误");		
+	
+
+			OrderTipCost otcModel=new OrderTipCost();
+			otcModel.setOrderid(oModel.getId());
+			otcModel.setAmount(oModel.getTipamount());
+			otcModel.setCreatename(businessModel.getName());	
+			int otcId=orderTipCostDao.insertSelective(otcModel);
+			if (otcId <= 0)
+				throw new TransactionalRuntimeException("记录小费错误");			
+						
 		}
 		else
 		{//抢单
@@ -2324,13 +2324,12 @@ public class OrderService implements IOrderService {
 				resp.setStatus(PublishOrderReturnEnum.BusinessEmpty.value());
 				resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
 				return resp;
-			}
+			}			
 			
 			// 扣除商家结算费
 			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
-			balanceRecord.setBusinessid(oModel.getBusinessid());
-			double amount=req.getTipamount();
-			balanceRecord.setAmount(amount);
+			balanceRecord.setBusinessid(oModel.getBusinessid());			
+			balanceRecord.setAmount(req.getTipamount());
 			balanceRecord.setGroupamount(0);
 			balanceRecord.setGroupid(0);
 			balanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success
@@ -2353,8 +2352,9 @@ public class OrderService implements IOrderService {
 			otcModel.setCreatename(businessModel.getName());		
 			int otcId=orderTipCostDao.insertSelective(otcModel);
 			if (otcId <= 0)
-				throw new TransactionalRuntimeException("记录小费错误");
-				
+				throw new TransactionalRuntimeException("记录小费错误");			
+
+			//更新小费
 			Order order2=new Order();			
 			double amount2=oModel.getTipamount()+ req.getTipamount();
 			order2.setTipamount(amount2);		
