@@ -15,6 +15,7 @@ appNameList.add("apihttp");
 appNameList.add("business");
 appNameList.add("taobaoopenapi");
 appNameList.add("renrenadmin");
+appNameList.add("renrenapihttp");
 Calendar a=Calendar.getInstance();
 int month=a.get(Calendar.MONTH)+1;
 
