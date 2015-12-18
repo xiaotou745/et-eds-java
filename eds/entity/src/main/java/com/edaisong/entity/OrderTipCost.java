@@ -9,8 +9,18 @@ public class OrderTipCost {
     private Integer orderid;
 
     private double amount;
+    
+    private double tipamount;
 
-    private String createname;
+    public double getTipamount() {
+		return tipamount;
+	}
+
+	public void setTipamount(double tipamount) {
+		this.tipamount = tipamount;
+	}
+
+	private String createname;
 
     private Date createtime;
 

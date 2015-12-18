@@ -26,6 +26,9 @@
       <if test="amount != null" >
         Amount,
       </if>
+        <if test="tipamount != null" >
+        tipamount,
+      </if>
       <if test="createname != null" >
         CreateName,
       </if>
@@ -42,6 +45,9 @@
       </if>
       <if test="amount != null" >
         #{amount,jdbcType=DECIMAL},
+      </if>
+        <if test="tipamount != null" >
+        #{tipamount,jdbcType=DECIMAL},
       </if>
       <if test="createname != null" >
         #{createname,jdbcType=NVARCHAR},
