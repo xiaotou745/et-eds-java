@@ -2311,7 +2311,8 @@ public class OrderService implements IOrderService {
 
 			OrderTipCost otcModel=new OrderTipCost();
 			otcModel.setOrderid(oModel.getId());
-			otcModel.setAmount(oModel.getTipamount());
+			otcModel.setAmount(amount);
+			otcModel.setTipamount(oModel.getTipamount());
 			otcModel.setCreatename(businessModel.getName());	
 			int otcId=orderTipCostDao.insertSelective(otcModel);
 			if (otcId <= 0)
@@ -2350,6 +2351,7 @@ public class OrderService implements IOrderService {
 			OrderTipCost otcModel=new OrderTipCost();
 			otcModel.setOrderid(oModel.getId());
 			otcModel.setAmount(req.getTipamount());
+			otcModel.setTipamount(req.getTipamount());
 			otcModel.setCreatename(businessModel.getName());		
 			int otcId=orderTipCostDao.insertSelective(otcModel);
 			if (otcId <= 0)
