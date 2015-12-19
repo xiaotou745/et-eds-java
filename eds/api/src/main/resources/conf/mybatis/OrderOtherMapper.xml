@@ -25,12 +25,13 @@
     <result column="IsNotRealOrder" property="isnotrealorder" jdbcType="INTEGER" />
     <result column="IsOrderChecked" property="isorderchecked" jdbcType="INTEGER" />
     <result column="expecteddelivery" property="expecteddelivery" jdbcType="TIMESTAMP" />
+    <result column="isAllowCashPay" property="isAllowCashPay" jdbcType="INTEGER" />    
   </resultMap>
   <sql id="Base_Column_List" >
     Id, OrderId, NeedUploadCount, ReceiptPic, HadUploadCount, IsJoinWithdraw, PubLongitude, 
     PubLatitude,  GrabTime, GrabLongitude, GrabLatitude, CompleteLongitude, CompleteLatitude, 
     TakeTime, TakeLongitude, TakeLatitude, PubToGrabDistance, GrabToCompleteDistance,  CancelTime,
-    PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked,ExpectedDelivery, ExpectedTakeTime
+    PubToCompleteDistance, OneKeyPubOrder, IsNotRealOrder,IsOrderChecked,ExpectedDelivery, ExpectedTakeTime,isAllowCashPay
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
