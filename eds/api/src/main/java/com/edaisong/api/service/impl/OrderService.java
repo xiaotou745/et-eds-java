@@ -1987,7 +1987,7 @@ public class OrderService implements IOrderService {
 		// 扣除商家结算费
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 		balanceRecord.setBusinessid(req.getBusinessid());
-		if (order.getGroupbusinessid() > 0) {
+		if (order.getGroupbusinessid()!=null && order.getGroupbusinessid() > 0) {
 			balanceRecord.setAmount(0d);
 			balanceRecord.setGroupamount(order.getSettlemoney());
 			balanceRecord.setGroupid(order.getGroupbusinessid());
@@ -2073,6 +2073,8 @@ public class OrderService implements IOrderService {
 		if(req.getBusinessid()!=null && req.getBusinessid()>0)
 		{
 			businessModel = businessDao.getBusiness((long) req.getBusinessid());
+			if(businessModel.getName()==null)
+				businessModel.setName("");
 		}
 		else
 		{
@@ -2270,6 +2272,14 @@ public class OrderService implements IOrderService {
 				resp.setMessage(FlashPushOrderEnum.OrderIdIsPay.desc());
 				return resp;
 			}
+			double zfAmount= oModel.getAmount()+oModel.getTipamount();
+			if(zfAmount>businessModel.getBalanceprice())
+			{
+				resp.setStatus(FlashPushOrderEnum.BlanceErr.value());
+				resp.setMessage(FlashPushOrderEnum.BlanceErr.desc());
+				return resp;			
+			}
+
 			//更新订单状态
 			Order order=new Order();
 			order.setIspay(true);
@@ -2328,6 +2338,13 @@ public class OrderService implements IOrderService {
 				return resp;
 			}			
 			
+			if(req.getTipamount()>businessModel.getBalanceprice())
+			{
+				resp.setStatus(FlashPushOrderEnum.BlanceErr.value());
+				resp.setMessage(FlashPushOrderEnum.BlanceErr.desc());
+				return resp;			
+			}
+			
 			// 扣除商家结算费
 			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 			balanceRecord.setBusinessid(oModel.getBusinessid());			
@@ -2367,9 +2384,8 @@ public class OrderService implements IOrderService {
 				throw new TransactionalRuntimeException("更新订单小费错误");
 		}	
 
-		
-
-		
+		resp.setStatus(PublishOrderReturnEnum.Success.value());
+		resp.setMessage(PublishOrderReturnEnum.Success.desc());
 		return resp;			
 	}
 	/** 
@@ -2845,7 +2861,7 @@ public class OrderService implements IOrderService {
 			child.setWxcodeurl("");
 			child.setPayprice(0d);
 			child.setHasuploadticket(false);
-			child.setThirdpaystatus((short) 0);
+			child.setThirdpaystatus((short) 0);			
 				
 			//以下属性是智能调度用到的属性
 			child.setBusinessid(businessModel.getId());
