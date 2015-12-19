@@ -2263,13 +2263,6 @@ public class OrderService implements IOrderService {
 			resp.setMessage(FlashPushOrderEnum.OrderIdIsNull.desc());
 			return resp;
 		}
-		double zfAmount= oModel.getAmount()+oModel.getTipamount();
-		if(zfAmount>businessModel.getBalanceprice())
-		{
-			resp.setStatus(FlashPushOrderEnum.BlanceErr.value());
-			resp.setMessage(FlashPushOrderEnum.BlanceErr.desc());
-			return resp;			
-		}
 
 		if(req.getType()==1)
 		{
@@ -2279,6 +2272,14 @@ public class OrderService implements IOrderService {
 				resp.setMessage(FlashPushOrderEnum.OrderIdIsPay.desc());
 				return resp;
 			}
+			double zfAmount= oModel.getAmount()+oModel.getTipamount();
+			if(zfAmount>businessModel.getBalanceprice())
+			{
+				resp.setStatus(FlashPushOrderEnum.BlanceErr.value());
+				resp.setMessage(FlashPushOrderEnum.BlanceErr.desc());
+				return resp;			
+			}
+
 			//更新订单状态
 			Order order=new Order();
 			order.setIspay(true);
@@ -2336,6 +2337,13 @@ public class OrderService implements IOrderService {
 				resp.setMessage(PublishOrderReturnEnum.BusinessEmpty.desc());
 				return resp;
 			}			
+			
+			if(req.getTipamount()>businessModel.getBalanceprice())
+			{
+				resp.setStatus(FlashPushOrderEnum.BlanceErr.value());
+				resp.setMessage(FlashPushOrderEnum.BlanceErr.desc());
+				return resp;			
+			}
 			
 			// 扣除商家结算费
 			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
