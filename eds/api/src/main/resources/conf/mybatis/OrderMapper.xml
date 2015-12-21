@@ -1452,7 +1452,7 @@ where   Status = 1
         o.MealsSettleMode ,
         b.Longitude ,
         b.Latitude ,
-        isnull(o.km,0) km, isnull(o.[weight]) weight,
+        isnull(o.km,0) km, isnull(o.[weight],0) weight,
         REPLACE(b.City, ''市'', '''') as pickUpCity ,
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
@@ -1473,7 +1473,7 @@ where   Status = 1
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="queryOrderWhere">
-		1=1 and o.IsEnable=1  and o.[Platform] IN( ${platform}) 
+		1=1 and o.IsEnable=1  and o.[Platform] IN ( ${platform}) 
 	   <if test="clienterId != null and  clienterId !=0 ">
 			and o.clienterId=${clienterId}
 		</if> 

@@ -2310,7 +2310,7 @@ public class OrderService implements IOrderService {
 			balanceRecord
 					.setRecordtype((short) BusinessBalanceRecordRecordType.PublishOrder
 							.value());
-			balanceRecord.setOperator(businessModel.getName());
+			balanceRecord.setOperator(ParseHelper.ToString(businessModel.getName(),""));
 			balanceRecord.setWithwardid((long) oModel.getId());
 			balanceRecord.setRelationno(oModel.getOrderno());
 			balanceRecord.setRemark("配送费支出金额");
