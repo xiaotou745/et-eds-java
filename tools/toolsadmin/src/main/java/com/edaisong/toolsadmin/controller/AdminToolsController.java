@@ -1,9 +1,15 @@
 package com.edaisong.toolsadmin.controller;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -26,6 +32,7 @@ import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
 import com.edaisong.toolscore.enums.ServerType;
 import com.edaisong.toolscore.security.AES;
 import com.edaisong.toolscore.util.JsonUtil;
+import com.edaisong.toolscore.util.ParseHelper;
 import com.edaisong.toolsentity.AppDbConfig;
 import com.edaisong.toolsentity.AuthorityMenuClass;
 import com.edaisong.toolsentity.common.PagedResponse;
@@ -34,6 +41,7 @@ import com.edaisong.toolsentity.domain.ConnectionInfo;
 import com.edaisong.toolsentity.domain.MenuDetail;
 import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.domain.SelectAppModel;
+import com.edaisong.toolsentity.req.MongoLogReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 import com.edaisong.toolsentity.req.PagedMongoLogReq;
 import com.mongodb.BasicDBObject;
@@ -341,7 +349,7 @@ public class AdminToolsController {
 	 * @return
 	 */
 	@RequestMapping("log")
-	public ModelAndView log() {
+	public ModelAndView log(){
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "日志分析");
@@ -399,10 +407,113 @@ public class AdminToolsController {
 		}
 		req.setQueryObject(query);
 		BasicDBObject sort=new BasicDBObject();
-		sort.put("executeTime", -1);//按照执行时间倒序（1是升序，-1是降序）
+		sort.put(req.getOrderBy(), req.getOrderType());//按照执行时间倒序（1是升序，-1是降序）
 		req.setSortObject(sort);
     }
-	/**
+    /**
+     * 根据页面上的查询条件组织对monmgo的查询request
+     * @author hailongzhao
+     * @date 20151208
+     * @param req
+     */
+    private BasicDBObject getQueryObj(MongoLogReq req){
+		BasicDBObject query=new BasicDBObject();
+		if (req.getSourceSys()!=null&&!req.getSourceSys().isEmpty()) {
+	        query.put("sourceSys", req.getSourceSys());
+		}
+		if (req.getRequestType()>-1) {
+	        query.put("requestType", req.getRequestType());
+		}
+		if (req.getExceptionShowType()==1) {//只看正常
+			query.put("stackTrace", "");
+		}
+		else if (req.getExceptionShowType()==2) {//只看异常
+			query.put("stackTrace", new BasicDBObject("$ne", ""));//stackTrace!=""
+		}
+		if (req.getRequestUrl()!=null&&!req.getRequestUrl().isEmpty()) {
+			//类似于sql中的like
+			Pattern pattern = Pattern.compile("^.*" + req.getRequestUrl()+ ".*$", Pattern.CASE_INSENSITIVE); 
+			query.put("requestUrl", pattern);
+		}
+		return query;
+    }
+    private String getTableName(String beginDate){
+    	return "logtb_"+ParseHelper.ToDateString(ParseHelper.ToDate(beginDate), "yyyy_MM");
+    }
+    /**
+     * 并行查询多个mongodb中的标
+     * @param req
+     * @return
+     * @date 20151221
+     * @throws Exception
+     */
+    public List<ActionLog> queryAll(MongoLogReq req) throws Exception{
+		List<ActionLog> result=Collections.synchronizedList(new ArrayList<>());
+		LinkedHashMap<String, String> timeHashMap= splitTimeRange(req.getBegin(),req.getEnd());
+		timeHashMap.entrySet().parallelStream().forEach(t->{
+			try {
+				BasicDBObject tempReq=getQueryObj(req);
+				if (!t.getKey().endsWith("00:00:00")) {
+					tempReq.put("requestTime", new BasicDBObject("$gte", t.getKey()));//>=
+				}
+				if (!t.getValue().endsWith("00:00:00")) {
+					tempReq.put("requestTime", new BasicDBObject("$lte", t.getValue()));//<=
+				}
+				String mongoName=getTableName(t.getKey());
+				System.out.println("表名称:"+mongoName);
+				List<ActionLog> partialResult= mongoService.selectResult(mongoName,tempReq);
+				result.addAll(partialResult);
+			} catch (Exception e) {
+				System.out.println("并行查询mongo时出错:"+e.getMessage());
+				e.printStackTrace();
+			}
+		});
+		return result;
+	}
+    /**
+	 * 把日期范围按月拆成日期段
+	 * @param begin
+	 * @param end
+	 * @date 20151221
+	 * @return
+	 * @throws Exception 
+	 */
+    private LinkedHashMap<String, String> splitTimeRange(Date begin,Date end) throws Exception{
+    	LinkedHashMap<String, String> result = new LinkedHashMap<String, String>();
+		if (begin.before(end)) {
+			String monthBegin = "";
+			String monthEnd = "";
+			Date tempBegin = begin;
+			Calendar cl = Calendar.getInstance();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+			while (tempBegin.before(end)) {
+				if (tempBegin.compareTo(begin) > 0) {
+					cl.setTime(sdf1.parse(sdf1.format(tempBegin)));
+					cl.set(Calendar.DAY_OF_MONTH,cl.getActualMinimum(Calendar.DAY_OF_MONTH));
+				}else {
+					cl.setTime(tempBegin);
+				}
+
+				if (cl.getTime().compareTo(end) > 0) {
+					break;
+				}
+				monthBegin = sdf.format(cl.getTime());
+				cl.setTime(sdf1.parse(sdf1.format(tempBegin)));
+				cl.set(Calendar.DAY_OF_MONTH,cl.getActualMaximum(Calendar.DAY_OF_MONTH));
+				if (cl.getTime().compareTo(end) > 0) {
+					monthEnd = sdf.format(end);
+				} else {
+					monthEnd = sdf.format(cl.getTime());
+				}
+				result.put(monthBegin, monthEnd);
+				cl.add(Calendar.DAY_OF_YEAR, 1);
+				tempBegin = cl.getTime();
+			}
+		}
+		return result;
+	}
+    /**
 	 * sql查询工具
 	 * @author hailongzhao
 	 * @date 20151118

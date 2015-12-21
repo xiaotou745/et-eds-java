@@ -1,6 +1,9 @@
 package com.edaisong.entity.domain;
 
+import java.text.DecimalFormat;
 import java.util.Date;
+
+import com.edaisong.core.util.ParseHelper;
 
 /**
  * 移动端查询订单列表
@@ -571,8 +574,8 @@ public class QueryOrder {
 		this.distance_OrderBy = distance_OrderBy;
 	} 
 
-public double getKm() {
-	return km;
+public double getKm() { 
+	return	ParseHelper.ToDouble(new DecimalFormat("0.0").format(km),0); 
 }
 
 public void setKm(double km) {

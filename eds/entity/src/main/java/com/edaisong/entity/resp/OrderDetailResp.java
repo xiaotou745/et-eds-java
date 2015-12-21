@@ -18,6 +18,7 @@ public class OrderDetailResp extends ResponseBase{
 	    public int getId() {
 		return id;
 	}
+	private boolean ismodifyticket;
 	private String clienterPhoneNo;
 	public void setId(int id) {
 		this.id = id;
@@ -64,7 +65,7 @@ public class OrderDetailResp extends ResponseBase{
 	}
 
 	public String getReceviceaddress() {
-		if(receviceaddress == null){return "附近3公里，由商户指定";}
+		if(receviceaddress == null || receviceaddress == ""){return "附近3公里，由商户指定";}
 		return receviceaddress;
 	}
 
@@ -1021,5 +1022,13 @@ public class OrderDetailResp extends ResponseBase{
 
 		public void setBalancePrice(double balancePrice) {
 			this.balancePrice = balancePrice;
+		}
+
+		public boolean isIsmodifyticket() {
+			return ismodifyticket;
+		}
+
+		public void setIsmodifyticket(boolean ismodifyticket) {
+			this.ismodifyticket = ismodifyticket;
 		}
 }
