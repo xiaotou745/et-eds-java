@@ -2887,9 +2887,14 @@ public class OrderService implements IOrderService {
 		// 验证商家状态
 		BusinessStatus b=  businessDao.getUserStatus(query.getBusinessId());
 		if(b != null){
-			if (b.getStatus() != BusinessStatusEnum.AuditPass.value()) {
-				resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
-				resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+//			if (b.getStatus() != BusinessStatusEnum.AuditPass.value()) {
+//				resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
+//				resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+//				return resultModel;
+//			}
+			if(b.getIsEnable() != 1 ){
+				resultModel.setStatus(QueryOrderReturnEnum.BusinessIsNotEnable.value());
+				resultModel.setMessage(QueryOrderReturnEnum.BusinessIsNotEnable.desc());
 				return resultModel;
 			}
 		}else{
