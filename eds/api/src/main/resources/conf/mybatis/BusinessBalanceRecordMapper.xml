@@ -352,7 +352,7 @@
         END AS IsOrder,
         o.[platform] 
  FROM   dbo.BusinessBalanceRecord AS bbr ( NOLOCK )
- join dbo.[order] o (nolock) on bbr.RelationNo = o.OrderNo 
+ left join dbo.[order] o (nolock) on bbr.RelationNo = o.OrderNo 
  WHERE bbr.id=#{recordId,jdbcType=INTEGER}
  		AND bbr.BusinessId=#{businessId,jdbcType=INTEGER}
 	</select>
