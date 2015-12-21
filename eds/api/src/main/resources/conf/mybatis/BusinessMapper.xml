@@ -768,7 +768,7 @@
 	<select id="getUserStatus" resultType="com.edaisong.entity.domain.BusinessStatus"
 		parameterType="java.lang.Long">
 		select Id as userid,[status] as
-		status,OneKeyPubOrder,IsAllowOverdraft,BalancePrice,IsAllowCashPay
+		status,OneKeyPubOrder,IsAllowOverdraft,BalancePrice,IsAllowCashPay,isEnable 
 		from dbo.business with(nolock) WHERE id=#{userid,jdbcType=INTEGER}
 	</select>
 	<select id="getOrderCountInfoByBusinessId" parameterType="java.lang.Integer" resultType="java.lang.Integer">

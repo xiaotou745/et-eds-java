@@ -1163,9 +1163,6 @@
 		JOIN OrderOther (NOLOCK) ord ON ord.OrderId = ab.Id
 		JOIN business (NOLOCK) c ON c.id = ab.businessId
 		WHERE ab.Id =#{orderId,jdbcType=INTEGER} 
-		<if test="platform != null">
-			and ab.Platform=#{platform,jdbcType=INTEGER} 
-		</if>
 	</select>
 
 	<!--商家后台 订单详情页面基础数据 add by caoheyang 20150804 -->
@@ -1953,7 +1950,7 @@ where a.orderno=#{ordernNo}
 		{call Sp_CustomPage2015_V1(
 		'
 		<if test="orderBy  ==0 ">
-			o.PubDate asc
+			o.PubDate desc
 		</if>
 		 <if test="orderBy  ==1 ">
 			o.ActualDoneDate desc

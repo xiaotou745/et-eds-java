@@ -1,8 +1,10 @@
 package com.edaisong.entity.resp;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.OrderChild;;
 
@@ -16,6 +18,7 @@ public class OrderDetailResp extends ResponseBase{
 	    public int getId() {
 		return id;
 	}
+	private boolean ismodifyticket;
 	private String clienterPhoneNo;
 	public void setId(int id) {
 		this.id = id;
@@ -62,7 +65,7 @@ public class OrderDetailResp extends ResponseBase{
 	}
 
 	public String getReceviceaddress() {
-		if(receviceaddress == null){return "附近3公里，由商户指定";}
+		if(receviceaddress == null || receviceaddress == ""){return "附近3公里，由商户指定";}
 		return receviceaddress;
 	}
 
@@ -266,7 +269,9 @@ public class OrderDetailResp extends ResponseBase{
 
 	public Double getKm() {
 		if(km == null){return 0.0;}
-		return km;
+		else{
+			return	ParseHelper.ToDouble(new DecimalFormat("0.0").format(km),0);
+		}
 	}
 
 	public void setKm(Double km) {
@@ -819,8 +824,17 @@ public class OrderDetailResp extends ResponseBase{
 	    
 	    private Double basecommission;
 	    
-	    private Integer platform;    
+	    private Integer platform;
+	    
+	    private String platformstr;    
 
+		public String getPlatformstr() {
+			return platformstr;
+		}
+
+		public void setPlatformstr(String platformstr) {
+			this.platformstr = platformstr;
+		}
 		private String pubname;
 		
 	    private String pubphoneno;
@@ -1008,5 +1022,13 @@ public class OrderDetailResp extends ResponseBase{
 
 		public void setBalancePrice(double balancePrice) {
 			this.balancePrice = balancePrice;
+		}
+
+		public boolean isIsmodifyticket() {
+			return ismodifyticket;
+		}
+
+		public void setIsmodifyticket(boolean ismodifyticket) {
+			this.ismodifyticket = ismodifyticket;
 		}
 }

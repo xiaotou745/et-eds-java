@@ -12,6 +12,7 @@ public class BusinessStatus {
     private int IsAllowOverdraft;
     private Double BalancePrice;
     private int IsAllowCashPay;
+    private int isEnable;
 	public int getUserid() {
 		return userid;
 	}
@@ -71,6 +72,12 @@ public class BusinessStatus {
 	 */
 	public void setIsAllowCashPay(int isAllowCashPay) {
 		IsAllowCashPay = isAllowCashPay;
+	}
+	public int getIsEnable() {
+		return isEnable;
+	}
+	public void setIsEnable(int isEnable) {
+		this.isEnable = isEnable;
 	}
     
 }

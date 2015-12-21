@@ -11,6 +11,8 @@ private int requestType;
 private String requestUrl;
 private String monthInfo;
 private int exceptionShowType;
+private int orderType;
+private String orderBy;
 
 private BasicDBObject queryObject;
 private BasicDBObject sortObject;
@@ -69,4 +71,21 @@ public int getExceptionShowType() {
 public void setExceptionShowType(int exceptionShowType) {
 	this.exceptionShowType = exceptionShowType;
 }
+
+public int getOrderType() {
+	return orderType;
+}
+
+public void setOrderType(int orderType) {
+	this.orderType = orderType;
+}
+
+public String getOrderBy() {
+	return orderBy;
+}
+
+public void setOrderBy(String orderBy) {
+	this.orderBy = orderBy;
+}
+
 }
