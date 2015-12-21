@@ -34,7 +34,15 @@ public enum ShanSongOrderStatus {
 	/**
 	 * 已取货
 	 */
-	Taking(4, "已取货")
+	Taking(4, "已取货"),
+		/**
+	 * 审核通过
+	 */
+	AuditPass(11, "审核通过"),
+	/**
+	 * 审核拒绝
+	 */
+	AuditRefuse(12, "审核拒绝")
 	;
 	private int value = 0;
 	private String desc;

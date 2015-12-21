@@ -11,6 +11,7 @@ public enum QueryOrderReturnEnum {
 	 */
 	BusinessNotExist(-100,"商户不存在"),
 	ErrStatus(-500,"商铺尚未审核通过");
+	BusinessIsNotEnable(-501,"发货用户未启用");
 	private int value = 0;
 	private String desc;
 	private QueryOrderReturnEnum(int value, String desc) { // 必须是private的，否则编译错误
