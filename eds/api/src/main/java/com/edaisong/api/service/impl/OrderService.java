@@ -59,6 +59,7 @@ import com.edaisong.core.enums.FlashPushOrderEnum;
 import com.edaisong.core.enums.OrderDetailGet;
 import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderOperationCommon;
+import com.edaisong.core.enums.OrderPlatform;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.ShanSongOrderStatus;
@@ -2483,6 +2484,14 @@ public class OrderService implements IOrderService {
 		odResp.setGroupbusinessid(oModel.getGroupbusinessid());	 
 		odResp.setBasecommission(oModel.getBasecommission());	 
 		odResp.setPlatform(oModel.getPlatform());	 
+		//
+		if(oModel.getPlatform()==1)
+			odResp.setPlatformstr(OrderPlatform.EDaiSong.desc());
+		if(oModel.getPlatform()==2)
+			odResp.setPlatformstr(OrderPlatform.FastOrder.desc());
+		if(oModel.getPlatform()==3)
+			odResp.setPlatformstr(OrderPlatform.FlashOrder.desc());
+		
 		odResp.setPubname(oModel.getPubname());	 
 		odResp.setPubphoneno(oModel.getPubphoneno());		
 		odResp.setTaketype(oModel.getTaketype()); 
