@@ -1452,7 +1452,7 @@ where   Status = 1
         o.MealsSettleMode ,
         b.Longitude ,
         b.Latitude ,
-        isnull(o.km,0) km, isnull(o.[weight]) weight,
+        isnull(o.km,0) km, isnull(o.[weight],0) weight,
         REPLACE(b.City, ''市'', '''') as pickUpCity ,
         ( o.Amount + ISNULL(o.DistribSubsidy, 0) * ISNULL(o.OrderCount, 0) ) as TotalAmount ,
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
@@ -1953,7 +1953,7 @@ where a.orderno=#{ordernNo}
 		{call Sp_CustomPage2015_V1(
 		'
 		<if test="orderBy  ==0 ">
-			o.PubDate asc
+			o.PubDate desc
 		</if>
 		 <if test="orderBy  ==1 ">
 			o.ActualDoneDate desc
