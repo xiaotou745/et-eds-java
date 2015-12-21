@@ -59,6 +59,7 @@ import com.edaisong.core.enums.FlashPushOrderEnum;
 import com.edaisong.core.enums.OrderDetailGet;
 import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderOperationCommon;
+import com.edaisong.core.enums.OrderPlatform;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.ShanSongOrderStatus;
@@ -2483,6 +2484,14 @@ public class OrderService implements IOrderService {
 		odResp.setGroupbusinessid(oModel.getGroupbusinessid());	 
 		odResp.setBasecommission(oModel.getBasecommission());	 
 		odResp.setPlatform(oModel.getPlatform());	 
+		//
+		if(oModel.getPlatform()==1)
+			odResp.setPlatformstr(OrderPlatform.EDaiSong.desc());
+		if(oModel.getPlatform()==2)
+			odResp.setPlatformstr(OrderPlatform.FastOrder.desc());
+		if(oModel.getPlatform()==3)
+			odResp.setPlatformstr(OrderPlatform.FlashOrder.desc());
+		
 		odResp.setPubname(oModel.getPubname());	 
 		odResp.setPubphoneno(oModel.getPubphoneno());		
 		odResp.setTaketype(oModel.getTaketype()); 
@@ -2512,7 +2521,7 @@ public class OrderService implements IOrderService {
 		odResp.setIsnotrealorder(ooModel.getIsnotrealorder());
 		odResp.setIsorderchecked(ooModel.getIsorderchecked());
 		odResp.setCancelTime(ooModel.getCancelTime());
-		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());
+		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());  //是否允许现金支付
 		odResp.setExpectedDelivery(ooModel.getExpecteddelivery());
 		//取货之前，骑士到商户的距离
 		double a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(businessModel.getLongitude(),0),ParseHelper.ToDouble(businessModel.getLatitude(),0));
@@ -2887,9 +2896,14 @@ public class OrderService implements IOrderService {
 		// 验证商家状态
 		BusinessStatus b=  businessDao.getUserStatus(query.getBusinessId());
 		if(b != null){
-			if (b.getStatus() != BusinessStatusEnum.AuditPass.value()) {
-				resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
-				resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+//			if (b.getStatus() != BusinessStatusEnum.AuditPass.value()) {
+//				resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
+//				resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+//				return resultModel;
+//			}
+			if(b.getIsEnable() != 1 ){
+				resultModel.setStatus(QueryOrderReturnEnum.BusinessIsNotEnable.value());
+				resultModel.setMessage(QueryOrderReturnEnum.BusinessIsNotEnable.desc());
 				return resultModel;
 			}
 		}else{

@@ -4,7 +4,7 @@ public enum SendSmsReturnType {
 	/**
 	 * 
 	 */
-	Success(200,"Success"),
+	Success(1,"Success"),
 	/**
 	 * 手机号码无效
 	 */

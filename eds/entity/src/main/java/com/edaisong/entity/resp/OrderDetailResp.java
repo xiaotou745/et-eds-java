@@ -1,8 +1,10 @@
 package com.edaisong.entity.resp;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.OrderChild;;
 
@@ -266,7 +268,9 @@ public class OrderDetailResp extends ResponseBase{
 
 	public Double getKm() {
 		if(km == null){return 0.0;}
-		return km;
+		else{
+			return	ParseHelper.ToDouble(new DecimalFormat("0.0").format(km),0);
+		}
 	}
 
 	public void setKm(Double km) {
@@ -819,8 +823,17 @@ public class OrderDetailResp extends ResponseBase{
 	    
 	    private Double basecommission;
 	    
-	    private Integer platform;    
+	    private Integer platform;
+	    
+	    private String platformstr;    
 
+		public String getPlatformstr() {
+			return platformstr;
+		}
+
+		public void setPlatformstr(String platformstr) {
+			this.platformstr = platformstr;
+		}
 		private String pubname;
 		
 	    private String pubphoneno;
