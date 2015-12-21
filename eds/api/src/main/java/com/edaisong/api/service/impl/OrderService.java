@@ -2521,7 +2521,7 @@ public class OrderService implements IOrderService {
 		odResp.setIsnotrealorder(ooModel.getIsnotrealorder());
 		odResp.setIsorderchecked(ooModel.getIsorderchecked());
 		odResp.setCancelTime(ooModel.getCancelTime());
-		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());
+		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());  //是否允许现金支付
 		odResp.setExpectedDelivery(ooModel.getExpecteddelivery());
 		//取货之前，骑士到商户的距离
 		double a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(businessModel.getLongitude(),0),ParseHelper.ToDouble(businessModel.getLatitude(),0));
