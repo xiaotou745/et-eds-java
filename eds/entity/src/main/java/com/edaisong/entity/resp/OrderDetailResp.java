@@ -823,8 +823,17 @@ public class OrderDetailResp extends ResponseBase{
 	    
 	    private Double basecommission;
 	    
-	    private Integer platform;    
+	    private Integer platform;
+	    
+	    private String platformstr;    
 
+		public String getPlatformstr() {
+			return platformstr;
+		}
+
+		public void setPlatformstr(String platformstr) {
+			this.platformstr = platformstr;
+		}
 		private String pubname;
 		
 	    private String pubphoneno;
