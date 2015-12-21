@@ -1,7 +1,10 @@
 package com.edaisong.entity;
 
 import java.lang.Double;
+import java.text.DecimalFormat;
 import java.util.Date;
+
+import com.edaisong.core.util.ParseHelper;
 
 public class Order {
     private int id;
@@ -16,8 +19,7 @@ public class Order {
 
     private String recevicephoneno;
 
-    private String receviceaddress;
-
+    private String receviceaddress; 
     private Date actualdonedate;
 
     private Boolean ispay;
@@ -276,11 +278,19 @@ public class Order {
     }
 
     public String getReceviceaddress() {
-        return receviceaddress;
+    	if(receviceaddress!=null){
+    		if(receviceaddress.trim().length() == 0){
+    			return "附近3公里，由商户指定";
+    		}else {
+				return receviceaddress;
+			}
+    	}else{
+    		return receviceaddress;
+    	} 
     }
 
     public void setReceviceaddress(String receviceaddress) {
-        this.receviceaddress = receviceaddress == null ? null : receviceaddress.trim();
+        this.receviceaddress = receviceaddress;
     }
 
     public Date getActualdonedate() {
@@ -476,7 +486,10 @@ public class Order {
     }
 
     public Double getKm() {
-        return km;
+    	if(km == null){return 0.0;}
+		else{
+			return	ParseHelper.ToDouble(new DecimalFormat("0.0").format(km),0);
+		}
     }
 
     public void setKm(Double km) {

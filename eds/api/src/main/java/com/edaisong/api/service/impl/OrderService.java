@@ -2463,8 +2463,7 @@ public class OrderService implements IOrderService {
 		odResp.setDealcount(oModel.getDealcount());	 
 		if(req.getBusinessId()!=null && req.getBusinessId()>0)
 		{
-			odResp.setPickupcode(oModel.getPickupcode());
-			
+			odResp.setPickupcode(oModel.getPickupcode()); 
 		}
 		else
 		{
@@ -2537,9 +2536,15 @@ public class OrderService implements IOrderService {
 		odResp.setLandline(businessModel.getLandline());  
 		odResp.setCity(businessModel.getCity());
 		odResp.setBalancePrice(businessModel.getBalanceprice());
-
+		
+		odResp.setIsmodifyticket(true);
+        if (ooModel.getHaduploadcount() >=  oModel.getOrdercount() && oModel.getStatus().byteValue() == OrderStatus.Complite.value())
+        {
+        	odResp.setIsmodifyticket(false);
+        }
 		resp.setStatus(OrderDetailGet.Success.value());
 		resp.setMessage(OrderDetailGet.Success.desc()); 
+		
 		resp.setResult(odResp);
 		return resp;
 	}
