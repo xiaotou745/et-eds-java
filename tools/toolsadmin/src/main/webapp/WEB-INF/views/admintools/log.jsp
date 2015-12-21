@@ -88,9 +88,29 @@ int month=a.get(Calendar.MONTH)+1;
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
+							<label class="col-sm-4 control-label">排序字段:</label>
+							<div class="col-sm-8">
+								<input type="radio" checked="checked" 
+									value="requestTime" name="orderBy" id="requestTime" />请求时间 <input
+									type="radio" value="executeTime" name="orderBy" id="executeTime" />执行时间
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">排序方式:</label>
+							<div class="col-sm-8">
+								<input type="radio"
+									value="1" name="orderType" id="ASC" />升序 <input checked="checked" 
+									type="radio" value="-1" name="orderType" id="DESC" />降序
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
 							<label class="col-sm-4 control-label">请求地址:</label>
 							<div class="col-sm-8">
-								<input type="text" placeholder="请输入请求地址" style="width:500px;"
+								<input type="text" placeholder="请输入请求地址" style="width:400px;"
 					class="form-control" id="requestUrl" name="requestUrl"  value="" />
 							</div>
 						</div>
@@ -113,7 +133,6 @@ int month=a.get(Calendar.MONTH)+1;
 	</div>
 </div>
 
-</div>
 <div class="modal inmodal fade" id="myModal" tabindex="-1" role="dialog"  aria-hidden="true">
 <div class="modal-dialog modal-lg">
     <div class="modal-content">

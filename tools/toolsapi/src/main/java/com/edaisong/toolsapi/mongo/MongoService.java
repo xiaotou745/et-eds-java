@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.domain.ActionLog;
+import com.edaisong.toolsentity.req.MongoLogReq;
 import com.edaisong.toolsentity.req.PagedMongoLogReq;
 import com.mongodb.BasicDBObject;
+import com.mongodb.Bytes;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -71,45 +73,80 @@ public class MongoService {
 	 * 
 	 * @throws Exception
 	 */
+	@SuppressWarnings("resource")
 	public PagedResponse<ActionLog> selectPart(String tableName,PagedMongoLogReq req) throws Exception {
-		if (req.getCurrentPage()==0) {
-			req.setCurrentPage(1);  //默认第一页
-		}
-		if(req.getPageSize()==0){
-			req.setPageSize(15);  //默认页容量
-		}
-		PagedResponse<ActionLog> result=new PagedResponse<ActionLog>();
+		DBCursor querycursor = null;
+		PagedResponse<ActionLog> result = new PagedResponse<ActionLog>();
+		try {
+			if (req.getCurrentPage() == 0) {
+				req.setCurrentPage(1); // 默认第一页
+			}
+			if (req.getPageSize() == 0) {
+				req.setPageSize(15); // 默认页容量
+			}
 
-		result.setCurrentPage(req.getCurrentPage());
-		result.setPageSize(req.getPageSize());
+			result.setCurrentPage(req.getCurrentPage());
+			result.setPageSize(req.getPageSize());
 
+			DBCollection collection = mongoTemplate.getCollection(tableName);
+			createIndex(collection);
+			BasicDBObject key = new BasicDBObject();// 指定需要显示列
+			querycursor = collection.find(req.getQueryObject());
+			if (req.getSortObject() != null) {
+				querycursor = querycursor.sort(req.getSortObject());
+			}
+			result.setTotalRecord(querycursor.count());
+			int totalPage = 0;
+			int modPage = result.getTotalRecord() % req.getPageSize();
+			if (modPage == 0) {
+				totalPage = result.getTotalRecord() / req.getPageSize();
+			} else {
+				totalPage = result.getTotalRecord() / req.getPageSize() + 1;
+			}
+			result.setTotalPage(totalPage);
 
-		DBCollection collection = mongoTemplate.getCollection(tableName);
-		createIndex(collection);
-		DBCursor querycursor = collection.find(req.getQueryObject());
-		if (req.getSortObject()!=null) {
-			querycursor = querycursor.sort(req.getSortObject());
+			querycursor = querycursor.skip((req.getCurrentPage() - 1) * req.getPageSize()).limit(req.getPageSize());// .addOption(Bytes.QUERYOPTION_NOTIMEOUT);
+			List<ActionLog> dataList = new ArrayList<ActionLog>();
+			String json = "";
+			while (querycursor.hasNext()) {
+				json = JsonUtil.obj2string(querycursor.next());
+				ActionLog log = JsonUtil.str2obj(json, ActionLog.class);
+				dataList.add(log);
+			}
+			result.setResultList(dataList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			querycursor.close();
 		}
-		result.setTotalRecord(querycursor.count());
-		int totalPage=0;
-		int modPage=result.getTotalRecord()%req.getPageSize();
-		if (modPage==0) {
-			totalPage=result.getTotalRecord()/req.getPageSize();
-		}else {
-			totalPage=result.getTotalRecord()/req.getPageSize()+1;
-		}
-		result.setTotalPage(totalPage);
-		
-		querycursor=querycursor.skip((req.getCurrentPage()-1)*req.getPageSize()).limit(req.getPageSize());
-		List<ActionLog> dataList=new ArrayList<ActionLog>();
-		String json="";
-		while (querycursor.hasNext()) {
-			json=JsonUtil.obj2string(querycursor.next());
-			ActionLog log=JsonUtil.str2obj(json, ActionLog.class);
-			dataList.add(log);
-		}
-		result.setResultList(dataList);
+
 		return result;
+	}
+	public List<ActionLog> selectResult(String tableName,BasicDBObject req) throws Exception {
+		List<ActionLog> dataList = new ArrayList<ActionLog>();
+		DBCursor querycursor = null;
+		try {
+			DBCollection collection = mongoTemplate.getCollection(tableName);
+			createIndex(collection);
+			BasicDBObject key = new BasicDBObject();// 指定需要显示列
+			key.put("stackTrace", 1);
+			key.put("executeTime", 1);
+			key.put("requestTime", 1);
+			querycursor = collection.find(req, key);// .addOption(Bytes.QUERYOPTION_NOTIMEOUT);
+			String json = "";
+
+			while (querycursor.hasNext()) {
+				json = JsonUtil.obj2string(querycursor.next());
+				ActionLog log = JsonUtil.str2obj(json, ActionLog.class);
+				dataList.add(log);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			querycursor.close();
+		}
+
+		return dataList;
 	}
 	/**
 	 * 第一次查询时，创建索引
