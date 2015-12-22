@@ -2230,8 +2230,7 @@ public class OrderService implements IOrderService {
 	public HttpResultModel<OrderBlancePayResp> OrderBalancePay(OrderBlancePayReq req)
 	{
 		HttpResultModel<OrderBlancePayResp> resp = new HttpResultModel<OrderBlancePayResp>();
-		
-		OrderBlancePayResp obpResp=new OrderBlancePayResp();
+
 		if(req.getOrderId()<1)
 		{
 			resp.setStatus(FlashPushOrderEnum.OrderIdIsNull.value());

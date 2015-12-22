@@ -163,7 +163,6 @@ public class OrderHttpService implements IOrderHttpService {
 	@Override 
 	public HttpResultModel<OrderBlancePayResp> OrderBalancePay(OrderBlancePayReq req)
 	{
-		HttpResultModel<OrderBlancePayResp> resp=new HttpResultModel<OrderBlancePayResp>();		
 		return orderService.OrderBalancePay(req);
 	}
 	

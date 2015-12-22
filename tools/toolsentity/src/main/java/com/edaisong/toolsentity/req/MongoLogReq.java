@@ -11,6 +11,7 @@ public class MongoLogReq {
 	private Date begin;
 	private Date end;
 	private int exceptionShowType;
+	private int minStep;
 	
 	private BasicDBObject queryObject;
 	public String getSourceSys() {
@@ -67,6 +68,14 @@ public class MongoLogReq {
 
 	public void setQueryObject(BasicDBObject queryObject) {
 		this.queryObject = queryObject;
+	}
+
+	public int getMinStep() {
+		return minStep;
+	}
+
+	public void setMinStep(int minStep) {
+		this.minStep = minStep;
 	}
 
 

@@ -1,15 +1,15 @@
 package com.edaisong.toolsadmin.controller;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
-
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -308,6 +308,14 @@ public class AdminToolsController {
 			return appDbConfigService.insert(req);
 		}
 	}
+	/**
+	 * 检查服务器是否可以连接通
+	 * @param conInfo
+	 * @param serverType
+	 * @author hailongzhao
+	 * @date 20151201
+	 * @return
+	 */
 	private boolean checkConnection(ConnectionInfo conInfo,ServerType serverType){
 		try {
 			switch (serverType) {
@@ -441,13 +449,14 @@ public class AdminToolsController {
     	return "logtb_"+ParseHelper.ToDateString(ParseHelper.ToDate(beginDate), "yyyy_MM");
     }
     /**
-     * 并行查询多个mongodb中的标
+     * 并行查询多个mongodb中的表
      * @param req
      * @return
      * @date 20151221
+     * @author hailongzhao
      * @throws Exception
      */
-    public List<ActionLog> queryAll(MongoLogReq req) throws Exception{
+    private List<ActionLog> queryAll(MongoLogReq req) throws Exception{
 		List<ActionLog> result=Collections.synchronizedList(new ArrayList<>());
 		LinkedHashMap<String, String> timeHashMap= splitTimeRange(req.getBegin(),req.getEnd());
 		timeHashMap.entrySet().parallelStream().forEach(t->{
@@ -471,10 +480,138 @@ public class AdminToolsController {
 		return result;
 	}
     /**
+     * 将日期段按照指定的步长拆段
+     * @param begin
+     * @param end
+     * @param minStep
+     * @date 20151222
+     * @author hailongzhao
+     * @return
+     */
+    private LinkedHashMap<Date, Date> splitStep(Date begin,Date end,int minStep){
+    	LinkedHashMap<Date, Date> result = new LinkedHashMap<Date, Date>();
+		if (begin.before(end)) {
+			Date tempBegin = begin;
+			Calendar cl = Calendar.getInstance();
+			while (tempBegin.before(end)) {
+				cl.setTime(tempBegin);
+				cl.add(Calendar.MINUTE, minStep);// 日期加n分钟
+				if (cl.getTime().compareTo(end) > 0) {
+					result.put(tempBegin, end);
+					break;
+				}else {
+					result.put(tempBegin, cl.getTime());
+				} 
+				tempBegin = cl.getTime();
+			}
+		}
+		return result;
+    }
+    /**
+     * 将指定日期范围内的数据按照指定的步长分组
+     * @param begin
+     * @param end
+     * @param data
+     * @author hailongzhao
+     * @date 20151222
+     * @param minStep
+     */
+    private Map<Date, List<Entry<Date, ActionLog>>> groupByStep(Date begin,Date end,List<ActionLog> data,int minStep){
+    	 Map<Date,ActionLog> resultMap = Collections.synchronizedMap(new HashMap<Date,ActionLog>()); 
+ 		LinkedHashMap<Date, Date> timeHashMap= splitStep(begin,end,minStep);
+ 		
+ 		//并行将在日期段内的ActionLog放入resultMap
+ 		data.parallelStream().forEach(t->{
+ 			timeHashMap.keySet().parallelStream().forEach(m->{
+ 				Date mb=ParseHelper.ToDate(t.getRequestTime());
+ 				if (mb.compareTo(m)>=0&&mb.compareTo(timeHashMap.get(m))<=0) {
+ 					resultMap.put(timeHashMap.get(m), t);
+				}
+ 			});
+    	});
+ 		//按照日期段的结束日期分组
+		 return resultMap
+				.entrySet().parallelStream()
+				.collect(Collectors.groupingBy(Entry<Date, ActionLog>::getKey));
+    }
+    /**
+     * 请求次数
+     * @return
+     * @throws Exception 
+     */
+	@RequestMapping("requestnum")
+	@ResponseBody
+    public Map<Date, Integer> queryRequestNum(MongoLogReq req) throws Exception{
+		List<ActionLog> data = queryAll(req);
+		Map<Date, List<Entry<Date, ActionLog>>> groupData = groupByStep(req.getBegin(), req.getEnd(), data, req.getMinStep());
+		return groupData
+				.entrySet()
+				.parallelStream()
+				.collect(
+						Collectors
+								.toMap(Entry<Date, List<Entry<Date, ActionLog>>>::getKey,
+										m -> m.getValue().size()));
+    }
+    /**
+     * 平均执行时间
+     * @param begin
+     * @param end
+     * @param data
+     * @param minStep
+     * @return
+     */
+	@RequestMapping("averagetime")
+	@ResponseBody
+    public Map<Date, Double> queryAverageTime(MongoLogReq req) throws Exception{
+    	List<ActionLog> data=queryAll(req);
+    	Map<Date, List<Entry<Date, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());
+		return groupData
+				.entrySet()
+				.parallelStream()
+				.collect(
+						Collectors
+								.toMap(Entry<Date, List<Entry<Date, ActionLog>>>::getKey,
+										m -> m.getValue()
+												.stream()
+												.mapToLong(x -> x.getValue().getExecuteTime())
+												.summaryStatistics()
+												.getAverage()));
+    }
+    /**
+     * 查询异常率
+     * @param begin
+     * @param end
+     * @param data
+     * @param minStep
+     * @return
+     */
+	@RequestMapping("errorrate")
+	@ResponseBody
+    public Map<Date, Double> queryErrorRate(MongoLogReq req) throws Exception{
+    	List<ActionLog> data=queryAll(req);
+    	Map<Date, List<Entry<Date, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());    		
+		return groupData
+				.entrySet()
+				.parallelStream()
+				.collect(
+						Collectors
+								.toMap(Entry<Date, List<Entry<Date, ActionLog>>>::getKey,
+										m -> {
+											long errNum = m
+													.getValue()
+													.stream()
+													.filter(k -> k.getValue().getStackTrace() != null
+															&& !k.getValue().getStackTrace().isEmpty())
+													.count();
+											return errNum * 100.00d / m.getValue().size();
+										}));
+    }
+    /**
 	 * 把日期范围按月拆成日期段
 	 * @param begin
 	 * @param end
 	 * @date 20151221
+	 * @author hailongzhao
 	 * @return
 	 * @throws Exception 
 	 */
