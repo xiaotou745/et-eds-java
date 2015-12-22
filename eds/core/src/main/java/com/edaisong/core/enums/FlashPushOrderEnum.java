@@ -67,15 +67,15 @@ public enum FlashPushOrderEnum {
 	/**
 	 * 未登录时输入的手机号
 	 */
-	BusinessPhonenoIsNull(-12, "未登录时输入的手机号"),
+	BusinessPhonenoIsNull(-12, "请输入正确的手机号"),
 	/**
 	 * 未登录时输入的验证码
 	 */
-	VerificationCodeIsNull(-13, "未登录时输入的验证码"),
+	VerificationCodeIsNull(-13, "验证码错误，请重新输入"),
 	/**
 	 * 未登录时输入的验证码错误
 	 */
-	VerificationCodeErr(-14, "未登录时输入的验证码错误"),
+	VerificationCodeErr(-14, "验证码错误，请重新输入"),
 	/**
 	 * 创建商户失败
 	 */

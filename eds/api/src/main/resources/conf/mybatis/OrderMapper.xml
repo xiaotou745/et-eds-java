@@ -1792,6 +1792,7 @@ where a.orderno=#{ordernNo}
         b.PhoneNo as BusinessPhone ,
         b.PhoneNo2 as BusinessPhone2 , 
         c.TrueName as SuperManName ,
+        b.balancePrice,
         c.PhoneNo as SuperManPhone ,
         o.OrderFrom ,
         o.id as OrderId ,
