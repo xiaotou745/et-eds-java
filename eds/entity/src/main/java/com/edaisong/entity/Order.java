@@ -489,9 +489,10 @@ public class Order {
     }
 
     public Double getKm() {
-    	if(km == null){return 0.0;}
-		else{
+    	if(km != null){
 			return	ParseHelper.ToDouble(new DecimalFormat("0.0").format(km),0);
+		}else {
+			return km;
 		}
     }
 

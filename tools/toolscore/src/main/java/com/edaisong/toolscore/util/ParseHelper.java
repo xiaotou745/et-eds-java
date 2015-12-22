@@ -174,7 +174,7 @@ public class ParseHelper {
 	 * @param dt
 	 *            要操作的日期对象
 	 * @param type
-	 *            0是年，1是月，2是日
+	 *            0是年，1是月，2是日,3是小时，4是分钟，5是秒
 	 * @param dif
 	 *            需要加减的值，负数时，表示减
 	 * @return
@@ -191,6 +191,15 @@ public class ParseHelper {
 			break;
 		case 2:
 			rightNow.add(Calendar.DAY_OF_YEAR, dif);// 日期加n天
+			break;
+		case 3:
+			rightNow.add(Calendar.HOUR, dif);// 日期加n小时
+			break;
+		case 4:
+			rightNow.add(Calendar.MINUTE, dif);// 日期加n分钟
+			break;
+		case 5:
+			rightNow.add(Calendar.SECOND, dif);// 日期加n秒
 			break;
 		default:
 			break;
