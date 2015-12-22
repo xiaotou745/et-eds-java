@@ -12,6 +12,7 @@ private int billType;//出入帐类型0 全部 1出账 2 入账
 private int recordType;// 交易类型(1：订单佣金 2：取消订单 3：提现申请 4：提现拒绝 5：打款失败 6：系统奖励 7：系统赔偿 8:余额调整 9:手续费 10:现金提现 11:异常订单)
 private String stratDate;
 private String endDate;
+private int platform;
 public int getBillType() {
 	return billType;
 }
@@ -47,6 +48,12 @@ public String getDayInfo() {
 }
 public void setDayInfo(String dayInfo) {
 	this.dayInfo = dayInfo;
+}
+public int getPlatform() {
+	return platform;
+}
+public void setPlatform(int platform) {
+	this.platform = platform;
 }
 
 }
