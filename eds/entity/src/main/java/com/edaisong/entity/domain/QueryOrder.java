@@ -51,6 +51,7 @@ public class QueryOrder {
 	private int platform;
 	private String grabTime;
 	private String pubName;
+	private double balancePrice;
 	/**
 	 * 订单Id
 	 */
@@ -620,5 +621,13 @@ public String getPubName() {
 
 public void setPubName(String pubName) {
 	this.pubName = pubName;
+}
+
+public double getBalancePrice() {
+	return balancePrice;
+}
+
+public void setBalancePrice(double balancePrice) {
+	this.balancePrice = balancePrice;
 }
 }
