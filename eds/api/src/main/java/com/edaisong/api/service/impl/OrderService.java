@@ -2311,7 +2311,7 @@ public class OrderService implements IOrderService {
 			balanceRecord
 					.setRecordtype((short) BusinessBalanceRecordRecordType.PublishOrder
 							.value());
-			balanceRecord.setOperator(businessModel.getName());
+			balanceRecord.setOperator(ParseHelper.ToString(businessModel.getName(),""));
 			balanceRecord.setWithwardid((long) oModel.getId());
 			balanceRecord.setRelationno(oModel.getOrderno());
 			balanceRecord.setRemark("配送费支出金额");
@@ -2833,8 +2833,8 @@ public class OrderService implements IOrderService {
 			BusinessModel businessModel) {
 		OrderOther orderOther = new OrderOther();
 		orderOther.setOrderid(order.getId());
-		orderOther.setNeeduploadcount(0);
-		orderOther.setHaduploadcount(0);
+		orderOther.setNeeduploadcount(1);
+		orderOther.setHaduploadcount(1);
 		if(req.getTaketype()==1)
 		{
 			//orderOther.setTaketime(req.getTaketime());
