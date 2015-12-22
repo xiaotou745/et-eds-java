@@ -2522,8 +2522,13 @@ public class OrderService implements IOrderService {
 		odResp.setCancelTime(ooModel.getCancelTime());
 		odResp.setIsAllowCashPay(ooModel.getIsAllowCashPay());  //是否允许现金支付
 		odResp.setExpectedDelivery(ooModel.getExpecteddelivery());
-		//取货之前，骑士到商户的距离
-		double a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(businessModel.getLongitude(),0),ParseHelper.ToDouble(businessModel.getLatitude(),0));
+		//取货之前，
+		double a =0d;
+		if (oModel.getPlatform().intValue()==3) {//闪送模式时，取骑士到取货点的距离
+			a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(oModel.getPickuplongitude(),0),ParseHelper.ToDouble(oModel.getPickuplatitude(),0));
+		}else {//骑士到商户的距离
+			a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(businessModel.getLongitude(),0),ParseHelper.ToDouble(businessModel.getLatitude(),0));
+		}
 		odResp.setPubtocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(a/1000),0));
 		//取货之后，骑士到客户的距离
 		double b = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(oModel.getRecevicelongitude(),0),ParseHelper.ToDouble(oModel.getRecevicelatitude(),0));
@@ -2743,7 +2748,9 @@ public class OrderService implements IOrderService {
 		order.setPubname(req.getPubname());//发货人
 		order.setPubdate(new Date());//发货日期	
 		order.setPubphoneno(req.getPubphoneno());//发货人手机号
-		order.setPickupaddress(req.getPubaddress());//发货人地址 		
+		order.setPickupaddress(req.getPubaddress());//发货人地址 	
+		order.setPickuplatitude(req.getPublatitude());
+		order.setPickuplongitude(req.getPublongitude());
 		order.setTaketype(req.getTaketype());//取货状态默认0立即，1预约	
 		Random random = new Random();
 	    int x = random.nextInt(899999);
@@ -2839,8 +2846,8 @@ public class OrderService implements IOrderService {
 		}
 		orderOther.setTakelongitude((double)0);
 		orderOther.setTakelatitude((double)0);		
-		orderOther.setPublongitude(req.getPublongitude());
-		orderOther.setPublatitude(req.getPublatitude());
+		orderOther.setPublongitude(req.getCurrentlongitude());
+		orderOther.setPublatitude(req.getCurrentlatitude());
 		orderOther.setOnekeypuborder(businessModel.getOnekeypuborder());
 		orderOther.setIsorderchecked(businessModel.getIsOrderChecked());
 		orderOther.setIsAllowCashPay(businessModel.getIsAllowCashPay());

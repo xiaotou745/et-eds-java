@@ -12,6 +12,9 @@ public class Order {
     private String orderno;
 
     private String pickupaddress;
+    private Double pickuplongitude;
+
+    private Double pickuplatitude;
 
     private Date pubdate;
 
@@ -694,5 +697,21 @@ public class Order {
 
 	public void setBasecommission(Double basecommission) {
 		this.basecommission = basecommission;
+	}
+
+	public Double getPickuplongitude() {
+		return pickuplongitude;
+	}
+
+	public void setPickuplongitude(Double pickuplongitude) {
+		this.pickuplongitude = pickuplongitude;
+	}
+
+	public Double getPickuplatitude() {
+		return pickuplatitude;
+	}
+
+	public void setPickuplatitude(Double pickuplatitude) {
+		this.pickuplatitude = pickuplatitude;
 	}
 }

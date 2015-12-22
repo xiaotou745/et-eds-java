@@ -1,93 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edaisong.api.dao.inter.IOrderDao">
-	<resultMap id="BaseResultMap" type="com.edaisong.entity.Order">
-		<id column="Id" property="id" jdbcType="INTEGER" />
-		<result column="OrderNo" property="orderno" jdbcType="NVARCHAR" />
-		<result column="PickUpAddress" property="pickupaddress"
-			jdbcType="NVARCHAR" />
-		<result column="PubDate" property="pubdate" jdbcType="TIMESTAMP" />
-		<result column="ReceviceName" property="recevicename" jdbcType="NVARCHAR" />
-		<result column="RecevicePhoneNo" property="recevicephoneno"
-			jdbcType="NVARCHAR" />
-		<result column="ReceviceAddress" property="receviceaddress"
-			jdbcType="NVARCHAR" />
-		<result column="ActualDoneDate" property="actualdonedate"
-			jdbcType="TIMESTAMP" />
-		<result column="IsPay" property="ispay" jdbcType="BIT" />
-		<result column="Amount" property="amount" jdbcType="NUMERIC" />
-		<result column="OrderCommission" property="ordercommission"
-			jdbcType="NUMERIC" />
-		<result column="DistribSubsidy" property="distribsubsidy"
-			jdbcType="NUMERIC" />
-		<result column="WebsiteSubsidy" property="websitesubsidy"
-			jdbcType="NUMERIC" />
-		<result column="Remark" property="remark" jdbcType="NVARCHAR" />
-		<result column="Status" property="status" jdbcType="TINYINT" />
-		<result column="clienterId" property="clienterid" jdbcType="INTEGER" />
-		<result column="businessId" property="businessid" jdbcType="INTEGER" />
-		<result column="ReceviceCity" property="recevicecity" jdbcType="NVARCHAR" />
-		<result column="ReceviceLongitude" property="recevicelongitude"
-			jdbcType="DOUBLE" />
-		<result column="ReceviceLatitude" property="recevicelatitude"
-			jdbcType="DOUBLE" />
-		<result column="OrderFrom" property="orderfrom" jdbcType="INTEGER" />
-		<result column="OriginalOrderId" property="originalorderid"
-			jdbcType="BIGINT" />
-		<result column="OriginalOrderNo" property="originalorderno"
-			jdbcType="NVARCHAR" />
-		<result column="Quantity" property="quantity" jdbcType="INTEGER" />
-		<result column="Weight" property="weight" jdbcType="NUMERIC" />
-		<result column="ReceiveProvince" property="receiveprovince"
-			jdbcType="NVARCHAR" />
-		<result column="ReceiveArea" property="receivearea" jdbcType="NVARCHAR" />
-		<result column="ReceiveProvinceCode" property="receiveprovincecode"
-			jdbcType="NVARCHAR" />
-		<result column="ReceiveCityCode" property="receivecitycode"
-			jdbcType="NVARCHAR" />
-		<result column="ReceiveAreaCode" property="receiveareacode"
-			jdbcType="NVARCHAR" />
-		<result column="OrderType" property="ordertype" jdbcType="INTEGER" />
-		<result column="KM" property="km" jdbcType="DOUBLE" />
-		<result column="GuoJuQty" property="guojuqty" jdbcType="INTEGER" />
-		<result column="LuJuQty" property="lujuqty" jdbcType="INTEGER" />
-		<result column="SongCanDate" property="songcandate" jdbcType="TIMESTAMP" />
-		<result column="OrderCount" property="ordercount" jdbcType="INTEGER" />
-		<result column="CommissionRate" property="commissionrate"
-			jdbcType="NUMERIC" />
-		<result column="Payment" property="payment" jdbcType="INTEGER" />
-		<result column="CommissionFormulaMode" property="commissionformulamode"
-			jdbcType="INTEGER" />
-		<result column="Adjustment" property="adjustment" jdbcType="DECIMAL" />
-		<result column="BusinessCommission" property="businesscommission"
-			jdbcType="DECIMAL" />
-		<result column="SettleMoney" property="settlemoney" jdbcType="NUMERIC" />
-		<result column="DealCount" property="dealcount" jdbcType="INTEGER" />
-		<result column="PickupCode" property="pickupcode" jdbcType="VARCHAR" />
-		<result column="OtherCancelReason" property="othercancelreason"
-			jdbcType="NVARCHAR" />
-		<result column="CommissionType" property="commissiontype"
-			jdbcType="INTEGER" />
-		<result column="CommissionFixValue" property="commissionfixvalue"
-			jdbcType="DECIMAL" />
-		<result column="BusinessGroupId" property="businessgroupid"
-			jdbcType="INTEGER" />
-		<result column="TimeSpan" property="timespan" jdbcType="NVARCHAR" />
-		<result column="Invoice" property="invoice" jdbcType="NVARCHAR" />
-		<result column="BusinessReceivable" property="businessreceivable"
-			jdbcType="DECIMAL" />
-		<result column="MealsSettleMode" property="mealssettlemode"
-			jdbcType="INTEGER" />
-		<result column="FinishDateLength" property="finishdatelength"
-			jdbcType="INTEGER" />
-		<result column="FinishAll" property="finishall" jdbcType="INTEGER" />
-		<result column="RealOrderCommission" property="realordercommission"
-			jdbcType="NUMERIC" />
-		<result column="GroupBusinessID" property="groupbusinessid"
-			jdbcType="INTEGER" />
-		<result column="basecommission" property="basecommission"
-			jdbcType="NUMERIC" />
-	</resultMap>
 	<!-- 商家订单概览信息 可扩展 add by pengyi 20180818 -->
 	<resultMap id="businessOrderSummaryResultMap"
 		type="com.edaisong.entity.domain.BusinessOrderSummaryModel">
@@ -110,26 +23,7 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo,
-		ReceviceAddress,
-		ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy,
-		Remark,
-		Status, clienterId, businessId, ReceviceCity, ReceviceLongitude,
-		ReceviceLatitude,
-		OrderFrom, OriginalOrderId, OriginalOrderNo, Quantity, Weight, ReceiveProvince,
-		ReceiveArea,
-		ReceiveProvinceCode, ReceiveCityCode, ReceiveAreaCode, OrderType, KM, GuoJuQty, LuJuQty,
-		SongCanDate, OrderCount, CommissionRate, Payment,
-		CommissionFormulaMode, Adjustment,
-		BusinessCommission, SettleMoney, DealCount, PickupCode, OtherCancelReason,
-		CommissionType,
-		CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable,
-		MealsSettleMode,
-		FinishDateLength, FinishAll, RealOrderCommission,GroupBusinessID,BaseCommission
-	</sql>
-	  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.Order" parameterType="java.lang.Integer" >
-    select 
-    Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
+	Id, OrderNo, PickUpAddress, PubDate, ReceviceName, RecevicePhoneNo, ReceviceAddress, 
      ActualDoneDate, IsPay, Amount, OrderCommission, DistribSubsidy, WebsiteSubsidy, Remark, 
     Status, clienterId, businessId, ReceviceCity, ReceviceLongitude, ReceviceLatitude, 
     OrderFrom, OriginalOrderId, OriginalOrderNo, Quantity, Weight, ReceiveProvince, ReceiveArea, 
@@ -139,12 +33,16 @@
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
     DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
-    Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount
+    Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount,pickuplongitude,pickuplatitude
+	</sql>
+	  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.Order" parameterType="java.lang.Integer" >
+    select 
+      <include refid="Base_Column_List" />
     from [order]  nolock
     where Id = #{id,jdbcType=INTEGER} 
   </select>
 	<!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展 CaoHeYang 20150804 -->
-	<select id="getOneByCriteria" resultMap="BaseResultMap"
+	<select id="getOneByCriteria" resultType="com.edaisong.entity.Order" 
 		parameterType="com.edaisong.entity.Order">
 		select
 		<include refid="Base_Column_List" />
@@ -164,7 +62,7 @@
 		</if>
 	</select>	
 		
-	<select id="selectIsExistByBusinessId" resultMap="BaseResultMap"
+	<select id="selectIsExistByBusinessId" resultType="com.edaisong.entity.Order" 
 		parameterType="com.edaisong.entity.req.OrderReq">
 		select
 		<include refid="Base_Column_List" />
@@ -182,67 +80,7 @@
 		delete from order
 		where Id = #{id,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert" parameterType="com.edaisong.entity.Order">
-		insert into dbo.[order] (Id, OrderNo, PickUpAddress,
-		PubDate, ReceviceName, RecevicePhoneNo,
-		ReceviceAddress, ActualDoneDate, IsPay,
-		Amount, OrderCommission, DistribSubsidy,
-		WebsiteSubsidy, Remark, Status,
-		clienterId, businessId, ReceviceCity,
-		ReceviceLongitude, ReceviceLatitude, OrderFrom,
-		OriginalOrderId, OriginalOrderNo, Quantity,
-		Weight, ReceiveProvince, ReceiveArea,
-		ReceiveProvinceCode, ReceiveCityCode,
-		ReceiveAreaCode, OrderType, KM,
-		GuoJuQty, LuJuQty, SongCanDate,
-		OrderCount, CommissionRate, Payment,
-		CommissionFormulaMode, Adjustment, BusinessCommission,
-		SettleMoney, DealCount, PickupCode,
-		OtherCancelReason, CommissionType, CommissionFixValue,
-		BusinessGroupId, TimeSpan, Invoice,
-		BusinessReceivable, MealsSettleMode, FinishDateLength,
-		FinishAll, RealOrderCommission,GroupBusinessID,BaseCommission)
-		values (#{id,jdbcType=INTEGER}, #{orderno,jdbcType=NVARCHAR},
-		#{pickupaddress,jdbcType=NVARCHAR},
-		#{pubdate,jdbcType=TIMESTAMP}, #{recevicename,jdbcType=NVARCHAR},
-		#{recevicephoneno,jdbcType=NVARCHAR},
-		#{receviceaddress,jdbcType=NVARCHAR},
-		#{actualdonedate,jdbcType=TIMESTAMP}, #{ispay,jdbcType=BIT},
-		#{amount,jdbcType=NUMERIC}, #{ordercommission,jdbcType=NUMERIC},
-		#{distribsubsidy,jdbcType=NUMERIC},
-		#{websitesubsidy,jdbcType=NUMERIC}, #{remark,jdbcType=NVARCHAR},
-		#{status,jdbcType=TINYINT},
-		#{clienterid,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, #{recevicecity,jdbcType=NVARCHAR},
-		#{recevicelongitude,jdbcType=DOUBLE},
-		#{recevicelatitude,jdbcType=DOUBLE}, #{orderfrom,jdbcType=INTEGER},
-		#{originalorderid,jdbcType=BIGINT},
-		#{originalorderno,jdbcType=NVARCHAR}, #{quantity,jdbcType=INTEGER},
-		#{weight,jdbcType=NUMERIC}, #{receiveprovince,jdbcType=NVARCHAR},
-		#{receivearea,jdbcType=NVARCHAR},
-		#{receiveprovincecode,jdbcType=NVARCHAR},
-		#{receivecitycode,jdbcType=NVARCHAR},
-		#{receiveareacode,jdbcType=NVARCHAR}, #{ordertype,jdbcType=INTEGER},
-		#{km,jdbcType=DOUBLE},
-		#{guojuqty,jdbcType=INTEGER}, #{lujuqty,jdbcType=INTEGER}, #{songcandate,jdbcType=TIMESTAMP},
-		#{ordercount,jdbcType=INTEGER}, #{commissionrate,jdbcType=NUMERIC},
-		#{payment,jdbcType=INTEGER},
-		#{commissionformulamode,jdbcType=INTEGER},
-		#{adjustment,jdbcType=DECIMAL},
-		#{businesscommission,jdbcType=DECIMAL},
-		#{settlemoney,jdbcType=NUMERIC}, #{dealcount,jdbcType=INTEGER},
-		#{pickupcode,jdbcType=VARCHAR},
-		#{othercancelreason,jdbcType=NVARCHAR},
-		#{commissiontype,jdbcType=INTEGER},
-		#{commissionfixvalue,jdbcType=DECIMAL},
-		#{businessgroupid,jdbcType=INTEGER}, #{timespan,jdbcType=NVARCHAR},
-		#{invoice,jdbcType=NVARCHAR},
-		#{businessreceivable,jdbcType=DECIMAL}, #{mealssettlemode,jdbcType=INTEGER},
-		#{finishdatelength,jdbcType=INTEGER},
-		#{finishall,jdbcType=INTEGER}, 
-		#{realordercommission,jdbcType=NUMERIC},
-		#{groupbusinessid,jdbcType=NUMERIC},
-		#{basecommission,jdbcType=NUMERIC})
-	</insert>
+
 	<insert id="insertSelective" parameterType="com.edaisong.entity.Order">
 		<selectKey resultType="java.lang.Integer" keyProperty="id"
 			order="AFTER">
@@ -256,6 +94,12 @@
 			</if>
 			<if test="pickupaddress != null">
 				PickUpAddress,
+			</if>
+			<if test="pickuplongitude != null">
+				pickuplongitude,
+			</if>
+			<if test="pickuplatitude != null">
+				pickuplatitude,
 			</if>
 			<if test="pubdate != null">
 				PubDate,
@@ -444,6 +288,12 @@
 			</if>	
 			<if test="pickupaddress != null">
 				#{pickupaddress,jdbcType=NVARCHAR},
+			</if>
+			<if test="pickuplongitude != null">
+				#{pickuplongitude,jdbcType=DOUBLE},
+			</if>
+			<if test="pickuplatitude != null">
+				#{pickuplatitude,jdbcType=DOUBLE},
 			</if>
 			<if test="pubdate != null">
 				#{pubdate,jdbcType=TIMESTAMP},
@@ -637,6 +487,12 @@
 			<if test="pickupaddress != null">
 				PickUpAddress = #{pickupaddress,jdbcType=NVARCHAR},
 			</if>
+			<if test="pickuplongitude != null">
+				PickUpLongitude = #{pickuplongitude,jdbcType=DOUBLE},
+			</if>
+			<if test="pickuplatitude != null">
+				PickUpLatitude = #{pickuplatitude,jdbcType=DOUBLE},
+			</if>
 			<if test="pubdate != null">
 				PubDate = #{pubdate,jdbcType=TIMESTAMP},
 			</if>
@@ -806,66 +662,7 @@
 		</set>
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
-	<update id="updateByPrimaryKey" parameterType="com.edaisong.entity.Order">
-		update order
-		set OrderNo = #{orderno,jdbcType=NVARCHAR},
-		PickUpAddress = #{pickupaddress,jdbcType=NVARCHAR},
-		PubDate = #{pubdate,jdbcType=TIMESTAMP},
-		ReceviceName = #{recevicename,jdbcType=NVARCHAR},
-		RecevicePhoneNo = #{recevicephoneno,jdbcType=NVARCHAR},
-		ReceviceAddress = #{receviceaddress,jdbcType=NVARCHAR},
-		ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
-		IsPay = #{ispay,jdbcType=BIT},
-		Amount = #{amount,jdbcType=NUMERIC},
-		OrderCommission = #{ordercommission,jdbcType=NUMERIC},
-		DistribSubsidy = #{distribsubsidy,jdbcType=NUMERIC},
-		WebsiteSubsidy = #{websitesubsidy,jdbcType=NUMERIC},
-		Remark = #{remark,jdbcType=NVARCHAR},
-		Status = #{status,jdbcType=TINYINT},
-		clienterId = #{clienterid,jdbcType=INTEGER},
-		businessId = #{businessid,jdbcType=INTEGER},
-		ReceviceCity = #{recevicecity,jdbcType=NVARCHAR},
-		ReceviceLongitude = #{recevicelongitude,jdbcType=DOUBLE},
-		ReceviceLatitude = #{recevicelatitude,jdbcType=DOUBLE},
-		OrderFrom = #{orderfrom,jdbcType=INTEGER},
-		OriginalOrderId = #{originalorderid,jdbcType=BIGINT},
-		OriginalOrderNo = #{originalorderno,jdbcType=NVARCHAR},
-		Quantity = #{quantity,jdbcType=INTEGER},
-		Weight = #{weight,jdbcType=NUMERIC},
-		ReceiveProvince = #{receiveprovince,jdbcType=NVARCHAR},
-		ReceiveArea = #{receivearea,jdbcType=NVARCHAR},
-		ReceiveProvinceCode = #{receiveprovincecode,jdbcType=NVARCHAR},
-		ReceiveCityCode = #{receivecitycode,jdbcType=NVARCHAR},
-		ReceiveAreaCode = #{receiveareacode,jdbcType=NVARCHAR},
-		OrderType = #{ordertype,jdbcType=INTEGER},
-		KM = #{km,jdbcType=DOUBLE},
-		GuoJuQty = #{guojuqty,jdbcType=INTEGER},
-		LuJuQty = #{lujuqty,jdbcType=INTEGER},
-		SongCanDate = #{songcandate,jdbcType=TIMESTAMP},
-		OrderCount = #{ordercount,jdbcType=INTEGER},
-		CommissionRate = #{commissionrate,jdbcType=NUMERIC},
-		Payment = #{payment,jdbcType=INTEGER},
-		CommissionFormulaMode = #{commissionformulamode,jdbcType=INTEGER},
-		Adjustment = #{adjustment,jdbcType=DECIMAL},
-		BusinessCommission = #{businesscommission,jdbcType=DECIMAL},
-		SettleMoney = #{settlemoney,jdbcType=NUMERIC},
-		DealCount = #{dealcount,jdbcType=INTEGER},
-		PickupCode = #{pickupcode,jdbcType=VARCHAR},
-		OtherCancelReason = #{othercancelreason,jdbcType=NVARCHAR},
-		CommissionType = #{commissiontype,jdbcType=INTEGER},
-		CommissionFixValue = #{commissionfixvalue,jdbcType=DECIMAL},
-		BusinessGroupId = #{businessgroupid,jdbcType=INTEGER},
-		TimeSpan = #{timespan,jdbcType=NVARCHAR},
-		Invoice = #{invoice,jdbcType=NVARCHAR},
-		BusinessReceivable = #{businessreceivable,jdbcType=DECIMAL},
-		MealsSettleMode = #{mealssettlemode,jdbcType=INTEGER},
-		FinishDateLength = #{finishdatelength,jdbcType=INTEGER},
-		FinishAll = #{finishall,jdbcType=INTEGER},
-		RealOrderCommission = #{realordercommission,jdbcType=NUMERIC},
-		groupbusinessid = #{groupbusinessid,jdbcType=NUMERIC},
-		basecommission=#{basecommission,jdbcType=NUMERIC} 
-		where Id = #{id,jdbcType=INTEGER}
-	</update>
+
 
 	<!-- 后台订单列表页面 查询列集合 add by caoheyang 20150728 -->
 	<sql id="GetOrdersColums">

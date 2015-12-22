@@ -35,9 +35,9 @@ public class OrderDraftReq {
 
     private String takecode;
 
-    private Double takelongitude;
+    private Double currentlongitude;
 
-    private Double takelatitude;
+    private Double currentlatitude;
 
     private String recevicename;
 
@@ -188,22 +188,6 @@ public class OrderDraftReq {
         this.takecode = takecode == null ? null : takecode.trim();
     }
 
-    public Double getTakelongitude() {
-        return takelongitude;
-    }
-
-    public void setTakelongitude(Double takelongitude) {
-        this.takelongitude = takelongitude;
-    }
-
-    public Double getTakelatitude() {
-        return takelatitude;
-    }
-
-    public void setTakelatitude(Double takelatitude) {
-        this.takelatitude = takelatitude;
-    }
-
     public String getRecevicename() {
         return recevicename;
     }
@@ -347,4 +331,20 @@ public class OrderDraftReq {
     public void setKm(Double km) {
         this.km = km;
     }
+
+	public Double getCurrentlongitude() {
+		return currentlongitude;
+	}
+
+	public void setCurrentlongitude(Double currentlongitude) {
+		this.currentlongitude = currentlongitude;
+	}
+
+	public Double getCurrentlatitude() {
+		return currentlatitude;
+	}
+
+	public void setCurrentlatitude(Double currentlatitude) {
+		this.currentlatitude = currentlatitude;
+	}
 }

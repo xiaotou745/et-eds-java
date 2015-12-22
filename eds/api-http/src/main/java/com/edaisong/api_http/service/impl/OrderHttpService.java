@@ -179,7 +179,6 @@ public class OrderHttpService implements IOrderHttpService {
 	@Override
 	public HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req)
 	{
-		HttpResultModel<OrderDetailResp> resp=new HttpResultModel<OrderDetailResp>();
 		return orderService.GetOrderDetails(req);
 	}
 
