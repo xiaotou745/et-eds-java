@@ -42,7 +42,7 @@ public class QueryOrder {
 	private int groupId;
 	private int needPickupCode; //无实际意义 与app同步 不能删
 	private int hadUploadCount;
-	private int orderCommission;
+	private double orderCommission;
 	private String distance="--"; 
 	private Double distance_OrderBy=9999999.0; 
 	private double km;
@@ -534,7 +534,7 @@ public class QueryOrder {
 	 * 
 	 * @return
 	 */
-	public int getOrderCommission() {
+	public double getOrderCommission() {
 		return orderCommission;
 	}
 
@@ -543,7 +543,7 @@ public class QueryOrder {
 	 * 
 	 * @param orderCommission
 	 */
-	public void setOrderCommission(int orderCommission) {
+	public void setOrderCommission(double orderCommission) {
 		this.orderCommission = orderCommission;
 	}
    /**
