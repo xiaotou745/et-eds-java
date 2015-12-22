@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.lang.Double;
 import java.util.Date;
 
+import com.edaisong.core.util.PropertyUtils;
+
 public class OrderChild implements Serializable {
     private Long id;
 
@@ -261,9 +263,10 @@ public class OrderChild implements Serializable {
     public void setHasuploadticket(Boolean hasuploadticket) {
         this.hasuploadticket = hasuploadticket;
     }
-
+    //订单详情小票地址
     public String getTicketurl() {
-        return ticketurl;
+    	 String defaultPic = PropertyUtils.getProperty("ImageServicePath");  //小票的地址
+        return this.ticketurl==null?"":defaultPic.substring(0, defaultPic.length()-1)+this.ticketurl;
     }
 
     public void setTicketurl(String ticketurl) {
