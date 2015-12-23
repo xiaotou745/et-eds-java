@@ -975,12 +975,12 @@ public class OrderService implements IOrderService {
 		HttpResultModel<OrderStatisticsBResp> resultModel = new HttpResultModel<OrderStatisticsBResp>();
 
 		// 注释掉对用户状态的判断
-		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId())
+/*		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId())
 				.getStatus() != BusinessStatusEnum.AuditPass.value()) {
 			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
 			resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
-		}
+		}*/
 
 		OrderStatisticsBResp orderStatisticsResp = orderDao
 				.getOrderStatistics(orderStatisticsBReq);// 当月数据总览统计
@@ -2345,6 +2345,23 @@ public class OrderService implements IOrderService {
 				return resp;			
 			}
 			
+			Order order=new Order();
+			order.setIspay(true);
+			order.setStatus((byte)0);
+			order.setId(req.getOrderId());
+			int oId=orderDao.updateByPrimaryKeySelective(order);
+			if(oId<0)
+				throw new TransactionalRuntimeException("更新订单状态错误");
+			
+			//PayStatus
+			OrderChild orderchild=new OrderChild();
+			orderchild.setPaystatus((short)1);	
+			orderchild.setPaytype((short)0);//余额
+			orderchild.setId((long)req.getOrderChildId());
+			int ocId=orderChildDao.updateByPrimaryKeySelective(orderchild);
+			if(oId<0)
+				throw new TransactionalRuntimeException("更新子订单状态错误");
+			
 			// 扣除商家结算费
 			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 			balanceRecord.setBusinessid(oModel.getBusinessid());			
@@ -2540,6 +2557,9 @@ public class OrderService implements IOrderService {
 		odResp.setLandline(businessModel.getLandline());  
 		odResp.setCity(businessModel.getCity());
 		odResp.setBalancePrice(businessModel.getBalanceprice());
+		odResp.setLatitude(businessModel.getLatitude());
+		odResp.setLongitude(businessModel.getLongitude());
+		
 		
 		odResp.setIsmodifyticket(true);
         if (ooModel.getHaduploadcount() >=  oModel.getOrdercount() && oModel.getStatus().byteValue() == OrderStatus.Complite.value())
