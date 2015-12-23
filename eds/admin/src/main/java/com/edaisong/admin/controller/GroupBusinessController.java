@@ -20,6 +20,8 @@ import com.edaisong.entity.GroupBusinessRecharge;
 import com.edaisong.entity.domain.GroupBusinessModel;
 import com.edaisong.entity.req.PagedGroupBusinessReq;
 import com.edaisong.admin.common.UserContext;
+import com.edaisong.api.service.impl.BusinessService;
+import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IGroupBusinessBindOptionLogService;
 import com.edaisong.api.service.inter.IGroupBusinessLogService;
 import com.edaisong.api.service.inter.IGroupBusinessRelationService;
@@ -65,6 +67,8 @@ public class GroupBusinessController {
 	 private IGroupBusinessService  groupBusinessService;
 	@Autowired
 	private IGroupBusinessLogService  groupBusinessLogService;
+	@Autowired
+	private IBusinessService businessService;
 	
 	/*
 	 * 集团商户管理
@@ -319,7 +323,12 @@ public class GroupBusinessController {
 		response.setMessage("绑定失败");
 		return response;
 	}
-	
+	/**
+	 * 集团商户添加绑定
+	 * @param req
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("addbusinessbind")
 	@ResponseBody
 	public ResponseBase addBusinessBind(BusinessBindOptionReq req, HttpServletRequest request) {
@@ -328,9 +337,16 @@ public class GroupBusinessController {
 		req.setOptType((short)BindOptType.Bind.value());
 		req.setOptName(UserContext.getCurrentContext(request).getLoginName());
 		req.setRemark("添加绑定");
-		if (groupBusinessRelationService.checkHaveBind(req)) {
+		BusinessDetailModel model= businessService.getBusinessDetailByID(req.getBusinessId());
+		if (groupBusinessRelationService.checkHaveBind(req)) {//判断绑定关系是否存在
 			response.setMessage("此条绑定关系已存在！");
-		}else{
+		}
+		else if(model.getStatus()!=Byte.valueOf((byte)1))//判断商户是否通过审核
+		{
+			response.setMessage("商家未审核通过！");
+		}
+		else{
+			//添加绑定
 			if (groupBusinessRelationService.addBusinessBind(req)) {
 				response.setMessage("绑定成功");
 				response.setResponseCode(1);
