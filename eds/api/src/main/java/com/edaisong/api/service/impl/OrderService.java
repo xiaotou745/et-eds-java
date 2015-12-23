@@ -2540,6 +2540,9 @@ public class OrderService implements IOrderService {
 		odResp.setLandline(businessModel.getLandline());  
 		odResp.setCity(businessModel.getCity());
 		odResp.setBalancePrice(businessModel.getBalanceprice());
+		odResp.setLatitude(businessModel.getLatitude());
+		odResp.setLongitude(businessModel.getLongitude());
+		
 		
 		odResp.setIsmodifyticket(true);
         if (ooModel.getHaduploadcount() >=  oModel.getOrdercount() && oModel.getStatus().byteValue() == OrderStatus.Complite.value())
