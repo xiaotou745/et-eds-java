@@ -2544,11 +2544,18 @@ public class OrderService implements IOrderService {
 			a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(oModel.getPickuplongitude(),0),ParseHelper.ToDouble(oModel.getPickuplatitude(),0));
 		}else {//骑士到商户的距离
 			a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(businessModel.getLongitude(),0),ParseHelper.ToDouble(businessModel.getLatitude(),0));
-		}
-		odResp.setPubtocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(a/1000),0));
-		//取货之后，骑士到客户的距离
+		}	
+		 BigDecimal bg = new BigDecimal(a/1000);
+		 double f1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	     a = a < 1000 ? a  : f1;  
+	     odResp.setPubtocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(a),0));
+		//取货之后，骑士到客户的距离	     
 		double b = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(oModel.getRecevicelongitude(),0),ParseHelper.ToDouble(oModel.getRecevicelatitude(),0));
-		odResp.setRecevicetocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(b/1000),0));	
+	     BigDecimal bg2 = new BigDecimal(b/1000);
+		 double f2 = bg2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	     b = b < 1000 ? b  : f2;  	     
+    
+		odResp.setRecevicetocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(b),0));	
 		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());
 		odResp.setName(businessModel.getName());
 		odResp.setPhoneno(businessModel.getPhoneno());
