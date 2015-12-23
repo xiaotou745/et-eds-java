@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.edaisong.api.common.LogServiceBLL;
@@ -30,6 +31,7 @@ import com.edaisong.entity.taobao.TaoBaoResponseBase;
 
 public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 
+	private static Logger taobaoopenapiLogger = Logger.getLogger("taobaoopenapiLogger");
 	public RqeustInterceptor(String phase) {
 		super(phase);
 	}
@@ -127,6 +129,7 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			logEngity.setRequestEndTime(ParseHelper.ToDateString(endDate, ""));
 			ActiveMqLogUtil.writeLog(logEngity);
 			} catch (Exception e) {
+				taobaoopenapiLogger.info("handleMessage异常:"+e.getMessage()+StringUtils.getStackTrace(e));
 				e.printStackTrace();
 			}
 	}
