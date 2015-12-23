@@ -2806,7 +2806,7 @@ public class OrderService implements IOrderService {
 		order.setCommissionfixvalue(businessModel.getCommissionfixvalue());
 		order.setMealssettlemode(businessModel.getMealssettlemode()); // 餐费结算方式（0：线下结算
 																		// 1：线上结算）
-		order.setDistribsubsidy(businessModel.getDistribsubsidy());
+		order.setDistribsubsidy(0.0);
 		OrderCommission orderCommission = new OrderCommission();
 		orderCommission.setAmount(req.getAmount());
 		orderCommission.setBusinessCommission(businessModel
@@ -2939,11 +2939,11 @@ public class OrderService implements IOrderService {
 //				resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 //				return resultModel;
 //			}
-			if(b.getIsEnable() != 1 ){
+	/*		if(b.getIsEnable() != 1 ){
 				resultModel.setStatus(QueryOrderReturnEnum.BusinessIsNotEnable.value());
 				resultModel.setMessage(QueryOrderReturnEnum.BusinessIsNotEnable.desc());
 				return resultModel;
-			}
+			}*/
 		}else{
 			resultModel.setStatus(QueryOrderReturnEnum.BusinessNotExist.value());
 			resultModel.setMessage(QueryOrderReturnEnum.BusinessNotExist.desc());
