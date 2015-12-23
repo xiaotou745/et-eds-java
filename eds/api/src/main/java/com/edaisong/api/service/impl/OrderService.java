@@ -2120,6 +2120,13 @@ public class OrderService implements IOrderService {
 				businessModel = businessDao.getBusiness((long) bModel.getId());
 			}		
 		}		
+		
+		if(businessModel.getIsenable().equals(0))
+		{
+			resp.setStatus(FlashPushOrderEnum.BusinessIsEnableErr.value());
+			resp.setMessage(FlashPushOrderEnum.BusinessIsEnableErr.desc());
+			return resp;	
+		}
 
 		// 订单主表		
 		Order order = fillFlashPushOrder(req, businessModel);	
