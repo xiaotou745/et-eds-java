@@ -58,7 +58,7 @@ public class Main {
 		logEngity.setRequestTime("2015-12-14");
 		logEngity.setRequestEndTime("2015-12-15");
 		String jsonMsg = JsonUtil.obj2string(logEngity);
-		service.asynSendMessage(jsonMsg);
+		service.asynSendMessage("test",jsonMsg);
 	}
 
 	private static void writePID() throws IOException {

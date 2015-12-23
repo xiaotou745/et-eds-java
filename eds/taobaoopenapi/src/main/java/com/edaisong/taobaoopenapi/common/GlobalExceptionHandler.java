@@ -1,20 +1,12 @@
 package com.edaisong.taobaoopenapi.common;
-
-
 import org.springframework.stereotype.Component;
-
-
-import com.edaisong.api.common.TransactionalRuntimeException;
-
-import com.edaisong.core.enums.returnenums.HttpReturnRnums;
-
 import com.edaisong.core.util.StringUtils;
-
-import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.taobao.TaoBaoResponseBase;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.ext.ExceptionMapper;
+
 import java.util.Locale;
 
 /**
@@ -26,16 +18,11 @@ import java.util.Locale;
 public class GlobalExceptionHandler implements ExceptionMapper {
 	@Override
     public Response toResponse(Throwable ex) {
-    	HttpResultModel<String> rep=new HttpResultModel<String>();
-    	if (ex instanceof TransactionalRuntimeException) {
-	        rep.setStatus(HttpReturnRnums.ParaError.value());
-	        rep.setMessage(HttpReturnRnums.ParaError.desc());
-	        rep.setResult(ex.getMessage());
-		}else {
-	        rep.setStatus(HttpReturnRnums.SystemError.value());
-	        rep.setMessage(HttpReturnRnums.SystemError.desc());
-	        rep.setResult(StringUtils.getStackTrace(ex));
-		}
+		TaoBaoResponseBase rep=new TaoBaoResponseBase();
+		rep.setIs_success(false);
+		rep.setError_code(ex.getMessage());
+		rep.setError_msg(StringUtils.getStackTrace(ex));
+		rep.setResult(false);
         
         ResponseBuilder rb = Response.status(Response.Status.OK);
         rb.type("application/json;charset=UTF-8");

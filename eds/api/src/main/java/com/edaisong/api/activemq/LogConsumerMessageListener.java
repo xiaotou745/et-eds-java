@@ -1,6 +1,7 @@
 package com.edaisong.api.activemq;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.jms.JMSException;   
 import javax.jms.Message;   
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.edaisong.api.mongo.MongoService;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StringUtils;
@@ -32,7 +34,9 @@ public class LogConsumerMessageListener implements MessageListener {
 			String isSendMail = PropertyUtils.getProperty("IsSendMail");
 			if (isSendMail.equals("1")) {
 				String stackTrace = StringUtils.getStackTrace(e);
-				SystemUtils.sendAlertEmail("Mongo_java项目预警", e.getMessage()+"\n"+stackTrace);
+				List<String> ipinfoList = SystemUtils.getLocalIpInfo();
+				String appServerIP = JsonUtil.obj2string(ipinfoList);
+				SystemUtils.sendAlertEmail("Mongo_actionLog_java项目预警", appServerIP+e.getMessage()+"\n"+stackTrace);
 			}
         }   
     }

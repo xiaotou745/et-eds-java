@@ -20,8 +20,7 @@ Calendar a=Calendar.getInstance();
 int month=a.get(Calendar.MONTH)+1;
 
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 <script src="<%=basePath%>/js/util.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -155,15 +154,6 @@ int month=a.get(Calendar.MONTH)+1;
 </div>
 </div>
 <script>
-$(function(){
-	  $(' .input-group.date').datepicker({
-        todayBtn: "linked",
-        keyboardNavigation: false,
-        forceParse: false,
-        calendarWeeks: true,
-        autoclose: true
-    });
-});
 
 var jss={
 		search:function(currentPage){

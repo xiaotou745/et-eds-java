@@ -1,5 +1,7 @@
 package com.edaisong.api.activemq;
 
+import java.util.List;
+
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -10,9 +12,11 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.core.util.SystemUtils;
+import com.edaisong.entity.domain.ActionLog;
 
 @Service
 public class ActiveMqService {
@@ -28,11 +32,11 @@ public class ActiveMqService {
  * @date 20151023
  * @param message
  */
-	public void asynSendMessage(final String message) {
+	public void asynSendMessage(String sourceSys,final String message) {
 		Thread dThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				synSendMessage(message);
+				synSendMessage(sourceSys,message);
 			}
 		});
 		dThread.setDaemon(false);
@@ -44,7 +48,7 @@ public class ActiveMqService {
 	 * @date 20151023
 	 * @param message
 	 */
-	public void synSendMessage(final String message){
+	public void synSendMessage(String sourceSys,final String message){
 		try {
 			jmsTemplate.send(queueDestination, new MessageCreator() {
 				public Message createMessage(Session session) throws JMSException {
@@ -54,11 +58,10 @@ public class ActiveMqService {
 		} catch (Exception e) {
 			//e.printStackTrace();
             System.out.println("ActiveMq发送日志消息时出错：" + e.getMessage());   
-			String isSendMail = PropertyUtils.getProperty("IsSendMail");
-			if (isSendMail.equals("1")) {
-				String stackTrace = StringUtils.getStackTrace(e);
-				SystemUtils.sendAlertEmail("ActiveMq_java项目预警", e.getMessage()+"\n"+stackTrace);
-			}
+			String stackTrace = StringUtils.getStackTrace(e);
+			List<String> ipinfoList = SystemUtils.getLocalIpInfo();
+			String appServerIP = JsonUtil.obj2string(ipinfoList);
+			SystemUtils.sendAlertEmail("ActiveMq_"+sourceSys+"java项目预警", appServerIP+e.getMessage()+"\n"+stackTrace);
 		}
 	}
 	/**
@@ -93,11 +96,10 @@ public class ActiveMqService {
 			} catch (Exception e) {
 				//e.printStackTrace();
 	            System.out.println("ActiveMq发送service日志消息时出错：" + e.getMessage());   
-				String isSendMail = PropertyUtils.getProperty("IsSendMail");
-				if (isSendMail.equals("1")) {
-					String stackTrace = StringUtils.getStackTrace(e);
-					SystemUtils.sendAlertEmail("ActiveMq_service_java项目预警", e.getMessage()+"\n"+stackTrace);
-				}
+				String stackTrace = StringUtils.getStackTrace(e);
+				List<String> ipinfoList = SystemUtils.getLocalIpInfo();
+				String appServerIP = JsonUtil.obj2string(ipinfoList);
+				SystemUtils.sendAlertEmail("ActiveMq_synSendServiceLogMessage_java项目预警", appServerIP+e.getMessage()+"\n"+stackTrace);
 			}
 		}
 }

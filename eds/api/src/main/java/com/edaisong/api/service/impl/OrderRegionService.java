@@ -86,7 +86,6 @@ public class OrderRegionService implements IOrderRegionService {
 						.collect(Collectors.toList());
 				if (childList.size() > 0) {
 					orderRegionDao.updateAllHasChild();
-					SystemUtils.sendAlertEmail("business_java项目预警", orderRegionReq.getBusinessId()+"商家区域数据haschild异常");
 					return orderRegionDao.getOrderRegion(orderRegionReq);
 				}
 			}

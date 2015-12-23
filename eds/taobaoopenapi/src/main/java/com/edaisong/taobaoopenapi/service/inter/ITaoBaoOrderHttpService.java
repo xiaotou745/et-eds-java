@@ -37,7 +37,7 @@ public interface ITaoBaoOrderHttpService {
 	 */
 	@POST
 	@Path("/ask")
-	public TaoBaoResponseBase ask(TaoBaoAsk r);
+	public TaoBaoResponseBase ask(TaoBaoAsk r)  throws Exception;
 
 	/**
 	 * 更新配送员信息接口（API）
@@ -47,7 +47,7 @@ public interface ITaoBaoOrderHttpService {
 	 */
 	@POST
 	@Path("/update")
-	public TaoBaoResponseBase update(TaoBaoUpdate r);
+	public TaoBaoResponseBase update(TaoBaoUpdate r)  throws Exception;
 
 	/**
 	 * 取件（API）
@@ -57,7 +57,7 @@ public interface ITaoBaoOrderHttpService {
 	 */
 	@POST
 	@Path("/pickup")
-	public TaoBaoResponseBase pickUp(TaoBaoPickUp  r);
+	public TaoBaoResponseBase pickUp(TaoBaoPickUp  r)  throws Exception;
 
 	/**
 	 * 妥投（API）
@@ -67,7 +67,7 @@ public interface ITaoBaoOrderHttpService {
 	 */
 	@POST
 	@Path("/confirm")
-	public TaoBaoResponseBase confirm(TaoBaoConfirm r );
+	public TaoBaoResponseBase confirm(TaoBaoConfirm r )  throws Exception;
 
 	/**
 	 * 更新配送员位置信息（API）
@@ -77,6 +77,6 @@ public interface ITaoBaoOrderHttpService {
 	 */
 	@POST
 	@Path("/locationupdate")
-	public TaoBaoResponseBase locationUpdate(TaoBaoLocationUpdate  r);
+	public TaoBaoResponseBase locationUpdate(TaoBaoLocationUpdate  r)  throws Exception;
 	
 }

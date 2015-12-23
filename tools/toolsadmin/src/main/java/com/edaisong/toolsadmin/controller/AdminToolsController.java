@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -459,19 +461,27 @@ public class AdminToolsController {
     private List<ActionLog> queryAll(MongoLogReq req) throws Exception{
 		List<ActionLog> result=Collections.synchronizedList(new ArrayList<>());
 		LinkedHashMap<String, String> timeHashMap= splitTimeRange(req.getBegin(),req.getEnd());
+		Calendar a=Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		int currentDay=a.get(Calendar.YEAR)+a.get(Calendar.MONTH)+1;
+		int lastDay=2015+9;
 		timeHashMap.entrySet().parallelStream().forEach(t->{
 			try {
-				BasicDBObject tempReq=getQueryObj(req);
-				if (!t.getKey().endsWith("00:00:00")) {
-					tempReq.put("requestTime", new BasicDBObject("$gte", t.getKey()));//>=
+				a.setTime(sdf.parse(t.getValue()));
+				int tempDay=a.get(Calendar.YEAR)+a.get(Calendar.MONTH)+1;
+				if(lastDay<=tempDay&&tempDay<=currentDay){
+					BasicDBObject tempReq=getQueryObj(req);
+					if (!t.getKey().endsWith("00:00:00")) {
+						tempReq.put("requestTime", new BasicDBObject("$gte", t.getKey()));//>=
+					}
+					if (!t.getValue().endsWith("00:00:00")) {
+						tempReq.put("requestTime", new BasicDBObject("$lte", t.getValue()));//<=
+					}
+					String mongoName=getTableName(t.getKey());
+					System.out.println("表名称:"+mongoName);
+					List<ActionLog> partialResult= mongoService.selectResult(mongoName,tempReq);
+					result.addAll(partialResult);
 				}
-				if (!t.getValue().endsWith("00:00:00")) {
-					tempReq.put("requestTime", new BasicDBObject("$lte", t.getValue()));//<=
-				}
-				String mongoName=getTableName(t.getKey());
-				System.out.println("表名称:"+mongoName);
-				List<ActionLog> partialResult= mongoService.selectResult(mongoName,tempReq);
-				result.addAll(partialResult);
 			} catch (Exception e) {
 				System.out.println("并行查询mongo时出错:"+e.getMessage());
 				e.printStackTrace();
@@ -533,6 +543,31 @@ public class AdminToolsController {
 		 return resultMap
 				.entrySet().parallelStream()
 				.collect(Collectors.groupingBy(Entry<Date, ActionLog>::getKey));
+    }
+	/**
+	 * 日志分析
+	 * @author hailongzhao
+	 * @date 20151118
+	 * @return
+	 */
+	@RequestMapping("logchart")
+	public ModelAndView logChart(){
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "APP控制");
+		view.addObject("currenttitle", "日志图表分析");
+		view.addObject("viewPath", "admintools/logchart");
+		return view;
+	}
+    /**
+     * 请求时间和执行时间
+     * @return
+     * @throws Exception 
+     */
+	@RequestMapping("requestexetime")
+	@ResponseBody
+    public Map<String, Long> queryRequestExecuteTime(MongoLogReq req) throws Exception{
+		List<ActionLog> data = queryAll(req);
+		return data.parallelStream().collect(Collectors.toMap(ActionLog::getRequestTime, t->t.getExecuteTime()));
     }
     /**
      * 请求次数

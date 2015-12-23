@@ -5,11 +5,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.edaisong.entity.taobao.TaoBaoResponseBase;
-import com.taobao.api.request.WaimaiDeliveryConfirmRequest;
-import com.taobao.api.request.WaimaiDeliveryLocationUpdateRequest;
-import com.taobao.api.request.WaimaiDeliveryPickupRequest;
-import com.taobao.api.request.WaimaiDeliveryUpdateRequest;
-import com.taobao.api.request.WaimaiOrderAckRequest;
 import com.taobao.top.link.LinkException;
 
 /**
@@ -28,5 +23,5 @@ public interface ITmcControlHttpService {
 	 */
 	@POST
 	@Path("/main")
-	public  void main() throws LinkException;
+	public  TaoBaoResponseBase main() throws Exception;
 }
