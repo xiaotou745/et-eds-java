@@ -14,8 +14,7 @@ public class ActiveMqHttpService implements IActiveMqHttpService{
 	@Autowired
 	LogServiceBLL logServiceBLL;
 	@Override
-	public HttpResultModel<String> sendMsg(String msg) {
-		ActionLog logEngity =JsonUtil.str2obj(msg, ActionLog.class);
+	public HttpResultModel<String> sendMsg(ActionLog logEngity) {
 		logServiceBLL.SystemActionLog(logEngity);
 		HttpResultModel<String> resultModel=new HttpResultModel<String>();
 	    return resultModel;

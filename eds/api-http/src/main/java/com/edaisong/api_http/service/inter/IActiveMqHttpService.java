@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.domain.ActionLog;
 
 
 @Path("/activemq")
@@ -14,5 +15,5 @@ import com.edaisong.entity.common.HttpResultModel;
 public interface IActiveMqHttpService {
 	@POST
 	@Path("/sendmsg")
-	public HttpResultModel<String> sendMsg(String msg);
+	public HttpResultModel<String> sendMsg(ActionLog logEngity);
 }
