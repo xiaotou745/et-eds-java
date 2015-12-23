@@ -27,6 +27,7 @@ public class QueryOrderBResp {
 	private int takingCount;
 	private int waitPayCount; //待支付数量
 	private int hadCompleteCount; //已完成数量
+	private int ssCancelOrder; //闪送模式待支付取消订单
 	
 /**
  *  待接单数量
@@ -85,5 +86,13 @@ public int getHadCompleteCount() {
 
 public void setHadCompleteCount(int hadCompleteCount) {
 	this.hadCompleteCount = hadCompleteCount;
+}
+
+public int getSsCancelOrder() {
+	return ssCancelOrder;
+}
+
+public void setSsCancelOrder(int ssCancelOrder) {
+	this.ssCancelOrder = ssCancelOrder;
 }
 }

@@ -100,16 +100,14 @@ import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.ExportShanSongOrder;
 import com.edaisong.entity.domain.InStoreOrderRegionInfo;
 import com.edaisong.entity.domain.InStoreTask;
-import com.edaisong.entity.domain.OrderCommission;
-import com.edaisong.entity.domain.OrderGrabDetailModel;
+import com.edaisong.entity.domain.OrderCommission; 
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
-import com.edaisong.entity.domain.ShanSongOrderListModel;
-import com.edaisong.entity.req.BusinessRegisterReq;
+import com.edaisong.entity.domain.ShanSongOrderListModel; 
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
@@ -119,10 +117,7 @@ import com.edaisong.entity.req.OrderBlancePayReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
-import com.edaisong.entity.req.OrderDraftReturnReq;
-import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.OrderOtherSearch;
-import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderRegionReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
@@ -137,15 +132,11 @@ import com.edaisong.entity.resp.CancelOrderBusinessResp;
 import com.edaisong.entity.resp.OrderBlancePayResp;
 import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderDetailResp;
-import com.edaisong.entity.resp.OrderPushResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
-
-import java.text.DecimalFormat;
-
 @Service
 public class OrderService implements IOrderService {
 
@@ -189,6 +180,8 @@ public class OrderService implements IOrderService {
 	
 	@Autowired
 	private IOrderTipCostDao orderTipCostDao;
+	@Autowired
+	private GlobalConfigService globalConfigService;
  
 	/**
 	 * 后台订单列表页面
@@ -2923,6 +2916,8 @@ public class OrderService implements IOrderService {
 			return resultModel;
 		}
 		QueryOrderBResp queryOrderBResp = orderDao.shanSongQueryOrderCountB(query);
+		String sscancelorderTime =globalConfigService.getConfigValueByKey(0, RedissCacheKey.SSCancelOrder);
+		queryOrderBResp.setSsCancelOrder(ParseHelper.ToInt(sscancelorderTime,24));
 		queryOrderBResp.setOrders(orderDao.shanSongQueryOrderB(query));
 		resultModel.setResult(queryOrderBResp);
 		return resultModel;

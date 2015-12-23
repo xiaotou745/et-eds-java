@@ -18,6 +18,8 @@ public class RedissCacheKey {
     public static final String Order_TimeSpan = "jOrder_TimeSpan_";//商家发单时间戳
     public static final String Menu_Auth = "Menu_Auth_";//用户有权限的菜单
     public static final String GlobalConfig_Key ="GlobalConfig_%s_0";
+    
+    public static final String SSCancelOrder = "SSCancelOrder";
   /// <summary>
     /// 商家端注册
     /// </summary>
