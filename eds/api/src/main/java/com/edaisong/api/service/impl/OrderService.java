@@ -2345,6 +2345,23 @@ public class OrderService implements IOrderService {
 				return resp;			
 			}
 			
+			Order order=new Order();
+			order.setIspay(true);
+			order.setStatus((byte)0);
+			order.setId(req.getOrderId());
+			int oId=orderDao.updateByPrimaryKeySelective(order);
+			if(oId<0)
+				throw new TransactionalRuntimeException("更新订单状态错误");
+			
+			//PayStatus
+			OrderChild orderchild=new OrderChild();
+			orderchild.setPaystatus((short)1);	
+			orderchild.setPaytype((short)0);//余额
+			orderchild.setId((long)req.getOrderChildId());
+			int ocId=orderChildDao.updateByPrimaryKeySelective(orderchild);
+			if(oId<0)
+				throw new TransactionalRuntimeException("更新子订单状态错误");
+			
 			// 扣除商家结算费
 			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 			balanceRecord.setBusinessid(oModel.getBusinessid());			
