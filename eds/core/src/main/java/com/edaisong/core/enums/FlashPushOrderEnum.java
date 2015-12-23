@@ -95,10 +95,15 @@ public enum FlashPushOrderEnum {
 	/**
 	 * 子订单Id不能为空
 	 */
-	OrderChildId(-19, "子订单Id不能为空"),	/**
+	OrderChildId(-19, "子订单Id不能为空"),	
+	/**
 	 * 支付金额大于商户余额
 	 */
-	BlanceErr(-20, "支付金额大于商户余额");	
+	BlanceErr(-20, "支付金额大于商户余额"),
+	/**
+	 * 商户已禁用
+	 */
+	BusinessIsEnableErr(-21, "商户已禁用");	
 	
 
 	private int value = 0;

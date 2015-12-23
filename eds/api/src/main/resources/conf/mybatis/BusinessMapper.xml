@@ -102,6 +102,7 @@
 		        b.isallowoverdraft ,
 		        b.isemployertask ,
 		        b.isAllowCashPay ,
+		        b.IsEnable,
 		        ISNULL(b.RecommendPhone, '') AS recommendphone ,
 		        bg.StrategyId AS StrategyId ,
 		        b.IsOrderChecked ,

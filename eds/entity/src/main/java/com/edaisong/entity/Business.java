@@ -98,6 +98,16 @@ public class Business implements Serializable{
     private String timespan;
     
     private String appkey;
+    
+    private Integer isenable; 
+
+	public Integer getIsenable() {
+		return isenable;
+	}
+
+	public void setIsenable(Integer isenable) {
+		this.isenable = isenable;
+	}
 
 	public String getAppkey() {
 		return appkey;
