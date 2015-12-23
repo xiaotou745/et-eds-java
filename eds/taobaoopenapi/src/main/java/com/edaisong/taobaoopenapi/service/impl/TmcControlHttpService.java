@@ -54,6 +54,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 			}
 		});
 		client.connect();
+		Thread.sleep(5000);
 		TaoBaoResponseBase rep=new TaoBaoResponseBase();
 		rep.setIs_success(true);
 		rep.setError_code("");
