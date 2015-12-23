@@ -29,8 +29,6 @@ import com.edaisong.entity.taobao.TaoBaoResponseBase;
 
 
 public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
-	@Autowired
-	LogServiceBLL logServiceBLL;
 
 	public RqeustInterceptor(String phase) {
 		super(phase);
@@ -127,7 +125,7 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			logEngity.setExecuteTime(endDate.getTime() - requestTime.getTime());
 			logEngity.setRequestTime(ParseHelper.ToDateString(requestTime, ""));
 			logEngity.setRequestEndTime(ParseHelper.ToDateString(endDate, ""));
-			logServiceBLL.SystemActionLog(logEngity);
+			ActiveMqLogUtil.writeLog(logEngity);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
