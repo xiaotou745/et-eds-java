@@ -975,12 +975,12 @@ public class OrderService implements IOrderService {
 		HttpResultModel<OrderStatisticsBResp> resultModel = new HttpResultModel<OrderStatisticsBResp>();
 
 		// 注释掉对用户状态的判断
-		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId())
+/*		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId())
 				.getStatus() != BusinessStatusEnum.AuditPass.value()) {
 			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
 			resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
-		}
+		}*/
 
 		OrderStatisticsBResp orderStatisticsResp = orderDao
 				.getOrderStatistics(orderStatisticsBReq);// 当月数据总览统计
