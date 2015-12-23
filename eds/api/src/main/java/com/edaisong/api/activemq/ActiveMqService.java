@@ -61,7 +61,7 @@ public class ActiveMqService {
 			String stackTrace = StringUtils.getStackTrace(e);
 			List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 			String appServerIP = JsonUtil.obj2string(ipinfoList);
-			SystemUtils.sendAlertEmail("ActiveMq_"+sourceSys+"java项目预警", appServerIP+e.getMessage()+"\n"+stackTrace);
+			SystemUtils.sendAlertEmail("ActiveMq_"+sourceSys+"_java项目预警", appServerIP+e.getMessage()+"\n"+stackTrace);
 		}
 	}
 	/**
