@@ -22,13 +22,15 @@ public class ActiveMqLogUtil {
 		String logStackTrace = "";
 		try {
 			String logParam = AES.aesEncrypt(JsonUtil.obj2string(logEngity));
-			logResultJson = HttpUtil.sendPost(PropertyUtils.getProperty("ActiveMqAddress"), "data="+ logParam);
-//			if (logResultJson != null && !logResultJson.isEmpty()) {
-//				HttpResultModel<Object> obj = JsonUtil.str2obj(logResultJson,HttpResultModel.class);
-//				if (obj != null&& obj.getStatus() != HttpReturnRnums.Success.value()) {
-//					needSendMail = true;
-//				}
-//			}
+			logResultJson = HttpUtil.sendPost(PropertyUtils.getProperty("ActiveMqAddress"), 
+											"{\"data\":\""+ logParam+"\"}",
+											"application/json; charset=utf-8");
+			if (logResultJson != null && !logResultJson.isEmpty()) {
+				HttpResultModel<Object> obj = JsonUtil.str2obj(logResultJson,HttpResultModel.class);
+				if (obj != null&& obj.getStatus() != HttpReturnRnums.Success.value()) {
+					needSendMail = true;
+				}
+			}
 		} catch (Exception e) {
 			needSendMail = true;
 			logMsg = e.getMessage();
