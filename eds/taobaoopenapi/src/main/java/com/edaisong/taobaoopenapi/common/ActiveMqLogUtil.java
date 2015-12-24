@@ -41,7 +41,7 @@ public class ActiveMqLogUtil {
 			if (isSendMail.equals("1")) {
 				List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 				String appServerIP = JsonUtil.obj2string(ipinfoList);
-				SystemUtils.sendAlertEmail("taobaoopenapi_writeLog_java项目预警",appServerIP + logMsg + logStackTrace);
+				SystemUtils.sendAlertEmail("taobaoopenapi_writeLog_java项目预警","appServerIP:"+appServerIP+"\n" + logMsg +"\n"+ logStackTrace);
 			}
 		}
 	}

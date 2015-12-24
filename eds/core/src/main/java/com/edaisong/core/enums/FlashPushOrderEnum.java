@@ -103,7 +103,7 @@ public enum FlashPushOrderEnum {
 	/**
 	 * 商户已禁用
 	 */
-	BusinessIsEnableErr(-21, "商户已禁用");	
+	BusinessIsEnableErr(-21, "账户已禁用");	
 	
 
 	private int value = 0;
