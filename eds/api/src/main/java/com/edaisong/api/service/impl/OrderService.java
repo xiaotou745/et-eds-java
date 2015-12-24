@@ -2097,11 +2097,8 @@ public class OrderService implements IOrderService {
 				resp.setMessage(FlashPushOrderEnum.VerificationCodeErr.desc());
 				return resp;
 			}
-			boolean hasPhoneNo=req.getBusinessphoneno()!=null&&!req.getBusinessphoneno().isEmpty();
-			if(hasPhoneNo){
-				businessModel = businessDao.getBusinessByPhoneNo(req.getBusinessphoneno());
-			}
-			if(!hasPhoneNo||businessModel==null){
+			businessModel = businessDao.getBusinessByPhoneNo(req.getBusinessphoneno());
+			if(businessModel==null){
 				//创建
 				Business bModel=new Business();
 				bModel.setName("");//姓名
