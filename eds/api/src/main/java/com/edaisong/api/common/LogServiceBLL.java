@@ -40,7 +40,7 @@ public class LogServiceBLL {
 				if (isSendMail.equals("1")) {
 					String alertBody = getAlertBody(logEngity);
 					if (alertBody != null && !alertBody.isEmpty()) {
-						SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_SystemActionLog_java项目预警", alertBody);
+						SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_java项目预警", alertBody);
 					}
 				}
 			}
@@ -52,7 +52,7 @@ public class LogServiceBLL {
 			if (isSendMail.equals("1")) {
 				List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 				String appServerIP = JsonUtil.obj2string(ipinfoList);
-				SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_SystemActionLog_java项目预警", appServerIP+e.getMessage()+StringUtils.getStackTrace(e));
+				SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_SystemActionLog_java项目预警", "appServerIP:"+appServerIP+"\n"+e.getMessage()+StringUtils.getStackTrace(e));
 			}
 		}
 	}
@@ -69,7 +69,7 @@ public class LogServiceBLL {
 				if (isSendMail.equals("1")) {
 					String alertBody = getAlertBody(logEngity);
 					if (alertBody != null && !alertBody.isEmpty()) {
-						SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_ServiceActionLog_java项目预警", alertBody);
+						SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_java项目预警", alertBody);
 					}
 				}
 			}
@@ -81,7 +81,7 @@ public class LogServiceBLL {
 			if (isSendMail.equals("1")) {
 				List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 				String appServerIP = JsonUtil.obj2string(ipinfoList);
-				SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_ServiceActionLog_java项目预警", appServerIP+e.getMessage()+StringUtils.getStackTrace(e));
+				SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_ServiceActionLog_java项目预警", "appServerIP:"+appServerIP+"\n"+e.getMessage()+StringUtils.getStackTrace(e));
 			}
 		}
 	}
