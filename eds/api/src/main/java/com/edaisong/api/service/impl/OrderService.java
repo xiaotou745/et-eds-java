@@ -2099,10 +2099,9 @@ public class OrderService implements IOrderService {
 				return resp;
 			}
 			
-			int selectBId=businessDao.getId(req.getBusinessphoneno());
-			if(selectBId>0)
+			if(req.getBusinessphoneno()!=null&&!req.getBusinessphoneno().isEmpty())
 			{
-				businessModel = businessDao.getBusiness((long) selectBId);
+				businessModel = businessDao.getBusinessByPhoneNo(req.getBusinessphoneno());
 			}
 			else
 			{

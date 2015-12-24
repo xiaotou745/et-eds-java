@@ -1,8 +1,10 @@
 package com.edaisong.toolsadmin.controller;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -42,11 +44,14 @@ import com.edaisong.toolsentity.domain.ActionLog;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
 import com.edaisong.toolsentity.domain.MenuDetail;
 import com.edaisong.toolsentity.domain.MenuEntity;
+import com.edaisong.toolsentity.domain.PairEntry;
 import com.edaisong.toolsentity.domain.SelectAppModel;
 import com.edaisong.toolsentity.req.MongoLogReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 import com.edaisong.toolsentity.req.PagedMongoLogReq;
 import com.mongodb.BasicDBObject;
+
+import freemarker.core.ReturnInstruction.Return;
 
 /**
  * 控制其他app
@@ -526,8 +531,8 @@ public class AdminToolsController {
      * @date 20151222
      * @param minStep
      */
-    private Map<Date, List<Entry<Date, ActionLog>>> groupByStep(Date begin,Date end,List<ActionLog> data,int minStep){
-    	 Map<Date,ActionLog> resultMap = Collections.synchronizedMap(new HashMap<Date,ActionLog>()); 
+    private Map<Date, List<PairEntry<Date, ActionLog>>> groupByStep(Date begin,Date end,List<ActionLog> data,int minStep){
+    	 List<PairEntry<Date, ActionLog>> resultMap = Collections.synchronizedList(new ArrayList<PairEntry<Date, ActionLog>>()); 
  		LinkedHashMap<Date, Date> timeHashMap= splitStep(begin,end,minStep);
  		
  		//并行将在日期段内的ActionLog放入resultMap
@@ -535,14 +540,13 @@ public class AdminToolsController {
  			timeHashMap.keySet().parallelStream().forEach(m->{
  				Date mb=ParseHelper.ToDate(t.getRequestTime());
  				if (mb.compareTo(m)>=0&&mb.compareTo(timeHashMap.get(m))<=0) {
- 					resultMap.put(timeHashMap.get(m), t);
+ 					resultMap.add(new PairEntry<>(timeHashMap.get(m), t));
 				}
  			});
     	});
  		//按照日期段的结束日期分组
-		 return resultMap
-				.entrySet().parallelStream()
-				.collect(Collectors.groupingBy(Entry<Date, ActionLog>::getKey));
+		 return resultMap.parallelStream()
+				.collect(Collectors.groupingBy(PairEntry<Date, ActionLog>::getKey));
     }
 	/**
 	 * 日志分析
@@ -578,13 +582,13 @@ public class AdminToolsController {
 	@ResponseBody
     public Map<Date, Integer> queryRequestNum(MongoLogReq req) throws Exception{
 		List<ActionLog> data = queryAll(req);
-		Map<Date, List<Entry<Date, ActionLog>>> groupData = groupByStep(req.getBegin(), req.getEnd(), data, req.getMinStep());
+		Map<Date, List<PairEntry<Date, ActionLog>>> groupData = groupByStep(req.getBegin(), req.getEnd(), data, req.getMinStep());
 		return groupData
 				.entrySet()
 				.parallelStream()
 				.collect(
 						Collectors
-								.toMap(Entry<Date, List<Entry<Date, ActionLog>>>::getKey,
+								.toMap(Entry<Date, List<PairEntry<Date, ActionLog>>>::getKey,
 										m -> m.getValue().size()));
     }
     /**
@@ -597,16 +601,16 @@ public class AdminToolsController {
      */
 	@RequestMapping("averagetime")
 	@ResponseBody
-    public Map<Date, Double> queryAverageTime(MongoLogReq req) throws Exception{
+    public Map<Date, Integer> queryAverageTime(MongoLogReq req) throws Exception{
     	List<ActionLog> data=queryAll(req);
-    	Map<Date, List<Entry<Date, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());
+    	Map<Date, List<PairEntry<Date, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());
 		return groupData
 				.entrySet()
 				.parallelStream()
 				.collect(
 						Collectors
-								.toMap(Entry<Date, List<Entry<Date, ActionLog>>>::getKey,
-										m -> m.getValue()
+								.toMap(Entry<Date, List<PairEntry<Date, ActionLog>>>::getKey,
+										m -> (int)m.getValue()
 												.stream()
 												.mapToLong(x -> x.getValue().getExecuteTime())
 												.summaryStatistics()
@@ -622,24 +626,25 @@ public class AdminToolsController {
      */
 	@RequestMapping("errorrate")
 	@ResponseBody
-    public Map<Date, Double> queryErrorRate(MongoLogReq req) throws Exception{
+    public List<PairEntry<Long, Double>> queryErrorRate(MongoLogReq req) throws Exception{
     	List<ActionLog> data=queryAll(req);
-    	Map<Date, List<Entry<Date, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());    		
-		return groupData
+    	Map<Date, List<PairEntry<Date, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());    		
+    	Comparator<PairEntry<Long, Double>> c = (a, b) -> {return (a.getKey() - b.getKey())>0?1:0;};
+    	List<PairEntry<Long, Double>> mEntries= groupData
 				.entrySet()
 				.parallelStream()
-				.collect(
-						Collectors
-								.toMap(Entry<Date, List<Entry<Date, ActionLog>>>::getKey,
-										m -> {
-											long errNum = m
-													.getValue()
-													.stream()
-													.filter(k -> k.getValue().getStackTrace() != null
-															&& !k.getValue().getStackTrace().isEmpty())
-													.count();
-											return errNum * 100.00d / m.getValue().size();
-										}));
+				.map(t -> {
+					long errNum = t
+							.getValue()
+							.stream()
+							.filter(k -> k.getValue().getStackTrace() != null
+									&& !k.getValue().getStackTrace().isEmpty())
+							.count();
+					Double rate = errNum * 100.00d / t.getValue().size();
+					return new PairEntry<Long, Double>(t.getKey().getTime(),rate);
+				}).collect(Collectors.toList());
+    	mEntries.sort(c);
+    	return mEntries;
     }
     /**
 	 * 把日期范围按月拆成日期段

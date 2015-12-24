@@ -168,7 +168,7 @@ public interface IBusinessDao {
 		   */
 		  boolean isExist(String phone);
 		  
-		  int getId(String phone);
+		  BusinessModel getBusinessByPhoneNo(String phone);
 			/**
 			 * 门店修改绑定手机号
 			 * @author CaoHeYang
