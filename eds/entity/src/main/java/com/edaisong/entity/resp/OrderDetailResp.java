@@ -909,25 +909,25 @@ public class OrderDetailResp extends ResponseBase{
 	    private Date cancelTime;
 	    
 	    private Integer isAllowCashPay; 
-	    public Double getPubtocurrentdistance() {
+	    public String getPubtocurrentdistance() {
 			return pubtocurrentdistance;
 		}
 
-		public void setPubtocurrentdistance(Double pubtocurrentdistance) {
+		public void setPubtocurrentdistance(String pubtocurrentdistance) {
 			this.pubtocurrentdistance = pubtocurrentdistance;
 		}
 
-		public Double getRecevicetocurrentdistance() {
+		public String getRecevicetocurrentdistance() {
 			return recevicetocurrentdistance;
 		}
 
-		public void setRecevicetocurrentdistance(Double recevicetocurrentdistance) {
+		public void setRecevicetocurrentdistance(String recevicetocurrentdistance) {
 			this.recevicetocurrentdistance = recevicetocurrentdistance;
 		}
 
-		private Double pubtocurrentdistance;
+		private String pubtocurrentdistance;
 	    
-	    private Double recevicetocurrentdistance;
+	    private String recevicetocurrentdistance;
 	    
 	    public Double getLongitude() {
 			return longitude;
