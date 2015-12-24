@@ -14,6 +14,25 @@ import com.edaisong.entity.OrderChild;;
  * @Date 2015年11月27日 11:44:38
  */
 public class OrderDetailResp extends ResponseBase{
+    public Double getPickuplongitude() {
+		return pickuplongitude;
+	}
+
+	public void setPickuplongitude(Double pickuplongitude) {
+		this.pickuplongitude = pickuplongitude;
+	}
+
+	public Double getPickuplatitude() {
+		return pickuplatitude;
+	}
+
+	public void setPickuplatitude(Double pickuplatitude) {
+		this.pickuplatitude = pickuplatitude;
+	}
+	private Double pickuplongitude;
+
+    private Double pickuplatitude;
+    
 	private String clienterName;
 	    public int getId() {
 		return id;
