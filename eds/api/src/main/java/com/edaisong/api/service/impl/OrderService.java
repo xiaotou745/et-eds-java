@@ -2092,19 +2092,16 @@ public class OrderService implements IOrderService {
 			String key = String.format(RedissCacheKey.PostRegisterInfo_B, req.getBusinessphoneno());
 			String verificationCode= netRedisService.get(key, String.class);
 			
-			if(verificationCode==null || !verificationCode.equals(req.getVerificationcode()))
-			{
+			if(verificationCode==null || !verificationCode.equals(req.getVerificationcode())){
 				resp.setStatus(FlashPushOrderEnum.VerificationCodeErr.value());
 				resp.setMessage(FlashPushOrderEnum.VerificationCodeErr.desc());
 				return resp;
 			}
-			
-			if(req.getBusinessphoneno()!=null&&!req.getBusinessphoneno().isEmpty())
-			{
+			boolean hasPhoneNo=req.getBusinessphoneno()!=null&&!req.getBusinessphoneno().isEmpty();
+			if(hasPhoneNo){
 				businessModel = businessDao.getBusinessByPhoneNo(req.getBusinessphoneno());
 			}
-			else
-			{
+			if(!hasPhoneNo||businessModel==null){
 				//创建
 				Business bModel=new Business();
 				bModel.setName("");//姓名
