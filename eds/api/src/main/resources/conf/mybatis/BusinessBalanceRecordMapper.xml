@@ -133,7 +133,7 @@
 	</update>
 	<!-- 获取交易明细的Where条件 -->
 	<sql id="getTransDetailListWhere">
-		1=1
+		bbr.[RecordType] IN (1,2,8,9,12,13) 
 		<if test="startDate != null and startDate != ''">
 			AND bbr.OperateTime >=''${startDate}''
 		</if>
@@ -173,7 +173,7 @@
 	</select>
 	<!-- 商家中心交易明细列表，右上角自定义查询，zhaohailong 20150821 -->
 	<sql id="customerGetTransDetailListWhere">
-		1=1
+		bbr.[RecordType] IN (1,2,8,9,12,13)  
 		<if test="search != null and search!='' and businessID>0">
 			and bbr.BusinessId=${businessID} and (bbr.RelationNo=''${search}''
 			or convert(varchar(20),bbr.WithwardId)=''${search}'')
@@ -205,7 +205,7 @@
 		SELECT ISNULL(SUM(bbr.amount),0) AS totalAmount
 		FROM BusinessBalanceRecord bbr ( NOLOCK )
 		INNER JOIN dbo.business b ( NOLOCK ) ON bbr.BusinessId = b.Id
-		where bbr.status=1
+		where bbr.status=1 AND bbr.[RecordType] IN (1,2,8,9,12,13) 
 		<if test="businessId != null and businessId != ''">
 			AND bbr.BusinessId='${businessId}'
 		</if>
@@ -269,7 +269,7 @@
 		FROM [BusinessBalanceRecord] bbr WITH(NOLOCK)
 		LEFT JOIN BusinessFinanceAccount bfa WITH(NOLOCK) ON
 		bbr.BusinessId=bfa.BusinessId
-		WHERE bbr.BusinessId=#{businessID,jdbcType=INTEGER}
+		WHERE bbr.BusinessId=#{businessID,jdbcType=INTEGER} AND bbr.[RecordType] IN (1,2,8,9,12,13) 
 		<if test="recordType>0">
 			AND bbr.[RecordType]=#{recordType,jdbcType=INTEGER}
 		</if>
@@ -354,7 +354,7 @@
  FROM   dbo.BusinessBalanceRecord AS bbr ( NOLOCK )
  left join dbo.[order] o (nolock) on bbr.RelationNo = o.OrderNo 
  WHERE bbr.id=#{recordId,jdbcType=INTEGER}
- 		AND bbr.BusinessId=#{businessId,jdbcType=INTEGER}
+ 		AND bbr.BusinessId=#{businessId,jdbcType=INTEGER} 	AND bbr.RecordType IN (1,2,8,9,12,13)
 	</select>
 	
 	<select id="getAccountInMoneyAndOutMoney" resultType="com.edaisong.entity.domain.AccountBillDayResultModel"
@@ -365,7 +365,7 @@ sum(case when 0>Amount then amount else 0 end) as outMoney,
 sum(case when Amount>0 then amount else 0 end) as inMoney
  FROM dbo.BusinessBalanceRecord bbr(nolock)
 where 
-BusinessId=${businessId} and RecordType!=7
+BusinessId=${businessId} AND RecordType IN (1,2,8,9,12,13) 
 AND OperateTime >'${stratDate}' 
 AND '${endDate}' > OperateTime
  group by BusinessId
