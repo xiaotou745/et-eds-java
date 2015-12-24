@@ -1099,23 +1099,14 @@ public class OrderService implements IOrderService {
 			QueryOrderReq query, int type) {
 		query.setStatus(OrderStatus.Complite.value());
 		HttpResultModel<List<QueryOrder>> res = new HttpResultModel<List<QueryOrder>>();
-//		if ((type == 0 && businessDao.getUserStatus(query.getBusinessId())
-//				.getStatus() != BusinessStatusEnum.AuditPass.value()) // B端判断B端逻辑
-//				|| (type == 1 && clienterService.getUserStatus(
-//						query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass
-//						.value())) {// C端判断C端逻辑
-//			res.setStatus(QueryOrderReturnEnum.ErrStatus.value());
-//			res.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
-//			return res;
-//		}
-		
-		if ( (type == 1 && clienterService.getUserStatus(
-				query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass
-				.value())) {// C端判断C端逻辑
-	res.setStatus(QueryOrderReturnEnum.ErrStatus.value());
-	res.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
-	return res;
-     }
+
+		// C端判断C端逻辑
+		if (type == 1 && clienterService.getUserStatus(query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass.value())
+		{
+			res.setStatus(QueryOrderReturnEnum.ErrStatus.value());
+			res.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
+			return res;
+		}
 		query.setorderBy(1);
 		res.setResult(orderDao.queryOrder(query));
 		return res;
