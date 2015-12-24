@@ -2066,6 +2066,11 @@ public class OrderService implements IOrderService {
 		if(req.getBusinessid()!=null && req.getBusinessid()>0)
 		{
 			businessModel = businessDao.getBusiness((long) req.getBusinessid());
+			if (businessModel==null) {
+				resp.setStatus(FlashPushOrderEnum.BusinessNotExits.value());
+				resp.setMessage(FlashPushOrderEnum.BusinessNotExits.desc());
+				return resp;	
+			}
 			if(businessModel.getName()==null)
 				businessModel.setName("");
 		}
@@ -2119,7 +2124,11 @@ public class OrderService implements IOrderService {
 				businessModel = businessDao.getBusiness((long) bModel.getId());
 			}		
 		}		
-		
+		if (businessModel==null) {
+			resp.setStatus(FlashPushOrderEnum.BusinessNotExits.value());
+			resp.setMessage(FlashPushOrderEnum.BusinessNotExits.desc());
+			return resp;	
+		}
 		if(businessModel.getIsenable().equals(0))
 		{
 			resp.setStatus(FlashPushOrderEnum.BusinessIsEnableErr.value());
