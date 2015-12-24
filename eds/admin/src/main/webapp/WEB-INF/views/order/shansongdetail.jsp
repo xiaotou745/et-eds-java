@@ -146,8 +146,8 @@
 	<div class="SearchMd" style="float: left">
 		<table border="0" cellspacing="0" cellpadding="0">
 			<tr>
-				<td><input type="button" value="取消订单" class="searchBtn"
-					id="btnCancel" /></td>
+<!-- 				<td><input type="button" value="取消订单" class="searchBtn" -->
+<!-- 					id="btnCancel" /></td> -->
 			</tr>
 		</table>
 	</div>
@@ -215,33 +215,21 @@
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
 		},function(){
-			$.ajax({
-				type : 'POST',
-				url :  "<%=basePath%>/order/shansongcancelorder",
-				data :  {
-				    "orderId" : orderId,
-					"optLog" : orderOptionLog,
-					"orderNo":orderNo
-				},
-				success : function(result) {
-					layer.alert(result.message, {
-					    icon: 1
-					});
-					if (result.responseCode==0) {
-						layer.alert(result.message, {
-						    icon: 1
-						},function(){
-							window.location.reload();
-						});
-
-					} else
-					{
-						layer.alert(result.message, {
-						    icon: 2
-				    	});
-					}
-				}
-			});
+		//AJAX
+		 $.ajax({
+                type: "POST",
+                url: "http://admin.edaisong.com/order/CancelOrder",
+                data: {  
+                	"orderId" : orderId,
+					"OrderOptionLog" : orderOptionLog,
+					"orderNo":orderNo },
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (json) {
+					alert(json);
+                }
+            });
+		//AJAX END 
 		});
 		return true;
 	});
