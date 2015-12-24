@@ -975,12 +975,12 @@ public class OrderService implements IOrderService {
 		HttpResultModel<OrderStatisticsBResp> resultModel = new HttpResultModel<OrderStatisticsBResp>();
 
 		// 注释掉对用户状态的判断
-		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId())
+/*		if (businessDao.getUserStatus(orderStatisticsBReq.getBusinessId())
 				.getStatus() != BusinessStatusEnum.AuditPass.value()) {
 			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
 			resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
-		}
+		}*/
 
 		OrderStatisticsBResp orderStatisticsResp = orderDao
 				.getOrderStatistics(orderStatisticsBReq);// 当月数据总览统计
@@ -1099,11 +1099,9 @@ public class OrderService implements IOrderService {
 			QueryOrderReq query, int type) {
 		query.setStatus(OrderStatus.Complite.value());
 		HttpResultModel<List<QueryOrder>> res = new HttpResultModel<List<QueryOrder>>();
-		if ((type == 0 && businessDao.getUserStatus(query.getBusinessId())
-				.getStatus() != BusinessStatusEnum.AuditPass.value()) // B端判断B端逻辑
-				|| (type == 1 && clienterService.getUserStatus(
-						query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass
-						.value())) {// C端判断C端逻辑
+		// C端判断C端逻辑
+		if ((type == 0) || (type == 1 && clienterService.getUserStatus(query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass.value())) 
+		{
 			res.setStatus(QueryOrderReturnEnum.ErrStatus.value());
 			res.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return res;
@@ -2345,6 +2343,23 @@ public class OrderService implements IOrderService {
 				return resp;			
 			}
 			
+			Order order=new Order();
+			order.setIspay(true);
+			order.setStatus((byte)0);
+			order.setId(req.getOrderId());
+			int oId=orderDao.updateByPrimaryKeySelective(order);
+			if(oId<0)
+				throw new TransactionalRuntimeException("更新订单状态错误");
+			
+			//PayStatus
+			OrderChild orderchild=new OrderChild();
+			orderchild.setPaystatus((short)1);	
+			orderchild.setPaytype((short)0);//余额
+			orderchild.setId((long)req.getOrderChildId());
+			int ocId=orderChildDao.updateByPrimaryKeySelective(orderchild);
+			if(oId<0)
+				throw new TransactionalRuntimeException("更新子订单状态错误");
+			
 			// 扣除商家结算费
 			BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 			balanceRecord.setBusinessid(oModel.getBusinessid());			
@@ -2527,11 +2542,18 @@ public class OrderService implements IOrderService {
 			a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(oModel.getPickuplongitude(),0),ParseHelper.ToDouble(oModel.getPickuplatitude(),0));
 		}else {//骑士到商户的距离
 			a = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(businessModel.getLongitude(),0),ParseHelper.ToDouble(businessModel.getLatitude(),0));
-		}
-		odResp.setPubtocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(a/1000),0));
-		//取货之后，骑士到客户的距离
+		}	
+		 BigDecimal bg = new BigDecimal(a/1000);
+		 double f1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	     a = a < 1000 ? a  : f1;  
+	     odResp.setPubtocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(a),0));
+		//取货之后，骑士到客户的距离	     
 		double b = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(oModel.getRecevicelongitude(),0),ParseHelper.ToDouble(oModel.getRecevicelatitude(),0));
-		odResp.setRecevicetocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(b/1000),0));	
+	     BigDecimal bg2 = new BigDecimal(b/1000);
+		 double f2 = bg2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	     b = b < 1000 ? b  : f2;  	     
+    
+		odResp.setRecevicetocurrentdistance(ParseHelper.ToDouble(new DecimalFormat("0.00").format(b),0));	
 		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());
 		odResp.setName(businessModel.getName());
 		odResp.setPhoneno(businessModel.getPhoneno());
@@ -2540,6 +2562,9 @@ public class OrderService implements IOrderService {
 		odResp.setLandline(businessModel.getLandline());  
 		odResp.setCity(businessModel.getCity());
 		odResp.setBalancePrice(businessModel.getBalanceprice());
+		odResp.setLatitude(businessModel.getLatitude());
+		odResp.setLongitude(businessModel.getLongitude());
+		
 		
 		odResp.setIsmodifyticket(true);
         if (ooModel.getHaduploadcount() >=  oModel.getOrdercount() && oModel.getStatus().byteValue() == OrderStatus.Complite.value())
@@ -2779,7 +2804,7 @@ public class OrderService implements IOrderService {
 		order.setCommissionfixvalue(businessModel.getCommissionfixvalue());
 		order.setMealssettlemode(businessModel.getMealssettlemode()); // 餐费结算方式（0：线下结算
 																		// 1：线上结算）
-		order.setDistribsubsidy(businessModel.getDistribsubsidy());
+		order.setDistribsubsidy(0.0);
 		OrderCommission orderCommission = new OrderCommission();
 		orderCommission.setAmount(req.getAmount());
 		orderCommission.setBusinessCommission(businessModel
@@ -2912,11 +2937,11 @@ public class OrderService implements IOrderService {
 //				resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 //				return resultModel;
 //			}
-			if(b.getIsEnable() != 1 ){
+	/*		if(b.getIsEnable() != 1 ){
 				resultModel.setStatus(QueryOrderReturnEnum.BusinessIsNotEnable.value());
 				resultModel.setMessage(QueryOrderReturnEnum.BusinessIsNotEnable.desc());
 				return resultModel;
-			}
+			}*/
 		}else{
 			resultModel.setStatus(QueryOrderReturnEnum.BusinessNotExist.value());
 			resultModel.setMessage(QueryOrderReturnEnum.BusinessNotExist.desc());
