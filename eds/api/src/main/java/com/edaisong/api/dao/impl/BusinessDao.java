@@ -263,11 +263,8 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	   * @return
 	   */
 	@Override
-	public	int getId(String phone){
-		Integer id= getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getId",phone);
-		if(id==null) return 0;
-		
-		return Integer.valueOf(id);
+	public	BusinessModel getBusinessByPhoneNo(String phone){
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessDao.getBusinessByPhoneNo",phone);
 	}
 	/**
 	 * 门店修改绑定手机号

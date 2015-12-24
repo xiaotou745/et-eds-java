@@ -2066,6 +2066,11 @@ public class OrderService implements IOrderService {
 		if(req.getBusinessid()!=null && req.getBusinessid()>0)
 		{
 			businessModel = businessDao.getBusiness((long) req.getBusinessid());
+			if (businessModel==null) {
+				resp.setStatus(FlashPushOrderEnum.BusinessNotExits.value());
+				resp.setMessage(FlashPushOrderEnum.BusinessNotExits.desc());
+				return resp;	
+			}
 			if(businessModel.getName()==null)
 				businessModel.setName("");
 		}
@@ -2094,10 +2099,9 @@ public class OrderService implements IOrderService {
 				return resp;
 			}
 			
-			int selectBId=businessDao.getId(req.getBusinessphoneno());
-			if(selectBId>0)
+			if(req.getBusinessphoneno()!=null&&!req.getBusinessphoneno().isEmpty())
 			{
-				businessModel = businessDao.getBusiness((long) selectBId);
+				businessModel = businessDao.getBusinessByPhoneNo(req.getBusinessphoneno());
 			}
 			else
 			{
@@ -2119,7 +2123,11 @@ public class OrderService implements IOrderService {
 				businessModel = businessDao.getBusiness((long) bModel.getId());
 			}		
 		}		
-		
+		if (businessModel==null) {
+			resp.setStatus(FlashPushOrderEnum.BusinessNotExits.value());
+			resp.setMessage(FlashPushOrderEnum.BusinessNotExits.desc());
+			return resp;	
+		}
 		if(businessModel.getIsenable().equals(0))
 		{
 			resp.setStatus(FlashPushOrderEnum.BusinessIsEnableErr.value());
@@ -2551,14 +2559,14 @@ public class OrderService implements IOrderService {
 		
 		 BigDecimal bg = new BigDecimal(a/1000);
 		 double f1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
-	     String strA = a < 1000 ? String.valueOf(a).concat("米"): String.valueOf(f1).concat("千米");  
+	     String strA = a < 1000 ? String.valueOf(a).concat("m"): String.valueOf(f1).concat("km");  
 	     odResp.setPubtocurrentdistance(strA);
 		//取货之后，骑士到客户的距离	     
 		 double b = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(oModel.getRecevicelongitude(),0),ParseHelper.ToDouble(oModel.getRecevicelatitude(),0));
 		 b= (new BigDecimal(b)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	     BigDecimal bg2 = new BigDecimal(b/1000);
 		 double f2 = bg2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-		 String strB  = b < 1000 ? String.valueOf(b).concat("米")  : String.valueOf(f2).concat("千米");   	     
+		 String strB  = b < 1000 ? String.valueOf(b).concat("m")  : String.valueOf(f2).concat("km");   	     
 		odResp.setRecevicetocurrentdistance(strB);	
 		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());
 		odResp.setName(businessModel.getName());

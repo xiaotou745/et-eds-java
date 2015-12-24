@@ -984,12 +984,56 @@ select  count(1)
 from  dbo.[business]  
 where   phoneNo= #{phone}  and GroupId=0
 	</select> 
-	   <select id="getId" resultType="java.lang.Integer"
+	<select id="getBusinessByPhoneNo" resultType="com.edaisong.entity.domain.BusinessModel"
 		parameterType="java.lang.String">
-select  id
-from  dbo.[business] 
-where   phoneNo= #{phone} 
-	</select> 
+				SELECT TOP 1
+		        b.id ,
+		        b.name ,
+		        b.city ,
+		        b.district ,
+		        b.phoneno ,
+		        b.phoneno2 ,
+		        b.idcard ,
+		        b.[address] ,
+		        ISNULL(b.landline, '') AS landline ,
+		        b.longitude ,
+		        b.latitude ,
+		        b.[status] ,
+		        b.inserttime ,
+		        b.districtid ,
+		        b.cityid ,
+		        b.provincecode ,
+		        b.citycode ,
+		        b.areacode ,
+		        b.province ,
+		        ISNULL(b.DistribSubsidy, 0.00) distribsubsidy ,
+		        b.businesscommission ,
+		        b.commissiontype ,
+		        b.commissionfixvalue ,
+		        b.businessgroupId ,
+		        b.balanceprice ,
+		        b.allowwithdrawprice ,
+		        b.haswithdrawprice ,
+		        b.checkpicurl ,
+		        b.businesslicensepic ,
+		        b.mealssettlemode ,
+		        ISNULL(b.groupid, 0) AS groupid ,
+		        b.originalbusiid ,
+		        ISNULL(b.OneKeyPubOrder, 0) onekeypuborder ,
+		        b.isallowoverdraft ,
+		        b.isemployertask ,
+		        b.isAllowCashPay ,
+		        b.IsEnable,
+		        ISNULL(b.RecommendPhone, '') AS recommendphone ,
+		        bg.StrategyId AS StrategyId ,
+		        b.IsOrderChecked ,
+		        ISNULL(g.groupid, 0) AS groupBusinessID,
+		        b.pushOrderType
+		FROM    business b WITH ( NOLOCK )
+		        LEFT JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON b.BusinessGroupId = bg.Id
+		        LEFT JOIN GroupBusinessRelation g WITH ( NOLOCK ) ON b.id = g.businessid AND g.IsBind=1 AND g.IsEnable=1
+		WHERE   b.phoneNo = #{phone} and b.GroupId=0
+	</select>
 	<!-- 门店修改绑定手机号 addby caoheyang 20151110 -->
 	<update id="businessModiyPhone" parameterType="com.edaisong.entity.req.BCheckCodeReq">
 	 declare @oldPhone VARCHAR(20);
