@@ -1,16 +1,20 @@
 package com.edaisong.toolsapi.common;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
+
 //import com.edaisong.toolsapi.activemq.ActiveMqService;
 import com.edaisong.toolsapi.dao.inter.IActionLogDao;
 import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.PropertyUtils;
+import com.edaisong.toolscore.util.StringUtils;
 import com.edaisong.toolscore.util.SystemUtils;
 import com.edaisong.toolsentity.domain.ActionLog;
 
@@ -30,10 +34,11 @@ public class LogServiceBLL {
 	 * @param
 	 */
 	public void SystemActionLog(ActionLog logEngity) {
+		String isSendMail = PropertyUtils.getProperty("IsSendMail");
 		try {
 			if (logEngity.getStackTrace()!=null&&!logEngity.getStackTrace().isEmpty()) {
 				String alertBody=getAlertBody(logEngity);
-				String isSendMail = PropertyUtils.getProperty("IsSendMail");
+				
 				if (isSendMail.equals("1")&&alertBody!=null&&!alertBody.isEmpty()) {
 					SystemUtils.sendAlertEmail(logEngity.getSourceSys()+"_java项目预警", alertBody);
 				}
@@ -43,6 +48,11 @@ public class LogServiceBLL {
 			//activeMqService.asynSendMessage(jsonMsg);
 				adminLogger.info(jsonMsg);
 		} catch (Exception e) {
+			if (isSendMail.equals("1")) {
+				List<String> ipinfoList = SystemUtils.getLocalIpInfo();
+				String appServerIP = JsonUtil.obj2string(ipinfoList);
+				SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_SystemActionLog_java项目预警", "appServerIP:"+appServerIP+"\n"+e.getMessage()+StringUtils.getStackTrace(e));
+			}
 		}
 	}
 	public void LogInfo(ActionLog logEngity) {

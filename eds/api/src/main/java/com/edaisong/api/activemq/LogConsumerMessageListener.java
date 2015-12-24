@@ -36,7 +36,7 @@ public class LogConsumerMessageListener implements MessageListener {
 				String stackTrace = StringUtils.getStackTrace(e);
 				List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 				String appServerIP = JsonUtil.obj2string(ipinfoList);
-				SystemUtils.sendAlertEmail("Mongo_actionLog_java项目预警", appServerIP+e.getMessage()+"\n"+stackTrace);
+				SystemUtils.sendAlertEmail("Mongo_actionLog_java项目预警", "appServerIP:"+appServerIP+"\n"+e.getMessage()+"\n"+stackTrace);
 			}
         }   
     }

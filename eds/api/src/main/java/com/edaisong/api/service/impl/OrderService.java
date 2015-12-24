@@ -1099,6 +1099,7 @@ public class OrderService implements IOrderService {
 			QueryOrderReq query, int type) {
 		query.setStatus(OrderStatus.Complite.value());
 		HttpResultModel<List<QueryOrder>> res = new HttpResultModel<List<QueryOrder>>();
+
 		// C端判断C端逻辑
 		if (type == 1 && clienterService.getUserStatus(query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass.value())
 		{
@@ -2510,6 +2511,9 @@ public class OrderService implements IOrderService {
 		odResp.setTaketype(oModel.getTaketype()); 
 		odResp.setProductname(oModel.getProductname());
 		odResp.setIscomplain(oModel.getIscomplain());
+		odResp.setPickuplongitude(oModel.getPickuplongitude());
+		odResp.setPickuplatitude(oModel.getPickuplatitude());;
+		odResp.setIscomplain(oModel.getIscomplain());	
 			
 		odResp.setListOrderChild(ocList);
 
@@ -2563,9 +2567,9 @@ public class OrderService implements IOrderService {
 		odResp.setCity(businessModel.getCity());
 		odResp.setBalancePrice(businessModel.getBalanceprice());
 		odResp.setLatitude(businessModel.getLatitude());
-		odResp.setLongitude(businessModel.getLongitude());
-		
-		
+		odResp.setLongitude(businessModel.getLongitude());			
+	
+				
 		odResp.setIsmodifyticket(true);
         if (ooModel.getHaduploadcount() >=  oModel.getOrdercount() && oModel.getStatus().byteValue() == OrderStatus.Complite.value())
         {
