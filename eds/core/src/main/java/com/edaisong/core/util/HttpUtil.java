@@ -2,6 +2,7 @@ package com.edaisong.core.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -88,7 +89,7 @@ public class HttpUtil {
      */
     public static String sendPost(String url, String param,String contentType) {
     	PrintWriter out = null;
-        BufferedReader in = null;
+    	InputStream in = null;
         String result = "";
         try {
             URL realUrl = new URL(url);
@@ -119,7 +120,8 @@ public class HttpUtil {
 //            while ((line = in.readLine()) != null) {
 //                result += line;
 //            }
-            result=StreamUtils.copyToString(conn.getInputStream(),Charset.forName("utf-8"));
+            in= conn.getInputStream();
+            result=StreamUtils.copyToString(in,Charset.forName("utf-8"));
         } catch (Exception e) {
             //System.out.println("发送 POST 请求出现异常！"+e);
             //e.printStackTrace();
