@@ -1100,7 +1100,7 @@ public class OrderService implements IOrderService {
 		query.setStatus(OrderStatus.Complite.value());
 		HttpResultModel<List<QueryOrder>> res = new HttpResultModel<List<QueryOrder>>();
 		// C端判断C端逻辑
-		if ((type == 0) || (type == 1 && clienterService.getUserStatus(query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass.value())) 
+		if (type == 1 && clienterService.getUserStatus(query.getClienterId()).getStatus() != ClienterStatusEnum.AuditPass.value())
 		{
 			res.setStatus(QueryOrderReturnEnum.ErrStatus.value());
 			res.setMessage(QueryOrderReturnEnum.ErrStatus.desc());

@@ -10,7 +10,7 @@ public enum QueryOrderReturnEnum {
 	 * 账号状态出错
 	 */
 	BusinessNotExist(-100,"商户不存在"),
-	ErrStatus(-500,"商铺尚未审核通过"),
+	ErrStatus(-500,"用户尚未审核通过"),
 	BusinessIsNotEnable(-501,"发货用户未启用");
 	private int value = 0;
 	private String desc;
