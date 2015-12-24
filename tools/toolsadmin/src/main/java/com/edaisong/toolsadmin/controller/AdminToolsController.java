@@ -817,7 +817,7 @@ public class AdminToolsController {
 			return AES.aesEncrypt(str);
 		}
 		else {//解密
-			return AES.aesDecrypt(str);
+			return AES.aesDecrypt(str.replace("\\", ""));
 		}
 	}
 }
