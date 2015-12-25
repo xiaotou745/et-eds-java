@@ -134,16 +134,23 @@ public class MongoService {
 			key.put("requestTime", 1);
 			querycursor = collection.find(req, key);// .addOption(Bytes.QUERYOPTION_NOTIMEOUT);
 			String json = "";
-
+			BasicDBObject deleDbObject = new BasicDBObject();  
 			while (querycursor.hasNext()) {
 				json = JsonUtil.obj2string(querycursor.next());
 				ActionLog log = JsonUtil.str2obj(json, ActionLog.class);
-				dataList.add(log);
+				if (log.getRequestTime().length()<"yyyy-MM-dd HH:mm:ss".length()) {
+					deleDbObject.put("requestTime", log.getRequestTime());  
+	                collection.remove(deleDbObject); 
+				}else {
+					dataList.add(log);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			querycursor.close();
+			if (querycursor!=null) {
+				querycursor.close();
+			}
 		}
 
 		return dataList;

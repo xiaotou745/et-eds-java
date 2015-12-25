@@ -1,5 +1,6 @@
 package com.edaisong.toolsadmin.controller;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,13 +18,22 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+
+
+
 import javax.servlet.http.HttpServletRequest;
+
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+
+
 
 import com.edaisong.toolsadmin.common.MenuHelper;
 import com.edaisong.toolsadmin.common.UserContext;
@@ -50,6 +60,9 @@ import com.edaisong.toolsentity.req.MongoLogReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 import com.edaisong.toolsentity.req.PagedMongoLogReq;
 import com.mongodb.BasicDBObject;
+
+
+
 
 import freemarker.core.ReturnInstruction.Return;
 
@@ -476,12 +489,7 @@ public class AdminToolsController {
 				int tempDay=a.get(Calendar.YEAR)+a.get(Calendar.MONTH)+1;
 				if(lastDay<=tempDay&&tempDay<=currentDay){
 					BasicDBObject tempReq=getQueryObj(req);
-					if (!t.getKey().endsWith("00:00:00")) {
-						tempReq.put("requestTime", new BasicDBObject("$gte", t.getKey()));//>=
-					}
-					if (!t.getValue().endsWith("00:00:00")) {
-						tempReq.put("requestTime", new BasicDBObject("$lte", t.getValue()));//<=
-					}
+					getWhere(tempReq,t.getKey(),t.getValue(),sdf);
 					String mongoName=getTableName(t.getKey());
 					System.out.println("表名称:"+mongoName);
 					List<ActionLog> partialResult= mongoService.selectResult(mongoName,tempReq);
@@ -492,8 +500,21 @@ public class AdminToolsController {
 				e.printStackTrace();
 			}
 		});
+		System.out.println("并行查询mongo完成");
 		return result;
 	}
+    private void getWhere(BasicDBObject tempReq,String begin,String end,SimpleDateFormat sdf) throws Exception{
+		if (begin.endsWith("-01 00:00:00")) {
+			tempReq.put("requestTime", new BasicDBObject("$lte", end));// <=
+			return;
+		}
+
+		String condition = "function(){"
+				+ "var init = this.requestTime.replace(new RegExp('-','gm'),'/'); "
+				+ "var initMills = (new Date(init)).getTime();" 
+				+ "return "+ sdf.parse(begin).getTime() + "<=initMills&&initMills<="+ sdf.parse(end).getTime() + ";}";
+		tempReq.put("$where", condition);
+    }
     /**
      * 将日期段按照指定的步长拆段
      * @param begin
@@ -503,19 +524,22 @@ public class AdminToolsController {
      * @author hailongzhao
      * @return
      */
-    private LinkedHashMap<Date, Date> splitStep(Date begin,Date end,int minStep){
-    	LinkedHashMap<Date, Date> result = new LinkedHashMap<Date, Date>();
+    private Map<Long, Long> splitStep(Date begin,Date end,int minStep){
+    	Map<Long, Long> result = new HashMap<Long, Long>();
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		if (begin.before(end)) {
 			Date tempBegin = begin;
 			Calendar cl = Calendar.getInstance();
 			while (tempBegin.before(end)) {
 				cl.setTime(tempBegin);
 				cl.add(Calendar.MINUTE, minStep);// 日期加n分钟
-				if (cl.getTime().compareTo(end) > 0) {
-					result.put(tempBegin, end);
+				if (cl.getTime().getTime()>end.getTime()) {
+					result.put(tempBegin.getTime(), end.getTime());
+					//System.out.println("splitStep:"+sdf.format(tempBegin)+"--"+sdf.format(end));
 					break;
 				}else {
-					result.put(tempBegin, cl.getTime());
+					result.put(tempBegin.getTime(), cl.getTime().getTime());
+					//System.out.println("splitStep:"+sdf.format(tempBegin)+"--"+sdf.format(cl.getTime()));
 				} 
 				tempBegin = cl.getTime();
 			}
@@ -531,22 +555,56 @@ public class AdminToolsController {
      * @date 20151222
      * @param minStep
      */
-    private Map<Date, List<PairEntry<Date, ActionLog>>> groupByStep(Date begin,Date end,List<ActionLog> data,int minStep){
-    	 List<PairEntry<Date, ActionLog>> resultMap = Collections.synchronizedList(new ArrayList<PairEntry<Date, ActionLog>>()); 
- 		LinkedHashMap<Date, Date> timeHashMap= splitStep(begin,end,minStep);
- 		
- 		//并行将在日期段内的ActionLog放入resultMap
- 		data.parallelStream().forEach(t->{
- 			timeHashMap.keySet().parallelStream().forEach(m->{
- 				Date mb=ParseHelper.ToDate(t.getRequestTime());
- 				if (mb.compareTo(m)>=0&&mb.compareTo(timeHashMap.get(m))<=0) {
- 					resultMap.add(new PairEntry<>(timeHashMap.get(m), t));
+    private Map<Long, List<PairEntry<Long, ActionLog>>> groupByStep(Date begin,Date end,List<ActionLog> data,int minStep){
+		List<PairEntry<Long, ActionLog>> resultList = Collections.synchronizedList(new ArrayList<PairEntry<Long, ActionLog>>());
+		System.out.println("splitStep开始");
+		Map<Long, Long> timeHashMap = splitStep(begin, end, minStep);
+		System.out.println("分组开始");
+		//记录按照请求时间升序
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		data.sort((a, b) -> {
+			try {
+				Long aValue=sdf.parse(a.getRequestTime()).getTime();
+				Long bValue=sdf.parse(b.getRequestTime()).getTime();
+				return aValue.compareTo(bValue);	
+			} catch (Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		});
+				
+		List<Long> timeList = new ArrayList<Long>(timeHashMap.keySet());
+		//时间段按照开始日期升序
+		timeList.sort((a, b) -> {
+			return a.compareTo(b);
+		});
+		// 并行将在日期段内的ActionLog放入resultMap
+		int j = 0;
+		Long mb = 0l;
+		for (int i = 0; i < data.size(); i++) {
+			mb = ParseHelper.ToDate(data.get(i).getRequestTime()).getTime();
+			while (j < timeList.size()) {
+				if (timeList.get(j) <= mb && mb < timeHashMap.get(timeList.get(j))) {
+					resultList.add(new PairEntry<>(timeHashMap.get(timeList.get(j)), data.get(i)));
+					break;
+				} else {
+					j++;
 				}
- 			});
-    	});
- 		//按照日期段的结束日期分组
-		 return resultMap.parallelStream()
-				.collect(Collectors.groupingBy(PairEntry<Date, ActionLog>::getKey));
+			}
+		}
+		System.out.println("分组结束");
+		// 按照日期段的结束日期分组
+		Map<Long, List<PairEntry<Long, ActionLog>>> result = resultList
+				.parallelStream()
+				.collect(
+						Collectors
+								.groupingBy(PairEntry<Long, ActionLog>::getKey));
+
+		// 补齐没有记录的日期段
+		List<Long> timeList1 = new ArrayList<Long>(result.keySet());
+		timeHashMap.values().removeAll(timeList1);
+		timeHashMap.values().forEach(t -> result.put(t, new ArrayList<>()));
+		return result;
+
     }
 	/**
 	 * 日志分析
@@ -562,17 +620,7 @@ public class AdminToolsController {
 		view.addObject("viewPath", "admintools/logchart");
 		return view;
 	}
-    /**
-     * 请求时间和执行时间
-     * @return
-     * @throws Exception 
-     */
-	@RequestMapping("requestexetime")
-	@ResponseBody
-    public Map<String, Long> queryRequestExecuteTime(MongoLogReq req) throws Exception{
-		List<ActionLog> data = queryAll(req);
-		return data.parallelStream().collect(Collectors.toMap(ActionLog::getRequestTime, t->t.getExecuteTime()));
-    }
+
     /**
      * 请求次数
      * @return
@@ -580,16 +628,17 @@ public class AdminToolsController {
      */
 	@RequestMapping("requestnum")
 	@ResponseBody
-    public Map<Date, Integer> queryRequestNum(MongoLogReq req) throws Exception{
+    public List<PairEntry<Long, Integer>> queryRequestNum(MongoLogReq req) throws Exception{
 		List<ActionLog> data = queryAll(req);
-		Map<Date, List<PairEntry<Date, ActionLog>>> groupData = groupByStep(req.getBegin(), req.getEnd(), data, req.getMinStep());
-		return groupData
+		Map<Long, List<PairEntry<Long, ActionLog>>> groupData = groupByStep(req.getBegin(), req.getEnd(), data, req.getMinStep());
+		List<PairEntry<Long, Integer>> mEntries= groupData
 				.entrySet()
-				.parallelStream()
-				.collect(
-						Collectors
-								.toMap(Entry<Date, List<PairEntry<Date, ActionLog>>>::getKey,
-										m -> m.getValue().size()));
+				.parallelStream().map(t -> {
+					return new PairEntry<Long, Integer>(t.getKey(),t.getValue().size());
+				})
+				.collect(Collectors.toList());
+		mEntries.sort((a, b) -> {return a.getKey().compareTo(b.getKey());});
+		return mEntries;
     }
     /**
      * 平均执行时间
@@ -601,20 +650,22 @@ public class AdminToolsController {
      */
 	@RequestMapping("averagetime")
 	@ResponseBody
-    public Map<Date, Integer> queryAverageTime(MongoLogReq req) throws Exception{
+    public List<PairEntry<Long, Integer>> queryAverageTime(MongoLogReq req) throws Exception{
     	List<ActionLog> data=queryAll(req);
-    	Map<Date, List<PairEntry<Date, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());
-		return groupData
+    	Map<Long, List<PairEntry<Long, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());
+    	List<PairEntry<Long, Integer>> mEntries= groupData
 				.entrySet()
-				.parallelStream()
-				.collect(
-						Collectors
-								.toMap(Entry<Date, List<PairEntry<Date, ActionLog>>>::getKey,
-										m -> (int)m.getValue()
-												.stream()
-												.mapToLong(x -> x.getValue().getExecuteTime())
-												.summaryStatistics()
-												.getAverage()));
+				.parallelStream().map(t -> {
+					Integer rate = (int)t.getValue()
+							.stream()
+							.mapToLong(x -> x.getValue().getExecuteTime())
+							.summaryStatistics()
+							.getAverage();
+					return new PairEntry<Long, Integer>(t.getKey(),rate);
+				})
+				.collect(Collectors.toList());
+		mEntries.sort((a, b) -> {return a.getKey().compareTo(b.getKey());});
+		return mEntries;
     }
     /**
      * 查询异常率
@@ -628,22 +679,24 @@ public class AdminToolsController {
 	@ResponseBody
     public List<PairEntry<Long, Double>> queryErrorRate(MongoLogReq req) throws Exception{
     	List<ActionLog> data=queryAll(req);
-    	Map<Date, List<PairEntry<Date, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());    		
-    	Comparator<PairEntry<Long, Double>> c = (a, b) -> {return (a.getKey() - b.getKey())>0?1:0;};
+    	Map<Long, List<PairEntry<Long, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());    		
     	List<PairEntry<Long, Double>> mEntries= groupData
 				.entrySet()
 				.parallelStream()
 				.map(t -> {
-					long errNum = t
-							.getValue()
-							.stream()
-							.filter(k -> k.getValue().getStackTrace() != null
-									&& !k.getValue().getStackTrace().isEmpty())
-							.count();
-					Double rate = errNum * 100.00d / t.getValue().size();
-					return new PairEntry<Long, Double>(t.getKey().getTime(),rate);
+					Double rate =0d;
+					if (t.getValue().size()>0) {
+						long errNum = t
+								.getValue()
+								.stream()
+								.filter(k -> k.getValue().getStackTrace() != null
+										&& !k.getValue().getStackTrace().isEmpty())
+								.count();
+						 rate = errNum * 100.00d / t.getValue().size();
+					}
+					return new PairEntry<Long, Double>(t.getKey(),rate);
 				}).collect(Collectors.toList());
-    	mEntries.sort(c);
+    	mEntries.sort((a, b) -> {return a.getKey().compareTo(b.getKey());});
     	return mEntries;
     }
     /**
