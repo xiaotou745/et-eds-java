@@ -122,28 +122,20 @@ public class MongoService {
 
 		return result;
 	}
-	public List<ActionLog> selectResult(String tableName,BasicDBObject req) throws Exception {
+
+	public List<ActionLog> selectResult(String tableName,BasicDBObject req,BasicDBObject colums) throws Exception {
 		List<ActionLog> dataList = new ArrayList<ActionLog>();
 		DBCursor querycursor = null;
 		try {
 			DBCollection collection = mongoTemplate.getCollection(tableName);
 			createIndex(collection);
-			BasicDBObject key = new BasicDBObject();// 指定需要显示列
-			key.put("stackTrace", 1);
-			key.put("executeTime", 1);
-			key.put("requestTime", 1);
-			querycursor = collection.find(req, key);// .addOption(Bytes.QUERYOPTION_NOTIMEOUT);
+			querycursor = collection.find(req, colums);// .addOption(Bytes.QUERYOPTION_NOTIMEOUT);
 			String json = "";
-			BasicDBObject deleDbObject = new BasicDBObject();  
+			//BasicDBObject deleDbObject = new BasicDBObject();  
 			while (querycursor.hasNext()) {
 				json = JsonUtil.obj2string(querycursor.next());
 				ActionLog log = JsonUtil.str2obj(json, ActionLog.class);
-				if (log.getRequestTime().length()<"yyyy-MM-dd HH:mm:ss".length()) {
-					deleDbObject.put("requestTime", log.getRequestTime());  
-	                collection.remove(deleDbObject); 
-				}else {
-					dataList.add(log);
-				}
+				dataList.add(log);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -61,15 +61,6 @@ appNameList.add("renrenapihttp");
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">步长(分钟):</label>
-							<div class="col-sm-8">
-								<input type="text" placeholder="步长" style="width:100px;"
-					class="form-control" id="minStep" name="minStep"  value="5" />
-							</div>
-						</div>
-					</div>
 				</div>
 				<div class="row">
 				<div class="col-lg-3">
@@ -115,16 +106,6 @@ appNameList.add("renrenapihttp");
 				</div>
 				<div class="row">
 					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">分析指标:</label>
-							<div class="col-sm-8">
-								<input type="radio" value="requestnum" name="showType" checked="checked"/>请求次数
-								<input type="radio" value="averagetime" name="showType"/>平均耗时
-								<input type="radio" value="errorrate" name="showType"/>异常率
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary"
 							id="btnSearch" style="margin-left: 3px;">查询</button>
 							<span id="tip" style="color:red"></span>
@@ -149,105 +130,80 @@ $(function(){
         forceParse: false,
         calendarWeeks: true,
         autoclose: true
-    });  
+    });
+	  Highcharts.setOptions({                                                     
+          global: {                                                               
+              useUTC: false                                                       
+          }                                                                       
+      });    
 });
-function showChart(points){    
-	var title="";
-	var showType=$('input:radio[name="showType"]:checked').val();
-	switch(showType){
-	case "requestnum":
-		title="请求次数";
-		break;
-	case "averagetime":
-		title="平均耗时(ms)";
-		break;
-	case "errorrate":
-		title="异常率(%)";
-		break;
-	}
-      var resultPoints = [];
-      var start=points[0].key;
-      var step=parseInt($("#minStep").val())*60*1000;
-      for (var i = 0; i < points.length; i++) {   
-    	  resultPoints.push(points[i].value);
-      }                                                               
+function showChart(result){                                                                  
 	  Highcharts.setOptions({                                                     
           global: {                                                               
               useUTC: false                                                       
           }                                                                       
       });   
 	$('#content').html("");    
-	$('#content').highcharts({
-        chart: {
-            zoomType: 'x',
-            spacingRight: 20
-        },
-        title: {
-            text: '系统'+title+'分析'
-        },
-        subtitle: {
-            text: '拖动鼠标放大'
-        },
-        xAxis: {
-            type: 'datetime',
-            //maxZoom: 14 * 24 * 3600000, // fourteen days
-//             title: {
-//                 text: null
-//             }
-        labels: {  
-            formatter: function() {  
-            	//return this.value;
-            	return Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.value);
-            	}  
-        } 
-        },
-        yAxis: {
-            title: {
-                text: title
-            }
-        },
-        tooltip: {
-        	formatter: function() {                                             
-                return '<b>'+ this.series.name +'</b><br/>'+                
-                Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
-                Highcharts.numberFormat(this.y, 2);                         
-        }     
-            //shared: true
-        },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
-            area: {
-                fillColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-                    stops: [
-                        [0, Highcharts.getOptions().colors[0]],
-                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                    ]
-                },
-                lineWidth: 1,
-                marker: {
-                    enabled: false
-                },
-                shadow: false,
-                states: {
-                    hover: {
-                        lineWidth: 1
-                    }
-                },
-                threshold: null
-            }
-        },
 
-        series: [{
-            type: 'area',
-            name: title,
-            pointInterval: step,
-            pointStart: start,
-            data: resultPoints
-        }]
-    });
+	    $('#content').highcharts({
+	        chart: {
+	            type: 'column'
+	        },
+	        title: {
+	            text: '接口调用统计'
+	        },
+	        subtitle: {
+	            text: '调用次数，平均执行时间，异常率'
+	        },
+	        xAxis: {
+	            categories: result.urls
+	            	
+// 	            	[
+// 	                'Jan',
+// 	                'Feb',
+// 	                'Mar',
+// 	                'Apr',
+// 	                'May',
+// 	                'Jun',
+// 	                'Jul',
+// 	                'Aug',
+// 	                'Sep',
+// 	                'Oct',
+// 	                'Nov',
+// 	                'Dec'
+// 	            ]
+	        },
+	        yAxis: {
+	            min: 0,
+	            title: {
+	                text: '次数/异常率/平均耗时'
+	            }
+	        },
+	        tooltip: {
+	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	                '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
+	            footerFormat: '</table>',
+	            shared: true,
+	            useHTML: true
+	        },
+	        plotOptions: {
+	            column: {
+	                pointPadding: 0.2,
+	                borderWidth: 0
+	            }
+	        },
+	        series: [{
+	            name: '调用次数',
+	            data:result.numData
+	        }, {
+	            name: '平均耗时',
+	            data: result.timeData
+	        }, {
+	            name: '异常率',
+	            data: result.rateData
+	        }]
+	    });			
 }
 $("#btnSearch").click(function(){
 	if($("#begin").val()==""){
@@ -265,22 +221,11 @@ $("#btnSearch").click(function(){
           $('#end').val("");
           return;
       }
-	if($("#minStep").val()==""){
-		alert("步长不能为空");
-		return;
-	}
-	var t=parseInt($("#minStep").val());
-	if(isNaN(t)||t<=0){
-		alert("步长必须大于0");
-		return;
-	}
 	$("#beginHidden").val($("#begin").val()+" 00:00:00");
 	$("#endHidden").val($("#end").val()+" 23:59:59");
 
 	var paramaters=$("#searchForm").serialize();
-	var showType=$('input:radio[name="showType"]:checked').val();
-	var url = "<%=basePath%>/admintools/";
-	url=url+showType
+	var url = "<%=basePath%>/admintools/methodstatisticsdo";
 	$("#tip").html("正在查询。。。");
 	$("#btnSearch").attr("disabled",true);
 	$.ajax({

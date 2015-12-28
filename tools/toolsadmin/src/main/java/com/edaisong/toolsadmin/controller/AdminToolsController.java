@@ -1,15 +1,11 @@
 package com.edaisong.toolsadmin.controller;
-import java.text.DecimalFormat;
-import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,22 +14,13 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-
-
-
 import javax.servlet.http.HttpServletRequest;
-
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-
-
 
 import com.edaisong.toolsadmin.common.MenuHelper;
 import com.edaisong.toolsadmin.common.UserContext;
@@ -52,6 +39,7 @@ import com.edaisong.toolsentity.AuthorityMenuClass;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.domain.ActionLog;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
+import com.edaisong.toolsentity.domain.LogChartModel;
 import com.edaisong.toolsentity.domain.MenuDetail;
 import com.edaisong.toolsentity.domain.MenuEntity;
 import com.edaisong.toolsentity.domain.PairEntry;
@@ -61,10 +49,6 @@ import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
 import com.edaisong.toolsentity.req.PagedMongoLogReq;
 import com.mongodb.BasicDBObject;
 
-
-
-
-import freemarker.core.ReturnInstruction.Return;
 
 /**
  * 控制其他app
@@ -476,7 +460,7 @@ public class AdminToolsController {
      * @author hailongzhao
      * @throws Exception
      */
-    private List<ActionLog> queryAll(MongoLogReq req) throws Exception{
+    private List<ActionLog> queryAll(MongoLogReq req,BasicDBObject columns) throws Exception{
 		List<ActionLog> result=Collections.synchronizedList(new ArrayList<>());
 		LinkedHashMap<String, String> timeHashMap= splitTimeRange(req.getBegin(),req.getEnd());
 		Calendar a=Calendar.getInstance();
@@ -492,7 +476,7 @@ public class AdminToolsController {
 					getWhere(tempReq,t.getKey(),t.getValue(),sdf);
 					String mongoName=getTableName(t.getKey());
 					System.out.println("表名称:"+mongoName);
-					List<ActionLog> partialResult= mongoService.selectResult(mongoName,tempReq);
+					List<ActionLog> partialResult= mongoService.selectResult(mongoName,tempReq,columns);
 					result.addAll(partialResult);
 				}
 			} catch (Exception e) {
@@ -503,6 +487,16 @@ public class AdminToolsController {
 		System.out.println("并行查询mongo完成");
 		return result;
 	}
+    /**
+     * mongo的范围查询
+     * @author hailongzhao
+     * @date 20151228
+     * @param tempReq
+     * @param begin
+     * @param end
+     * @param sdf
+     * @throws Exception
+     */
     private void getWhere(BasicDBObject tempReq,String begin,String end,SimpleDateFormat sdf) throws Exception{
 		if (begin.endsWith("-01 00:00:00")) {
 			tempReq.put("requestTime", new BasicDBObject("$lte", end));// <=
@@ -620,16 +614,92 @@ public class AdminToolsController {
 		view.addObject("viewPath", "admintools/logchart");
 		return view;
 	}
+	/**
+	 * 日志分析
+	 * @author hailongzhao
+	 * @date 20151118
+	 * @return
+	 */
+	@RequestMapping("methodstatistics")
+	public ModelAndView methodStatistics(){
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "APP控制");
+		view.addObject("currenttitle", "日志方法统计");
+		view.addObject("viewPath", "admintools/methodstatistics");
+		return view;
+	}
+	/**
+	 * 每个方法分析
+	 * @author hailongzhao
+	 * @date 20151228
+	 * @return
+	 */
+	@RequestMapping("methodstatisticsdo")
+	@ResponseBody
+	public LogChartModel methodStatisticsDo(MongoLogReq req) throws Exception{
+		List<ActionLog> data = queryAll(req, getTimeColumns());
+		Map<String, List<ActionLog>> group = data.parallelStream().collect(
+				Collectors.groupingBy(ActionLog::getRequestUrl));
+		Map<String, Integer> numData = group
+				.entrySet()
+				.parallelStream()
+				.collect(
+						Collectors.toMap(
+								Entry<String, List<ActionLog>>::getKey,
+								m ->m.getValue().size()));
+		Map<String, Double> timeData = group
+				.entrySet()
+				.parallelStream()
+				.collect(
+						Collectors.toMap(
+								Entry<String, List<ActionLog>>::getKey,
+								m -> m.getValue().parallelStream()
+										.mapToLong(t -> t.getExecuteTime())
+										.summaryStatistics().getAverage()));
+		Map<String, Double> rateData = group
+				.entrySet()
+				.parallelStream()
+				.collect(
+						Collectors.toMap(
+								Entry<String, List<ActionLog>>::getKey,
+								m -> {
+									long errNum = m.getValue()
+											.parallelStream()
+											.filter(k -> k.getStackTrace() != null
+													&& !k.getStackTrace()
+															.isEmpty()).count();
+									return errNum * 100.00d
+											/ m.getValue().size();
+								}));
+		LogChartModel result = new LogChartModel();
+		List<String> urlsList = new ArrayList<String>();
+		List<Integer> numList = new ArrayList<Integer>();
+		List<Double> timeList = new ArrayList<Double>();
+		List<Double> rateList = new ArrayList<Double>();
+		numData.keySet().forEach(t -> {
+			urlsList.add(t);
+			numList.add(numData.get(t));
+			timeList.add(timeData.get(t));
+			rateList.add(rateData.get(t));
+		});
+		result.setNumData(numList);
+		result.setRateData(rateList);
+		result.setTimeData(timeList);
+		result.setUrls(urlsList);
+		return result;
+}
 
     /**
      * 请求次数
+     * @author hailongzhao
+     * @date 20151228
      * @return
      * @throws Exception 
      */
 	@RequestMapping("requestnum")
 	@ResponseBody
     public List<PairEntry<Long, Integer>> queryRequestNum(MongoLogReq req) throws Exception{
-		List<ActionLog> data = queryAll(req);
+		List<ActionLog> data = queryAll(req,getColumns());
 		Map<Long, List<PairEntry<Long, ActionLog>>> groupData = groupByStep(req.getBegin(), req.getEnd(), data, req.getMinStep());
 		List<PairEntry<Long, Integer>> mEntries= groupData
 				.entrySet()
@@ -642,6 +712,8 @@ public class AdminToolsController {
     }
     /**
      * 平均执行时间
+     * @author hailongzhao
+     * @date 20151228
      * @param begin
      * @param end
      * @param data
@@ -651,7 +723,7 @@ public class AdminToolsController {
 	@RequestMapping("averagetime")
 	@ResponseBody
     public List<PairEntry<Long, Integer>> queryAverageTime(MongoLogReq req) throws Exception{
-    	List<ActionLog> data=queryAll(req);
+    	List<ActionLog> data=queryAll(req,getColumns());
     	Map<Long, List<PairEntry<Long, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());
     	List<PairEntry<Long, Integer>> mEntries= groupData
 				.entrySet()
@@ -669,6 +741,8 @@ public class AdminToolsController {
     }
     /**
      * 查询异常率
+     * @author hailongzhao
+     * @date 20151228
      * @param begin
      * @param end
      * @param data
@@ -678,7 +752,7 @@ public class AdminToolsController {
 	@RequestMapping("errorrate")
 	@ResponseBody
     public List<PairEntry<Long, Double>> queryErrorRate(MongoLogReq req) throws Exception{
-    	List<ActionLog> data=queryAll(req);
+    	List<ActionLog> data=queryAll(req,getColumns());
     	Map<Long, List<PairEntry<Long, ActionLog>>> groupData=groupByStep(req.getBegin(), req.getEnd(),data, req.getMinStep());    		
     	List<PairEntry<Long, Double>> mEntries= groupData
 				.entrySet()
@@ -699,6 +773,28 @@ public class AdminToolsController {
     	mEntries.sort((a, b) -> {return a.getKey().compareTo(b.getKey());});
     	return mEntries;
     }
+	/**
+	 * 总体统计时用到的列
+	 * @return
+	 */
+	private  BasicDBObject getColumns(){
+		BasicDBObject columns= new BasicDBObject();// 指定需要显示列
+		columns.put("stackTrace", 1);
+		columns.put("executeTime", 1);
+		columns.put("requestTime", 1);
+		return columns;
+	} 
+	/**
+	 * 每个方法查询时用到的列
+	 * @return
+	 */
+	private  BasicDBObject getTimeColumns(){
+		BasicDBObject columns= new BasicDBObject();// 指定需要显示列
+		columns.put("stackTrace", 1);
+		columns.put("executeTime", 1);
+		columns.put("requestUrl", 1);
+		return columns;
+	} 
     /**
 	 * 把日期范围按月拆成日期段
 	 * @param begin
