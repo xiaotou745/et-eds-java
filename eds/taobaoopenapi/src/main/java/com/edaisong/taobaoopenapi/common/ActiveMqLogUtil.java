@@ -15,7 +15,7 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.ActionLog;
 
 public class ActiveMqLogUtil {
-	public static void writeLog(ActionLog logEngity) {
+	private static void synWriteLog(ActionLog logEngity){
 		String logResultJson = "";
 		boolean needSendMail = false;
 		String logMsg = "";
@@ -44,6 +44,16 @@ public class ActiveMqLogUtil {
 				SystemUtils.sendAlertEmail("taobaoopenapi_writeLog_java项目预警","appServerIP:"+appServerIP+"\n" + logMsg +"\n"+ logStackTrace);
 			}
 		}
+	}
+	public static void writeLog(ActionLog logEngity) {
+		Thread dThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synWriteLog(logEngity);
+			}
+		});
+		dThread.setDaemon(false);
+		dThread.start();
 	}
 
 	public static void writeLog(String url, String param, String decryptMsg,
