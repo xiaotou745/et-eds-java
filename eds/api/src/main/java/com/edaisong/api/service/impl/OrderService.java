@@ -2825,7 +2825,7 @@ public class OrderService implements IOrderService {
 		    				 order.setReceivearea(bdApiBean.getResult().getAddressComponent().getDistrict());//收货区域	
 		    			 }			    		
 		    			
-		    			order.setReceivecitycode(String.valueOf(bdApiBean.getResult().getCityCode()));//收货人城市代码		    			   		
+		    			//order.setReceivecitycode(String.valueOf(bdApiBean.getResult().getCityCode()));//收货人城市代码    			   		
 			    		  
 		    		 }				
 		    }
