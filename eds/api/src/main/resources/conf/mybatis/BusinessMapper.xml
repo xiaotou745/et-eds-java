@@ -812,16 +812,22 @@ select @cliernterPoint=geography::Point(#{latitude},#{longitude},4326) ;
 select  b.Id as BusinessId,  
 min(b.Name) as BusinessName,min(b.address) as BusinessAddress
 ,round(geography::Point(ISNULL(b.Latitude,0),ISNULL(b.Longitude,0),4326).STDistance(@cliernterPoint),0) as DistanceToBusiness,
-count(oc.Id) WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,min(b.City) businessCityName 
+count(tm.businessId) WaitingCounts, b.Longitude businessLongitude,b.Latitude businessLatitude,min(b.City) businessCityName 
 from    BusinessClienterRelation a (nolock)
 join dbo.business b (nolock) on a.BusinessId = b.Id  and  a.ClienterId=#{clienterId,jdbcType=INTEGER}
-left join OrderChild oc(nolock) on a.BusinessId=oc.BusinessId and oc.Status=0
-left  join dbo.[order] o (nolock) on oc.OrderId=o.Id and o.Platform=2 
+LEFT JOIN ( SELECT  oc.BusinessId
+            FROM    dbo.[order] o ( NOLOCK )
+                    JOIN OrderChild oc ( NOLOCK ) ON oc.OrderId = o.Id
+                                                     AND o.Platform = 2
+                                                     AND oc.Status = 0
+                    JOIN BusinessClienterRelation kb ( NOLOCK ) ON oc.businessId = kb.BusinessId
+                                                      AND kb.ClienterId = #{clienterId,jdbcType=INTEGER}
+          ) tm ON tm.businessId = b.id
 where a.IsEnable = 1
 and a.IsBind = 1
 and a.AuditStatus=1
 group by b.Id,b.Latitude,b.Longitude
-order by count(oc.Id) desc  
+order by count(tm.businessId) desc  
 	</select>
 	<!-- 骑士绑定商户 建立关系 wangchao-->
 	<insert id="bindClienterBusiness" parameterType="com.edaisong.entity.domain.BindClienterBusiness">
