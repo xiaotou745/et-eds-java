@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,6 +69,7 @@ import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
 import com.edaisong.core.security.MD5Util;
+import com.edaisong.core.util.HttpUtil;
 import com.edaisong.core.util.MapUtils;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
@@ -90,6 +92,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.common.ResponseCode;
+import com.edaisong.entity.domain.BaiduApiBean;
 import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
@@ -137,6 +140,8 @@ import com.edaisong.entity.resp.OrderStatisticsBResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
+
+import net.sf.json.*;
 @Service
 public class OrderService implements IOrderService {
 
@@ -2800,6 +2805,32 @@ public class OrderService implements IOrderService {
 		order.setReceiveprovincecode(null);//收货人城市代码
 		order.setReceivecitycode(null);//收货人城市代码
 		order.setReceiveareacode(null);////收货区域 代码	
+		net.sf.json.JSONObject jsonObject=null;
+		if(req.getRecevicelatitude()!=null && req.getRecevicelongitude()!=null )
+		{
+			String url="http://api.map.baidu.com/geocoder/v2/";
+			//String param="ak=dAeaG6HwIFGlkbqtyKkyFGEC&output=json&location=30.548397,104.04701";
+			String param="ak=dAeaG6HwIFGlkbqtyKkyFGEC&output=json&location="+req.getRecevicelatitude()+","+req.getRecevicelongitude();
+			String resultJson = HttpUtil.sendPost(url, param);	
+			
+		    if (resultJson != null && !resultJson.isEmpty()) {				
+		    		 jsonObject=  net.sf.json.JSONObject.fromObject(resultJson);
+		    		 BaiduApiBean bdApiBean = (BaiduApiBean)net.sf.json.JSONObject.toBean(jsonObject,BaiduApiBean.class);
+		    		 if(bdApiBean!=null &&bdApiBean.getResult()!=null)
+		    		 {		    			
+		    			 if(bdApiBean.getResult().getAddressComponent()!=null)
+		    			 {
+		    				 order.setRecevicecity(bdApiBean.getResult().getAddressComponent().getCity());//收货人城市
+		    				 order.setReceiveprovince(bdApiBean.getResult().getAddressComponent().getProvince());//收货人省份
+		    				 order.setReceivearea(bdApiBean.getResult().getAddressComponent().getDistrict());//收货区域	
+		    			 }			    		
+		    			
+		    			order.setReceivecitycode(String.valueOf(bdApiBean.getResult().getCityCode()));//收货人城市代码		    			   		
+			    		  
+		    		 }				
+		    }
+		}
+	
 		order.setProductname(req.getProductname());//物品名称
 		order.setRemark(req.getRemark());//备注
 		order.setAmount(req.getAmount());//金额				
