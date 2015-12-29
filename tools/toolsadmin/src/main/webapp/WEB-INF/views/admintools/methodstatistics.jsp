@@ -106,10 +106,10 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">排序方式:</label>
+							<label class="col-sm-4 control-label">排序指标:</label>
 							<div class="col-sm-8">
 								<input type="radio" checked="checked" 
-									value="0" name="orderBy" />调用次数 <input
+									value="0" name="orderBy" />请求次数 <input
 									type="radio" value="1" name="orderBy"/>平均耗时
 									<input
 									type="radio" value="2" name="orderBy"/>异常率
