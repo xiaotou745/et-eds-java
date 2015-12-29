@@ -12,7 +12,7 @@ public class MongoLogReq {
 	private Date end;
 	private int exceptionShowType;
 	private int minStep;
-	
+	private String appversion;
 	private BasicDBObject queryObject;
 	public String getSourceSys() {
 		return sourceSys;
@@ -76,6 +76,14 @@ public class MongoLogReq {
 
 	public void setMinStep(int minStep) {
 		this.minStep = minStep;
+	}
+
+	public String getAppversion() {
+		return appversion;
+	}
+
+	public void setAppversion(String appversion) {
+		this.appversion = appversion;
 	}
 
 

@@ -19,6 +19,9 @@ appNameList.add("renrenapihttp");
 Calendar a=Calendar.getInstance();
 int month=a.get(Calendar.MONTH)+1;
 
+String apihttpVersion = request.getAttribute("apihttpVersion").toString();
+String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toString();
+
 %>
 
 <script src="<%=basePath%>/js/util.js"></script>
@@ -34,8 +37,17 @@ int month=a.get(Calendar.MONTH)+1;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">系统名称:</label>
 							<div class="col-sm-8">
-								<%=HtmlHelper.getSelect("sourceSys", appNameList, "", "",
-					null, null, null)%>
+								<%=HtmlHelper.getSelect("sourceSys", appNameList, "", "",null, null, null)%>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">版本:</label>
+							<div class="col-sm-8">
+								<select name="appversion" class="form-control m-b" id="appversion">
+								<option value='' selected='selected'>全部版本</option>
+								</select>
 							</div>
 						</div>
 					</div>
@@ -60,8 +72,9 @@ int month=a.get(Calendar.MONTH)+1;
 							</div>
 						</div>
 					</div>
-
-					<div class="col-lg-3">
+				</div>
+				<div class="row">
+				<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">请求类型:</label>
 							<div class="col-sm-8">
@@ -72,7 +85,7 @@ int month=a.get(Calendar.MONTH)+1;
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3">
+				<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">异常:</label>
 							<div class="col-sm-8">
@@ -83,8 +96,6 @@ int month=a.get(Calendar.MONTH)+1;
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">排序字段:</label>
@@ -105,6 +116,9 @@ int month=a.get(Calendar.MONTH)+1;
 							</div>
 						</div>
 					</div>
+					
+				</div>
+				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">请求地址:</label>
@@ -153,8 +167,25 @@ int month=a.get(Calendar.MONTH)+1;
     </div>
 </div>
 </div>
+<input type="hidden" value="" id="apihttpversion"/>
+<input type="hidden" value="" id="renrenapihttpversion"/>
 <script>
-
+$(function(){
+	$("#apihttpversion").val("<%=apihttpVersion%>");
+	$("#renrenapihttpversion").val("<%=renrenapihttpVersion%>");
+	$("#sourceSys").on("change",function(e){
+		$("#appversion").html("<option value='' selected='selected'>全部版本</option>");
+		if($("#sourceSys").val()=="apihttp"||$("#sourceSys").val()=="renrenapihttp"){
+			var versions=$("#"+$("#sourceSys").val()+"version").val();
+			if(versions!=""){
+				var result=versions.split(",");
+				for(j=0;j<result.length;j++){  
+					$("#appversion").append("<option value='"+result[j]+"'>"+result[j]+"</option>");   
+				}
+			}
+		}
+	}); 
+});
 var jss={
 		search:function(currentPage){
 			    $("#_hiddenCurrentPage").val(currentPage);
@@ -169,6 +200,7 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+
 function showdetail(id){
 	$("#param").html(base64decode($("#param"+id).val()));
 	$("#decryptMsg").html(base64decode($("#decryptMsg"+id).val()));

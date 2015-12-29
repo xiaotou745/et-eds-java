@@ -359,13 +359,18 @@ public class AdminToolsController {
 	 * @author hailongzhao
 	 * @date 20151118
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping("log")
-	public ModelAndView log(){
+	public ModelAndView log() throws Exception{
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "日志分析");
 		view.addObject("viewPath", "admintools/log");
+		List<String> apihttpVersion=queryVersion("apihttp");
+		List<String> renrenapihttpVersion=queryVersion("renrenapihttp");
+		view.addObject("apihttpVersion", String.join(",", apihttpVersion));
+		view.addObject("renrenapihttpVersion",  String.join(",", renrenapihttpVersion));
 		return view;
 	}
 	/**
@@ -412,11 +417,25 @@ public class AdminToolsController {
 		else if (req.getExceptionShowType()==2) {//只看异常
 			query.put("stackTrace", new BasicDBObject("$ne", ""));//stackTrace!=""
 		}
-		if (req.getRequestUrl()!=null&&!req.getRequestUrl().isEmpty()) {
-			//类似于sql中的like
-			Pattern pattern = Pattern.compile("^.*" + req.getRequestUrl()+ ".*$", Pattern.CASE_INSENSITIVE); 
-			query.put("requestUrl", pattern);
+		if (req.getRequestUrl()!=null&&
+				!req.getRequestUrl().isEmpty()&&
+				req.getAppversion()!=null&&
+				!req.getAppversion().isEmpty()) {
+			String condition = "function(){"+
+					"return this.requestUrl.indexOf('"+req.getAppversion()+"')>0&&this.requestUrl.indexOf('"+req.getRequestUrl()+"')>0;}";
+			query.put("$where", condition);
+		}else {
+			if (req.getRequestUrl()!=null&&!req.getRequestUrl().isEmpty()) {
+				//类似于sql中的like
+				Pattern pattern = Pattern.compile("^.*" + req.getRequestUrl()+ ".*$", Pattern.CASE_INSENSITIVE); 
+				query.put("requestUrl", pattern);
+			}else if (req.getAppversion()!=null&&!req.getAppversion().isEmpty()) {
+				//类似于sql中的like
+				Pattern pattern = Pattern.compile("^.*" + req.getAppversion()+ ".*$", Pattern.CASE_INSENSITIVE); 
+				query.put("requestUrl", pattern);
+			}
 		}
+
 		req.setQueryObject(query);
 		BasicDBObject sort=new BasicDBObject();
 		sort.put(req.getOrderBy(), req.getOrderType());//按照执行时间倒序（1是升序，-1是降序）
@@ -442,16 +461,51 @@ public class AdminToolsController {
 		else if (req.getExceptionShowType()==2) {//只看异常
 			query.put("stackTrace", new BasicDBObject("$ne", ""));//stackTrace!=""
 		}
-		if (req.getRequestUrl()!=null&&!req.getRequestUrl().isEmpty()) {
-			//类似于sql中的like
-			Pattern pattern = Pattern.compile("^.*" + req.getRequestUrl()+ ".*$", Pattern.CASE_INSENSITIVE); 
-			query.put("requestUrl", pattern);
-		}
 		return query;
     }
     private String getTableName(String beginDate){
     	return "logtb_"+ParseHelper.ToDateString(ParseHelper.ToDate(beginDate), "yyyy_MM");
     }
+
+	private List<String> queryVersion(String sourceSys) throws Exception{
+		List<String> result=new ArrayList<String>();
+		if (!(sourceSys.equals("apihttp")||sourceSys.equals("renrenapihttp"))) {
+			return result;
+		}
+		List<ActionLog> resultList=Collections.synchronizedList(new ArrayList<>());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LinkedHashMap<String, String> timeHashMap= splitTimeRange(sdf.parse("2015-10-01 00:00:00"),new Date());
+		BasicDBObject query=new BasicDBObject();
+		query.put("sourceSys", sourceSys);
+		BasicDBObject columns=new BasicDBObject();
+		columns.put("requestUrl", 1);
+		
+		timeHashMap.entrySet().parallelStream().forEach(t->{
+			try {
+					String mongoName=getTableName(t.getKey());
+					System.out.println("表名称:"+mongoName);
+					List<ActionLog> partialResult= mongoService.selectResult(mongoName,query,columns);
+					resultList.addAll(partialResult);
+			} catch (Exception e) {
+				System.out.println("并行查询mongo时出错:"+e.getMessage());
+				e.printStackTrace();
+			}
+		});
+		System.out.println("并行查询mongo完成");
+
+		//String m="http://japi.edaisong.com/20151023/services/common/getrecordtypec";
+
+		result= resultList.parallelStream().map(t->{
+			int index=t.getRequestUrl().indexOf("/services/");
+			String url=t.getRequestUrl().substring(0, index);
+			int begin=url.lastIndexOf("/");
+			return url.substring(begin+1);
+		}).distinct().collect(Collectors.toList());
+		if (result.size()==1) {
+			result.clear();
+		}
+		return result;
+	}
     /**
      * 并行查询多个mongodb中的表
      * @param req
@@ -473,7 +527,7 @@ public class AdminToolsController {
 				int tempDay=a.get(Calendar.YEAR)+a.get(Calendar.MONTH)+1;
 				if(lastDay<=tempDay&&tempDay<=currentDay){
 					BasicDBObject tempReq=getQueryObj(req);
-					getWhere(tempReq,t.getKey(),t.getValue(),sdf);
+					getWhere(req,tempReq,t.getKey(),t.getValue(),sdf);
 					String mongoName=getTableName(t.getKey());
 					System.out.println("表名称:"+mongoName);
 					List<ActionLog> partialResult= mongoService.selectResult(mongoName,tempReq,columns);
@@ -497,16 +551,26 @@ public class AdminToolsController {
      * @param sdf
      * @throws Exception
      */
-    private void getWhere(BasicDBObject tempReq,String begin,String end,SimpleDateFormat sdf) throws Exception{
-		if (begin.endsWith("-01 00:00:00")) {
-			tempReq.put("requestTime", new BasicDBObject("$lte", end));// <=
-			return;
-		}
+    private void getWhere(MongoLogReq req,BasicDBObject tempReq,String begin,String end,SimpleDateFormat sdf) throws Exception{
+    	String isversion="";
+    	String isurl="";
+    	if (req.getAppversion()!=null&&!req.getAppversion().isEmpty()) {
+    		isversion="var isversion=this.requestUrl.indexOf('"+req.getAppversion()+"')>0;";
+    	}
+    	if (req.getRequestUrl()!=null&&!req.getRequestUrl().isEmpty()) {
+    		isurl="var isurl=this.requestUrl.indexOf('"+req.getRequestUrl()+"')>0;";
+    	}
 
 		String condition = "function(){"
 				+ "var init = this.requestTime.replace(new RegExp('-','gm'),'/'); "
-				+ "var initMills = (new Date(init)).getTime();" 
-				+ "return "+ sdf.parse(begin).getTime() + "<=initMills&&initMills<="+ sdf.parse(end).getTime() + ";}";
+				+ "var initMills = (new Date(init)).getTime();"
+				+ "var istime="+ sdf.parse(begin).getTime() + "<=initMills&&initMills<="+ sdf.parse(end).getTime() + ";"
+				+(isversion==""?"":isversion)
+				+(isurl==""?"":isurl)
+				+ "return istime"
+				+(isversion==""?"":"&&isversion")
+				+(isurl==""?"":"&&isurl")
+				+";}";
 		tempReq.put("$where", condition);
     }
     /**
@@ -605,13 +669,18 @@ public class AdminToolsController {
 	 * @author hailongzhao
 	 * @date 20151118
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping("logchart")
-	public ModelAndView logChart(){
+	public ModelAndView logChart() throws Exception{
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "日志图表分析");
 		view.addObject("viewPath", "admintools/logchart");
+		List<String> apihttpVersion=queryVersion("apihttp");
+		List<String> renrenapihttpVersion=queryVersion("renrenapihttp");
+		view.addObject("apihttpVersion", String.join(",", apihttpVersion));
+		view.addObject("renrenapihttpVersion",  String.join(",", renrenapihttpVersion));
 		return view;
 	}
 	/**
@@ -619,13 +688,18 @@ public class AdminToolsController {
 	 * @author hailongzhao
 	 * @date 20151118
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping("methodstatistics")
-	public ModelAndView methodStatistics(){
+	public ModelAndView methodStatistics() throws Exception{
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "日志方法统计");
 		view.addObject("viewPath", "admintools/methodstatistics");
+		List<String> apihttpVersion=queryVersion("apihttp");
+		List<String> renrenapihttpVersion=queryVersion("renrenapihttp");
+		view.addObject("apihttpVersion", String.join(",", apihttpVersion));
+		view.addObject("renrenapihttpVersion",  String.join(",", renrenapihttpVersion));
 		return view;
 	}
 	/**

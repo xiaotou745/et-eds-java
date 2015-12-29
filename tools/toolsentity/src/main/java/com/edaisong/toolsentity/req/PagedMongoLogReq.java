@@ -13,6 +13,7 @@ private String monthInfo;
 private int exceptionShowType;
 private int orderType;
 private String orderBy;
+private String appversion;
 
 private BasicDBObject queryObject;
 private BasicDBObject sortObject;
@@ -86,6 +87,14 @@ public String getOrderBy() {
 
 public void setOrderBy(String orderBy) {
 	this.orderBy = orderBy;
+}
+
+public String getAppversion() {
+	return appversion;
+}
+
+public void setAppversion(String appversion) {
+	this.appversion = appversion;
 }
 
 }

@@ -16,6 +16,8 @@ appNameList.add("business");
 appNameList.add("taobaoopenapi");
 appNameList.add("renrenadmin");
 appNameList.add("renrenapihttp");
+String apihttpVersion = request.getAttribute("apihttpVersion").toString();
+String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toString();
 
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
@@ -38,7 +40,16 @@ appNameList.add("renrenapihttp");
 							</div>
 						</div>
 					</div>
-
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">版本:</label>
+							<div class="col-sm-8">
+								<select name="appversion" class="form-control m-b" id="appversion">
+								<option value='' selected='selected'>全部版本</option>
+								</select>
+							</div>
+						</div>
+					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">请求类型:</label>
@@ -61,7 +72,10 @@ appNameList.add("renrenapihttp");
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3">
+					
+				</div>
+				<div class="row">
+				<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">步长(分钟):</label>
 							<div class="col-sm-8">
@@ -70,8 +84,6 @@ appNameList.add("renrenapihttp");
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
 				<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">请求时间:</label>
@@ -103,18 +115,7 @@ appNameList.add("renrenapihttp");
    						</div>
 						</div>
 					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">请求地址:</label>
-							<div class="col-sm-8">
-								<input type="text" placeholder="请输入请求地址" style="width:400px;"
-					class="form-control" id="requestUrl" name="requestUrl"  value="" />
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-3">
+						<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">分析指标:</label>
 							<div class="col-sm-8">
@@ -124,6 +125,22 @@ appNameList.add("renrenapihttp");
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="row">
+				<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">请求地址:</label>
+							<div class="col-sm-8">
+								<input type="text" placeholder="请输入请求地址" style="width:400px;"
+					class="form-control" id="requestUrl" name="requestUrl"  value="" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+						</div>
+					</div>
+					
 					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary"
 							id="btnSearch" style="margin-left: 3px;">查询</button>
@@ -140,7 +157,8 @@ appNameList.add("renrenapihttp");
 		<div class="ibox-content" id="content"></div>
 	</div>
 </div>
-
+<input type="hidden" value="" id="apihttpversion"/>
+<input type="hidden" value="" id="renrenapihttpversion"/>
 <script>
 $(function(){
 	  $(' .input-group.date').datepicker({
@@ -149,8 +167,23 @@ $(function(){
         forceParse: false,
         calendarWeeks: true,
         autoclose: true
-    });  
+    }); 
+		$("#apihttpversion").val("<%=apihttpVersion%>");
+		$("#renrenapihttpversion").val("<%=renrenapihttpVersion%>");
+		$("#sourceSys").on("change",function(e){
+			$("#appversion").html("<option value='' selected='selected'>全部版本</option>");
+			if($("#sourceSys").val()=="apihttp"||$("#sourceSys").val()=="renrenapihttp"){
+				var versions=$("#"+$("#sourceSys").val()+"version").val();
+				if(versions!=""){
+					var result=versions.split(",");
+					for(j=0;j<result.length;j++){  
+						$("#appversion").append("<option value='"+result[j]+"'>"+result[j]+"</option>");   
+					}
+				}
+			}
+		}); 
 });
+
 function showChart(points){    
 	var title="";
 	var showType=$('input:radio[name="showType"]:checked').val();

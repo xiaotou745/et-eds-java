@@ -16,7 +16,8 @@ appNameList.add("business");
 appNameList.add("taobaoopenapi");
 appNameList.add("renrenadmin");
 appNameList.add("renrenapihttp");
-
+String apihttpVersion = request.getAttribute("apihttpVersion").toString();
+String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toString();
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
@@ -38,7 +39,16 @@ appNameList.add("renrenapihttp");
 							</div>
 						</div>
 					</div>
-
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">版本:</label>
+							<div class="col-sm-8">
+								<select name="appversion" class="form-control m-b" id="appversion">
+								<option value='' selected='selected'>全部版本</option>
+								</select>
+							</div>
+						</div>
+					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">请求类型:</label>
@@ -121,7 +131,8 @@ appNameList.add("renrenapihttp");
 		<div class="ibox-content" id="content"></div>
 	</div>
 </div>
-
+<input type="hidden" value="" id="apihttpversion"/>
+<input type="hidden" value="" id="renrenapihttpversion"/>
 <script>
 $(function(){
 	  $(' .input-group.date').datepicker({
@@ -135,8 +146,23 @@ $(function(){
           global: {                                                               
               useUTC: false                                                       
           }                                                                       
-      });    
+      }); 
+		$("#apihttpversion").val("<%=apihttpVersion%>");
+		$("#renrenapihttpversion").val("<%=renrenapihttpVersion%>");
+		$("#sourceSys").on("change",function(e){
+			$("#appversion").html("<option value='' selected='selected'>全部版本</option>");
+			if($("#sourceSys").val()=="apihttp"||$("#sourceSys").val()=="renrenapihttp"){
+				var versions=$("#"+$("#sourceSys").val()+"version").val();
+				if(versions!=""){
+					var result=versions.split(",");
+					for(j=0;j<result.length;j++){  
+						$("#appversion").append("<option value='"+result[j]+"'>"+result[j]+"</option>");   
+					}
+				}
+			}
+		});
 });
+
 function showChart(result){                                                                  
 	  Highcharts.setOptions({                                                     
           global: {                                                               
