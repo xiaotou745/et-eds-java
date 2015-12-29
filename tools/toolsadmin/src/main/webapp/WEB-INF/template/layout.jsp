@@ -127,6 +127,13 @@ $(document).ajaxError( function(event, jqXHR, options, errorMsg){
 			} catch (e) {
 			}
 		});
+		//列表页radio改变时，自动查询
+		$("input[type='radio']").on("change",function(e){
+			try{
+				jss.search(1);
+			}catch(e){
+			}
+		});
 	});
 </script>
 <tiles:insertAttribute name="header_js" ignore="true"></tiles:insertAttribute>
