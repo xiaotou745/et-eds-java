@@ -245,9 +245,11 @@ function showChart(result){
 	    });			
 }
 function showtable(result){
-	var contentHtml="<table  class='table table-striped table-bordered table-hover dataTables-example'><thead><tr><th>RequestUrl</th><th>请求次数</th><th>异常率(%)</th><th>平均耗时(ms)</th><th>最小耗时(ms)</th><th>最大耗时(ms)</th></tr></thead><tbody>";
+	var contentHtml="<table  class='table table-striped table-bordered table-hover dataTables-example'>"+
+	"<thead><tr><th>序号</th><th>RequestUrl</th><th>请求次数</th><th>异常率(%)</th><th>平均耗时(ms)</th><th>最小耗时(ms)</th><th>最大耗时(ms)</th></tr></thead><tbody>";
 	for(var i=0;i<result.urls.length;i++){
-		contentHtml+="<tr><td>"+result.urls[i]+"</td>"+
+		contentHtml+="<tr><td>"+(i+1)+"</td>"+
+		"<td>"+result.urls[i]+"</td>"+
 		"<td>"+result.numData[i]+"</td>"+
 		"<td>"+result.rateData[i].toFixed(2)+"</td>"+
 		"<td>"+result.timeData[i].toFixed(2)+"</td>"+
