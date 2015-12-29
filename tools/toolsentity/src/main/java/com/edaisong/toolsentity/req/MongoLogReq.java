@@ -13,6 +13,8 @@ public class MongoLogReq {
 	private int exceptionShowType;
 	private int minStep;
 	private String appversion;
+	private int orderType;
+	private int orderBy;
 	private BasicDBObject queryObject;
 	public String getSourceSys() {
 		return sourceSys;
@@ -84,6 +86,22 @@ public class MongoLogReq {
 
 	public void setAppversion(String appversion) {
 		this.appversion = appversion;
+	}
+
+	public int getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(int orderBy) {
+		this.orderBy = orderBy;
+	}
+
+	public int getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(int orderType) {
+		this.orderType = orderType;
 	}
 
 

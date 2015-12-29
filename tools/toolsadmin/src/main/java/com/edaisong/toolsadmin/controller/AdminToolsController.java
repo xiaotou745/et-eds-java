@@ -504,6 +504,7 @@ public class AdminToolsController {
 		if (result.size()==1) {
 			result.clear();
 		}
+		result.sort((a,b)->{return a.compareTo(b);});
 		return result;
 	}
     /**
@@ -745,23 +746,69 @@ public class AdminToolsController {
 									return errNum * 100.00d
 											/ m.getValue().size();
 								}));
+		Map<String, Long> maxTimeData = group
+				.entrySet()
+				.parallelStream()
+				.collect(
+						Collectors.toMap(
+								Entry<String, List<ActionLog>>::getKey,
+								m -> m.getValue().parallelStream()
+										.mapToLong(t -> t.getExecuteTime())
+										.summaryStatistics().getMax()));
+
+		Map<String, Long> minTimeData = group
+				.entrySet()
+				.parallelStream()
+				.collect(
+						Collectors.toMap(
+								Entry<String, List<ActionLog>>::getKey,
+								m -> m.getValue().parallelStream()
+										.mapToLong(t -> t.getExecuteTime())
+										.summaryStatistics().getMin()));
+
+		List<String> urlsSet=null;
+		switch (req.getOrderBy()) {
+		case 0://调用次数
+			if(req.getOrderType()==-1){//降序
+				urlsSet=numData.entrySet().stream().sorted((b,a)->{return a.getValue().compareTo(b.getValue());}).map(t->t.getKey()).collect(Collectors.toList());
+			}else {
+				urlsSet=numData.entrySet().stream().sorted((a,b)->{return a.getValue().compareTo(b.getValue());}).map(t->t.getKey()).collect(Collectors.toList());
+			}
+			break;
+		case 1://平均耗时
+			if(req.getOrderType()==-1){//降序
+				urlsSet=timeData.entrySet().stream().sorted((b,a)->{return a.getValue().compareTo(b.getValue());}).map(t->t.getKey()).collect(Collectors.toList());
+			}else {
+				urlsSet=timeData.entrySet().stream().sorted((a,b)->{return a.getValue().compareTo(b.getValue());}).map(t->t.getKey()).collect(Collectors.toList());
+			}
+			break;
+		case 2://异常率
+			if(req.getOrderType()==-1){//降序
+				urlsSet=rateData.entrySet().stream().sorted((b,a)->{return a.getValue().compareTo(b.getValue());}).map(t->t.getKey()).collect(Collectors.toList());
+			}else {
+				urlsSet=rateData.entrySet().stream().sorted((a,b)->{return a.getValue().compareTo(b.getValue());}).map(t->t.getKey()).collect(Collectors.toList());
+			}
+			break;
+		default:
+			break;
+		}
 		LogChartModel result = new LogChartModel();
-		List<String> urlsList = new ArrayList<String>();
-		List<Integer> numList = new ArrayList<Integer>();
-		List<Double> timeList = new ArrayList<Double>();
-		List<Double> rateList = new ArrayList<Double>();
-		numData.keySet().forEach(t -> {
-			urlsList.add(t);
-			numList.add(numData.get(t));
-			timeList.add(timeData.get(t));
-			rateList.add(rateData.get(t));
+		result.setUrls(new ArrayList<String>());
+		result.setTimeData(new ArrayList<Double>());
+		result.setMinTimeData(new ArrayList<Long>());
+		result.setMaxTimeData(new ArrayList<Long>());
+		result.setNumData(new ArrayList<Integer>());
+		result.setRateData(new ArrayList<Double>());
+		urlsSet.forEach(t -> {
+			result.getUrls().add(t);
+			result.getNumData().add(numData.get(t));
+			result.getTimeData().add(timeData.get(t));
+			result.getMinTimeData().add(minTimeData.get(t));
+			result.getMaxTimeData().add(maxTimeData.get(t));
+			result.getRateData().add(rateData.get(t));
 		});
-		result.setNumData(numList);
-		result.setRateData(rateList);
-		result.setTimeData(timeList);
-		result.setUrls(urlsList);
 		return result;
-}
+	}
 
     /**
      * 请求次数

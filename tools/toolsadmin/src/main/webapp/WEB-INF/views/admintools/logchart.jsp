@@ -223,13 +223,8 @@ function showChart(points){
         },
         xAxis: {
             type: 'datetime',
-            //maxZoom: 14 * 24 * 3600000, // fourteen days
-//             title: {
-//                 text: null
-//             }
         labels: {  
             formatter: function() {  
-            	//return this.value;
             	return Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.value);
             	}  
         } 
@@ -245,7 +240,6 @@ function showChart(points){
                 Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
                 Highcharts.numberFormat(this.y, 2);                         
         }     
-            //shared: true
         },
         legend: {
             enabled: false
@@ -282,54 +276,59 @@ function showChart(points){
         }]
     });
 }
-$("#btnSearch").click(function(){
-	if($("#begin").val()==""){
-		alert("开始日期不能为空");
-		return;
-	}
-	if($("#end").val()==""){
-		alert("结束日期不能为空");
-		return;
-	}
-	  var intStartDate = $("#begin").val().replace(/-/g, "");
-      var intEndDate = $("#end").val().replace(/-/g, "");
-      if (intStartDate > intEndDate) {
-          alert('开始日期不能大于结束日期');
-          $('#end').val("");
-          return;
-      }
-	if($("#minStep").val()==""){
-		alert("步长不能为空");
-		return;
-	}
-	var t=parseInt($("#minStep").val());
-	if(isNaN(t)||t<=0){
-		alert("步长必须大于0");
-		return;
-	}
-	$("#beginHidden").val($("#begin").val()+" 00:00:00");
-	$("#endHidden").val($("#end").val()+" 23:59:59");
+var jss={
+		search:function(currentPage){
+			if($("#begin").val()==""){
+				alert("开始日期不能为空");
+				return;
+			}
+			if($("#end").val()==""){
+				alert("结束日期不能为空");
+				return;
+			}
+			  var intStartDate = $("#begin").val().replace(/-/g, "");
+		      var intEndDate = $("#end").val().replace(/-/g, "");
+		      if (intStartDate > intEndDate) {
+		          alert('开始日期不能大于结束日期');
+		          $('#end').val("");
+		          return;
+		      }
+			if($("#minStep").val()==""){
+				alert("步长不能为空");
+				return;
+			}
+			var t=parseInt($("#minStep").val());
+			if(isNaN(t)||t<=0){
+				alert("步长必须大于0");
+				return;
+			}
+			$("#beginHidden").val($("#begin").val()+" 00:00:00");
+			$("#endHidden").val($("#end").val()+" 23:59:59");
 
-	var paramaters=$("#searchForm").serialize();
-	var showType=$('input:radio[name="showType"]:checked').val();
-	var url = "<%=basePath%>/admintools/";
-	url=url+showType
-	$("#tip").html("正在查询。。。");
-	$("#btnSearch").attr("disabled",true);
-	$.ajax({
-		type : 'POST',
-		url : url,
-		data : paramaters,
-		success : function(result) {
-			$("#tip").html("");
-			$("#btnSearch").attr("disabled",false);
-			//alert(result);
-			showChart(result);
-		},error:function(data){
-			$("#tip").html("");
-			$("#btnSearch").attr("disabled",false);
-		}
-	});
+			var paramaters=$("#searchForm").serialize();
+			var showType=$('input:radio[name="showType"]:checked').val();
+			var url = "<%=basePath%>/admintools/";
+			url=url+showType
+			$("#tip").html("正在查询。。。");
+			$("#btnSearch").attr("disabled",true);
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data : paramaters,
+				success : function(result) {
+					$("#tip").html("");
+					$("#btnSearch").attr("disabled",false);
+					//alert(result);
+					showChart(result);
+				},error:function(data){
+					$("#tip").html("");
+					$("#btnSearch").attr("disabled",false);
+				}
+			});
+			}
+	};
+$("#btnSearch").click(function(){
+	jss.search(1);
 });
 
 </script>
