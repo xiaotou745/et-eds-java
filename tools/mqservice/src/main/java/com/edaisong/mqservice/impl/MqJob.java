@@ -18,7 +18,7 @@ public class MqJob implements Job {
 			throws JobExecutionException {
 		ActiveMqService service = contentApp.getBean(ActiveMqService.class);
 
-		service.asynSendMessage("test","123");
+//		service.asynSendMessage("test","123");
 		// 这里实现服务监听1分钟一次，如果mq停止了就发邮件，然后重启mq
 		System.out.println("输出值");
 	}
