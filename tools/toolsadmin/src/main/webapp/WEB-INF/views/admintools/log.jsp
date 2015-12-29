@@ -28,8 +28,8 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12">
-			<form method="POST" action="#" class="form-horizontal"
-				id="searchForm">
+			<form method="POST" action="" class="form-horizontal"
+				id="searchForm" onsubmit="return false;">
 				<input type="hidden" name="currentPage" id="_hiddenCurrentPage"
 					value="1" />
 				<div class="row">
@@ -133,6 +133,7 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
 					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary"
 							id="btnSearch" style="margin-left: 3px;">查询</button>
+						<span id="tip" style="color:red"></span>
 					</div>
 				</div>
 
@@ -189,8 +190,20 @@ $(function(){
 var jss={
 		search:function(currentPage){
 			    $("#_hiddenCurrentPage").val(currentPage);
+				//sourceSys下拉框改变时，会自动触发查询，此时appversion中的值还没有发生变更，因此需要特殊处理
+				if($("#sourceSys").val()!="apihttp"&&$("#sourceSys").val()!="renrenapihttp"){
+				    $("#appversion").val("");
+				}else if($("#appversion").val()!=""){
+					if($("#"+$("#sourceSys").val()+"version").val().indexOf($("#appversion").val())==-1){
+						$("#appversion").val("");
+					}
+				}
+				$("#tip").html("正在查询。。。");
+				$("#btnSearch").attr("disabled",true);
 			    var data=$("#searchForm").serialize();
 				$.post("<%=basePath%>/admintools/logdo",data, function(d) {
+					$("#tip").html("");
+					$("#btnSearch").attr("disabled",false);
 					$("#content").html(d);
 				});
 			}

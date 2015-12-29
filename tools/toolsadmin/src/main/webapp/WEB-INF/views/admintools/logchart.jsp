@@ -304,7 +304,14 @@ var jss={
 			}
 			$("#beginHidden").val($("#begin").val()+" 00:00:00");
 			$("#endHidden").val($("#end").val()+" 23:59:59");
-
+			//sourceSys下拉框改变时，会自动触发查询，此时appversion中的值还没有发生变更，因此需要特殊处理
+			if($("#sourceSys").val()!="apihttp"&&$("#sourceSys").val()!="renrenapihttp"){
+			    $("#appversion").val("");
+			}else if($("#appversion").val()!=""){
+				if($("#"+$("#sourceSys").val()+"version").val().indexOf($("#appversion").val())==-1){
+					$("#appversion").val("");
+				}
+			}
 			var paramaters=$("#searchForm").serialize();
 			var showType=$('input:radio[name="showType"]:checked').val();
 			var url = "<%=basePath%>/admintools/";
