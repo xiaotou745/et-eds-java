@@ -422,7 +422,7 @@ public class AdminToolsController {
 				req.getAppversion()!=null&&
 				!req.getAppversion().isEmpty()) {
 			String condition = "function(){"+
-					"return this.requestUrl.indexOf('"+req.getAppversion()+"')>0&&this.requestUrl.indexOf('"+req.getRequestUrl()+"')>0;}";
+					"return this.requestUrl.indexOf('"+req.getAppversion()+"')>0&&this.requestUrl.indexOf('"+req.getRequestUrl()+"')>=0;}";
 			query.put("$where", condition);
 		}else {
 			if (req.getRequestUrl()!=null&&!req.getRequestUrl().isEmpty()) {
@@ -559,7 +559,7 @@ public class AdminToolsController {
     		isversion="var isversion=this.requestUrl.indexOf('"+req.getAppversion()+"')>0;";
     	}
     	if (req.getRequestUrl()!=null&&!req.getRequestUrl().isEmpty()) {
-    		isurl="var isurl=this.requestUrl.indexOf('"+req.getRequestUrl()+"')>0;";
+    		isurl="var isurl=this.requestUrl.indexOf('"+req.getRequestUrl()+"')>=0;";
     	}
 
 		String condition = "function(){"
