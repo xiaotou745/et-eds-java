@@ -5,6 +5,8 @@ import java.util.List;
 public class LogChartModel {
 private List<String> urls;
 private List<Double> timeData;
+private List<Long> minTimeData;
+private List<Long> maxTimeData;
 private List<Double> rateData;
 private List<Integer> numData;
 public List<String> getUrls() {
@@ -30,5 +32,17 @@ public List<Integer> getNumData() {
 }
 public void setNumData(List<Integer> numData) {
 	this.numData = numData;
+}
+public List<Long> getMinTimeData() {
+	return minTimeData;
+}
+public void setMinTimeData(List<Long> minTimeData) {
+	this.minTimeData = minTimeData;
+}
+public List<Long> getMaxTimeData() {
+	return maxTimeData;
+}
+public void setMaxTimeData(List<Long> maxTimeData) {
+	this.maxTimeData = maxTimeData;
 }
 }

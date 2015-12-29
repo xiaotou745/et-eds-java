@@ -106,6 +106,31 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
+							<label class="col-sm-4 control-label">排序方式:</label>
+							<div class="col-sm-8">
+								<input type="radio" checked="checked" 
+									value="0" name="orderBy" />调用次数 <input
+									type="radio" value="1" name="orderBy"/>平均耗时
+									<input
+									type="radio" value="2" name="orderBy"/>异常率
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">排序方式:</label>
+							<div class="col-sm-8">
+								<input type="radio"
+									value="1" name="orderType" id="ASC" />升序 <input checked="checked" 
+									type="radio" value="-1" name="orderType" id="DESC" />降序
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
 							<label class="col-sm-4 control-label">请求地址:</label>
 							<div class="col-sm-8">
 								<input type="text" placeholder="请输入请求地址" style="width:400px;"
@@ -129,6 +154,9 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
 <div class="row">
 	<div class="col-lg-12">
 		<div class="ibox-content" id="content"></div>
+	</div>
+	<div class="col-lg-12">
+		<div class="ibox-content" id="content2"></div>
 	</div>
 </div>
 <input type="hidden" value="" id="apihttpversion"/>
@@ -183,21 +211,6 @@ function showChart(result){
 	        },
 	        xAxis: {
 	            categories: result.urls
-	            	
-// 	            	[
-// 	                'Jan',
-// 	                'Feb',
-// 	                'Mar',
-// 	                'Apr',
-// 	                'May',
-// 	                'Jun',
-// 	                'Jul',
-// 	                'Aug',
-// 	                'Sep',
-// 	                'Oct',
-// 	                'Nov',
-// 	                'Dec'
-// 	            ]
 	        },
 	        yAxis: {
 	            min: 0,
@@ -231,43 +244,62 @@ function showChart(result){
 	        }]
 	    });			
 }
-$("#btnSearch").click(function(){
-	if($("#begin").val()==""){
-		alert("开始日期不能为空");
-		return;
+function showtable(result){
+	var contentHtml="<table  class='table table-striped table-bordered table-hover dataTables-example'><thead><tr><th>RequestUrl</th><th>请求次数</th><th>异常率(%)</th><th>平均耗时(ms)</th><th>最小耗时(ms)</th><th>最大耗时(ms)</th></tr></thead><tbody>";
+	for(var i=0;i<result.urls.length;i++){
+		contentHtml+="<tr><td>"+result.urls[i]+"</td>"+
+		"<td>"+result.numData[i]+"</td>"+
+		"<td>"+result.rateData[i].toFixed(2)+"</td>"+
+		"<td>"+result.timeData[i].toFixed(2)+"</td>"+
+		"<td>"+result.minTimeData[i]+"</td>"+
+		"<td>"+result.maxTimeData[i]+"</td></tr>";
 	}
-	if($("#end").val()==""){
-		alert("结束日期不能为空");
-		return;
-	}
-	  var intStartDate = $("#begin").val().replace(/-/g, "");
-      var intEndDate = $("#end").val().replace(/-/g, "");
-      if (intStartDate > intEndDate) {
-          alert('开始日期不能大于结束日期');
-          $('#end').val("");
-          return;
-      }
-	$("#beginHidden").val($("#begin").val()+" 00:00:00");
-	$("#endHidden").val($("#end").val()+" 23:59:59");
+	contentHtml+="</tbody></table>";
+	$("#content2").html(contentHtml);
+}
+var jss={
+		search:function(currentPage){
+			if($("#begin").val()==""){
+				alert("开始日期不能为空");
+				return;
+			}
+			if($("#end").val()==""){
+				alert("结束日期不能为空");
+				return;
+			}
+			  var intStartDate = $("#begin").val().replace(/-/g, "");
+		      var intEndDate = $("#end").val().replace(/-/g, "");
+		      if (intStartDate > intEndDate) {
+		          alert('开始日期不能大于结束日期');
+		          $('#end').val("");
+		          return;
+		      }
+			$("#beginHidden").val($("#begin").val()+" 00:00:00");
+			$("#endHidden").val($("#end").val()+" 23:59:59");
 
-	var paramaters=$("#searchForm").serialize();
-	var url = "<%=basePath%>/admintools/methodstatisticsdo";
-	$("#tip").html("正在查询。。。");
-	$("#btnSearch").attr("disabled",true);
-	$.ajax({
-		type : 'POST',
-		url : url,
-		data : paramaters,
-		success : function(result) {
-			$("#tip").html("");
-			$("#btnSearch").attr("disabled",false);
-			//alert(result);
-			showChart(result);
-		},error:function(data){
-			$("#tip").html("");
-			$("#btnSearch").attr("disabled",false);
+			var paramaters=$("#searchForm").serialize();
+			var url = "<%=basePath%>/admintools/methodstatisticsdo";
+			$("#tip").html("正在查询。。。");
+			$("#btnSearch").attr("disabled",true);
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data : paramaters,
+				success : function(result) {
+					$("#tip").html("");
+					$("#btnSearch").attr("disabled",false);
+					//alert(result);
+					showChart(result);
+					showtable(result);
+				},error:function(data){
+					$("#tip").html("");
+					$("#btnSearch").attr("disabled",false);
+				}
+			});
 		}
-	});
+};
+$("#btnSearch").click(function(){
+	jss.search(1);
 });
 
 </script>
