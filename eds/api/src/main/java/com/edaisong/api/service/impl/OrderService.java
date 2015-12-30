@@ -1,7 +1,9 @@
 package com.edaisong.api.service.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.Double;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,6 +76,7 @@ import com.edaisong.core.util.MapUtils;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
+import com.edaisong.core.util.SmsUtils;
 import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Clienter;
@@ -2184,18 +2187,6 @@ public class OrderService implements IOrderService {
 			if (orderSubsidieslogId <= 0)
 				throw new TransactionalRuntimeException("记录补贴日志错误");
 		}
-		/*//订单小费
-		if(req.getTipamount()>0)
-		{
-			OrderTipCost otcModel=new OrderTipCost();
-			otcModel.setOrderid(order.getId());
-			otcModel.setAmount(req.getTipamount());
-			otcModel.setCreatename(businessModel.getName());			
-			
-			int otcId=orderTipCostDao.insertSelective(otcModel);
-			if (otcId <= 0)
-				throw new TransactionalRuntimeException("记录小费错误");
-		}*/
 		
 		oResp.setMealssettlemode(order.getMealssettlemode());		
 		oResp.setOrderId(order.getId());
@@ -2407,6 +2398,22 @@ public class OrderService implements IOrderService {
 				throw new TransactionalRuntimeException("更新订单小费错误");
 		}	
 
+		//发送短信
+		String Content1="尊敬的E代送用户您好，您的订单取货码是：#验证码#";
+		Content1 = Content1.replace("#验证码#", oModel.getPickupcode());
+		try {
+			SmsUtils.sendSMS(oModel.getPubphoneno(),Content1);
+		} catch (MalformedURLException | UnsupportedEncodingException e) {		
+			e.printStackTrace();
+		}		
+		String Content2="尊敬的E代送用户您好，您的订单收货码是：#验证码#";
+		Content2 = Content2.replace("#验证码#", oModel.getReceivecitycode());
+		try {
+			SmsUtils.sendSMS(oModel.getRecevicephoneno(),Content2);
+		} catch (MalformedURLException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
 		resp.setMessage(PublishOrderReturnEnum.Success.desc());
 		return resp;			
@@ -2491,6 +2498,7 @@ public class OrderService implements IOrderService {
 		{
 			odResp.setPickupcode("");
 		}
+		odResp.setReceivecode(oModel.getReceivecode());
 		odResp.setOthercancelreason(oModel.getOthercancelreason());	 		
 		odResp.setCommissiontype(oModel.getCommissiontype());	 
 		odResp.setCommissionfixvalue(oModel.getCommissionfixvalue());	 
@@ -2757,6 +2765,15 @@ public class OrderService implements IOrderService {
 		{
 			return FlashPushOrderEnum.TaketimeErr;
 		}		
+		if(req.getPubphoneno().equals(req.getRecevicephoneno()))
+		{
+			return FlashPushOrderEnum.PhoneNoIsSame;			
+		}
+		if(req.getPubaddress().equals(req.getReceviceaddress()))
+		{
+			return FlashPushOrderEnum.AddressSame;
+		}		
+		
 		
 		return FlashPushOrderEnum.VerificationSuccess;
 	}
@@ -2793,7 +2810,11 @@ public class OrderService implements IOrderService {
 		Random random = new Random();
 	    int x = random.nextInt(899999);
 		x = x+100000;
-		order.setPickupcode(String.valueOf(x));//取货吗			
+		order.setPickupcode(String.valueOf(x));//取货吗		
+		Random randomy = new Random();
+	    int y = randomy.nextInt(899999);
+		y = y+100000;
+		order.setReceivecode(String.valueOf(y));		
 		order.setRecevicename(req.getRecevicename());//收货人姓名
 		order.setRecevicephoneno(req.getRecevicephoneno());//收货人手机号
 		order.setReceviceaddress(req.getReceviceaddress());//收货人地址
@@ -2823,10 +2844,7 @@ public class OrderService implements IOrderService {
 		    				 order.setRecevicecity(bdApiBean.getResult().getAddressComponent().getCity());//收货人城市
 		    				 order.setReceiveprovince(bdApiBean.getResult().getAddressComponent().getProvince());//收货人省份
 		    				 order.setReceivearea(bdApiBean.getResult().getAddressComponent().getDistrict());//收货区域	
-		    			 }			    		
-		    			
-		    			//order.setReceivecitycode(String.valueOf(bdApiBean.getResult().getCityCode()));//收货人城市代码    			   		
-			    		  
+		    			 }   		
 		    		 }				
 		    }
 		}

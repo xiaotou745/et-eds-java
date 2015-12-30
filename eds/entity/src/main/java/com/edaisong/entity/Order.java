@@ -96,8 +96,18 @@ public class Order {
     private Integer dealcount;
 
     private String pickupcode;
+    
+    private String receivecode;        
 
-    private String othercancelreason;
+    public String getReceivecode() {
+		return receivecode;
+	}
+
+	public void setReceivecode(String receivecode) {
+		this.receivecode = receivecode;
+	}
+
+	private String othercancelreason;
 
     private Integer commissiontype;
 
