@@ -107,7 +107,15 @@ public enum FlashPushOrderEnum {
 	/**
 	 * 商户不存在
 	 */
-	BusinessNotExits(-22, "商户不存在");	
+	BusinessNotExits(-22, "商户不存在"),
+	/**
+	 * 发货电话与收货电话相同
+	 */
+	PhoneNoIsSame(-23, "发货电话与收货电话相同"),
+	/**
+	 * 发货地址与收货地址相同
+	 */
+	AddressSame(-24, "发货地址与收货地址相同");	
 	
 
 	private int value = 0;

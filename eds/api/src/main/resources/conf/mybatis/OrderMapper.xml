@@ -29,7 +29,7 @@
     OrderFrom, OriginalOrderId, OriginalOrderNo, Quantity, Weight, ReceiveProvince, ReceiveArea, 
     ReceiveProvinceCode, ReceiveCityCode, ReceiveAreaCode, OrderType, KM, GuoJuQty, LuJuQty, 
     SongCanDate, OrderCount, CommissionRate, Payment, CommissionFormulaMode, Adjustment, 
-    BusinessCommission, SettleMoney, DealCount, PickupCode, OtherCancelReason, CommissionType, 
+    BusinessCommission, SettleMoney, DealCount, PickupCode,ReceiveCode, OtherCancelReason, CommissionType, 
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
     DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
@@ -224,6 +224,9 @@
 			<if test="pickupcode != null">
 				PickupCode,
 			</if>
+			<if test="receivecode != null">
+				ReceiveCode,
+			</if>
 			<if test="othercancelreason != null">
 				OtherCancelReason,
 			</if>
@@ -417,6 +420,9 @@
 			</if>
 			<if test="pickupcode != null">
 				#{pickupcode,jdbcType=VARCHAR},
+			</if>
+				<if test="receivecode != null">
+				#{receivecode,jdbcType=VARCHAR},
 			</if>
 			<if test="othercancelreason != null">
 				#{othercancelreason,jdbcType=NVARCHAR},
