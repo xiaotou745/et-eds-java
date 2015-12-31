@@ -2584,8 +2584,9 @@ public class OrderService implements IOrderService {
 		odResp.setCity(businessModel.getCity());
 		odResp.setBalancePrice(businessModel.getBalanceprice());
 		odResp.setLatitude(businessModel.getLatitude());
-		odResp.setLongitude(businessModel.getLongitude());			
-	
+		odResp.setLongitude(businessModel.getLongitude());
+		double amountAndTip= oModel.getAmount()+oModel.getTipamount();		
+		odResp.setAmountAndTip(amountAndTip);
 				
 		odResp.setIsmodifyticket(true);
         if (ooModel.getHaduploadcount() >=  oModel.getOrdercount() && oModel.getStatus().byteValue() == OrderStatus.Complite.value())

@@ -854,7 +854,17 @@ public class OrderDetailResp extends ResponseBase{
 	    
 	    private Integer platform;
 	    
-	    private String platformstr;    
+	    private String platformstr;
+	    
+	    private Double amountAndTip;
+
+		public Double getAmountAndTip() {
+			return amountAndTip;
+		}
+
+		public void setAmountAndTip(Double amountAndTip) {
+			this.amountAndTip = amountAndTip;
+		}
 
 		public String getPlatformstr() {
 			return platformstr;
