@@ -23,6 +23,30 @@
    FROM     [OrderTip]  WITH ( NOLOCK )         
    WHERE    1 = 1  
   </select>
+  
+    <sql id="queryWhere">
+		1=1
+		<if test="amount != ''">
+			and amount=${amount}
+		</if>
+	</sql>
+	
+      <select id="query" resultType="com.edaisong.entity.OrderTip" 
+  parameterType="com.edaisong.entity.req.PagedOrderTipReq" 
+  statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+'  id DESC',
+' Id, Amount, CreateName, CreateTime, ModifyName, ModifyTime',
+' 	OrderTip WITH (NOLOCK)',
+'<include refid="queryWhere" />',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER}
+,1,
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
+)}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from OrderTip
     where Id = #{id,jdbcType=INTEGER}
@@ -37,10 +61,7 @@
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.OrderTip" >
     insert into OrderTip
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
+    <trim prefix="(" suffix=")" suffixOverrides="," >    
       <if test="amount != null" >
         Amount,
       </if>
@@ -57,10 +78,7 @@
         ModifyTime,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >   
       <if test="amount != null" >
         #{amount,jdbcType=DECIMAL},
       </if>

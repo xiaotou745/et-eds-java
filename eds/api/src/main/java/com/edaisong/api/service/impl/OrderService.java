@@ -2407,7 +2407,7 @@ public class OrderService implements IOrderService {
 			e.printStackTrace();
 		}		
 		String Content2="尊敬的E代送用户您好，您的订单收货码是：#验证码#";
-		Content2 = Content2.replace("#验证码#", oModel.getReceivecitycode());
+		Content2 = Content2.replace("#验证码#", oModel.getReceivecode());
 		try {
 			SmsUtils.sendSMS(oModel.getRecevicephoneno(),Content2);
 		} catch (MalformedURLException | UnsupportedEncodingException e) {

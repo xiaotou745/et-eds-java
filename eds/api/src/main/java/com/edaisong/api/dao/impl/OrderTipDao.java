@@ -18,6 +18,8 @@ import java.util.Map;
 
 
 
+
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -33,6 +35,7 @@ import com.edaisong.entity.domain.AccountBillDayResultModel;
 import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
+import com.edaisong.entity.domain.FeedbackModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.AccountBillBReq;
 import com.edaisong.entity.req.AccountBillCReq;
@@ -40,6 +43,7 @@ import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedAccountBillDayReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
+import com.edaisong.entity.req.PagedOrderTipReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
 
 @Repository
@@ -59,8 +63,8 @@ public class OrderTipDao extends DaoBase implements IOrderTipDao {
 
 	@Override
 	public int insertSelective(OrderTip record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().insert(
+				"IOrderTipDao.insertSelective", record);
 	}
 
 	@Override
@@ -90,6 +94,15 @@ public class OrderTipDao extends DaoBase implements IOrderTipDao {
 		return list;
 
 	}
+	@Override
+    public PagedResponse<OrderTip> query(PagedOrderTipReq req)
+    {
+		PagedResponse<OrderTip> model = getReadOnlySqlSessionUtil()
+				.selectPageList(
+						"IOrderTipDao.query",
+						req);
+		return model;
+    }
 
 
 }

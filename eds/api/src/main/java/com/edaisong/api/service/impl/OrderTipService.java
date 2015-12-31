@@ -55,6 +55,7 @@ import com.edaisong.entity.req.GetPushOrderTypeReq;
 import com.edaisong.entity.req.MyOrderBReq;
 import com.edaisong.entity.req.OrderDetailBReq;
 import com.edaisong.entity.req.PagedBusinessReq;
+import com.edaisong.entity.req.PagedOrderTipReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
 import com.edaisong.entity.resp.MyOrderBResp;
 import com.edaisong.entity.resp.MyOrderDetailBResp;
@@ -70,6 +71,15 @@ public class OrderTipService implements IOrderTipService {
 		return iOrderTipDao.getList();
 	}
 
-
+	@Override
+	public PagedResponse<OrderTip> query(PagedOrderTipReq req)
+	{
+		return iOrderTipDao.query(req);
+	}
 	
+	@Override
+	public int  add(OrderTip record)
+	{
+		return iOrderTipDao.insertSelective(record);
+	}
 }
