@@ -19,6 +19,7 @@ import com.edaisong.entity.domain.ShanSongOrderListModel;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
+import com.edaisong.entity.req.GetPushClienterIdsReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderBlancePayReq;
@@ -400,4 +401,12 @@ public interface IOrderService {
 		 */
 	    HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryShanSongOrderReq query) ;
 	    
+	    /**
+	     * 里程计算 推单  
+	     * @author CaoHeYang
+	     * @date 20160104
+	     * @param req
+	     * @return
+	     */
+	    Boolean shanSongPushOrder(GetPushClienterIdsReq req);
 }

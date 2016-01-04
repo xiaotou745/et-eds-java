@@ -114,6 +114,7 @@ import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.domain.ShanSongOrderListModel; 
+import com.edaisong.entity.req.GetPushClienterIdsReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
@@ -190,7 +191,8 @@ public class OrderService implements IOrderService {
 	private IOrderTipCostDao orderTipCostDao;
 	@Autowired
 	private GlobalConfigService globalConfigService;
- 
+	
+	
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -3012,5 +3014,22 @@ public class OrderService implements IOrderService {
 		queryOrderBResp.setOrders(orderDao.shanSongQueryOrderB(query));
 		resultModel.setResult(queryOrderBResp);
 		return resultModel;
+	}
+	
+    /**
+     * 里程计算 推单  
+     * @author CaoHeYang
+     * @date 20160104
+     * @param req
+     * @return
+     */
+	@Override
+    public   Boolean shanSongPushOrder(GetPushClienterIdsReq req){
+		List<String> clienters=clienterLocationDao.getPushClienterIds(req);
+		if (clienters==null||clienters.size()==0) {
+			return false;
+		}
+		String ids=";"+ String.join(";", clienters)+";";
+		return true;
 	}
 }
