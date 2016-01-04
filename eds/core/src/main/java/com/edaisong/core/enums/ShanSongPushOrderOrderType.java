@@ -13,7 +13,7 @@ public enum ShanSongPushOrderOrderType {
 	/**
 	 * 订单已被处理
 	 */
-	Other(1,"订单已被处理");
+	Other(2,"订单已被处理");
 	private int value = 0;
 	private String desc;
 	private ShanSongPushOrderOrderType(int value, String desc) { // 必须是private的，否则编译错误
