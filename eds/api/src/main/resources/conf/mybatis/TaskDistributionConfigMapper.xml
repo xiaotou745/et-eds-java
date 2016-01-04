@@ -11,9 +11,72 @@
  <select id="query" resultMap="BaseResultMap">
   SELECT Id,KM,KG,DistributionPrice,IsMaster FROM TaskDistributionConfig(nolock)
   </select>
-  
+   <select id="selectByKM" resultType="com.edaisong.entity.TaskDistributionConfig" parameterType="java.util.Map" >
+    select Id,KM,KG,DistributionPrice,IsMaster 
+    from TaskDistributionConfig
+    where    IsMaster!=1 and KM!=0 and KM= #{kM,jdbcType=DOUBLE} and id!=#{id,jdbcType=INTEGER}
+  </select>
+   <select id="selectByKG" resultType="com.edaisong.entity.TaskDistributionConfig" parameterType="java.util.Map" >
+    select Id,KM,KG,DistributionPrice,IsMaster 
+    from TaskDistributionConfig
+    where   IsMaster!=1 and KG!=0 and KG= #{kG,jdbcType=DOUBLE}  and id!=#{id,jdbcType=INTEGER}
+  </select>
+      <sql id="queryWhere">
+		1=1
+		<if  test="KM != null and KM != ''">	
+				and KM=''${KM}''
+		</if>
+	<if  test="KG != null and KG != ''">	
+				and KG=''${KG}''
+		</if>
+	</sql>
+        <select id="query_Sp" resultType="com.edaisong.entity.TaskDistributionConfig" 
+  parameterType="com.edaisong.entity.req.PagedTaskDistributionConfigReq" 
+  statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+'  isMaster desc,KG,KM',
+' Id,KM,KG,DistributionPrice,IsMaster',
+' 	TaskDistributionConfig WITH (NOLOCK)',
+'<include refid="queryWhere" />',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER}
+,1,
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
+)}
+  </select>
   <update id="update" parameterType="com.edaisong.entity.TaskDistributionConfig">
   	update dbo.TaskDistributionConfig set KM= #{kM,jdbcType=INTEGER},KG=#{kG,jdbcType=INTEGER},DistributionPrice= #{distributionPrice,jdbcType=DOUBLE} where Id=#{id,jdbcType=INTEGER}
   </update>
-  
+   <insert id="insertSelective" parameterType="com.edaisong.entity.TaskDistributionConfig" >
+    insert into TaskDistributionConfig
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="kM != null" >
+        KM,
+      </if>
+      <if test="kG != null" >
+        KG,
+      </if>
+      <if test="distributionPrice != null" >
+        DistributionPrice,
+      </if>
+      <if test="isMaster != null" >
+        IsMaster,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="kM != null" >
+        #{kM,jdbcType=DOUBLE},
+      </if>
+      <if test="kG != null" >
+        #{kG,jdbcType=DOUBLE},
+      </if>
+      <if test="distributionPrice != null" >
+        #{distributionPrice,jdbcType=NUMERIC},
+      </if>
+      <if test="isMaster != null" >
+        #{isMaster,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
 </mapper>

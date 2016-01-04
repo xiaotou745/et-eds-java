@@ -102,9 +102,8 @@ width: 100%;
 	function showAdd(){ 
         $('#txtAmount').val('');
         $('#addOrderTip').modal('show');
-}
-	
-	//保存集团商户
+}	
+
 	function saveAddOrderTip(){
 		var txtAmount= $('#txtAmount').val().trim();	
 	 
