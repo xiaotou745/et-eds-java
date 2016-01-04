@@ -30,6 +30,7 @@ import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.dao.inter.IClienterLocationDao;
+import com.edaisong.api.dao.inter.IClienterPushLogDao;
 import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
@@ -66,12 +67,15 @@ import com.edaisong.core.enums.OrderPlatform;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.ShanSongOrderStatus;
+import com.edaisong.core.enums.ShanSongPushOrderOrderType;
+import com.edaisong.core.enums.SignalrPushMessageType;
 import com.edaisong.core.enums.Strategy;
 import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.HttpUtil;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.MapUtils;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
@@ -81,6 +85,7 @@ import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterBalanceRecord;
+import com.edaisong.entity.ClienterPushLog;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
@@ -114,6 +119,8 @@ import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.domain.ShanSongOrderListModel; 
+import com.edaisong.entity.domain.ShanSongPushOrder;
+import com.edaisong.entity.domain.SignalrPushMessage;
 import com.edaisong.entity.req.GetPushClienterIdsReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OptOrder;
@@ -191,6 +198,9 @@ public class OrderService implements IOrderService {
 	private IOrderTipCostDao orderTipCostDao;
 	@Autowired
 	private GlobalConfigService globalConfigService;
+	
+	@Autowired
+	private IClienterPushLogDao clienterPushLog;
 	
 	
 	/**
@@ -3017,19 +3027,39 @@ public class OrderService implements IOrderService {
 	}
 	
     /**
-     * 里程计算 推单  
+     * 里程计算 推单  (新订单)
      * @author CaoHeYang
      * @date 20160104
      * @param req
+     * @param orderId
      * @return
      */
 	@Override
-    public   Boolean shanSongPushOrder(GetPushClienterIdsReq req){
+    public   Boolean shanSongPushOrder(GetPushClienterIdsReq req,int orderId){
 		List<String> clienters=clienterLocationDao.getPushClienterIds(req);
 		if (clienters==null||clienters.size()==0) {
 			return false;
 		}
-		String ids=";"+ String.join(";", clienters)+";";
-		return true;
+		String ids=";"+ String.join(";", clienters)+";";  //所有可以接收消息的骑士ids
+
+		ShanSongPushOrder model=new ShanSongPushOrder();
+		model.setClienterIds(ids);
+		model.setOrderId(orderId);
+		model.setOrderType(ShanSongPushOrderOrderType.New.value());
+		
+		SignalrPushMessage<ShanSongPushOrder> message=
+				new SignalrPushMessage<ShanSongPushOrder>(
+						SignalrPushMessageType.ShanSongPushOrder.value(),
+						model);
+		String res= HttpUtil.sendPost("http://172.18.10.26:10001/PushMessage.ashx", "msginfo=" +JsonUtil.obj2string(message));
+		if (res.equals("success")) {
+			ClienterPushLog log=new ClienterPushLog();
+			log.setOrderId(ParseHelper.ToLong(orderId,0));
+			log.setClienterIds(ids);
+			clienterPushLog.insert(log);
+			return true;
+		}else {
+			return false;
+		}
 	}
 }

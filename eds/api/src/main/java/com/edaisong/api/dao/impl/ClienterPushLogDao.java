@@ -1,8 +1,11 @@
 package com.edaisong.api.dao.impl;
 
 import java.util.List;
+
 import org.springframework.stereotype.Repository;
+
 import com.edaisong.api.common.DaoBase;
+import com.edaisong.api.dao.inter.IClienterPushLogDao;
 import com.edaisong.entity.ClienterPushLog;
 
 /**

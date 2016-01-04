@@ -1,4 +1,4 @@
-package com.edaisong.api.dao.impl;
+package com.edaisong.api.dao.inter;
 
 import java.util.List;
 import com.edaisong.entity.ClienterPushLog;

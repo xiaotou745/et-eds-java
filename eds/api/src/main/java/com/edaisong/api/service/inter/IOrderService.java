@@ -406,7 +406,8 @@ public interface IOrderService {
 	     * @author CaoHeYang
 	     * @date 20160104
 	     * @param req
+	     * @param orderId
 	     * @return
 	     */
-	    Boolean shanSongPushOrder(GetPushClienterIdsReq req);
+	    Boolean shanSongPushOrder(GetPushClienterIdsReq req,int orderId);
 }
