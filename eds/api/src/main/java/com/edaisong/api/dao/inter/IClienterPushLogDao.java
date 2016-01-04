@@ -1,6 +1,7 @@
 package com.edaisong.api.dao.inter;
 
 import java.util.List;
+
 import com.edaisong.entity.ClienterPushLog;
 
 /**
@@ -42,5 +43,21 @@ public interface IClienterPushLogDao {
 	 * @param iD 主键 自增ID
 	 */
 	ClienterPushLog getById(Long iD);
+	
+	/**
+	 * 根据orderId得到一个对象实体
+	 * @author wangyuchuan
+	 * @date 2016-01-04 09:48:19
+	 * @param iD 主键 自增ID
+	 */
+	ClienterPushLog selectByOrderId(Long orderId);
+	
+	/**
+	 * 更新 订单处理后（接单取消订单）推送时间
+	 * @author wangyuchuan
+	 * @date 2016-01-04 09:48:19
+	 * @param clienterPushLog 要更改的对象
+	 */
+	 Integer updateProcessTime(Long id);
 
 }

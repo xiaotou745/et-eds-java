@@ -402,7 +402,7 @@ public interface IOrderService {
 	    HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryShanSongOrderReq query) ;
 	    
 	    /**
-	     * 里程计算 推单  
+	     * 里程计算 推单   新订单
 	     * @author CaoHeYang
 	     * @date 20160104
 	     * @param req
@@ -410,4 +410,13 @@ public interface IOrderService {
 	     * @return
 	     */
 	    Boolean shanSongPushOrder(GetPushClienterIdsReq req,int orderId);
+	    /**
+	     * 里程计算 推单   订单已被处理
+	     * @author CaoHeYang
+	     * @date 20160104
+	     * @param orderId
+	     * @return
+	     */
+	    Boolean shanSongPushOrder(int orderId);
 }
+

@@ -25,11 +25,16 @@ public class ClienterPushLog {
 	private String clienterIds;
 
 	/**
-	 * 推送时间
+	 * 新订单推送时间
 	 */
 	private Date createTime;
 
 
+	/**
+	 * 订单处理后（接单取消订单）推送时间
+	 */
+	private Date processTime;
+	
 	/**
 	 * 获取主键 自增ID
 	 */
@@ -73,17 +78,31 @@ public class ClienterPushLog {
 	}
 
 	/**
-	 * 推送时间
+	 * 新订单推送时间
 	 */
 	public Date getCreateTime() {
 		return createTime;
 	}
 	/**
-	 * 推送时间
-	 * @param createTime 推送时间
+	 * 新订单推送时间
+	 * @param createTime 新订单推送时间
 	 */
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	/**
+	 * 订单处理后（接单取消订单）推送时间
+	 * @return
+	 */
+	public Date getProcessTime() {
+		return processTime;
+	}
+	/**
+	 * 订单处理后（接单取消订单）推送时间
+	 * @param processTime
+	 */
+	public void setProcessTime(Date processTime) {
+		this.processTime = processTime;
 	}
 
 

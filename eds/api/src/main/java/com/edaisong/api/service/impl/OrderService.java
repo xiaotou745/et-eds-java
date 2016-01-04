@@ -200,7 +200,7 @@ public class OrderService implements IOrderService {
 	private GlobalConfigService globalConfigService;
 	
 	@Autowired
-	private IClienterPushLogDao clienterPushLog;
+	private IClienterPushLogDao clienterPushLogDao;
 	
 	
 	/**
@@ -3041,7 +3041,6 @@ public class OrderService implements IOrderService {
 			return false;
 		}
 		String ids=";"+ String.join(";", clienters)+";";  //所有可以接收消息的骑士ids
-
 		ShanSongPushOrder model=new ShanSongPushOrder();
 		model.setClienterIds(ids);
 		model.setOrderId(orderId);
@@ -3056,7 +3055,38 @@ public class OrderService implements IOrderService {
 			ClienterPushLog log=new ClienterPushLog();
 			log.setOrderId(ParseHelper.ToLong(orderId,0));
 			log.setClienterIds(ids);
-			clienterPushLog.insert(log);
+			clienterPushLogDao.insert(log);
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	/**
+     * 里程计算 推单  (新订单)
+     * @author CaoHeYang
+     * @date 20160104
+     * @param req
+     * @param orderId
+     * @return
+     */
+	@Override
+    public   Boolean shanSongPushOrder(int orderId){
+		ClienterPushLog log=clienterPushLogDao.selectByOrderId(ParseHelper.ToLong(orderId,0));
+		if (log==null) {
+			return false;
+		}
+		ShanSongPushOrder model=new ShanSongPushOrder();
+		model.setClienterIds(log.getClienterIds());
+		model.setOrderId(orderId);
+		model.setOrderType(ShanSongPushOrderOrderType.Other.value());
+		
+		SignalrPushMessage<ShanSongPushOrder> message=
+				new SignalrPushMessage<ShanSongPushOrder>(
+						SignalrPushMessageType.ShanSongPushOrder.value(),
+						model);
+		String res= HttpUtil.sendPost("http://172.18.10.26:10001/PushMessage.ashx", "msginfo=" +JsonUtil.obj2string(message));
+		if (res.equals("success")&&clienterPushLogDao.updateProcessTime(log.getID())>0) {
 			return true;
 		}else {
 			return false;
