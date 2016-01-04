@@ -34,7 +34,7 @@ public class FileUploadController {
 			resultModel.setRemark("loadFrom不能为空");
 			return resultModel;
 		}
-		loadFrom=UploadFrom.Clienter;
+		//loadFrom=UploadFrom.Clienter;
 		return UploadFileHelper.UploadImg(request,loadFrom);
 	}
 	/**
