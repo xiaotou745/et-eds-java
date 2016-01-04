@@ -16,7 +16,7 @@
 		cpl.ID,cpl.OrderId,cpl.ClienterIds,cpl.CreateTime,cpl.ProcessTime
 	</sql>
 
-	<insert id="insert" parameterType="com.edaisong.entity.domain.ClienterPushLog" useGeneratedKeys="true" keyProperty="iD">
+	<insert id="insert" parameterType="com.edaisong.entity.ClienterPushLog" useGeneratedKeys="true" keyProperty="iD">
 		insert into ClienterPushLog(OrderId,ClienterIds,CreateTime)
 		values(
 			#{orderId,jdbcType=BIGINT},
@@ -25,7 +25,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.edaisong.entity.domain.ClienterPushLog">
+	<update id="update" parameterType="com.edaisong.entity.ClienterPushLog">
 		update ClienterPushLog
 		set OrderId=#{orderId,jdbcType=BIGINT},
 			ClienterIds=#{clienterIds,jdbcType=VARCHAR},
