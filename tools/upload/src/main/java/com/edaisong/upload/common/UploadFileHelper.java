@@ -197,8 +197,8 @@ public class UploadFileHelper {
 			int year = cal.get(Calendar.YEAR);// 获取年份
 			int month = cal.get(Calendar.MONTH) + 1;// 获取月份
 			int day = cal.get(Calendar.DATE);// 获取日
-			int hour = cal.get(Calendar.HOUR);// 小时
-			String temp = year + "/" + month + "/" + day + "/" + hour;
+			int hour = cal.get(Calendar.HOUR_OF_DAY);// 小时
+			String temp = year + "/" + String.format("%02d", month) + "/" + String.format("%02d", day) + "/" + String.format("%02d", hour);
 			fullPath = rootPath +"/" + temp;
 			// 创建目录
 			FileUtil.createDirectory(fullPath);
