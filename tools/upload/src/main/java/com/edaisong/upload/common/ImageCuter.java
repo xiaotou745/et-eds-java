@@ -6,7 +6,13 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+
+//import com.sun.image.codec.jpeg.JPEGCodec;
+//import com.sun.image.codec.jpeg.JPEGEncodeParam;
+//import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
 import javax.imageio.ImageIO;
 
 public class ImageCuter {
@@ -96,7 +102,6 @@ public class ImageCuter {
 		BufferedImage tag = new BufferedImage(width, height, 1);
 		Graphics g = tag.getGraphics();
 		g.drawImage(img.getScaledInstance(width, height, 4), 0, 0, null);
-
 		g.dispose();
 		return tag;
 	}
@@ -114,6 +119,7 @@ public class ImageCuter {
 	 */
 	private static void saveSubImage(BufferedImage image,
 			Rectangle subImageBounds, File destImageFile) throws IOException {
+		//writeHighQuality(image,destImageFile.getPath());
 		String fileName = destImageFile.getName();
 		String formatName = fileName.substring(fileName.lastIndexOf('.') + 1);
 		BufferedImage subImage = new BufferedImage(subImageBounds.width,
@@ -139,4 +145,21 @@ public class ImageCuter {
 		g.dispose();
 		ImageIO.write(subImage, formatName, destImageFile);
 	}
+	 @SuppressWarnings("restriction")
+	private static  boolean writeHighQuality(BufferedImage im, String fileFullPath) {  
+         try {  
+             /*输出到文件流*/  
+//             FileOutputStream newimage = new FileOutputStream(fileFullPath);  
+//             JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(newimage);  
+//             JPEGEncodeParam jep = JPEGCodec.getDefaultJPEGEncodeParam(im);  
+//             /* 压缩质量 */  
+//             jep.setQuality(1f, true);  
+//             encoder.encode(im, jep);  
+//            /*近JPEG编码*/  
+//             newimage.close();  
+             return true;  
+         } catch (Exception e) {  
+             return false;  
+         }  
+     }  
 }
