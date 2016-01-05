@@ -63,6 +63,7 @@ import com.edaisong.core.enums.FlashPushOrderEnum;
 import com.edaisong.core.enums.OrderDetailGet;
 import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderOperationCommon;
+import com.edaisong.core.enums.OrderPayment;
 import com.edaisong.core.enums.OrderPlatform;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
@@ -2532,6 +2533,13 @@ public class OrderService implements IOrderService {
 			odResp.setPlatformstr(OrderPlatform.FastOrder.desc());
 		if(oModel.getPlatform()==3)
 			odResp.setPlatformstr(OrderPlatform.FlashOrder.desc());
+		
+		if(oModel.getPayment()==0)
+			odResp.setPaymentstr(OrderPayment.Balance.desc());
+		if(oModel.getPayment()==1)
+			odResp.setPaymentstr(OrderPayment.Zhifubao.desc());
+		if(oModel.getPayment()==2)
+			odResp.setPaymentstr(OrderPayment.Weixin.desc());
 		
 		odResp.setPubname(oModel.getPubname());	 
 		odResp.setPubphoneno(oModel.getPubphoneno());		
