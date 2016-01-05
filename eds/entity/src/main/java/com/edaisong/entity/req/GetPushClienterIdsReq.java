@@ -12,6 +12,22 @@ public class GetPushClienterIdsReq {
 	private int minuteInfo;
 	private int distance;
 
+	public GetPushClienterIdsReq(){
+		
+	}
+	/**
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 * @param minuteInfo
+	 * @param distance
+	 */
+    public GetPushClienterIdsReq(Double latitude,Double longitude,int minuteInfo,int distance){
+		this.latitude=latitude;
+		this.longitude=longitude;
+		this.minuteInfo=minuteInfo;
+		this.distance=distance;
+	}
 	/**
 	 * 发单纬度
 	 * 
