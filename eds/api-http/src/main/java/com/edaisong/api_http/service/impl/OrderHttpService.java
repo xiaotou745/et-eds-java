@@ -415,6 +415,7 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @param req
 	 * @return
 	 */
+	@Override
 	public HttpResultModel<Boolean> shanSongPushOrder(ShanSongPushOrderReq req) {
 		HttpResultModel<Boolean> res = new HttpResultModel<Boolean>();
 		return res.setResult(orderService.shanSongPushOrder(req.getOrderId()));
