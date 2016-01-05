@@ -418,5 +418,20 @@ public interface IOrderService {
 	     * @return
 	     */
 	    Boolean shanSongPushOrder(int orderId);
+		/**
+		 * 异步里程计算 推单  (处理订单) 
+		 * @author CaoHeYang
+		 * @date 20150105
+		 * @param orderId
+		 */
+		 void asyncShanSongPushOrder(int orderId);
+	    /**
+		 *  异步里程计算 推单  (新订单) 
+		 *  @author CaoHeYang
+		 *  @date 20150105
+		 * @param req
+		 * @param orderId
+		 */
+		 void asyncShanSongPushOrder(GetPushClienterIdsReq req,int orderId);
 }
 
