@@ -117,8 +117,11 @@ width: 100%;
             <div class="control-group">  
                 <label>重量：</label><input  name="txtUKG" id="txtUKG" type="text" >
             </div>
+            <div class="control-group">  
+                <label>计价阶梯：</label><input  name="txtUSteps" id="txtUSteps" type="text" >
+            </div>            
               <div class="control-group">  
-                <label>配送费：</label><input  name="txtUDistributionPrice" id="txtUDistributionPrice" type="text" >
+                <label>金额：</label><input  name="txtUDistributionPrice" id="txtUDistributionPrice" type="text" >
             </div>
         </fieldset>
 				</div>
@@ -153,8 +156,11 @@ width: 100%;
             <div class="control-group">  
                 <label>重量：</label><input  name="txtEKG" id="txtEKG" type="text" >
             </div>
+                    <div class="control-group">  
+                <label>计价阶梯：</label><input  name="txtESteps" id="txtESteps" type="text" >
+            </div>     
               <div class="control-group">  
-                <label>配送费：</label><input  name="txtEDistributionPrice" id="txtEDistributionPrice" type="text" >
+                <label>金额：</label><input  name="txtEDistributionPrice" id="txtEDistributionPrice" type="text" >
             </div>
               <div class="control-group">  
                 <label>备注：</label>
@@ -187,13 +193,13 @@ width: 100%;
 					<fieldset>
             <br>
             <div class="control-group">  
-                <label>距离：</label><input  name="txtCKM" id="txtUKM" type="text" >
+                <label>距离：</label><input  name="txtCKM" id="txtCKM" type="text" >
             </div>
             <div class="control-group">  
-                <label>重量：</label><input  name="txtCKG" id="txtUKG" type="text" >
+                <label>重量：</label><input  name="txtCKG" id="txtCKG" type="text" >
             </div>      
               <div class="control-group">  
-                <label>配送费：</label><input  name="txtPSF" id="txtPSF" type="text" >
+                <label>配送费：</label><input  name="txtPSF" id="txtPSF" type="text"  disabled="disabled">
             </div>       
         </fieldset>
 				</div>
@@ -235,12 +241,14 @@ width: 100%;
 	function showAdd(){ 
         $('#txtUKM').val('0');
         $('#txtUKG').val('0');
+        $('#txtUSteps').val('1');
         $('#txtUDistributionPrice').val('0');
         $('#addConfig').modal('show');
 }
 	function saveAdd(){
 		var txtKM= $('#txtUKM').val().trim();
 		var txtKG= $('#txtUKG').val().trim();	
+		var txtSteps= $('#txtUSteps').val().trim();
 		var txtDistributionPrice= $('#txtUDistributionPrice').val().trim();		
 
 		 if(txtKM == "")
@@ -263,6 +271,17 @@ width: 100%;
 			 alert("距离， 重量必须有1个值不能为0");
 			return;		 
 		 }
+		 if(txtUSteps == "")
+		 {
+			 alert("计价阶梯不能为空");
+		    return;
+		 }
+		 if(txtUSteps == "0")
+		 {
+			 alert("计价阶梯不能为0");
+		    return;
+		 }
+		 
 		 if(txtDistributionPrice == "")
 		 {
 			 alert("配送费");
@@ -276,10 +295,12 @@ width: 100%;
 	    var paramaters = {
                 "KM": txtKM.trim(),
                 "KG": txtKG.trim(),
+                "Steps": txtSteps.trim(),
                 "DistributionPrice": txtDistributionPrice.trim(),
             };
+	    
        var url = "<%=basePath%>/taskdistributionconfig/add";
-	   var la= layer.confirm('是否确认创建配置费？', {
+       var la= layer.confirm('是否确认创建配置费？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
 		},function(){
@@ -297,7 +318,7 @@ width: 100%;
 		        	  
 		           }
 		       });
-		});       	    
+		});  
 	}
 	
 	function saveModify()
@@ -305,6 +326,7 @@ width: 100%;
 		var txtId= $('#txtEId').val().trim();
 		var txtKM= $('#txtEKM').val().trim();
 		var txtKG= $('#txtEKG').val().trim();
+		var txtESteps= $('#txtESteps').val().trim();
 		var txtERemark= $('#txtERemark').val().trim();	
 		var txtDistributionPrice= $('#txtEDistributionPrice').val().trim();		
 		var txtEIsMaster= $('#txtEIsMaster').val().trim();		
@@ -339,12 +361,23 @@ width: 100%;
 				if(txtDistributionPrice<=0){
 				    	alert("配送费必须大于零");
 				    	return;
-				   }		  
+				   }	
+				 if(txtESteps == "")
+				 {
+					 alert("计价阶梯不能为空");
+				    return;
+				 }
+				 if(txtESteps == "0")
+				 {
+					 alert("计价阶梯不能为0");
+				    return;
+				 }
 			 }
 	    var paramaters = {	    		
 	    		"Id": txtId.trim(),
                 "KM": txtKM.trim(),
-                "KG": txtKG.trim(),                
+                "KG": txtKG.trim(),
+                "Steps": txtESteps.trim(),                
                 "DistributionPrice": txtDistributionPrice.trim(),
                 "IsMaster": txtEIsMaster.trim(),
                 "Remark": txtERemark.trim(),
@@ -371,8 +404,8 @@ width: 100%;
 		});       	    
 	}
 	function showCalculator(){ 
-		 $('#txtUKM').val('0');
-	     $('#txtUKG').val('0');
+		 $('#txtCKM').val('0');
+	     $('#txtCKG').val('0');
 	     $('#txtPSF').val('0');
         $('#CalculatorConfig').modal('show');
 }
@@ -399,25 +432,17 @@ width: 100%;
                 "KG": txtKG.trim()           
             };
         var url = "<%=basePath%>/taskdistributionconfig/calculator"; 
-	   var la= layer.confirm('是否确认创建配置费？', {
-		    btn: ['确认','取消'], //按钮
-		    shade: false //显示遮罩
-		},function(){
-			layer.close(la);
+	
 			$.ajax({
 		           type: 'POST',
 		           url: url,
 		           data: paramaters,
-		           success: function (result) {		    
-		        	   alert(result.message);		        	
-		               if (result.status == 1) {
- 		            	   window.location.href = "<%=basePath%>/taskdistributionconfig/list";		 
-		               }
-		                              
-		        	  
+		           success: function (result) {		   
+		        	   
+		        	   $('#txtPSF').val(result);
+
 		           }
-		       });
-		});       	    
+		       });	       	    
 	}
 	</script>		
 	

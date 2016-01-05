@@ -196,7 +196,62 @@ public class TaskDistributionConfigService implements
 	
 	public double calculator(TaskDistributionConfig record)
 	{
-		//double 
-		return 0;
+		double cost=0;
+		List<TaskDistributionConfig> list= taskDistributionConfigDao.query();
+		if (list==null)
+			return cost;
+		
+		double baseKM=list.get(0).getkM();
+		double baseKG=list.get(0).getkG();
+		double baseDistributionPrice=list.get(0).getDistributionPrice();		
+		
+		double kmDistributionPrice=0.0;
+		for (int i = 1; i < list.size(); i++)
+		{
+			double currKM=list.get(i).getkM();
+			double currDistributionPrice=list.get(i).getDistributionPrice();
+			int currSteps=list.get(i).getSteps();
+			
+			if(currKM>baseKM && record.getkM()>currKM)//获取第一个符合的值
+			{		
+				int currFlg=0;
+				if((record.getkM()-currKM)%currSteps==0)
+				{
+					currFlg= (int)(record.getkM()-currKM)/currSteps;
+				}
+				else
+				{
+					currFlg= (int)(record.getkM()-currKM)/currSteps+1;
+				}
+				
+				kmDistributionPrice=currDistributionPrice*currFlg;
+				break;
+			}
+		}
+		
+		double kgDistributionPrice=0.0;
+		for (int i = 1; i < list.size(); i++)
+		{
+			double currKG=list.get(i).getkG();
+			double currDistributionPrice=list.get(i).getDistributionPrice();
+			int currSteps=list.get(i).getSteps();
+			
+			if(currKG>baseKG && record.getkG()>currKG)//获取第一个符合的值
+			{			
+				int currFlg=0;
+				if((record.getkG()-currKG)%currSteps==0)
+				{
+					 currFlg= (int)(record.getkG()-currKG)/currSteps;
+				}
+				else
+				{					
+					currFlg= (int)(record.getkG()-currKG)/currSteps+1;
+				}
+				kgDistributionPrice=currDistributionPrice*currFlg;
+				break;
+			}
+		}
+		cost=baseDistributionPrice+kmDistributionPrice+kgDistributionPrice;
+		return cost;
 	}
 }

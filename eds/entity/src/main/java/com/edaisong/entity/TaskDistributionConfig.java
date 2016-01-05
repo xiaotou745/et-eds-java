@@ -4,6 +4,15 @@ public class TaskDistributionConfig {
 	private int id;
 	private int kM;
 	private int kG;
+	
+	private int steps;
+	
+	public int getSteps() {
+		return steps;
+	}
+	public void setSteps(int steps) {
+		this.steps = steps;
+	}
 	private double distributionPrice;
 	private int isMaster;	
 	private String remark;

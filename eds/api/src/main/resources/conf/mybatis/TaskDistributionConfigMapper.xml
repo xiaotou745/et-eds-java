@@ -5,11 +5,12 @@
     <id column="Id" property="id" jdbcType="INTEGER" />
     <result column="KM" property="kM" jdbcType="INTEGER" />
     <result column="KG" property="kG" jdbcType="INTEGER" />
+    <result column="Steps" property="steps" jdbcType="INTEGER" />
     <result column="DistributionPrice" property="distributionPrice" jdbcType="DOUBLE" />
     <result column="IsMaster" property="isMaster" jdbcType="INTEGER" />
   </resultMap>
  <select id="query" resultMap="BaseResultMap">
-  SELECT Id,KM,KG,DistributionPrice,IsMaster,Remark FROM TaskDistributionConfig(nolock)
+  SELECT Id,KM,KG,DistributionPrice,Steps,IsMaster,Remark FROM TaskDistributionConfig(nolock)   order by IsMaster desc,km desc,kg desc
   </select>
    <select id="selectByKM" resultType="com.edaisong.entity.TaskDistributionConfig" parameterType="java.util.Map" >
     select Id,KM,KG,DistributionPrice,IsMaster 
@@ -35,7 +36,7 @@
   statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
 '  isMaster desc,KG,KM',
-' Id,KM,KG,DistributionPrice,IsMaster,Remark',
+' Id,KM,KG,Steps,DistributionPrice,IsMaster,Remark',
 ' 	TaskDistributionConfig WITH (NOLOCK)',
 '<include refid="queryWhere" />',
 #{pageSize,mode=IN,jdbcType=INTEGER},
@@ -50,7 +51,7 @@
     where Id = #{id,jdbcType=INTEGER}
   </delete>
   <update id="update" parameterType="com.edaisong.entity.TaskDistributionConfig">
-  	update dbo.TaskDistributionConfig set KM= #{kM,jdbcType=INTEGER},KG=#{kG,jdbcType=INTEGER},DistributionPrice= #{distributionPrice,jdbcType=DOUBLE},Remark= #{remark,jdbcType=NVARCHAR} where Id=#{id,jdbcType=INTEGER}
+  	update dbo.TaskDistributionConfig set KM= #{kM,jdbcType=INTEGER},KG=#{kG,jdbcType=INTEGER},Steps=#{steps,jdbcType=INTEGER},DistributionPrice= #{distributionPrice,jdbcType=DOUBLE},Remark= #{remark,jdbcType=NVARCHAR} where Id=#{id,jdbcType=INTEGER}
   </update>
    <insert id="insertSelective" parameterType="com.edaisong.entity.TaskDistributionConfig" >
     insert into TaskDistributionConfig
@@ -60,6 +61,9 @@
       </if>
       <if test="kG != null" >
         KG,
+      </if>
+            <if test="steps != null" >
+        Steps,
       </if>
       <if test="distributionPrice != null" >
         DistributionPrice,
@@ -74,6 +78,9 @@
       </if>
       <if test="kG != null" >
         #{kG,jdbcType=DOUBLE},
+      </if>
+       <if test="steps != null" >
+        #{steps,jdbcType=INTEGER},
       </if>
       <if test="distributionPrice != null" >
         #{distributionPrice,jdbcType=NUMERIC},
