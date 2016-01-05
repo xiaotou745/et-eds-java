@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.edaisong.dao.inter.IClienterPushLogDao">
+<mapper namespace="com.edaisong.api.dao.inter.IClienterPushLogDao">
 
 	<resultMap type="com.edaisong.entity.ClienterPushLog" id="baseResultMap">
 		<id property="iD" column="ID" jdbcType="BIGINT"></id>
@@ -17,11 +17,10 @@
 	</sql>
 
 	<insert id="insert" parameterType="com.edaisong.entity.ClienterPushLog" useGeneratedKeys="true" keyProperty="iD">
-		insert into ClienterPushLog(OrderId,ClienterIds,CreateTime)
+		insert into ClienterPushLog(OrderId,ClienterIds)
 		values(
 			#{orderId,jdbcType=BIGINT},
-			#{clienterIds,jdbcType=VARCHAR},
-			#{createTime,jdbcType=TIMESTAMP}
+			#{clienterIds,jdbcType=VARCHAR}
 		)
 	</insert>
 
