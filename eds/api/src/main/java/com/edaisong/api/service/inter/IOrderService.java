@@ -19,6 +19,7 @@ import com.edaisong.entity.domain.ShanSongOrderListModel;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
+import com.edaisong.entity.req.GetPushClienterIdsReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderBlancePayReq;
@@ -400,4 +401,37 @@ public interface IOrderService {
 		 */
 	    HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryShanSongOrderReq query) ;
 	    
+	    /**
+	     * 里程计算 推单   新订单
+	     * @author CaoHeYang
+	     * @date 20160104
+	     * @param req
+	     * @param orderId
+	     * @return
+	     */
+	    Boolean shanSongPushOrder(GetPushClienterIdsReq req,int orderId);
+	    /**
+	     * 里程计算 推单   订单已被处理
+	     * @author CaoHeYang
+	     * @date 20160104
+	     * @param orderId
+	     * @return
+	     */
+	    Boolean shanSongPushOrder(int orderId);
+		/**
+		 * 异步里程计算 推单  (处理订单) 
+		 * @author CaoHeYang
+		 * @date 20150105
+		 * @param orderId
+		 */
+		 void asyncShanSongPushOrder(int orderId);
+	    /**
+		 *  异步里程计算 推单  (新订单) 
+		 *  @author CaoHeYang
+		 *  @date 20150105
+		 * @param req
+		 * @param orderId
+		 */
+		 void asyncShanSongPushOrder(GetPushClienterIdsReq req,int orderId);
 }
+

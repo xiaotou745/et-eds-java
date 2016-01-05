@@ -30,6 +30,7 @@ import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
 import com.edaisong.api.dao.inter.IClienterDao;
 import com.edaisong.api.dao.inter.IClienterLocationDao;
+import com.edaisong.api.dao.inter.IClienterPushLogDao;
 import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IOrderChildDao;
 import com.edaisong.api.dao.inter.IOrderDao;
@@ -62,16 +63,20 @@ import com.edaisong.core.enums.FlashPushOrderEnum;
 import com.edaisong.core.enums.OrderDetailGet;
 import com.edaisong.core.enums.OrderFrom;
 import com.edaisong.core.enums.OrderOperationCommon;
+import com.edaisong.core.enums.OrderPayment;
 import com.edaisong.core.enums.OrderPlatform;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.ShanSongOrderStatus;
+import com.edaisong.core.enums.ShanSongPushOrderOrderType;
+import com.edaisong.core.enums.SignalrPushMessageType;
 import com.edaisong.core.enums.Strategy;
 import com.edaisong.core.enums.SuperPlatform;
 import com.edaisong.core.enums.TaskStatus;
 import com.edaisong.core.enums.returnenums.QueryOrderReturnEnum;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.HttpUtil;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.MapUtils;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
@@ -81,6 +86,7 @@ import com.edaisong.entity.Business;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterBalanceRecord;
+import com.edaisong.entity.ClienterPushLog;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
@@ -114,6 +120,9 @@ import com.edaisong.entity.domain.RegionOrderDetail;
 import com.edaisong.entity.domain.RegionOrderTotal;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.domain.ShanSongOrderListModel; 
+import com.edaisong.entity.domain.ShanSongPushOrder;
+import com.edaisong.entity.domain.SignalrPushMessage;
+import com.edaisong.entity.req.GetPushClienterIdsReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.BusinessMoney;
@@ -190,7 +199,11 @@ public class OrderService implements IOrderService {
 	private IOrderTipCostDao orderTipCostDao;
 	@Autowired
 	private GlobalConfigService globalConfigService;
- 
+	
+	@Autowired
+	private IClienterPushLogDao clienterPushLogDao;
+	
+	
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -2210,6 +2223,12 @@ public class OrderService implements IOrderService {
 		resp.setResult(oResp);
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
 		resp.setMessage(PublishOrderReturnEnum.Success.desc());
+		
+		//异步发送Signalr通知   caoheyang 20160105
+		asyncShanSongPushOrder(new GetPushClienterIdsReq(order.getPickuplatitude(),
+				order.getPickuplongitude(),
+				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderTimeInfo")),
+				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderDistanceInfo"))*1000),orderId);
 		return resp;
 	}
 	
@@ -2407,7 +2426,7 @@ public class OrderService implements IOrderService {
 			e.printStackTrace();
 		}		
 		String Content2="尊敬的E代送用户您好，您的订单收货码是：#验证码#";
-		Content2 = Content2.replace("#验证码#", oModel.getReceivecitycode());
+		Content2 = Content2.replace("#验证码#", oModel.getReceivecode());
 		try {
 			SmsUtils.sendSMS(oModel.getRecevicephoneno(),Content2);
 		} catch (MalformedURLException | UnsupportedEncodingException e) {
@@ -2521,6 +2540,13 @@ public class OrderService implements IOrderService {
 		if(oModel.getPlatform()==3)
 			odResp.setPlatformstr(OrderPlatform.FlashOrder.desc());
 		
+		if(oModel.getPayment()==0)
+			odResp.setPaymentstr(OrderPayment.Balance.desc());
+		if(oModel.getPayment()==1)
+			odResp.setPaymentstr(OrderPayment.Zhifubao.desc());
+		if(oModel.getPayment()==2)
+			odResp.setPaymentstr(OrderPayment.Weixin.desc());
+		
 		odResp.setPubname(oModel.getPubname());	 
 		odResp.setPubphoneno(oModel.getPubphoneno());		
 		odResp.setTaketype(oModel.getTaketype()); 
@@ -2584,8 +2610,9 @@ public class OrderService implements IOrderService {
 		odResp.setCity(businessModel.getCity());
 		odResp.setBalancePrice(businessModel.getBalanceprice());
 		odResp.setLatitude(businessModel.getLatitude());
-		odResp.setLongitude(businessModel.getLongitude());			
-	
+		odResp.setLongitude(businessModel.getLongitude());
+		double amountAndTip= oModel.getAmount()+oModel.getTipamount();		
+		odResp.setAmountAndTip(amountAndTip);
 				
 		odResp.setIsmodifyticket(true);
         if (ooModel.getHaduploadcount() >=  oModel.getOrdercount() && oModel.getStatus().byteValue() == OrderStatus.Complite.value())
@@ -3012,4 +3039,112 @@ public class OrderService implements IOrderService {
 		resultModel.setResult(queryOrderBResp);
 		return resultModel;
 	}
+	
+    /**
+     * 里程计算 推单  (新订单)
+     * @author CaoHeYang
+     * @date 20160104
+     * @param req
+     * @param orderId
+     * @return
+     */
+	@Override
+    public   Boolean shanSongPushOrder(GetPushClienterIdsReq req,int orderId){
+		try{
+			List<String> clienters=clienterLocationDao.getPushClienterIds(req);
+			if (clienters==null||clienters.size()==0) {
+				return false;
+			}
+			String ids=";"+ String.join(";", clienters)+";";  //所有可以接收消息的骑士ids
+			ShanSongPushOrder model=new ShanSongPushOrder();
+			model.setClienterIds(ids);
+			model.setOrderId(orderId);
+			model.setOrderType(ShanSongPushOrderOrderType.New.value());
+			
+			SignalrPushMessage<ShanSongPushOrder> message=
+					new SignalrPushMessage<ShanSongPushOrder>(
+							SignalrPushMessageType.ShanSongPushOrder.value(),
+							model);
+			String res= HttpUtil.sendPost(PropertyUtils.getProperty("SignalrPushMessageUrl"), "msginfo=" +JsonUtil.obj2string(message));
+			if (res.equals("success")) {
+				ClienterPushLog log=new ClienterPushLog();
+				log.setOrderId(ParseHelper.ToLong(orderId,0));
+				log.setClienterIds(ids);
+				clienterPushLogDao.insert(log);
+				return true;
+			}else {
+				return false;
+			}
+		}catch(Exception ex){
+			return false;
+		}
+		
+	}
+	
+	/**
+     * 里程计算 推单  (处理订单)
+     * @author CaoHeYang
+     * @date 20160104
+     * @param req
+     * @param orderId
+     * @return
+     */
+	@Override
+    public   Boolean shanSongPushOrder(int orderId){
+		try {
+			ClienterPushLog log = clienterPushLogDao.selectByOrderId(ParseHelper.ToLong(orderId, 0));
+			if (log == null) {
+				return false;
+			}
+			ShanSongPushOrder model = new ShanSongPushOrder();
+			model.setClienterIds(log.getClienterIds());
+			model.setOrderId(orderId);
+			model.setOrderType(ShanSongPushOrderOrderType.Other.value());
+
+			SignalrPushMessage<ShanSongPushOrder> message = new SignalrPushMessage<ShanSongPushOrder>(SignalrPushMessageType.ShanSongPushOrder.value(), model);
+			String res = HttpUtil.sendPost(PropertyUtils.getProperty("SignalrPushMessageUrl"), "msginfo=" + JsonUtil.obj2string(message));
+			if (res.equals("success") && clienterPushLogDao.updateProcessTime(log.getID()) > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception ex) {
+			return false;
+		}
+	}
+	/**
+	 * 异步里程计算 推单  (处理订单) 
+	 * @author CaoHeYang
+	 * @date 20150105
+	 * @param orderId
+	 */
+	public void asyncShanSongPushOrder(int orderId){
+		Thread dThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				 shanSongPushOrder(orderId);
+			}
+		});
+		dThread.setDaemon(false);
+		dThread.start();
+	}
+	
+	/**
+	 *  异步里程计算 推单  (新订单) 
+	 *  @author CaoHeYang
+	 *  @date 20150105
+	 * @param req
+	 * @param orderId
+	 */
+	public void asyncShanSongPushOrder(GetPushClienterIdsReq req,int orderId){
+		Thread dThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				 shanSongPushOrder(req,orderId);
+			}
+		});
+		dThread.setDaemon(false);
+		dThread.start();
+	}
+	
 }

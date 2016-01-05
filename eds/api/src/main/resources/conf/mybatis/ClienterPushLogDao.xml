@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.edaisong.api.dao.inter.IClienterPushLogDao">
+
+	<resultMap type="com.edaisong.entity.ClienterPushLog" id="baseResultMap">
+		<id property="iD" column="ID" jdbcType="BIGINT"></id>
+		<result property="orderId" column="OrderId" jdbcType="BIGINT" />
+		<result property="clienterIds" column="ClienterIds" jdbcType="VARCHAR" />
+		<result property="createTime" column="CreateTime" jdbcType="TIMESTAMP" />
+		<result property="processTime" column="ProcessTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="baseColumnList">
+		cpl.ID,cpl.OrderId,cpl.ClienterIds,cpl.CreateTime,cpl.ProcessTime
+	</sql>
+
+	<insert id="insert" parameterType="com.edaisong.entity.ClienterPushLog" useGeneratedKeys="true" keyProperty="iD">
+		insert into ClienterPushLog(OrderId,ClienterIds)
+		values(
+			#{orderId,jdbcType=BIGINT},
+			#{clienterIds,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.edaisong.entity.ClienterPushLog">
+		update ClienterPushLog
+		set OrderId=#{orderId,jdbcType=BIGINT},
+			ClienterIds=#{clienterIds,jdbcType=VARCHAR},
+			CreateTime=#{createTime,jdbcType=TIMESTAMP}
+		where ID=#{iD,jdbcType=BIGINT} 
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from ClienterPushLog where ID=#{iD,jdbcType=BIGINT} 
+	</delete>
+
+	<select id="getById" resultMap="baseResultMap" parameterType="java.lang.Integer">
+		select <include refid="baseColumnList"></include> from ClienterPushLog cpl(nolock) where ID=#{iD,jdbcType=BIGINT} 
+	</select>
+
+	<select id="select" resultMap="baseResultMap">
+		select <include refid="baseColumnList"></include> from ClienterPushLog cpl(nolock) where ID=#{iD,jdbcType=BIGINT} 
+	</select>
+     <!-- 查询某个订单的推送记录  add by caoheyang  20160104-->
+     <select id="selectByOrderId"  parameterType="java.lang.Integer"  resultMap="baseResultMap">
+		select <include refid="baseColumnList"></include> from ClienterPushLog cpl(nolock) where OrderId=#{orderId,jdbcType=BIGINT} 
+	</select>
+	
+	<!--更新 订单处理后（接单取消订单）推送时间  add by caoheyang  20160104-->
+     <update id="updateProcessTime" parameterType="java.lang.Long">
+		update ClienterPushLog
+		set ProcessTime=getdate() 
+		where ID=#{id} 
+	</update>
+
+</mapper>

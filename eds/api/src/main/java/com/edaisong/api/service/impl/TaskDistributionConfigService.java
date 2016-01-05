@@ -11,11 +11,19 @@ import com.edaisong.api.dao.inter.IBiDao;
 import com.edaisong.api.dao.inter.IOptLogDao;
 import com.edaisong.api.dao.inter.ITaskDistributionConfigDao;
 import com.edaisong.api.service.inter.ITaskDistributionConfigService;
+import com.edaisong.core.enums.FlashPushOrderEnum;
 import com.edaisong.core.enums.OptLogEnum;
+import com.edaisong.core.enums.PublishOrderReturnEnum;
+import com.edaisong.core.enums.TaskDistributionConfigEnum;
 import com.edaisong.entity.OptLog;
+import com.edaisong.entity.OrderTip;
 import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.HttpResultModel;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.PagedOrderTipReq;
+import com.edaisong.entity.req.PagedTaskDistributionConfigReq;
 import com.edaisong.entity.req.TaskDistributionConfigReq;
+import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.TaskDistributionConfigResp;
 
 @Service
@@ -119,8 +127,92 @@ public class TaskDistributionConfigService implements
 			// e.printStackTrace();
 //			throw new TransactionalRuntimeException("错误啦");
 			return 0;
-		}
+		}	
+		
+	
 
 	}
 
+	@Override
+	public PagedResponse<TaskDistributionConfig> query(
+			PagedTaskDistributionConfigReq req) {
+		return taskDistributionConfigDao.query(req);		
+	}
+
+	@Override
+	public HttpResultModel<TaskDistributionConfigResp> add(TaskDistributionConfig record) {
+		
+		HttpResultModel<TaskDistributionConfigResp> resp = new HttpResultModel<TaskDistributionConfigResp>();
+
+		if(record.getkM()>0)
+		{
+			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(0, record.getkM());
+			if(selectModel!=null)
+			{
+				resp.setStatus(TaskDistributionConfigEnum.KMErr.value());
+				resp.setMessage(TaskDistributionConfigEnum.KMErr.desc());
+				return resp;
+			}
+		}
+		else
+		{
+			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(0, record.getkG());
+			if(selectModel!=null)
+			{
+				resp.setStatus(TaskDistributionConfigEnum.KGErr.value());
+				resp.setMessage(TaskDistributionConfigEnum.KGErr.desc());
+				return resp;
+			}
+		}
+		taskDistributionConfigDao.insertSelective(record);
+		resp.setStatus(TaskDistributionConfigEnum.Success.value());
+		resp.setMessage(TaskDistributionConfigEnum.Success.desc());		
+		return resp;
+	}
+	
+	@Override
+	public  HttpResultModel<TaskDistributionConfigResp> modify(TaskDistributionConfig record)
+	{
+		HttpResultModel<TaskDistributionConfigResp> resp = new HttpResultModel<TaskDistributionConfigResp>();
+
+		if(record.getkM()>0)
+		{
+			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(record.getId(), record.getkM());
+			if(selectModel!=null)
+			{
+				resp.setStatus(TaskDistributionConfigEnum.KMErr.value());
+				resp.setMessage(TaskDistributionConfigEnum.KMErr.desc());
+				return resp;
+			}
+		}
+		else
+		{
+			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(record.getId(), record.getkG());
+			if(selectModel!=null)
+			{
+				resp.setStatus(TaskDistributionConfigEnum.KGErr.value());
+				resp.setMessage(TaskDistributionConfigEnum.KGErr.desc());
+				return resp;
+			}
+		}
+		taskDistributionConfigDao.update(record);
+		resp.setStatus(TaskDistributionConfigEnum.Success.value());
+		resp.setMessage(TaskDistributionConfigEnum.Success.desc());		
+		return resp;
+	}
+	
+	public TaskDistributionConfig selectByKM(int id, double km)
+	{
+		return taskDistributionConfigDao.selectByKM(id,km);	
+	}
+	
+	public TaskDistributionConfig selectByKG(int id,double kg)
+	{
+		return taskDistributionConfigDao.selectByKG(id,kg);	
+	}
+    
+	public int deleteByPrimaryKey(Integer id)
+	{
+		return taskDistributionConfigDao.deleteByPrimaryKey(id);	
+	}
 }

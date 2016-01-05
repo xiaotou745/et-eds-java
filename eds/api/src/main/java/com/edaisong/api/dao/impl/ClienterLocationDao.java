@@ -12,6 +12,7 @@ import com.edaisong.api.dao.inter.IClienterLocationDao;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.ClienterLocation;
 import com.edaisong.entity.common.Location;
+import com.edaisong.entity.req.GetPushClienterIdsReq;
 
 @Repository
 public class ClienterLocationDao extends DaoBase implements IClienterLocationDao {
@@ -69,5 +70,16 @@ public class ClienterLocationDao extends DaoBase implements IClienterLocationDao
 		maps.put("clienterId",  clienterId);
 		return getReadOnlySqlSessionUtil().selectList("IClienterLocationDao.getLocationsByTime", maps);
 	}
-
+    /**
+     * 里程计算获取商家指定范围内的骑士 
+     * @author CaoHeYang
+     * @date 20160104
+     * @param req
+     * @return
+     */
+	@Override
+	public List<String> getPushClienterIds(GetPushClienterIdsReq req) {
+		return getReadOnlySqlSessionUtil().selectList("IClienterLocationDao.getPushClienterIds", req);
+	}
+	
 }

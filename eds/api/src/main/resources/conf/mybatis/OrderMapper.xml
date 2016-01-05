@@ -1584,7 +1584,7 @@ GROUP BY a.id ,
 	<!-- 后台E单订单列表页面   查询列集合 add by caoheyang 20151124 -->
 	<sql id="getShanSongOrdersColums">
 		a.Id,a.OrderNo,a.PubDate,a.PickUpAddress,a.BusinessId,a.ReceviceAddress,ISNULL(a.ClienterId, 0) clienterId ,
-                    a.PickupCode ,a.[Status],a.Amount,a.Weight,a. KM ,
+                    a.PickupCode ,a.[Status],a.Amount,a.Weight,a. KM ,a.ReceiveCode,
         c.TrueName ClienterName,
         c.PhoneNo ClienterPhoneNo,
         b.PhoneNo BusinessPhoneNo 
@@ -1710,7 +1710,7 @@ where
   	<!-- 后台E单订单详情页面 add by caoheyang 20151124 -->
 <select id="getShanSongOrderByNo" resultType="com.edaisong.entity.domain.ShanSongOrderListModel"
 		parameterType="java.lang.String">
-select 	 a.Id ,a.OrderNo ,a.PickUpAddress,a.BusinessId ,a.ReceviceAddress ,a.clienterId ,a.PickupCode ,
+select 	 a.Id ,a.OrderNo ,a.PickUpAddress,a.BusinessId ,a.ReceviceAddress ,a.clienterId ,a.PickupCode ,a.ReceiveCode,
 a.[status],a.Amount,a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
 a.ReceviceName ,  a.[PubDate],
 ISNULL(c.TrueName,'匿名') ClienterName,

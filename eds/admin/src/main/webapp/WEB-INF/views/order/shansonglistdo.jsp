@@ -25,6 +25,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			<th style="width: 200px;text-align:center;">费用信息</th>
 			<th style="width: 150px;text-align:center;">骑士信息</th>
 		    <th style="width: 220px;text-align:center;">取货码</th>
+		    <th style="width: 220px;text-align:center;">收货码</th>
 		    <th style="width: 150px;text-align:center;">订单状态</th>
 			<th style="width: 60px;text-align:center;">操作</th>
 		</tr>
@@ -53,6 +54,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			<td><%=ParseHelper.ShowString(data.get(i).getClienterName())%> <br/>
 			<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getPickupCode())%></td>
+			<td><%=ParseHelper.ShowString(data.get(i).getReceiveCode())%></td>
 			<td>	<%=ShanSongOrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td>  
 			<%if(data.get(i).getStatus()!=ShanSongOrderStatus.WaitPay.value()&&data.get(i).getStatus()!=ShanSongOrderStatus.PayClose.value()){%>
