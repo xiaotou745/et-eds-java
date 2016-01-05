@@ -52,6 +52,44 @@ public class QueryOrder {
 	private String grabTime;
 	private String pubName;
 	private double balancePrice;
+	private Double amountAndTip;
+	 private String receivecode;
+	 private String paymentstr;
+	 private String platformstr;
+
+	 public Double getAmountAndTip() {
+		return amountAndTip;
+	}
+
+	public void setAmountAndTip(Double amountAndTip) {
+		this.amountAndTip = amountAndTip;
+	}
+
+	public String getReceivecode() {
+		return receivecode;
+	}
+
+	public void setReceivecode(String receivecode) {
+		this.receivecode = receivecode;
+	}
+
+	public String getPaymentstr() {
+		return paymentstr;
+	}
+
+	public void setPaymentstr(String paymentstr) {
+		this.paymentstr = paymentstr;
+	}
+
+	public String getPlatformstr() {
+		return platformstr;
+	}
+
+	public void setPlatformstr(String platformstr) {
+		this.platformstr = platformstr;
+	}
+
+
 	/**
 	 * 订单Id
 	 */
