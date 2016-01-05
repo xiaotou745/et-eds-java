@@ -159,8 +159,7 @@ public class UploadFileHelper {
 		while (fii.hasNext()) {
 			FileItem fis = (FileItem) fii.next();
 			if (fis.isFormField() || fis.getName().length() <= 0) {
-				result.setRemark("请选择文件");
-				return result;
+				continue;
 			}
 			if (fis.getSize() > 1000000) {
 				result.setRemark("上传文件大小超过限制");
