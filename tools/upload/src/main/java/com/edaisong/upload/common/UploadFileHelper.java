@@ -156,19 +156,19 @@ public class UploadFileHelper {
 		String rootPath = "";
 		while (fii.hasNext()) {
 			FileItem fis = (FileItem) fii.next();
-			if (fis.isFormField() && fis.getFieldName().equals("loadFrom")) {
+			if (fis.isFormField() && fis.getFieldName().equals("uploadFrom")) {
 				String loadFromValue=fis.getString("utf-8");
 				if (loadFromValue==null||loadFromValue.trim().isEmpty()) {
-					result.setRemark("loadFrom不能为空");
+					result.setRemark("uploadFrom不能为空");
 					return result;
 				}
 				if(!StringUtils.isNumeric(loadFromValue.trim())){
-					result.setRemark("loadFrom值错误,只能为数字");
+					result.setRemark("uploadFrom值错误,只能为数字");
 					return result;
 				}
 				UploadFrom loadFrom=UploadFrom.getEnum(Integer.parseInt(loadFromValue));
 				if (loadFrom==null) {
-					result.setRemark("loadFrom值错误");
+					result.setRemark("uploadFrom值错误");
 					return result;
 				}
 				result.setLoadFrom(loadFrom.value());
