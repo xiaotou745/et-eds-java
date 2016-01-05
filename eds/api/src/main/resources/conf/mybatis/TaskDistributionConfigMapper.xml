@@ -9,7 +9,7 @@
     <result column="IsMaster" property="isMaster" jdbcType="INTEGER" />
   </resultMap>
  <select id="query" resultMap="BaseResultMap">
-  SELECT Id,KM,KG,DistributionPrice,IsMaster FROM TaskDistributionConfig(nolock)
+  SELECT Id,KM,KG,DistributionPrice,IsMaster,Remark FROM TaskDistributionConfig(nolock)
   </select>
    <select id="selectByKM" resultType="com.edaisong.entity.TaskDistributionConfig" parameterType="java.util.Map" >
     select Id,KM,KG,DistributionPrice,IsMaster 
@@ -35,7 +35,7 @@
   statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
 '  isMaster desc,KG,KM',
-' Id,KM,KG,DistributionPrice,IsMaster',
+' Id,KM,KG,DistributionPrice,IsMaster,Remark',
 ' 	TaskDistributionConfig WITH (NOLOCK)',
 '<include refid="queryWhere" />',
 #{pageSize,mode=IN,jdbcType=INTEGER},
@@ -50,7 +50,7 @@
     where Id = #{id,jdbcType=INTEGER}
   </delete>
   <update id="update" parameterType="com.edaisong.entity.TaskDistributionConfig">
-  	update dbo.TaskDistributionConfig set KM= #{kM,jdbcType=INTEGER},KG=#{kG,jdbcType=INTEGER},DistributionPrice= #{distributionPrice,jdbcType=DOUBLE} where Id=#{id,jdbcType=INTEGER}
+  	update dbo.TaskDistributionConfig set KM= #{kM,jdbcType=INTEGER},KG=#{kG,jdbcType=INTEGER},DistributionPrice= #{distributionPrice,jdbcType=DOUBLE},Remark= #{remark,jdbcType=NVARCHAR} where Id=#{id,jdbcType=INTEGER}
   </update>
    <insert id="insertSelective" parameterType="com.edaisong.entity.TaskDistributionConfig" >
     insert into TaskDistributionConfig

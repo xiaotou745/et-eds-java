@@ -109,5 +109,11 @@ public class TaskDistributionConfigController {
 	public int del(Integer id) {
 		return taskDistributionConfigService.deleteByPrimaryKey(id);
 	}
+	
+	@RequestMapping("calculator")
+	@ResponseBody
+	public double calculator(TaskDistributionConfig record) {
+		return taskDistributionConfigService.calculator(record);
+	}
 
 }

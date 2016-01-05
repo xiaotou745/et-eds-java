@@ -5,7 +5,9 @@ public class TaskDistributionConfig {
 	private int kM;
 	private int kG;
 	private double distributionPrice;
-	private int isMaster;
+	private int isMaster;	
+	private String remark;
+
 	public int getId() {
 		return id;
 	}
@@ -37,5 +39,10 @@ public class TaskDistributionConfig {
 		this.isMaster = isMaster;
 	}
 
-	
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 }

@@ -1810,7 +1810,10 @@ where a.orderno=#{ordernNo}
         ISNULL(o.OriginalOrderNo, '''') as OriginalOrderNo ,
         o.OrderCommission ,o.PubName,
         b.GroupId ,o.[Platform],isnull(o.KM,0) km,isnull(o.[Weight],0) weight,o.PickupCode,
-        ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
+        ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName,
+        o.amount+o.tipamount as amountAndTip,o.receivecode,
+case o.Payment when 0 then ''余额''  when 1 then ''支付宝''  when 2 then ''微信'' end paymentstr,
+case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送商户版''  when 3 then ''E代送智能调度'' end platformstr
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="shanSongqueryOrderFrom">

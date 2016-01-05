@@ -42,33 +42,10 @@ public class TaskDistributionConfigService implements
 	 * 获取普通任务配送费配置
 	 * */
 	@Override
-	public HttpResultModel<TaskDistributionConfigResp> getTaskDistributionConfig() {
-		HttpResultModel<TaskDistributionConfigResp> resultModel=new HttpResultModel<TaskDistributionConfigResp>();
+	public HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig() {
+		HttpResultModel<List<TaskDistributionConfig>> resultModel=new HttpResultModel<List<TaskDistributionConfig>>();
 		List<TaskDistributionConfig> list= taskDistributionConfigDao.query();//获取所有配送费配置 
-		if(list==null || list.size()!=3)
-		{
-			resultModel.setMessage("任务配送费配置错误");
-			resultModel.setResult(null);
-			resultModel.setStatus(0);
-			return resultModel;
-		}
-		
-		//开始组装
-		TaskDistributionConfigResp response=new TaskDistributionConfigResp();
-		
-		TaskDistributionConfig config= list.get(0);
-		response.setMasterKM(config.getkM());
-		response.setMasterKG(config.getkG());
-		response.setMasterDistributionPrice(config.getDistributionPrice());
-		
-		config =list.get(1);
-		response.setOneKM(config.getkM());
-		response.setOneDistributionPrice(config.getDistributionPrice());
-		config=list.get(2);
-		response.setTwoKG(config.getkG());
-		response.setTwoDistributionPrice(config.getDistributionPrice());
-		
-		resultModel.setResult(response);
+		resultModel.setResult(list);
 		return resultModel;
 	}
 
@@ -175,7 +152,8 @@ public class TaskDistributionConfigService implements
 	{
 		HttpResultModel<TaskDistributionConfigResp> resp = new HttpResultModel<TaskDistributionConfigResp>();
 
-		if(record.getkM()>0)
+		
+		if(record.getIsMaster()==0 &&record.getkM()>0)
 		{
 			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(record.getId(), record.getkM());
 			if(selectModel!=null)
@@ -185,7 +163,7 @@ public class TaskDistributionConfigService implements
 				return resp;
 			}
 		}
-		else
+		else if(record.getIsMaster()==0 &&record.getkM()==0)
 		{
 			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(record.getId(), record.getkG());
 			if(selectModel!=null)
@@ -214,5 +192,11 @@ public class TaskDistributionConfigService implements
 	public int deleteByPrimaryKey(Integer id)
 	{
 		return taskDistributionConfigDao.deleteByPrimaryKey(id);	
+	}
+	
+	public double calculator(TaskDistributionConfig record)
+	{
+		//double 
+		return 0;
 	}
 }

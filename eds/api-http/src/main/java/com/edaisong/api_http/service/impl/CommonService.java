@@ -56,7 +56,7 @@ public class CommonService implements ICommonService {
 	* 获取普通任务配送费配置
 	* */
 	@Override
-	public HttpResultModel<TaskDistributionConfigResp> getTaskDistributionConfig() {
+	public HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig() {
 		return taskDistributionConfigService.getTaskDistributionConfig();
 	}
 	

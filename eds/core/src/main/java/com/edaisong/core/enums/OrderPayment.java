@@ -7,9 +7,9 @@ public enum OrderPayment {
 	 */
 	Balance(0, "余额"),
 	/**
-	 * 余额
+	 * 支付宝
 	 */
-	Zhifubao(1, "余额"),
+	Zhifubao(1, "支付宝"),
 	/**
 	 * 微信
 	 */

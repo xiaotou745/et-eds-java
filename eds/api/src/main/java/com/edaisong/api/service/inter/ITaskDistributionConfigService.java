@@ -33,7 +33,7 @@ public interface ITaskDistributionConfigService {
 	* @date 2015年11月26日 09:54:08
 	* 获取普通任务配送费配置
 	* */
-	HttpResultModel<TaskDistributionConfigResp> getTaskDistributionConfig();
+	HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig();
 	
 	
 	PagedResponse<TaskDistributionConfig> query(PagedTaskDistributionConfigReq req);
@@ -47,4 +47,6 @@ public interface ITaskDistributionConfigService {
 	TaskDistributionConfig selectByKG(int id,double kg);
 	
 	int deleteByPrimaryKey(Integer id);
+	
+	double calculator(TaskDistributionConfig record);
 }
