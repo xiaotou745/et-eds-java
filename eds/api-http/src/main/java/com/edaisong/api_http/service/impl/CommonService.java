@@ -36,10 +36,6 @@ public class CommonService implements ICommonService {
 	 */
 	@Override
 	public HttpResultModel<List<RecordType>> getRecordtypeB() {
-		
-		order.shanSongPushOrder(121);
-	
-		
 		HttpResultModel<List<RecordType>> resultModel=new HttpResultModel<List<RecordType>>();
        resultModel.setResult(RecordtypeHelper.getRecordtypeB());
        return resultModel;
