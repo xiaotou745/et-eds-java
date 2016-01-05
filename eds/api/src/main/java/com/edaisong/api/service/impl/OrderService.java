@@ -2223,6 +2223,12 @@ public class OrderService implements IOrderService {
 		resp.setResult(oResp);
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
 		resp.setMessage(PublishOrderReturnEnum.Success.desc());
+		
+		//异步发送Signalr通知   caoheyang 20160105
+		asyncShanSongPushOrder(new GetPushClienterIdsReq(order.getPickuplatitude(),
+				order.getPickuplongitude(),
+				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderTimeInfo")),
+				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderDistanceInfo"))*1000),orderId);
 		return resp;
 	}
 	
@@ -3044,34 +3050,39 @@ public class OrderService implements IOrderService {
      */
 	@Override
     public   Boolean shanSongPushOrder(GetPushClienterIdsReq req,int orderId){
-		List<String> clienters=clienterLocationDao.getPushClienterIds(req);
-		if (clienters==null||clienters.size()==0) {
+		try{
+			List<String> clienters=clienterLocationDao.getPushClienterIds(req);
+			if (clienters==null||clienters.size()==0) {
+				return false;
+			}
+			String ids=";"+ String.join(";", clienters)+";";  //所有可以接收消息的骑士ids
+			ShanSongPushOrder model=new ShanSongPushOrder();
+			model.setClienterIds(ids);
+			model.setOrderId(orderId);
+			model.setOrderType(ShanSongPushOrderOrderType.New.value());
+			
+			SignalrPushMessage<ShanSongPushOrder> message=
+					new SignalrPushMessage<ShanSongPushOrder>(
+							SignalrPushMessageType.ShanSongPushOrder.value(),
+							model);
+			String res= HttpUtil.sendPost(PropertyUtils.getProperty("SignalrPushMessageUrl"), "msginfo=" +JsonUtil.obj2string(message));
+			if (res.equals("success")) {
+				ClienterPushLog log=new ClienterPushLog();
+				log.setOrderId(ParseHelper.ToLong(orderId,0));
+				log.setClienterIds(ids);
+				clienterPushLogDao.insert(log);
+				return true;
+			}else {
+				return false;
+			}
+		}catch(Exception ex){
 			return false;
 		}
-		String ids=";"+ String.join(";", clienters)+";";  //所有可以接收消息的骑士ids
-		ShanSongPushOrder model=new ShanSongPushOrder();
-		model.setClienterIds(ids);
-		model.setOrderId(orderId);
-		model.setOrderType(ShanSongPushOrderOrderType.New.value());
 		
-		SignalrPushMessage<ShanSongPushOrder> message=
-				new SignalrPushMessage<ShanSongPushOrder>(
-						SignalrPushMessageType.ShanSongPushOrder.value(),
-						model);
-		String res= HttpUtil.sendPost("http://172.18.10.26:10001/PushMessage.ashx", "msginfo=" +JsonUtil.obj2string(message));
-		if (res.equals("success")) {
-			ClienterPushLog log=new ClienterPushLog();
-			log.setOrderId(ParseHelper.ToLong(orderId,0));
-			log.setClienterIds(ids);
-			clienterPushLogDao.insert(log);
-			return true;
-		}else {
-			return false;
-		}
 	}
 	
 	/**
-     * 里程计算 推单  (新订单)
+     * 里程计算 推单  (处理订单)
      * @author CaoHeYang
      * @date 20160104
      * @param req
@@ -3080,24 +3091,60 @@ public class OrderService implements IOrderService {
      */
 	@Override
     public   Boolean shanSongPushOrder(int orderId){
-		ClienterPushLog log=clienterPushLogDao.selectByOrderId(ParseHelper.ToLong(orderId,0));
-		if (log==null) {
-			return false;
-		}
-		ShanSongPushOrder model=new ShanSongPushOrder();
-		model.setClienterIds(log.getClienterIds());
-		model.setOrderId(orderId);
-		model.setOrderType(ShanSongPushOrderOrderType.Other.value());
-		
-		SignalrPushMessage<ShanSongPushOrder> message=
-				new SignalrPushMessage<ShanSongPushOrder>(
-						SignalrPushMessageType.ShanSongPushOrder.value(),
-						model);
-		String res= HttpUtil.sendPost("http://172.18.10.26:10001/PushMessage.ashx", "msginfo=" +JsonUtil.obj2string(message));
-		if (res.equals("success")&&clienterPushLogDao.updateProcessTime(log.getID())>0) {
-			return true;
-		}else {
+		try {
+			ClienterPushLog log = clienterPushLogDao.selectByOrderId(ParseHelper.ToLong(orderId, 0));
+			if (log == null) {
+				return false;
+			}
+			ShanSongPushOrder model = new ShanSongPushOrder();
+			model.setClienterIds(log.getClienterIds());
+			model.setOrderId(orderId);
+			model.setOrderType(ShanSongPushOrderOrderType.Other.value());
+
+			SignalrPushMessage<ShanSongPushOrder> message = new SignalrPushMessage<ShanSongPushOrder>(SignalrPushMessageType.ShanSongPushOrder.value(), model);
+			String res = HttpUtil.sendPost(PropertyUtils.getProperty("SignalrPushMessageUrl"), "msginfo=" + JsonUtil.obj2string(message));
+			if (res.equals("success") && clienterPushLogDao.updateProcessTime(log.getID()) > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception ex) {
 			return false;
 		}
 	}
+	/**
+	 * 异步里程计算 推单  (处理订单) 
+	 * @author CaoHeYang
+	 * @date 20150105
+	 * @param orderId
+	 */
+	public void asyncShanSongPushOrder(int orderId){
+		Thread dThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				 shanSongPushOrder(orderId);
+			}
+		});
+		dThread.setDaemon(false);
+		dThread.start();
+	}
+	
+	/**
+	 *  异步里程计算 推单  (新订单) 
+	 *  @author CaoHeYang
+	 *  @date 20150105
+	 * @param req
+	 * @param orderId
+	 */
+	public void asyncShanSongPushOrder(GetPushClienterIdsReq req,int orderId){
+		Thread dThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				 shanSongPushOrder(req,orderId);
+			}
+		});
+		dThread.setDaemon(false);
+		dThread.start();
+	}
+	
 }

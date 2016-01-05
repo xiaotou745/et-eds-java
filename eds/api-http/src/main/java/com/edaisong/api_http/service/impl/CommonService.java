@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.common.RecordtypeHelper;
 import com.edaisong.api.dao.inter.ITaskDistributionConfigDao;
+import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.ITaskDistributionConfigService;
 import com.edaisong.api_http.service.inter.ICommonService;
 import com.edaisong.entity.TaskDistributionConfig;
@@ -24,6 +25,9 @@ public class CommonService implements ICommonService {
 	
 	@Autowired
 	private ITaskDistributionConfigService taskDistributionConfigService;
+	
+	@Autowired 
+	private IOrderService order;
 	/**
 	 * B端获取所有的筛选条件类型
 	 * @author CaoHeYang
@@ -32,6 +36,10 @@ public class CommonService implements ICommonService {
 	 */
 	@Override
 	public HttpResultModel<List<RecordType>> getRecordtypeB() {
+		
+		order.shanSongPushOrder(121);
+	
+		
 		HttpResultModel<List<RecordType>> resultModel=new HttpResultModel<List<RecordType>>();
        resultModel.setResult(RecordtypeHelper.getRecordtypeB());
        return resultModel;

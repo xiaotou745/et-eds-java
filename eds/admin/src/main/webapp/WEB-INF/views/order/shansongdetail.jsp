@@ -57,6 +57,11 @@
 				<td>配送费：<%=ParseHelper.ShowString(detail.getAmount())%></td>
 			</tr>
 			<tr class="trclass">
+				<td>取货码：<%=ParseHelper.ShowString(detail.getPickupCode())%></td>
+				<td>收货码：<%=ParseHelper.ShowString(detail.getReceiveCode())%></td>
+				<td></td>
+			</tr>
+			<tr class="trclass">
 				<td colspan="2">物品信息：<%=ParseHelper.ShowString(detail.getProductName())%></td>
 				<td>备注:<%=ParseHelper.ShowString(detail.getRemark())%></td>
 			</tr>

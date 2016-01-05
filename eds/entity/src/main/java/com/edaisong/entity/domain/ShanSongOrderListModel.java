@@ -7,6 +7,7 @@ public class ShanSongOrderListModel extends OrderListModel {
 	private String pubName;
 	private String pubPhoneNo;
      private String productName;
+     private String receiveCode;
 	/**
 	 * 重量
 	 */
@@ -103,4 +104,21 @@ public class ShanSongOrderListModel extends OrderListModel {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
+
+	/**
+	 *  收货码
+	 * @return
+	 */
+	public String getReceiveCode() {
+		return receiveCode;
+	}
+
+	/**
+	 * 收货码
+	 * @param receiveCode
+	 */
+	public void setReceiveCode(String receiveCode) {
+		this.receiveCode = receiveCode;
+	}
+	
 }
