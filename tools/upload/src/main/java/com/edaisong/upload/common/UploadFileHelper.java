@@ -46,9 +46,9 @@ public class UploadFileHelper {
 			if (originalFile.getLoadFrom() == UploadFrom.Clienter.value()) {
 				ImageCuter.cut(diskPath, diskPath.replace(originalSuffix, clienterSmallHeadSuffix),clienterSmallHeadWidth, clienterSmallHeadHeight);
 			}
+			originalFile.setFileUrl(originalFile.getFileUrl().replace(originalSuffix, ""));
+			originalFile.setRelativePath(originalFile.getRelativePath().replace(originalSuffix, ""));
 		}
-		originalFile.setFileUrl(originalFile.getFileUrl().replace(originalSuffix, ""));
-		originalFile.setRelativePath(originalFile.getRelativePath().replace(originalSuffix, ""));
 		return originalFile;
 	}
 /**
