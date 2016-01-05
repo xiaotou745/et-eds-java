@@ -103,5 +103,11 @@ public class TaskDistributionConfigController {
 		return taskDistributionConfigService.modify(record);
 	}
 
+	
+	@RequestMapping("del")
+	@ResponseBody
+	public int del(Integer id) {
+		return taskDistributionConfigService.deleteByPrimaryKey(id);
+	}
 
 }

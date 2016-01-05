@@ -210,5 +210,9 @@ public class TaskDistributionConfigService implements
 	{
 		return taskDistributionConfigDao.selectByKG(id,kg);	
 	}
-
+    
+	public int deleteByPrimaryKey(Integer id)
+	{
+		return taskDistributionConfigDao.deleteByPrimaryKey(id);	
+	}
 }

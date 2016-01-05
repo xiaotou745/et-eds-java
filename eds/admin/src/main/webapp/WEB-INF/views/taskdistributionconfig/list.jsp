@@ -253,6 +253,7 @@ width: 100%;
 	
 	function saveModify()
 	{
+		var txtId= $('#txtEId').val().trim();
 		var txtKM= $('#txtEKM').val().trim();
 		var txtKG= $('#txtEKG').val().trim();	
 		var txtDistributionPrice= $('#txtEDistributionPrice').val().trim();		
@@ -285,9 +286,9 @@ width: 100%;
 		if(txtDistributionPrice<=0){
 		    	alert("配送费必须大于零");
 		    	return;
-		   }		    
-	    
-	    var paramaters = {
+		   }		    	
+	    var paramaters = {	    		
+	    		"Id": txtId.trim(),
                 "KM": txtKM.trim(),
                 "KG": txtKG.trim(),
                 "DistributionPrice": txtDistributionPrice.trim(),

@@ -45,4 +45,6 @@ public interface ITaskDistributionConfigService {
 	TaskDistributionConfig selectByKM(int id, double km);	
 	
 	TaskDistributionConfig selectByKG(int id,double kg);
+	
+	int deleteByPrimaryKey(Integer id);
 }

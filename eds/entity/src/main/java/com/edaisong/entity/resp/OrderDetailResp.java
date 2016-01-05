@@ -857,6 +857,16 @@ public class OrderDetailResp extends ResponseBase{
 	    private String platformstr;
 	    
 	    private Double amountAndTip;
+	    
+	    private String paymentstr;
+
+		public String getPaymentstr() {
+			return paymentstr;
+		}
+
+		public void setPaymentstr(String paymentstr) {
+			this.paymentstr = paymentstr;
+		}
 
 		public Double getAmountAndTip() {
 			return amountAndTip;
@@ -1090,4 +1100,6 @@ public class OrderDetailResp extends ResponseBase{
 		public void setIsmodifyticket(boolean ismodifyticket) {
 			this.ismodifyticket = ismodifyticket;
 		}
+		
+		
 }
