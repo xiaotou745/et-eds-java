@@ -28,14 +28,8 @@ public class FileUploadController {
 	 */
 	@RequestMapping("uploadimg")
 	@ResponseBody
-	public UploadResultModel uploadImg(HttpServletRequest request,UploadFrom loadFrom) throws ServletException, Exception {
-		if (loadFrom==null) {
-			UploadResultModel resultModel=new UploadResultModel();
-			resultModel.setRemark("loadFrom不能为空");
-			return resultModel;
-		}
-		//loadFrom=UploadFrom.Clienter;
-		return UploadFileHelper.UploadImg(request,loadFrom);
+	public UploadResultModel uploadImg(HttpServletRequest request) throws Exception {
+		return UploadFileHelper.UploadImg(request);
 	}
 	/**
 	 * 上传文件
@@ -49,14 +43,8 @@ public class FileUploadController {
 	 */
 	@RequestMapping("uploadfile")
 	@ResponseBody
-	public UploadResultModel uploadFile(HttpServletRequest request,UploadFrom loadFrom) throws ServletException, Exception {
-		if (loadFrom==null) {
-			UploadResultModel resultModel=new UploadResultModel();
-			resultModel.setRemark("loadFrom不能为空");
-			return resultModel;
-		}
-		loadFrom=UploadFrom.Clienter;
-		return UploadFileHelper.UploadFile(request,loadFrom);
+	public UploadResultModel uploadFile(HttpServletRequest request) throws Exception {
+		return UploadFileHelper.UploadFile(request);
 	}
 	/**
 	 * 删除文件

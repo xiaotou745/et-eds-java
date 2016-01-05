@@ -6,6 +6,7 @@ public class UploadResultModel {
     private String originalName;
     private String modifyOriginalName;
     private String remark;
+    private int loadFrom;
 	public String getFileUrl() {
 		return fileUrl;
 	}
@@ -35,5 +36,11 @@ public class UploadResultModel {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public int getLoadFrom() {
+		return loadFrom;
+	}
+	public void setLoadFrom(int loadFrom) {
+		this.loadFrom = loadFrom;
 	}
 }

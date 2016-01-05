@@ -7,11 +7,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.StringUtils;
 
 import com.edaisong.toolscore.util.FileUtil;
 
@@ -26,8 +28,7 @@ public class UploadFileHelper {
  * @return
  * @throws Exception
  */
-	public static UploadResultModel UploadImg(HttpServletRequest request,
-			UploadFrom loadFrom) throws Exception {
+	public static UploadResultModel UploadImg(HttpServletRequest request) throws Exception {
 		int defaultImgWidth=Integer.parseInt(PropertyUtils.getProperty("DefaultImgWidth"));
 		int defaultImgHeight=Integer.parseInt(PropertyUtils.getProperty("DefaultImgHeight"));
 		int clienterSmallHeadWidth=Integer.parseInt(PropertyUtils.getProperty("ClienterSmallHeadWidth"));
@@ -36,13 +37,13 @@ public class UploadFileHelper {
 		String originalSuffix=PropertyUtils.getProperty("OriginalSuffix");
 		String clienterSmallHeadSuffix=PropertyUtils.getProperty("ClienterSmallHeadSuffix");
 		//先保存原图，后缀为_0_0
-		UploadResultModel originalFile = doUpload(request, loadFrom, 0, originalSuffix);
+		UploadResultModel originalFile = doUpload(request, 0, originalSuffix);
 		if (originalFile.getRemark() == null||originalFile.getRemark().isEmpty()) {
 			//如果原图保存成功，则切一个150*150的图
 			String diskPath = PropertyUtils.getProperty("FileUploadPath")+ "/"+ originalFile.getRelativePath();
 			ImageCuter.cut(diskPath, diskPath.replace(originalSuffix, ""), defaultImgWidth, defaultImgHeight);
 			//如果来源是骑士，则再切一个95*95的小图，用于任务参与人的小头像
-			if (loadFrom == UploadFrom.Clienter) {
+			if (originalFile.getLoadFrom() == UploadFrom.Clienter.value()) {
 				ImageCuter.cut(diskPath, diskPath.replace(originalSuffix, clienterSmallHeadSuffix),clienterSmallHeadWidth, clienterSmallHeadHeight);
 			}
 		}
@@ -59,9 +60,8 @@ public class UploadFileHelper {
  * @return
  * @throws Exception
  */
-	public static UploadResultModel UploadFile(HttpServletRequest request,
-			UploadFrom loadFrom) throws Exception {
-		return doUpload(request, loadFrom, 1, "");
+	public static UploadResultModel UploadFile(HttpServletRequest request) throws Exception {
+		return doUpload(request, 1, "");
 	}
 /**
  * 根据相对路径删除对应的文件
@@ -123,8 +123,7 @@ public class UploadFileHelper {
  * @return
  * @throws Exception
  */
-	private static UploadResultModel doUpload(HttpServletRequest request,
-			UploadFrom loadFrom, int fileType, String originalSufix)
+	private static UploadResultModel doUpload(HttpServletRequest request,int fileType, String originalSufix)
 			throws Exception {
 		// 定义允许上传的文件扩展名
 		HashMap<String, String> extMap = new HashMap<String, String>();
@@ -132,9 +131,6 @@ public class UploadFileHelper {
 		extMap.put("flash", "swf,flv");
 		extMap.put("media", "swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
 		extMap.put("file", "doc,docx,xls,xlsx,ppt,htm,html,txt,zip,rar,gz,bz2");
-		String regionPath = getPathByFrom(loadFrom);
-		String rootPath = PropertyUtils.getProperty("FileUploadPath") + "/"+ regionPath;
-		FileUtil.createDirectory(rootPath);// 创建目录
 		UploadResultModel result = new UploadResultModel();
 
 		if (!ServletFileUpload.isMultipartContent(request)) {
@@ -156,16 +152,38 @@ public class UploadFileHelper {
 		String uploadFileName = ""; // 上传文件名
 		String realFileName = "";
 		String fullPath = "";
+		String regionPath =""; 
+		String rootPath = "";
 		while (fii.hasNext()) {
 			FileItem fis = (FileItem) fii.next();
-			if (fis.isFormField() || fis.getName().length() <= 0) {
+			if (fis.isFormField() && fis.getFieldName().equals("loadFrom")) {
+				String loadFromValue=fis.getString("utf-8");
+				if (loadFromValue==null||loadFromValue.trim().isEmpty()) {
+					result.setRemark("loadFrom不能为空");
+					return result;
+				}
+				if(!StringUtils.isNumeric(loadFromValue.trim())){
+					result.setRemark("loadFrom值错误,只能为数字");
+					return result;
+				}
+				UploadFrom loadFrom=UploadFrom.getEnum(Integer.parseInt(loadFromValue));
+				if (loadFrom==null) {
+					result.setRemark("loadFrom值错误");
+					return result;
+				}
+				result.setLoadFrom(loadFrom.value());
+				regionPath=getPathByFrom(loadFrom);
+				rootPath=PropertyUtils.getProperty("FileUploadPath") + "/"+regionPath;
+				FileUtil.createDirectory(rootPath);// 创建目录
 				continue;
 			}
 			if (fis.getSize() > 1000000) {
 				result.setRemark("上传文件大小超过限制");
 				return result;
 			}
-
+			if (rootPath.isEmpty()) {
+				continue;
+			}
 			// 上传文件名
 			uploadFileName = fis.getName();
 			// 检查扩展名
