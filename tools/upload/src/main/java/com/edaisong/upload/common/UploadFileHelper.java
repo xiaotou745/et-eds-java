@@ -1,6 +1,7 @@
 package com.edaisong.upload.common;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -125,105 +126,114 @@ public class UploadFileHelper {
  */
 	private static UploadResultModel doUpload(HttpServletRequest request,int fileType, String originalSufix)
 			throws Exception {
-		// 定义允许上传的文件扩展名
-		HashMap<String, String> extMap = new HashMap<String, String>();
-		extMap.put("image", "gif,jpg,jpeg,png,bmp");
-		extMap.put("flash", "swf,flv");
-		extMap.put("media", "swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
-		extMap.put("file", "doc,docx,xls,xlsx,ppt,htm,html,txt,zip,rar,gz,bz2");
+
 		UploadResultModel result = new UploadResultModel();
 
 		if (!ServletFileUpload.isMultipartContent(request)) {
 			result.setRemark("请选择文件");
 			return result;
 		}
-		DiskFileItemFactory dff = new DiskFileItemFactory();
-		dff.setSizeThreshold(1024000);
-
-		ServletFileUpload sfu = new ServletFileUpload(dff);
-		sfu.setHeaderEncoding("UTF-8");
-		Iterator fii = sfu.parseRequest(request).iterator();
+		// 定义允许上传的文件扩展名
+		HashMap<String, String> extMap = new HashMap<String, String>();
+		extMap.put("image", "gif,jpg,jpeg,png,bmp");
+		extMap.put("flash", "swf,flv");
+		extMap.put("media", "swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
+		extMap.put("file", "doc,docx,xls,xlsx,ppt,htm,html,txt,zip,rar,gz,bz2");
 		List<String> ext = Arrays.<String> asList(extMap.get("image").split(","));
 		if (fileType > 0) {
 			ext = Arrays.<String> asList(extMap.get("file").split(","));
 			List<String> mediaExt = Arrays.<String> asList(extMap.get("media").split(","));
 			ext.addAll(mediaExt);
 		}
-		String uploadFileName = ""; // 上传文件名
-		String realFileName = "";
-		String fullPath = "";
 		String regionPath =""; 
 		String rootPath = "";
+		List<FileItem> fileList=new ArrayList<FileItem>();
+		DiskFileItemFactory dff = new DiskFileItemFactory();
+		dff.setSizeThreshold(1024000);
+		ServletFileUpload sfu = new ServletFileUpload(dff);
+		sfu.setHeaderEncoding("UTF-8");
+		Iterator fii = sfu.parseRequest(request).iterator();
 		while (fii.hasNext()) {
 			FileItem fis = (FileItem) fii.next();
-			if (fis.isFormField() && fis.getFieldName().equals("uploadFrom")) {
-				String loadFromValue=fis.getString("utf-8");
-				if (loadFromValue==null||loadFromValue.trim().isEmpty()) {
-					result.setRemark("uploadFrom不能为空");
+			if (fis.isFormField()) {
+				if (fis.getFieldName().equals("uploadFrom")) {
+					String loadFrom = getLoadFrom(fis);
+					if (loadFrom.length() > 1) {
+						result.setRemark(loadFrom);
+						return result;
+					}
+					result.setLoadFrom(Integer.parseInt(loadFrom));
+					regionPath = getPathByFrom(UploadFrom.getEnum(Integer.parseInt(loadFrom)));
+					rootPath = PropertyUtils.getProperty("FileUploadPath")+ "/" + regionPath;
+					FileUtil.createDirectory(rootPath);// 创建目录
+					continue;
+				}
+			} else {
+				if (fis.getSize() > 1000000) {
+					result.setRemark("上传文件大小超过限制");
 					return result;
 				}
-				if(!StringUtils.isNumeric(loadFromValue.trim())){
-					result.setRemark("uploadFrom值错误,只能为数字");
+				// 检查扩展名
+				String fileExt = fis.getName().substring(fis.getName().lastIndexOf(".") + 1).toLowerCase();
+				if (!ext.contains(fileExt)) {
+					result.setRemark("上传文件扩展名是不允许的扩展名。\n只允许"+ String.join(",", ext));
 					return result;
 				}
-				UploadFrom loadFrom=UploadFrom.getEnum(Integer.parseInt(loadFromValue));
-				if (loadFrom==null) {
-					result.setRemark("uploadFrom值错误");
-					return result;
-				}
-				result.setLoadFrom(loadFrom.value());
-				regionPath=getPathByFrom(loadFrom);
-				rootPath=PropertyUtils.getProperty("FileUploadPath") + "/"+regionPath;
-				FileUtil.createDirectory(rootPath);// 创建目录
-				continue;
+				fileList.add(fis);
 			}
-			if (fis.getSize() > 1000000) {
-				result.setRemark("上传文件大小超过限制");
-				return result;
-			}
-			if (rootPath.isEmpty()) {
-				continue;
-			}
-			// 上传文件名
-			uploadFileName = fis.getName();
-			// 检查扩展名
-			String fileExt = uploadFileName.substring(uploadFileName.lastIndexOf(".") + 1).toLowerCase();
-			if (!ext.contains(fileExt)) {
-				result.setRemark("上传文件扩展名是不允许的扩展名。\n只允许"+ String.join(",", ext));
-				return result;
-			}
+		}
+		if (rootPath==null||rootPath.isEmpty()) {
+			result.setRemark("uploadFrom不能为空");
+			return result;
+		}
 
-			Calendar cal = Calendar.getInstance();
-			int year = cal.get(Calendar.YEAR);// 获取年份
-			int month = cal.get(Calendar.MONTH) + 1;// 获取月份
-			int day = cal.get(Calendar.DATE);// 获取日
-			int hour = cal.get(Calendar.HOUR_OF_DAY);// 小时
-			String temp = year + "/" + String.format("%02d", month) + "/" + String.format("%02d", day) + "/" + String.format("%02d", hour);
-			fullPath = rootPath +"/" + temp;
-			// 创建目录
-			FileUtil.createDirectory(fullPath);
-
+		saveFiles(fileList,originalSufix,regionPath,rootPath,result);
+		return result;
+	}
+	private static void saveFiles(List<FileItem> fileList,String originalSufix,String regionPath, String rootPath,UploadResultModel result) throws Exception{
+		if (fileList.size()==0) {
+			result.setRemark("请选择文件");
+		}
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);// 获取年份
+		int month = cal.get(Calendar.MONTH) + 1;// 获取月份
+		int day = cal.get(Calendar.DATE);// 获取日
+		int hour = cal.get(Calendar.HOUR_OF_DAY);// 小时
+		String temp = year + "/" + String.format("%02d", month) + "/" + String.format("%02d", day) + "/" + String.format("%02d", hour);
+		String fullPath = rootPath +"/" + temp;
+		// 创建目录
+		FileUtil.createDirectory(fullPath);
+		for (FileItem fileItem : fileList) {
+			String uploadFileName = fileItem.getName();
+			// 上传文件重命名
+			String realFileName = new Date().getTime()
+					+ originalSufix
+					+ uploadFileName.substring(uploadFileName.lastIndexOf("."));
 			try {
-				// 上传文件重命名
-				realFileName = new Date().getTime()
-						+ originalSufix
-						+ uploadFileName.substring(
-								uploadFileName.lastIndexOf("."),
-								uploadFileName.length());
 				File uploadedFile = new File(rootPath +"/" + temp, realFileName);
-				fis.write(uploadedFile);
+				fileItem.write(uploadedFile);
 			} catch (Exception e) {
 				result.setRemark("上传文件失败");
-				return result;
 			}
 			String relativePath=regionPath +"/" + temp + "/" + realFileName;
 			result.setFileUrl(PropertyUtils.getProperty("WebApiAddress")+"/"+ relativePath);
 			result.setModifyOriginalName(realFileName);
 			result.setOriginalName(uploadFileName);
 			result.setRelativePath(relativePath);
-			return result;
 		}
-		result.setRemark("请选择文件");
-		return result;
+	} 
+	private static String getLoadFrom(FileItem fis) throws Exception{
+		String loadFromValue=fis.getString("utf-8");
+		if (loadFromValue==null||loadFromValue.trim().isEmpty()) {
+			return "uploadFrom不能为空";
+		}
+		if(!StringUtils.isNumeric(loadFromValue.trim())){
+			return "uploadFrom值错误,只能为数字";
+		}
+		UploadFrom loadFrom=UploadFrom.getEnum(Integer.parseInt(loadFromValue));
+		if (loadFrom==null) {
+			return "uploadFrom值错误";
+		}
+		return String.valueOf(loadFrom.value());
 	}
 }
