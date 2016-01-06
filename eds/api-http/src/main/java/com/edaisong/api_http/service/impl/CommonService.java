@@ -36,10 +36,6 @@ public class CommonService implements ICommonService {
 	 */
 	@Override
 	public HttpResultModel<List<RecordType>> getRecordtypeB() {
-		
-		order.shanSongPushOrder(121);
-	
-		
 		HttpResultModel<List<RecordType>> resultModel=new HttpResultModel<List<RecordType>>();
        resultModel.setResult(RecordtypeHelper.getRecordtypeB());
        return resultModel;
@@ -64,7 +60,7 @@ public class CommonService implements ICommonService {
 	* 获取普通任务配送费配置
 	* */
 	@Override
-	public HttpResultModel<TaskDistributionConfigResp> getTaskDistributionConfig() {
+	public HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig() {
 		return taskDistributionConfigService.getTaskDistributionConfig();
 	}
 	

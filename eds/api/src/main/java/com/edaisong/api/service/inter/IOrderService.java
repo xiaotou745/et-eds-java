@@ -417,14 +417,14 @@ public interface IOrderService {
 	     * @param orderId
 	     * @return
 	     */
-	    Boolean shanSongPushOrder(int orderId);
+	    Boolean shanSongPushOrder(Long orderId);
 		/**
 		 * 异步里程计算 推单  (处理订单) 
 		 * @author CaoHeYang
 		 * @date 20150105
 		 * @param orderId
 		 */
-		 void asyncShanSongPushOrder(int orderId);
+		 void asyncShanSongPushOrder(Long orderId);
 	    /**
 		 *  异步里程计算 推单  (新订单) 
 		 *  @author CaoHeYang

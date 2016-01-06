@@ -29,6 +29,7 @@ import com.edaisong.entity.req.OrderStatisticsCReq;
 import com.edaisong.entity.req.QueryOrderReq;
 import com.edaisong.entity.req.OrderGrabDetailCReq;
 import com.edaisong.entity.req.QueryShanSongOrderReq;
+import com.edaisong.entity.req.ShanSongPushOrderReq;
 import com.edaisong.entity.resp.OrderBlancePayResp;
 import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderDraftResp;
@@ -256,4 +257,16 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/shansongqueryorderb")
 	HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryShanSongOrderReq query) ;
+	
+	/**
+	 * 里程计算 推单  (处理订单)
+	 * @author CaoHeYang 
+	 * @date 20160105
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/shansongpushorder")
+	HttpResultModel<Boolean>  shanSongPushOrder(ShanSongPushOrderReq req) ;
+	
 }

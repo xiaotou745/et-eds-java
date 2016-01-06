@@ -21,6 +21,7 @@ if(list == null){
 							<tr>
 							<th>距离(km)</th>
 								<th>重量(kg)</th>
+								<th>计价阶梯</th>
 								<th>变量值</th>
 								<th>是否基础值</th>
 								<th>操作</th>
@@ -31,12 +32,19 @@ if(list == null){
 							<tr>
 								<td><%=list.get(i).getkM()%></td>
 								<td><%=list.get(i).getkG()%></td>
+								<td><%=list.get(i).getSteps()%></td>
 									<td><%=list.get(i).getDistributionPrice()%>	</td>
 								<td><%=list.get(i).getIsMaster()%></td>							
 						
-								<td>								
-								<a href="javascript:void(0)" onclick="modify('<%=list.get(i).getId() %>','<%=list.get(i).getkM() %>','<%=list.get(i).getkG() %>','<%=list.get(i).getDistributionPrice() %>')">修改</a>
-								<a href="javascript:void(0)" onclick="del('<%=list.get(i).getId() %>')">删除</a>	
+								<td>						
+								<a href="javascript:void(0)" onclick="modify('<%=list.get(i).getId() %>','<%=list.get(i).getkM() %>','<%=list.get(i).getkG() %>','<%=list.get(i).getSteps() %>','<%=list.get(i).getDistributionPrice() %>','<%=list.get(i).getRemark() %>','<%=list.get(i).getIsMaster() %>')">修改</a>
+								
+								<%		
+								
+					if ( list.get(i).getIsMaster()==0)
+					{			%>
+								<a href="javascript:void(0)" onclick="del('<%=list.get(i).getId() %>')">删除</a>
+							<%}	%>
 								</td>
 							</tr>
 
@@ -50,12 +58,19 @@ if(list == null){
 					data.getTotalPage())%>
 					
 <script>				
-    function modify(id,km,kg,distributionPrice)
-    {
-       	$('#txtEId').val(id);
+    function modify(id,km,kg,steps,distributionPrice,remark,isMaster)
+    {    	
+    	$('#txtERemark').attr("disabled",false);
+    	if(isMaster==0) 
+    		$('txtERemark').attr("disabled",true)    	
+    		
+       	$('#txtEId').val(id);    	
         $('#txtEKM').val(km);
         $('#txtEKG').val(kg);
+        $('#txtESteps').val(steps);   
         $("#txtEDistributionPrice").val(distributionPrice);
+        $("#txtERemark").val(remark);
+        $("#txtEIsMaster").val(isMaster);
         $('#modifyConfig').modal('show');
     }
 function del(id){		

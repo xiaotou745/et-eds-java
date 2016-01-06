@@ -3090,15 +3090,15 @@ public class OrderService implements IOrderService {
      * @return
      */
 	@Override
-    public   Boolean shanSongPushOrder(int orderId){
+    public   Boolean shanSongPushOrder(Long orderId){
 		try {
-			ClienterPushLog log = clienterPushLogDao.selectByOrderId(ParseHelper.ToLong(orderId, 0));
+			ClienterPushLog log = clienterPushLogDao.selectByOrderId(orderId);
 			if (log == null) {
 				return false;
 			}
 			ShanSongPushOrder model = new ShanSongPushOrder();
 			model.setClienterIds(log.getClienterIds());
-			model.setOrderId(orderId);
+			model.setOrderId(ParseHelper.ToInt(orderId));
 			model.setOrderType(ShanSongPushOrderOrderType.Other.value());
 
 			SignalrPushMessage<ShanSongPushOrder> message = new SignalrPushMessage<ShanSongPushOrder>(SignalrPushMessageType.ShanSongPushOrder.value(), model);
@@ -3118,7 +3118,7 @@ public class OrderService implements IOrderService {
 	 * @date 20150105
 	 * @param orderId
 	 */
-	public void asyncShanSongPushOrder(int orderId){
+	public void asyncShanSongPushOrder(Long orderId){
 		Thread dThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
