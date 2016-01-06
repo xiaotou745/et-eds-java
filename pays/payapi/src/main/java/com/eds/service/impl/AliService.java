@@ -18,10 +18,38 @@ import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.alipay.factory.AlipayAPIClientFactory;
 import com.eds.entity.ParamAliModel;
+import com.eds.entity.ParamBatchTransModel;
 import com.eds.service.inter.IAliService;
+import com.alipay.config.*;
+import com.alipay.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AliService implements IAliService {
+
+	/**
+	 * 批量付款
+	 * */
+	@Override
+	public String batchTrans(ParamBatchTransModel model) {
+		//把请求参数打包成数组
+		Map<String, String> sParaTemp = new HashMap<String, String>();
+		sParaTemp.put("service", "batch_trans_notify");
+        sParaTemp.put("partner", AlipayConfig.partner);
+        sParaTemp.put("_input_charset", AlipayConfig.input_charset);
+		sParaTemp.put("notify_url", model.getNotify_url());
+		sParaTemp.put("email", model.getEmail());
+		sParaTemp.put("account_name",model.getAccount_name());
+		sParaTemp.put("pay_date",model.getPay_date());
+		sParaTemp.put("batch_no",model.getBatch_no());
+		sParaTemp.put("batch_fee",model.getBatch_fee());
+		sParaTemp.put("batch_num",model.getBatch_num());
+		sParaTemp.put("detail_data",model.getDetail_data());
+		//建立请求
+		String sHtmlText = AlipaySubmit.buildRequest(sParaTemp,"get","确认");
+		return sHtmlText;
+	}
 
 	/**
 	 * 生成订单

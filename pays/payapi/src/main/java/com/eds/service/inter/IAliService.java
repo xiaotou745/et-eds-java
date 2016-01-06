@@ -14,6 +14,7 @@ import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.eds.entity.ParamAliModel;
+import com.eds.entity.ParamBatchTransModel;
 
 @Path("/aliservice")
 @Consumes("application/json")
@@ -37,4 +38,11 @@ public interface IAliService {
 	@POST
 	@Path("/queryorder")
 	public AlipayTradeQueryResponse queryOrder(ParamAliModel model) throws AlipayApiException;
+	
+	/**
+	 * 批量付款
+	 * */
+	@POST
+	@Path("batchtrans")
+	public String batchTrans(ParamBatchTransModel model);
 }
