@@ -27,9 +27,10 @@ public class OrderDraftReq {
 
     private String pubphoneno;
 
-    private String pubaddress;
+    private String pubaddress;    
+ 
 
-    private Short taketype;
+	private Short taketype;
 
     private Date taketime;
 
@@ -45,7 +46,6 @@ public class OrderDraftReq {
 
     private String receviceaddress;
 
-    private String recevicecity;
 
     private Double recevicelongitude;
 
@@ -74,7 +74,8 @@ public class OrderDraftReq {
     private Double km;
     
     private Double tipamount;    
-    
+        
+   
     
     public Double getTipamount() {
 		return tipamount;
@@ -210,14 +211,6 @@ public class OrderDraftReq {
 
     public void setReceviceaddress(String receviceaddress) {
         this.receviceaddress = receviceaddress == null ? null : receviceaddress.trim();
-    }
-
-    public String getRecevicecity() {
-        return recevicecity;
-    }
-
-    public void setRecevicecity(String recevicecity) {
-        this.recevicecity = recevicecity == null ? null : recevicecity.trim();
     }
 
     public Double getRecevicelongitude() {

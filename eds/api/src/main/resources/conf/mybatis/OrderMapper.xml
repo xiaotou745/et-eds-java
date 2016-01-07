@@ -33,7 +33,7 @@
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
     DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
-    Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount,pickuplongitude,pickuplatitude
+    Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount,pickuplongitude,pickuplatitude,PubCity
 	</sql>
 	  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.Order" parameterType="java.lang.Integer" >
     select 
@@ -103,6 +103,9 @@
 			</if>
 			<if test="pubdate != null">
 				PubDate,
+			</if>
+				<if test="pubcity != null">
+				pubcity,
 			</if>
 			<if test="recevicename != null">
 				ReceviceName,
@@ -300,6 +303,9 @@
 			</if>
 			<if test="pubdate != null">
 				#{pubdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="pubcity != null">
+				#{pubcity,jdbcType=NVARCHAR},
 			</if>
 			<if test="recevicename != null">
 				#{recevicename,jdbcType=NVARCHAR},

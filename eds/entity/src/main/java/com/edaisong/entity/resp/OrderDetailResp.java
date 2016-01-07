@@ -14,7 +14,17 @@ import com.edaisong.entity.OrderChild;;
  * @Date 2015年11月27日 11:44:38
  */
 public class OrderDetailResp extends ResponseBase{
-    public Double getPickuplongitude() {
+    private String pubcity;
+    
+    public String getPubcity() {
+		return pubcity;
+	}
+
+	public void setPubcity(String pubcity) {
+		this.pubcity = pubcity;
+	}
+
+	public Double getPickuplongitude() {
 		return pickuplongitude;
 	}
 

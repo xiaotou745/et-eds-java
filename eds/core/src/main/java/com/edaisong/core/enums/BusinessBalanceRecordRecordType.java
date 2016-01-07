@@ -61,7 +61,11 @@ public enum BusinessBalanceRecordRecordType {
 	/**
 	 * 返还配送费
 	 */
-	ReturnDeliveryFee(13, "返还配送费",2);
+	ReturnDeliveryFee(13, "返还配送费",2),
+	/**
+	 * 小费
+	 */
+	Tip(14, "小费",2);
 
 	private int value = 0;
 	private String desc;
