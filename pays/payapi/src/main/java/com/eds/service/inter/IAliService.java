@@ -13,8 +13,8 @@ import com.alipay.api.response.AlipayTradePayResponse;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
-import com.eds.entity.ParamAliModel;
-import com.eds.entity.ParamBatchTransModel;
+import com.alipay.parmodel.ParamAliModel;
+import com.alipay.parmodel.ParamBatchTransModel;
 
 @Path("/aliservice")
 @Consumes("application/json")

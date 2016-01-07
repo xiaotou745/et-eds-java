@@ -1,4 +1,4 @@
-package com.eds.entity;
+package com.alipay.parmodel;
 
 public class ParamAliModel {
 	//取消订单，退款
@@ -13,7 +13,14 @@ public class ParamAliModel {
 	private String total_fee;
 	private String seller_email;
 	private String body;
+	private int platform;
 	
+	public int getPlatform() {
+		return platform;
+	}
+	public void setPlatform(int platform) {
+		this.platform = platform;
+	}
 	public String getNotify_url() {
 		return notify_url;
 	}

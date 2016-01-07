@@ -1,4 +1,4 @@
-package com.eds.entity;
+package com.alipay.parmodel;
 
 public class ParamBatchTransModel {
 	private String email;//付款账号,需http://格式的完整路径，不允许加?id=123这类自定义参数
@@ -9,8 +9,14 @@ public class ParamBatchTransModel {
 	private String batch_num;//付款笔数,必填，即参数detail_data的值中所有金额的总和
 	
 	//必填，格式：流水号1^收款方帐号1^真实姓名^付款金额1^备注说明1|流水号2^收款方帐号2^真实姓名^付款金额2^备注说明2....
-	private String detail_data;//付款详细数据,必填，即参数detail_data的值中，“|”字符出现的数量加1，最大支持1000笔（即“|”字符出现的数量999个）
+	private String detail_info;//付款详细数据,必填，即参数detail_data的值中，“|”字符出现的数量加1，最大支持1000笔（即“|”字符出现的数量999个）
 	
+	public String getDetail_info() {
+		return detail_info;
+	}
+	public void setDetail_info(String detail_info) {
+		this.detail_info = detail_info;
+	}
 	private String notify_url;//服务器异步通知页面路径
 	public String getEmail() {
 		return email;
@@ -48,12 +54,7 @@ public class ParamBatchTransModel {
 	public void setBatch_num(String batch_num) {
 		this.batch_num = batch_num;
 	}
-	public String getDetail_data() {
-		return detail_data;
-	}
-	public void setDetail_data(String detail_data) {
-		this.detail_data = detail_data;
-	}
+	
 	public String getNotify_url() {
 		return notify_url;
 	}
