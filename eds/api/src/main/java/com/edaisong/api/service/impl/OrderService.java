@@ -1042,8 +1042,13 @@ public class OrderService implements IOrderService {
 	public HttpResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq query) {
 		HttpResultModel<QueryOrderBResp> resultModel = new HttpResultModel<QueryOrderBResp>();
 		// 验证商家状态
-		if (businessDao.getUserStatus(query.getBusinessId()).getStatus() != BusinessStatusEnum.AuditPass
-				.value()) {
+		BusinessStatus businessStatus=businessDao.getUserStatus(query.getBusinessId());
+		if (businessStatus==null) {
+			resultModel.setStatus(QueryOrderReturnEnum.BusinessNotExist.value());
+			resultModel.setMessage(QueryOrderReturnEnum.BusinessNotExist.desc());
+			return resultModel;
+		}
+		if (businessStatus.getStatus() != BusinessStatusEnum.AuditPass.value()) {
 			resultModel.setStatus(QueryOrderReturnEnum.ErrStatus.value());
 			resultModel.setMessage(QueryOrderReturnEnum.ErrStatus.desc());
 			return resultModel;
