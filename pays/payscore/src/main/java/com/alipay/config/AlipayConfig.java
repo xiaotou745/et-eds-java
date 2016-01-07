@@ -41,4 +41,9 @@ public class AlipayConfig {
 	// 签名方式 不需修改
 	public static String sign_type = "MD5";
 
+	//邮箱
+	public static String email="info@edaisong.com";
+	
+	//支付人
+	public static String account_name="易代送网络科技（北京）有限公司";
 }
