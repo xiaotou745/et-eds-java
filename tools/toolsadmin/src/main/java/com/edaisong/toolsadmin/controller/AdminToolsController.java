@@ -1,5 +1,6 @@
 package com.edaisong.toolsadmin.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -28,8 +30,10 @@ import com.edaisong.toolsapi.common.SQLServerUtil;
 import com.edaisong.toolsapi.common.MybatisUtil;
 import com.edaisong.toolsapi.common.RedisUtil;
 import com.edaisong.toolsapi.mongo.MongoService;
+import com.edaisong.toolsapi.redis.RedisService;
 import com.edaisong.toolsapi.service.inter.IAppDbConfigService;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
+import com.edaisong.toolscore.consts.RedissCacheKey;
 import com.edaisong.toolscore.enums.ServerType;
 import com.edaisong.toolscore.security.AES;
 import com.edaisong.toolscore.util.JsonUtil;
@@ -64,6 +68,8 @@ public class AdminToolsController {
 	private IAppDbConfigService appDbConfigService;
 	@Autowired
 	private MongoService mongoService;
+	@Autowired
+	private RedisService redisService;
 	/**
 	 * 根据key模糊查询或精确查询
 	 * @param key
@@ -371,6 +377,7 @@ public class AdminToolsController {
 		List<String> renrenapihttpVersion=queryVersion("renrenapihttp");
 		view.addObject("apihttpVersion", String.join(",", apihttpVersion));
 		view.addObject("renrenapihttpVersion",  String.join(",", renrenapihttpVersion));
+		view.addObject("appNameList",  getAppNameList());
 		return view;
 	}
 	/**
@@ -384,9 +391,34 @@ public class AdminToolsController {
 	public ModelAndView logdo(PagedMongoLogReq req) throws Exception {
 		ModelAndView view = new ModelAndView("admintools/logdo");
 		fillQuery(req);
-		PagedResponse<ActionLog> resp=mongoService.selectPart(getMongoTableName(req.getMonthInfo()), req);
+		PagedResponse<ActionLog> resp=mongoService.selectPart(getMongoTableName(req), req);
 		view.addObject("listData", resp);
 		return view;
+	}
+	private List<String> getAppNameList() throws Exception{
+		List<String> redisAppNameList=new ArrayList<String>();
+		redisAppNameList=redisService.get(RedissCacheKey.AppName_Key,List.class);
+		if (redisAppNameList!=null) {
+			return redisAppNameList;
+		}
+		List<String> appNameList=Collections.synchronizedList(new ArrayList<>());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LinkedHashMap<String, String> timeHashMap= splitTimeRange(sdf.parse("2015-10-01 00:00:00"),new Date());
+		timeHashMap.entrySet().parallelStream().forEach(t->{
+			try {
+				String mongoName = getTableName(t.getKey());
+				System.out.println("表名称:" + mongoName);
+				List<String> partialResult = mongoService.selectDistinct(mongoName, "sourceSys");
+				appNameList.addAll(partialResult);
+			} catch (Exception e) {
+				System.out.println("并行查询mongo时出错:"+ e.getMessage());
+				e.printStackTrace();
+			}
+		});
+		System.out.println("并行查询mongo完成");
+		redisAppNameList=appNameList.parallelStream().distinct().collect(Collectors.toList());
+		redisService.set(RedissCacheKey.AppName_Key,redisAppNameList,8,TimeUnit.HOURS);
+		return redisAppNameList;
 	}
 	/**
 	 * 根据月份生产mongo中的表名称
@@ -395,9 +427,8 @@ public class AdminToolsController {
 	 * @date 20151208
 	 * @return
 	 */
-    private String getMongoTableName(String monthInfo){
-    	Calendar a=Calendar.getInstance();
-    	return "logtb_"+a.get(Calendar.YEAR)+"_"+monthInfo;
+    private String getMongoTableName(PagedMongoLogReq req){
+    	return "logtb_"+req.getYearInfo()+"_"+req.getMonthInfo();
     }
     /**
      * 根据页面上的查询条件组织对monmgo的查询request
@@ -472,6 +503,10 @@ public class AdminToolsController {
 		if (!(sourceSys.equals("apihttp")||sourceSys.equals("renrenapihttp"))) {
 			return result;
 		}
+		result=redisService.get(RedissCacheKey.AppVersion_Key+sourceSys,List.class);
+		if (result!=null) {
+			return result;
+		}
 		List<ActionLog> resultList=Collections.synchronizedList(new ArrayList<>());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		LinkedHashMap<String, String> timeHashMap= splitTimeRange(sdf.parse("2015-10-01 00:00:00"),new Date());
@@ -505,6 +540,7 @@ public class AdminToolsController {
 			result.clear();
 		}
 		result.sort((a,b)->{return a.compareTo(b);});
+		redisService.set(RedissCacheKey.AppVersion_Key+sourceSys,result,8,TimeUnit.HOURS);
 		return result;
 	}
     /**
@@ -518,14 +554,12 @@ public class AdminToolsController {
     private List<ActionLog> queryAll(MongoLogReq req,BasicDBObject columns) throws Exception{
 		List<ActionLog> result=Collections.synchronizedList(new ArrayList<>());
 		LinkedHashMap<String, String> timeHashMap= splitTimeRange(req.getBegin(),req.getEnd());
-		Calendar a=Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		int currentDay=a.get(Calendar.YEAR)+a.get(Calendar.MONTH)+1;
-		int lastDay=2015+9;
+		long currentDay=(new Date()).getTime();
+		long lastDay=sdf.parse("2015-10-01 00:00:00").getTime();
 		timeHashMap.entrySet().parallelStream().forEach(t->{
 			try {
-				a.setTime(sdf.parse(t.getValue()));
-				int tempDay=a.get(Calendar.YEAR)+a.get(Calendar.MONTH)+1;
+				long tempDay=sdf.parse(t.getKey()).getTime();
 				if(lastDay<=tempDay&&tempDay<=currentDay){
 					BasicDBObject tempReq=getQueryObj(req);
 					getWhere(req,tempReq,t.getKey(),t.getValue(),sdf);
@@ -682,6 +716,7 @@ public class AdminToolsController {
 		List<String> renrenapihttpVersion=queryVersion("renrenapihttp");
 		view.addObject("apihttpVersion", String.join(",", apihttpVersion));
 		view.addObject("renrenapihttpVersion",  String.join(",", renrenapihttpVersion));
+		view.addObject("appNameList",  getAppNameList());
 		return view;
 	}
 	/**
@@ -701,6 +736,7 @@ public class AdminToolsController {
 		List<String> renrenapihttpVersion=queryVersion("renrenapihttp");
 		view.addObject("apihttpVersion", String.join(",", apihttpVersion));
 		view.addObject("renrenapihttpVersion",  String.join(",", renrenapihttpVersion));
+		view.addObject("appNameList",  getAppNameList());
 		return view;
 	}
 	/**

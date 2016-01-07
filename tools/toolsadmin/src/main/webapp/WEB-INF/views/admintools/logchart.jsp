@@ -9,13 +9,7 @@
 <%
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
 
-List<String> appNameList = new ArrayList<String>();
-appNameList.add("admin");
-appNameList.add("apihttp");
-appNameList.add("business");
-appNameList.add("taobaoopenapi");
-appNameList.add("renrenadmin");
-appNameList.add("renrenapihttp");
+List<String> appNameList = (List<String>)request.getAttribute("appNameList");
 String apihttpVersion = request.getAttribute("apihttpVersion").toString();
 String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toString();
 

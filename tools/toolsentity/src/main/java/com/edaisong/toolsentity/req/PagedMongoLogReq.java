@@ -9,6 +9,7 @@ public class PagedMongoLogReq extends PagedRequestBase{
 private String sourceSys;
 private int requestType;
 private String requestUrl;
+private int yearInfo;
 private String monthInfo;
 private int exceptionShowType;
 private int orderType;
@@ -95,6 +96,14 @@ public String getAppversion() {
 
 public void setAppversion(String appversion) {
 	this.appversion = appversion;
+}
+
+public int getYearInfo() {
+	return yearInfo;
+}
+
+public void setYearInfo(int yearInfo) {
+	this.yearInfo = yearInfo;
 }
 
 }

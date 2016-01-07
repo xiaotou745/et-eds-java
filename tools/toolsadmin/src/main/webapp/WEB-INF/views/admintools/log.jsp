@@ -7,18 +7,11 @@
 <%@page import="com.edaisong.toolscore.util.EnumHelper"%>
 <%@page import="java.util.Calendar"%>
 <%
-	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
-
-List<String> appNameList = new ArrayList<String>();
-appNameList.add("admin");
-appNameList.add("apihttp");
-appNameList.add("business");
-appNameList.add("taobaoopenapi");
-appNameList.add("renrenadmin");
-appNameList.add("renrenapihttp");
 Calendar a=Calendar.getInstance();
 int month=a.get(Calendar.MONTH)+1;
 
+String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
+List<String> appNameList = (List<String>)request.getAttribute("appNameList");
 String apihttpVersion = request.getAttribute("apihttpVersion").toString();
 String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toString();
 
@@ -47,6 +40,24 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
 							<div class="col-sm-8">
 								<select name="appversion" class="form-control m-b" id="appversion">
 								<option value='' selected='selected'>全部版本</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">年份:</label>
+							<div class="col-sm-8">
+							<select name="yearInfo" class="form-control m-b" id="yearInfo">
+										<%
+										Calendar cal = Calendar.getInstance();
+										int nowYear = cal.get(Calendar.YEAR);
+										for (int i = nowYear; i >=2015; i--) {
+											%>
+											<option value="<%=i %>" <%=i==nowYear?"selected='selected'":"" %>><%=i %></option>
+											<%
+										}
+										%>
 								</select>
 							</div>
 						</div>
@@ -155,12 +166,12 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
 	    <h4 class="modal-title">日志详情</h4>
 	</div>
 <div class="modal-body">
-入参:<span id="param"></span><br/>
-解密后:<span id="decryptMsg"></span><br/>
-请求头:<span id="header"></span><br/>
-返回值:<span id="resultJson"></span><br/>
-异常信息:<span id="exception"></span><br/>
-堆栈:<span id="stackTrace"></span><br/>
+入参:<span id="param" class="breakline"></span><br/>
+解密后:<span id="decryptMsg" class="breakline"></span><br/>
+请求头:<span id="header" class="breakline"></span><br/>
+返回值:<span id="resultJson" class="breakline"></span><br/>
+异常信息:<span id="exception" class="breakline"></span><br/>
+堆栈:<span id="stackTrace" class="breakline"></span><br/>
 </div>
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
