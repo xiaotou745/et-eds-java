@@ -756,4 +756,11 @@ where Id = #{userId,jdbcType=INTEGER}
 			into dbo.ClienterOptionLog(ClienterId,OptId,OptName,InsertTime,[Platform],Remark)
 				where Id = #{clienterId,jdbcType=INTEGER}
 	</update>
+	
+		<!-- 闪送模式 修改骑士交通工具  wangchao -->
+  	<update id="modifyPushShanSongOrderSet" parameterType="com.edaisong.entity.req.ModifyPushShanSongOrderSetReq">
+		update dbo.clienter 
+		set PushShanSongOrderSet = #{set}
+		where Id = #{clienterId,jdbcType=INTEGER}
+	</update>
 </mapper>

@@ -51,7 +51,11 @@ public class AccountDao extends DaoBase implements IAccountDao {
 		return getReadOnlySqlSessionUtil().selectList(
 				"IAccountDao.getByRoleID", roleID);
 	}
-
+	@Override
+	public int update(Account account) {
+		return getMasterSqlSessionUtil().update(
+				"IAccountDao.update", account);
+	}
 	@Override
 	public int updatePwd(UpdatePwdReq req) {
 		return getMasterSqlSessionUtil().update(

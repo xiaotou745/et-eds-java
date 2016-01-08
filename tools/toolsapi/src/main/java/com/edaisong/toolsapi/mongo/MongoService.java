@@ -123,6 +123,15 @@ public class MongoService {
 		return result;
 	}
 
+	public List<String> selectDistinct(String tableName,String columName){
+		try {
+			DBCollection collection = mongoTemplate.getCollection(tableName);
+			return collection.distinct(columName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<>();
+	}
 	public List<ActionLog> selectResult(String tableName,BasicDBObject req,BasicDBObject colums) throws Exception {
 		List<ActionLog> dataList = new ArrayList<ActionLog>();
 		DBCursor querycursor = null;

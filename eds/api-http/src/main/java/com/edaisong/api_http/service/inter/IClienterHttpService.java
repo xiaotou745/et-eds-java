@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.req.ClienterBindOptionReq;
+import com.edaisong.entity.req.ModifyPushShanSongOrderSetReq;
 import com.edaisong.entity.req.ModifyVehicleReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.UserStatusReq;
@@ -46,4 +47,15 @@ public interface IClienterHttpService {
 	@Path("/modifyvehicle")
 	HttpResultModel<Object> modifyVehicle(ModifyVehicleReq req);
 	 
+	/**
+	 * 修改 是否 接收 里程计算的推单
+	 * @author CaoHeYang
+	 * @date 20160108
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/modifypushshansongorderset")
+	HttpResultModel<Object> modifyPushShanSongOrderSet(ModifyPushShanSongOrderSetReq req);
+	
 }

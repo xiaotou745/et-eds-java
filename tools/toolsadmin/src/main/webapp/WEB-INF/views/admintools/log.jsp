@@ -7,21 +7,12 @@
 <%@page import="com.edaisong.toolscore.util.EnumHelper"%>
 <%@page import="java.util.Calendar"%>
 <%
-	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
-
-List<String> appNameList = new ArrayList<String>();
-appNameList.add("admin");
-appNameList.add("apihttp");
-appNameList.add("business");
-appNameList.add("taobaoopenapi");
-appNameList.add("renrenadmin");
-appNameList.add("renrenapihttp");
 Calendar a=Calendar.getInstance();
 int month=a.get(Calendar.MONTH)+1;
 
-String apihttpVersion = request.getAttribute("apihttpVersion").toString();
-String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toString();
-
+String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
+List<String> appNameList = (List<String>)request.getAttribute("appNameList");
+List<String> appVersionList = (List<String>)request.getAttribute("appVersionList");
 %>
 
 <script src="<%=basePath%>/js/util.js"></script>
@@ -47,6 +38,24 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
 							<div class="col-sm-8">
 								<select name="appversion" class="form-control m-b" id="appversion">
 								<option value='' selected='selected'>全部版本</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">年份:</label>
+							<div class="col-sm-8">
+							<select name="yearInfo" class="form-control m-b" id="yearInfo">
+										<%
+										Calendar cal = Calendar.getInstance();
+										int nowYear = cal.get(Calendar.YEAR);
+										for (int i = nowYear; i >=2015; i--) {
+											%>
+											<option value="<%=i %>" <%=i==nowYear?"selected='selected'":"" %>><%=i %></option>
+											<%
+										}
+										%>
 								</select>
 							</div>
 						</div>
@@ -155,12 +164,12 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
 	    <h4 class="modal-title">日志详情</h4>
 	</div>
 <div class="modal-body">
-入参:<span id="param"></span><br/>
-解密后:<span id="decryptMsg"></span><br/>
-请求头:<span id="header"></span><br/>
-返回值:<span id="resultJson"></span><br/>
-异常信息:<span id="exception"></span><br/>
-堆栈:<span id="stackTrace"></span><br/>
+入参:<span id="param" class="breakline"></span><br/>
+解密后:<span id="decryptMsg" class="breakline"></span><br/>
+请求头:<span id="header" class="breakline"></span><br/>
+返回值:<span id="resultJson" class="breakline"></span><br/>
+异常信息:<span id="exception" class="breakline"></span><br/>
+堆栈:<span id="stackTrace" class="breakline"></span><br/>
 </div>
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -168,36 +177,14 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
     </div>
 </div>
 </div>
-<input type="hidden" value="" id="apihttpversion"/>
-<input type="hidden" value="" id="renrenapihttpversion"/>
+<input type="hidden" value="" id="appversions"/>
 <script>
 $(function(){
-	$("#apihttpversion").val("<%=apihttpVersion%>");
-	$("#renrenapihttpversion").val("<%=renrenapihttpVersion%>");
-	$("#sourceSys").on("change",function(e){
-		$("#appversion").html("<option value='' selected='selected'>全部版本</option>");
-		if($("#sourceSys").val()=="apihttp"||$("#sourceSys").val()=="renrenapihttp"){
-			var versions=$("#"+$("#sourceSys").val()+"version").val();
-			if(versions!=""){
-				var result=versions.split(",");
-				for(j=0;j<result.length;j++){  
-					$("#appversion").append("<option value='"+result[j]+"'>"+result[j]+"</option>");   
-				}
-			}
-		}
-	}); 
+	$("#appversions").val("<%=String.join(";",appVersionList)%>");
 });
 var jss={
 		search:function(currentPage){
 			    $("#_hiddenCurrentPage").val(currentPage);
-				//sourceSys下拉框改变时，会自动触发查询，此时appversion中的值还没有发生变更，因此需要特殊处理
-				if($("#sourceSys").val()!="apihttp"&&$("#sourceSys").val()!="renrenapihttp"){
-				    $("#appversion").val("");
-				}else if($("#appversion").val()!=""){
-					if($("#"+$("#sourceSys").val()+"version").val().indexOf($("#appversion").val())==-1){
-						$("#appversion").val("");
-					}
-				}
 				$("#tip").html("正在查询。。。");
 				$("#btnSearch").attr("disabled",true);
 			    var data=$("#searchForm").serialize();
@@ -208,7 +195,29 @@ var jss={
 				});
 			}
 	};
-	
+function beforeselectchange(e){
+	if(e.target.id=="sourceSys"){
+		$("#appversion").html("<option value='' selected='selected'>全部版本</option>");
+		if($("#sourceSys").val().indexOf("http")>0||$("#sourceSys").val().indexOf("api")>0){
+			var versions=$("#appversions").val();
+			if(versions!=""){
+				var result=versions.split(";");
+				for(j=0;j<result.length;j++){  
+					var versionresult=result[j].split(":");
+					if(versionresult[0]==$("#sourceSys").val()){
+						if(versionresult[1]!=""){
+							var version=versionresult[1].split(",");
+							for(k=0;k<version.length;k++){ 
+								$("#appversion").append("<option value='"+version[k]+"'>"+version[k]+"</option>");   
+							}
+							break;
+						}
+					}
+				}
+			}
+		}	
+	}
+}	
 jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
