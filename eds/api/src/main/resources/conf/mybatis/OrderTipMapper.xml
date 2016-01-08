@@ -26,7 +26,7 @@
        <select id="getList" resultType="com.edaisong.entity.OrderTip"  >      
    SELECT      Id, Amount, CreateName, CreateTime, ModifyName, ModifyTime
    FROM     [OrderTip]  WITH ( NOLOCK )         
-   WHERE    1 = 1  
+   WHERE    1 = 1  order by Amount
   </select>
   
     <sql id="queryWhere">
