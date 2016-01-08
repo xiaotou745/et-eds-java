@@ -21,6 +21,7 @@ import com.edaisong.entity.domain.ImportClienterInfo;
 import com.edaisong.entity.domain.MyBusinessModel;
 import com.edaisong.entity.req.ClienterMoney;
 import com.edaisong.entity.req.ClienterOptionReq;
+import com.edaisong.entity.req.ModifyPushShanSongOrderSetReq;
 import com.edaisong.entity.req.ModifyVehicleReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.PagedClienterReq;
@@ -243,5 +244,16 @@ public class ClienterService implements IClienterService {
 	@Override
 	public int modifyVehicle(ModifyVehicleReq req) {
 		return clienterDao.modifyVehicle(req);
+	}
+	/**
+	 * 修改 是否 接收 里程计算的推单
+	 * @author CaoHeYang
+	 * @date 20160108
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public int modifyPushShanSongOrderSet(ModifyPushShanSongOrderSetReq req){
+		return clienterDao.modifyPushShanSongOrderSet(req);
 	}
 }
