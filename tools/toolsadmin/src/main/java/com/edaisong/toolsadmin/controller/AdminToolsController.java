@@ -557,7 +557,7 @@ public class AdminToolsController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		long currentDay=(new Date()).getTime();
 		long lastDay=sdf.parse("2015-10-01 00:00:00").getTime();
-		timeHashMap.entrySet().parallelStream().forEach(t->{
+		timeHashMap.entrySet().stream().forEach(t->{
 			try {
 				long tempDay=sdf.parse(t.getKey()).getTime();
 				if(lastDay<=tempDay&&tempDay<=currentDay){
