@@ -12,11 +12,15 @@ public class Order {
     private String orderno;
 
     private String pickupaddress;
+    
     private Double pickuplongitude;
 
     private Double pickuplatitude;
+    
+    private String pubcity;
 
-    private Date pubdate;
+
+	private Date pubdate;
 
     private String recevicename;
 
@@ -139,6 +143,14 @@ public class Order {
     private int iscomplain;
     
     
+    public String getPubcity() {
+		return pubcity;
+	}
+
+	public void setPubcity(String pubcity) {
+		this.pubcity = pubcity;
+	}
+	
     public int getIscomplain() {
 		return iscomplain;
 	}

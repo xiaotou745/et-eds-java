@@ -2387,7 +2387,7 @@ public class OrderService implements IOrderService {
 			balanceRecord.setStatus((short) BusinessBalanceRecordStatus.Success
 							.value());
 			balanceRecord
-								.setRecordtype((short) BusinessBalanceRecordRecordType.PublishOrder
+								.setRecordtype((short) BusinessBalanceRecordRecordType.Tip
 										.value());
 			balanceRecord.setOperator(businessModel.getName());
 			balanceRecord.setWithwardid((long) oModel.getId());
@@ -2548,7 +2548,8 @@ public class OrderService implements IOrderService {
 			odResp.setPaymentstr(OrderPayment.Weixin.desc());
 		
 		odResp.setPubname(oModel.getPubname());	 
-		odResp.setPubphoneno(oModel.getPubphoneno());		
+		odResp.setPubphoneno(oModel.getPubphoneno());
+		odResp.setPubcity(oModel.getPubcity());		
 		odResp.setTaketype(oModel.getTaketype()); 
 		odResp.setProductname(oModel.getProductname());
 		odResp.setIscomplain(oModel.getIscomplain());
@@ -2829,10 +2830,32 @@ public class OrderService implements IOrderService {
 		
 		order.setPubname(req.getPubname());//发货人
 		order.setPubdate(new Date());//发货日期	
-		order.setPubphoneno(req.getPubphoneno());//发货人手机号
+		order.setPubphoneno(req.getPubphoneno());//发货人手机号	
 		order.setPickupaddress(req.getPubaddress());//发货人地址 	
 		order.setPickuplatitude(req.getPublatitude());
 		order.setPickuplongitude(req.getPublongitude());
+		order.setPubcity(null);
+		net.sf.json.JSONObject jsonObjectP=null;
+		if(req.getPublatitude()!=null && req.getPublongitude()!=null )
+		{
+			String url="http://api.map.baidu.com/geocoder/v2/";
+			String param="ak=dAeaG6HwIFGlkbqtyKkyFGEC&output=json&location="+req.getPublatitude()+","+req.getPublongitude();
+			String resultJson = HttpUtil.sendPost(url, param);	
+			
+		    if (resultJson != null && !resultJson.isEmpty()) {				
+		    		jsonObjectP=  net.sf.json.JSONObject.fromObject(resultJson);
+		    		 BaiduApiBean bdApiBean = (BaiduApiBean)net.sf.json.JSONObject.toBean(jsonObjectP,BaiduApiBean.class);
+		    		 if(bdApiBean!=null &&bdApiBean.getResult()!=null)
+		    		 {		    			
+		    			 if(bdApiBean.getResult().getAddressComponent()!=null)
+		    			 {
+		    				 order.setPubcity(bdApiBean.getResult().getAddressComponent().getCity());	    					
+		    			 }   		
+		    		 }				
+		    }
+		}
+		//order.setPubcity(req.getPubcity());
+		
 		order.setTaketype(req.getTaketype());//取货状态默认0立即，1预约	
 		Random random = new Random();
 	    int x = random.nextInt(899999);
