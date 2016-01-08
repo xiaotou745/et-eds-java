@@ -205,7 +205,7 @@ width: 100%;
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id="btnCCalculator" onclick="CalculatorFun()">计算公里</button>
+					<button class="btn btn-primary" type="button" id="btnCCalculator" onclick="CalculatorFun()">计算配送费</button>
 				</div>
 			</small>
 		</div> 
@@ -370,6 +370,14 @@ width: 100%;
 				 if(txtESteps == "0")
 				 {
 					 alert("计价阶梯不能为0");
+				    return;
+				 }
+			 }
+		 else
+			 {
+				 if(txtERemark == "")
+				 {
+					 alert("备注不能为空");
 				    return;
 				 }
 			 }

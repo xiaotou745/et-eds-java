@@ -131,8 +131,11 @@ width: 100%;
 		           type: 'POST',
 		           url: url,
 		           data: paramaters,
-		           success: function (result) {		        
-		                   window.location.href = "<%=basePath%>/ordertip/list";		            
+		           success: function (result) {		 
+		        	   alert(result.message);		        	
+		               if (result.status == 1) {
+		            	   window.location.href = "<%=basePath%>/ordertip/list";		
+		               }		                   		            
 		        	  
 		           }
 		       });

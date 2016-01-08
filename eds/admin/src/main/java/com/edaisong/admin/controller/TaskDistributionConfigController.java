@@ -115,5 +115,12 @@ public class TaskDistributionConfigController {
 	public double calculator(TaskDistributionConfig record) {
 		return taskDistributionConfigService.calculator(record);
 	}
-
+	
+	@RequestMapping("selectbyprimarykey")
+	@ResponseBody
+	public TaskDistributionConfig selectByPrimaryKey(int id)
+	{
+		TaskDistributionConfig model=taskDistributionConfigService.selectByPrimaryKey(id);
+		return model;
+	}
 }

@@ -41,6 +41,8 @@ public interface ITaskDistributionConfigDao {
 	
 	TaskDistributionConfig selectByKG(int id,double kg);
 	
+	TaskDistributionConfig selectByPrimaryKey(int id);
+	
     int deleteByPrimaryKey(Integer id);
 	
 }

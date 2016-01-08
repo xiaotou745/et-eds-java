@@ -37,7 +37,7 @@ if(list == null){
 								<td><%=list.get(i).getIsMaster()%></td>							
 						
 								<td>						
-								<a href="javascript:void(0)" onclick="modify('<%=list.get(i).getId() %>','<%=list.get(i).getkM() %>','<%=list.get(i).getkG() %>','<%=list.get(i).getSteps() %>','<%=list.get(i).getDistributionPrice() %>','<%=list.get(i).getRemark() %>','<%=list.get(i).getIsMaster() %>')">修改</a>
+								<a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId() %>,<%=list.get(i).getIsMaster() %>)">修改</a>
 								
 								<%		
 								
@@ -58,20 +58,33 @@ if(list == null){
 					data.getTotalPage())%>
 					
 <script>				
-    function modify(id,km,kg,steps,distributionPrice,remark,isMaster)
+    function modify(id,isMaster)
     {    	
-    	$('#txtERemark').attr("disabled",false);
-    	if(isMaster==0) 
-    		$('txtERemark').attr("disabled",true)    	
-    		
-       	$('#txtEId').val(id);    	
-        $('#txtEKM').val(km);
-        $('#txtEKG').val(kg);
-        $('#txtESteps').val(steps);   
-        $("#txtEDistributionPrice").val(distributionPrice);
-        $("#txtERemark").val(remark);
-        $("#txtEIsMaster").val(isMaster);
-        $('#modifyConfig').modal('show');
+    	 var paramaters = {
+                   "id": id
+               };
+    	 var url = "<%=basePath%>/taskdistributionconfig/selectbyprimarykey";
+    	 $.ajax({
+	           type: 'POST',
+	           url: url,
+	           data: paramaters,
+	           success: function (result) {		    
+	        	             	
+	        	 	$('#txtEId').val(result.id);    	
+	                $('#txtEKM').val(result.kM);
+	                $('#txtEKG').val(result.kG);
+	                $('#txtESteps').val(result.steps);   
+	                $("#txtEDistributionPrice").val(result.distributionPrice);       
+	                $("#txtEIsMaster").val(result.isMaster); 
+	                $("#txtERemark").val(result.remark);    		
+	              	$('#txtERemark').attr("disabled",false);     
+	            	if(isMaster==0) 
+	            		$('#txtERemark').attr("disabled",true)    	
+	            		
+	                $('#modifyConfig').modal('show');
+	           }
+	       });   	
+		
     }
 function del(id){		
 	    

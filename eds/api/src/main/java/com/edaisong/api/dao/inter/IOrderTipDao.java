@@ -3,6 +3,7 @@ package com.edaisong.api.dao.inter;
 import java.util.List;
 
 import com.edaisong.entity.OrderTip;
+import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.domain.FeedbackModel;
@@ -26,5 +27,7 @@ public interface IOrderTipDao {
 	public List<OrderTip> getList();
 	
     PagedResponse<OrderTip> query(PagedOrderTipReq req); 
+    
+    OrderTip selectByTip(int id, double amount);
 		
 }

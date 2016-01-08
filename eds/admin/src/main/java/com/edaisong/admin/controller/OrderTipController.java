@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,12 +33,14 @@ import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IOrderTipService;
 import com.edaisong.entity.AuthorityRole;
 import com.edaisong.entity.OrderTip;
+import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.PagedClienterBalanceRecordReq;
 import com.edaisong.entity.req.ClienterOptionReq;
 import com.edaisong.entity.req.PagedClienterReq;
 import com.edaisong.entity.req.PagedFeedbackReq;
 import com.edaisong.entity.req.PagedOrderTipReq;
+import com.edaisong.entity.resp.TaskDistributionConfigResp;
 
 
 
@@ -83,7 +86,7 @@ public class OrderTipController {
 	
 	@RequestMapping("add")
 	@ResponseBody
-	public int add(String amount, HttpServletRequest request) {
+	public  HttpResultModel<Object> add(String amount, HttpServletRequest request) {
 		OrderTip record=new OrderTip();
 		record.setAmount(Double.parseDouble(amount));
 		record.setCreatename(UserContext.getCurrentContext(request).getLoginName());

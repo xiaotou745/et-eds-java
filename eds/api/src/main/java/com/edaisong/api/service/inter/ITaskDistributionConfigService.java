@@ -49,4 +49,6 @@ public interface ITaskDistributionConfigService {
 	int deleteByPrimaryKey(Integer id);
 	
 	double calculator(TaskDistributionConfig record);
+	
+	public TaskDistributionConfig selectByPrimaryKey(int id);
 }

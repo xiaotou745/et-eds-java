@@ -23,6 +23,8 @@ import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.enums.BusinessPushOrderType;
 import com.edaisong.core.enums.BusinessStatusEnum;
+import com.edaisong.core.enums.OrderTipEnum;
+import com.edaisong.core.enums.TaskDistributionConfigEnum;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.HttpUtil;
 import com.edaisong.core.util.ParseHelper;
@@ -35,6 +37,7 @@ import com.edaisong.entity.BusinessLoginLog;
 import com.edaisong.entity.BusinessOptionLog;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.OrderTip;
+import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
@@ -59,6 +62,7 @@ import com.edaisong.entity.req.PagedOrderTipReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
 import com.edaisong.entity.resp.MyOrderBResp;
 import com.edaisong.entity.resp.MyOrderDetailBResp;
+import com.edaisong.entity.resp.TaskDistributionConfigResp;
 
 @Service
 public class OrderTipService implements IOrderTipService {
@@ -78,8 +82,22 @@ public class OrderTipService implements IOrderTipService {
 	}
 	
 	@Override
-	public int  add(OrderTip record)
+	public HttpResultModel<Object>  add(OrderTip record)
 	{
-		return iOrderTipDao.insertSelective(record);
-	}
+		HttpResultModel<Object> resp = new HttpResultModel<Object>();
+		
+		OrderTip selectModel= iOrderTipDao.selectByTip(0, record.getAmount());
+		if(selectModel!=null)
+		{
+				resp.setStatus(OrderTipEnum.TipErr.value());
+				resp.setMessage(OrderTipEnum.TipErr.desc());
+				return resp;
+		}
+
+	    resp.setStatus(OrderTipEnum.Success.value());
+		resp.setMessage(OrderTipEnum.Success.desc());		
+		iOrderTipDao.insertSelective(record);
+		return resp;
+	}	
+
 }

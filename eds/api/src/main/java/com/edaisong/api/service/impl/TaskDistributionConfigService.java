@@ -254,4 +254,10 @@ public class TaskDistributionConfigService implements
 		cost=baseDistributionPrice+kmDistributionPrice+kgDistributionPrice;
 		return cost;
 	}
+
+	@Override
+	public TaskDistributionConfig selectByPrimaryKey(int id) {
+		return taskDistributionConfigDao.selectByPrimaryKey(id);	
+	}
+	
 }

@@ -79,5 +79,10 @@ public class TaskDistributionConfigDao extends DaoBase implements ITaskDistribut
 		return getMasterSqlSessionUtil().delete(
 				"ITaskDistributionConfigDao.deleteByPrimaryKey", id);
 	}
-
+	
+	@Override
+	public TaskDistributionConfig selectByPrimaryKey(int id)
+	{
+		return getReadOnlySqlSessionUtil().selectOne("ITaskDistributionConfigDao.selectByPrimaryKey",id);
+	}
 }

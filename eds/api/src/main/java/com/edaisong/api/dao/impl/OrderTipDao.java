@@ -20,6 +20,7 @@ import java.util.Map;
 
 
 
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -103,6 +104,16 @@ public class OrderTipDao extends DaoBase implements IOrderTipDao {
 						req);
 		return model;
     }
+	@Override
+    public OrderTip selectByTip(int id, double amount)
+	{
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("id", id);
+		paramMap.put("amount", amount);
+		
+		return getMasterSqlSessionUtil().selectOne(
+				"IOrderTipDao.selectByTip", paramMap);
+	}
 
 
 }

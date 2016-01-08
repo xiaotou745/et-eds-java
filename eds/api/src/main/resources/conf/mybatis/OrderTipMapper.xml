@@ -18,6 +18,11 @@
     from OrderTip
     where Id = #{id,jdbcType=INTEGER}
   </select>
+   <select id="selectByTip" resultType="com.edaisong.entity.OrderTip" parameterType="java.util.Map" >
+    select  Id, Amount, CreateName, CreateTime, ModifyName, ModifyTime
+    from OrderTip
+    where     Amount= #{amount,jdbcType=DECIMAL} and id!=#{id,jdbcType=INTEGER}
+  </select>
        <select id="getList" resultType="com.edaisong.entity.OrderTip"  >      
    SELECT      Id, Amount, CreateName, CreateTime, ModifyName, ModifyTime
    FROM     [OrderTip]  WITH ( NOLOCK )         
