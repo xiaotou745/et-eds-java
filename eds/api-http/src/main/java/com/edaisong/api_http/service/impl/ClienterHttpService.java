@@ -20,6 +20,7 @@ import com.edaisong.entity.domain.MyOrderHadFinishCModel;
 import com.edaisong.entity.domain.QueryOrder;
 import com.edaisong.entity.req.ClienterBindOptionReq;
 import com.edaisong.entity.req.HadFinishOrderReq;
+import com.edaisong.entity.req.ModifyPushShanSongOrderSetReq;
 import com.edaisong.entity.req.ModifyVehicleReq;
 import com.edaisong.entity.req.MyBusinessReq;
 import com.edaisong.entity.req.UserStatusReq;
@@ -110,5 +111,23 @@ public class ClienterHttpService implements IClienterHttpService {
 			res.setMessage(HttpReturnRnums.Fail.desc());
 		}
 		return res;
+	}
+	
+	/**
+	 * 修改 是否 接收 里程计算的推单
+	 * @author CaoHeYang
+	 * @date 20160108
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<Object> modifyPushShanSongOrderSet(ModifyPushShanSongOrderSetReq req) {
+		HttpResultModel<Object>  res=new HttpResultModel<>();
+		if (iClienterService.modifyPushShanSongOrderSet(req)<=0) {
+			return res.setStatus(HttpReturnRnums.NoData.value()).setMessage(HttpReturnRnums.NoData.desc());
+		}
+		return res;
 	} 
+	
+	
 }
