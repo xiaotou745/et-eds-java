@@ -28,20 +28,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/commons-beanutils-1.8.3.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/commons-codec-1.6.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/commons-httpclient-3.0.1.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/commons-logging-1.1.1-sources.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/ezmorph-1.0.6.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/httpclient-4.3.3.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/jaxen-1.1-beta-6.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/json-lib-2.4-jdk15.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/xom-1.2.5.jar"/>
-	<classpathentry kind="lib" path="G:/project/e代送众包版/eds.java/pays/lib/alipay-sdk-java20151229120053.jar" sourcepath="G:/project/e代送众包版/eds.java/pays/lib/alipay-sdk-java20151229120053-source.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

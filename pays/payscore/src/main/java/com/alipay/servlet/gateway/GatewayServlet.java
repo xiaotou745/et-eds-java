@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.constants.AlipayServiceEnvConstants;
+import com.alipay.config.Platform;
 import com.alipay.dispatcher.Dispatcher;
 import com.alipay.executor.ActionExecutor;
+import com.alipay.factory.AlipayAPIClientFactory;
+import com.alipay.parmodel.ParamPlatformModel;
 import com.alipay.util.LogUtil;
 import com.alipay.util.RequestUtil;
 
@@ -60,16 +62,15 @@ public class GatewayServlet extends HttpServlet {
 
         //打印本次请求日志，开发者自行决定是否需要
         LogUtil.log("支付宝请求串", params.toString());
-
+        int platform=Platform.EDS.value();
         try {
             //2. 验证签名
-            this.verifySign(params);
+            this.verifySign(params,platform);
 
             //3. 获取业务执行器   根据请求中的 service, msgType, eventType, actionParam 确定执行器
             ActionExecutor executor = Dispatcher.getExecutor(params);
-
             //4. 执行业务逻辑
-            responseMsg = executor.execute();
+            responseMsg = executor.execute(platform);
 
         } catch (AlipayApiException alipayApiException) {
             //开发者可以根据异常自行进行处理
@@ -83,9 +84,10 @@ public class GatewayServlet extends HttpServlet {
             //5. 响应结果加签及返回
             try {
                 //对响应内容加签
+            	ParamPlatformModel paramPlatformModel=AlipayAPIClientFactory.getPlatformModel(platform);
                 responseMsg = AlipaySignature.encryptAndSign(responseMsg,
-                    AlipayServiceEnvConstants.ALIPAY_PUBLIC_KEY,
-                    AlipayServiceEnvConstants.PRIVATE_KEY, AlipayServiceEnvConstants.CHARSET,
+                		paramPlatformModel.getAlipay_public_key(),
+                		paramPlatformModel.getPrivate_key(),paramPlatformModel.getCharset(),
                     false, true);
 
                 //http 内容应答
@@ -111,11 +113,10 @@ public class GatewayServlet extends HttpServlet {
      * @param request
      * @return
      */
-    private void verifySign(Map<String, String> params) throws AlipayApiException {
-
-        if (!AlipaySignature.rsaCheckV2(params, AlipayServiceEnvConstants.ALIPAY_PUBLIC_KEY,
-            AlipayServiceEnvConstants.SIGN_CHARSET)) {
-
+    private void verifySign(Map<String, String> params,int platform) throws AlipayApiException {
+    	ParamPlatformModel paramPlatformModel=AlipayAPIClientFactory.getPlatformModel(platform);
+        if (!AlipaySignature.rsaCheckV2(params, paramPlatformModel.getAlipay_public_key(),
+        		paramPlatformModel.getSign_charset())) {
             throw new AlipayApiException("verify sign fail.");
         }
     }

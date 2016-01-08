@@ -5,7 +5,8 @@
 package com.alipay.executor;
 
 import com.alipay.common.MyException;
-import com.alipay.constants.AlipayServiceEnvConstants;
+import com.alipay.factory.AlipayAPIClientFactory;
+import com.alipay.parmodel.ParamPlatformModel;
 
 /**
  * 开通服务窗开发者功能处理器
@@ -19,8 +20,8 @@ public class InAlipayVerifyExecutor implements ActionExecutor {
      * @see com.alipay.executor.ActionExecutor#executor(java.util.Map)
      */
     @Override
-    public String execute() throws MyException {
-        return this.setResponse();
+    public String execute(int platform) throws MyException {
+        return this.setResponse(platform);
     }
 
     /**
@@ -28,11 +29,13 @@ public class InAlipayVerifyExecutor implements ActionExecutor {
      * 
      * @return
      */
-    private String setResponse() throws MyException {
+    private String setResponse(int platform) throws MyException {
+    	ParamPlatformModel paramPlatformModel=AlipayAPIClientFactory.getPlatformModel(platform);
         //固定响应格式，必须按此格式返回
         StringBuilder builder = new StringBuilder();
         builder.append("<success>").append(Boolean.TRUE.toString()).append("</success>");
-        builder.append("<biz_content>").append(AlipayServiceEnvConstants.PUBLIC_KEY)
+        
+        builder.append("<biz_content>").append(paramPlatformModel.getPublic_key())
             .append("</biz_content>");
         return builder.toString();
     }

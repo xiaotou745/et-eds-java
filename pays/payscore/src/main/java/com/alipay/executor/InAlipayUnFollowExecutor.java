@@ -28,7 +28,7 @@ public class InAlipayUnFollowExecutor implements ActionExecutor {
     }
 
     @Override
-    public String execute() {
+    public String execute(int platform) {
 
         //取得发起请求的支付宝账号id
         final String fromUserId = bizContent.getString("FromUserId");
@@ -36,6 +36,6 @@ public class InAlipayUnFollowExecutor implements ActionExecutor {
         //TODO 根据支付宝请求参数，开发者可以删除之前保存的本地支付宝UID-服务窗ID的关注关系
         // 这里只是个样例程序，所以这步省略。
 
-        return AlipayMsgBuildUtil.buildBaseAckMsg(fromUserId);
+        return AlipayMsgBuildUtil.buildBaseAckMsg(fromUserId,platform);
     }
 }

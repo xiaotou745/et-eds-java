@@ -8,6 +8,7 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.request.AlipayMobilePublicMessageCustomSendRequest;
 import com.alipay.api.response.AlipayMobilePublicMessageCustomSendResponse;
+import com.alipay.config.Platform;
 import com.alipay.factory.AlipayAPIClientFactory;
 import com.alipay.util.AlipayMsgBuildUtil;
 
@@ -28,8 +29,8 @@ public class ToAlipaySingleSendImgTextMsg {
      * @param args
      */
     public static void main(String[] args) {
-
-        AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+    	int platform=Platform.EDS.value();
+        AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
 
         // 使用SDK，构建单发请求模型
         AlipayMobilePublicMessageCustomSendRequest request = new AlipayMobilePublicMessageCustomSendRequest();

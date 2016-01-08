@@ -33,13 +33,13 @@ public class InAlipayEnterExecutor implements ActionExecutor {
      * @see com.alipay.executor.ActionExecutor#executor(java.util.Map)
      */
     @Override
-    public String execute() throws MyException {
+    public String execute(int platform) throws MyException {
         //自身业务处理,这里只是简单打印下
         //建议开发者自行处理采用异步方式，参见InAlipayChatTextExecutor
         System.out.println("欢迎光临！");
 
         // 同步返回ack响应
-        return this.setResponse();
+        return this.setResponse(platform);
     }
 
     /**
@@ -47,11 +47,11 @@ public class InAlipayEnterExecutor implements ActionExecutor {
      * 
      * @return
      */
-    private String setResponse() throws MyException {
+    private String setResponse(int platform) throws MyException {
 
         //取得发起请求的支付宝账号id
         String fromUserId = bizContent.getString("FromUserId");
 
-        return AlipayMsgBuildUtil.buildBaseAckMsg(fromUserId);
+        return AlipayMsgBuildUtil.buildBaseAckMsg(fromUserId,platform);
     }
 }

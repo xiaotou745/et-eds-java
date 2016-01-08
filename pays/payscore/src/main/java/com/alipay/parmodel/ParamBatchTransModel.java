@@ -11,6 +11,14 @@ public class ParamBatchTransModel {
 	//必填，格式：流水号1^收款方帐号1^真实姓名^付款金额1^备注说明1|流水号2^收款方帐号2^真实姓名^付款金额2^备注说明2....
 	private String detail_info;//付款详细数据,必填，即参数detail_data的值中，“|”字符出现的数量加1，最大支持1000笔（即“|”字符出现的数量999个）
 	
+	private int platform;
+	
+	public int getPlatform() {
+		return platform;
+	}
+	public void setPlatform(int platform) {
+		this.platform = platform;
+	}
 	public String getDetail_info() {
 		return detail_info;
 	}

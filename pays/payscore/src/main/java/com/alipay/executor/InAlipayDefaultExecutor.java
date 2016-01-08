@@ -33,11 +33,11 @@ public class InAlipayDefaultExecutor implements ActionExecutor {
      * @see com.alipay.executor.ActionExecutor#execute()
      */
     @Override
-    public String execute() throws MyException {
+    public String execute(int platform) throws MyException {
 
         //取得发起请求的支付宝账号id
         final String fromUserId = bizContent.getString("FromUserId");
 
-        return AlipayMsgBuildUtil.buildBaseAckMsg(fromUserId);
+        return AlipayMsgBuildUtil.buildBaseAckMsg(fromUserId,platform);
     }
 }

@@ -23,6 +23,7 @@ import com.alipay.api.response.AlipayTradeCancelResponse;
 import com.alipay.api.response.AlipayTradePayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.alipay.config.Platform;
 import com.alipay.factory.AlipayAPIClientFactory;
 
 public class ToAlipayBarTradePay {
@@ -39,7 +40,8 @@ public class ToAlipayBarTradePay {
 		String out_request_no = String.valueOf(RandomUtils.nextLong());
 		String trade_no = "2015050521001004720200031381";
 		String refund_amount = "0.01";
-		 refundOrder(trade_no, refund_amount, out_request_no);
+		int platform=Platform.EDS.value();//默认是易代送支付
+		 refundOrder(trade_no, refund_amount, out_request_no,platform);
 	}
 
 	/**
@@ -53,7 +55,7 @@ public class ToAlipayBarTradePay {
 	 * @return
 	 */
 	public static AlipayTradePayResponse barPay(String out_trade_no,
-			String auth_code, String total_amount, String subject) {
+			String auth_code, String total_amount, String subject,int platform) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time_expire = sdf.format(System.currentTimeMillis() + 24 * 60
 				* 60 * 1000);
@@ -69,7 +71,7 @@ public class ToAlipayBarTradePay {
 		sb.append("\"operator_id\":\"op001\",\"store_id\":\"pudong001\",\"terminal_id\":\"t_001\",");
 		sb.append("\"time_expire\":\"" + time_expire + "\"}");
 
-		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
 
 		// 使用SDK，构建群发请求模型
 		AlipayTradePayRequest request = new AlipayTradePayRequest();
@@ -146,8 +148,8 @@ public class ToAlipayBarTradePay {
 	 * @date 2015年5月5日
 	 * @version 1.0
 	 */
-	public static AlipayTradeQueryResponse query(final String out_trade_no) {
-		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+	public static AlipayTradeQueryResponse query(final String out_trade_no,int platform) {
+		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
 		AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
 		String biz_content = "{\"out_trade_no\":\"" + out_trade_no + "\"}";
 		request.setBizContent(biz_content);
@@ -177,7 +179,7 @@ public class ToAlipayBarTradePay {
 					} else if ("WAIT_BUYER_PAY".equalsIgnoreCase(response
 							.getTradeStatus())) {
 						// 等待用户付款状态，需要轮询查询用户的付款结果
-						queryRetry(out_trade_no);
+						queryRetry(out_trade_no,platform);
 						
 					} else if ("TRADE_CLOSED".equalsIgnoreCase(response
 							.getTradeStatus())) {
@@ -207,7 +209,7 @@ public class ToAlipayBarTradePay {
 	 * @date 2015年4月28日
 	 * @version 1.0
 	 */
-	public static void queryRetry(final String out_trade_no) {
+	public static void queryRetry(final String out_trade_no,int platform) {
 		final ScheduledExecutorService service = Executors
 				.newSingleThreadScheduledExecutor();
 		final int queryTime = 60;// 总共轮询查询时间，单位秒
@@ -223,7 +225,7 @@ public class ToAlipayBarTradePay {
 				if (++i <= n) {
 					System.out.println("重试查询第 " +i+ " 次");
 					AlipayClient alipayClient = AlipayAPIClientFactory
-							.getAlipayClient();
+							.getAlipayClient(platform);
 					AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
 					String biz_content = "{\"out_trade_no\":\"" + out_trade_no
 							+ "\"}";
@@ -298,8 +300,8 @@ public class ToAlipayBarTradePay {
 	 * @return
 	 */
 	public static AlipayTradeCancelResponse cancelOrder(
-			final String out_trade_no) {
-		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+			final String out_trade_no,int platform) {
+		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
 		AlipayTradeCancelRequest request = new AlipayTradeCancelRequest();
 		String biz_content = "{\"out_trade_no\":\"" + out_trade_no + "\"}";
 		request.setBizContent(biz_content);
@@ -330,7 +332,7 @@ public class ToAlipayBarTradePay {
 					
 					if (response.getRetryFlag().equals("Y")) {
 						// 如果重试标识为Y，表示支付宝撤销失败，需要轮询重新发起撤销
-						cancelOrderRetry(out_trade_no);
+						cancelOrderRetry(out_trade_no,platform);
 					}
 				}
 			}
@@ -349,8 +351,8 @@ public class ToAlipayBarTradePay {
 	 * @date 2015年4月28日
 	 * @version 1.0
 	 */
-	public static void cancelOrderRetry(final String out_trade_no) {
-		final AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+	public static void cancelOrderRetry(final String out_trade_no,int platform) {
+		final AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
 		final AlipayTradeCancelRequest request = new AlipayTradeCancelRequest();
 		String biz_content = "{\"out_trade_no\":\"" + out_trade_no + "\"}";
 		request.setBizContent(biz_content);
@@ -411,8 +413,8 @@ public class ToAlipayBarTradePay {
 	 * @return
 	 */
 	public static AlipayTradeRefundResponse refundOrder(String trade_no,
-			String refund_amount, String out_request_no) {
-		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+			String refund_amount, String out_request_no,int platform) {
+		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
 		AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
 
 		String biz_content = "{\"trade_no\":\""
@@ -452,7 +454,7 @@ public class ToAlipayBarTradePay {
 					}					
 				} else {
 					// 没有撤销成功，需要重试几次
-					refundOrderRetry(trade_no, refund_amount, out_request_no, 6);
+					refundOrderRetry(trade_no, refund_amount, out_request_no, 6,platform);
 				}
 			}
 		} catch (AlipayApiException e) {
@@ -475,8 +477,8 @@ public class ToAlipayBarTradePay {
 	 * @version 1.0
 	 */
 	public static void refundOrderRetry(String trade_no, String refund_amount,
-			String out_request_no, int retryTimes) {
-		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+			String out_request_no, int retryTimes,int platform) {
+		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
 		AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
 		String biz_content = "{\"trade_no\":\""
 				+ trade_no
