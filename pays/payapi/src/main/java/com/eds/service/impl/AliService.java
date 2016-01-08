@@ -21,6 +21,7 @@ import com.eds.service.inter.IAliService;
 import com.alipay.config.*;
 import com.alipay.parmodel.ParamAliModel;
 import com.alipay.parmodel.ParamBatchTransModel;
+import com.alipay.parmodel.ParamPlatformModel;
 import com.alipay.util.*;
 
 import java.util.Date;
@@ -40,11 +41,14 @@ public class AliService implements IAliService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Map<String, String> sParaTemp = new HashMap<String, String>();
 		sParaTemp.put("service", "batch_trans_notify");
-        sParaTemp.put("partner", AlipayConfig.partner);
-        sParaTemp.put("_input_charset", AlipayConfig.input_charset);
+		ParamPlatformModel paramPlatformModel= AlipayAPIClientFactory.getPlatformModel(model.getPlatform());
+        sParaTemp.put("partner", paramPlatformModel.getPartner());
+		sParaTemp.put("email", paramPlatformModel.getEmail());
+		sParaTemp.put("key", paramPlatformModel.getKey());
+		sParaTemp.put("account_name",paramPlatformModel.getAccount_name());
+        sParaTemp.put("_input_charset", paramPlatformModel.getInput_charset());
+        
 		sParaTemp.put("notify_url", model.getNotify_url());
-		sParaTemp.put("email", AlipayConfig.email);
-		sParaTemp.put("account_name",AlipayConfig.account_name);
 		sParaTemp.put("pay_date",sdf.format(now));
 		sParaTemp.put("batch_no",model.getBatch_no());
 		sParaTemp.put("batch_fee",model.getBatch_fee());
@@ -75,7 +79,7 @@ public class AliService implements IAliService {
 		sb.append("\"operator_id\":\"op001\",\"store_id\":\"pudong001\",\"terminal_id\":\"t_001\",");
 		sb.append("\"time_expire\":\"" + time_expire + "\"}");
 		System.out.println(sb.toString());
-		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();//model.getPlatform()
+		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(model.getPlatform());
 		// 使用SDK，构建群发请求模型
 		AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
 		request.setBizContent(sb.toString());
@@ -111,7 +115,7 @@ public class AliService implements IAliService {
 	@Override
 	public AlipayMobilePublicMessagePushResponse cancelOrder(ParamAliModel model)
 			throws AlipayApiException {
-		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();//model.getPlatform()
+		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(model.getPlatform());
 		AlipayMobilePublicMessagePushRequest request = new AlipayMobilePublicMessagePushRequest();
 		// 传入接口中规定的业务参数
 		JSONObject json = new JSONObject();
@@ -126,7 +130,7 @@ public class AliService implements IAliService {
 	@Override
 	public AlipayTradeRefundResponse refundOrder(ParamAliModel model)
 			throws AlipayApiException {
-		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();//model.getPlatform()
+		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(model.getPlatform());
 		AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
 
 		JSONObject json = new JSONObject();
@@ -144,7 +148,7 @@ public class AliService implements IAliService {
 	 * */
 	@Override
 	public AlipayTradeQueryResponse queryOrder(ParamAliModel model) throws AlipayApiException {
-		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();//model.getPlatform()
+		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(model.getPlatform());
 		AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
 		net.sf.json.JSONObject json = new net.sf.json.JSONObject();
 //		StringBuilder sb=new StringBuilder();

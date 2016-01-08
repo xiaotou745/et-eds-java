@@ -10,6 +10,7 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.request.AlipayTradePrecreateRequest;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
+import com.alipay.config.Platform;
 import com.alipay.factory.AlipayAPIClientFactory;
 
 
@@ -26,8 +27,8 @@ public class ToAlipayQrTradePay {
 		String out_trade_no="20150528207426"; //商户唯一订单号
 		String total_amount="0.01";
 		String subject = "测试扫码付订单";
-		
-		qrPay(out_trade_no,total_amount,subject);
+		int platform=Platform.EDS.value();
+		qrPay(out_trade_no,total_amount,subject,platform);
 	}
 	
 	
@@ -40,7 +41,7 @@ public class ToAlipayQrTradePay {
 	 * @version 1.0
 	 * @return 
 	 */
-	public static AlipayTradePrecreateResponse qrPay(String out_trade_no,String total_amount,String subject) {
+	public static AlipayTradePrecreateResponse qrPay(String out_trade_no,String total_amount,String subject,int platform) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time_expire= sdf.format(System.currentTimeMillis()+24*60*60*1000);
 		
@@ -53,7 +54,7 @@ public class ToAlipayQrTradePay {
 		sb.append("\"time_expire\":\""+time_expire+"\"}");
 		System.out.println(sb.toString());
 
-		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+		AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
 
 		// 使用SDK，构建群发请求模型
 		AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();

@@ -142,7 +142,7 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			logEngity.setUserName("");
 			logEngity.setRequestType(0);
 			logEngity.setClientIp(clientIp);
-			logEngity.setSourceSys("apihttp");
+			logEngity.setSourceSys("payapi");
 			logEngity.setRequestUrl(url);
 			logEngity.setParam(param);
 			logEngity.setDecryptMsg(decryptMsg);

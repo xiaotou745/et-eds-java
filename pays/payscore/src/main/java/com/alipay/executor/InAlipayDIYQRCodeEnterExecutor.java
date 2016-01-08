@@ -42,7 +42,7 @@ public class InAlipayDIYQRCodeEnterExecutor implements ActionExecutor {
      * @see com.alipay.executor.ActionExecutor#executor(java.util.Map)
      */
     @Override
-    public String execute() throws MyException {
+    public String execute(int platform) throws MyException {
         //自身业务处理
         //理论上，自定义二维码会有sceneId设置，通过该id，开发者开始知道是哪个自定义二维码进入
 
@@ -57,7 +57,7 @@ public class InAlipayDIYQRCodeEnterExecutor implements ActionExecutor {
             final String fromUserId = bizContent.getString("FromUserId");
 
             //1. 首先同步构建ACK响应
-            syncResponseMsg = AlipayMsgBuildUtil.buildBaseAckMsg(fromUserId);
+            syncResponseMsg = AlipayMsgBuildUtil.buildBaseAckMsg(fromUserId,platform);
 
             //2. 异步发送消息
             executors.execute(new Runnable() {
@@ -68,7 +68,7 @@ public class InAlipayDIYQRCodeEnterExecutor implements ActionExecutor {
                         // 2.1 构建一个业务响应消息，开发者根据自行业务构建，这里只是一个简单的样例
                         String requestMsg = AlipayMsgBuildUtil.buildSingleImgTextMsg(fromUserId);
 
-                        AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+                        AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
                         AlipayMobilePublicMessageCustomSendRequest request = new AlipayMobilePublicMessageCustomSendRequest();
                         request.setBizContent(requestMsg);
 

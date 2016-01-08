@@ -8,6 +8,7 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.request.AlipayMobilePublicMessageTotalSendRequest;
 import com.alipay.api.response.AlipayMobilePublicMessageTotalSendResponse;
+import com.alipay.config.Platform;
 import com.alipay.factory.AlipayAPIClientFactory;
 import com.alipay.util.AlipayMsgBuildUtil;
 
@@ -24,8 +25,8 @@ public class ToAlipayGroupSendTextMsg {
      * @param args
      */
     public static void main(String[] args) {
-
-        AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+    	int platform=Platform.EDS.value();
+        AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
 
         // 使用SDK，构建群发请求模型
         AlipayMobilePublicMessageTotalSendRequest request = new AlipayMobilePublicMessageTotalSendRequest();

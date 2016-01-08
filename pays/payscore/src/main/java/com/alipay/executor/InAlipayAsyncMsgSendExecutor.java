@@ -38,13 +38,12 @@ public class InAlipayAsyncMsgSendExecutor implements ActionExecutor {
     }
 
     @Override
-    public String execute() {
-
+    public String execute(int platform) {
         //取得发起请求的支付宝账号id
         final String fromUserId = bizContent.getString("FromUserId");
 
         //1. 首先同步响应一个消息
-        String syncResponseMsg = AlipayMsgBuildUtil.buildBaseAckMsg(fromUserId);
+        String syncResponseMsg = AlipayMsgBuildUtil.buildBaseAckMsg(fromUserId,platform);
 
         //2. 异步发送消息
         executors.execute(new Runnable() {
@@ -55,7 +54,7 @@ public class InAlipayAsyncMsgSendExecutor implements ActionExecutor {
                     // 2.1 构建一个业务响应消息，开发者根据自行业务构建，这里只是一个简单的样例
                     String requestMsg = AlipayMsgBuildUtil.buildSingleImgTextMsg(fromUserId);
 
-                    AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient();
+                    AlipayClient alipayClient = AlipayAPIClientFactory.getAlipayClient(platform);
                     AlipayMobilePublicMessageCustomSendRequest request = new AlipayMobilePublicMessageCustomSendRequest();
                     request.setBizContent(requestMsg);
 

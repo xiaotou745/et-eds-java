@@ -8,9 +8,8 @@ import java.util.Map;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.constants.AlipayServiceEnvConstants;
-
-
+import com.alipay.factory.AlipayAPIClientFactory;
+import com.alipay.parmodel.ParamPlatformModel;
 
 /* *
  *类名：AlipayNotify
@@ -38,18 +37,20 @@ public class AlipayNotify {
      * @return 验证结果
      */
     public static boolean verify(Map<String, String> params) {
-
         //判断responsetTxt是否为true，isSign是否为true
         //responsetTxt的结果不是true，与服务器设置问题、合作身份者ID、notify_id一分钟失效有关
         //isSign不是true，与安全校验码、请求时的参数格式（如：带自定义参数等）、编码格式有关
     	String responseTxt = "true";
+
+    	int platform= Integer.parseInt(params.get("platform"));
 		if(params.get("notify_id") != null) {
 			String notify_id = params.get("notify_id");
-			responseTxt = verifyResponse(notify_id);
+			
+			responseTxt = verifyResponse(notify_id,platform);
 		}
 	    String sign = "";
 	    if(params.get("sign") != null) {sign = params.get("sign");}
-	    boolean isSign = getRSASignVerify(params, sign);
+	    boolean isSign = getRSASignVerify(params, sign,platform);
 
         //写日志记录（若要调试，请取消下面两行注释）
         //String sWord = "responseTxt=" + responseTxt + "\n isSign=" + isSign + "\n 返回回来的参数：" + AlipayCore.createLinkString(params);
@@ -68,7 +69,7 @@ public class AlipayNotify {
      * @param sign 比对的签名结果
      * @return 生成的签名结果
      */
-	private static boolean getRSASignVerify(Map<String, String> Params, String sign) {
+	private static boolean getRSASignVerify(Map<String, String> Params, String sign,int platform) {
     	//过滤空值、sign与sign_type参数
     	Map<String, String> sParaNew = AlipayCore.paraFilter(Params);
         //获取待签名字符串
@@ -76,9 +77,10 @@ public class AlipayNotify {
         //获得签名验证结果
         boolean isSign = false;
         try {
+        	ParamPlatformModel paramPlatformModel=AlipayAPIClientFactory.getPlatformModel(platform);
 			isSign = AlipaySignature.rsaCheckContent(
-					preSignStr, sign, AlipayServiceEnvConstants.ALIPAY_PUBLIC_KEY,
-					AlipayServiceEnvConstants.CHARSET);
+					preSignStr, sign, paramPlatformModel.getAlipay_public_key(),
+					paramPlatformModel.getCharset());
 		} catch (AlipayApiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,10 +98,10 @@ public class AlipayNotify {
     * true 返回正确信息
     * false 请检查防火墙或者是服务器阻止端口问题以及验证时间是否超过一分钟
     */
-    private static String verifyResponse(String notify_id) {
+    private static String verifyResponse(String notify_id,int platform) {
         //获取远程服务器ATN结果，验证是否是支付宝服务器发来的请求
-
-        String partner = AlipayServiceEnvConstants.PARTNER;
+    	ParamPlatformModel paramPlatformModel=AlipayAPIClientFactory.getPlatformModel(platform);
+        String partner = paramPlatformModel.getPartner();
         String veryfy_url = HTTPS_VERIFY_URL + "partner=" + partner + "&notify_id=" + notify_id;
 
         return checkUrl(veryfy_url);

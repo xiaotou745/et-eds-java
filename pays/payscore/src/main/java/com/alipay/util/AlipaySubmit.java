@@ -47,7 +47,8 @@ public class AlipaySubmit {
     	String prestr = AlipayCore.createLinkString(sPara); //把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
         String mysign = "";
         if(AlipayConfig.sign_type.equals("MD5") ) {
-        	mysign = MD5.sign(prestr, AlipayConfig.key, AlipayConfig.input_charset);
+//        	mysign = MD5.sign(prestr, AlipayConfig.key, AlipayConfig.input_charset);
+          	mysign = MD5.sign(prestr, sPara.get("key"), sPara.get("_input_charset"));
         }
         return mysign;
     }
@@ -66,7 +67,6 @@ public class AlipaySubmit {
         //签名结果与签名方式加入请求提交参数组中
         sPara.put("sign", mysign);
         sPara.put("sign_type", AlipayConfig.sign_type);
-
         return sPara;
     }
 
@@ -192,11 +192,11 @@ public class AlipaySubmit {
      * @throws DocumentException
      * @throws MalformedURLException
      */
-	public static String query_timestamp() throws MalformedURLException,
+	public static String query_timestamp(String partner) throws MalformedURLException,
                                                         DocumentException, IOException {
 
         //构造访问query_timestamp接口的URL串
-        String strUrl = ALIPAY_GATEWAY_NEW + "service=query_timestamp&partner=" + AlipayConfig.partner + "&_input_charset" +AlipayConfig.input_charset;
+        String strUrl = ALIPAY_GATEWAY_NEW + "service=query_timestamp&partner=" + partner + "&_input_charset" +AlipayConfig.input_charset;
         StringBuffer result = new StringBuffer();
 
         SAXReader reader = new SAXReader();

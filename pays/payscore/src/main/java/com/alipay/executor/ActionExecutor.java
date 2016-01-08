@@ -18,6 +18,6 @@ public interface ActionExecutor {
      * 业务执行方法
      * @return
      */
-    public String execute() throws MyException;
+    public String execute(int platform) throws MyException;
 
 }

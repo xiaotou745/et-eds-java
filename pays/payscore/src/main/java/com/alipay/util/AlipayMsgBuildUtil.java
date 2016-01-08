@@ -6,7 +6,8 @@ package com.alipay.util;
 
 import java.util.Calendar;
 
-import com.alipay.constants.AlipayServiceEnvConstants;
+import com.alipay.factory.AlipayAPIClientFactory;
+import com.alipay.parmodel.ParamPlatformModel;
 
 /**
  * 消息构造工具
@@ -107,11 +108,12 @@ public class AlipayMsgBuildUtil {
      * 
      * @return
      */
-    public static String buildBaseAckMsg(String fromUserId) {
+    public static String buildBaseAckMsg(String fromUserId,int platform) {
+    	ParamPlatformModel paramPlatformModel=AlipayAPIClientFactory.getPlatformModel(platform);
         StringBuilder sb = new StringBuilder();
         sb.append("<XML>");
         sb.append("<ToUserId><![CDATA[" + fromUserId + "]]></ToUserId>");
-        sb.append("<AppId><![CDATA[" + AlipayServiceEnvConstants.APP_ID + "]]></AppId>");
+        sb.append("<AppId><![CDATA[" + paramPlatformModel.getApp_id()+ "]]></AppId>");
         sb.append("<CreateTime>" + Calendar.getInstance().getTimeInMillis() + "</CreateTime>");
         sb.append("<MsgType><![CDATA[ack]]></MsgType>");
         sb.append("</XML>");
