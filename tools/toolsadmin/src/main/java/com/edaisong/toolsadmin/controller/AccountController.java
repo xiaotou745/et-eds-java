@@ -26,6 +26,7 @@ import com.edaisong.toolsapi.service.inter.IAccountService;
 import com.edaisong.toolsapi.service.inter.IAuthorityAccountMenuSetService;
 import com.edaisong.toolsapi.service.inter.IAuthorityRoleService;  
 import com.edaisong.toolscore.security.AES;
+import com.edaisong.toolscore.security.MD5Util;
 import com.edaisong.toolscore.util.CookieUtils;
 import com.edaisong.toolscore.util.IPUtil;
 import com.edaisong.toolscore.util.JsonUtil;
@@ -76,6 +77,15 @@ public class AccountController {
 	@ResponseBody
 	public Account getUserInfo(HttpServletRequest request,int userId) {
 		return accountService.getByID(userId);
+	}
+	@RequestMapping("updateuser")
+	@ResponseBody
+	public int updateUser(HttpServletRequest request,Account account) {
+		if (account.getPassword()!=null&&!account.getPassword().isEmpty()) {
+			String password = MD5Util.MD5(account.getPassword());
+			account.setPassword(password);
+		}
+		return accountService.update(account);
 	}
 	@RequestMapping("code")
 	public ModelAndView code(HttpServletRequest request, HttpServletResponse response) {

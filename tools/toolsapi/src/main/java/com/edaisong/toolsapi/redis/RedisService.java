@@ -108,7 +108,7 @@ public class RedisService {
 	 * @return
 	 */
 	private String suffxKey(String orginKey) {
-		return "java_" + PropertyUtils.getProperty("GlobalVersion") + "_"
+		return "java_tools_" + PropertyUtils.getProperty("GlobalVersion") + "_"
 				+ orginKey;
 	}
 }

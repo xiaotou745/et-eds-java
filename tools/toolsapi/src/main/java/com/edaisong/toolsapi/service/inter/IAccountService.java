@@ -8,6 +8,7 @@ import com.edaisong.toolsentity.req.PagedAccountReq;
 import com.edaisong.toolsentity.req.UpdatePwdReq;
 
 
+
 public interface IAccountService {
 	public  PagedResponse<Account>  queryAccount(PagedAccountReq req);
 	Account login(String username,String password);
@@ -15,4 +16,5 @@ public interface IAccountService {
 	int updateRoleID(int userID,int newRoleID);
 	List<Account> getByRoleID(int roleID);
 	int updatePwd(UpdatePwdReq req);
+	int update(Account account);
 }

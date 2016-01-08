@@ -16,4 +16,5 @@ public interface IAccountDao {
 	int updateRoleID(int userID,int newRoleID);
 	List<Account> getByRoleID(int roleID);
 	int updatePwd(UpdatePwdReq req);
+	int update(Account account);
 }

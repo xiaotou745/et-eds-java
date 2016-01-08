@@ -22,6 +22,25 @@
     
    
   </sql>
+  <update id="update" parameterType="com.edaisong.toolsentity.Account" >
+    update account
+    <set >
+    	LCDateTime=getdate(),
+      <if test="username != null and username!=''" >
+        userName = #{username,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginname != null and loginname!=''" >
+        loginName = #{loginname,jdbcType=NVARCHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="password != null and password!=''" >
+        passWord = #{password,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
  <sql id="queryWhere">
 		1=1
 		<if test="keyword != null and keyword!=''">

@@ -9,15 +9,8 @@
 <%
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
 
-List<String> appNameList = new ArrayList<String>();
-appNameList.add("admin");
-appNameList.add("apihttp");
-appNameList.add("business");
-appNameList.add("taobaoopenapi");
-appNameList.add("renrenadmin");
-appNameList.add("renrenapihttp");
-String apihttpVersion = request.getAttribute("apihttpVersion").toString();
-String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toString();
+List<String> appNameList = (List<String>)request.getAttribute("appNameList");
+List<String> appVersionList = (List<String>)request.getAttribute("appVersionList");
 
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
@@ -157,8 +150,7 @@ String renrenapihttpVersion = request.getAttribute("renrenapihttpVersion").toStr
 		<div class="ibox-content" id="content"></div>
 	</div>
 </div>
-<input type="hidden" value="" id="apihttpversion"/>
-<input type="hidden" value="" id="renrenapihttpversion"/>
+<input type="hidden" value="" id="appversions"/>
 <script>
 $(function(){
 	  $(' .input-group.date').datepicker({
@@ -168,22 +160,31 @@ $(function(){
         calendarWeeks: true,
         autoclose: true
     }); 
-		$("#apihttpversion").val("<%=apihttpVersion%>");
-		$("#renrenapihttpversion").val("<%=renrenapihttpVersion%>");
-		$("#sourceSys").on("change",function(e){
-			$("#appversion").html("<option value='' selected='selected'>全部版本</option>");
-			if($("#sourceSys").val()=="apihttp"||$("#sourceSys").val()=="renrenapihttp"){
-				var versions=$("#"+$("#sourceSys").val()+"version").val();
-				if(versions!=""){
-					var result=versions.split(",");
-					for(j=0;j<result.length;j++){  
-						$("#appversion").append("<option value='"+result[j]+"'>"+result[j]+"</option>");   
+	$("#appversions").val("<%=String.join(";",appVersionList)%>");
+});
+function beforeselectchange(e){
+	if(e.target.id=="sourceSys"){
+		$("#appversion").html("<option value='' selected='selected'>全部版本</option>");
+		if($("#sourceSys").val().indexOf("http")>0||$("#sourceSys").val().indexOf("api")>0){
+			var versions=$("#appversions").val();
+			if(versions!=""){
+				var result=versions.split(";");
+				for(j=0;j<result.length;j++){  
+					var versionresult=result[j].split(":");
+					if(versionresult[0]==$("#sourceSys").val()){
+						if(versionresult[1]!=""){
+							var version=versionresult[1].split(",");
+							for(k=0;k<version.length;k++){ 
+								$("#appversion").append("<option value='"+version[k]+"'>"+version[k]+"</option>");   
+							}
+							break;
+						}
 					}
 				}
 			}
-		}); 
-});
-
+		}	
+	}
+}	
 function showChart(points){    
 	var title="";
 	var showType=$('input:radio[name="showType"]:checked').val();
@@ -304,14 +305,7 @@ var jss={
 			}
 			$("#beginHidden").val($("#begin").val()+" 00:00:00");
 			$("#endHidden").val($("#end").val()+" 23:59:59");
-			//sourceSys下拉框改变时，会自动触发查询，此时appversion中的值还没有发生变更，因此需要特殊处理
-			if($("#sourceSys").val()!="apihttp"&&$("#sourceSys").val()!="renrenapihttp"){
-			    $("#appversion").val("");
-			}else if($("#appversion").val()!=""){
-				if($("#"+$("#sourceSys").val()+"version").val().indexOf($("#appversion").val())==-1){
-					$("#appversion").val("");
-				}
-			}
+			
 			var paramaters=$("#searchForm").serialize();
 			var showType=$('input:radio[name="showType"]:checked').val();
 			var url = "<%=basePath%>/admintools/";

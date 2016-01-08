@@ -61,4 +61,9 @@ public class AccountService implements IAccountService{
 		req.setNewPwd(newPassword);
 		return accountDao.updatePwd(req);
 	}
+
+	@Override
+	public int update(Account account) {
+		return accountDao.update(account);
+	}
 }

@@ -111,8 +111,11 @@ $(document).ajaxError( function(event, jqXHR, options, errorMsg){
 		//列表页下拉框改变时，自动查询
 		$("select").on("change",function(e){
 			try{
+				try{
+					beforeselectchange(e);
+				}catch(ex){}
 				jss.search(1);
-			}catch(e){
+			}catch(ex){
 			}
 		});
 		//列表页点击回车时，自动查询
