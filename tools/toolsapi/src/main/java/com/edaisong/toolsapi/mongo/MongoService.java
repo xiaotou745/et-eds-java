@@ -55,18 +55,6 @@ public class MongoService {
 		collection.insert(dbobjct);
 	}
 
-	public void selectAll() throws Exception {
-		DBCollection collection = mongoTemplate.getCollection("user");
-
-		// 查询操作
-		// 查询所有
-		// 其中类似access数据库中游标概念
-		DBCursor cursor = collection.find();
-		System.out.println("mongodb中的user表结果如下：");
-		while (cursor.hasNext()) {
-			System.out.println(cursor.next());
-		}
-	}
 
 	/**
 	 * 根据条件查询
@@ -90,7 +78,6 @@ public class MongoService {
 
 			DBCollection collection = mongoTemplate.getCollection(tableName);
 			createIndex(collection);
-			BasicDBObject key = new BasicDBObject();// 指定需要显示列
 			querycursor = collection.find(req.getQueryObject());
 			if (req.getSortObject() != null) {
 				querycursor = querycursor.sort(req.getSortObject());
@@ -167,10 +154,12 @@ public class MongoService {
 			if (list.size() == 1) {
 				collection.createIndex(new BasicDBObject("sourceSys", 1));
 				collection.createIndex(new BasicDBObject("requestType", 1));
-				collection.createIndex(new BasicDBObject("requestUrl", 1));
-				collection.createIndex(new BasicDBObject("methodName", 1));
 				collection.createIndex(new BasicDBObject("requestTime", 1));
-				collection.createIndex(new BasicDBObject("stackTrace", 1));
+				collection.createIndex(new BasicDBObject("executeTime", 1));
+				//如果查询时，按照(不等于)去查询，则由于索引，会导致查不出来数据
+//				collection.createIndex(new BasicDBObject("requestUrl", 1));
+//				collection.createIndex(new BasicDBObject("methodName", 1));
+//				collection.createIndex(new BasicDBObject("stackTrace", 1));
 			}
 	}
 	/**
@@ -203,25 +192,15 @@ public class MongoService {
 	}
 
 	/**
-	 * 删除文档，其中包括删除全部或删除部分
+	 * 删除记录
 	 * 
 	 * @throws Exception
 	 */
-	public void delete() throws Exception {
-		DBCollection collection = mongoTemplate.getCollection("user");
-		BasicDBObject queryObject1 = new BasicDBObject();
-		queryObject1.put("id", 2);
-		queryObject1.put("name", "小红");
-
+	public void delete(String tableName,BasicDBObject req) throws Exception {
+		DBCollection collection = mongoTemplate.getCollection(tableName);
 		// 删除某一条记录
-		collection.remove(queryObject1);
+		collection.remove(req);
 		// 删除全部
 		// collection.drop();
-
-		DBCursor cursor1 = collection.find();
-		System.out.println("删除后的结果如下：");
-		while (cursor1.hasNext()) {
-			System.out.println(cursor1.next());
-		}
 	}
 }
