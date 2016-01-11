@@ -17,7 +17,8 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			<thead>
 				<tr class="tdbg">
 						<th width="%15">序号</th>
-						<th width="%15">金额</th>				
+						<th width="%15">金额</th>			
+							<th>操作</th>	
 				</tr>
 			</thead>
 			
@@ -34,7 +35,10 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
        %>  
 			 <tr>
 				<td><%=i %></td>
-				<td><%=model.getAmount() %></td>				
+				<td><%=model.getAmount() %></td>		
+				<td>
+ 		<a href="javascript:void(0)" onclick="modify(<%=model.getId() %>,<%=model.getAmount() %>)">修改</a> 
+				</td>		
 			</tr>
 		
 		 <%	i++;}
@@ -44,7 +48,14 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 		<%=PageHelper.getPage(data.getPageSize(),
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
-
+<script>				
+    function modify(id,amount)
+    {    
+    	$('#txtEId').val(id);    
+        $('#txtEAmount').val(amount);        
+	    $('#modifyOrderTip').modal('show');
+    }
+    </script>	
 	
 
 	

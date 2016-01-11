@@ -58,7 +58,7 @@ width: 100%;
 					<fieldset>
             <br>
             <div class="control-group">  
-                <label>金额：</label><input  name="txtAmount" id="txtAmount" type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                <label>金额：</label><input  name="txtAmount" id="txtAmount" type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
             </div>
    
         </fieldset>
@@ -72,6 +72,36 @@ width: 100%;
 	</div> 
 </div>
    
+    <div tabindex="-1" class="modal inmodal" id="modifyOrderTip"
+	role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">修改小费</h4>
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+            <br>
+            <div class="control-group">  
+                <label>金额：</label>
+                <input  name="txtEAmount" id="txtEAmount"  name="txtEAmount"  type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                <input  name="txtEId" id="txtEId" type="hidden">             
+            </div>            
+            
+        </fieldset>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button" id="btnAdd" onclick="saveModify()">保存</button>
+				</div>
+			</small>
+		</div> 
+	</div> 
+</div>
 
 	<script>		
 	var jss={
@@ -104,7 +134,7 @@ width: 100%;
         $('#addOrderTip').modal('show');
 }	
 
-	function saveAddOrderTip(){
+	function saveAddOrderTip(){	
 		var txtAmount= $('#txtAmount').val().trim();	
 	 
 		 if(txtAmount == "")
@@ -113,16 +143,57 @@ width: 100%;
 		    	return;
 		 }
 		
-	    if(txtAmount<=0){
-	    	alert("金额必须大于零");
+	    if(txtAmount<0){
+	    	alert("金额必须大于0");
 	    	return;
 	    }
 	    
-	    var paramaters = {
+	    var paramaters = {	    	
                 "amount": txtAmount.trim()        
             };
        var url = "<%=basePath%>/ordertip/add";
 	   var la= layer.confirm('是否确认创建小费？', {
+		    btn: ['确认','取消'], //按钮
+		    shade: false //显示遮罩
+		},function(){
+			layer.close(la);
+			$.ajax({
+		           type: 'POST',
+		           url: url,
+		           data: paramaters,
+		           success: function (result) {		 
+		        	   alert(result.message);		        	
+		               if (result.status == 1) {
+		            	   window.location.href = "<%=basePath%>/ordertip/list";		
+		               }		                   		            
+		        	  
+		           }
+		       });
+		});
+       	    
+	}
+	
+	function saveModify(){
+		var txtId= $('#txtEId').val().trim();	
+		var txtAmount= $('#txtEAmount').val().trim();	
+	 
+		 if(txtAmount == "")
+		 {
+			 	alert("金额不能为空");
+		    	return;
+		 }
+		
+	    if(txtAmount<0){
+	    	alert("金额必须大于0");
+	    	return;
+	    }
+	    
+	    var paramaters = {
+	    		"Id": txtId.trim(),
+                "amount": txtAmount.trim(),        
+            };
+       var url = "<%=basePath%>/ordertip/modify";
+	   var la= layer.confirm('是否确认修改小费？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
 		},function(){

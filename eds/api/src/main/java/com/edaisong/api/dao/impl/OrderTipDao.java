@@ -76,8 +76,8 @@ public class OrderTipDao extends DaoBase implements IOrderTipDao {
 
 	@Override
 	public int updateByPrimaryKeySelective(OrderTip record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().update(
+				"IOrderTipDao.updateByPrimaryKeySelective", record);
 	}
 
 	@Override
