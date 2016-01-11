@@ -142,8 +142,18 @@ public class Order {
     
     private int iscomplain;
     
+    private int isreceivecode;
     
-    public String getPubcity() {
+    
+    public int getIsreceivecode() {
+		return isreceivecode;
+	}
+
+	public void setIsreceivecode(int isreceivecode) {
+		this.isreceivecode = isreceivecode;
+	}
+
+	public String getPubcity() {
 		return pubcity;
 	}
 

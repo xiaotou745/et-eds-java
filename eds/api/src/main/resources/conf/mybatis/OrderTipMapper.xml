@@ -31,7 +31,7 @@
   
     <sql id="queryWhere">
 		1=1
-		<if test="amount != ''">
+		<if  test="amount!=null and amount != ''">
 			and amount=${amount}
 		</if>
 	</sql>

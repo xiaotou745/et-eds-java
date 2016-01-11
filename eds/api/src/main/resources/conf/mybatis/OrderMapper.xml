@@ -33,7 +33,8 @@
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
     DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
-    Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount,pickuplongitude,pickuplatitude,PubCity
+    Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount,pickuplongitude,pickuplatitude,PubCity,
+    IsReceiveCode
 	</sql>
 	  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.Order" parameterType="java.lang.Integer" >
     select 
@@ -670,7 +671,9 @@
 			<if test="basecommission != null">
 				basecommission = #{basecommission,jdbcType=NUMERIC},
 			</if>
-		
+			<if test="isreceivecode != null">
+				isreceivecode = #{isreceivecode,jdbcType=INTEGER},
+			</if>
 		</set>
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
@@ -1590,7 +1593,7 @@ GROUP BY a.id ,
 	<!-- 后台E单订单列表页面   查询列集合 add by caoheyang 20151124 -->
 	<sql id="getShanSongOrdersColums">
 		a.Id,a.OrderNo,a.PubDate,a.PickUpAddress,a.BusinessId,a.ReceviceAddress,ISNULL(a.ClienterId, 0) clienterId ,
-                    a.PickupCode ,a.[Status],a.Amount,a.Weight,a. KM ,a.ReceiveCode,
+                    a.PickupCode ,a.[Status],a.Amount,a.Weight,a. KM ,a.ReceiveCode,a.IsReceiveCode,
         c.TrueName ClienterName,
         c.PhoneNo ClienterPhoneNo,
         b.PhoneNo BusinessPhoneNo 
@@ -1818,6 +1821,7 @@ where a.orderno=#{ordernNo}
         b.GroupId ,o.[Platform],isnull(o.KM,0) km,isnull(o.[Weight],0) weight,o.PickupCode,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName,
         o.amount+o.tipamount as amountAndTip,o.receivecode,
+        o.IsReceiveCode,
 case o.Payment when 0 then ''余额''  when 1 then ''支付宝''  when 2 then ''微信'' end paymentstr,
 case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送商户版''  when 3 then ''E代送智能调度'' end platformstr
 	</sql>

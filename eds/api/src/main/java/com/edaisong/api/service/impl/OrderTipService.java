@@ -62,6 +62,7 @@ import com.edaisong.entity.req.PagedOrderTipReq;
 import com.edaisong.entity.resp.BusinessLoginResp;
 import com.edaisong.entity.resp.MyOrderBResp;
 import com.edaisong.entity.resp.MyOrderDetailBResp;
+import com.edaisong.entity.resp.OrderTipResp;
 import com.edaisong.entity.resp.TaskDistributionConfigResp;
 
 @Service
@@ -100,4 +101,23 @@ public class OrderTipService implements IOrderTipService {
 		return resp;
 	}	
 
+	@Override
+	public HttpResultModel<OrderTipResp> modify(OrderTip record )
+	{
+		HttpResultModel<OrderTipResp> resp = new HttpResultModel<OrderTipResp>();
+		
+		OrderTip selectModel= iOrderTipDao.selectByTip(record.getId(), record.getAmount());
+		if(selectModel!=null)
+		{
+				resp.setStatus(OrderTipEnum.TipErr.value());
+				resp.setMessage(OrderTipEnum.TipErr.desc());
+				return resp;
+		}
+
+	    resp.setStatus(OrderTipEnum.Success.value());
+		resp.setMessage(OrderTipEnum.Success.desc());		
+		iOrderTipDao.updateByPrimaryKeySelective(record);
+		return resp;
+	}
 }
+

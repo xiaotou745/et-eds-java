@@ -46,8 +46,12 @@
 			String header="";
 			String resultJson="";
 			for (int i = 0; i < list.size(); i++) { 
-				param=new String(Base64.encodeBase64(list.get(i).getParam().getBytes("UTF-8"))); 
-				decryptMsg=new String(Base64.encodeBase64(list.get(i).getDecryptMsg().getBytes("UTF-8")));  
+				if(list.get(i).getParam()!=null){
+					param=new String(Base64.encodeBase64(list.get(i).getParam().getBytes("UTF-8")));  
+				}
+				if(list.get(i).getDecryptMsg()!=null){
+					decryptMsg=new String(Base64.encodeBase64(list.get(i).getDecryptMsg().getBytes("UTF-8")));  
+				} 
 				if(list.get(i).getException()!=null){
 					exception=new String(Base64.encodeBase64(list.get(i).getException().getBytes("UTF-8")));  
 				}
@@ -60,7 +64,9 @@
 				if(list.get(i).getHeader()!=null){
 					header=new String(Base64.encodeBase64(list.get(i).getHeader().getBytes("UTF-8")));  
 				}
-				resultJson=new String(Base64.encodeBase64(list.get(i).getResultJson().getBytes("UTF-8")));  
+				if(list.get(i).getResultJson()!=null){
+					resultJson=new String(Base64.encodeBase64(list.get(i).getResultJson().getBytes("UTF-8")));  
+				}
 		%>
 		<tr>
 		<td>
@@ -74,9 +80,11 @@
 			<td><%=(i+1)%></td>
 			<td><%=list.get(i).getUserID()%></td>
 			<td><%=list.get(i).getUserName()%></td>
-		    <td>
-		    请求地址:<%=list.get(i).getRequestUrl()%><br/>
-		    方法名称:<br/><%=list.get(i).getMethodName()%></td>
+		    <td>   
+		    <div style="width:500px;text-align:left;" class="breakline">
+		    	请求地址:<br/><%=list.get(i).getRequestUrl()%><br/>
+		    	方法名称:<br/><%=list.get(i).getMethodName()%></div>
+		   </td>
 		    <td><%=list.get(i).getExecuteTime()%></td>
 			<td><%=list.get(i).getRequestTime()%></td>
 			<td><%=list.get(i).getRequestEndTime()%></td>

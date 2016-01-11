@@ -26,6 +26,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			<th style="width: 150px;text-align:center;">骑士信息</th>
 		    <th style="width: 220px;text-align:center;">取货码</th>
 		    <th style="width: 220px;text-align:center;">收货码</th>
+		    <th style="width: 220px;text-align:center;">下单人是否获取过收货码</th>
 		    <th style="width: 150px;text-align:center;">订单状态</th>
 			<th style="width: 60px;text-align:center;">操作</th>
 		</tr>
@@ -38,6 +39,9 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 				data = new ArrayList<ShanSongOrderListModel>();
 			}
 			for (int i = 0; i < data.size(); i++) {
+			String IsReceiveCodeStr="否";
+			if(data.get(i).getIsreceivecode()==1)
+				IsReceiveCodeStr="是";
 		%>
 		<tr>
 			<td><%=i + 1%></td>
@@ -55,10 +59,12 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getPickupCode())%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getReceiveCode())%></td>
+			<td><%=IsReceiveCodeStr%>
+			</td>
 			<td>	<%=ShanSongOrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td>  
 			<%if(data.get(i).getStatus()!=ShanSongOrderStatus.WaitPay.value()&&data.get(i).getStatus()!=ShanSongOrderStatus.PayClose.value()){%>
-			<a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a>
+			<a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图1</a>
 			<%}%>
 			</td>
 		</tr>

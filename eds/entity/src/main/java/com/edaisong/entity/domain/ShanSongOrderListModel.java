@@ -8,6 +8,15 @@ public class ShanSongOrderListModel extends OrderListModel {
 	private String pubPhoneNo;
      private String productName;
      private String receiveCode;
+     private int isreceivecode;
+	public int getIsreceivecode() {
+		return isreceivecode;
+	}
+
+	public void setIsreceivecode(int isreceivecode) {
+		this.isreceivecode = isreceivecode;
+	}
+
 	/**
 	 * 重量
 	 */
