@@ -56,8 +56,17 @@ public class QueryOrder {
 	 private String receivecode;
 	 private String paymentstr;
 	 private String platformstr;
+		private int isReceiveCode;
 
-	 public Double getAmountAndTip() {
+	 public int getIsReceiveCode() {
+			return isReceiveCode;
+		}
+
+		public void setIsReceiveCode(int isReceiveCode) {
+			this.isReceiveCode = isReceiveCode;
+		}
+
+	public Double getAmountAndTip() {
 		return amountAndTip;
 	}
 

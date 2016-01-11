@@ -147,6 +147,10 @@ width: 100%;
 	    	alert("金额必须大于0");
 	    	return;
 	    }
+	    if(txtAmount>100){
+	    	alert("金额不能大于100");
+	    	return;
+	    }
 	    
 	    var paramaters = {	    	
                 "amount": txtAmount.trim()        
@@ -181,13 +185,15 @@ width: 100%;
 		 {
 			 	alert("金额不能为空");
 		    	return;
-		 }
-		
+		 }		
 	    if(txtAmount<0){
 	    	alert("金额必须大于0");
 	    	return;
 	    }
-	    
+	    if(txtAmount>100){
+	    	alert("金额不能大于100");
+	    	return;
+	    }
 	    var paramaters = {
 	    		"Id": txtId.trim(),
                 "amount": txtAmount.trim(),        
