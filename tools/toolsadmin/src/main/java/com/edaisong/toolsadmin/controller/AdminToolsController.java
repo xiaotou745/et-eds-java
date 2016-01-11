@@ -537,14 +537,19 @@ public class AdminToolsController {
 
 		//String m="http://japi.edaisong.com/20151023/services/common/getrecordtypec";
 		result = resultList.parallelStream().map(t -> {
-			if (t.getRequestUrl().indexOf("http://localhost")<0) {
+			if (t.getRequestUrl().indexOf("http://")==0&&
+				t.getRequestUrl().indexOf("http://localhost")<0) {
 				String mkkString = t.getRequestUrl().substring("http://".length());
 				int index = mkkString.indexOf("/");
-				String url = mkkString.substring(index + 1);
-				int end = url.indexOf("/");
-				String tempVersion= url.substring(0, end);
-				if(!tempVersion.isEmpty()&&StringUtils.isNumeric(tempVersion)){
-					return tempVersion;
+				if(index>0){
+					String url = mkkString.substring(index + 1);
+					int end = url.indexOf("/");
+					if(end>0){
+						String tempVersion= url.substring(0, end);
+						if(!tempVersion.isEmpty()&&StringUtils.isNumeric(tempVersion)){
+							return tempVersion;
+						}
+					}
 				}
 			}
 			return "";

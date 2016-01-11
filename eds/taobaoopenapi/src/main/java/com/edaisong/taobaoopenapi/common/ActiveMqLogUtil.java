@@ -56,7 +56,7 @@ public class ActiveMqLogUtil {
 		dThread.start();
 	}
 
-	public static void writeLog(String url, String param, String decryptMsg,
+	public static void writeLog(String url,String methodName, String param, String decryptMsg,
 			String resultJson, String exceptionMsg, String stackTrace,
 			Date requestTime) {
 
@@ -75,7 +75,7 @@ public class ActiveMqLogUtil {
 		logEngity.setContentType("application/json; charset=utf-8");
 		logEngity.setHeader("");
 		logEngity.setRequestMethod("POST");
-		logEngity.setMethodName("");
+		logEngity.setMethodName(methodName);
 		logEngity.setResultJson(resultJson);
 		logEngity.setAppServer(appServerIP);
 		logEngity.setException(exceptionMsg);
