@@ -80,9 +80,11 @@
 			<td><%=(i+1)%></td>
 			<td><%=list.get(i).getUserID()%></td>
 			<td><%=list.get(i).getUserName()%></td>
-		    <td>
-		    请求地址:<%=list.get(i).getRequestUrl()%><br/>
-		    方法名称:<br/><%=list.get(i).getMethodName()%></td>
+		    <td>   
+		    <div style="width:500px;text-align:left;" class="breakline">
+		    	请求地址:<br/><%=list.get(i).getRequestUrl()%><br/>
+		    	方法名称:<br/><%=list.get(i).getMethodName()%></div>
+		   </td>
 		    <td><%=list.get(i).getExecuteTime()%></td>
 			<td><%=list.get(i).getRequestTime()%></td>
 			<td><%=list.get(i).getRequestEndTime()%></td>
