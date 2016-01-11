@@ -31,4 +31,8 @@ public interface IHttpTestService {
 	@GET
 	@Path("/getlist")
 	public HttpResultModel<BusinessDetailModel> getList();
+	
+	@POST
+	@Path("/signalrpush")
+	 public HttpResultModel<BusinessDetailModel> signalrPush();
 }

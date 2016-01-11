@@ -2228,7 +2228,7 @@ public class OrderService implements IOrderService {
 		asyncShanSongPushOrder(new GetPushClienterIdsReq(order.getPickuplatitude(),
 				order.getPickuplongitude(),
 				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderTimeInfo")),
-				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderDistanceInfo"))*1000),orderId);
+				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderDistanceInfo"))*1000),order.getId());
 		return resp;
 	}
 	
