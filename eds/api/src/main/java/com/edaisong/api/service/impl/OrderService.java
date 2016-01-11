@@ -2329,7 +2329,7 @@ public class OrderService implements IOrderService {
 			balanceRecord.setOperator(ParseHelper.ToString(businessModel.getName(),""));
 			balanceRecord.setWithwardid((long) oModel.getId());
 			balanceRecord.setRelationno(oModel.getOrderno());
-			balanceRecord.setRemark("配送费支出金额");
+			balanceRecord.setRemark("配送费支出"+oModel.getAmount()+"元，小费"+oModel.getTipamount()+"元");
 			int bbcId = businessService.updateForWithdrawC(0, balanceRecord);		
 			if(bbcId<0)
 				throw new TransactionalRuntimeException("记录商户流水错误");		
@@ -2392,7 +2392,8 @@ public class OrderService implements IOrderService {
 			balanceRecord.setOperator(businessModel.getName());
 			balanceRecord.setWithwardid((long) oModel.getId());
 			balanceRecord.setRelationno(oModel.getOrderno());
-			balanceRecord.setRemark("配送费支出金额");
+			//balanceRecord.setRemark("配送费支出金额");
+			balanceRecord.setRemark("小费" +req.getTipamount()+"元");
 			int bbcId = businessService.updateForWithdrawC(0, balanceRecord);		
 			if(bbcId<0)
 				throw new TransactionalRuntimeException("记录商户流水错误");
