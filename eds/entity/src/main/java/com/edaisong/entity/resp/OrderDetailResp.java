@@ -1110,6 +1110,14 @@ public class OrderDetailResp extends ResponseBase{
 		public void setIsmodifyticket(boolean ismodifyticket) {
 			this.ismodifyticket = ismodifyticket;
 		}
-		
+		 private int isreceivecode;
+
+		public int getIsreceivecode() {
+			return isreceivecode;
+		}
+
+		public void setIsreceivecode(int isreceivecode) {
+			this.isreceivecode = isreceivecode;
+		}
 		
 }

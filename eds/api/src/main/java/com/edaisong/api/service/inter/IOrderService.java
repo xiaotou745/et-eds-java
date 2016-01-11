@@ -3,6 +3,7 @@ package com.edaisong.api.service.inter;
 import java.util.Date;
 import java.util.List;
 
+import com.edaisong.entity.Order;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
@@ -433,5 +434,7 @@ public interface IOrderService {
 		 * @param orderId
 		 */
 		 void asyncShanSongPushOrder(GetPushClienterIdsReq req,int orderId);
+		 
+		 public int updateIsReceiveCode(int id);
 }
 

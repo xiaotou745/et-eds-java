@@ -33,7 +33,8 @@
     CommissionFixValue, BusinessGroupId, TimeSpan, Invoice, BusinessReceivable, MealsSettleMode, 
     FinishDateLength, FinishAll, RealOrderCommission, IsEnable, DeliveryCompanySettleMoney, 
     DeliveryCompanyID, BaseCommission, IsConsiderDeliveryFee, IsComplain, GroupBusinessId, 
-    Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount,pickuplongitude,pickuplatitude,PubCity
+    Platform, PubName, PubPhoneNo,  TakeType,  ProductName,tipAmount,pickuplongitude,pickuplatitude,PubCity,
+    IsReceiveCode
 	</sql>
 	  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.Order" parameterType="java.lang.Integer" >
     select 
@@ -670,7 +671,9 @@
 			<if test="basecommission != null">
 				basecommission = #{basecommission,jdbcType=NUMERIC},
 			</if>
-		
+			<if test="isreceivecode != null">
+				isreceivecode = #{isreceivecode,jdbcType=INTEGER},
+			</if>
 		</set>
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
@@ -1590,7 +1593,7 @@ GROUP BY a.id ,
 	<!-- 后台E单订单列表页面   查询列集合 add by caoheyang 20151124 -->
 	<sql id="getShanSongOrdersColums">
 		a.Id,a.OrderNo,a.PubDate,a.PickUpAddress,a.BusinessId,a.ReceviceAddress,ISNULL(a.ClienterId, 0) clienterId ,
-                    a.PickupCode ,a.[Status],a.Amount,a.Weight,a. KM ,a.ReceiveCode,
+                    a.PickupCode ,a.[Status],a.Amount,a.Weight,a. KM ,a.ReceiveCode,a.IsReceiveCode,
         c.TrueName ClienterName,
         c.PhoneNo ClienterPhoneNo,
         b.PhoneNo BusinessPhoneNo 

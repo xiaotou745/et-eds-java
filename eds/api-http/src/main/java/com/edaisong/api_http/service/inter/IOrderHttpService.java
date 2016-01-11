@@ -21,6 +21,7 @@ import com.edaisong.entity.req.OrderDraftReq;
 import com.edaisong.entity.req.OrderDraftGetReq;
 import com.edaisong.entity.req.OrderDraftReturnReq;
 import com.edaisong.entity.req.OrderGrabReq;
+import com.edaisong.entity.req.OrderIdReq;
 import com.edaisong.entity.req.OrderPushReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
@@ -268,5 +269,16 @@ public interface IOrderHttpService {
 	@POST
 	@Path("/shansongpushorder")
 	HttpResultModel<Boolean>  shanSongPushOrder(ShanSongPushOrderReq req) ;
+	
+	/**
+	 * 获取收货码
+	 * @author CaoHeYang 
+	 * @date 20160105
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/getreceivecode")
+	HttpResultModel<Integer> GetReceiveCode(OrderIdReq req);
 	
 }
