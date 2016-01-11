@@ -2556,6 +2556,7 @@ public class OrderService implements IOrderService {
 		odResp.setPickuplongitude(oModel.getPickuplongitude());
 		odResp.setPickuplatitude(oModel.getPickuplatitude());;
 		odResp.setIscomplain(oModel.getIscomplain());	
+		odResp.setIsreceivecode(oModel.getIsreceivecode());  
 			
 		odResp.setListOrderChild(ocList);
 
@@ -2602,7 +2603,7 @@ public class OrderService implements IOrderService {
 		 double f2 = bg2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		 String strB  = b < 1000 ? String.valueOf(b).concat("m")  : String.valueOf(f2).concat("km");   	     
 		odResp.setRecevicetocurrentdistance(strB);	
-		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());
+		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());		
 		odResp.setName(businessModel.getName());
 		odResp.setPhoneno(businessModel.getPhoneno());
 		odResp.setPhoneno2(businessModel.getPhoneno2());
@@ -3170,4 +3171,11 @@ public class OrderService implements IOrderService {
 		dThread.start();
 	}
 	
+	public int updateIsReceiveCode(int id)
+	{
+		Order order=new Order();
+		order.setId(id);
+		order.setIsreceivecode(1);
+		return orderDao.updateByPrimaryKeySelective(order);
+	}
 }

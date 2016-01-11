@@ -32,6 +32,7 @@ import com.edaisong.entity.req.OrderDraftReq;
 import com.edaisong.entity.req.OrderDraftGetReq;
 import com.edaisong.entity.req.OrderDraftReturnReq;
 import com.edaisong.entity.req.OrderGrabReq;
+import com.edaisong.entity.req.OrderIdReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
@@ -419,5 +420,18 @@ public class OrderHttpService implements IOrderHttpService {
 	public HttpResultModel<Boolean> shanSongPushOrder(ShanSongPushOrderReq req) {
 		HttpResultModel<Boolean> res = new HttpResultModel<Boolean>();
 		return res.setResult(orderService.shanSongPushOrder(req.getOrderId()));
+	}
+	
+	/**
+	 * 获取收货码
+	 * @author hulingbo
+	 * @date 2016年1月11日10:42:15
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<Integer> GetReceiveCode(OrderIdReq req) {
+		HttpResultModel<Integer> res = new HttpResultModel<Integer>();
+		return res.setResult(orderService.updateIsReceiveCode(req.getOrderId()));
 	}
 }
