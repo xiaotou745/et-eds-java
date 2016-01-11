@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -536,11 +537,17 @@ public class AdminToolsController {
 
 		//String m="http://japi.edaisong.com/20151023/services/common/getrecordtypec";
 		result = resultList.parallelStream().map(t -> {
-			String mkkString = t.getRequestUrl().substring("http://".length());
-			int index = mkkString.indexOf("/");
-			String url = mkkString.substring(index + 1);
-			int end = url.indexOf("/");
-			return url.substring(0, end);
+			if (t.getRequestUrl().indexOf("http://localhost")<0) {
+				String mkkString = t.getRequestUrl().substring("http://".length());
+				int index = mkkString.indexOf("/");
+				String url = mkkString.substring(index + 1);
+				int end = url.indexOf("/");
+				String tempVersion= url.substring(0, end);
+				if(!tempVersion.isEmpty()&&StringUtils.isNumeric(tempVersion)){
+					return tempVersion;
+				}
+			}
+			return "";
 		}).filter(k -> !k.isEmpty()).distinct().collect(Collectors.toList());
 		if (result.size()==1) {
 			result.clear();
