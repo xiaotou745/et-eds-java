@@ -1,6 +1,5 @@
 package com.edaisong.toolsadmin.controller;
 
-import java.awt.geom.Ellipse2D;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -494,7 +493,7 @@ public class AdminToolsController {
     private String getTableName(String beginDate){
     	return "logtb_"+ParseHelper.ToDateString(ParseHelper.ToDate(beginDate), "yyyy_MM");
     }
-	private List<String> queryAllVersion() throws Exception{
+	private List<String> queryAllVersion() throws Exception{	
 		List<String> appNames= getAppNameList();
 		List<String> resultVersion=new ArrayList<>();
 		List<String> tempVersion=new ArrayList<>();
@@ -509,10 +508,8 @@ public class AdminToolsController {
 	}
 	private List<String> queryVersion(String sourceSys) throws Exception{
 		List<String> result=new ArrayList<String>();
-		if (!(sourceSys.equals("apihttp")||sourceSys.equals("renrenapihttp"))) {
-			return result;
-		}
 		result=redisService.get(RedissCacheKey.AppVersion_Key+sourceSys,List.class);
+		//redisService.remove(RedissCacheKey.AppVersion_Key+sourceSys);
 		if (result!=null) {
 			return result;
 		}
@@ -538,13 +535,13 @@ public class AdminToolsController {
 		System.out.println("并行查询mongo完成");
 
 		//String m="http://japi.edaisong.com/20151023/services/common/getrecordtypec";
-
-		result= resultList.parallelStream().map(t->{
-			int index=t.getRequestUrl().indexOf("/services/");
-			String url=t.getRequestUrl().substring(0, index);
-			int begin=url.lastIndexOf("/");
-			return url.substring(begin+1);
-		}).distinct().collect(Collectors.toList());
+		result = resultList.parallelStream().map(t -> {
+			String mkkString = t.getRequestUrl().substring("http://".length());
+			int index = mkkString.indexOf("/");
+			String url = mkkString.substring(index + 1);
+			int end = url.indexOf("/");
+			return url.substring(0, end);
+		}).filter(k -> !k.isEmpty()).distinct().collect(Collectors.toList());
 		if (result.size()==1) {
 			result.clear();
 		}
