@@ -43,7 +43,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 		client.setMessageHandler(new MessageHandler() {
 			@Override
 			public void onMessage(Message message, MessageStatus status) throws Exception {	
-				ActiveMqLogUtil.writeLog("TmcControlHttpService.onMessage", message.getContent(), message.getContent(), "","", "", new Date());
+				ActiveMqLogUtil.writeLog("TmcControlHttpService.onMessage","TmcControlHttpService.onMessage", message.getContent(), message.getContent(), "","", "", new Date());
 				if (message.getTopic().equals(TaoBaoConsts.OrderDispatch) ) {
 					orderDispatch(message.getContent());
 				} else if (message.getTopic().equals(TaoBaoConsts.OrderClose) ) {
@@ -86,7 +86,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 				stackTrace = StringUtils.getStackTrace(e);
 			}
 			//记录调用openapi的日志
-			ActiveMqLogUtil.writeLog("TmcControlHttpService.orderDispatch==" + url, param, data, resultJson,exceptionMsg, stackTrace, requestTime);
+			ActiveMqLogUtil.writeLog(url,"TmcControlHttpService.orderDispatch", param, data, resultJson,exceptionMsg, stackTrace, requestTime);
 			if (resultJson != null && !resultJson.isEmpty()) {
 				JSONObject jsonObject = new JSONObject(resultJson);
 				if (jsonObject.getInt("Status") == 1) {
@@ -109,13 +109,13 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 						taobaoStackTrace = StringUtils.getStackTrace(e);
 					}
 					//记录调用taobaoapi的日志
-					ActiveMqLogUtil.writeLog("TmcControlHttpService.orderDispatch==" + TaoBaoConsts.Uri,deliveryOrderNo.toString(),deliveryOrderNo.toString(),JsonUtil.obj2string(response), taobaoExceptionMsg,taobaoStackTrace, taobaoRequestTime);
+					ActiveMqLogUtil.writeLog(TaoBaoConsts.Uri,"TmcControlHttpService.orderDispatch",deliveryOrderNo.toString(),deliveryOrderNo.toString(),JsonUtil.obj2string(response), taobaoExceptionMsg,taobaoStackTrace, taobaoRequestTime);
 				}
 			}
 		} catch (Exception e) {
 			String stackTrace = StringUtils.getStackTrace(e);
 			//记录当前方法的错误日志
-			ActiveMqLogUtil.writeLog("TmcControlHttpService.orderDispatch", data, data, "",e.getMessage(), stackTrace, requestTime);
+			ActiveMqLogUtil.writeLog("TmcControlHttpService.orderDispatch","TmcControlHttpService.orderDispatch", data, data, "",e.getMessage(), stackTrace, requestTime);
 		}
 	}
 
@@ -140,7 +140,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 			exceptionMsg = e.getMessage();
 			stackTrace = StringUtils.getStackTrace(e);
 		}
-		ActiveMqLogUtil.writeLog("TmcControlHttpService.orderClose"+url, param, data, resultJson,exceptionMsg, stackTrace, requestTime);
+		ActiveMqLogUtil.writeLog(url,"TmcControlHttpService.orderClose", param, data, resultJson,exceptionMsg, stackTrace, requestTime);
 	}
 
 	/**

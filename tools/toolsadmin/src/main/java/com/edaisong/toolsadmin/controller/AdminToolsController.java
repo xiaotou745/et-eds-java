@@ -1,6 +1,5 @@
 package com.edaisong.toolsadmin.controller;
 
-import java.awt.geom.Ellipse2D;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,6 +17,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -494,7 +494,7 @@ public class AdminToolsController {
     private String getTableName(String beginDate){
     	return "logtb_"+ParseHelper.ToDateString(ParseHelper.ToDate(beginDate), "yyyy_MM");
     }
-	private List<String> queryAllVersion() throws Exception{
+	private List<String> queryAllVersion() throws Exception{	
 		List<String> appNames= getAppNameList();
 		List<String> resultVersion=new ArrayList<>();
 		List<String> tempVersion=new ArrayList<>();
@@ -509,10 +509,8 @@ public class AdminToolsController {
 	}
 	private List<String> queryVersion(String sourceSys) throws Exception{
 		List<String> result=new ArrayList<String>();
-		if (!(sourceSys.equals("apihttp")||sourceSys.equals("renrenapihttp"))) {
-			return result;
-		}
 		result=redisService.get(RedissCacheKey.AppVersion_Key+sourceSys,List.class);
+		//redisService.remove(RedissCacheKey.AppVersion_Key+sourceSys);
 		if (result!=null) {
 			return result;
 		}
@@ -538,13 +536,24 @@ public class AdminToolsController {
 		System.out.println("并行查询mongo完成");
 
 		//String m="http://japi.edaisong.com/20151023/services/common/getrecordtypec";
-
-		result= resultList.parallelStream().map(t->{
-			int index=t.getRequestUrl().indexOf("/services/");
-			String url=t.getRequestUrl().substring(0, index);
-			int begin=url.lastIndexOf("/");
-			return url.substring(begin+1);
-		}).distinct().collect(Collectors.toList());
+		result = resultList.parallelStream().map(t -> {
+			if (t.getRequestUrl().indexOf("http://")==0&&
+				t.getRequestUrl().indexOf("http://localhost")<0) {
+				String mkkString = t.getRequestUrl().substring("http://".length());
+				int index = mkkString.indexOf("/");
+				if(index>0){
+					String url = mkkString.substring(index + 1);
+					int end = url.indexOf("/");
+					if(end>0){
+						String tempVersion= url.substring(0, end);
+						if(!tempVersion.isEmpty()&&StringUtils.isNumeric(tempVersion)){
+							return tempVersion;
+						}
+					}
+				}
+			}
+			return "";
+		}).filter(k -> !k.isEmpty()).distinct().collect(Collectors.toList());
 		if (result.size()==1) {
 			result.clear();
 		}
