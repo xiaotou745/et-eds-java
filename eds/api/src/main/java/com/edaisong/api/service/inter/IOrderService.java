@@ -49,6 +49,13 @@ import com.edaisong.entity.resp.QueryOrderCResp;
 
 public interface IOrderService {
 	/**
+	 * 根据id查询订单数据
+	 * @param id
+	 * @return
+	 */
+	Order selectByPrimaryKey(int id); 
+	
+	/**
 	 * 后台订单列表页面
 	 * 
 	 * @author CaoHeYang

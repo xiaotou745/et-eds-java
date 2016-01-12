@@ -269,7 +269,7 @@ public interface IOrderHttpService {
 	 */
 	@POST
 	@Path("/shansongpushneworder")
-	public HttpResultModel<Boolean> shanSongPushNewOrder(ShanSongPushOrderReq req);
+	public HttpResultModel<Boolean> shanSongPushNewOrder(ShanSongPushNewOrderReq req);
 	
 	/**
 	 * 里程计算 推单  (处理订单)

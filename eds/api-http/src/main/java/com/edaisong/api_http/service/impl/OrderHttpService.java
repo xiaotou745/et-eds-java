@@ -19,12 +19,16 @@ import com.edaisong.api_http.service.inter.IOrderHttpService;
 import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.core.enums.returnenums.HttpReturnRnums;
 import com.edaisong.core.enums.returnenums.InStoreTaskReturnEnum;
+import com.edaisong.core.util.ParseHelper;
+import com.edaisong.core.util.PropertyUtils;
+import com.edaisong.entity.Order;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDraft;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.domain.OrderGrabDetailModel;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.QueryOrder; 
+import com.edaisong.entity.req.GetPushClienterIdsReq;
 import com.edaisong.entity.req.OrderBlancePayReq;
 import com.edaisong.entity.req.OrderChildCancelReq;
 import com.edaisong.entity.req.OrderDetailReq;
@@ -418,10 +422,17 @@ public class OrderHttpService implements IOrderHttpService {
 	 * @return
 	 */
 	@Override
-	public HttpResultModel<Boolean> shanSongPushNewOrder(ShanSongPushOrderReq req) {
+	public HttpResultModel<Boolean> shanSongPushNewOrder(ShanSongPushNewOrderReq req) {
 		HttpResultModel<Boolean> res = new HttpResultModel<Boolean>();
+	    Order order=	orderService.selectByPrimaryKey(req.getOrderId());
+	    if (order.getStatus()!=OrderStatus.New.value()) {
+			return res.setResult(false);
+		}
 		return res.setResult(orderService.shanSongPushOrder(
-				req.getOrderId()));
+				new GetPushClienterIdsReq(order.getPickuplatitude(), order.getPickuplongitude(), 
+						ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderTimeInfo")), 
+						ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderDistanceInfo")) * 1000), req
+						.getOrderId()));
 	}
 	
 	/**
