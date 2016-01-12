@@ -115,7 +115,11 @@ public enum FlashPushOrderEnum {
 	/**
 	 * 发货地址与收货地址相同
 	 */
-	AddressSame(-24, "发货地址与收货地址相同");	
+	AddressSame(-24, "发货地址与收货地址相同"),	
+	/**
+	 * 订单已被抢单
+	 */
+	OrderStates(-25, "订单已被抢单");	
 	
 
 	private int value = 0;

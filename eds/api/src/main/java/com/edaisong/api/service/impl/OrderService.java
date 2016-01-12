@@ -2279,6 +2279,12 @@ public class OrderService implements IOrderService {
 			resp.setMessage(FlashPushOrderEnum.OrderIdIsNull.desc());
 			return resp;
 		}
+	    if (oModel.getStatus() != 50 && oModel.getStatus() != 0)
+        {
+			resp.setStatus(FlashPushOrderEnum.OrderStates.value());
+			resp.setMessage(FlashPushOrderEnum.OrderStates.desc());
+			return resp;
+         }
 
 		if(req.getType()==1)
 		{
@@ -2595,14 +2601,14 @@ public class OrderService implements IOrderService {
 		
 		 BigDecimal bg = new BigDecimal(a/1000);
 		 double f1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
-	     String strA = a < 1000 ? String.valueOf(a).concat("m"): String.valueOf(f1).concat("km");  
+	     String strA = a < 1000 ? String.valueOf(a).concat("米"): String.valueOf(f1).concat("千米");  
 	     odResp.setPubtocurrentdistance(strA);
 		//取货之后，骑士到客户的距离	     
 		 double b = MapUtils.GetShortDistance(req.getLongitude(),req.getLatitude(),ParseHelper.ToDouble(oModel.getRecevicelongitude(),0),ParseHelper.ToDouble(oModel.getRecevicelatitude(),0));
 		 b= (new BigDecimal(b)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	     BigDecimal bg2 = new BigDecimal(b/1000);
 		 double f2 = bg2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-		 String strB  = b < 1000 ? String.valueOf(b).concat("m")  : String.valueOf(f2).concat("km");   	     
+		 String strB  = b < 1000 ? String.valueOf(b).concat("米")  : String.valueOf(f2).concat("千米");   	     
 		odResp.setRecevicetocurrentdistance(strB);	
 		odResp.setExpectedTakeTime(ooModel.getExpectedtaketime());		
 		odResp.setName(businessModel.getName());
