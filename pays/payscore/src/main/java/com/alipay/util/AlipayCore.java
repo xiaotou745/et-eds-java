@@ -43,7 +43,9 @@ public class AlipayCore {
         for (String key : sArray.keySet()) {
             String value = sArray.get(key);
             if (value == null || value.equals("") || key.equalsIgnoreCase("sign")
-                || key.equalsIgnoreCase("sign_type")) {
+                || key.equalsIgnoreCase("sign_type") || key.equalsIgnoreCase("platform") 
+                || key.equalsIgnoreCase("verify")
+            		) {
                 continue;
             }
             result.put(key, value);
