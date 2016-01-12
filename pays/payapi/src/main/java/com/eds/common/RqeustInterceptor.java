@@ -132,7 +132,6 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 			String appServerIP = JsonUtil.obj2string(ipinfoList);
 	
-			Date endDate = new Date();
 			Date requestTime = (Date) exchange.get("requestTime");
 			String param = (String) exchange.get("encryptMsg");
 			String decryptMsg = (String) exchange.get("decryptMsg");
@@ -154,6 +153,7 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			logEngity.setAppServer(appServerIP);
 			logEngity.setException(exceptionMsg);
 			logEngity.setStackTrace(stackTrace);
+			Date endDate = new Date();
 			logEngity.setExecuteTime(endDate.getTime() - requestTime.getTime());
 			logEngity.setRequestTime(ParseHelper.ToDateString(requestTime, ""));
 			logEngity.setRequestEndTime(ParseHelper.ToDateString(endDate, ""));

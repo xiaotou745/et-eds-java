@@ -39,6 +39,7 @@
 			<ref bean="clienterHttpService" />
 			<ref bean="taoBaoHttpService" />
 			<ref bean="activeMqHttpService" />
+		    <ref bean="httpTestService" />
 		</jaxrs:serviceBeans>
 		<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
 		<jaxrs:inInterceptors>

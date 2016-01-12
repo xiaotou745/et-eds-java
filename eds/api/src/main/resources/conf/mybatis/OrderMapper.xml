@@ -303,7 +303,7 @@
 				#{pickuplatitude,jdbcType=DOUBLE},
 			</if>
 			<if test="pubdate != null">
-				#{pubdate,jdbcType=TIMESTAMP},
+				getdate(),
 			</if>
 			<if test="pubcity != null">
 				#{pubcity,jdbcType=NVARCHAR},

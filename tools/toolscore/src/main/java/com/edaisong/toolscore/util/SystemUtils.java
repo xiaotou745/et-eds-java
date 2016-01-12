@@ -2,7 +2,6 @@ package com.edaisong.toolscore.util;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -16,13 +15,25 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 public class SystemUtils {
+	private volatile static   List<String> localIpInfo;
 	/**
 	 * 获取本机的内网ip，本机名，外网ip
 	 * @date 20151022
 	 * @author zhaohl
 	 * @return
+	 * @throws Exception 
 	 */
-	public static List<String> getLocalIpInfo(){
+	public static List<String> getLocalIpInfo() {
+		if (localIpInfo == null) {
+			synchronized (SystemUtils.class) {
+				if (localIpInfo == null) {
+					localIpInfo = getLocalInfo();
+				}
+			}
+		}
+		return localIpInfo;
+	}
+	private static List<String> getLocalInfo(){
 		String localip = null;// 本地IP，如果没有配置外网IP则返回它  
         String netip = null;// 外网IP  
         String hostName = null;// 本机名称
@@ -59,11 +70,11 @@ public class SystemUtils {
         if (hostName==null) {
         	hostName="";
 		}
-		List<String> result = new ArrayList<>();
-		result.add(localip);
-		result.add(hostName);
-		result.add(netip);
-		return result;
+        List<String> listInfo = new ArrayList<>();
+        listInfo.add(localip);
+        listInfo.add(hostName);
+        listInfo.add(netip);
+		return listInfo;
 	}
 	public static String getClientIp(HttpServletRequest request){
 		if (request==null) {

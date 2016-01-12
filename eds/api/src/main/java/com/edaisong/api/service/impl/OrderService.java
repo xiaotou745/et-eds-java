@@ -203,6 +203,15 @@ public class OrderService implements IOrderService {
 	@Autowired
 	private IClienterPushLogDao clienterPushLogDao;
 	
+	/**
+	 * 根据id查询订单数据
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public Order selectByPrimaryKey(int id){
+		return orderDao.selectByPrimaryKey(id);
+	}
 	
 	/**
 	 * 后台订单列表页面
@@ -2224,11 +2233,6 @@ public class OrderService implements IOrderService {
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
 		resp.setMessage(PublishOrderReturnEnum.Success.desc());
 		
-		//异步发送Signalr通知   caoheyang 20160105
-		asyncShanSongPushOrder(new GetPushClienterIdsReq(order.getPickuplatitude(),
-				order.getPickuplongitude(),
-				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderTimeInfo")),
-				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderDistanceInfo"))*1000),orderId);
 		return resp;
 	}
 	
@@ -2442,6 +2446,12 @@ public class OrderService implements IOrderService {
 		
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
 		resp.setMessage(PublishOrderReturnEnum.Success.desc());
+		
+		//异步发送Signalr通知   caoheyang 20160105
+		asyncShanSongPushOrder(new GetPushClienterIdsReq(oModel.getPickuplatitude(),
+				oModel.getPickuplongitude(),
+				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderTimeInfo")),
+				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderDistanceInfo"))*1000),oModel.getId());
 		return resp;			
 	}
 	/** 
