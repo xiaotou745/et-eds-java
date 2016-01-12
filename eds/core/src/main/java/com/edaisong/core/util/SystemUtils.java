@@ -2,7 +2,6 @@ package com.edaisong.core.util;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -16,57 +15,66 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 public class SystemUtils {
+	private volatile static   List<String> localIpInfo;
 	/**
 	 * 获取本机的内网ip，本机名，外网ip
-	 * 
 	 * @date 20151022
 	 * @author zhaohl
 	 * @return
+	 * @throws Exception 
 	 */
 	public static List<String> getLocalIpInfo() {
-		String localip = null;// 本地IP，如果没有配置外网IP则返回它
-		String netip = null;// 外网IP
-		String hostName = null;// 本机名称
-		try {
-			InetAddress ip = null;
-			boolean finded = false;// 是否找到外网IP
-			Enumeration<NetworkInterface> netInterfaces = NetworkInterface
-					.getNetworkInterfaces();
-			while (netInterfaces.hasMoreElements() && !finded) {
-				NetworkInterface ni = netInterfaces.nextElement();
-				Enumeration<InetAddress> address = ni.getInetAddresses();
-				while (address.hasMoreElements()) {
-					ip = address.nextElement();
-					if (!ip.isLoopbackAddress()
-							&& ip.getHostAddress().indexOf(":") == -1) {
-						if (ip.isSiteLocalAddress()) {
-							localip = ip.getHostAddress();// 内网IP
-							hostName = ip.getHostName();
-						} else {
-							netip = ip.getHostAddress();// 外网IP
-							finded = true;
-							break;
-						}
-					}
+		if (localIpInfo == null) {
+			synchronized (SystemUtils.class) {
+				if (localIpInfo == null) {
+					localIpInfo = getLocalInfo();
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		if (localip == null) {
-			localip = "";
+		return localIpInfo;
+	}
+	private static List<String> getLocalInfo(){
+		String localip = null;// 本地IP，如果没有配置外网IP则返回它  
+        String netip = null;// 外网IP  
+        String hostName = null;// 本机名称
+        try {  
+            InetAddress ip = null;  
+            boolean finded = false;// 是否找到外网IP  
+            Enumeration<NetworkInterface> netInterfaces = NetworkInterface.getNetworkInterfaces();  
+            while (netInterfaces.hasMoreElements() && !finded) {  
+                NetworkInterface ni = netInterfaces.nextElement();  
+                Enumeration<InetAddress> address = ni.getInetAddresses();  
+                while (address.hasMoreElements()) {  
+                    ip = address.nextElement();  
+                    if (!ip.isLoopbackAddress()&&ip.getHostAddress().indexOf(":") == -1) {
+						if (ip.isSiteLocalAddress()) {
+	                        localip = ip.getHostAddress();// 内网IP 
+	                        hostName = ip.getHostName();
+						}else {
+	                        netip = ip.getHostAddress();// 外网IP  
+	                        finded = true;  
+	                        break; 
+						}
+					}
+                }  
+            }  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        } 
+        if (localip==null) {
+        	localip="";
 		}
-		if (netip == null) {
-			netip = "";
+        if (netip==null) {
+        	netip="";
 		}
-		if (hostName == null) {
-			hostName = "";
+        if (hostName==null) {
+        	hostName="";
 		}
-		List<String> result = new ArrayList<>();
-		result.add(localip);
-		result.add(hostName);
-		result.add(netip);
-		return result;
+        List<String> listInfo = new ArrayList<>();
+        listInfo.add(localip);
+        listInfo.add(hostName);
+        listInfo.add(netip);
+		return listInfo;
 	}
 
 	public static String getClientIp(HttpServletRequest request) {
