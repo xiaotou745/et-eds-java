@@ -38,6 +38,7 @@ import com.edaisong.entity.req.InStoreTaskReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.QueryOrderReq;  
 import com.edaisong.entity.req.QueryShanSongOrderReq;
+import com.edaisong.entity.req.ShanSongPushNewOrderReq;
 import com.edaisong.entity.req.ShanSongPushOrderReq;
 import com.edaisong.entity.resp.OrderBlancePayResp;
 import com.edaisong.entity.resp.OrderDetailResp;
@@ -407,6 +408,20 @@ public class OrderHttpService implements IOrderHttpService {
 		para.setDateInfo(null);
 		para.setClienterId(null);
 		return orderService.shanSongQueryOrderB(para);
+	}
+	
+	/**
+	 * 里程计算 推单 (新订单)
+	 * @author CaoHeYang 
+	 * @date 20160105
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<Boolean> shanSongPushNewOrder(ShanSongPushOrderReq req) {
+		HttpResultModel<Boolean> res = new HttpResultModel<Boolean>();
+		return res.setResult(orderService.shanSongPushOrder(
+				req.getOrderId()));
 	}
 	
 	/**

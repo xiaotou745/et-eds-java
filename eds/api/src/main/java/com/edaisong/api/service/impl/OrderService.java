@@ -2436,6 +2436,12 @@ public class OrderService implements IOrderService {
 		
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
 		resp.setMessage(PublishOrderReturnEnum.Success.desc());
+		
+		//异步发送Signalr通知   caoheyang 20160105
+		asyncShanSongPushOrder(new GetPushClienterIdsReq(oModel.getPickuplatitude(),
+				oModel.getPickuplongitude(),
+				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderTimeInfo")),
+				ParseHelper.ToInt(PropertyUtils.getProperty("ShanSongPushOrderDistanceInfo"))*1000),oModel.getId());
 		return resp;			
 	}
 	/** 
