@@ -18,10 +18,10 @@ public class EDSAlipayServiceEnvConstants {
     public static final String ALIPAY_PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB";
     
     /**签名编码-视支付宝服务窗要求*/
-    public static final String SIGN_CHARSET      = "GBK";
+    public static final String SIGN_CHARSET      = "utf-8";
 
     /**字符编码-传递给支付宝的数据编码*/
-    public static final String CHARSET           = "GBK";
+    public static final String CHARSET           = "utf-8";
 
     /**签名类型-视支付宝服务窗要求*/
     public static final String SIGN_TYPE         = "RSA";

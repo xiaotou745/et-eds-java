@@ -54,7 +54,6 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 
 			String methodName = handlerMethod.getMethod().toString();
 			String param = JsonUtil.obj2string(request.getParameterMap());
-			Date endDate = new Date();
 			Date requestTime = (Date) request.getAttribute("requestTime");
 			int userID=ParseHelper.ToInt(request.getAttribute("userID"),-1);
 			String userName = ParseHelper.ToString(request.getAttribute("userName"),"");
@@ -93,6 +92,7 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			logEngity.setParam(param);
 			logEngity.setException(exceptionMsg);
 			logEngity.setStackTrace(stackTrace);
+			Date endDate = new Date();
 			logEngity.setExecuteTime(endDate.getTime() - requestTime.getTime());
 			logEngity.setRequestTime(ParseHelper.ToDateString(requestTime, ""));
 			logEngity.setRequestEndTime(ParseHelper.ToDateString(endDate, ""));
