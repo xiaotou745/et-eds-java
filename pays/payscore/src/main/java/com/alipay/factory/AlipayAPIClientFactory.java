@@ -71,7 +71,6 @@ public class AlipayAPIClientFactory {
 			paramPlatformModel.setKey(EDSAlipayConfig.key);
 			paramPlatformModel.setAccount_name(EDSAlipayConfig.account_name);
 			paramPlatformModel.setInput_charset(EDSAlipayConfig.input_charset);
-			
 			paramPlatformModel.setAlipay_public_key(EDSAlipayServiceEnvConstants.ALIPAY_PUBLIC_KEY);
 			paramPlatformModel.setSign_charset(EDSAlipayServiceEnvConstants.SIGN_CHARSET);
 			paramPlatformModel.setCharset(EDSAlipayServiceEnvConstants.CHARSET);
@@ -88,7 +87,6 @@ public class AlipayAPIClientFactory {
 			paramPlatformModel.setKey(RRTAlipayConfig.key);
 			paramPlatformModel.setAccount_name(RRTAlipayConfig.account_name);
 			paramPlatformModel.setInput_charset(RRTAlipayConfig.input_charset);
-			
 			paramPlatformModel.setAlipay_public_key(RRTAlipayServiceEnvConstants.ALIPAY_PUBLIC_KEY);
 			paramPlatformModel.setSign_charset(RRTAlipayServiceEnvConstants.SIGN_CHARSET);
 			paramPlatformModel.setCharset(RRTAlipayServiceEnvConstants.CHARSET);
