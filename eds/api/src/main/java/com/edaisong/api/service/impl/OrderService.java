@@ -1102,10 +1102,10 @@ public class OrderService implements IOrderService {
 			List<QueryOrder> orders = orderDao.queryDeliveryOrderC(query);
 			orders.forEach(action -> action.setDistance(action
 					.getDistance_OrderBy() < 1000 ? action
-					.getDistance_OrderBy() + "m" : new BigDecimal(action
+					.getDistance_OrderBy() + "米" : new BigDecimal(action
 					.getDistance_OrderBy() * 0.001).setScale(2,
 					BigDecimal.ROUND_HALF_UP).doubleValue()
-					+ "km")); 
+					+ "千米")); 
 			m.setOrders(orders);
 		} else { // 不需要计算骑士距离门店距离
 			m.setOrders(orderDao.queryOrder(query));
@@ -1212,8 +1212,8 @@ public class OrderService implements IOrderService {
 							.getBusinessId()).collect(Collectors.toList()));
 			Double tempDis = ParseHelper.ToDouble(
 					action.getDistanceToBusiness(), 0);
-			action.setDistanceToBusiness(tempDis < 1000 ? tempDis + "m"
-					: ParseHelper.digitsNum(tempDis * 0.001, 2) + "km");
+			action.setDistanceToBusiness(tempDis < 1000 ? tempDis + "米"
+					: ParseHelper.digitsNum(tempDis * 0.001, 2) + "千米");
 	        if (action.getList()!=null&&action.getList().size()==9) {
 			      returnList.add(action);
 			}
