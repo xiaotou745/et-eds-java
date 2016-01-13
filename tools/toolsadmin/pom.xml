@@ -1,19 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>tools</groupId>
-  <artifactId>toolsadmin</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>toolsadmin Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  <properties>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>tools</groupId>
+	<artifactId>toolsadmin</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>toolsadmin Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 		<spring.version>4.1.1.RELEASE</spring.version>
 	</properties>
-  <dependencies>
-  <!--spring context -->
+	<dependencies>
+		<!--spring context -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
@@ -33,27 +33,32 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
-		</dependency> 
-		<dependency> 
-			<groupId>tools</groupId>
-  			<artifactId>toolsapi</artifactId>
-  			<version>0.0.1-SNAPSHOT</version> 
 		</dependency>
 		<dependency>
-			  <groupId>tools</groupId>
-  				<artifactId>toolsentity</artifactId>
-  				<version>0.0.1-SNAPSHOT</version>
-		</dependency> 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    
-    
-  </dependencies>
-  <build>
-    <finalName>toolsadmin</finalName>
-  </build>
+			<groupId>tools</groupId>
+			<artifactId>toolsapi</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>tools</groupId>
+			<artifactId>toolsentity</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-digester</groupId>
+			<artifactId>commons-digester</artifactId>
+			<version>1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+
+	</dependencies>
+	<build>
+		<finalName>toolsadmin</finalName>
+	</build>
 </project>
