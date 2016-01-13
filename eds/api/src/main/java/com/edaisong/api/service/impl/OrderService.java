@@ -2290,6 +2290,7 @@ public class OrderService implements IOrderService {
 			return resp;
          }
 
+	    //未支付
 		if(req.getType()==1)
 		{
 			if(oModel.getStatus()!=50)
@@ -2374,6 +2375,9 @@ public class OrderService implements IOrderService {
 			Order order=new Order();
 			order.setIspay(true);
 			order.setStatus((byte)0);
+			order.setSettlemoney(oModel.getSettlemoney()+req.getTipamount());			
+			order.setOrdercommission(oModel.getOrdercommission()+req.getTipamount());
+
 			order.setId(req.getOrderId());
 			int oId=orderDao.updateByPrimaryKeySelective(order);
 			if(oId<0)
@@ -2954,8 +2958,8 @@ public class OrderService implements IOrderService {
 		order.setAdjustment(orderPriceService.getAdjustment(orderCommission));
 		order.setBasecommission(orderPriceService
 				.getBaseCommission(orderCommission));
-		//扣商家
-		Double settleMoney=req.getAmount();
+		//扣商家 
+		Double settleMoney=req.getAmount()+req.getTipamount();
 		order.setSettlemoney(settleMoney);
 		order.setOrdercommission(settleMoney);
 		// 如果当前商家的余额不够支付订单了，则消费集团的金额
