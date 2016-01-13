@@ -44,11 +44,11 @@
 			<artifactId>toolsentity</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-digester</groupId>
-			<artifactId>commons-digester</artifactId>
-			<version>1.8</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>commons-digester</groupId> -->
+<!-- 			<artifactId>commons-digester</artifactId> -->
+<!-- 			<version>1.8</version> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
