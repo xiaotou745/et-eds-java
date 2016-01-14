@@ -132,6 +132,7 @@ import com.edaisong.entity.req.OrderBlancePayReq;
 import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
+import com.edaisong.entity.req.OrderIdReq;
 import com.edaisong.entity.req.OrderOtherSearch;
 import com.edaisong.entity.req.OrderRegionReq;
 import com.edaisong.entity.req.OrderReq;
@@ -149,6 +150,7 @@ import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.OrderStatusResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
@@ -2645,6 +2647,62 @@ public class OrderService implements IOrderService {
 		resp.setStatus(OrderDetailGet.Success.value());
 		resp.setMessage(OrderDetailGet.Success.desc()); 
 		
+		resp.setResult(odResp);
+		return resp;
+	}
+	
+	/** 
+	 * 获取订单详情  闪送模式 api
+	 * 
+	 * @author 胡灵波
+	 * @param req
+	 * @Date 2015年11月27日 12:03:02
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<OrderStatusResp> GetOrderStatus(OrderIdReq req) {		
+		HttpResultModel<OrderStatusResp> resp=new HttpResultModel<OrderStatusResp>(); 
+		OrderStatusResp odResp=new OrderStatusResp();
+		int orderId=req.getOrderId();		
+		if (orderId<1)
+		{
+			resp.setStatus(OrderDetailGet.OrderIdIsNULL.value());
+			resp.setMessage(OrderDetailGet.OrderIdIsNULL.desc());
+			return resp;
+		}
+		Order oModel=orderDao.selectByPrimaryKey(orderId);		
+		odResp.setStatus(oModel.getStatus());	
+		if(oModel.getStatus()==0)
+		{
+			odResp.setStatusStr(OrderStatus.New.desc());
+		}
+		if(oModel.getStatus()==1)
+		{
+			odResp.setStatusStr(OrderStatus.Complite.desc());
+		}
+		if(oModel.getStatus()==2)
+		{
+			odResp.setStatusStr("任务"+OrderStatus.Delivery.desc());
+		}
+		if(oModel.getStatus()==3)
+		{
+			odResp.setStatusStr(OrderStatus.Cancel.desc());
+		}		
+		if(oModel.getStatus()==4)
+		{
+			odResp.setStatusStr(OrderStatus.Taking.desc());
+		}		
+		if(oModel.getStatus()==50)
+		{
+			odResp.setStatusStr(OrderStatus.Draft.desc());
+		}	
+		if(oModel.getStatus()==51)
+		{
+			odResp.setStatusStr(OrderStatus.DraftCancel.desc());
+		}	
+
+		resp.setStatus(OrderDetailGet.Success.value());
+		resp.setMessage(OrderDetailGet.Success.desc()); 		
 		resp.setResult(odResp);
 		return resp;
 	}

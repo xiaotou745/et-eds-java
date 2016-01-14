@@ -344,10 +344,10 @@
         bbr.RecordType ,
         bbr.OperateTime ,
         bbr.Remark ,
-        CASE WHEN bbr.RecordType IN ( 1, 2, 8 ) THEN '订单号'
+        CASE WHEN bbr.RecordType IN ( 1, 2, 8,14 ) THEN '订单号'
              ELSE '交易流水号'
         END AS NoDesc ,
-        CASE WHEN bbr.RecordType IN ( 1, 2, 8 ) THEN 1
+        CASE WHEN bbr.RecordType IN ( 1, 2, 8,14 ) THEN 1
              ELSE 0
         END AS IsOrder,
         o.[platform] 

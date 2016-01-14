@@ -50,6 +50,7 @@ import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.OrderStatusResp;
 import com.edaisong.entity.resp.OrderTipDetailResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
@@ -188,6 +189,21 @@ public class OrderHttpService implements IOrderHttpService {
 		return orderService.GetOrderDetails(req);
 	}
 
+	
+	/**
+	 * 获取订单状态(闪送模式) 
+	 * @author 胡灵波
+	 * @date 2016年1月14日10:31:08
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/getorderstatus")
+	public HttpResultModel<OrderStatusResp> GetOrderStatus(OrderIdReq req)
+	{
+		return orderService.GetOrderStatus(req);
+	}
 
 	/**
 	 * 获取小费订单详情 闪送模式

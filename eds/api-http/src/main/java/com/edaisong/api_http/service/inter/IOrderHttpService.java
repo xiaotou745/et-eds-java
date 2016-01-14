@@ -38,6 +38,7 @@ import com.edaisong.entity.resp.OrderDraftResp;
 import com.edaisong.entity.resp.OrderGrabResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.OrderStatusResp;
 import com.edaisong.entity.resp.OrderTipDetailResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
@@ -126,6 +127,17 @@ public interface IOrderHttpService {
 	@Path("/getorderdetails")
 	public HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req);
 	
+	/**
+	 * 获取订单状态(闪送模式) 
+	 * @author 胡灵波
+	 * @date 2016年1月14日10:31:08
+	 * @version 1.0
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/getorderstatus")
+	public HttpResultModel<OrderStatusResp> GetOrderStatus(OrderIdReq req);
 	/**
 	 * 获取小费详情(闪送模式) 
 	 * @author 胡灵波

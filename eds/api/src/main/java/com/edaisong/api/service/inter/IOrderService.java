@@ -28,6 +28,7 @@ import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
 import com.edaisong.entity.req.OrderDraftReturnReq;
+import com.edaisong.entity.req.OrderIdReq;
 import com.edaisong.entity.req.OrderReq;
 import com.edaisong.entity.req.OrderStatisticsBReq;
 import com.edaisong.entity.req.OrderStatisticsCReq;
@@ -43,6 +44,7 @@ import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderDetailResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.entity.resp.OrderStatisticsBResp;
+import com.edaisong.entity.resp.OrderStatusResp;
 import com.edaisong.entity.resp.QueryOrderBResp;
 import com.edaisong.entity.resp.OrderStatisticsCResp;
 import com.edaisong.entity.resp.QueryOrderCResp;
@@ -189,6 +191,17 @@ public interface IOrderService {
 	 * @return
 	 */
 	HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req);
+	
+	/**
+	 * 获取订单状态  闪送模式 api
+	 * 
+	 * @param req
+	 *            参数
+	 * @author hulingbo
+	 * @Date 2016年1月14日10:36:12
+	 * @return
+	 */
+	HttpResultModel<OrderStatusResp> GetOrderStatus(OrderIdReq req);
 	// endregion 
 
 	/**
