@@ -13,7 +13,7 @@
   SELECT Id,KM,KG,DistributionPrice,Steps,IsMaster,Remark FROM TaskDistributionConfig(nolock)   order by IsMaster desc,km desc,kg desc
   </select>
   <select id="selectByPrimaryKey" resultType="com.edaisong.entity.TaskDistributionConfig" parameterType="java.lang.Integer" >
-    select    Id,KM,KG,DistributionPrice,IsMaster,Remark 
+    select    Id,KM,KG,steps,DistributionPrice,IsMaster,Remark 
     from TaskDistributionConfig
     where Id = #{id,jdbcType=INTEGER}
   </select>
