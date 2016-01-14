@@ -51,7 +51,7 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 		client.setMessageHandler(new MessageHandler() {
 			@Override
 			public void onMessage(Message message, MessageStatus status) throws Exception {	
-				ActiveMqLogUtil.writeLog("TmcControlHttpService.onMessage","TmcControlHttpService.onMessage", message.getContent(), message.getContent(), "","", "", new Date());
+				//ActiveMqLogUtil.writeLog("TmcControlHttpService.onMessage","TmcControlHttpService.onMessage", message.getContent(), message.getContent(), "","", "", new Date());
 				if (message.getTopic().equals(TaoBaoConsts.OrderDispatch) ) {
 					orderDispatch(message.getContent());
 				} else if (message.getTopic().equals(TaoBaoConsts.OrderClose) ) {
