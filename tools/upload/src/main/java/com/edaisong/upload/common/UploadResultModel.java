@@ -1,10 +1,13 @@
 package com.edaisong.upload.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class UploadResultModel {
     private String fileUrl;
     private String relativePath;
     private String originalName;
     private String modifyOriginalName;
+    @JsonIgnore
     private String remark;
     private int loadFrom;
 	public String getFileUrl() {
