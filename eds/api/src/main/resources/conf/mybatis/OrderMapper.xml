@@ -1269,6 +1269,7 @@ where   Status = 1
         b.GroupId ,o.[Platform],
         CONVERT(VARCHAR(16), oo.GrabTime, 120) GrabTime,
         o.PubName,
+        ISNULL(o.Amount,0)+ISNULL(o.TipAmount,0) as AmountAndTip,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
@@ -1820,7 +1821,7 @@ where a.orderno=#{ordernNo}
         o.OrderCommission ,o.PubName,
         b.GroupId ,o.[Platform],isnull(o.KM,0) km,isnull(o.[Weight],0) weight,o.PickupCode,
         ISNULL(oo.HadUploadCount, 0) HadUploadCount ,isnull(g.GroupName,'''') as OrderFromName,
-        o.amount+o.tipamount as amountAndTip,o.receivecode,
+        ISNULL(o.amount,0)+ISNULL(o.tipamount,0) as amountAndTip,o.receivecode,
         o.IsReceiveCode,
 case o.Payment when 0 then ''余额''  when 1 then ''支付宝''  when 2 then ''微信'' end paymentstr,
 case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送商户版''  when 3 then ''E代送智能调度'' end platformstr
