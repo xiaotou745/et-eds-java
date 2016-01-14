@@ -32,6 +32,14 @@ import com.taobao.top.link.LinkException;
  */
 @Service
 public class TmcControlHttpService implements ITmcControlHttpService {
+	public TmcControlHttpService(){
+		try {
+			//spring扫描bean的时候，会自动调用类的构造函数，此时用它来初始化taobao的监听器
+			main();
+		} catch (Exception e) {
+			System.out.println("spring自动启动taobao监听失败："+e.getMessage());
+		}
+	}
 	/**
 	 * tmc 获取通知
 	 * 
