@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edaisong.upload.common.HttpResultModel;
+import com.edaisong.upload.common.HttpReturnRnums;
 import com.edaisong.upload.common.UploadFileHelper;
 import com.edaisong.upload.common.UploadFrom;
 import com.edaisong.upload.common.UploadResultModel;
@@ -28,8 +30,16 @@ public class FileUploadController {
 	 */
 	@RequestMapping("uploadimg")
 	@ResponseBody
-	public UploadResultModel uploadImg(HttpServletRequest request) throws Exception {
-		return UploadFileHelper.UploadImg(request);
+	public HttpResultModel<UploadResultModel> uploadImg(HttpServletRequest request) throws Exception {
+		UploadResultModel resp= UploadFileHelper.UploadImg(request);
+		HttpResultModel<UploadResultModel> result=new HttpResultModel<UploadResultModel>();
+		if (resp.getRemark()!=null&&!resp.getRemark().isEmpty()) {
+			result.setCode(HttpReturnRnums.ParaError.value());
+			result.setMsg(resp.getRemark());
+			return result;
+		}
+		result.setData(resp);
+		return result;
 	}
 	/**
 	 * 上传文件
@@ -43,8 +53,16 @@ public class FileUploadController {
 	 */
 	@RequestMapping("uploadfile")
 	@ResponseBody
-	public UploadResultModel uploadFile(HttpServletRequest request) throws Exception {
-		return UploadFileHelper.UploadFile(request);
+	public HttpResultModel<UploadResultModel> uploadFile(HttpServletRequest request) throws Exception {
+		UploadResultModel resp= UploadFileHelper.UploadFile(request);
+		HttpResultModel<UploadResultModel> result=new HttpResultModel<UploadResultModel>();
+		if (resp.getRemark()!=null&&!resp.getRemark().isEmpty()) {
+			result.setCode(HttpReturnRnums.ParaError.value());
+			result.setMsg(resp.getRemark());
+			return result;
+		}
+		result.setData(resp);
+		return result;
 	}
 	/**
 	 * 删除文件
@@ -55,11 +73,14 @@ public class FileUploadController {
 	 */
 	@RequestMapping("deletefile")
 	@ResponseBody
-	public String deleteFile(String fileUrl) throws Exception {
+	public HttpResultModel<String> deleteFile(String fileUrl) throws Exception {
+		HttpResultModel<String> result=new HttpResultModel<String>();
 		if (fileUrl==null||fileUrl.isEmpty()) {
-			return "文件路径不能为空";
+			result.setCode(HttpReturnRnums.ParaError.value());
+			result.setMsg("文件路径不能为空");
+			return result;
 		}
 		UploadFileHelper.DeleteFile(fileUrl);
-		return "";
+		return result;
 	}	
 }
