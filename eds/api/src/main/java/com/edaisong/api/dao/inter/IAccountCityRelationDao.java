@@ -5,17 +5,8 @@ import java.util.List;
 import com.edaisong.entity.AccountCityRelation;
 
 public interface IAccountCityRelationDao {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(AccountCityRelation record);
-
-    int insertSelective(AccountCityRelation record);
-
-    AccountCityRelation selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(AccountCityRelation record);
-
-    int updateByPrimaryKey(AccountCityRelation record);
+    int modifyAuthList(List<AccountCityRelation> recordList);
     
     /**
 	 * 获取后台用户可查看的城市集合
@@ -24,5 +15,5 @@ public interface IAccountCityRelationDao {
 	 * @param userId
 	 * @return
 	 */
-    List<String>  getAuthorityCitys(int userId);
+    List<Integer>  getAuthorityCitys(int userId);
 }

@@ -260,11 +260,6 @@ public class OrderController {
 	 */
 	@RequestMapping("shansonglistdo")
 	public ModelAndView shansonglistdo(PagedOrderSearchReq searchWebReq,HttpServletRequest request){
-		//如果管理后台的类型是所有权限就传0，否则传管理后台id    暂时注释
-		/*List<String> authsList =UserContext.getCurrentContext(request).getAccountType() == 1 ?
-				null:
-				accountCityRelationService.getAuthorityCitys(UserContext.getCurrentContext(request).getId());
-        searchWebReq.setAuthorityCityNameList(authsList);*/
         PagedResponse<ShanSongOrderListModel> resp = orderService.getShanSongOrders(searchWebReq);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "order/shansonglistdo");

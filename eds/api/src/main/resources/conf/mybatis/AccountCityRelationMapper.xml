@@ -1,136 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edaisong.api.dao.inter.IAccountCityRelationDao" >
-  <resultMap id="BaseResultMap" type="com.edaisong.entity.AccountCityRelation" >
-    <id column="Id" property="id" jdbcType="INTEGER" />
-    <result column="AccountId" property="accountid" jdbcType="INTEGER" />
-    <result column="CityId" property="cityid" jdbcType="INTEGER" />
-    <result column="IsEnable" property="isenable" jdbcType="SMALLINT" />
-    <result column="CreateBy" property="createby" jdbcType="NVARCHAR" />
-    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-    <result column="UpdateBy" property="updateby" jdbcType="NVARCHAR" />
-    <result column="UpdateTime" property="updatetime" jdbcType="TIMESTAMP" />
-  </resultMap>
   <sql id="Base_Column_List" >
     Id, AccountId, CityId, IsEnable, CreateBy, CreateTime, UpdateBy, UpdateTime
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from AccountCityRelation
-    where Id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from AccountCityRelation
-    where Id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.edaisong.entity.AccountCityRelation" >
-    insert into AccountCityRelation (Id, AccountId, CityId, 
-      IsEnable, CreateBy, CreateTime, 
-      UpdateBy, UpdateTime)
-    values (#{id,jdbcType=INTEGER}, #{accountid,jdbcType=INTEGER}, #{cityid,jdbcType=INTEGER}, 
-      #{isenable,jdbcType=SMALLINT}, #{createby,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{updateby,jdbcType=NVARCHAR}, #{updatetime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.AccountCityRelation" >
-    insert into AccountCityRelation
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="accountid != null" >
-        AccountId,
-      </if>
-      <if test="cityid != null" >
-        CityId,
-      </if>
-      <if test="isenable != null" >
-        IsEnable,
-      </if>
-      <if test="createby != null" >
-        CreateBy,
-      </if>
-      <if test="createtime != null" >
-        CreateTime,
-      </if>
-      <if test="updateby != null" >
-        UpdateBy,
-      </if>
-      <if test="updatetime != null" >
-        UpdateTime,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="accountid != null" >
-        #{accountid,jdbcType=INTEGER},
-      </if>
-      <if test="cityid != null" >
-        #{cityid,jdbcType=INTEGER},
-      </if>
-      <if test="isenable != null" >
-        #{isenable,jdbcType=SMALLINT},
-      </if>
-      <if test="createby != null" >
-        #{createby,jdbcType=NVARCHAR},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateby != null" >
-        #{updateby,jdbcType=NVARCHAR},
-      </if>
-      <if test="updatetime != null" >
-        #{updatetime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.AccountCityRelation" >
-    update AccountCityRelation
-    <set >
-      <if test="accountid != null" >
-        AccountId = #{accountid,jdbcType=INTEGER},
-      </if>
-      <if test="cityid != null" >
-        CityId = #{cityid,jdbcType=INTEGER},
-      </if>
-      <if test="isenable != null" >
-        IsEnable = #{isenable,jdbcType=SMALLINT},
-      </if>
-      <if test="createby != null" >
-        CreateBy = #{createby,jdbcType=NVARCHAR},
-      </if>
-      <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateby != null" >
-        UpdateBy = #{updateby,jdbcType=NVARCHAR},
-      </if>
-      <if test="updatetime != null" >
-        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.AccountCityRelation" >
-    update AccountCityRelation
-    set AccountId = #{accountid,jdbcType=INTEGER},
-      CityId = #{cityid,jdbcType=INTEGER},
-      IsEnable = #{isenable,jdbcType=SMALLINT},
-      CreateBy = #{createby,jdbcType=NVARCHAR},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      UpdateBy = #{updateby,jdbcType=NVARCHAR},
-      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <!-- 获取后台用户可查看的城市集合  add by caoheyang  20151125 -->
-   <select id="getAuthorityCitys" resultType="java.lang.String" parameterType="java.lang.Integer" >
-SELECT ppc.name
+<update id="modifyAuthList" parameterType="java.util.List">
+	 <foreach collection="list" index="index" item="item">    
+IF EXISTS ( SELECT  1
+            FROM    AccountCityRelation with(nolock)
+            WHERE   accountid = #{item.accountid,jdbcType=INTEGER} 
+                    AND CityId = #{item.cityid,jdbcType=INTEGER})
+    BEGIN
+        update  AccountCityRelation
+        set IsEnable=#{item.isenable,jdbcType=INTEGER},UpdateBy=#{item.updateby,jdbcType=NVARCHAR} 
+        WHERE   accountid = #{item.accountid,jdbcType=INTEGER}
+                AND cityid = #{item.cityid,jdbcType=INTEGER}
+    END
+ELSE
+    INSERT  INTO AccountCityRelation
+            ( accountid, cityid,CreateBy, UpdateBy) 
+    VALUES  ( #{item.accountid,jdbcType=INTEGER}, #{item.cityid,jdbcType=INTEGER},
+    #{item.createby,jdbcType=NVARCHAR},#{item.updateby,jdbcType=NVARCHAR} )
+     </foreach>
+	</update>
+  <!-- 获取后台用户可查看的城市集合  add by zhaohl  20160115-->
+   <select id="getAuthorityCitys" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+SELECT acr.cityid  
 FROM [AccountCityRelation] acr with(nolock)
 JOIN PublicProvinceCity ppc with(nolock) on acr.CityId=ppc.code
 WHERE acr.AccountId=#{userId} and acr.IsEnable=1
   </select>
-  
 </mapper>
