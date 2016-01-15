@@ -60,7 +60,11 @@
     delete from account
     where Id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.edaisong.entity.Account" >
+    <insert id="insert" parameterType="com.edaisong.entity.Account" useGeneratedKeys="true" keyProperty="id">
+    	<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			select @@IDENTITY as id
+		</selectKey>
     insert into account (Password, UserName, 
       LoginName, Status, AccountType, 
       FADateTime, FAUser, LCDateTime, 

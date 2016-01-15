@@ -197,11 +197,11 @@ function updateuser(cityCodeList,DCidList){
 		return;
 	}
 	var paramaters = {
-			"Id":userid,
-			"UserName" :  $("#txtUserName").val(),
-			"LoginName" : $("#txtLoginName").val(),
-			"PassWord":$("#txtPwd").val(),
-			"Status":$('input[name="radstatus"]:checked').val(),
+			"id":userid,
+			"username" :  $("#txtUserName").val(),
+			"loginname" : $("#txtLoginName").val(),
+			"password":$("#txtPwd").val(),
+			"status":$('input[name="radstatus"]:checked').val(),
 			"oldcityrelations":oldcityrelations,
 			"olddeliveryrelations":olddeliveryrelations,
 			"newcityrelations":cityCodeList,
@@ -268,9 +268,9 @@ $("#saveuser").click(function(){
 		return;
 	}
 	var paramaters = {
-			"userName" :  $("#txtUserName").val(),
-			"loginName" : $("#txtLoginName").val(),
-			"passWord":$("#txtPwd").val(),
+			"username" :  $("#txtUserName").val(),
+			"loginname" : $("#txtLoginName").val(),
+			"password":$("#txtPwd").val(),
 			"status":$('input[name="radstatus"]:checked').val(),
 			"cityrelations":cityCodeList,
 			"deliveryrelations":DCidList
@@ -355,7 +355,7 @@ function queryauthralation(accountId) {
         			$("#chkcity" + result[i]).prop("checked", false);
         		}
             }
-        	if(result.length==authlength){
+        	if(result.length==authlength||result.length==0){
         		$("#selAcountType").val("1");
         		$("#divcity").hide();
         	}else{
