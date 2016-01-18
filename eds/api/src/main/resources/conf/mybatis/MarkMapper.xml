@@ -283,4 +283,21 @@
                      '${optName}',
                      ${isEnable});
   </update>
+  
+    <select id="getMarksListByType" resultType="com.edaisong.entity.Mark" parameterType="java.lang.Integer">
+SELECT  Id ,
+        TagName ,
+        TagType ,
+        BindQuantity ,
+        IsEnable ,
+        CreateTime ,
+        CreateName ,
+        ModifyTime ,
+        ModifyName ,
+        IsDelete
+FROM    tag (NOLOCK)
+WHERE   tagType = #{type,jdbcType=INTEGER}
+        AND IsEnable = 1
+        AND IsDelete = 0
+  </select>
 </mapper>

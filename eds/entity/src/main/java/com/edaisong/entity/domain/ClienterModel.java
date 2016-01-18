@@ -5,6 +5,9 @@ import java.lang.Double;
 import java.text.DecimalFormat;
 import java.util.Date;
 
+import com.edaisong.core.util.ParseHelper;
+import com.edaisong.core.util.PropertyUtils;
+
 public class ClienterModel {
     private Integer id;
 
@@ -92,17 +95,31 @@ public class ClienterModel {
 	}
 
 	public String getPicWithHandUrl() {
-		return picWithHandUrl;
+		if(this.picWithHandUrl==null||"".equals(this.picWithHandUrl))
+		{
+			return "";
+		}
+		return PropertyUtils.getProperty("ImageClienterServicePath")+picWithHandUrl;
 	}
-
+	public String getPicWithHandUrlBig()
+	{
+		return ParseHelper.getBigPic(getPicWithHandUrl());
+	}
+	
 	public void setPicWithHandUrl(String picWithHandUrl) {
 		this.picWithHandUrl = picWithHandUrl;
 	}
 
 	public String getPicUrl() {
-		return picUrl;
+		if(this.picUrl==null||"".equals(this.picUrl))
+		{
+			return "";
+		}
+		return PropertyUtils.getProperty("ImageClienterServicePath")+picUrl;
 	}
-
+	public String getPicUrlBig(){
+		return ParseHelper.getBigPic(getPicUrl());
+	}
 	public void setPicUrl(String picUrl) {
 		this.picUrl = picUrl;
 	}

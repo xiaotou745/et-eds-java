@@ -65,7 +65,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 				%>		
 				<td><%=list.get(i).getPhoneNo() %></td>
 				<td><%=list.get(i).getIdCard() %></td>
-				<td><a href="javascript:void(0)" class="businessOk" onclick="">查看</a></td>		
+				<td><a href="javascript:void(0)" class="businessOk" onclick="ShowPic('<%=list.get(i).getPicWithHandUrl()%>','<%=list.get(i).getPicWithHandUrlBig()%>','<%=list.get(i).getPicUrl()%>','<%=list.get(i).getPicUrlBig()%>')">查看</a></td>		
 				<td><%=ParseHelper.ToDateString(list.get(i).getInsertTime(), "")%>		</td>		
 				<td style="color:red;font-weight:600"><a href="<%=basePath%>/clienter/clienterbalancerecordlist?clienterId=<%=list.get(i).getId() %> ">￥  <%=list.get(i).getAccountBalance() %></a></td>
 				<td><%=list.get(i).getAllowWithdrawPrice() %></td>
@@ -145,7 +145,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
         if (!window.confirm("是否审核通过？")) {
             return;
         }
-        if (idCard == 0 || trueName == 0 || picUrl == 0 || picWithHandUrl == 0) {
+        if (idCard == '' || trueName == '' || picUrl =='' || picWithHandUrl =='') {
             alert("该骑士未上传个人资料，不能通过审核。")
             return;
         }
@@ -156,7 +156,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
             url: url,
             data: paramaters,
             success: function (result) {            
-                    window.location.href = "<%=basePath%>/clienter/list";               
+            	jss.search(1);             
             }
         });
     }
@@ -170,7 +170,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
            url: url,
            data: paramaters,
            success: function (result) {            
-                   window.location.href = "<%=basePath%>/clienter/list";               
+        	   jss.search(1);               
            }
        });
    }
