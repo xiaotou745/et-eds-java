@@ -51,11 +51,13 @@ List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleD
 	</div>
 <div class="modal-body">
 
-  账号名称：<input id="txtUserName"/><br/><br/>
-登录名称：<input id="txtLoginName"/><br/><br/>
-登录密码：<input type="password" id="txtPwd"/><br/><br/>
-确认密码：<input type="password" id="txtConfirmPwd"/><br/><br/>
-城市选项：<select id="selCity"  class="form-control m-b"><option value="1">全部城市权限</option><option value="2">部分城市权限</option></select>
+  账号名称：<input id="txtUserName" class="form-control"/><br/><br/>
+登录名称：<input id="txtLoginName" class="form-control"/><br/><br/>
+登录密码：<input type="password" id="txtPwd" class="form-control"/><br/><br/>
+确认密码：<input type="password" id="txtConfirmPwd" class="form-control"/><br/><br/>
+城市选项：<select id="selAcountType"  class="form-control m-b">
+<option value="1">全部城市权限</option>
+<option value="2">部分城市权限</option></select>
 <br/>
 <div style="padding-left:65px;display:none" id="divcity">
 <%
@@ -63,7 +65,7 @@ List<AreaModel> listArea = (List<AreaModel>) request.getAttribute("listArea");
 for(AreaModel item:listArea)
 {
 	%>
-	<input type="checkbox" value="<%=item.getCode()%>" id="chkcity<%=item.getCode()%>"/>
+	<input type="checkbox" name="checkMenus" value="<%=item.getCode()%>" id="chkcity<%=item.getCode()%>"/>
 	<label for="chkcity<%=item.getCode()%>"><%=item.getName() %></label> &nbsp;
 	<%	
 }
@@ -77,15 +79,15 @@ for(AreaModel item:listArea)
 	for(DeliveryCompany item:listDc)
 	{
 		%>
-		<input type="checkbox" value="<%=item.getId() %>" id="chkdc<%=item.getId()%>"/>
-		<label for="chkdc<%=item.getId() %>"><%=item.getDeliverycompanyname() %></label>
+		<input type="checkbox" name="checkDeliveryCompany" value="<%=item.getId() %>" id="chkdc<%=item.getId()%>"/>
+		<label for="chkdc<%=item.getId()%>"><%=item.getDeliverycompanyname() %></label>
 		<%
 	}
 	%>
 
 </div>
 <br/>
-是否启用：<input type="radio" value="1" name="radstatus" id="radyes"/>
+是否启用：<input type="radio" value="1" name="radstatus" id="radyes" checked/>
 	  <label for="radyes">启用</label>
 	  <input type="radio" value="0" name="radstatus" id="radno"/>
 	  <label for="radno">不启用</label>
@@ -94,7 +96,7 @@ for(AreaModel item:listArea)
 
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-	    <button type="button" class="btn btn-primary">保存</button>
+	    <button type="button" id="saveuser" class="btn btn-primary">保存</button>
 	</div>
     </div>
 </div>
@@ -118,7 +120,7 @@ for(AreaModel item:listArea)
 						单独分配<input type="radio" id="usertype" name="objtype" value="1">
 					</div>
 					<div class="control-group" id="rolediv">
-						<%=HtmlHelper.getSelect("roleid", roleData, "rolename", "id",null,null,"全部")%>
+						<%=HtmlHelper.getSelect("roleid", roleData, "rolename", "id",null,"-1","请选择")%>
 					</div>
 					<div class="control-group" id="userdiv" style="display: hidden;">
 						<div class="controls">
@@ -153,14 +155,24 @@ var jss={
 			});
 		},
 		reset:function(){
+			userid=-1;
+			optype=0;
+		    oldcityrelations="";
+		    olddeliveryrelations="";
 			$("#txtUserName").val("");
 			$("#txtLoginName").val("");
 			$("#txtPwd").val("");
 			$("#txtConfirmPwd").val("");
-			$("#selCity").val(1);
+			$("#selAcountType").val(1);
 			$("#divcity").hide();
 			$("#divdc").hide();
 		    $("#radyes").attr("checked","checked");
+		    $("input[name='checkDeliveryCompany']").each(function() {
+		        $(this).prop("checked", false);
+		    });
+		    $("input[name='checkMenus']").each(function() {
+		        $(this).prop("checked", false);
+		    });
 		},
 		reloadInfo:function(){
 			
@@ -171,12 +183,209 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+function updateuser(cityCodeList,DCidList){
+	if($("#txtUserName").val()==""){
+		alert("用户名不能为空");
+		return;
+	}
+	if($("#txtLoginName").val()==""){
+		alert("登录名不能为空");
+		return;
+	}
+	if($("#txtPwd").val()!=$("#txtConfirmPwd").val()){
+		alert("密码和确认密码不一致");
+		return;
+	}
+	var paramaters = {
+			"id":userid,
+			"username" :  $("#txtUserName").val(),
+			"loginname" : $("#txtLoginName").val(),
+			"password":$("#txtPwd").val(),
+			"status":$('input[name="radstatus"]:checked').val(),
+			"oldcityrelations":oldcityrelations,
+			"olddeliveryrelations":olddeliveryrelations,
+			"newcityrelations":cityCodeList,
+			"newdeliveryrelations":DCidList
+		};
+		var url = "<%=basePath%>/account/updateuser";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				if (result>0) {
+					alert("操作成功");
+					window.location.href = window.location.href;
+				} else {
+					alert("操作失败");
+				}
+			}
+		});
+}
+var userid=-1;
+var optype=0;
+$("#saveuser").click(function(){
+	var cityCodeList = "";
+    $("input[name='checkMenus']").each(function () {
+        if ($("#selAcountType").val() == 1) {
+            cityCodeList = cityCodeList + $(this).val() + ",";
+        }
+        else {
+            if ($(this).is(':checked')) {
+                cityCodeList = cityCodeList + $(this).val() + ",";
+            }
+        }
+    });
+    var DCidList = "";
+    $("input[name='checkDeliveryCompany']").each(function () {
+        if ($(this).is(':checked')) {
+            DCidList = DCidList + $(this).val() + ",";
+        }
+    });
+    if (cityCodeList.length > 0)
+        cityCodeList = cityCodeList.substring(0, cityCodeList.length - 1);
+    if (DCidList.length > 0)
+        DCidList = DCidList.substring(0, DCidList.length - 1);
+	if(optype==1&&userid>0){
+		return updateuser(cityCodeList,DCidList);
+	}
+	userid=-1;
+	optype=0;
+	if($("#txtUserName").val()==""){
+		alert("用户名不能为空");
+		return;
+	}
+	if($("#txtLoginName").val()==""){
+		alert("登录名不能为空");
+		return;
+	}
+	if($("#txtPwd").val()==""){
+		alert("密码不能为空");
+		return;
+	}
+	if($("#txtPwd").val()!=$("#txtConfirmPwd").val()){
+		alert("密码和确认密码不一致");
+		return;
+	}
+	var paramaters = {
+			"username" :  $("#txtUserName").val(),
+			"loginname" : $("#txtLoginName").val(),
+			"password":$("#txtPwd").val(),
+			"status":$('input[name="radstatus"]:checked').val(),
+			"cityrelations":cityCodeList,
+			"deliveryrelations":DCidList
+		};
+		var url = "<%=basePath%>/account/adduser";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				if (result>0) {
+					alert("操作成功");
+					window.location.href = window.location.href;
+				} else {
+					alert("操作失败");
+				}
+			}
+		});
+});
 $("#addUser").click(function(){
 	jss.reset();
 });
+function modify(id) {
+	var paramaters = {
+			"userId" :  id
+		};
+		var url = "<%=basePath%>/account/getuserinfo";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+			    userid=id;
+				optype=1;
+				$("#txtUserName").val(result.UserName);
+				$("#txtLoginName").val(result.LoginName);
+				$("#txtPwd").val("");
+				$("#txtConfirmPwd").val("");
+				if(result.Status==1){
+					$("#radyes").prop('checked','checked')
+				}
+				else{
+					$("#radno").prop('checked','checked')
+				}
+				queryauthralation(id);
+		        $('#myModal').modal('show');
+			}
+		});
+
+}
+var oldcityrelations="";
+var olddeliveryrelations="";
+function queryauthralation(accountId) {
+    //每次加载数据前先清除
+    oldcityrelations="";
+    olddeliveryrelations="";
+    $("input[name='checkDeliveryCompany']").each(function() {
+        $(this).prop("checked", false);
+    });
+    $("input[name='checkMenus']").each(function() {
+        $(this).prop("checked", false);
+    });
+    var paramaters = { "userId": accountId };
+    var strCityNameList = "";
+    var url = "<%=basePath%>/account/getauthoritycityrelations";
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: url,
+        data: paramaters,
+        success: function (result) {
+        	var authlength=$("input[name='checkMenus']").length;
+        	for (var i = 0; i < result.length; i++) {
+        		if(i==0){
+        			oldcityrelations=result[i];
+        		}else{
+        			oldcityrelations=oldcityrelations+","+result[i];
+        		}
+        		if(result.length!=authlength){
+                 	$("#chkcity" + result[i]).prop("checked", true);
+        		}else{
+        			$("#chkcity" + result[i]).prop("checked", false);
+        		}
+            }
+        	if(result.length==authlength||result.length==0){
+        		$("#selAcountType").val("1");
+        		$("#divcity").hide();
+        	}else{
+        		$("#selAcountType").val("2");
+        		$("#divcity").show(500);
+        	}
+        }
+    });
+    url = "<%=basePath%>/account/getauthoritydeliveryrelations";
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: url,
+        data: paramaters,
+        success: function (result) {
+            for (var i = 0; i < result.length; i++) {
+        		if(i==0){
+        			olddeliveryrelations=result[i];
+        		}else{
+        			olddeliveryrelations=olddeliveryrelations+","+result[i];
+        		}
+                $("#chkdc" + result[i]).prop("checked", true);
+            }
+            $("#divdc").show();
+        }
+    });
+};
 //绑定城市事件
-$("#selCity").change(function(){
-	var selCity=$("#selCity").val();
+$("#selAcountType").change(function(){
+	var selCity=$("#selAcountType").val();
 	if(selCity==1) $("#divcity").hide();
 	else $("#divcity").show(500);
 });
@@ -229,6 +438,10 @@ $("input[type='radio'][name='objtype']").change(function() {
 $("#saveauth").click(function() {
 	var typeid=$("input[name='objtype']:checked").val();
 	 if(typeid=="0"){
+		 if("-1"==$("#roleid").val()){
+			 alert("请选择一个角色");
+			 return;
+		 }
 		 if($("#userroleid").val()==$("#roleid").val()){
 			 alert("没有变更，不需要保存");
 			 return;

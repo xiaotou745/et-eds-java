@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.edaisong.api.dao.inter.IAccountCityRelationDao;
 import com.edaisong.api.service.inter.IAccountCityRelationService;
+import com.edaisong.entity.AccountCityRelation;
 
 @Service
 public class AccountCityRelationService implements IAccountCityRelationService {
@@ -20,7 +21,11 @@ public class AccountCityRelationService implements IAccountCityRelationService {
 		 * @return
 		 */
 	@Override
-	  public  List<String>  getAuthorityCitys(int userId){
+	  public  List<Integer>  getAuthorityCitys(int userId){
 			return accountCityRelationDao.getAuthorityCitys(userId);
 	  }
+	@Override
+	public int modifyAuthList(List<AccountCityRelation> recordList) {
+		return accountCityRelationDao.modifyAuthList(recordList);
+	}
 }
