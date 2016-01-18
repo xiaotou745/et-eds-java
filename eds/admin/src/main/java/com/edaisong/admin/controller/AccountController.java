@@ -1,8 +1,12 @@
 package com.edaisong.admin.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -14,12 +18,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.LoginUtil;
 import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.common.LoginHelper;
 import com.edaisong.api.redis.RedisService;
+import com.edaisong.api.service.inter.IAccountCityRelationService;
+import com.edaisong.api.service.inter.IAccountDeliveryRelationService;
 import com.edaisong.api.service.inter.IAccountLoginLogService;
 import com.edaisong.api.service.inter.IAccountService;
 import com.edaisong.api.service.inter.IAuthorityAccountMenuSetService;
@@ -28,6 +35,7 @@ import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.security.AES;
+import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.IPUtil;
 import com.edaisong.core.util.JsonUtil;
@@ -35,13 +43,17 @@ import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.Account;
+import com.edaisong.entity.AccountCityRelation;
+import com.edaisong.entity.AccountDeliveryRelation;
 import com.edaisong.entity.AccountLog;
+import com.edaisong.entity.AuthorityAccountMenuSet;
 import com.edaisong.entity.AuthorityRole;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.SimpleUserInfoModel;
 import com.edaisong.entity.req.PagedAccountReq;
+import com.edaisong.entity.req.UpdatePwdReq;
 
 
 //import java.util.function.Predicate;
@@ -62,6 +74,10 @@ public class AccountController {
 	private IAuthorityAccountMenuSetService authorityAccountMenuSetService;
 	@Autowired
 	private IAuthorityRoleService authorityRoleService;
+	@Autowired
+	private IAccountDeliveryRelationService accountDeliveryRelationService;
+	@Autowired
+	private IAccountCityRelationService accountCityRelationService;
 	@RequestMapping("list")
 	public ModelAndView list() {
 		ModelAndView view = new ModelAndView("adminView");
@@ -93,7 +109,142 @@ public class AccountController {
 		ModelAndView mv = new ModelAndView("account/code");
 		return mv;
 	}
-	
+	@RequestMapping("adduser")
+	@ResponseBody
+	public int addUser(HttpServletRequest request,Account account,
+			String cityrelations,String deliveryrelations) {
+		if (account==null||
+				account.getLoginname()==null||
+				account.getLoginname().isEmpty()||
+				account.getUsername()==null||
+				account.getUsername().isEmpty()
+				) {
+			return -1;
+		}
+		UserContext context = UserContext.getCurrentContext(request);
+		account.setAccounttype(0);
+		account.setRoleid(0);
+		account.setLcuser(context.getUserName());
+		account.setFauser(context.getUserName());
+		String password = MD5Util.MD5(account.getPassword());
+		account.setPassword(password);
+		int result= accountService.insert(account);
+		if (result>0) {
+			saveCityAndDeliveryRelations(request, account, "", cityrelations,"", deliveryrelations);
+		}
+		return result;
+	}
+	private Map<String,List<String>> getUpdateRelation(String oldIDs,String newIDs){
+		List<String> newList = new ArrayList<>();
+		List<String> oldList = new ArrayList<>();
+		List<String> diffList = new ArrayList<>();
+		if (newIDs != null && !newIDs.isEmpty()) {
+			Collections.addAll(newList, newIDs.split(","));
+			Collections.addAll(diffList, newIDs.split(","));
+		}
+		if (oldIDs != null && !oldIDs.isEmpty()) {
+			Collections.addAll(oldList, oldIDs.split(","));
+		}
+
+		diffList.removeAll(oldList);// diffList中剩余的是新增的id
+		oldList.removeAll(newList);// oldList中剩余的是被删掉的id
+		Map<String,List<String>> result=new HashMap<String, List<String>>();
+		result.put("add", diffList);
+		result.put("del", oldList);
+		//diffList.addAll(oldList);// diffList中剩余的是发生了变更的id
+		return result;
+	}
+	private void saveCityAndDeliveryRelations(HttpServletRequest request,Account account,
+			String oldcityrelations,String newcityrelations,
+			String olddeliveryrelations,String newdeliveryrelations){
+		UserContext context = UserContext.getCurrentContext(request);
+		Map<String,List<String>> changeCityList=getUpdateRelation(oldcityrelations,newcityrelations);
+		if (changeCityList.size()>0) {
+			List<AccountCityRelation> authCityList = new ArrayList<>();
+			for (String cityid : changeCityList.get("add")) {
+				AccountCityRelation authset = new AccountCityRelation();
+				authset.setAccountid(account.getId());
+				authset.setCityid(Integer.parseInt(cityid));
+				authset.setUpdateby(context.getUserName());
+				authset.setCreateby(context.getUserName());
+				authset.setIsenable((short)1);
+				authCityList.add(authset);
+			}
+			for (String cityid : changeCityList.get("del")) {
+				AccountCityRelation authset = new AccountCityRelation();
+				authset.setAccountid(account.getId());
+				authset.setCityid(Integer.parseInt(cityid));
+				authset.setUpdateby(context.getUserName());
+				authset.setCreateby(context.getUserName());
+				authset.setIsenable((short)0);
+				authCityList.add(authset);
+			}
+			accountCityRelationService.modifyAuthList(authCityList);
+		}
+		Map<String,List<String>> changeDeliveryList=getUpdateRelation(olddeliveryrelations,newdeliveryrelations);
+		if (changeDeliveryList.size()>0) {
+			List<AccountDeliveryRelation> authDeliveryList = new ArrayList<>();
+			for (String deliveryid : changeDeliveryList.get("add")) {
+				AccountDeliveryRelation authset = new AccountDeliveryRelation();
+				authset.setAccountid(account.getId());
+				authset.setDeliverycompanyid(Integer.parseInt(deliveryid));
+				authset.setCreateby(context.getUserName());
+				authset.setIsenable(1);
+				authDeliveryList.add(authset);
+			}
+			for (String deliveryid : changeDeliveryList.get("del")) {
+				AccountDeliveryRelation authset = new AccountDeliveryRelation();
+				authset.setAccountid(account.getId());
+				authset.setDeliverycompanyid(Integer.parseInt(deliveryid));
+				authset.setCreateby(context.getUserName());
+				authset.setIsenable(0);
+				authDeliveryList.add(authset);
+			}
+			accountDeliveryRelationService.modifyAuthList(authDeliveryList);
+		}
+	}
+	@RequestMapping("updateuser")
+	@ResponseBody
+	public int updateUser(HttpServletRequest request,Account account,
+			String oldcityrelations,String newcityrelations,
+			String olddeliveryrelations,String newdeliveryrelations) {
+		if (account==null||
+				account.getLoginname()==null||
+				account.getLoginname().isEmpty()||
+				account.getUsername()==null||
+				account.getUsername().isEmpty()
+				) {
+			return -1;
+		}
+		if (account.getPassword()!=null&&!account.getPassword().isEmpty()) {
+			String password = MD5Util.MD5(account.getPassword());
+			account.setPassword(password);
+		}
+		UserContext context = UserContext.getCurrentContext(request);
+		account.setLcuser(context.getUserName());
+		int result= accountService.update(account);
+		if (result>0) {
+			saveCityAndDeliveryRelations(request, account, oldcityrelations,
+					newcityrelations, olddeliveryrelations,
+					newdeliveryrelations);
+		}
+		return result;
+	}
+	@RequestMapping("getauthoritycityrelations")
+	@ResponseBody
+	public List<Integer> getAuthorityCityRelations(HttpServletRequest request,int userId) {
+		return accountCityRelationService.getAuthorityCitys(userId);
+	}
+	@RequestMapping("getauthoritydeliveryrelations")
+	@ResponseBody
+	public List<Integer> getAuthorityDeliveryRelations(HttpServletRequest request,int userId) {
+		return accountDeliveryRelationService.getAuthorityCitys(userId);
+	}
+	@RequestMapping("getuserinfo")
+	@ResponseBody
+	public Account getUserInfo(HttpServletRequest request,int userId) {
+		return accountService.getByID(userId);
+	}
 	@RequestMapping(value = "login", method = { RequestMethod.POST })
 	public void login(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String username, @RequestParam String password, @RequestParam String code,
@@ -182,5 +333,20 @@ public class AccountController {
 		}else {
 			response.sendRedirect(PropertyUtils.getProperty("java.admin.url") + "/");
 		}
+	}
+	@RequestMapping(value = "changepwd")
+	public ModelAndView changePwd(){
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "管理员");
+		view.addObject("currenttitle", "修改密码");
+		view.addObject("viewPath", "account/changepwd");
+		return view;
+	}
+	@RequestMapping(value = "updatepwd")
+	@ResponseBody
+	public int updatePwd(HttpServletRequest request, UpdatePwdReq req){
+		UserContext context = UserContext.getCurrentContext(request);
+		req.setUserId(context.getId());
+		return accountService.updatePwd(req);
 	}
 }

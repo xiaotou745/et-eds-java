@@ -44,8 +44,3 @@
 <%=PageHelper.getPage(data.getPageSize(),
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
-<script type="text/javascript">				
-    function modify(id) {
-        $('#myModal').modal('show');
-    }
-    </script>

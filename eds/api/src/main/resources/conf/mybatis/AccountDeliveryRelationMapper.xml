@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.IAccountDeliveryRelationDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.AccountDeliveryRelation" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="AccountId" property="accountid" jdbcType="INTEGER" />
+    <result column="DeliveryCompanyID" property="deliverycompanyid" jdbcType="INTEGER" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="CreateBy" property="createby" jdbcType="NVARCHAR" />
+    <result column="IsEnable" property="isenable" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, AccountId, DeliveryCompanyID, CreateTime, CreateBy, IsEnable
+  </sql>
+  <update id="modifyAuthList" parameterType="java.util.List">
+	 <foreach collection="list" index="index" item="item">    
+IF EXISTS ( SELECT  1
+            FROM    AccountDeliveryRelation with(nolock)
+            WHERE   accountid = #{item.accountid,jdbcType=INTEGER} 
+                    AND deliverycompanyid = #{item.deliverycompanyid,jdbcType=INTEGER})
+    BEGIN
+        update  AccountDeliveryRelation
+        set IsEnable=#{item.isenable,jdbcType=INTEGER} ,CreateBy=#{item.createby,jdbcType=NVARCHAR} 
+        WHERE   accountid = #{item.accountid,jdbcType=INTEGER}
+                AND deliverycompanyid = #{item.deliverycompanyid,jdbcType=INTEGER}
+    END
+ELSE
+    INSERT  INTO AccountDeliveryRelation
+            ( accountid, DeliveryCompanyID,CreateBy) 
+    VALUES  ( #{item.accountid,jdbcType=INTEGER}, #{item.deliverycompanyid,jdbcType=INTEGER},
+    #{item.createby,jdbcType=NVARCHAR})
+     </foreach>
+	</update>
+  <!-- 获取后台用户可查看的城市集合  add by zhaohl  20160115-->
+   <select id="getAuthorityCitys" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+SELECT DeliveryCompanyID FROM AccountDeliveryRelation (nolock)
+WHERE AccountId=#{userId} AND IsEnable=1
+  </select>
+</mapper>

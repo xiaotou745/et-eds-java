@@ -78,7 +78,7 @@ public class ClienterController {
 		List<DeliveryCompany> dCListData=deliveryCompanyService.getDeliveryCompanyList();	
 		
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "管理员");
+		model.addObject("subtitle", "骑士管理");
 		model.addObject("currenttitle", "骑士管理");
 		model.addObject("areaListData", areaListData);
 		model.addObject("dCListData", dCListData);

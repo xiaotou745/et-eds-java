@@ -40,11 +40,11 @@
 					</span>
 					</a>
 					<ul class="dropdown-menu animated fadeInRight m-t-xs">
-						<li><a href="<%=adminUrl %>/Account/ChangePassword">设置</a></li>
+						<li><a href="<%=basePath%>/account/changepwd">修改密码</a></li>
 <!-- 						<li><a href="contacts.html">联系方式</a></li> -->
 <!-- 						<li><a href="mailbox.html">消息</a></li> -->
 						<li class="divider"></li>
-						<li><a href="<%=basePath %>/account/logoff">注销</a></li>
+						<li><a href="<%=basePath%>/account/logoff">注销</a></li>
 					</ul>
 				</div>
 				<div class="logo-element">IN+</div>

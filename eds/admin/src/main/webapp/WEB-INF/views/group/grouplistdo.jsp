@@ -1,4 +1,5 @@
 
+<%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@page import="java.util.List"%>         
@@ -32,24 +33,11 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			 <tr>
 				<td><%=data.get(i).getId() %></td>
 				<td><%=data.get(i).getGroupname() %></td>
-				<td><%=data.get(i).getCreatetime() %></td>
-				<td><%=data.get(i).getCreatetime() %></td>	
+				<td><%=ParseHelper.ToDateString(data.get(i).getCreatetime()) %></td>
+				<td><%=ParseHelper.ToDateString(data.get(i).getCreatetime()) %></td>	
 				<td><%=data.get(i).getIsvalid() %></td>
 				<td><%=data.get(i).getIsvalid() %></td>
 				<td><%=data.get(i).getIsvalid() %></td>					
-	
-				<%--<%
-				if(data.get(i).getIsvalid()==1)
-				%>		
-				<td ><a href="javascript:void(0);">启用</a></td>
-				<%
-				else
-				%>
-				<td ><a href="javascript:void(0);">未启用</a></td>
-				 
-				<td><%=data.get(i).getCreatetime() %></td>
-					
-				--%>			
 				<td><%=data.get(i).getIsvalid() %></td>	
 				<td>
 				<a href="javascript:void(0)" onclick="funcGShowView('<%=data.get(i).getId() %>','<%=data.get(i).getGroupname() %>')">修改</a>

@@ -67,13 +67,14 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 				.update("IClienterDao.updateMoneyById",
 						paramMap);
 	}	
-	
+	/**
+	 * 
+	 * 骑士分页列表
+	 */
 	@Override
 	public PagedResponse<ClienterModel> query(PagedClienterReq req) {
 		PagedResponse<ClienterModel> model = getReadOnlySqlSessionUtil()
-				.selectPageList(
-						"IClienterDao.query",
-						req);
+				.selectPageList("IClienterDao.query",req);
 		return model;	
 	}
 
