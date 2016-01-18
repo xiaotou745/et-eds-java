@@ -9,6 +9,7 @@ import java.util.Map;
 
 
 
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -100,5 +101,17 @@ public class GroupDao extends DaoBase implements IGroupDao {
 	 */
    public	 PagedResponse<GroupApiConfigModel>  getGroupListByPage(PagedGroupReq req){
 	   return getReadOnlySqlSessionUtil().selectPageList("IGroupDao.getGroupListByPage", req);
+   }
+   
+    /**
+	 * 更新集团状态
+	 * 
+	 * @author CaoHeYang
+	 * @date 20160118
+	 * @param group
+	 * @return
+	 */
+   public Integer updateGroupStatus(Group group){
+		return getMasterSqlSessionUtil().update("IGroupDao.updateGroupStatus",group);
    }
 }

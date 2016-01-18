@@ -29,4 +29,13 @@ public interface IGroupService {
 	 * @return
 	 */
 	public PagedResponse<GroupApiConfigModel>  getGroupListByPage(PagedGroupReq req); 
+	
+	/**
+	 * 更新集团状态
+	 * @author CaoHeYang
+	 * @date 20160118
+	 * @param group
+	 * @return
+	 */
+	public   Boolean  updateGroupStatus(Group group);
 }

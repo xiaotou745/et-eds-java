@@ -153,7 +153,7 @@
     where Id = #{id,jdbcType=BIGINT}
   </update>
   
-  <!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展 CaoHeYang 20150804 -->
+  <!-- 第三方集团列表 caoheyang 20160118 -->
 	<select id="getGroupListByPage" resultType="com.edaisong.entity.domain.GroupApiConfigModel" 
 		parameterType="com.edaisong.entity.req.PagedGroupReq" statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
@@ -173,6 +173,7 @@
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>	
+	 <!-- 查询条件 -->
      <sql id="getGroupListByPageWhere">
 		1=1
 		<if test="groupName != null and  groupName!='' ">
@@ -182,4 +183,8 @@
 	     	and appKey= ''${appKey}''
 		</if>
 	</sql>
+	<!-- 修改集团api状态信息 caoheyang 20160118 -->
+	<update id="updateGroupStatus" parameterType="com.edaisong.entity.Group" >
+	update [group] set IsValid=#{isvalid} where id=#{id}
+	</update>
 </mapper>
