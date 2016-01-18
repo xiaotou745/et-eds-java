@@ -8,13 +8,17 @@ import java.util.Map;
 
 
 
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IGroupDao;
 import com.edaisong.entity.Group;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.GroupApiConfigModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
+import com.edaisong.entity.req.PagedGroupReq;
 
 @Repository
 public class GroupDao extends DaoBase implements IGroupDao {
@@ -26,19 +30,6 @@ public class GroupDao extends DaoBase implements IGroupDao {
 
 	 @Override
 	public int insert(Group record) {
-//		Map<String, Object> paramMap = new HashMap<>();
-//		paramMap.put("groupname", record.getGroupname());
-//		paramMap.put("createname", record.getCreatename());
-//		paramMap.put("createtime", new Date());
-//		paramMap.put("modifyname", "");
-//		paramMap.put("modifytime", new Date());
-//		paramMap.put("isvalid", 1);
-//		paramMap.put("ismodifybind", 0);
-//
-//		return getMasterSqlSessionUtil().insert(
-//				"IGroupDao.insert", record);
-		 
-
 			return getMasterSqlSessionUtil().insert(
 					"IGroupDao.insert", record);
 	}
@@ -99,4 +90,15 @@ public class GroupDao extends DaoBase implements IGroupDao {
 		return list;
 	}
 
+	
+	/**
+	 * 查询第三方集团 
+	 * @author CaoHeYang
+	 * @param req
+	 * @date 20160118
+	 * @return
+	 */
+   public	 PagedResponse<GroupApiConfigModel>  getGroupListByPage(PagedGroupReq req){
+	   return getReadOnlySqlSessionUtil().selectPageList("IGroupDao.getGroupListByPage", req);
+   }
 }

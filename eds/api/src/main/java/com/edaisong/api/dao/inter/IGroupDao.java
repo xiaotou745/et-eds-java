@@ -3,8 +3,11 @@ package com.edaisong.api.dao.inter;
 import java.util.List;
 
 import com.edaisong.entity.Group;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.GroupApiConfigModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
+import com.edaisong.entity.req.PagedGroupReq;
 
 public interface IGroupDao {
     int deleteByPrimaryKey(Long id);
@@ -22,4 +25,13 @@ public interface IGroupDao {
     List<GroupModel> getGroupListByID(Long id);
     
     List<GroupModel> getGroupList(GroupReq req);
+    
+	/**
+	 * 查询第三方集团 
+	 * @author CaoHeYang
+	 * @param req
+	 * @date 20160118
+	 * @return
+	 */
+	 PagedResponse<GroupApiConfigModel>  getGroupListByPage(PagedGroupReq req); 
 }
