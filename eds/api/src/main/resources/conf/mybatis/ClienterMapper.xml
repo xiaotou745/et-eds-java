@@ -66,9 +66,13 @@
 		<if test="code != null and code>0">
 			and c.CityId=${code}
 		</if>
+		<if test="markId > 0" >
+			and TagR.TagId = ${markId}
+		</if>
 	</sql>
 
 	<sql id="queryTables">
+		<if test="markId == -1" >
 		dbo.clienter c with(nolock)
 		left join dbo.[Group] g
 		with(nolock) on c.GroupId=g.id
@@ -76,6 +80,19 @@
 		with(nolock) on c.DeliveryCompanyId=dc.id
 		left join dbo.clienter cl
 		with(nolock) on c.recommendPhone=cl.PhoneNo
+		</if>
+		
+		<if test="markId != -1" >
+		TagRelation TagR WITH (NOLOCK) 
+	    join dbo.clienter c with(nolock) on TagR.UserId=C.id and TagR.UserType=1 and IsEnable=1
+		left join dbo.[Group] g
+		with(nolock) on c.GroupId=g.id
+		left join dbo.DeliveryCompany dc
+		with(nolock) on c.DeliveryCompanyId=dc.id
+		left join dbo.clienter cl
+		with(nolock) on c.recommendPhone=cl.PhoneNo
+		</if>
+		
 	</sql>
 <!-- 骑士分页列表 -->
 	<select id="query" resultType="com.edaisong.entity.domain.ClienterModel"

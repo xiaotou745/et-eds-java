@@ -36,13 +36,20 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 		 for (int i = 0; i < data.size(); i++) {
 			 %>  
 			 <tr>
-				<td><%=data.get(i).getGroupId() %></td>
+				<td><%=data.get(i).getGroupId()%></td>
 				<td><%=data.get(i).getGroupName() %></td>
 				<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime()) %></td>
 				<td><%=ParseHelper.ShowString(data.get(i).getAppKey()) %></td>	
 				<td><%=ParseHelper.ShowString(data.get(i).getAppSecret()) %></td>
 				<td><%=ParseHelper.ShowString(data.get(i).getAppVersion()) %></td>
-				<td><%=data.get(i).getIsValid() %></td>					
+				 <%if (data.get(i).getIsValid() == 1)
+                    { %>
+                        <td width="5%"><a href="javascript:void(0);"  onclick="SetGourpStatus(<%=data.get(i).getGroupId()%>,0)">启用</a></td>
+                   <% }
+                    else
+                    {%>
+                        <td width="5%"><a href="javascript:void(0);" onclick="SetGourpStatus(<%=data.get(i).getGroupId()%>,1)">禁用</a></td>
+                   <% } %>           			
 				<td><%=data.get(i).getCreateName() %></td>	
 				<td>
 				<a href="javascript:void(0)" onclick="funcGShowView('<%=data.get(i).getId() %>','<%=data.get(i).getGroupName() %>')">修改</a>
@@ -62,6 +69,36 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
     	   $("#hiduGroupID").val(gid);
            $('#txtuGroupName').val(gname);
            adminjs.openwinbox('#GroupUpdateDivShow');
+    }
+    
+    //修改第三方集团启用状态
+    function SetGourpStatus(id, status) {
+        if (confirm("确定要更新此状态吗？")) {
+            var pars = { "id": id, "isvalid": status };
+            console.log(pars)
+            var url = "<%=basePath%>/group/updatestatus";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: pars,
+                success: function(result) {
+                	console.log(result)
+                	if (result.responseCode==0) {		
+						layer.alert("设置成功", {
+						    icon: 1
+						},function(){
+							window.location.reload();
+						});
+					}else
+					{
+						layer.alert(result.message, {
+						    icon: 2
+				    	});
+					}
+                }
+        });
+        }
+        return false;
     }
     </script>
 	

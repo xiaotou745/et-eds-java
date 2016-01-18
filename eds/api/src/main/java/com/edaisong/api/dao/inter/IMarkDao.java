@@ -53,5 +53,12 @@ public interface IMarkDao {
 		  * @return
 		  */
 		 int modifyBusinessTags(TagRelationModel model);
+		 
+		/**
+		 * 通过类型获取标签
+		 * @param type
+		 * @return
+		 */
+		 List<Mark> getMarksListByType(int type);
 
 }

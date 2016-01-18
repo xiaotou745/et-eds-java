@@ -79,5 +79,9 @@ public class MarkService implements IMarkService {
 	public List<Mark> getBusMarksList(int userId) {
 		return markDao.getBusMarksList( userId);
 	}
+	@Override
+	public List<Mark> getMarksListByType(int type) {
+		return markDao.getMarksListByType(type);
+	}
 
 }
