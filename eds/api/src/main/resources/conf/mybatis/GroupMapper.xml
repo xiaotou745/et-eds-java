@@ -152,4 +152,34 @@
       IsModifyBind = #{ismodifybind,jdbcType=INTEGER}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <!-- 自身的字段作为查询条件 查询order 的基础数据 可扩展 CaoHeYang 20150804 -->
+	<select id="getGroupListByPage" resultType="com.edaisong.entity.domain.GroupApiConfigModel" 
+		parameterType="com.edaisong.entity.req.PagedGroupReq" statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' g.Id ',
+		'g.id as GroupId,g.GroupName,g.CreateName,g.CreateTime,g.IsValid,isnull(gc.AppKey,'''') AppKey,isnull(gc.AppSecret,'''') AppSecret,isnull(gc.AppVersion,'''') AppVersion  
+		',
+		'
+		[group] g with(nolock) left join GroupApiConfig gc with(nolock) on g.Id = gc.GroupId
+		',
+		'
+		<include refid="getGroupListByPageWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>	
+     <sql id="getGroupListByPageWhere">
+		1=1
+		<if test="groupName != null and  groupName!='' ">
+		and GroupName= ''${groupName}''
+		</if>
+		<if test="appKey != null and  appKey!='' ">
+	     	and appKey= ''${appKey}''
+		</if>
+	</sql>
 </mapper>

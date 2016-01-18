@@ -17,8 +17,11 @@ import com.edaisong.api.service.inter.IGroupApiConfigService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.GroupApiConfig;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.GroupApiConfigModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
+import com.edaisong.entity.req.PagedGroupReq;
 
 
 @Controller
@@ -38,31 +41,26 @@ public class GroupController {
 	  * @return
 	  */
 	@RequestMapping("list")
-	public ModelAndView list(HttpServletRequest request, HttpServletResponse response){
+	public ModelAndView list(){
 		GroupReq req=new GroupReq();	
-		List<GroupModel> resultList =groupService.getGroupList(req);		
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "第三方平台管理");
-		model.addObject("listData", resultList);
 		model.addObject("viewPath", "group/list");
 		return model;		
 	}
 	
+	/**
+	 * 查询第三方集团  异步
+	 * @author CaoHeYang
+	 * @date 20160118
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("selectlist")
 	@ResponseBody
-	public ModelAndView selectlist(HttpServletRequest request, HttpServletResponse response){
-		String groupName=request.getParameter("groupname");
-		String appkey=request.getParameter("appkey");
-		GroupReq req=new GroupReq();	
-		if(groupName!=null && groupName!="")
-		{
-			req.setGroupName(groupName);		
-		}
-		if(appkey!=null && appkey!=""){
-			req.setAppKey(appkey);	
-		}
-		List<GroupModel> resultList =groupService.getGroupList(req);				
+	public ModelAndView selectlist(PagedGroupReq req){
+		PagedResponse<GroupApiConfigModel> resultList =groupService.getGroupListByPage(req);				
 		ModelAndView model = new ModelAndView("group/grouplistdo");
 		model.addObject("listData", resultList);
 		return model;		
