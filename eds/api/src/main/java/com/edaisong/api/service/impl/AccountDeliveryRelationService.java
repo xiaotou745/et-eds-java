@@ -14,9 +14,24 @@ public class AccountDeliveryRelationService implements IAccountDeliveryRelationS
 
 	@Autowired
 	private IAccountDeliveryRelationDao accountDeliveryRelationDao;
+	/**
+	 * 批量执行insert
+	 */
 	@Override
 	public int modifyAuthList(List<AccountDeliveryRelation> recordList) {
-return accountDeliveryRelationDao.modifyAuthList(recordList);
+		int batch = 50;
+		int result = 0;
+		int num = recordList.size() / batch;
+		int fix = recordList.size() % batch;
+		for (int i = 0; i < num; i++) {
+			List<AccountDeliveryRelation> sublist = recordList.subList(batch* i, batch * (i + 1));
+			result += accountDeliveryRelationDao.modifyAuthList(sublist);
+		}
+		if (fix > 0) {
+			List<AccountDeliveryRelation> sublist = recordList.subList(recordList.size() - fix, recordList.size());
+			result += accountDeliveryRelationDao.modifyAuthList(sublist);
+		}
+		return result;
 	}
 
 	@Override
