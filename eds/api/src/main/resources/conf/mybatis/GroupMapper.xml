@@ -187,4 +187,20 @@
 	<update id="updateGroupStatus" parameterType="com.edaisong.entity.Group" >
 	update [group] set IsValid=#{isvalid} where id=#{id}
 	</update>
+	
+	<!-- 判断集团是否已经存在  caoheyang 20160118-->
+	<select id="hasExistsGroup" resultType="java.lang.Integer"   parameterType="com.edaisong.entity.Group" >
+	select 1 from [group] with(nolock) where  GroupName=#{groupname}
+	</select>
+  
+    <!-- 创建集团  caoheyang 20160118-->
+	<insert id="addGroup" parameterType="com.edaisong.entity.Group" >
+    insert into dbo.[group] (GroupName, CreateName, 
+      CreateTime, ModifyName, ModifyTime, 
+      IsValid)
+    values (
+      #{groupname,jdbcType=NVARCHAR}, #{createname,jdbcType=NVARCHAR}, 
+      getdate(), #{createname,jdbcType=NVARCHAR}, getdate(), 
+      #{isvalid,jdbcType=TINYINT});select @@IDENTITY
+  </insert>
 </mapper>

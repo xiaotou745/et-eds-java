@@ -38,4 +38,23 @@ public interface IGroupService {
 	 * @return
 	 */
 	public   Boolean  updateGroupStatus(Group group);
+	
+	
+	/**
+	 * 判断集团是否已经存在
+	 * @author CaoHeYang
+	 * @date 20160118
+	 * @param req
+	 * @return
+	 */
+	public Boolean hasExistsGroup(Group req) ;
+	
+	/**
+	 * 创建集团
+	 *  @date 20160118
+	 *  @author CaoHeYang
+	 * @param record
+	 * @return
+	 */
+	public int  addGroup(Group record) ;
 }

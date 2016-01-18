@@ -10,10 +10,13 @@ import java.util.Map;
 
 
 
+
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IGroupDao;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GroupApiConfigModel;
@@ -114,4 +117,26 @@ public class GroupDao extends DaoBase implements IGroupDao {
    public Integer updateGroupStatus(Group group){
 		return getMasterSqlSessionUtil().update("IGroupDao.updateGroupStatus",group);
    }
+   
+	/**
+	 * 判断集团是否已经存在
+	 * @author CaoHeYang
+	 * @date 20160118
+	 * @param req
+	 * @return
+	 */
+	public Integer hasExistsGroup(Group req) {
+		return  ParseHelper.ToInt(getReadOnlySqlSessionUtil().selectOne("IGroupDao.hasExistsGroup",req), -1) ;
+	}
+	
+	/**
+	 * 创建集团
+	 *  @date 20160118
+	 *  @author CaoHeYang
+	 * @param record
+	 * @return
+	 */
+	public int  addGroup(Group record) {
+		return getMasterSqlSessionUtil().insert("IGroupDao.addGroup", record);
+	}
 }
