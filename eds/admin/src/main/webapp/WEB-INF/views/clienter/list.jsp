@@ -7,6 +7,8 @@
 <%@page import="com.edaisong.entity.DeliveryCompany"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
+<%@page import="com.edaisong.core.enums.ClienterStatusEnum"%>
+<%@page import="com.edaisong.core.util.EnumHelper"%>
 
 <%
 String basePath =PropertyUtils.getProperty("java.admin.url");
@@ -14,47 +16,88 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 	List<DeliveryCompany> dCListData=	(List<DeliveryCompany>)request.getAttribute("dCListData");
 %>
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">骑士名称:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" name="txtClienterName"  id="txtClienterName" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">审核状态:</label>
+							<div class="col-sm-8">
+								<%=HtmlHelper.getSelect("status", EnumHelper.GetEnumItems(ClienterStatusEnum.class), "desc", "value",null,"-1","全部") %>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">骑士电话:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" name="txtSuperManPhone"  id="txtSuperManPhone"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">推荐人:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" name="recommonPhone"  id="recommonPhone"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">筛选城市:</label>
+							<div class="col-sm-8">
+							 <%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "code") %>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">物流公司:</label>
+							<div class="col-sm-8">
+                               <%=HtmlHelper.getSelect("deliveryCompanyId", dCListData, "deliverycompanyname", "id") %> 
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">标签:</label>
+							<div class="col-sm-8">
+						
+                                        <input type="text" class="form-control" value="" name="OrderPubEnd"  id="txtOrderPubEnd"/>
+   							</div>
+						</div>
+					</div>
 
-
-   <table border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                 <span class="">骑士名称: </span>
-                 <input id="txtClienterName" type="text" name="txtClienterName" />
-                  <span class="">审核状态: </span>
-                        <select name="status"  class="form-control m-b" id="superManStatus">
-                            <option value="-1">全部</option>
-                            <option value="1">审核通过</option>
-                            <option value="0">被拒绝</option>
-                            <option value="2">未审核</option>
-                            <option value="3">审核中</option>
-                        </select>
-                        <span class="">骑士电话: </span>
-                        <input id="txtClienterPhone" type="text" name="txtClienterPhone" value="" />
-                        <span class="">推荐人手机: </span>
-                        <input id="txtRecommonPhone" type="text" name="txtRecommonPhone" value="" />
-                                
-                </td>
-            </tr>
-            <tr>
-            <td>
-               <span class="">筛选城市: </span>
-               		  <%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "code") %>
-               	                     
-              <span class="">物流公司: </span>
-              <%=HtmlHelper.getSelect("deliveryCompanyId", dCListData, "deliverycompanyname", "id") %>            
-      
-             <input type="submit" value="查询" class="searchBtn" id="btnSearch" />
-            </td>
-            </tr>
-        </table>  
-        
+				</div>
+					
+			    <div class="row">
+						<div class="col-lg-3">
+						<button type="button" class="btn btn-w-m btn-primary" id="btnSearch" style="margin-left: 3px;height:30px;">查询</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 内容列表 --> 
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox-content" id="content"></div>
 		</div>
 	</div>
-   
-   
+   <!-- 内容列表 --> 
+</div>
+   <!-- 弹窗 --> 
    <div tabindex="-1" class="modal inmodal" id="ClienterRechargeShow"
 	role="dialog" aria-hidden="true" style="display: none;">		
 	<div class="modal-dialog">
@@ -99,21 +142,19 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 		<small class="font-bold"> </small>
 	</div>
 	<small class="font-bold"> </small>
-
 </div>
-
+<!-- 弹窗 --> 
 	<script>		
 	var jss={
 			search:function(currentPage){	
-
                  var trueName = $("#txtClienterName").val();
-                 var phoneNo = $("#txtClienterPhone").val();
-                 var recommendPhone = $("#txtRecommonPhone").val(); 
-                 var status=$("#superManStatus").val();           
+                 var phoneNo = $("#txtSuperManPhone").val();
+                 var recommendPhone = $("#recommonPhone").val(); 
+                 var status=$("#status").val();           
                  var code=$("#businessCityId").val();       
                  var deliveryCompanyId=$("#deliveryCompanyId").val();   
                  if (code==null || code=="")
-                	 {
+                 {
                 	  code=-1;             
                 	 }
                  if (deliveryCompanyId==null || deliveryCompanyId=="")
