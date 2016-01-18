@@ -49,7 +49,9 @@ public class ClienterService implements IClienterService {
 	public int modifyMoneyById(ClienterOptionReq record) {
 		return clienterDao.updateMoneyById(record);
 	}
-
+	/**
+	 * 骑士管理异步列表
+	 */
 	@Override
 	public PagedResponse<ClienterModel> query(PagedClienterReq req) {
 		return clienterDao.query(req);
