@@ -15,6 +15,13 @@ public class PagedClienterReq extends PagedRequestBase{
 	private String recommendPhone;
 	private int code;
 	private int deliveryCompanyId ;	
+	private int markId;
+	public int getMarkId() {
+		return markId;
+	}
+	public void setMarkId(int markId) {
+		this.markId = markId;
+	}
 	public String getTrueName() {
 		return trueName;
 	}

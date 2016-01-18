@@ -9,12 +9,14 @@
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
 <%@page import="com.edaisong.core.enums.ClienterStatusEnum"%>
 <%@page import="com.edaisong.core.util.EnumHelper"%>
+<%@page import="com.edaisong.entity.Mark"%>
 
 <%
 String basePath =PropertyUtils.getProperty("java.admin.url");
 	
 	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 	List<DeliveryCompany> dCListData=	(List<DeliveryCompany>)request.getAttribute("dCListData");
+	List<Mark> marklist=	(List<Mark>)request.getAttribute("marklistList");
 %>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -74,8 +76,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">标签:</label>
 							<div class="col-sm-8">
-						
-                                        <input type="text" class="form-control" value="" name="OrderPubEnd"  id="txtOrderPubEnd"/>
+						<%=HtmlHelper.getSelect("markId", marklist, "tagName", "id") %>
    							</div>
 						</div>
 					</div>
@@ -98,7 +99,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
    <!-- 内容列表 --> 
 </div>
    <!-- 弹窗 --> 
-   <div tabindex="-1" class="modal inmodal" id="ClienterRechargeShow"
+<div tabindex="-1" class="modal inmodal" id="ClienterRechargeShow"
 	role="dialog" aria-hidden="true" style="display: none;">		
 	<div class="modal-dialog">
 		<div class="modal-content animated bounceInRight">
@@ -144,6 +145,36 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 	<small class="font-bold"> </small>
 </div>
 <!-- 弹窗 --> 
+   <!-- 弹窗 --> 
+<div tabindex="-1" class="modal inmodal" id="PicShow"
+	role="dialog" aria-hidden="true" style="display: none;">		
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">查看图片</h4>				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+			 	<fieldset>
+                <img width="160" height="160" id="showPicHandWithUrl" />
+                <a id="showBigPicHWU" href="" target="_blank">查看大图</a>
+                <img width="160" height="160" id="showPicUrl" />
+                <a id="showBigPicUrl" href="" target="_blank">查看大图</a>
+           		</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>
+</div>
+<!-- 弹窗 --> 
 	<script>		
 	var jss={
 			search:function(currentPage){	
@@ -170,7 +201,8 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 						 "recommendPhone": recommendPhone,
 						 "status": status,
 						 "code": code,
-						 "deliveryCompanyId": deliveryCompanyId		
+						 "deliveryCompanyId": deliveryCompanyId	,
+						 "markId":$('#markId').val()
 						 };        
 			        var url = "<%=basePath%>/clienter/listdo";
 			        $.ajax({
@@ -222,6 +254,14 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
             });
         }
     });
-
+	 //查看图片
+	function ShowPic(PicWithHandUrl,BigPWH,PicUrl,BigPU)
+	{
+			$('#showPicHandWithUrl').attr('src', PicWithHandUrl);
+	        $('#showPicUrl').attr('src', PicUrl);
+	        $('#showBigPicHWU').attr('href',BigPWH);
+	        $('#showBigPicUrl').attr('href',BigPU);
+	        $('#PicShow').modal('show');
+	}
 	</script>		
 	

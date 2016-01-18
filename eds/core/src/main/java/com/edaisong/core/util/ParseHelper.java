@@ -313,4 +313,21 @@ public class ParseHelper {
 		DecimalFormat decimalFormat=new DecimalFormat(aString);//构造方法的字符格式这里如果小数不足2位,会以0补足.
 		return decimalFormat.format(numVaule);
 	}
+	
+	/**
+	 * 
+	 * 获取大图
+	 * @param url
+	 * @return
+	 */
+	public static String getBigPic(String url)
+	{
+		String bigpicurl="";
+		if(url==null||url.equals(""))
+			return "";
+		
+		String filenameString=url.replaceAll("[.][^.]+$", "");//文件名
+		String fileex=url.substring(url.lastIndexOf(".")+1);//文件后最
+		return filenameString+"_0_0."+fileex;
+	}
 }
