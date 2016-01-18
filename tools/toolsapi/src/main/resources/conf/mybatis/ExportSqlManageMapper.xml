@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.toolsapi.dao.inter.IExportSqlManageDao" >
+  <sql id="Base_Column_List" >
+    Id, Name, Executetime, ReceiveEmail, IsEnable,sqltext
+  </sql>
+
+  <select id="update" parameterType="com.edaisong.toolsentity.ExportSqlManage" >
+   update ExportSqlManage
+     <set >
+      <if test="name != null and name!=''" >
+        name = #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="executetime != null and executetime!=''" >
+        executetime = #{executetime,jdbcType=NVARCHAR},
+      </if>
+      <if test="receiveemail != null and receiveemail!=''" >
+        receiveemail = #{receiveemail,jdbcType=NVARCHAR},
+      </if>
+      <if test="isenable != null and isenable!=''" >
+        isenable = #{isenable,jdbcType=SMALLINT},
+      </if>
+      <if test="sqltext != null and sqltext!=''" >
+        sqltext = #{sqltext,jdbcType=SMALLINT},
+      </if>
+    </set>
+	where id=#{id,jdbcType=BIGINT}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from ExportSqlManage where id=#{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.toolsentity.ExportSqlManage" >
+    insert into ExportSqlManage (Name, Executetime, 
+      ReceiveEmail, IsEnable, SqlText
+      )
+    values (#{name,jdbcType=NVARCHAR}, #{executetime,jdbcType=NVARCHAR}, 
+      #{receiveemail,jdbcType=NVARCHAR}, #{isenable,jdbcType=SMALLINT}, #{sqltext,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <sql id="queryWhere">
+		1=1
+		<if test="templetName != null and templetName!=''">
+			and name like ''%${templetName}%''
+		</if>
+	</sql> 
+<select id="query" resultType="com.edaisong.toolsentity.ExportSqlManage" 
+parameterType="com.edaisong.toolsentity.req.PagedExportSqlReq"
+ statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+		' Id desc ',
+		' Id, Name, Executetime, ReceiveEmail, IsEnable,sqltext ',
+		' ExportSqlManage (nolock) ',
+		'
+		<include refid="queryWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)} 
+  </select>
+  </mapper>

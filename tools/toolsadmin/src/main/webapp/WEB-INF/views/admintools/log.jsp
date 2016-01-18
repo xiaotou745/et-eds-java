@@ -181,6 +181,10 @@ List<String> appVersionList = (List<String>)request.getAttribute("appVersionList
 <script>
 $(function(){
 	$("#appversions").val("<%=String.join(";",appVersionList)%>");
+	//列表页radio改变时，自动查询
+	$("input[type='radio']").on("change",function(e){
+		jss.search(1);
+	});
 });
 var jss={
 		search:function(currentPage){

@@ -38,6 +38,11 @@
 <script src="<%=basePath%>/js/layer.js"></script>
 <script>
 $(document).ajaxError( function(event, jqXHR, options, errorMsg){
+	try{
+		$("#btnSearch").attr("disabled",false);
+		$("#tip").html("");
+	}catch(ex){}
+	
   	 var content="内部服务器错误";
    	if(jqXHR.responseText==undefined){
    		content=jqXHR.statusText;
@@ -128,13 +133,6 @@ $(document).ajaxError( function(event, jqXHR, options, errorMsg){
 					jss.search(1);
 				}
 			} catch (e) {
-			}
-		});
-		//列表页radio改变时，自动查询
-		$("input[type='radio']").on("change",function(e){
-			try{
-				jss.search(1);
-			}catch(e){
 			}
 		});
 	});
