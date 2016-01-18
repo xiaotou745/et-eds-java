@@ -77,7 +77,7 @@
 		left join dbo.clienter cl
 		with(nolock) on c.recommendPhone=cl.PhoneNo
 	</sql>
-
+<!-- 骑士分页列表 -->
 	<select id="query" resultType="com.edaisong.entity.domain.ClienterModel"
 		parameterType="com.edaisong.entity.req.PagedClienterReq"
 		statementType="CALLABLE">
