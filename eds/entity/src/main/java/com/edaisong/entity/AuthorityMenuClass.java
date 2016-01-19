@@ -15,7 +15,14 @@ public class AuthorityMenuClass implements Serializable{
 
     private Boolean isbutton;
     private String javaUrl;
+    private String authCode;
+	public String getAuthCode() {
+		return authCode==null?"":authCode;
+	}
 
+	public void setAuthCode(String authCode) {
+		this.authCode = authCode;
+	}
     public Integer getId() {
         return id;
     }
