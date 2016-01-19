@@ -68,6 +68,9 @@ public class UserContext {
 	public String getUserName() {
 		return account.getUserName();
 	}
+	public int getGroupId() {
+		return account.getGroupId();
+	}
 	public static  UserContext getCurrentContext(HttpServletRequest request) {
 		final String cookieKey = LoginUtil.LOGIN_COOKIE_NAME;
 		String cookieValue = CookieUtils.getCookie(request, cookieKey);
