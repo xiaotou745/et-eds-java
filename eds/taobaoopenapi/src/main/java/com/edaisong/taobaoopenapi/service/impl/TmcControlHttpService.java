@@ -58,6 +58,8 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 					orderClose(message.getContent());
 				} else if (message.getTopic().equals(TaoBaoConsts.OuterOrderDispatch)) {
 
+				}else if(message.getTopic().equals(TaoBaoConsts.OrderRemind)){ //催单
+					orderRemind(message.getContent());
 				}
 			}
 		});
@@ -158,7 +160,56 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 	 * @date 20151113
 	 */
 	private void outerOrderDispatch() {
-
+		
 	}
 	
+	/*
+	 * 催单通知消息TMC 
+	 * wangchao
+	 */
+	private void orderRemind(String data){
+		Date requestTime = new Date();
+		try {
+			String resultJson = "";
+			String exceptionMsg = "";
+			String stackTrace = "";
+			String param="";
+			String url="";
+			try {
+				param = AES.aesEncrypt(data);
+				url = PropertyUtils.getProperty("TaoBaoOrderRemind");
+				resultJson = HttpUtil.sendPost(url, "data=" + param);
+			} catch (Exception e) {
+				exceptionMsg = e.getMessage();
+				stackTrace = StringUtils.getStackTrace(e);
+			}
+			//记录调用openapi的日志
+			ActiveMqLogUtil.writeLog(url,"TmcControlHttpService.orderRemind", param, data, resultJson,exceptionMsg, stackTrace, requestTime);
+			if (resultJson != null && !resultJson.isEmpty()) {
+				JSONObject jsonObject = new JSONObject(resultJson);
+				if (jsonObject.getInt("Status") == 1) {
+					String taobaoExceptionMsg = "";
+					String taobaoStackTrace = "";
+					Date taobaoRequestTime = new Date(); 
+					WaimaiOrderAckResponse response = new WaimaiOrderAckResponse();
+					Long deliveryOrderNo = ParseHelper.ToLong(jsonObject.getLong("Result"), 0);
+					try {
+						TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey,TaoBaoConsts.AppSecret);
+						WaimaiOrderAckRequest req = new WaimaiOrderAckRequest();
+						req.setDeliveryOrderNo(deliveryOrderNo);
+						response = client.execute(req, TaoBaoConsts.SessionKey);
+					} catch (Exception e) {
+						taobaoExceptionMsg = e.getMessage();
+						taobaoStackTrace = StringUtils.getStackTrace(e);
+					}
+					//记录调用taobaoapi的日志
+					ActiveMqLogUtil.writeLog(TaoBaoConsts.Uri,"TmcControlHttpService.orderRemind",deliveryOrderNo.toString(),deliveryOrderNo.toString(),JsonUtil.obj2string(response), taobaoExceptionMsg,taobaoStackTrace, taobaoRequestTime);
+				}
+			}
+		} catch (Exception e) {
+			String stackTrace = StringUtils.getStackTrace(e);
+			//记录当前方法的错误日志
+			ActiveMqLogUtil.writeLog("TmcControlHttpService.orderRemind","TmcControlHttpService.orderRemind", data, data, "",e.getMessage(), stackTrace, requestTime);
+		}
+	}
 }

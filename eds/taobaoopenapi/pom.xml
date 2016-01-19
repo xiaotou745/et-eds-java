@@ -110,6 +110,11 @@
 			<artifactId>cxf-rt-rs-extension-providers</artifactId>
 			<version>3.1.1</version>
 		</dependency>
+				<dependency>
+			<groupId>taobao-sdk-java-auto</groupId>
+			<artifactId>taodiandian</artifactId>
+			<version>20160105</version>
+		</dependency>
 	</dependencies>
 	<!-- <build> -->
 	<!-- <defaultGoal>compile</defaultGoal> -->
