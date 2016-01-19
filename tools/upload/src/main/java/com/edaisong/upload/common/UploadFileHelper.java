@@ -145,9 +145,8 @@ public class UploadFileHelper {
 			List<String> mediaExt = Arrays.<String> asList(extMap.get("media").split(","));
 			ext.addAll(mediaExt);
 		}
-		String regionPath =""; 
-		String rootPath = "";
 		List<FileItem> fileList=new ArrayList<FileItem>();
+		FileItem formFieldItem=null;
 		DiskFileItemFactory dff = new DiskFileItemFactory();
 		dff.setSizeThreshold(1024000);
 		ServletFileUpload sfu = new ServletFileUpload(dff);
@@ -157,15 +156,7 @@ public class UploadFileHelper {
 			FileItem fis = (FileItem) fii.next();
 			if (fis.isFormField()) {
 				if (fis.getFieldName().equals("uploadFrom")) {
-					String loadFrom = getLoadFrom(fis);
-					if (loadFrom.length() > 1) {
-						result.setRemark(loadFrom);
-						return result;
-					}
-					result.setLoadFrom(Integer.parseInt(loadFrom));
-					regionPath = getPathByFrom(UploadFrom.getEnum(Integer.parseInt(loadFrom)));
-					rootPath = PropertyUtils.getProperty("FileUploadPath")+ "/" + regionPath;
-					FileUtil.createDirectory(rootPath);// 创建目录
+					formFieldItem=fis;
 					continue;
 				}
 			} else {
@@ -182,10 +173,16 @@ public class UploadFileHelper {
 				fileList.add(fis);
 			}
 		}
-		if (rootPath==null||rootPath.isEmpty()) {
-			result.setRemark("uploadFrom不能为空");
+
+		String loadFrom = getLoadFrom(request,formFieldItem);
+		if (loadFrom.length() > 1) {
+			result.setRemark(loadFrom);
 			return result;
 		}
+		result.setLoadFrom(Integer.parseInt(loadFrom));
+		String regionPath = getPathByFrom(UploadFrom.getEnum(Integer.parseInt(loadFrom)));
+		String rootPath = PropertyUtils.getProperty("FileUploadPath")+ "/" + regionPath;
+		FileUtil.createDirectory(rootPath);// 创建目录
 
 		saveFiles(fileList,originalSufix,regionPath,rootPath,result);
 		return result;
@@ -222,8 +219,14 @@ public class UploadFileHelper {
 			result.setRelativePath(relativePath);
 		}
 	} 
-	private static String getLoadFrom(FileItem fis) throws Exception{
-		String loadFromValue=fis.getString("utf-8");
+	private static String getLoadFrom(HttpServletRequest request,FileItem fis) throws Exception{
+		String loadFromValue=request.getParameter("uploadFrom");
+		if (loadFromValue==null||loadFromValue.trim().isEmpty()) {
+			if (fis!=null) {
+				loadFromValue=fis.getString("utf-8");
+			}
+		}
+
 		if (loadFromValue==null||loadFromValue.trim().isEmpty()) {
 			return "uploadFrom不能为空";
 		}
