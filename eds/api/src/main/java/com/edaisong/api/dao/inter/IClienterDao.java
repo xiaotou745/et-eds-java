@@ -7,6 +7,7 @@ import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.BusinessStatus;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
+import com.edaisong.entity.domain.ClienterDetailModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
@@ -146,4 +147,11 @@ public interface IClienterDao {
 	 */
 
 	int modifyPushShanSongOrderSet(ModifyPushShanSongOrderSetReq req);
+	
+	/**
+	 * 获取账号信息
+	 * @param cid
+	 * @return
+	 */
+	ClienterDetailModel getClienterDetailById(Long cid);
 }

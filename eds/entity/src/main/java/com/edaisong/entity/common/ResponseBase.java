@@ -9,23 +9,26 @@ public class ResponseBase {
         return responseCode;
     }
 
-    public void setResponseCode(int responseCode) {
+    public ResponseBase setResponseCode(int responseCode) {
         this.responseCode = responseCode;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public ResponseBase setMessage(String message) {
         this.message = message;
+        return this;
     }
 
     public String getProcessServerIp() {
         return processServerIp;
     }
 
-    public void setProcessServerIp(String processServerIp) {
+    public ResponseBase setProcessServerIp(String processServerIp) {
         this.processServerIp = processServerIp;
+        return this;
     }
 }

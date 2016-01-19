@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.UserContext;
+import com.edaisong.api.service.impl.MarkService;
 import com.edaisong.api.service.inter.IClienterBalanceRecordService;
 import com.edaisong.api.service.inter.IClienterForzenLogService;
 import com.edaisong.api.service.inter.IClienterForzenService;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
+import com.edaisong.api.service.inter.IMarkService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.Clienter;
@@ -28,9 +30,11 @@ import com.edaisong.entity.ClienterForzen;
 import com.edaisong.entity.ClienterForzenLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.GroupBusinessLog;
+import com.edaisong.entity.Mark;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.ClienterDetailModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.GroupBusinessModel;
 import com.edaisong.entity.req.ClienterForzenBalanceReq;
@@ -63,6 +67,8 @@ public class ClienterController {
 	 private IClienterForzenService clienterForzenService;
 	 @Autowired
 	 private IClienterForzenLogService clienterForzenLogService;
+	 @Autowired
+	 private IMarkService markService;
 	 
 	/**
 	 * 骑士列表管理页面 
@@ -76,12 +82,13 @@ public class ClienterController {
 	
 		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);
 		List<DeliveryCompany> dCListData=deliveryCompanyService.getDeliveryCompanyList();	
-		
+		List<Mark> marklistList=markService.getMarksListByType(1);
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "骑士管理");
 		model.addObject("currenttitle", "骑士管理");
 		model.addObject("areaListData", areaListData);
 		model.addObject("dCListData", dCListData);
+		model.addObject("marklistList", marklistList);
 		model.addObject("viewPath", "clienter/list");
 		return model;
 	}	
@@ -111,14 +118,14 @@ public class ClienterController {
 	 * @return
 	 */	
 	@RequestMapping("clienterbalancerecordlist")
-	public ModelAndView clienterbalancerecordlist(HttpServletRequest request){				
-
-		int clienterId=Integer.parseInt(request.getParameter("clienterId"));
-		
+	public ModelAndView clienterbalancerecordlist(HttpServletRequest request,Long clienterId){				
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "管理员");
-		model.addObject("currenttitle", "骑士管理/收支记录");
+		
+		ClienterDetailModel detail=clienterService.getClienterDetailById(clienterId);
+		model.addObject("subtitle", "骑士管理");
+		model.addObject("currenttitle", "收支记录");
 		model.addObject("clienterId", clienterId);		
+		model.addObject("detail", detail);	
 		model.addObject("viewPath", "clienterbalancerecord/list");
 		return model;
 	}	
@@ -148,14 +155,14 @@ public class ClienterController {
 	 */	
 	@RequestMapping("auditok")
 	@ResponseBody
-	public void auditok(HttpServletRequest request){
+	public int auditok(HttpServletRequest request){
 
 		int id=Integer.parseInt(request.getParameter("id"));
 		String status="1";
 		Clienter record=new Clienter();
 		record.setId(id);;	
 		record.setStatus(Byte.parseByte(status));
-		clienterService.modifyStatusById(record);
+		return clienterService.modifyStatusById(record);
 	}	
 	
 	/**
@@ -167,14 +174,14 @@ public class ClienterController {
 	 */	
 	@RequestMapping("auditcancel")
 	@ResponseBody
-	public void auditcancel(HttpServletRequest request){
+	public int auditcancel(HttpServletRequest request){
 
 		int id=Integer.parseInt(request.getParameter("id"));
 		String status="0";
 		Clienter record=new Clienter();
 		record.setId(id);;	
 		record.setStatus(Byte.parseByte(status));
-	 clienterService.modifyStatusById(record);
+	    return clienterService.modifyStatusById(record);
 	}	
 	
 	/**
@@ -186,11 +193,11 @@ public class ClienterController {
 	 */	
 	@RequestMapping("modifymoney")
 	@ResponseBody
-	public void modifymoney(@ModelAttribute("clienteroptionreq") ClienterOptionReq clienteroptionreq){
+	public int modifymoney(ClienterOptionReq clienteroptionreq,HttpServletRequest request){
 		
 		ClienterOptionReq  record=clienteroptionreq;	
-		record.setOptName("admin");		
-		clienterService.modifyMoneyById(record);
+		record.setOptName(UserContext.getCurrentContext(request).getUserName());		
+		return clienterService.modifyMoneyById(record);
 	}	
 	/**
 	 * 冻结单列表管理页面 

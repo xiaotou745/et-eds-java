@@ -1,6 +1,7 @@
 package com.edaisong.admin.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,12 +14,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IGroupApiConfigService;
 import com.edaisong.api.service.inter.IGroupService;
+import com.edaisong.core.enums.returnenums.GroupAddConfigReturnEnum;
+import com.edaisong.core.enums.returnenums.GroupAddReturnEnum;
+import com.edaisong.core.enums.returnenums.GroupEditReturnEnum;
+import com.edaisong.core.enums.returnenums.GroupUpdateStatusReturnEnum;
+import com.edaisong.core.util.GuidHelper;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.GroupApiConfig;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseBase;
+import com.edaisong.entity.domain.GroupApiConfigModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
+import com.edaisong.entity.req.PagedGroupReq;
 
 
 @Controller
@@ -38,80 +49,125 @@ public class GroupController {
 	  * @return
 	  */
 	@RequestMapping("list")
-	public ModelAndView list(HttpServletRequest request, HttpServletResponse response){
+	public ModelAndView list(){
 		GroupReq req=new GroupReq();	
-		List<GroupModel> resultList =groupService.getGroupList(req);		
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "第三方平台管理");
-		model.addObject("listData", resultList);
 		model.addObject("viewPath", "group/list");
 		return model;		
 	}
 	
+	/**
+	 * 查询第三方集团  异步
+	 * @author CaoHeYang
+	 * @date 20160118
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("selectlist")
 	@ResponseBody
-	public ModelAndView selectlist(HttpServletRequest request, HttpServletResponse response){
-		String groupName=request.getParameter("groupname");
-		String appkey=request.getParameter("appkey");
-		GroupReq req=new GroupReq();	
-		if(groupName!=null && groupName!="")
-		{
-			req.setGroupName(groupName);		
-		}
-		if(appkey!=null && appkey!=""){
-			req.setAppKey(appkey);	
-		}
-		List<GroupModel> resultList =groupService.getGroupList(req);				
+	public ModelAndView selectlist(PagedGroupReq req){
+		PagedResponse<GroupApiConfigModel> resultList =groupService.getGroupListByPage(req);				
 		ModelAndView model = new ModelAndView("group/grouplistdo");
 		model.addObject("listData", resultList);
 		return model;		
 	}	
 	
+	
+	/**
+	 * 
+	 * @param group
+	 * @return
+	 */
 	@RequestMapping(value="addgroup",method = RequestMethod.POST)		
 	@ResponseBody
-	public String addgroup(@ModelAttribute("group") Group group){		
-		Group record=group;		
-		record.setCreatename("admin");			
-		groupService.add(record);	
-		return "ok";  
+	public ResponseBase addgroup( Group group,HttpServletRequest request){		
+		 if (group.getGroupname()==null||group.getGroupname().isEmpty())
+         {
+			 return new ResponseBase().setMessage(GroupAddReturnEnum.GroupNameError.desc())
+						.setResponseCode(GroupAddReturnEnum.GroupNameError.value());
+         } 
+		 group.setCreatename(UserContext.getCurrentContext(request).getUserName());
+         Boolean result = groupService.hasExistsGroup(group);
+         if (result)
+         {
+        	 return new ResponseBase().setMessage(GroupAddReturnEnum.GroupExists.desc())
+						.setResponseCode(GroupAddReturnEnum.GroupExists.value());
+         }
+         group.setIsvalid((byte)1);
+         int res = groupService.addGroup( group);
+         return res>0?new ResponseBase(): new ResponseBase().setMessage(GroupAddReturnEnum.ServiceError.desc())
+					.setResponseCode(GroupAddReturnEnum.ServiceError.value()) ;
 	}
 	
-	@RequestMapping("updategroup")
+	/**
+	 * 修改第三方平台名称
+	 * @author CaoHeYang
+	 * @date 20160119
+	 * @param group
+	 * @return
+	 */
+	@RequestMapping(value="updategroup",method = RequestMethod.POST)
 	@ResponseBody
-	public String updategroup(@ModelAttribute("group") Group group){
-		groupService.update(group);			
-		return "ok";  
+	public ResponseBase updategroup(Group group,HttpServletRequest request){
+		 if (group.getGroupname()==null||group.getGroupname().isEmpty())
+         {
+			 return new ResponseBase().setMessage(GroupEditReturnEnum.GroupNameError.desc())
+						.setResponseCode(GroupEditReturnEnum.GroupNameError.value());
+         } 
+		 group.setModifyname(UserContext.getCurrentContext(request).getUserName());
+		 int res= groupService.update(group);		
+		 return res>0?new ResponseBase(): new ResponseBase().setMessage(GroupEditReturnEnum.ServiceError.desc())
+					.setResponseCode(GroupEditReturnEnum.ServiceError.value()) ;
 	}
 	
-	@RequestMapping("updatestatus")
+    /**
+     * 更新启用状态
+     * @author CaoHeYang
+     * @date 20160118
+     * @param record
+     * @return
+     */
+	@RequestMapping(value="updatestatus",method= {RequestMethod.POST})
 	@ResponseBody
-	public String updatestatus(HttpServletRequest request, HttpServletResponse response){
-		Long id=Long.parseLong(request.getParameter("id"));		
-		String status= request.getParameter("status");
-		if(status.equals("1"))
-		{
-			status="0";
-		}
-		else
-		{
-			 status="1";
-		}
-		byte bstatus=Byte.parseByte(status);		
-		Group record=new Group();
-		record.setId(id);;	
-		record.setIsvalid(bstatus);;		
-		groupService.update(record);				
-		return "ok";  
+	public ResponseBase updatestatus(Group record ){
+		if (record.getId() == 0)
+        {
+			return new ResponseBase().setMessage(GroupUpdateStatusReturnEnum.GroupIdError.desc())
+					.setResponseCode(GroupUpdateStatusReturnEnum.GroupIdError.value());
+        }
+        Boolean res = groupService.updateGroupStatus(record);	
+		return res?   new ResponseBase(): new ResponseBase().setMessage(GroupUpdateStatusReturnEnum.Error.desc())
+				.setResponseCode(GroupUpdateStatusReturnEnum.Error.value());
 	}	
 
-	@RequestMapping("addgroupapiconfig")
+	/**
+	 * 
+	 * @param groupapiconfig
+	 * @return
+	 */
+	@RequestMapping(value="addgroupapiconfig",method= {RequestMethod.POST})
 	@ResponseBody
-	public String addgroupapiconfig(@ModelAttribute("groupapiconfig") GroupApiConfig groupapiconfig){
-		GroupApiConfig record=groupapiconfig;
-		record.setAppsecret("");
-		groupApiConfigService.add(record);	
-		return "ok";  
+	public ResponseBase addGroupApiConfig(GroupApiConfig groupapiconfig){
+		if (groupapiconfig.getGroupid()== 0)
+        {
+			return new ResponseBase().setMessage(GroupAddConfigReturnEnum.GroupIdError.desc())
+					.setResponseCode(GroupAddConfigReturnEnum.GroupIdError.value());
+        }
+        if (groupapiconfig.getAppkey()==null||groupapiconfig.getAppkey().isEmpty())
+        {
+        	return new ResponseBase().setMessage(GroupAddConfigReturnEnum.AppKeyError.desc())
+					.setResponseCode(GroupAddConfigReturnEnum.AppKeyError.value());
+        }
+        if (groupapiconfig.getAppversion()==null||groupapiconfig.getAppversion().isEmpty())
+        {
+        	groupapiconfig.setAppversion("1.0");
+        }
+		groupapiconfig.setAppsecret(GuidHelper.guidNoSepToUpperCase());
+     	int res= groupApiConfigService.add(groupapiconfig);	
+	    return res>0?   new ResponseBase(): new ResponseBase().setMessage(GroupAddConfigReturnEnum.Error.desc())
+ 			.setResponseCode(GroupAddConfigReturnEnum.Error.value());
 	}
 	
 }

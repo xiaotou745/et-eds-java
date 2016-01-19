@@ -83,5 +83,12 @@ public class MarkDao extends DaoBase implements IMarkDao {
 	public int modifyBusinessTags(TagRelationModel model) {
 		return getMasterSqlSessionUtil().update("IMarkDao.modifyBusinessTags", model);
 	}
+	/**
+	 * 通过类型获取标签
+	 */
+	@Override
+	public List<Mark> getMarksListByType(int type) {
+		return getReadOnlySqlSessionUtil().selectList("IMarkDao.getMarksListByType",type);
+	}
 
 }

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,7 +32,6 @@ import com.edaisong.api.service.inter.IAuthorityAccountMenuSetService;
 import com.edaisong.api.service.inter.IAuthorityRoleService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
-import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.security.AES;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.CookieUtils;
@@ -41,12 +39,10 @@ import com.edaisong.core.util.IPUtil;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
-import com.edaisong.core.util.StringUtils;
 import com.edaisong.entity.Account;
 import com.edaisong.entity.AccountCityRelation;
 import com.edaisong.entity.AccountDeliveryRelation;
 import com.edaisong.entity.AccountLog;
-import com.edaisong.entity.AuthorityAccountMenuSet;
 import com.edaisong.entity.AuthorityRole;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.common.PagedResponse;
@@ -56,7 +52,6 @@ import com.edaisong.entity.req.PagedAccountReq;
 import com.edaisong.entity.req.UpdatePwdReq;
 
 
-//import java.util.function.Predicate;
 @Controller
 @RequestMapping("account")
 public class AccountController {
@@ -78,6 +73,7 @@ public class AccountController {
 	private IAccountDeliveryRelationService accountDeliveryRelationService;
 	@Autowired
 	private IAccountCityRelationService accountCityRelationService;
+
 	@RequestMapping("list")
 	public ModelAndView list() {
 		ModelAndView view = new ModelAndView("adminView");
@@ -122,8 +118,6 @@ public class AccountController {
 			return -1;
 		}
 		UserContext context = UserContext.getCurrentContext(request);
-		account.setAccounttype(0);
-		account.setRoleid(0);
 		account.setLcuser(context.getUserName());
 		account.setFauser(context.getUserName());
 		String password = MD5Util.MD5(account.getPassword());

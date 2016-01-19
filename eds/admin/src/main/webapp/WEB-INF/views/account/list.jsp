@@ -8,8 +8,11 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.AuthorityRole"%>
 <%@page import="com.edaisong.core.util.HtmlHelper"%>
+<%@page import="com.edaisong.admin.common.UserContext"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.admin.url");
+UserContext context=UserContext.getCurrentContext(request);
+int groupId=context.getGroupId();
 List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleData");
 %>
 <script src="<%=basePath%>/js/bootstrap-treeview.js"></script>
@@ -50,7 +53,7 @@ List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleD
 	    <h4 class="modal-title">用户操作</h4>
 	</div>
 <div class="modal-body">
-
+<input name="groupId" id="groupId" type="hidden" value="<%=groupId %>" />
   账号名称：<input id="txtUserName" class="form-control"/><br/><br/>
 登录名称：<input id="txtLoginName" class="form-control"/><br/><br/>
 登录密码：<input type="password" id="txtPwd" class="form-control"/><br/><br/>
@@ -161,6 +164,8 @@ var jss={
 		    olddeliveryrelations="";
 			$("#txtUserName").val("");
 			$("#txtLoginName").val("");
+            $("#txtUserName").removeAttr("disabled");
+            $("#txtLoginName").removeAttr("disabled");
 			$("#txtPwd").val("");
 			$("#txtConfirmPwd").val("");
 			$("#selAcountType").val(1);
@@ -198,9 +203,8 @@ function updateuser(cityCodeList,DCidList){
 	}
 	var paramaters = {
 			"id":userid,
-			"username" :  $("#txtUserName").val(),
-			"loginname" : $("#txtLoginName").val(),
 			"password":$("#txtPwd").val(),
+			"accounttype":$("#selAcountType").val(),
 			"status":$('input[name="radstatus"]:checked').val(),
 			"oldcityrelations":oldcityrelations,
 			"olddeliveryrelations":olddeliveryrelations,
@@ -271,6 +275,8 @@ $("#saveuser").click(function(){
 			"username" :  $("#txtUserName").val(),
 			"loginname" : $("#txtLoginName").val(),
 			"password":$("#txtPwd").val(),
+			"groupid":$("#groupId").val(),
+			"accounttype":$("#selAcountType").val(),
 			"status":$('input[name="radstatus"]:checked').val(),
 			"cityrelations":cityCodeList,
 			"deliveryrelations":DCidList
@@ -285,7 +291,7 @@ $("#saveuser").click(function(){
 					alert("操作成功");
 					window.location.href = window.location.href;
 				} else {
-					alert("操作失败");
+					alert("操作失败:账号名称或登录名称已经存在！");
 				}
 			}
 		});
@@ -307,6 +313,8 @@ function modify(id) {
 				optype=1;
 				$("#txtUserName").val(result.UserName);
 				$("#txtLoginName").val(result.LoginName);
+		        $("#txtUserName").attr("disabled", "true");
+		        $("#txtLoginName").attr("disabled", "true");
 				$("#txtPwd").val("");
 				$("#txtConfirmPwd").val("");
 				if(result.Status==1){

@@ -40,6 +40,7 @@ import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.ParseHelper;
 import com.edaisong.toolsentity.AppDbConfig;
 import com.edaisong.toolsentity.AuthorityMenuClass;
+import com.edaisong.toolsentity.ExportSqlManage;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.domain.ActionLog;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
@@ -50,6 +51,7 @@ import com.edaisong.toolsentity.domain.PairEntry;
 import com.edaisong.toolsentity.domain.SelectAppModel;
 import com.edaisong.toolsentity.req.MongoLogReq;
 import com.edaisong.toolsentity.req.PagedAppDbConfigReq;
+import com.edaisong.toolsentity.req.PagedExportSqlReq;
 import com.edaisong.toolsentity.req.PagedMongoLogReq;
 import com.mongodb.BasicDBObject;
 
@@ -358,6 +360,48 @@ public class AdminToolsController {
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "导出数据管理");
 		view.addObject("viewPath", "admintools/export");
+		view.addObject("appNameList", getappNameList(ServerType.SqlServer,null));
+		return view;
+	}
+	@RequestMapping("exportinsert")
+	@ResponseBody
+	public int exportInsert(ExportSqlManage req,String appName) {
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			return MybatisUtil.getSqlSessionUtil(conInfo).insert("IExportSqlManageDao.insert",req);
+		}
+		return -1;
+	}
+	@RequestMapping("exportdelete")
+	@ResponseBody
+	public int exportDelete(Integer id,String appName) {
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			return MybatisUtil.getSqlSessionUtil(conInfo).delete("IExportSqlManageDao.delete",id);
+		}
+		return -1;
+	}
+	@RequestMapping("exportupdate")
+	@ResponseBody
+	public int exportUpdate(ExportSqlManage req,String appName) {
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			return  MybatisUtil.getSqlSessionUtil(conInfo).update("IExportSqlManageDao.update",req);
+		}
+		return -1;
+	}
+	@RequestMapping("exportquery")
+	public ModelAndView exportQuery(PagedExportSqlReq req,String appName) {
+		ModelAndView view = new ModelAndView("admintools/exportdo");
+		List<AppDbConfig> appConfig=getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			PagedResponse<ExportSqlManage> resp= MybatisUtil.getSqlSessionUtil(conInfo).selectPageList("IExportSqlManageDao.query",req);
+			view.addObject("listData", resp);
+		}
 		return view;
 	}
 	/**

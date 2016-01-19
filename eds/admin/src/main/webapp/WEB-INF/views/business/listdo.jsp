@@ -24,7 +24,7 @@ boolean business_WithDraw=context.isHasAuth(AuthCode.Business_WithDraw);
 	<thead>
 		<tr class="tdbg">
 			<th width="%5">编号</th>
-			<th width="10%">商户名称</th>
+			<th width="10%">门店名称</th>
 			<th width="100px">电话</th>
 			<th width="10%">地址</th>
 			<th width="11%">申请时间</th>
@@ -176,7 +176,7 @@ boolean business_WithDraw=context.isHasAuth(AuthCode.Business_WithDraw);
     }
     
     
-    //商户充值
+    //门店充值
     function businessRecharge(id, name, phone) {
         $('#busId').val(0);
         $('#busName').val('');
@@ -188,13 +188,13 @@ boolean business_WithDraw=context.isHasAuth(AuthCode.Business_WithDraw);
         $('#busPhone').val(phone);
         $('#BusinessRechargeShow').modal('show');
     }
-  //商户充值
+  //门店充值
     $("#btnRechargeCommit").on('click', function () {
-        var busiId = $("#busId").val(); //商户id
-        var busiName = $("#busName").val(); //商户电话
+        var busiId = $("#busId").val(); //门店id
+        var busiName = $("#busName").val(); //门店电话
         var busRechargeType = $('#RechargeType').val();//充值类型
-        var busiRechargeAmount = $("#busRechargeAmount").val(); //商户充值金额
-        var busiRechargeAmountFree = $("#busRechargeAmountFree").val(); //商户赠送金额
+        var busiRechargeAmount = $("#busRechargeAmount").val(); //门店充值金额
+        var busiRechargeAmountFree = $("#busRechargeAmountFree").val(); //门店赠送金额
         var rechargeLog = $("#rechargeLog").val(); //充值描述
         if (rechargeLog.trim().length == 0) {
             alert("请输入充值操作描述!");
@@ -220,11 +220,11 @@ boolean business_WithDraw=context.isHasAuth(AuthCode.Business_WithDraw);
         var tipstr = "";
         switch (busRechargeType) {
             case "1":
-                tipstr = "确定要为商户：" + busiName + "  充值：" + busiRechargeAmount + "元？"; break;
+                tipstr = "确定要为门店：" + busiName + "  充值：" + busiRechargeAmount + "元？"; break;
             case "2":
-                tipstr = "确定要为商户：" + busiName + "  赠送：" + busiRechargeAmountFree + "元？"; break;
+                tipstr = "确定要为门店：" + busiName + "  赠送：" + busiRechargeAmountFree + "元？"; break;
             case "3":
-                tipstr = "确定要为商户：" + busiName + "  充值：" + busiRechargeAmount + " 元,赠送:" + busiRechargeAmountFree + "元？"; break;
+                tipstr = "确定要为门店：" + busiName + "  充值：" + busiRechargeAmount + " 元,赠送:" + busiRechargeAmountFree + "元？"; break;
 
         }
         if (confirm(tipstr)) {
@@ -290,10 +290,10 @@ boolean business_WithDraw=context.isHasAuth(AuthCode.Business_WithDraw);
         $('#withdrawPhone').val(phone);
         $('#BusinessWithdraw').modal('show');
     }
-  //商户提现
+  //门店提现
     $("#btnWithdrawCommit").on('click', function () {
-        var withdrawId = $("#withdrawId").val(); //商户id
-        var busiName = $("#withdrawPhone").val(); //商户电话
+        var withdrawId = $("#withdrawId").val(); //门店id
+        var busiName = $("#withdrawPhone").val(); //门店电话
         var withdrawAmount = $("#withdrawAmount").val();
         var withdrawLog = $("#withdrawLog").val();
         var selectProvinceName = $("#openProvince").val();

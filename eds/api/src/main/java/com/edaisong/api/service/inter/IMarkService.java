@@ -37,5 +37,12 @@ public interface IMarkService {
 	 * 2015年11月10日16:29:15
 	 */
 	List<Mark> getBusMarksList(int userId);
+	
+	/**
+	 * 
+	 * @param type
+	 * @return
+	 */
+	List<Mark> getMarksListByType(int type);
 
 }
