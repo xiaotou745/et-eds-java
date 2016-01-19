@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IGroupApiConfigService;
 import com.edaisong.api.service.inter.IGroupService;
+import com.edaisong.core.enums.returnenums.GroupAddReturnEnum;
+import com.edaisong.core.enums.returnenums.GroupEditReturnEnum;
 import com.edaisong.core.enums.returnenums.GroupUpdateStatusReturnEnum;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.GroupApiConfig;
@@ -68,6 +71,7 @@ public class GroupController {
 		return model;		
 	}	
 	
+	
 	/**
 	 * 
 	 * @param group
@@ -75,18 +79,44 @@ public class GroupController {
 	 */
 	@RequestMapping(value="addgroup",method = RequestMethod.POST)		
 	@ResponseBody
-	public String addgroup(@ModelAttribute("group") Group group){		
-		Group record=group;		
-		record.setCreatename("admin");			
-		groupService.add(record);	
-		return "ok";  
+	public ResponseBase addgroup( Group group,HttpServletRequest request){		
+		 if (group.getGroupname()==null||group.getGroupname().isEmpty())
+         {
+			 return new ResponseBase().setMessage(GroupAddReturnEnum.GroupNameError.desc())
+						.setResponseCode(GroupAddReturnEnum.GroupNameError.value());
+         } 
+		 group.setCreatename(UserContext.getCurrentContext(request).getUserName());
+         Boolean result = groupService.hasExistsGroup(group);
+         if (result)
+         {
+        	 return new ResponseBase().setMessage(GroupAddReturnEnum.GroupExists.desc())
+						.setResponseCode(GroupAddReturnEnum.GroupExists.value());
+         }
+         group.setIsvalid((byte)1);
+         int res = groupService.addGroup( group);
+         return res>0?new ResponseBase(): new ResponseBase().setMessage(GroupAddReturnEnum.ServiceError.desc())
+					.setResponseCode(GroupAddReturnEnum.ServiceError.value()) ;
 	}
 	
-	@RequestMapping("updategroup")
+	/**
+	 * 修改第三方平台名称
+	 * @author CaoHeYang
+	 * @date 20160119
+	 * @param group
+	 * @return
+	 */
+	@RequestMapping(value="updategroup",method = RequestMethod.POST)
 	@ResponseBody
-	public String updategroup(@ModelAttribute("group") Group group){
-		groupService.update(group);			
-		return "ok";  
+	public ResponseBase updategroup(Group group,HttpServletRequest request){
+		 if (group.getGroupname()==null||group.getGroupname().isEmpty())
+         {
+			 return new ResponseBase().setMessage(GroupEditReturnEnum.GroupNameError.desc())
+						.setResponseCode(GroupEditReturnEnum.GroupNameError.value());
+         } 
+		 group.setModifyname(UserContext.getCurrentContext(request).getUserName());
+		 int res= groupService.update(group);		
+		 return res>0?new ResponseBase(): new ResponseBase().setMessage(GroupEditReturnEnum.ServiceError.desc())
+					.setResponseCode(GroupEditReturnEnum.ServiceError.value()) ;
 	}
 	
     /**
