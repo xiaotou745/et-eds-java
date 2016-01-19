@@ -15,6 +15,7 @@ import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusinessClientersModel;
 import com.edaisong.entity.domain.ClienterBindInfoModel;
+import com.edaisong.entity.domain.ClienterDetailModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.ClienterStatus;
 import com.edaisong.entity.domain.ImportClienterInfo;
@@ -258,4 +259,12 @@ public class ClienterService implements IClienterService {
 	public int modifyPushShanSongOrderSet(ModifyPushShanSongOrderSetReq req){
 		return clienterDao.modifyPushShanSongOrderSet(req);
 	}
+	/**
+	 * 获取账号信息
+	 */
+	@Override
+	public ClienterDetailModel getClienterDetailById(Long cid) {
+		return clienterDao.getClienterDetailById(cid);
+	}
+	
 }

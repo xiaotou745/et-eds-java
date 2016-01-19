@@ -34,6 +34,7 @@ import com.edaisong.entity.Mark;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
+import com.edaisong.entity.domain.ClienterDetailModel;
 import com.edaisong.entity.domain.ClienterModel;
 import com.edaisong.entity.domain.GroupBusinessModel;
 import com.edaisong.entity.req.ClienterForzenBalanceReq;
@@ -117,14 +118,14 @@ public class ClienterController {
 	 * @return
 	 */	
 	@RequestMapping("clienterbalancerecordlist")
-	public ModelAndView clienterbalancerecordlist(HttpServletRequest request){				
-
-		int clienterId=Integer.parseInt(request.getParameter("clienterId"));
-		
+	public ModelAndView clienterbalancerecordlist(HttpServletRequest request,Long clienterId){				
 		ModelAndView model = new ModelAndView("adminView");
+		
+		ClienterDetailModel detail=clienterService.getClienterDetailById(clienterId);
 		model.addObject("subtitle", "骑士管理");
 		model.addObject("currenttitle", "收支记录");
 		model.addObject("clienterId", clienterId);		
+		model.addObject("detail", detail);	
 		model.addObject("viewPath", "clienterbalancerecord/list");
 		return model;
 	}	
