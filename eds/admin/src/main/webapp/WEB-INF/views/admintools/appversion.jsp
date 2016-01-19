@@ -51,8 +51,9 @@ boolean canAdd=context.isHasAuth(72);
 							<label class="col-sm-4 control-label">所属平台:</label>
 							<div class="col-sm-8" style="padding-top: 5px;">
 								<input name="rAppSource" id="rold" type="radio" value="0"
-									checked="checked" /> 易代送商户版 <input name="rAppSource" id="rnew"
-									type="radio" value="1" /> 智能调度版
+									checked="checked" />易代送商户版 <input name="rAppSource" id="rnew"
+									type="radio" value="1" />智能调度版<input name="rAppSource" id="rnew"
+									type="radio" value="2" />闪送版
 							</div>
 						</div>
 					</div>
@@ -145,7 +146,7 @@ boolean canAdd=context.isHasAuth(72);
 						<div class="form-group">
 							<label class="col-sm-4 control-label">更新内容:</label>
 							<div class="col-sm-8">
-								<textarea cols="50" rows="8" id="message"></textarea>
+								<textarea cols="40" rows="8" id="message"></textarea>
 							</div>
 						</div>
 					</div>
