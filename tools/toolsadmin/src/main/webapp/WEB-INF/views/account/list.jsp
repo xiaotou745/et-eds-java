@@ -156,8 +156,8 @@ function modify(id) {
 				$("#txtLoginName").val(result.loginname);
 		        $("#txtUserName").attr("disabled", "true");
 		        $("#txtLoginName").attr("disabled", "true");
-				$("#txtPwd").val();
-				$("#txtConfirmPwd").val();
+				$("#txtPwd").val("");
+				$("#txtConfirmPwd").val("");
 				if(result.status==1){
 					$("#radyes").prop('checked','checked')
 				}
