@@ -780,4 +780,41 @@ where Id = #{userId,jdbcType=INTEGER}
 		set PushShanSongOrderSet = #{set}
 		where Id = #{clienterId,jdbcType=INTEGER}
 	</update>
+	<!-- 获取骑士详情信息 -->
+	<select id="getClienterDetailById" resultType="com.edaisong.entity.domain.ClienterDetailModel" parameterType="java.lang.Long">
+	SELECT   c.[Id],
+         c.[PhoneNo],
+         c.[LoginName],
+         c.[recommendPhone],
+         c.[Password],
+         c.[TrueName],
+         c.[IDCard],
+         c.[PicWithHandUrl],
+         c.[PicUrl],
+         c.[Status],
+         c.[AccountBalance],
+         c.[InsertTime],
+         c.[InviteCode],
+         c.[City],
+         c.[CityId],
+         c.[GroupId],
+         c.[HealthCardID],
+         c.[InternalDepart],
+         c.[ProvinceCode],
+         c.[AreaCode],
+         c.[CityCode],
+         c.[Province],
+         c.[BussinessID],
+         c.[WorkStatus], 
+         c.DeliveryCompanyId,
+         c.GradeType,       
+         cfa.TrueName AccountName,
+         cfa.AccountNo,
+         cfa.AccountType,
+         cfa.OpenBank,
+         cfa.OpenSubBank
+FROM clienter c WITH(NOLOCK) 
+	Left join ClienterFinanceAccount cfa WITH(NOLOCK) ON c.Id=cfa.ClienterId AND cfa.IsEnable=1
+WHERE c.Id = #{cid,jdbcType=BIGINT} 
+	</select>
 </mapper>
