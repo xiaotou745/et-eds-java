@@ -69,4 +69,6 @@ public interface IAuthorityMenuClassService {
 	 * @return
 	 */
 	boolean addMenu(AuthorityMenuClass req);
+	
+    boolean checkHasAuthByCode(int userID,String authCode);
 }

@@ -8,9 +8,12 @@
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%> 
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
-
+<%@page import="com.edaisong.admin.common.UserContext"%>
+<%@page import="com.edaisong.admin.common.AuthCodeConst"%>
 <%
 String basePath =PropertyUtils.getProperty("java.admin.url");
+String netPath =PropertyUtils.getProperty("net.admin.url");
+UserContext current=UserContext.getCurrentContext(request);
  %>
 
         
@@ -67,7 +70,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 				<td><%=list.get(i).getIdCard() %></td>
 				<td><a href="javascript:void(0)" class="businessOk" onclick="ShowPic('<%=list.get(i).getPicWithHandUrl()%>','<%=list.get(i).getPicWithHandUrlBig()%>','<%=list.get(i).getPicUrl()%>','<%=list.get(i).getPicUrlBig()%>')">查看</a></td>		
 				<td><%=ParseHelper.ToDateString(list.get(i).getInsertTime(), "")%>		</td>		
-				<td style="color:red;font-weight:600"><a href="<%=basePath%>/clienter/clienterbalancerecordlist?clienterId=<%=list.get(i).getId() %> ">￥  <%=list.get(i).getAccountBalance() %></a></td>
+				<td style="color:red;font-weight:600"><a href="<%=netPath%>/SuperManManager/ClienterDetail?clienterId=<%=list.get(i).getId()%>">￥  <%=list.get(i).getAccountBalance() %></a></td>
 				<td><%=list.get(i).getAllowWithdrawPrice() %></td>
 				<td><%=list.get(i).getGroupName()%>  </td>
 				<td><%=list.get(i).getDeliveryCompanyName()%>  </td>			
@@ -106,25 +109,41 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 				<%
 				if (list.get(i).getStatus()== 1)
 				{
+					if(current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterAudit_Btn)||current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterCancel_Btn))
+					{
 				%>				
 				<a href="javascript:void(0)" style="color:gray"  onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
 				<a href="javascript:void(0)"  onclick="clientCancel('<%=list.get(i).getId() %>')" >审核拒绝</a>
-		
 				<%
+					}
 				}
 				else
 				{
+					if(current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterAudit_Btn)||current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterCancel_Btn))
+					{
 				%>								  
-				<a href="javascript:void(0)"   onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
+				<a href="javascript:void(0)"   onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl()%>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
                  <a href="javascript:void(0)" style="color:gray" onclick="clientCancel('<%=list.get(i).getId() %>')" >审核拒绝</a>
 
 				<%
+					}
 				}
+				
+				if(current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterBlanceChange_Btn))
+				{
 				%>
+				
 				<a href="javascript:void(0)" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
-				<a href="/SuperManManager/GetRelationByClienterId?ClienterId=@item.Id&Name=@item.TrueName&Phone=@item.PhoneNo">查看绑定商家</a>
-				<a href="/SuperManManager/QueryClienterDetail?clienterId=@item.Id">修改信息</a>
-					
+				<%
+				}
+				if(current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ModifyInfo_Btn))
+				{
+				%>
+				<a href="<%=netPath%>/SuperManManager/QueryClienterDetail?clienterId=<%=list.get(i).getId()%>">修改信息</a>
+				<%
+				}
+				%>	
+				<a href="<%=netPath%>/SuperManManager/GetRelationByClienterId?ClienterId=<%=list.get(i).getId()%>&Name=<%=list.get(i).getTrueName()%>&Phone=<%=list.get(i).getPhoneNo()%>">查看绑定商家</a>
 			</td>
 				
 			</tr>

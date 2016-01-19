@@ -61,6 +61,24 @@ public class AuthorityMenuClassService implements IAuthorityMenuClassService {
 		return dao.addMenu(req);
 	}
 
+	/**
+	 * 根据AuthCode判断用户是否有该权限
+	 * 2015年12月2日14:42:12
+	 * 茹化肖
+	 */
+	@Override
+	public boolean checkHasAuthByCode(int userID,String authCode) {
+		List<MenuEntity> data=dao.getMenuListByUserID(userID);
+		if (data!=null&&data.size()>0) {
+			for (MenuEntity menuEntity : data) {
+				if (authCode.equals(menuEntity.getAuthCode())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 
 
 }
