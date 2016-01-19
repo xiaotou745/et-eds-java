@@ -52,17 +52,9 @@ public class GroupDao extends DaoBase implements IGroupDao {
 
 	@Override
 	public int updateByPrimaryKeySelective(Group record) {
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("id", record.getId());
-		if (record.getGroupname() != "" && record.getGroupname() != null)
-			paramMap.put("groupname", record.getGroupname());
-		if (record.getIsvalid() != null)
-			paramMap.put("isvalid", record.getIsvalid());
-
 		return getMasterSqlSessionUtil()
 				.update("IGroupDao.updateByPrimaryKeySelective",
-						paramMap);
-
+						record);
 	}
 
 	@Override
