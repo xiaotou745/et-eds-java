@@ -7,6 +7,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.AppVersion"%>
 <%@page import="com.edaisong.admin.common.UserContext"%>
+<%@page import="com.edaisong.core.enums.AppSource"%>
 <%
 	UserContext context=UserContext.getCurrentContext(request);
 boolean canEdit=context.isHasAuth(73);
@@ -48,7 +49,7 @@ boolean canCancel=context.isHasAuth(74);
 			<td title='<%=data.get(i).getMessage()%>'><%=data.get(i).getMessage().length()>15?(data.get(i).getMessage().substring(0, 15)+"..."):data.get(i).getMessage()%></td>
 			<td><%=data.get(i).getIstiming()==1?"定时发布":"实时发布"%></td>
 			<td><%=data.get(i).getPubstatus()==0?"待发布":(data.get(i).getPubstatus()==1?"已发布":"取消发布")%></td>			
-			<td><%=data.get(i).getAppsource()==0?"易代送商户版":"智能调度平台"%></td>		
+			<td><%=AppSource.getEnum(data.get(i).getAppsource()).desc()%></td>		
 			<td><%=ParseHelper.ToDateString(data.get(i).getTimingdate())%></td>		
 			<td><%=data.get(i).getUpdateby()%></td>		
 			<td>
