@@ -14,6 +14,10 @@
 String basePath =PropertyUtils.getProperty("java.admin.url");
 String netPath =PropertyUtils.getProperty("net.admin.url");
 UserContext current=UserContext.getCurrentContext(request);
+boolean auditokbtn=current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterAudit_Btn);
+boolean auditokcancel=current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterCancel_Btn);
+boolean yuetiaozheng=current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterBlanceChange_Btn);
+boolean btnmodify=current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ModifyInfo_Btn);
  %>
 
         
@@ -109,7 +113,7 @@ UserContext current=UserContext.getCurrentContext(request);
 				<%
 				if (list.get(i).getStatus()== 1)
 				{
-					if(current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterAudit_Btn)||current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterCancel_Btn))
+					if(auditokbtn||auditokcancel)
 					{
 				%>				
 				<a href="javascript:void(0)" style="color:gray"  onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl() %>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
@@ -119,7 +123,7 @@ UserContext current=UserContext.getCurrentContext(request);
 				}
 				else
 				{
-					if(current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterAudit_Btn)||current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterCancel_Btn))
+					if(auditokbtn||auditokcancel)
 					{
 				%>								  
 				<a href="javascript:void(0)"   onclick="clientOk('<%=list.get(i).getId() %>','<%=list.get(i).getIdCard() %>','<%=list.get(i).getTrueName() %>','<%=list.get(i).getPicUrl()%>','<%=list.get(i).getPicWithHandUrl() %>')">审核通过</a>
@@ -129,14 +133,14 @@ UserContext current=UserContext.getCurrentContext(request);
 					}
 				}
 				
-				if(current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ClienterBlanceChange_Btn))
+				if(yuetiaozheng)
 				{
 				%>
 				
 				<a href="javascript:void(0)" onclick="funcClienterRecharge('<%=list.get(i).getId() %>','<%=list.get(i).getTrueName() %>', '<%=list.get(i).getPhoneNo() %>')">余额变更</a>
 				<%
 				}
-				if(current.isHasAuthByCode(AuthCodeConst.SuperManManager_SuperManManager_ModifyInfo_Btn))
+				if(btnmodify)
 				{
 				%>
 				<a href="<%=netPath%>/SuperManManager/QueryClienterDetail?clienterId=<%=list.get(i).getId()%>">修改信息</a>
