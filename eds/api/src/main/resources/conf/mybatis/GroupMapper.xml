@@ -120,17 +120,11 @@
       <if test="groupname != null" >
         GroupName = #{groupname,jdbcType=NVARCHAR},
       </if>
-      <if test="createname != null" >
-        CreateName = #{createname,jdbcType=NVARCHAR},
-      </if>
-      <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
       <if test="modifyname != null" >
         ModifyName = #{modifyname,jdbcType=NVARCHAR},
       </if>
-      <if test="modifytime != null" >
-        ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+      <if test="modifyname != null" >
+        ModifyTime = getdate(),
       </if>
       <if test="isvalid != null" >
         IsValid = #{isvalid,jdbcType=TINYINT},
