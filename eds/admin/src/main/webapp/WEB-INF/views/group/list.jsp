@@ -108,6 +108,59 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 		</div>
 	</div>
 </div>
+<!-- 修改第三方平台 弹窗 -->
+<div class="modal inmodal fade" id="myModalEdit" tabindex="-1" role="dialog"
+	aria-hidden="true">
+	<div class="modal-dialog" style="width: 550px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title">设置第三方平台AppConfig</h4>
+			</div>
+			<div class="modal-body form-horizontal">
+				<div class="row">
+					<div class="col-lg-9">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">AppKey:</label>
+							<div class="col-sm-8">
+								<input name="txtAppKeys" class="form-control" id="txtAppKeys"
+									type="text" value="" />
+							   <label style="color: red">建议为"appkey_"+第三方平台名称小写全拼</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-9">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">App版本:</label>
+							<div class="col-sm-8">
+								<input name="txtAppVersion" class="form-control" id="txtAppVersion"
+									type="text" value="" />
+									<label style="color: red">默认1.0</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-9">
+						<div class="form-group">
+							<label class="col-sm-12 "  style="color: red">AppSecret会自动生成</label>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			 <input type="hidden" id="hiduEditGroupID" value=""/>
+			<div class="modal-footer">
+				<button type="button" id="btnEditGroup" class="btn btn-primary">保存</button>
+				<button type="button" class="btn btn-white"  data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
 var jss = {
 		search : function(currentPage) {
