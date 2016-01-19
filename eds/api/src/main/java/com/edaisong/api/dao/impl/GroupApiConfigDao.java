@@ -23,15 +23,11 @@ public class GroupApiConfigDao extends DaoBase implements IGroupApiConfigDao {
 
 	@Override
 	public int insert(GroupApiConfig record) {
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("appkey", record.getAppkey());
-		paramMap.put("appsecret", record.getAppsecret());
-		paramMap.put("appversion", record.getAppversion());
-		paramMap.put("groupid", record.getGroupid());
+		
 
 		return getMasterSqlSessionUtil()
 				.insert("IGroupApiConfigDao.insert",
-						paramMap);
+						record);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.edaisong.admin.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,9 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IGroupApiConfigService;
 import com.edaisong.api.service.inter.IGroupService;
+import com.edaisong.core.enums.returnenums.GroupAddConfigReturnEnum;
 import com.edaisong.core.enums.returnenums.GroupAddReturnEnum;
 import com.edaisong.core.enums.returnenums.GroupEditReturnEnum;
 import com.edaisong.core.enums.returnenums.GroupUpdateStatusReturnEnum;
+import com.edaisong.core.util.GuidHelper;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.GroupApiConfig;
 import com.edaisong.entity.common.PagedResponse;
@@ -139,13 +142,32 @@ public class GroupController {
 				.setResponseCode(GroupUpdateStatusReturnEnum.Error.value());
 	}	
 
-	@RequestMapping("addgroupapiconfig")
+	/**
+	 * 
+	 * @param groupapiconfig
+	 * @return
+	 */
+	@RequestMapping(value="addgroupapiconfig",method= {RequestMethod.POST})
 	@ResponseBody
-	public String addgroupapiconfig(@ModelAttribute("groupapiconfig") GroupApiConfig groupapiconfig){
-		GroupApiConfig record=groupapiconfig;
-		record.setAppsecret("");
-		groupApiConfigService.add(record);	
-		return "ok";  
+	public ResponseBase addGroupApiConfig(GroupApiConfig groupapiconfig){
+		if (groupapiconfig.getGroupid()== 0)
+        {
+			return new ResponseBase().setMessage(GroupAddConfigReturnEnum.GroupIdError.desc())
+					.setResponseCode(GroupAddConfigReturnEnum.GroupIdError.value());
+        }
+        if (groupapiconfig.getAppkey()==null||groupapiconfig.getAppkey().isEmpty())
+        {
+        	return new ResponseBase().setMessage(GroupAddConfigReturnEnum.AppKeyError.desc())
+					.setResponseCode(GroupAddConfigReturnEnum.AppKeyError.value());
+        }
+        if (groupapiconfig.getAppversion()==null||groupapiconfig.getAppversion().isEmpty())
+        {
+        	groupapiconfig.setAppversion("1.0");
+        }
+		groupapiconfig.setAppsecret(GuidHelper.guidNoSepToUpperCase());
+     	int res= groupApiConfigService.add(groupapiconfig);	
+	    return res>0?   new ResponseBase(): new ResponseBase().setMessage(GroupAddConfigReturnEnum.Error.desc())
+ 			.setResponseCode(GroupAddConfigReturnEnum.Error.value());
 	}
 	
 }
