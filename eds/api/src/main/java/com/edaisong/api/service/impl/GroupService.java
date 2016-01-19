@@ -58,4 +58,38 @@ public class GroupService implements IGroupService {
 	public PagedResponse<GroupApiConfigModel>  getGroupListByPage(PagedGroupReq req){
 		return dao.getGroupListByPage(req);
 	}
+	/**
+	 * 更新集团状态
+	 * @author CaoHeYang
+	 * @date 20160118
+	 * @param group
+	 * @return
+	 */
+	@Override
+	public   Boolean  updateGroupStatus(Group group){
+		return dao.updateGroupStatus(group)>0;
+	}
+	
+	/**
+	 * 判断集团是否已经存在
+	 * @author CaoHeYang
+	 * @date 20160118
+	 * @param req
+	 * @return
+	 */
+	@Override
+	public Boolean hasExistsGroup(Group req){
+		return dao.hasExistsGroup(req)>0;
+	}
+	
+	/**
+	 * 创建集团
+	 *  @date 20160118
+	 *  @author CaoHeYang
+	 * @param record
+	 * @return
+	 */
+	public int  addGroup(Group record) {
+		return dao.addGroup(record);
+	}
 }

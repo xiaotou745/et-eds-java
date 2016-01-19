@@ -161,6 +161,10 @@ $(function(){
         autoclose: true
     }); 
 	$("#appversions").val("<%=String.join(";",appVersionList)%>");
+	//列表页radio改变时，自动查询
+	$("input[type='radio']").on("change",function(e){
+		jss.search(1);
+	});
 });
 function beforeselectchange(e){
 	if(e.target.id=="sourceSys"){

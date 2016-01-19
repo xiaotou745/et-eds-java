@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IGroupApiConfigService;
 import com.edaisong.api.service.inter.IGroupService;
+import com.edaisong.core.enums.returnenums.GroupAddReturnEnum;
+import com.edaisong.core.enums.returnenums.GroupUpdateStatusReturnEnum;
 import com.edaisong.entity.Group;
 import com.edaisong.entity.GroupApiConfig;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.GroupApiConfigModel;
 import com.edaisong.entity.domain.GroupModel;
 import com.edaisong.entity.req.GroupReq;
@@ -66,13 +70,31 @@ public class GroupController {
 		return model;		
 	}	
 	
+	
+	/**
+	 * 
+	 * @param group
+	 * @return
+	 */
 	@RequestMapping(value="addgroup",method = RequestMethod.POST)		
 	@ResponseBody
-	public String addgroup(@ModelAttribute("group") Group group){		
-		Group record=group;		
-		record.setCreatename("admin");			
-		groupService.add(record);	
-		return "ok";  
+	public ResponseBase addgroup( Group group,HttpServletRequest request){		
+		 if (group.getGroupname()==null||group.getGroupname().isEmpty())
+         {
+			 return new ResponseBase().setMessage(GroupAddReturnEnum.GroupNameError.desc())
+						.setResponseCode(GroupAddReturnEnum.GroupNameError.value());
+         } 
+		 group.setCreatename(UserContext.getCurrentContext(request).getUserName());
+         Boolean result = groupService.hasExistsGroup(group);
+         if (result)
+         {
+        	 return new ResponseBase().setMessage(GroupAddReturnEnum.GroupExists.desc())
+						.setResponseCode(GroupAddReturnEnum.GroupExists.value());
+         }
+         group.setIsvalid((byte)1);
+         int res = groupService.addGroup( group);
+         return res>0?new ResponseBase(): new ResponseBase().setMessage(GroupAddReturnEnum.ServiceError.desc())
+					.setResponseCode(GroupAddReturnEnum.ServiceError.value()) ;
 	}
 	
 	@RequestMapping("updategroup")
@@ -82,25 +104,24 @@ public class GroupController {
 		return "ok";  
 	}
 	
-	@RequestMapping("updatestatus")
+    /**
+     * 更新启用状态
+     * @author CaoHeYang
+     * @date 20160118
+     * @param record
+     * @return
+     */
+	@RequestMapping(value="updatestatus",method= {RequestMethod.POST})
 	@ResponseBody
-	public String updatestatus(HttpServletRequest request, HttpServletResponse response){
-		Long id=Long.parseLong(request.getParameter("id"));		
-		String status= request.getParameter("status");
-		if(status.equals("1"))
-		{
-			status="0";
-		}
-		else
-		{
-			 status="1";
-		}
-		byte bstatus=Byte.parseByte(status);		
-		Group record=new Group();
-		record.setId(id);;	
-		record.setIsvalid(bstatus);;		
-		groupService.update(record);				
-		return "ok";  
+	public ResponseBase updatestatus(Group record ){
+		if (record.getId() == 0)
+        {
+			return new ResponseBase().setMessage(GroupUpdateStatusReturnEnum.GroupIdError.desc())
+					.setResponseCode(GroupUpdateStatusReturnEnum.GroupIdError.value());
+        }
+        Boolean res = groupService.updateGroupStatus(record);	
+		return res?   new ResponseBase(): new ResponseBase().setMessage(GroupUpdateStatusReturnEnum.Error.desc())
+				.setResponseCode(GroupUpdateStatusReturnEnum.Error.value());
 	}	
 
 	@RequestMapping("addgroupapiconfig")
