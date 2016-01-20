@@ -26,12 +26,6 @@
     update account
     <set >
     	LCDateTime=getdate(),
-      <if test="username != null and username!=''" >
-        userName = #{username,jdbcType=NVARCHAR},
-      </if>
-      <if test="loginname != null and loginname!=''" >
-        loginName = #{loginname,jdbcType=NVARCHAR},
-      </if>
       <if test="status != null" >
         Status = #{status,jdbcType=INTEGER},
       </if>

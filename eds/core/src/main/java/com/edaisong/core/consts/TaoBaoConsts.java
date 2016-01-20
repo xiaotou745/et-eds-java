@@ -37,6 +37,10 @@ public class TaoBaoConsts {
 	 * 订单指派通知消息(TMC)
 	 */
 	public final static String OrderDispatch="taobao_waimai_OrderDispatch";
+	/*
+	 * 催单通知消息(TMC)
+	 */
+	public final static String OrderRemind ="taobao_waimai_OrderRemind";
 	/**
 	 *  确认接单接口(API)
 	 */

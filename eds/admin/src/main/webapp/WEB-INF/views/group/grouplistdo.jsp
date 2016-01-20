@@ -54,7 +54,11 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			<% } %>
 			<td><%=data.get(i).getCreateName() %></td>
 			<td><a href="javascript:void(0)"
-				onclick="funcGShowView('<%=data.get(i).getId() %>','<%=data.get(i).getGroupName() %>')">修改</a>
+				onclick="funcGShowView('<%=data.get(i).getGroupId() %>','<%=data.get(i).getGroupName() %>')">修改</a>
+			<% if (data.get(i).getAppKey()==null||data.get(i).getAppKey().isEmpty())
+                 {%>
+                     <a href="javascript:void(0)" onclick="funcAShowView(<%=data.get(i).getGroupId() %>,'<%=data.get(i).getGroupName() %>')">设置AppKey</a>        
+               <%  }%>
 			</td>
 		</tr>
 		<%}
@@ -66,13 +70,6 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 					responsePageList.getTotalRecord(),
 					responsePageList.getTotalPage())%>
 <script type="text/javascript">
-    //显示修改集团弹出层
-    function funcGShowView(gid, gname) {    
-    	   $("#hiduGroupID").val(gid);
-           $('#txtuGroupName').val(gname);
-           adminjs.openwinbox('#GroupUpdateDivShow');
-    }
-    
     //修改第三方集团启用状态
     function SetGourpStatus(id, status) {
         if (confirm("确定要更新此状态吗？")) {

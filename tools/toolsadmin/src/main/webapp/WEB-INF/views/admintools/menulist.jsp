@@ -266,8 +266,8 @@
 						</div>
 						<div class="control-group">
 							<label>是否锁定：</label> 
-							<input name="edit1radion" id="edit1radionY" type="radio" value=1/>是
-							<input name="edit1radion" id="edit1radionN"  type="radio" value=0/>否
+							<input name="edit1radion" id="edit1radionY" type="radio" value="1" />是
+							<input name="edit1radion" id="edit1radionN"  type="radio" value="0" />否
 						</div>
 						<div class="control-group">
 							<label>AuthCode：</label> <input name="menuName" id="edit1AuthCode" type="text"/>
@@ -310,8 +310,8 @@
 						</div>
 						<div class="control-group">
 							<label>是否锁定：</label> 
-							<input name="edit2radion" id="edit2radionY" type="radio" value=1/>是
-							<input name="edit2radion" id="edit2radionN"  type="radio" value=0/>否
+							<input name="edit2radion" id="edit2radionY" type="radio" value="1" />是
+							<input name="edit2radion" id="edit2radionN"  type="radio" value="0" />否
 						</div>
 						<div class="control-group">
 							<label>AuthCode：</label> <input name="menuName" id="edit2AuthCode" type="text"/>
@@ -350,8 +350,8 @@
 						</div>
 						<div class="control-group">
 							<label>是否锁定：</label> 
-							<input name="edit3radion" id="edit3radionY" type="radio" value=1/>是
-							<input name="edit3radion" id="edit3radionN"  type="radio" value=0/>否
+							<input name="edit3radion" id="edit3radionY" type="radio" value="1" />是
+							<input name="edit3radion" id="edit3radionN"  type="radio" value="0" />否
 						</div>
 						<div class="control-group">
 							<label>AuthCode：</label> <input name="menuName" id="edit3AuthCode" type="text"/>

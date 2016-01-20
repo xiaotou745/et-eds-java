@@ -22,7 +22,6 @@ public class GroupApiConfigService implements IGroupApiConfigService {
 
 	@Override
 	public int add(GroupApiConfig record) {
-		// TODO Auto-generated method stub
 		return groupApiConfigDao.insert(record);
 	}
    

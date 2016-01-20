@@ -249,7 +249,16 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
                 url: url,
                 data: paramaters,
                 success: function (result) {                  
-                        window.location.href = "<%=basePath%>/clienter/list";                    
+                       if(result>0)
+                    	{
+                    	   jss.search(1);
+                    	   alert('操作成功!');
+                    	   $('#ClienterRechargeShow').modal('hide'); 
+                    	 }
+                       else
+                    	   {
+                    	   alert('操作失败!');
+                    	   }
                 }
             });
         }

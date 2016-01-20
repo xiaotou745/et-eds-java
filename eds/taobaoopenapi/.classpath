@@ -29,7 +29,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v8.0"/>
-	<classpathentry kind="lib" path="lib/taobao-sdk-java-auto_1447039783018-20151111.jar" sourcepath="lib/taobao-sdk-java-auto_1447039783018-20151111-source.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/taobao-sdk-java-auto_1447039783018-20151111.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

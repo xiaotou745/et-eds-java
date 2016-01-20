@@ -193,11 +193,11 @@ public class ClienterController {
 	 */	
 	@RequestMapping("modifymoney")
 	@ResponseBody
-	public void modifymoney(@ModelAttribute("clienteroptionreq") ClienterOptionReq clienteroptionreq){
+	public int modifymoney(ClienterOptionReq clienteroptionreq,HttpServletRequest request){
 		
 		ClienterOptionReq  record=clienteroptionreq;	
-		record.setOptName("admin");		
-		clienterService.modifyMoneyById(record);
+		record.setOptName(UserContext.getCurrentContext(request).getUserName());		
+		return clienterService.modifyMoneyById(record);
 	}	
 	/**
 	 * 冻结单列表管理页面 

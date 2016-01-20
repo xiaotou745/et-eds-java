@@ -65,32 +65,30 @@
 			order="AFTER">
 			select @@IDENTITY as id
 		</selectKey>
+		if not exists(select 1 from account (nolock) where username=#{username,jdbcType=NVARCHAR} or loginname=#{loginname,jdbcType=NVARCHAR})
     insert into account (Password, UserName, 
       LoginName, Status, AccountType, 
       FADateTime, FAUser, LCDateTime, 
       LCUser, GroupId, RoleId
       )
     values (#{password,jdbcType=NVARCHAR}, #{username,jdbcType=NVARCHAR}, 
-      #{loginname,jdbcType=NVARCHAR}, 1, #{accounttype,jdbcType=INTEGER}, 
+      #{loginname,jdbcType=NVARCHAR}, #{status,jdbcType=INTEGER}, #{accounttype,jdbcType=INTEGER}, 
       getdate(), #{fauser,jdbcType=NVARCHAR}, getdate(), 
-      #{lcuser,jdbcType=NVARCHAR}, 0, 0
+      #{lcuser,jdbcType=NVARCHAR}, #{groupid,jdbcType=INTEGER}, 0
       )
   </insert>
     <update id="update" parameterType="com.edaisong.entity.Account" >
     update account
     <set >
-    	LCDateTime=getdate(),
-      <if test="username != null and username!=''" >
-        userName = #{username,jdbcType=NVARCHAR},
-      </if>
-      <if test="loginname != null and loginname!=''" >
-        loginName = #{loginname,jdbcType=NVARCHAR},
-      </if>
+    	LastChangeTime=getdate(),
       <if test="status != null" >
         Status = #{status,jdbcType=INTEGER},
       </if>
       <if test="password != null and password!=''" >
         passWord = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="accounttype != null and accounttype>0" >
+        accounttype = #{accounttype,jdbcType=VARCHAR},
       </if>
     </set>
     where Id = #{id,jdbcType=BIGINT}

@@ -18,7 +18,7 @@ public class MenuEntity extends AuthorityMenuClass implements Serializable{
 	public void setMenuid(Integer menuid) {
 		this.menuid = menuid;
 	}
-
+	
 	private Integer accoutid;
 
     private Integer menuid;

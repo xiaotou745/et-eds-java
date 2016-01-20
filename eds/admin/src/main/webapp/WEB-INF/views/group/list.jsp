@@ -76,6 +76,83 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 		</div>
 	</div>
 </div>
+<!-- 修改第三方平台 弹窗 -->
+<div class="modal inmodal fade" id="myModalEdit" tabindex="-1" role="dialog"
+	aria-hidden="true">
+	<div class="modal-dialog" style="width: 550px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title">修改第三方平台</h4>
+			</div>
+			<div class="modal-body form-horizontal">
+				<div class="row">
+					<div class="col-lg-9">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">第三方平台名称:</label>
+							<div class="col-sm-8">
+								<input name="txtuEditGroupName" class="form-control" id="txtuEditGroupName"
+									type="text" value="" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			 <input type="hidden" id="hiduEditGroupID" value=""/>
+			<div class="modal-footer">
+				<button type="button" id="btnEditGroup" class="btn btn-primary">保存</button>
+				<button type="button" class="btn btn-white"  data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 修改第三方平台 弹窗 -->
+<div class="modal inmodal fade" id="myModalAppkey" tabindex="-1" role="dialog"
+	aria-hidden="true">
+	<div class="modal-dialog" style="width: 550px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title"  id=“statusFinApp”>设置第三方平台AppConfig</h4>
+			</div>
+			<div class="modal-body form-horizontal">
+				<div class="row">
+					<div class="col-lg-10">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">AppKey:</label>
+							<div class="col-sm-8">
+								<input name="txtAppKeys" class="form-control" id="txtAppKeys"
+									type="text" value="" />
+							   <label style="color: red">建议为"appkey_"+第三方平台名称小写全拼</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-10">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">App版本:</label>
+							<div class="col-sm-8">
+								<input name="txtAppVersion" class="form-control" id="txtAppVersion"
+									type="text" value="" />
+									<label style="color: red">默认1.0,AppSecret会自动生成</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			 <input type="hidden" id="HidAppkeyGroupID" value=""/>
+			<div class="modal-footer">
+				<button type="button" id="btnAddGroupConfig" class="btn btn-primary">保存</button>
+				<button type="button" class="btn btn-white"  data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
 var jss = {
 		search : function(currentPage) {
@@ -114,6 +191,87 @@ var jss = {
             	if (result.responseCode==0) 
                 {
                 	layer.alert("添加成功!", {
+        			    icon: 1
+        	    	},function(){
+        	    		window.location.reload();
+        	    	});
+                } else {
+                	layer.alert(result.message, {
+        			    icon: 2
+        	    	});
+                }
+            }
+        });
+    });
+	  
+    //显示修改集团弹出层
+    function funcGShowView(gid, gname) {    
+    	   $("#hiduEditGroupID").val(gid);
+           $("#txtuEditGroupName").val(gname);
+        	$("#myModalEdit").modal('show');
+    }
+
+    //修改第三方平台
+    $("#btnEditGroup").on('click', function () {
+        var txtGroupName = $("#txtuEditGroupName").val(); //第三方平台名称
+        var hiduGroupId = $("#hiduEditGroupID").val(); //第三方平台id 
+        if (txtGroupName == "") {
+        	layer.alert("第三方平台名称不能为空!", {
+			    icon: 2
+	    	});
+            return;
+        }
+        var pars = { "id":hiduGroupId,"groupname": txtGroupName };
+        var url = "<%=basePath%>/group/updategroup";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: pars,
+            success: function (result) {
+            	if (result.responseCode==0) 
+                {
+                	layer.alert("修改成功!", {
+        			    icon: 1
+        	    	},function(){
+        	    		window.location.reload();
+        	    	});
+                } else {
+                	layer.alert(result.message, {
+        			    icon: 2
+        	    	});
+                }
+            }
+        });
+    });
+    
+    //显示设置config弹出层
+    function funcAShowView(gid,gname) {
+        $("#HidAppkeyGroupID").val(gid); 
+        $("#statusFinApp").text("配置-" + gname+"-AppConfig");
+    	$("#myModalAppkey").modal('show');
+    }
+    
+  //添加第三方平台api配置
+    $("#btnAddGroupConfig").on('click',function() {
+        var gid = $("#HidAppkeyGroupID").val(); 
+        var appkey=$('#txtAppKeys').val();
+        var appversion=$('#txtAppVersion').val(); 
+        if (appkey == "") {
+        	layer.alert("第三方平台AppKey不能为空!", {
+			    icon: 2
+	    	});
+            return;
+        }
+        var pars = { "appkey":appkey,"appversion":appversion,"groupid":gid};
+        var url = "<%=basePath%>/group/addgroupapiconfig";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: pars,
+            success: function (result) {
+            	if (result.responseCode==0) 
+                {
+                	layer.alert("设置成功!", {
         			    icon: 1
         	    	},function(){
         	    		window.location.reload();
