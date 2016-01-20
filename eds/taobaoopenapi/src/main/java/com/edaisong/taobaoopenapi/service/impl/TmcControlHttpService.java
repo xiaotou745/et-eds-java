@@ -21,6 +21,7 @@ import com.taobao.api.internal.tmc.Message;
 import com.taobao.api.internal.tmc.MessageHandler;
 import com.taobao.api.internal.tmc.MessageStatus;
 import com.taobao.api.internal.tmc.TmcClient;
+import com.taobao.api.request.WaimaiItemOperateRequest;
 import com.taobao.api.request.WaimaiOrderAckRequest;
 import com.taobao.api.response.WaimaiOrderAckResponse;
 import com.taobao.top.link.LinkException;
@@ -187,23 +188,13 @@ public class TmcControlHttpService implements ITmcControlHttpService {
 			ActiveMqLogUtil.writeLog(url,"TmcControlHttpService.orderRemind", param, data, resultJson,exceptionMsg, stackTrace, requestTime);
 			if (resultJson != null && !resultJson.isEmpty()) {
 				JSONObject jsonObject = new JSONObject(resultJson);
-				if (jsonObject.getInt("Status") == 1) {
-					String taobaoExceptionMsg = "";
-					String taobaoStackTrace = "";
-					Date taobaoRequestTime = new Date(); 
-					WaimaiOrderAckResponse response = new WaimaiOrderAckResponse();
-					Long deliveryOrderNo = ParseHelper.ToLong(jsonObject.getLong("Result"), 0);
-					try {
-						TaobaoClient client = new DefaultTaobaoClient(TaoBaoConsts.Uri, TaoBaoConsts.AppKey,TaoBaoConsts.AppSecret);
-						WaimaiOrderAckRequest req = new WaimaiOrderAckRequest();
-						req.setDeliveryOrderNo(deliveryOrderNo);
-						response = client.execute(req, TaoBaoConsts.SessionKey);
-					} catch (Exception e) {
-						taobaoExceptionMsg = e.getMessage();
-						taobaoStackTrace = StringUtils.getStackTrace(e);
-					}
+				Date taobaoRequestTime = new Date();
+				Long deliveryOrderNo = ParseHelper.ToLong(jsonObject.getLong("Result"), 0);
+				if (jsonObject.getInt("Status") == 1) { 
 					//记录调用taobaoapi的日志
-					ActiveMqLogUtil.writeLog(TaoBaoConsts.Uri,"TmcControlHttpService.orderRemind",deliveryOrderNo.toString(),deliveryOrderNo.toString(),JsonUtil.obj2string(response), taobaoExceptionMsg,taobaoStackTrace, taobaoRequestTime);
+					ActiveMqLogUtil.writeLog(TaoBaoConsts.Uri,"TmcControlHttpService.orderRemind",deliveryOrderNo.toString(),deliveryOrderNo.toString(),JsonUtil.obj2string("催单成功"), "催单成功","", taobaoRequestTime);
+				}else {
+					ActiveMqLogUtil.writeLog(TaoBaoConsts.Uri,"TmcControlHttpService.orderRemind",deliveryOrderNo.toString(),deliveryOrderNo.toString(),JsonUtil.obj2string(resultJson), "催单失败","", taobaoRequestTime);
 				}
 			}
 		} catch (Exception e) {
