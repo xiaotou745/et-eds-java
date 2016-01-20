@@ -59,7 +59,7 @@ public class ToAlipayQrTradePay {
 		// 使用SDK，构建群发请求模型
 		AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
 		request.setBizContent(sb.toString());
-		request.setNotifyUrl("http://185297.cicp.net:50366/fuwuchuang_demo/notify_url.jsp");
+		request.setNotifyUrl("http://pay73.yitaoyun.net:8011/payapi/services/aliservice/notifykey");
 //		request.putOtherTextParam("ws_service_url", "http://unitradeprod.t15032aqcn.alipay.net:8080");
 		AlipayTradePrecreateResponse response = null;
 		try {
