@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.upload.common.HttpResultModel;
 import com.edaisong.upload.common.HttpReturnRnums;
 import com.edaisong.upload.common.UploadFileHelper;
@@ -18,6 +19,37 @@ import com.edaisong.upload.common.UploadResultModel;
 @Controller
 @RequestMapping("fileupload")
 public class FileUploadController {	
+	//web页面上用jquery.uploadify上传文件时，ie和火狐都只能接收字符串类型的返回值（不支持json）
+	//因此为web页面上添加了这个方法
+	/**
+	 * web页面上调用的上传图片的方法
+	 * @author hailongzhao
+	 * @date 20160120
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("webuploadimg")
+	@ResponseBody
+	public String webUpLoadImg(HttpServletRequest request) throws Exception {
+		UploadResultModel resp= UploadFileHelper.UploadImg(request);
+		return JsonUtil.obj2string(resp);
+	}
+	@RequestMapping("webuploadfile")
+	@ResponseBody
+	public String webUpLoadFile(HttpServletRequest request) throws Exception {
+		UploadResultModel resp= UploadFileHelper.UploadFile(request);
+		return JsonUtil.obj2string(resp);
+	}
+	@RequestMapping("webdeletefile")
+	@ResponseBody
+	public String webDeleteFile(String fileUrl) throws Exception {
+		if (fileUrl==null||fileUrl.isEmpty()) {
+			return "文件路径不能为空";
+		}
+		UploadFileHelper.DeleteFile(fileUrl);
+		return "success";
+	}	
 	/**
 	 * 上传图片（会裁剪图片）
 	 * @author hailongzhao
