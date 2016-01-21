@@ -15,18 +15,17 @@
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-
-
+<!-- 	<import resource="payNotifyapi-servlet.xml" /> -->
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-	<import resource="classpath:conf/core/current-context.xml" />	
+	<import resource="classpath:conf/core/current-context.xml" />
 
 	<context:component-scan base-package="com.eds.service.impl" />
 
 	<jaxrs:server id="myService" address="/">
 		<jaxrs:serviceBeans>
-	<!-- 		<ref bean="testService" /> -->
+			<!-- <ref bean="testService" /> -->
 			<ref bean="aliService" />
 		</jaxrs:serviceBeans>
 		<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
