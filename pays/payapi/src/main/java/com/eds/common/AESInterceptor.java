@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,25 +34,17 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 	public void handleMessage(Message message) throws Fault {
 		String encryptMsg = "";
 		String decryptMsg = "";
-
+		boolean needCheck=checkNeedEncrypt(message);
 		try {
 			InputStream inputStream = message.getContent(InputStream.class);
-
-			//设置请求参数白名单
-			HttpServletRequest request = (HttpServletRequest) message
-					.get(AbstractHTTPDestination.HTTP_REQUEST);// 这句可以
-			if (request.getRequestURI().contains("/aliservice/notifykey")) {
-				return;
-			}
-
 			String inputMsg = StreamUtils.copyToString(inputStream,
 					Charset.forName("utf-8"));
+			logCustomerInfo(message, encryptMsg, decryptMsg);
 			if (inputMsg == null || inputMsg.isEmpty()) {
 				return;
 			}
-			String interceptSwith = PropertyUtils.getProperty("InterceptSwith");// "1"//
-																				// 开启加密
-			if (interceptSwith.equals("1")) {
+			String interceptSwith = PropertyUtils.getProperty("InterceptSwith");// "1"//	
+			if (interceptSwith.equals("1")&&needCheck) {
 				System.out.println("已开启解密拦截器");
 				if (inputMsg.indexOf("data") < 0) {
 					throw new RuntimeException("应该传入加密后的入参！");
@@ -65,7 +58,7 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 				encryptMsg = inputMsg;
 				decryptMsg = inputMsg;
 				System.out.println("暂未开启AES解密拦截器");
-				if (inputMsg.indexOf("data") > 0) {
+				if (inputMsg.indexOf("data") > 0&&needCheck) {
 					throw new RuntimeException("应该传入未加密的入参");
 				}
 			}
@@ -80,11 +73,19 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 		System.out.println("解密后的入参:" + decryptMsg);
 		logCustomerInfo(message, encryptMsg, decryptMsg);
 
-		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0) {
+		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0&&needCheck) {
 			throw new RuntimeException("应该传入未加密的入参");
 		}
 	}
-
+	private boolean checkNeedEncrypt(Message message){
+		//设置请求参数白名单
+		HttpServletRequest request = (HttpServletRequest) message
+				.get(AbstractHTTPDestination.HTTP_REQUEST);// 这句可以
+		if (request.getRequestURI().contains("/aliservice/notifykey")) {
+			return false;
+		}
+		return true;
+	}
 	/**
 	 * 记录额外的信息，用于统计log（先删除，后添加）
 	 * 

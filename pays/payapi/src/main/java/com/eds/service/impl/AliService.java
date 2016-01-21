@@ -1,5 +1,8 @@
 package com.eds.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 
 import net.sf.json.JSONObject;
@@ -20,6 +23,7 @@ import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.alipay.f2fpay.ToAlipayQrTradePay;
 import com.alipay.factory.AlipayAPIClientFactory;
 import com.edaisong.core.util.PropertyUtils;
+import com.edaisong.core.util.StreamUtils;
 import com.eds.common.Config;
 import com.eds.service.inter.IAliService;
 import com.alipay.config.*;
@@ -35,41 +39,49 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
 
+import org.apache.cxf.jaxrs.ext.MessageContext;
+import org.apache.cxf.message.Exchange;
+import org.apache.cxf.message.Message;
+import org.apache.cxf.jaxrs.ext.MessageContextImpl;
 @Service
 public class AliService implements IAliService {
 	String AliPayNotifyKey = new Config().getConfig("AliPayNotifyKey");
 	String AliPayNotifyRSA = new Config().getConfig("AliPayNotifyRSA");
 
 	@Override
-	public String NotifyKey(HttpServletRequest request,
-			HttpServletResponse response) {
-		Map<String, String> params = new HashMap<String, String>();
-
-		// Map requestParams = request.getParameterMap();
-		Map requestParams = null;
-		for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
-			String name = (String) iter.next();
-			String[] values = (String[]) requestParams.get(name);
-			String valueStr = "";
-			for (int i = 0; i < values.length; i++) {
-				valueStr = (i == values.length - 1) ? valueStr + values[i]
-						: valueStr + values[i] + ",";
-			}
-			// 乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-			// valueStr = new String(valueStr.getBytes("ISO-8859-1"), "gbk");
-			params.put(name, valueStr);
-		}
-		// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
-		// 批量付款数据中转账成功的详细信息
-		// AlipayBatchCallBackModel alipayBatchCallBackModel = new
-		// AlipayBatchCallBackModel();
-		// params.put("platform", "1");
-		params.put("verify", "1");// key
-		if (AlipayNotify.verify(params)) {// 验证成功
-			return "fail";
-		} else {
-			return "fail";
-		}
+	public String NotifyKey(MessageContext  request,
+			HttpServletResponse response) throws Exception {
+		String param=((MessageContextImpl)request).get("decryptMsg").toString();
+		return "";
+//		Map<String, String> params = new HashMap<String, String>();
+//		Map requestParams = request.getParameterMap();
+//		Enumeration<String> b=request.getParameterNames();
+//		for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+//			String name = (String) iter.next();
+//			String[] values = (String[]) requestParams.get(name);
+//			String valueStr = "";
+//			for (int i = 0; i < values.length; i++) {
+//				valueStr = (i == values.length - 1) ? valueStr + values[i]
+//						: valueStr + values[i] + ",";
+//			}
+//			// 乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
+//			// valueStr = new String(valueStr.getBytes("ISO-8859-1"), "gbk");
+//			params.put(name, valueStr);
+//		}
+//		// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
+//		// 批量付款数据中转账成功的详细信息
+//		// AlipayBatchCallBackModel alipayBatchCallBackModel = new
+//		// AlipayBatchCallBackModel();
+//		// params.put("platform", "1");
+//		if (params.isEmpty()) {
+//			return "fail";
+//		}
+//		params.put("verify", "1");// key
+//		if (AlipayNotify.verify(params)) {// 验证成功
+//			return "fail";
+//		} else {
+//			return "fail";
+//		}
 	}
 
 	@Override

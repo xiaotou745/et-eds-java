@@ -16,6 +16,10 @@ import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.alipay.parmodel.ParamAliModel;
 import com.alipay.parmodel.ParamBatchTransModel;
 
+import org.apache.cxf.jaxrs.ext.MessageContext;
+import org.apache.cxf.message.Message;
+
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 @Path("/aliservice")
@@ -25,18 +29,16 @@ import javax.ws.rs.core.MediaType;
 // 当前类的所有方法都返回json格式的数据
 public interface IAliService {
 
-//	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN })
-	// {MediaType.ALL})
-	// "application/x-www-form-urlencoded")
-//	@Produces({ MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN })
+	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN })
+	@Produces(MediaType.TEXT_PLAIN)
 	@POST
 	@Path("/notifykey")
-	public String NotifyKey(HttpServletRequest request,HttpServletResponse response) ;
-
-	@Produces({ MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN })
+	public String NotifyKey(@Context MessageContext  httpRequest,@Context HttpServletResponse response)  throws Exception;
+	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN })
+	@Produces(MediaType.TEXT_PLAIN)
 	@POST
 	@Path("/notifyrsa")
-	public String NotifyRSA(HttpServletRequest request);
+	public String NotifyRSA(@Context HttpServletRequest request);
 
 	@POST
 	@Path("/createorder")
@@ -63,5 +65,6 @@ public interface IAliService {
 	 * */
 	@POST
 	@Path("batchtrans")
+	@Produces(MediaType.TEXT_PLAIN)
 	public String batchTrans(ParamBatchTransModel model);
 }
