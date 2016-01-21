@@ -34,7 +34,7 @@ public class HtmlHelper {
 	 */
 	public static <T> String getSelect(String selectName, List<T> list,
 			String textName, String valueName, Object selectedValue,
-			Object defaultValue, String defaultText, String styleString,String classString) {
+			Object defaultValue, String defaultText, String styleString,String classString,Boolean auto) {
 		StringBuffer htmlStrBuffer = new StringBuffer();
 		String selected = "";
 		String style = "";
@@ -44,6 +44,18 @@ public class HtmlHelper {
 		String strClass = "form-control m-b";
 		if (classString != null&&!classString.isEmpty()) {
 			strClass = classString;
+		}
+		String autooptString="";
+		String divjsStringHead=" ";
+		String divjsStringFoot=" ";
+		if(auto){//zidong
+			strClass+=" chosen-select";
+			autooptString=" hassubinfo=\"true\" ";
+		    divjsStringHead=" <div class=\"input-group\" style=\"width:100%\"> ";
+		   // divjsStringFoot= "  </div> ";
+		    divjsStringFoot= "  </div>  <script>"
+		    		+"var configAutoCity = { '.chosen-select': {},'.chosen-select-deselect': { allow_single_deselect: true},'.chosen-select-no-single': {  disable_search_threshold: 10}, '.chosen-select-no-results': {no_results_text: '未找到结果!'},'.chosen-select-width': {width: \"50%\"}};for (var selector in configAutoCity) {$(selector).chosen(configAutoCity[selector]);}"
+		    		+ "</script>";
 		}
 		htmlStrBuffer.append(" <select class=\""+strClass+"\" " + style + " id=\""
 				+ selectName + "\" name=\"" + selectName + "\"> ");
@@ -79,12 +91,14 @@ public class HtmlHelper {
 						&& selectedValue.toString().equals(ValueText)) {
 						selected = " selected=\"selected\" ";
 					}
-					htmlStrBuffer.append(" <option " + selected + " value=\""
+					htmlStrBuffer.append(" <option "+autooptString + selected + " value=\""
 										+ ValueText + "\">"+ NameText+ "</option>");
 					selected = "";
 				}
 			}
-			return htmlStrBuffer.append("</select>").toString();
+			htmlStrBuffer.append("</select>");
+			
+			return divjsStringHead+ htmlStrBuffer.toString() +divjsStringFoot;
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}
@@ -143,7 +157,7 @@ public class HtmlHelper {
 	public static <T> String getSelect(String selectName, List<T> list,
 			String textName, String valueName) {
 		return getSelect(selectName, list, textName, valueName, null, "-1",
-				"全部", null,null);
+				"全部", null,null,false);
 	}
 
 	/**
@@ -161,7 +175,7 @@ public class HtmlHelper {
 	public static <T> String getSelect(String selectName, List<T> list,
 			String textName, String valueName, String styleString) {
 		return getSelect(selectName, list, textName, valueName, null, "-1",
-				"全部", styleString,null);
+				"全部", styleString,null,false);
 	}
 	
 	/**
@@ -180,7 +194,7 @@ public class HtmlHelper {
 			String textName, String valueName, Object selectedValue,
 			Object defaultValue, String defaultText, String styleString) {
 		return getSelect(selectName, list, textName, valueName, selectedValue, defaultValue,
-				defaultText, styleString,null);
+				defaultText, styleString,null,false);
 	}
 	/**
 	 * 
@@ -198,6 +212,80 @@ public class HtmlHelper {
 			String textName, String valueName, Object selectedValue,
 			Object defaultValue, String defaultText) {
 		return getSelect(selectName, list, textName, valueName, selectedValue, defaultValue,
-				defaultText, null,null);
+				defaultText, null,null,false);
 	}
+	/*******************************************************/
+	/**
+	 * 
+	 * @param selectName
+	 *            下拉框名称
+	 * @param list
+	 *            下拉框数据集
+	 * @param textName
+	 *            文本对应的item的属性名称
+	 * @param valueName
+	 *            value对应的item的属性名称
+	 * @return
+	 */
+	public static <T> String getSelectAuto(String selectName, List<T> list,
+			String textName, String valueName) {
+		return getSelect(selectName, list, textName, valueName, null, "-1",
+				"全部", null,null,true);
+	}
+
+	/**
+	 * 
+	 * @param selectName
+	 *            下拉框名称
+	 * @param list
+	 *            下拉框数据集
+	 * @param textName
+	 *            文本对应的item的属性名称
+	 * @param valueName
+	 *            value对应的item的属性名称
+	 * @return
+	 */
+	public static <T> String getSelectAuto(String selectName, List<T> list,
+			String textName, String valueName, String styleString) {
+		return getSelect(selectName, list, textName, valueName, null, "-1",
+				"全部", styleString,null,true);
+	}
+	
+	/**
+	 * 
+	 * @param selectName
+	 * @param list
+	 * @param textName
+	 * @param valueName
+	 * @param selectedValue
+	 * @param defaultValue
+	 * @param defaultText
+	 * @param styleString
+	 * @return
+	 */
+	public static <T> String getSelectAuto(String selectName, List<T> list,
+			String textName, String valueName, Object selectedValue,
+			Object defaultValue, String defaultText, String styleString) {
+		return getSelect(selectName, list, textName, valueName, selectedValue, defaultValue,
+				defaultText, styleString,null,true);
+	}
+	/**
+	 * 
+	 * @param selectName
+	 * @param list
+	 * @param textName
+	 * @param valueName
+	 * @param selectedValue
+	 * @param defaultValue
+	 * @param defaultText
+	 * @param styleString
+	 * @return
+	 */
+	public static <T> String getSelectAuto(String selectName, List<T> list,
+			String textName, String valueName, Object selectedValue,
+			Object defaultValue, String defaultText) {
+		return getSelect(selectName, list, textName, valueName, selectedValue, defaultValue,
+				defaultText, null,null,true);
+	}
+
 }
