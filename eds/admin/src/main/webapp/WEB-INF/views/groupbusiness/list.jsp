@@ -178,8 +178,8 @@
 	    	alert("登录账号不能为中文字符");
 	    	return;
 	    }
-	    if(loginName.trim().length <6 || loginName.trim().length>20){
-	    	alert("登录账号除中文外6-20位字符");
+	    if(loginName.trim().length <6 || loginName.trim().length>15){
+	    	alert("登录账号除中文外6-15位字符");
 	    	return;
 	    }
 	    if(pw.trim().length <6 || pw.trim().length>20){

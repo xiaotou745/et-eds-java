@@ -41,7 +41,7 @@
 								<input type="hidden" name="userType" id="userType" value="0"/>
 							</h3>
 
-								<input type="text" placeholder="输入手机号码" class="ex_iphone" maxlength="11" name="phoneNo" id="phoneNo">
+								<input type="text" placeholder="输入手机号码" class="ex_iphone" maxlength="15" name="phoneNo" id="phoneNo">
 								<p><b class="error error1"></b></p>
 								<input type="password" placeholder="输入密码"  class="ex_pord" name="password" id="password">
 								<p><b class="error error2"></b></p>
