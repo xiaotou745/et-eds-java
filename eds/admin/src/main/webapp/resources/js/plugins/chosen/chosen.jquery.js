@@ -145,7 +145,7 @@
             this.disable_search = this.options.disable_search || false;
             this.enable_split_word_search = this.options.enable_split_word_search != null ? this.options.enable_split_word_search : true;
             this.group_search = this.options.group_search != null ? this.options.group_search : true;
-            this.search_contains = this.options.search_contains || false;
+            this.search_contains = this.options.search_contains || true;
             this.single_backstroke_delete = this.options.single_backstroke_delete != null ? this.options.single_backstroke_delete : true;
             this.max_selected_options = this.options.max_selected_options || Infinity;
             this.inherit_select_classes = this.options.inherit_select_classes || false;
@@ -514,7 +514,7 @@
 
         AbstractChosen.default_single_text = "Select an Option";
 
-        AbstractChosen.default_no_result_text = "No results match";
+        AbstractChosen.default_no_result_text = "未找到结果";
 
         return AbstractChosen;
 
