@@ -67,7 +67,7 @@ public class ExcelUtils {
 	public static void export2Excel(String fileName,String title,LinkedHashMap<String,String> columnTitiles,
 			List<?> records,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		if (records==null||records.size()==0||columnTitiles==null||columnTitiles.size()==0) {
-			response.getWriter().write("<script>alert('No Data!');window.close();</script>");
+			response.getWriter().write("<script>alert('No Data!');window.opener=null;window.open(\"\",\"_self\");window.close();</script>");
 			return;
 		}
 		ExcelExportData data = new ExcelUtils.ExcelExportData();
