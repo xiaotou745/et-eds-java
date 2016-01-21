@@ -40,7 +40,7 @@ public class AlipayAPIClientFactory {
 				alipayEdsClient = new DefaultAlipayClient(
 						EDSAlipayServiceEnvConstants.ALIPAY_GATEWAY,
 						EDSAlipayServiceEnvConstants.APP_ID,
-						EDSAlipayServiceEnvConstants.PRIVATE_KEY, "json",
+						EDSAlipayServiceEnvConstants.PRIVATE_KEY,"json",
 						EDSAlipayServiceEnvConstants.CHARSET,
 						EDSAlipayServiceEnvConstants.ALIPAY_PUBLIC_KEY);
 			}
@@ -51,7 +51,7 @@ public class AlipayAPIClientFactory {
 				alipayRRTClient = new DefaultAlipayClient(
 						RRTAlipayServiceEnvConstants.ALIPAY_GATEWAY,
 						RRTAlipayServiceEnvConstants.APP_ID,
-						RRTAlipayServiceEnvConstants.PRIVATE_KEY, "json",
+						RRTAlipayServiceEnvConstants.PRIVATE_KEY,"json",
 						RRTAlipayServiceEnvConstants.CHARSET,
 						RRTAlipayServiceEnvConstants.ALIPAY_PUBLIC_KEY);
 			}

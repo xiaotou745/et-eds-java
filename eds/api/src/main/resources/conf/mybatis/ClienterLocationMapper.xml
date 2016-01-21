@@ -108,6 +108,7 @@ where  datediff( second, CreateTime, getdate()) <![CDATA[ <]]>#{minuteInfo}
 and round(geography::Point(ISNULL(Latitude,0),ISNULL(Longitude,0),4326).STDistance(@cliernterPoint),0)<![CDATA[ <]]>#{distance}
 and b.PushShanSongOrderSet=1
 and b.DeliveryCompanyId=0
+and b.WorkStatus=0
 group by ClienterId
   </select>
   
