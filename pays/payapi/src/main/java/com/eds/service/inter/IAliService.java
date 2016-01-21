@@ -29,24 +29,9 @@ import javax.ws.rs.core.MediaType;
 // 当前类的所有方法都返回json格式的数据
 public interface IAliService {
 
-	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED,
-			MediaType.APPLICATION_JSON, MediaType.TEXT_HTML,
-			MediaType.TEXT_PLAIN })
-	@Produces(MediaType.TEXT_PLAIN)
-	@POST
-	@Path("/notifykey")
-	public String NotifyKey(@Context MessageContext httpRequest,
-			@Context HttpServletResponse response) throws Exception;
-
-	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN })
-	@Produces(MediaType.TEXT_PLAIN)
-	@POST
-	@Path("/notifyrsa")
-	public String NotifyRSA(@Context HttpServletRequest request);
-
 	@POST
 	@Path("/createorder")
-	public AlipayTradePrecreateResponse createOrder(ParamAliModel model)
+	public String createOrder(ParamAliModel model)
 			throws AlipayApiException;
 
 	@POST
