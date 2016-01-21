@@ -1,0 +1,34 @@
+2015-12-10 11:07:58 INFO  DispatcherServlet:484 - FrameworkServlet 'admin': initialization started
+2015-12-10 11:07:58 INFO  XmlWebApplicationContext:510 - Refreshing WebApplicationContext for namespace 'admin-servlet': startup date [Thu Dec 10 11:07:58 CST 2015]; root of context hierarchy
+2015-12-10 11:07:58 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from ServletContext resource [/WEB-INF/admin-servlet.xml]
+2015-12-10 11:07:58 INFO  PropertyPlaceholderConfigurer:172 - Loading properties file from class path resource [conf.properties]
+2015-12-10 11:07:59 INFO  RequestMappingHandlerMapping:220 - Mapped "{[/ajaxdemo/hello],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView admin.edaisong.controller.HelloWorldController.index(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2015-12-10 11:07:59 INFO  RequestMappingHandlerAdapter:523 - Looking for @ControllerAdvice: WebApplicationContext for namespace 'admin-servlet': startup date [Thu Dec 10 11:07:58 CST 2015]; root of context hierarchy
+2015-12-10 11:07:59 INFO  RequestMappingHandlerAdapter:523 - Looking for @ControllerAdvice: WebApplicationContext for namespace 'admin-servlet': startup date [Thu Dec 10 11:07:58 CST 2015]; root of context hierarchy
+2015-12-10 11:07:59 INFO  SimpleUrlHandlerMapping:315 - Mapped URL path [/css/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+2015-12-10 11:07:59 INFO  SimpleUrlHandlerMapping:315 - Mapped URL path [/js/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#1'
+2015-12-10 11:07:59 INFO  SimpleUrlHandlerMapping:315 - Mapped URL path [/images/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#2'
+2015-12-10 11:07:59 INFO  DispatcherServlet:503 - FrameworkServlet 'admin': initialization completed in 1916 ms
+2015-12-10 11:08:14 INFO  XmlWebApplicationContext:862 - Closing WebApplicationContext for namespace 'admin-servlet': startup date [Thu Dec 10 11:07:58 CST 2015]; root of context hierarchy
+2015-12-10 11:08:25 INFO  DispatcherServlet:484 - FrameworkServlet 'admin': initialization started
+2015-12-10 11:08:25 INFO  XmlWebApplicationContext:510 - Refreshing WebApplicationContext for namespace 'admin-servlet': startup date [Thu Dec 10 11:08:25 CST 2015]; root of context hierarchy
+2015-12-10 11:08:25 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from ServletContext resource [/WEB-INF/admin-servlet.xml]
+2015-12-10 11:08:26 INFO  PropertyPlaceholderConfigurer:172 - Loading properties file from class path resource [conf.properties]
+2015-12-10 11:08:26 INFO  RequestMappingHandlerMapping:220 - Mapped "{[/ajaxdemo/hello],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView admin.edaisong.controller.HelloWorldController.index(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2015-12-10 11:08:26 INFO  RequestMappingHandlerAdapter:523 - Looking for @ControllerAdvice: WebApplicationContext for namespace 'admin-servlet': startup date [Thu Dec 10 11:08:25 CST 2015]; root of context hierarchy
+2015-12-10 11:08:27 INFO  RequestMappingHandlerAdapter:523 - Looking for @ControllerAdvice: WebApplicationContext for namespace 'admin-servlet': startup date [Thu Dec 10 11:08:25 CST 2015]; root of context hierarchy
+2015-12-10 11:08:27 INFO  SimpleUrlHandlerMapping:315 - Mapped URL path [/css/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+2015-12-10 11:08:27 INFO  SimpleUrlHandlerMapping:315 - Mapped URL path [/js/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#1'
+2015-12-10 11:08:27 INFO  SimpleUrlHandlerMapping:315 - Mapped URL path [/images/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#2'
+2015-12-10 11:08:27 INFO  DispatcherServlet:503 - FrameworkServlet 'admin': initialization completed in 1504 ms
+2015-12-10 11:09:34 INFO  DispatcherServlet:484 - FrameworkServlet 'admin': initialization started
+2015-12-10 11:09:34 INFO  XmlWebApplicationContext:510 - Refreshing WebApplicationContext for namespace 'admin-servlet': startup date [Thu Dec 10 11:09:34 CST 2015]; root of context hierarchy
+2015-12-10 11:09:34 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from ServletContext resource [/WEB-INF/admin-servlet.xml]
+2015-12-10 11:09:34 INFO  PropertyPlaceholderConfigurer:172 - Loading properties file from class path resource [conf.properties]
+2015-12-10 11:09:35 INFO  RequestMappingHandlerMapping:220 - Mapped "{[/ajaxdemo/hello],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView admin.edaisong.controller.HelloWorldController.index(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2015-12-10 11:09:35 INFO  RequestMappingHandlerAdapter:523 - Looking for @ControllerAdvice: WebApplicationContext for namespace 'admin-servlet': startup date [Thu Dec 10 11:09:34 CST 2015]; root of context hierarchy
+2015-12-10 11:09:35 INFO  RequestMappingHandlerAdapter:523 - Looking for @ControllerAdvice: WebApplicationContext for namespace 'admin-servlet': startup date [Thu Dec 10 11:09:34 CST 2015]; root of context hierarchy
+2015-12-10 11:09:35 INFO  SimpleUrlHandlerMapping:315 - Mapped URL path [/css/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+2015-12-10 11:09:35 INFO  SimpleUrlHandlerMapping:315 - Mapped URL path [/js/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#1'
+2015-12-10 11:09:35 INFO  SimpleUrlHandlerMapping:315 - Mapped URL path [/images/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#2'
+2015-12-10 11:09:35 INFO  DispatcherServlet:503 - FrameworkServlet 'admin': initialization completed in 1480 ms

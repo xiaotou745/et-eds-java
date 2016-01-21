@@ -2,7 +2,6 @@ package com.edaisong.toolsentity.domain;
 
 import java.util.Date;
 
-import com.edaisong.toolscore.enums.TaskStatus;
 import com.edaisong.toolscore.util.DateTime;
 import com.edaisong.toolsentity.req.TasksStatus;
 

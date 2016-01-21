@@ -129,7 +129,6 @@ public class ToolsController {
 
 	@RequestMapping("tasks/refresh")
 	public ModelAndView taskRefresh(HttpServletRequest request, TasksQueryReq queryReq) {
-		System.out.println("parameters:" + JsonUtil.obj2string(queryReq));
 		ModelAndView model = new ModelAndView("tools/_taskslist");
 
 		TasksViewModel viewModel = new TasksViewModel();
@@ -138,7 +137,6 @@ public class ToolsController {
 		queryReq.setUserId(userId);
 		queryReq.setStartTime(DateTime.parse(queryReq.getStartTime(), "yyyy-MM-dd").getDate().toString());
 		queryReq.setEndTime(DateTime.parse(queryReq.getEndTime(), "yyyy-MM-dd").addDays(1).getDate().toString());
-		System.out.println("parameters2:" + JsonUtil.obj2string(queryReq));
 		List<Tasks> lstTasks = tasksService.query(queryReq);
 
 		viewModel.setTasks(lstTasks);
