@@ -105,7 +105,7 @@ public class AliService implements IAliService {
 	 * 退款
 	 * */
 	@Override
-	public AlipayTradeRefundResponse refundOrder(ParamAliModel model)
+	public String refundOrder(ParamAliModel model)
 			throws AlipayApiException {
 		AlipayClient alipayClient = AlipayAPIClientFactory
 				.getAlipayClient(model.getPlatform());
@@ -118,14 +118,14 @@ public class AliService implements IAliService {
 
 		request.setBizContent(json.toString());
 		AlipayTradeRefundResponse response = alipayClient.execute(request);
-		return response;
+		return response.getFundChange();
 	}
 
 	/**
 	 * 查询订单状态
 	 * */
 	@Override
-	public AlipayTradeQueryResponse queryOrder(ParamAliModel model)
+	public String queryOrder(ParamAliModel model)
 			throws AlipayApiException {
 		AlipayClient alipayClient = AlipayAPIClientFactory
 				.getAlipayClient(model.getPlatform());
@@ -138,7 +138,7 @@ public class AliService implements IAliService {
 		System.out.println(json.toString());
 		request.setBizContent(json.toString());
 		AlipayTradeQueryResponse response = alipayClient.execute(request);
-		return response;
+		return response.getTradeStatus();
 	}
 
 }

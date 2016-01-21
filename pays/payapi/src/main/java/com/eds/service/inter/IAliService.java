@@ -41,12 +41,12 @@ public interface IAliService {
 
 	@POST
 	@Path("/refundorder")
-	public AlipayTradeRefundResponse refundOrder(ParamAliModel model)
+	public String refundOrder(ParamAliModel model)
 			throws AlipayApiException;
 
 	@POST
 	@Path("/queryorder")
-	public AlipayTradeQueryResponse queryOrder(ParamAliModel model)
+	public String queryOrder(ParamAliModel model)
 			throws AlipayApiException;
 
 	/**
