@@ -27,6 +27,7 @@
 		<jaxrs:serviceBeans>
 			<!-- <ref bean="testService" /> -->
 			<ref bean="aliService" />
+			<ref bean="wxService" />
 		</jaxrs:serviceBeans>
 		<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
 		<jaxrs:inInterceptors>
