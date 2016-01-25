@@ -35,6 +35,7 @@ public class MsgInterceptor extends AbstractPhaseInterceptor<Message> {
 		try {
 			InputStream inputStream = message.getContent(InputStream.class);
 			String inputMsg = StreamUtils.copyToString(inputStream, Charset.forName("utf-8"));
+			logCustomerInfo(message, encryptMsg, decryptMsg);
 			if (inputMsg==null||inputMsg.isEmpty()) {
 				return;
 			}
@@ -67,7 +68,7 @@ public class MsgInterceptor extends AbstractPhaseInterceptor<Message> {
 		logCustomerInfo(message, encryptMsg, decryptMsg);
 
 		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0) {
-			throw new RuntimeException("解密后的参数必须是json个数的数据");
+			throw new RuntimeException("解密后的参数必须是json格式的数据");
 		}
 	}
 
