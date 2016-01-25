@@ -15,12 +15,12 @@
 		<property name="order" value="1" />
 		<property name="locations">
 			<list>
-				<value>classpath:conf/core/current-conf.properties</value>
-				<value>classpath:conf/core/current-env.properties</value>
+<!-- 				<value>classpath:conf/core/current-conf.properties</value> -->
+<!-- 				<value>classpath:conf/core/current-env.properties</value> -->
 <!-- 				<value>classpath:conf/custom/test-conf.properties</value> -->
 <!-- 				<value>classpath:conf/custom/test-env.properties</value> -->
-				<!-- <value>classpath:conf/custom/pro-conf.properties</value> -->
-				<!-- <value>classpath:conf/custom/pro-env.properties</value> -->
+				<value>classpath:conf/custom/pro-conf.properties</value>
+				<value>classpath:conf/custom/pro-env.properties</value>
 			</list>
 		</property>
 	</bean>
