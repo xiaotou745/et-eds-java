@@ -23,10 +23,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 @Path("/aliservice")
+//当前方法接收的参数类型
 @Consumes("application/json")
-// 当前方法接收的参数类型
+//当前类的所有方法都返回json格式的数据
 @Produces("application/json; charset=utf-8")
-// 当前类的所有方法都返回json格式的数据
 public interface IAliService {
 
 	@POST
