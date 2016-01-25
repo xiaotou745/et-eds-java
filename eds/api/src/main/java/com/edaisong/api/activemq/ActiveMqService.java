@@ -1,6 +1,8 @@
 package com.edaisong.api.activemq;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -26,6 +28,7 @@ public class ActiveMqService {
 	private Destination queueDestination;
 	@Autowired
 	private Destination serviceLogQueueDestination;
+	private static   ExecutorService fixedThreadPool = Executors.newFixedThreadPool(3);  
 /**
  * 异步发送mq消息
  * @author hailongzhao
@@ -33,14 +36,20 @@ public class ActiveMqService {
  * @param message
  */
 	public void asynSendMessage(String sourceSys,final String message) {
-		Thread dThread = new Thread(new Runnable() {
+		fixedThreadPool.execute(new Runnable() {
 			@Override
 			public void run() {
 				synSendMessage(sourceSys,message);
 			}
 		});
-		dThread.setDaemon(false);
-		dThread.start();
+//		Thread dThread = new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				synSendMessage(sourceSys,message);
+//			}
+//		});
+//		dThread.setDaemon(false);
+//		dThread.start();
 	}
 	/**
 	 * 同步发送mq消息
