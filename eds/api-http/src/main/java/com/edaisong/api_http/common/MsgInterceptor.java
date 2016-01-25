@@ -18,11 +18,11 @@ import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StreamUtils;
 import com.edaisong.core.util.StringUtils;
-import com.edaisong.entity.req.AesParameterReq;
+import com.edaisong.entity.req.ParameterReq;
 
-public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
+public class MsgInterceptor extends AbstractPhaseInterceptor<Message> {
 
-	public AESInterceptor() {
+	public MsgInterceptor() {
 		// 接受参数时候调用
 		super(Phase.RECEIVE);
 	}
@@ -44,13 +44,13 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 				if (inputMsg.indexOf("data")<0) {
 					throw new RuntimeException("应该传入加密后的入参！");
 				}
-				AesParameterReq req = JsonUtil.str2obj(inputMsg,AesParameterReq.class);
+				ParameterReq req = JsonUtil.str2obj(inputMsg,ParameterReq.class);
 				encryptMsg = req.getData();
 				decryptMsg = AES.aesDecrypt(StringUtils.trimRight(req.getData(), "\n"));// AES解密
 			} else {
 				encryptMsg = inputMsg;
 				decryptMsg = inputMsg;
-				System.out.println("暂未开启AES解密拦截器");
+				System.out.println("暂未开启解密");
 				if (inputMsg.indexOf("data")>0) {
 					throw new RuntimeException("应该传入未加密的入参");
 				}
@@ -67,7 +67,7 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 		logCustomerInfo(message, encryptMsg, decryptMsg);
 
 		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0) {
-			throw new RuntimeException("应该传入未加密的入参");
+			throw new RuntimeException("解密后的参数必须是json个数的数据");
 		}
 	}
 

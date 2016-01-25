@@ -18,7 +18,7 @@ import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StreamUtils;
 import com.edaisong.core.util.StringUtils;
-import com.edaisong.entity.req.AesParameterReq;
+import com.edaisong.entity.req.ParameterReq;
 
 public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 
@@ -42,7 +42,7 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 					throw new RuntimeException("传递的入参是没有加密的字符串，但是apihttp项目开启了AES解密");
 				}
 				if (inputMsg!=null&&!inputMsg.isEmpty()) {
-					AesParameterReq req = JsonUtil.str2obj(inputMsg,AesParameterReq.class);
+					ParameterReq req = JsonUtil.str2obj(inputMsg,ParameterReq.class);
 					encryptMsg = req.getData();
 					decryptMsg = AES.aesDecrypt(StringUtils.trimRight(req.getData(), "\n"));// AES解密
 				}

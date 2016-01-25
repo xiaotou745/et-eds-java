@@ -44,7 +44,7 @@
 		<!-- <如果是同一个阶段的拦截器，则按照配置的顺序执行> -->
 		<jaxrs:inInterceptors>
 			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
-			<bean class="com.edaisong.api_http.common.AESInterceptor"></bean>
+			<bean class="com.edaisong.api_http.common.MsgInterceptor"></bean>
 		</jaxrs:inInterceptors>
 		<jaxrs:outInterceptors>
 			<bean class="com.edaisong.api_http.common.RqeustInterceptor"></bean>
