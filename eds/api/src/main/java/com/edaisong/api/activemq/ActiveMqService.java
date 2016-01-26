@@ -28,7 +28,8 @@ public class ActiveMqService {
 	private Destination queueDestination;
 	@Autowired
 	private Destination serviceLogQueueDestination;
-	private static   ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);  
+	//线上环境用线程池，可能导致cpu和内存暴涨，原因暂时不清楚
+	//private static   ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);  
 /**
  * 异步发送mq消息
  * @author hailongzhao
@@ -36,20 +37,21 @@ public class ActiveMqService {
  * @param message
  */
 	public void asynSendMessage(String sourceSys,final String message) {
-		fixedThreadPool.execute(new Runnable() {
-			@Override
-			public void run() {
-				synSendMessage(sourceSys,message);
-			}
-		});
-//		Thread dThread = new Thread(new Runnable() {
+//线上环境用线程池，可能导致cpu和内存暴涨，原因暂时不清楚
+//		fixedThreadPool.execute(new Runnable() {
 //			@Override
 //			public void run() {
 //				synSendMessage(sourceSys,message);
 //			}
 //		});
-//		dThread.setDaemon(false);
-//		dThread.start();
+		Thread dThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synSendMessage(sourceSys,message);
+			}
+		});
+		dThread.setDaemon(false);
+		dThread.start();
 	}
 	/**
 	 * 同步发送mq消息

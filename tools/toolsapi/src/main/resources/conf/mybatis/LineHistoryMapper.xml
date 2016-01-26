@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.toolsapi.dao.inter.ILineHistoryDao" >
+   <insert id="addLineHistory" parameterType="com.edaisong.toolsentity.req.LineHistoryReq" >
+	   insert into dbo.LineHistory
+	        ( DevPlatform ,
+	          OnLineProduct ,
+	          DevVersion ,
+	          OnLineTime ,
+	          OnLineContent ,
+	          Remark ,
+	          CreateName
+	        )
+	values  (
+				#{devPlatform,jdbcType=NVARCHAR},
+				#{onLineProduct,jdbcType=NVARCHAR},
+				#{devVersion,jdbcType=NVARCHAR},
+				#{onLineTime,jdbcType=DATETIME},
+				#{onLineContent,jdbcType=NVARCHAR},
+				#{remark,jdbcType=NVARCHAR},
+				#{createName,jdbcType=NVARCHAR}
+	        )
+   </insert>
+   <update id="deleteLineHistory" parameterType="com.edaisong.toolsentity.req.LineHistoryReq">
+   		update dbo.LineHistory set IsEnable=0,ModifyTime=getdate(),ModifyName=#{modifyName,jdbcType=NVARCHAR} where id = #{id,jdbcType=INTEGER}
+   </update>
+   <update id="modifyLineHistory" parameterType="com.edaisong.toolsentity.req.LineHistoryReq">
+   		update dbo.LineHistory set OnLineTime={#onLineTime,jdbcType=DATETIME},ModifyTime=getdate(),DevVersion={#devVersion},OnLineContent={#onLineContent,jdbcType=NVARCHAR},Remark={#remark,jdbcType=NVARCHAR},ModifyName=#{modifyName,jdbcType=NVARCHAR} where id = #{id,jdbcType=INTEGER}
+   </update>
+   
+</mapper>
