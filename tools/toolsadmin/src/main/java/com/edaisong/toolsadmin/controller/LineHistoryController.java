@@ -35,7 +35,7 @@ public class LineHistoryController {
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "上线里程");
 		view.addObject("currenttitle", "上线里程"); 
-		view.addObject("appNameList", toolsHelper.getappNameList(null,null));
+		view.addObject("appNameList", toolsHelper.getAppNameList(null,null));
 		view.addObject("viewPath", "linehistory/list"); 
 		return view;
 	}

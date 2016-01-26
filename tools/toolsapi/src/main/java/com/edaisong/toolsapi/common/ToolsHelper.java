@@ -67,7 +67,7 @@ public class ToolsHelper {
 	 * @param serverType
 	 * @return
 	 */
-	public List<String> getappNameList(ServerType serverType,String appName){
+	public List<String> getAppNameList(ServerType serverType,String appName){
 		List<AppDbConfig> resp = getAppConfigList(serverType,appName);
 		List<String> appNameList =resp.stream().map(t->t.getAppname()).distinct().collect(Collectors.toList());
 		return appNameList;
@@ -197,6 +197,28 @@ public class ToolsHelper {
 		sort.put(req.getOrderBy(), req.getOrderType());//按照执行时间倒序（1是升序，-1是降序）
 		req.setSortObject(sort);
     }
+	/**
+	 * 总体统计时用到的列
+	 * @return
+	 */
+	public  BasicDBObject getColumns(){
+		BasicDBObject columns= new BasicDBObject();// 指定需要显示列
+		columns.put("stackTrace", 1);
+		columns.put("executeTime", 1);
+		columns.put("requestTime", 1);
+		return columns;
+	} 
+	/**
+	 * 每个方法查询时用到的列
+	 * @return
+	 */
+	public  BasicDBObject getTimeColumns(){
+		BasicDBObject columns= new BasicDBObject();// 指定需要显示列
+		columns.put("stackTrace", 1);
+		columns.put("executeTime", 1);
+		columns.put("requestUrl", 1);
+		return columns;
+	} 
     /**
      * 根据页面上的查询条件组织对monmgo的查询request
      * @author hailongzhao
@@ -219,7 +241,7 @@ public class ToolsHelper {
 		}
 		return query;
     }
-	public String getTableName(String beginDate){
+	private String getTableName(String beginDate){
     	return "logtb_"+ParseHelper.ToDateString(ParseHelper.ToDate(beginDate), "yyyy_MM");
     }
 	public List<String> queryAllVersion() throws Exception{	
@@ -235,7 +257,7 @@ public class ToolsHelper {
 		}
 		return resultVersion;
 	}
-	public List<String> queryVersion(String sourceSys) throws Exception{
+	private List<String> queryVersion(String sourceSys) throws Exception{
 		List<String> result=new ArrayList<String>();
 		result=redisService.get(RedissCacheKey.AppVersion_Key+sourceSys,List.class);
 		//redisService.remove(RedissCacheKey.AppVersion_Key+sourceSys);
@@ -334,7 +356,7 @@ public class ToolsHelper {
 	 * @return
 	 * @throws Exception 
 	 */
-	public LinkedHashMap<String, String> splitTimeRange(Date begin,Date end) throws Exception{
+	private LinkedHashMap<String, String> splitTimeRange(Date begin,Date end) throws Exception{
     	LinkedHashMap<String, String> result = new LinkedHashMap<String, String>();
 		if (begin.before(end)) {
 			String monthBegin = "";
@@ -379,7 +401,7 @@ public class ToolsHelper {
      * @param sdf
      * @throws Exception
      */
-	public void getWhere(MongoLogReq req,BasicDBObject tempReq,String begin,String end,SimpleDateFormat sdf) throws Exception{
+	private void getWhere(MongoLogReq req,BasicDBObject tempReq,String begin,String end,SimpleDateFormat sdf) throws Exception{
     	String isversion="";
     	String isurl="";
     	if (req.getAppversion()!=null&&!req.getAppversion().isEmpty()) {
@@ -410,7 +432,7 @@ public class ToolsHelper {
      * @author hailongzhao
      * @return
      */
-	public Map<Long, Long> splitStep(Date begin,Date end,int minStep){
+	private Map<Long, Long> splitStep(Date begin,Date end,int minStep){
     	Map<Long, Long> result = new HashMap<Long, Long>();
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		if (begin.before(end)) {
