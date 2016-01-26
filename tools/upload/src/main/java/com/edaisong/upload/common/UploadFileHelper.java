@@ -160,10 +160,10 @@ public class UploadFileHelper {
 					continue;
 				}
 			} else {
-				if (fis.getSize() > 1000000) {
-					result.setRemark("上传文件大小超过限制");
-					return result;
-				}
+//				if (fis.getSize() > 1000000) {
+//					result.setRemark("上传文件大小超过限制");
+//					return result;
+//				}
 				// 检查扩展名
 				String fileExt = fis.getName().substring(fis.getName().lastIndexOf(".") + 1).toLowerCase();
 				if (!ext.contains(fileExt)) {

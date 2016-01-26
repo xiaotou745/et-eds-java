@@ -18,6 +18,10 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 	List<DeliveryCompany> dCListData=	(List<DeliveryCompany>)request.getAttribute("dCListData");
 	List<Mark> marklist=	(List<Mark>)request.getAttribute("marklistList");
 %>
+<!-- 下拉框的样式以及JS -->
+<link href="<%=basePath%>/css/plugins/chosen/chosen.css"  rel="stylesheet">
+<script src="<%=basePath%>/js/plugins/chosen/chosen.jquery.js" ></script>
+<!-- 下拉框的样式以及JS -->
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12">
@@ -60,7 +64,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">
-							 <%=HtmlHelper.getSelect("businessCityId", areaListData, "name", "code") %>
+							 <%=HtmlHelper.getSelectAuto("businessCityId", areaListData, "name", "code") %>
 							</div>
 						</div>
 					</div>
@@ -80,7 +84,6 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
    							</div>
 						</div>
 					</div>
-
 				</div>
 					
 			    <div class="row">

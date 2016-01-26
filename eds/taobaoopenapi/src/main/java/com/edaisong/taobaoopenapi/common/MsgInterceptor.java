@@ -18,11 +18,11 @@ import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StreamUtils;
 import com.edaisong.core.util.StringUtils;
-import com.edaisong.entity.req.AesParameterReq;
+import com.edaisong.entity.req.ParameterReq;
 
-public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
+public class MsgInterceptor extends AbstractPhaseInterceptor<Message> {
 
-	public AESInterceptor() {
+	public MsgInterceptor() {
 		// 接受参数时候调用
 		super(Phase.RECEIVE);
 	}
@@ -35,23 +35,25 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 		try {
 			InputStream inputStream = message.getContent(InputStream.class);
 			String inputMsg = StreamUtils.copyToString(inputStream, Charset.forName("utf-8"));
+			logCustomerInfo(message, encryptMsg, decryptMsg);
+			if (inputMsg == null || inputMsg.isEmpty()) {
+				return;
+			}
 			String interceptSwith = PropertyUtils.getProperty("InterceptSwith");// "1"// 开启加密										
 			if (interceptSwith.equals("1")) {
-				System.out.println("已开启AES解密拦截器");
-				if (inputMsg.indexOf("data")<0&&inputMsg!=null&&!inputMsg.isEmpty()) {
-					throw new RuntimeException("传递的入参是没有加密的字符串，但是apihttp项目开启了AES解密");
+				System.out.println("已开启解密拦截器");
+				if (inputMsg.indexOf("data")<0) {
+					throw new RuntimeException("应该传入加密后的入参！");
 				}
-				if (inputMsg!=null&&!inputMsg.isEmpty()) {
-					AesParameterReq req = JsonUtil.str2obj(inputMsg,AesParameterReq.class);
-					encryptMsg = req.getData();
-					decryptMsg = AES.aesDecrypt(StringUtils.trimRight(req.getData(), "\n"));// AES解密
-				}
+				ParameterReq req = JsonUtil.str2obj(inputMsg,ParameterReq.class);
+				encryptMsg = req.getData();
+				decryptMsg = AES.aesDecrypt(StringUtils.trimRight(req.getData(), "\n"));// AES解密
 			} else {
 				encryptMsg = inputMsg;
 				decryptMsg = inputMsg;
-				System.out.println("暂未开启AES解密拦截器");
+				System.out.println("暂未开启解密拦截器");
 				if (inputMsg.indexOf("data")>0) {
-					throw new RuntimeException("传递的入参是加密后的字符串，但是apihttp项目暂未开启AES解密");
+					throw new RuntimeException("应该传入未加密的入参");
 				}
 			}
 			InputStream stream = StreamUtils.StringToInputStream(decryptMsg);
@@ -64,8 +66,8 @@ public class AESInterceptor extends AbstractPhaseInterceptor<Message> {
 		System.out.println("未解密的入参:" + encryptMsg);
 		System.out.println("解密后的入参:" + decryptMsg);
 		logCustomerInfo(message, encryptMsg, decryptMsg);
-		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0&&decryptMsg!=null&&!decryptMsg.isEmpty()) {
-			throw new RuntimeException("传递的入参是加密后的字符串，但是apihttp项目暂未开启AES解密");
+		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0) {
+			throw new RuntimeException("解密后的参数必须是json格式的数据");
 		}
 	}
 

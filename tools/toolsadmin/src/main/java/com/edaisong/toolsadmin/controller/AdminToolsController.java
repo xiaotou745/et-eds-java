@@ -439,7 +439,7 @@ public class AdminToolsController {
 	private List<String> getAppNameList() throws Exception{
 		List<String> redisAppNameList=new ArrayList<String>();
 		redisAppNameList=redisService.get(RedissCacheKey.AppName_Key,List.class);
-		if (redisAppNameList!=null) {
+		if (redisAppNameList!=null&&redisAppNameList.size()>0) {
 			return redisAppNameList;
 		}
 		List<String> appNameList=Collections.synchronizedList(new ArrayList<>());
@@ -458,7 +458,9 @@ public class AdminToolsController {
 		});
 		System.out.println("并行查询mongo完成");
 		redisAppNameList=appNameList.parallelStream().distinct().collect(Collectors.toList());
-		redisService.set(RedissCacheKey.AppName_Key,redisAppNameList,8,TimeUnit.HOURS);
+		if (redisAppNameList!=null&&redisAppNameList.size()>0) {
+			redisService.set(RedissCacheKey.AppName_Key,redisAppNameList,1,TimeUnit.MINUTES);
+		}
 		return redisAppNameList;
 	}
 	/**
@@ -555,7 +557,7 @@ public class AdminToolsController {
 		List<String> result=new ArrayList<String>();
 		result=redisService.get(RedissCacheKey.AppVersion_Key+sourceSys,List.class);
 		//redisService.remove(RedissCacheKey.AppVersion_Key+sourceSys);
-		if (result!=null) {
+		if (result!=null&&result.size()>0) {
 			return result;
 		}
 		List<ActionLog> resultList=Collections.synchronizedList(new ArrayList<>());
@@ -602,7 +604,10 @@ public class AdminToolsController {
 			result.clear();
 		}
 		result.sort((a,b)->{return a.compareTo(b);});
-		redisService.set(RedissCacheKey.AppVersion_Key+sourceSys,result,8,TimeUnit.HOURS);
+		if (result!=null&&result.size()>0) {
+			redisService.set(RedissCacheKey.AppVersion_Key+sourceSys,result,1,TimeUnit.MINUTES);
+		}
+		
 		return result;
 	}
     /**
@@ -1085,7 +1090,7 @@ public class AdminToolsController {
 				if(type.equals("1"))
 				{
 					//查询SQL
-					if(sql.toUpperCase().indexOf("UPDATE")>=0)
+					if(sql.toUpperCase().indexOf("UPDATE ")>=0)
 					{
 						return "查询时SQL不可以带UPDATE关键字";
 					}
@@ -1093,7 +1098,7 @@ public class AdminToolsController {
 					{
 						return "查询时SQL不可以带INSERT关键字";
 					}
-					if(sql.toUpperCase().indexOf("DELETE")>=0)
+					if(sql.toUpperCase().indexOf("DELETE ")>=0)
 					{
 						return "查询时SQL不可以带DELETE关键字";
 					}
@@ -1101,7 +1106,7 @@ public class AdminToolsController {
 					{
 						return "查询时SQL必须加NOLOCK关键字";
 					}
-					if(sql.toUpperCase().indexOf("SELECT TOP")<0)
+					if(sql.toUpperCase().indexOf(" TOP ")<0)
 					{
 						return "查询时SQL必须加TOP关键字";
 					}

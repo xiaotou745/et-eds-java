@@ -16,31 +16,22 @@ import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.alipay.parmodel.ParamAliModel;
 import com.alipay.parmodel.ParamBatchTransModel;
 
+import org.apache.cxf.jaxrs.ext.MessageContext;
+import org.apache.cxf.message.Message;
+
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 @Path("/aliservice")
+//当前方法接收的参数类型
 @Consumes("application/json")
-// 当前方法接收的参数类型
+//当前类的所有方法都返回json格式的数据
 @Produces("application/json; charset=utf-8")
-// 当前类的所有方法都返回json格式的数据
 public interface IAliService {
-
-//	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN })
-	// {MediaType.ALL})
-	// "application/x-www-form-urlencoded")
-//	@Produces({ MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN })
-	@POST
-	@Path("/notifykey")
-	public String NotifyKey(HttpServletRequest request,HttpServletResponse response) ;
-
-	@Produces({ MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN })
-	@POST
-	@Path("/notifyrsa")
-	public String NotifyRSA(HttpServletRequest request);
 
 	@POST
 	@Path("/createorder")
-	public AlipayTradePrecreateResponse createOrder(ParamAliModel model)
+	public String createOrder(ParamAliModel model)
 			throws AlipayApiException;
 
 	@POST
@@ -50,12 +41,12 @@ public interface IAliService {
 
 	@POST
 	@Path("/refundorder")
-	public AlipayTradeRefundResponse refundOrder(ParamAliModel model)
+	public String refundOrder(ParamAliModel model)
 			throws AlipayApiException;
 
 	@POST
 	@Path("/queryorder")
-	public AlipayTradeQueryResponse queryOrder(ParamAliModel model)
+	public String queryOrder(ParamAliModel model)
 			throws AlipayApiException;
 
 	/**
@@ -63,5 +54,6 @@ public interface IAliService {
 	 * */
 	@POST
 	@Path("batchtrans")
+	@Produces(MediaType.TEXT_PLAIN)
 	public String batchTrans(ParamBatchTransModel model);
 }

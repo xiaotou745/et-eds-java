@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+
+<!-- 	<import resource="classpath:META-INF/cxf/cxf.xml" /> -->
+<!-- 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" /> -->
+
+	<import resource="classpath:conf/core/current-context.xml" />
+
+	<context:component-scan base-package="com.eds.service.impl" />
+
+	<mvc:annotation-driven conversion-service="conversionService">
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/plain;charset=UTF-8</value>
+						<value>text/html;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper" ref="jacksonMapper" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<mvc:interceptors>
+		<bean class="com.edaisong.api.common.GlobalLogInteceptor">
+			<property name="sourceSys" value="payapi"></property>
+		</bean>
+	</mvc:interceptors>
+
+<!-- 日期转换 -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="registerDefaultFormatters" value="false" />
+		<property name="formatterRegistrars">
+			<set>
+				<bean class="org.springframework.format.datetime.DateFormatterRegistrar">
+					<property name="formatter">
+						<bean class="org.springframework.format.datetime.DateFormatter">
+							<property name="pattern" value="yyyy-MM-dd HH:mm:ss" />
+						</bean>
+					</property>
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="jacksonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
+		<property name="mapper" ref="jacksonMapper" />
+	</bean>
+	<bean id="jacksonMapper" class="com.eds.common.ExtandObjectMapper" />
+</beans>

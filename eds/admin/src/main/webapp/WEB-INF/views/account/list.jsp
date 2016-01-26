@@ -203,6 +203,8 @@ function updateuser(cityCodeList,DCidList){
 	}
 	var paramaters = {
 			"id":userid,
+			"username" :$("#txtUserName").val(),
+			"loginname" : $("#txtLoginName").val(),
 			"password":$("#txtPwd").val(),
 			"accounttype":$("#selAcountType").val(),
 			"status":$('input[name="radstatus"]:checked').val(),

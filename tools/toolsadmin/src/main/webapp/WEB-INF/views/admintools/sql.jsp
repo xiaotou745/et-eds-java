@@ -39,6 +39,7 @@ String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id="btnExec" style="margin-left:3px;">执行</button>
 						</div>
+						<span id="tip" style="color:red"></span>
 				</div>
 		</div>
 	</div>
@@ -47,6 +48,14 @@ String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
 </div>
 <script>
 function execSQL(type){
+
+	if(type==1){
+		$("#tip").html("正在查询。。。");
+	}else{
+		$("#tip").html("正在执行。。。");
+	}
+	$("#btnSearch").attr("disabled",true);
+	$("#btnExec").attr("disabled",true);
 	var url='<%=basePath%>/admintools/execsql';
 	var par={
 			"sql":$('#sql').val(),
@@ -54,6 +63,9 @@ function execSQL(type){
 			"appName":$('#selappname').val()
 	};
 	$.post(url,par,function(data){
+		$("#tip").html("");
+		$("#btnSearch").attr("disabled",false);
+		$("#btnExec").attr("disabled",false);
 		$('#content').html(data);
 	});
 }

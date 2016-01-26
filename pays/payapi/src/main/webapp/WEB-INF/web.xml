@@ -26,6 +26,20 @@
         <servlet-name>payapi</servlet-name>
         <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
+    
+    
+     <servlet>
+        <description>Apache CXF Endpoint</description>
+        <display-name>payNotifyapi</display-name>
+        <servlet-name>payNotifyapi</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>payNotifyapi</servlet-name>
+        <url-pattern>/notify/*</url-pattern>
+    </servlet-mapping>
+    
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

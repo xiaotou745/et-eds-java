@@ -25,7 +25,7 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 			<div class="function">
 				<input type="button" class="fr" value="搜索" id="btnSearch">
 				<span class="fl">交易类型</span>
-				<%=HtmlHelper.getSelect("recordType", EnumHelper.GetEnumItems(BusinessBalanceRecordRecordType.class), "desc", "value",null,"-1","全部","width:155px","fl") %>
+				<%=HtmlHelper.getSelect("recordType", EnumHelper.GetEnumItems(BusinessBalanceRecordRecordType.class), "desc", "value",null,"-1","全部","width:155px","fl",false) %>
 				<span class="fl">操作时间</span>
 				<label class="fl">
 					<input type="radio" name="timeType" value="0" checked="checked">
