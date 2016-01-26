@@ -71,7 +71,17 @@ public class OrderListModel {
     private int hadUploadCount ;
     private String receiptPic ;
     private String otherCancelReason ;
-     private List<OrderChild> OrderChildList ;
+    private Double tipAmount ;
+    
+     public Double getTipAmount() {
+		return tipAmount;
+	}
+
+	public void setTipAmount(Double tipAmount) {
+		this.tipAmount = tipAmount;
+	}
+
+	private List<OrderChild> OrderChildList ;
      private Integer auditStatus;
     public Integer getAuditStatus() {
 		return auditStatus;

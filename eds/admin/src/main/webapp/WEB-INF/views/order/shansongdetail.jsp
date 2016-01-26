@@ -54,12 +54,12 @@
 			<tr class="trclass">
 				<td>发货账号：：<%=detail.getBusinessPhoneNo()%></td>
 				<td>距离/重量： <%=ParseHelper.ShowString(detail.getKm())%>公里/<%=ParseHelper.ShowString(detail.getWeight())%>公斤</td>
-				<td>配送费：<%=ParseHelper.ShowString(detail.getAmount())%></td>
+				<td>配送费：<%=ParseHelper.ShowString(detail.getAmount())%>元</td>
 			</tr>
 			<tr class="trclass">
 				<td>取货码：<%=ParseHelper.ShowString(detail.getPickupCode())%></td>
 				<td>收货码：<%=ParseHelper.ShowString(detail.getReceiveCode())%></td>
-				<td></td>
+				<td>小费：<%=ParseHelper.ShowString(detail.getTipAmount())%>元</td>
 			</tr>
 			<tr class="trclass">
 				<td colspan="2">物品信息：<%=ParseHelper.ShowString(detail.getProductName())%></td>

@@ -54,7 +54,13 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			<td><%=ParseHelper.ShowString(data.get(i).getPickUpAddress())%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getReceviceAddress())%></td>
 			<td> <%=ParseHelper.ShowString(data.get(i).getKm())%>公里/<%=ParseHelper.ShowString(data.get(i).getWeight())%>公斤<br/>
-			配送费: <%=ParseHelper.ShowString(data.get(i).getAmount())%>元</td>
+			配送费: <%=ParseHelper.ShowString(data.get(i).getAmount())%>元<br/>			
+			<%if(data.get(i).getTipAmount()>0){%>
+			小费:<%=ParseHelper.ShowString(data.get(i).getTipAmount())%>元
+			<%}%>
+			
+			
+			</td>
 			<td><%=ParseHelper.ShowString(data.get(i).getClienterName())%> <br/>
 			<%=ParseHelper.ShowString(data.get(i).getClienterPhoneNo())%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getPickupCode())%></td>
@@ -64,7 +70,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			<td>	<%=ShanSongOrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td>  
 			<%if(data.get(i).getStatus()!=ShanSongOrderStatus.WaitPay.value()&&data.get(i).getStatus()!=ShanSongOrderStatus.PayClose.value()){%>
-			<a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图1</a>
+			<a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a>
 			<%}%>
 			</td>
 		</tr>

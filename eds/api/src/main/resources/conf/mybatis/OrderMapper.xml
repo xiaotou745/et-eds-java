@@ -1595,6 +1595,7 @@ GROUP BY a.id ,
 	<sql id="getShanSongOrdersColums">
 		a.Id,a.OrderNo,a.PubDate,a.PickUpAddress,a.BusinessId,a.ReceviceAddress,ISNULL(a.ClienterId, 0) clienterId ,
                     a.PickupCode ,a.[Status],a.Amount,a.Weight,a. KM ,a.ReceiveCode,a.IsReceiveCode,
+                    a.TipAmount,
         c.TrueName ClienterName,
         c.PhoneNo ClienterPhoneNo,
         b.PhoneNo BusinessPhoneNo 
@@ -1721,7 +1722,7 @@ where
 <select id="getShanSongOrderByNo" resultType="com.edaisong.entity.domain.ShanSongOrderListModel"
 		parameterType="java.lang.String">
 select 	 a.Id ,a.OrderNo ,a.PickUpAddress,a.BusinessId ,a.ReceviceAddress ,a.clienterId ,a.PickupCode ,a.ReceiveCode,
-a.[status],a.Amount,a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
+a.[status],a.Amount,a.TipAmount, a.Weight,a.KM,a.PubName,a.PubPhoneNo,a.RecevicePhoneNo,
 a.ReceviceName ,  a.[PubDate],
 ISNULL(c.TrueName,'匿名') ClienterName,
 ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
