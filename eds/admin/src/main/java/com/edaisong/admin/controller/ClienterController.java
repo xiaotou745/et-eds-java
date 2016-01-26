@@ -262,7 +262,8 @@ public class ClienterController {
 	 * WangChao
 	 */	
 	@RequestMapping("forzenbalancelistdo")
-	public ModelAndView forzenBalanceListdo(PagedClienterReq pagedClienterReq ){		
+	public ModelAndView forzenBalanceListdo(PagedClienterReq pagedClienterReq ){	
+		pagedClienterReq.setMarkId(-1);
 		PagedResponse<ClienterModel> resp = clienterService.query(pagedClienterReq); 
 		ModelAndView model = new ModelAndView("clienter/forzenbalancelistdo");
 		model.addObject("listData", resp);
