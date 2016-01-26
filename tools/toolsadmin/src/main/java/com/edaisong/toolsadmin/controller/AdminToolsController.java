@@ -1090,7 +1090,7 @@ public class AdminToolsController {
 				if(type.equals("1"))
 				{
 					//查询SQL
-					if(sql.toUpperCase().indexOf("UPDATE")>=0)
+					if(sql.toUpperCase().indexOf("UPDATE ")>=0)
 					{
 						return "查询时SQL不可以带UPDATE关键字";
 					}
@@ -1098,7 +1098,7 @@ public class AdminToolsController {
 					{
 						return "查询时SQL不可以带INSERT关键字";
 					}
-					if(sql.toUpperCase().indexOf("DELETE")>=0)
+					if(sql.toUpperCase().indexOf("DELETE ")>=0)
 					{
 						return "查询时SQL不可以带DELETE关键字";
 					}
@@ -1106,7 +1106,7 @@ public class AdminToolsController {
 					{
 						return "查询时SQL必须加NOLOCK关键字";
 					}
-					if(sql.toUpperCase().indexOf("SELECT TOP")<0)
+					if(sql.toUpperCase().indexOf(" TOP ")<0)
 					{
 						return "查询时SQL必须加TOP关键字";
 					}
