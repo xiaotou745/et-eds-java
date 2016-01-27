@@ -27,19 +27,19 @@
    <update id="modifyLineHistory" parameterType="com.edaisong.toolsentity.req.LineHistoryReq">
    		update dbo.LineHistory set OnLineTime={#onLineTime,jdbcType=DATETIME},ModifyTime=getdate(),DevVersion={#devVersion},OnLineContent={#onLineContent,jdbcType=NVARCHAR},Remark={#remark,jdbcType=NVARCHAR},ModifyName=#{modifyName,jdbcType=NVARCHAR} where id = #{id,jdbcType=INTEGER}
    </update>
-   <select id="getPageList" resultType="com.edaisong.toolsentity.LineHistory" parameterType="com.edaisong.toolsentity.req.PagedLineHistoryReq" statementType="CALLABLE">
-{call Sp_CustomPage2015_V1(
-		' Id desc ',
-		' Id ,DevPlatform ,OnLineProduct ,DevVersion ,OnLineTime ,OnLineContent ,Remark ,CreateTime ,CreateName ,ModifyTime ,ModifyName ,IsEnable ',
-		' dbo.LineHistory(nolock) ',
-		'
-		<include refid="queryWhere" />
-		',
-		#{pageSize,mode=IN,jdbcType=INTEGER},
-		#{currentPage,mode=IN,jdbcType=INTEGER}
-		,1,
-		#{totalRecord,mode=OUT,jdbcType=INTEGER},
-		#{totalPage,mode=OUT,jdbcType=INTEGER}
-		)} 
-  </select>
+<!--    <select id="getPageList" resultType="com.edaisong.toolsentity.LineHistory" parameterType="com.edaisong.toolsentity.req.PagedLineHistoryReq" statementType="CALLABLE"> -->
+<!-- {call Sp_CustomPage2015_V1( -->
+<!-- 		' Id desc ', -->
+<!-- 		' Id ,DevPlatform ,OnLineProduct ,DevVersion ,OnLineTime ,OnLineContent ,Remark ,CreateTime ,CreateName ,ModifyTime ,ModifyName ,IsEnable ', -->
+<!-- 		' dbo.LineHistory(nolock) ', -->
+<!-- 		' -->
+<!-- 		<include refid="queryWhere" /> -->
+<!-- 		', -->
+<!-- 		#{pageSize,mode=IN,jdbcType=INTEGER}, -->
+<!-- 		#{currentPage,mode=IN,jdbcType=INTEGER} -->
+<!-- 		,1, -->
+<!-- 		#{totalRecord,mode=OUT,jdbcType=INTEGER}, -->
+<!-- 		#{totalPage,mode=OUT,jdbcType=INTEGER} -->
+<!-- 		)}  -->
+<!--   </select> -->
 </mapper>

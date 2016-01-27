@@ -9,6 +9,7 @@
 <%
 Calendar a=Calendar.getInstance();
 int month=a.get(Calendar.MONTH)+1;
+int dateOfMonth = a.getActualMaximum(Calendar.DATE); 
 
 String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
 List<String> appNameList = (List<String>)request.getAttribute("appNameList");
@@ -137,6 +138,45 @@ List<String> appVersionList = (List<String>)request.getAttribute("appVersionList
 							</div>
 						</div>
 					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">开始日期:</label>
+							<div class="col-sm-8">
+							<select name="beginDay" class="form-control m-b" id="beginDay">
+							 <option value='' selected='selected'></option>
+										<%
+										for (int i = 1; i<=dateOfMonth; i++) {
+											%>
+											<option value="<%=i<10?("0"+i):i %>"><%=i %></option>
+											<%
+										}
+										%>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">结束日期:</label>
+							<div class="col-sm-8">
+							<select name="endDay" class="form-control m-b" id="endDay">
+							 <option value='' selected='selected'></option>
+										<%
+										for (int i = 1; i<=dateOfMonth; i++) {
+											%>
+											<option value="<%=i<10?("0"+i):i %>"><%=i %></option>
+											<%
+										}
+										%>
+								</select>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-lg-3">
@@ -199,8 +239,7 @@ var jss={
 				});
 			}
 	};
-function beforeselectchange(e){
-	if(e.target.id=="sourceSys"){
+	function chanageversion(){
 		$("#appversion").html("<option value='' selected='selected'>全部版本</option>");
 		if($("#sourceSys").val().indexOf("http")>0||$("#sourceSys").val().indexOf("api")>0){
 			var versions=$("#appversions").val();
@@ -220,6 +259,46 @@ function beforeselectchange(e){
 				}
 			}
 		}	
+	}
+	function changeBeginDay(){
+	    $("#beginDay").html("<option value=''></option>");
+	    $("#endDay").html("<option value=''></option>");
+		var year=$("#yearInfo").val();
+		var month=$("#monthInfo").val();
+		if(month.indexOf("0")==0){
+			month=month.substr(1);
+		}
+	    var d = new Date(year,month,0);
+	    var temp="";
+	    var sel="selected='selected'"
+		for(k=1;k<=d.getDate();k++){ 
+			if(k<10){
+				temp="0"+k;
+			}else{
+				temp=k;
+			}
+			$("#beginDay").append("<option value='"+temp+"'>"+k+"</option>"); 
+			$("#endDay").append("<option value='"+temp+"'>"+k+"</option>");   
+		}
+	}
+	function changeEndDay(id){
+		if(id=="beginDay"){
+			if($("#endDay").val()!=""&&$("#endDay").val()<$("#beginDay").val()){
+				$("#endDay").val($("#beginDay").val());
+			}
+		}else{
+			if($("#beginDay").val()!=""&&$("#beginDay").val()>$("#endDay").val()){
+				$("#beginDay").val($("#endDay").val());
+			}
+		}
+	}
+function beforeselectchange(e){
+	if(e.target.id=="sourceSys"){
+		chanageversion();
+	}else if(e.target.id=="yearInfo"||e.target.id=="monthInfo"){
+		changeBeginDay();
+	}else if(e.target.id=="beginDay"||e.target.id=="endDay"){
+		changeEndDay(e.target.id);
 	}
 }	
 jss.search(1);

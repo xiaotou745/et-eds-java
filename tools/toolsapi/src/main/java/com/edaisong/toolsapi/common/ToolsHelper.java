@@ -155,13 +155,15 @@ public class ToolsHelper {
 	public String getMongoTableName(PagedMongoLogReq req){
     	return "logtb_"+req.getYearInfo()+"_"+req.getMonthInfo();
     }
+
     /**
      * 根据页面上的查询条件组织对monmgo的查询request
      * @author hailongzhao
      * @date 20151208
      * @param req
+     * @throws Exception 
      */
-	public void fillQuery(PagedMongoLogReq req){
+	public void fillQuery(PagedMongoLogReq req) throws Exception{
 		BasicDBObject query=new BasicDBObject();
         query.put("sourceSys", req.getSourceSys());
 		if (req.getRequestType()>-1) {
@@ -173,25 +175,19 @@ public class ToolsHelper {
 		else if (req.getExceptionShowType()==2) {//只看异常
 			query.put("stackTrace", new BasicDBObject("$ne", ""));//stackTrace!=""
 		}
-		if (req.getRequestUrl()!=null&&
-				!req.getRequestUrl().isEmpty()&&
-				req.getAppversion()!=null&&
-				!req.getAppversion().isEmpty()) {
-			String condition = "function(){"+
-					"return this.requestUrl.indexOf('"+req.getAppversion()+"')>0&&this.requestUrl.indexOf('"+req.getRequestUrl()+"')>=0;}";
-			query.put("$where", condition);
-		}else {
-			if (req.getRequestUrl()!=null&&!req.getRequestUrl().isEmpty()) {
-				//类似于sql中的like
-				Pattern pattern = Pattern.compile("^.*" + req.getRequestUrl()+ ".*$", Pattern.CASE_INSENSITIVE); 
-				query.put("requestUrl", pattern);
-			}else if (req.getAppversion()!=null&&!req.getAppversion().isEmpty()) {
-				//类似于sql中的like
-				Pattern pattern = Pattern.compile("^.*" + req.getAppversion()+ ".*$", Pattern.CASE_INSENSITIVE); 
-				query.put("requestUrl", pattern);
-			}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		MongoLogReq whereReq=new MongoLogReq();
+		whereReq.setAppversion(req.getAppversion());
+		whereReq.setRequestUrl(req.getRequestUrl());
+		String begin="";
+		String end="";
+		if (!req.getBeginDay().isEmpty()) {
+			begin=req.getYearInfo()+"-"+req.getMonthInfo()+"-"+req.getBeginDay()+" 00:00:00";
 		}
-
+		if (!req.getEndDay().isEmpty()) {
+			end=req.getYearInfo()+"-"+req.getMonthInfo()+"-"+req.getEndDay()+" 23:59:59";
+		}
+		getWhere(whereReq,query,begin,end,sdf);
 		req.setQueryObject(query);
 		BasicDBObject sort=new BasicDBObject();
 		sort.put(req.getOrderBy(), req.getOrderType());//按照执行时间倒序（1是升序，-1是降序）
@@ -402,26 +398,39 @@ public class ToolsHelper {
      * @throws Exception
      */
 	private void getWhere(MongoLogReq req,BasicDBObject tempReq,String begin,String end,SimpleDateFormat sdf) throws Exception{
-    	String isversion="";
+    	String isbegin="";
+    	String isend="";
+		String isversion="";
     	String isurl="";
+
+    	if (begin!=null&&!begin.isEmpty()) {
+    		isbegin="var isbegin="+ sdf.parse(begin).getTime() + "<=initMills;";
+    	}
+    	if (end!=null&&!end.isEmpty()) {
+    		isend="var isend=initMills<="+ sdf.parse(end).getTime()+";";
+    	}
     	if (req.getAppversion()!=null&&!req.getAppversion().isEmpty()) {
     		isversion="var isversion=this.requestUrl.indexOf('"+req.getAppversion()+"')>0;";
     	}
     	if (req.getRequestUrl()!=null&&!req.getRequestUrl().isEmpty()) {
     		isurl="var isurl=this.requestUrl.indexOf('"+req.getRequestUrl()+"')>=0;";
     	}
-
-		String condition = "function(){"
-				+ "var init = this.requestTime.replace(new RegExp('-','gm'),'/'); "
-				+ "var initMills = (new Date(init)).getTime();"
-				+ "var istime="+ sdf.parse(begin).getTime() + "<=initMills&&initMills<="+ sdf.parse(end).getTime() + ";"
-				+(isversion==""?"":isversion)
-				+(isurl==""?"":isurl)
-				+ "return istime"
-				+(isversion==""?"":"&&isversion")
-				+(isurl==""?"":"&&isurl")
-				+";}";
-		tempReq.put("$where", condition);
+    	if (!isbegin.isEmpty()||!isend.isEmpty()||!isversion.isEmpty()||!isurl.isEmpty()) {
+    		String condition = "function(){"
+    				+ "var init = this.requestTime.replace(new RegExp('-','gm'),'/'); "
+    				+ "var initMills = (new Date(init)).getTime();"
+    				+isbegin
+    				+isend
+    				+isversion
+    				+isurl
+    				+ "return "
+    				+(isbegin==""?"true":"isbegin")
+    				+(isend==""?"&&true":"&&isend")
+    				+(isversion==""?"&&true":"&&isversion")
+    				+(isurl==""?"&&true":"&&isurl")
+    				+";}";
+    		tempReq.put("$where", condition);
+		}
     }
     /**
      * 将日期段按照指定的步长拆段
