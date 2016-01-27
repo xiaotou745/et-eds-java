@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.edaisong.entity.Order;
+import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
@@ -161,6 +162,9 @@ public interface IOrderDao {
 	 * @return
 	 */
    int updateByPrimaryKeySelective(Order order);
+   
+   int updateByPrimaryKeySelectiveAndStatus(Order record);
+
    
    /**
     * 更新订单真实佣金

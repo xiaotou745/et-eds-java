@@ -48,6 +48,12 @@ import com.edaisong.entity.resp.QueryOrderCResp;
 @Repository
 public class OrderDao extends DaoBase implements IOrderDao {	
 	
+
+   @Override
+   public int updateByPrimaryKeySelectiveAndStatus(Order order){
+			  return getMasterSqlSessionUtil().update("IOrderDao.updateByPrimaryKeySelectiveAndStatus", order);
+		  }
+	   
 	@Override
 	public int insert(Order record)
 	{
