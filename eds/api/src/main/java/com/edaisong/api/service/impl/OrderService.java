@@ -2314,8 +2314,8 @@ public class OrderService implements IOrderService {
 			order.setIspay(true);
 			order.setStatus((byte)0);
 			order.setId(req.getOrderId());
-			int oId=orderDao.updateByPrimaryKeySelective(order);
-			if(oId<0)
+			int oId=orderDao.updateByPrimaryKeySelectiveAndStatus(order);
+			if(oId<=0)
 				throw new TransactionalRuntimeException("更新订单状态错误");
 			
 			//PayStatus

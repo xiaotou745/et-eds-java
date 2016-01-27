@@ -25,6 +25,7 @@ import com.edaisong.toolscore.consts.RedissCacheKey;
 import com.edaisong.toolscore.enums.ServerType;
 import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.ParseHelper;
+import com.edaisong.toolscore.util.PropertyUtils;
 import com.edaisong.toolsentity.AppDbConfig;
 import com.edaisong.toolsentity.domain.ActionLog;
 import com.edaisong.toolsentity.domain.ConnectionInfo;
@@ -141,7 +142,7 @@ public class ToolsHelper {
 		System.out.println("并行查询mongo完成");
 		redisAppNameList=appNameList.parallelStream().distinct().collect(Collectors.toList());
 		if (redisAppNameList!=null&&redisAppNameList.size()>0) {
-			redisService.set(RedissCacheKey.AppName_Key,redisAppNameList,1,TimeUnit.MINUTES);
+			redisService.set(RedissCacheKey.AppName_Key,redisAppNameList,Integer.parseInt(PropertyUtils.getProperty("redisCacheTime")),TimeUnit.DAYS);
 		}
 		return redisAppNameList;
 	}
@@ -305,7 +306,7 @@ public class ToolsHelper {
 		}
 		result.sort((a,b)->{return a.compareTo(b);});
 		if (result!=null&&result.size()>0) {
-			redisService.set(RedissCacheKey.AppVersion_Key+sourceSys,result,1,TimeUnit.MINUTES);
+			redisService.set(RedissCacheKey.AppVersion_Key+sourceSys,result,Integer.parseInt(PropertyUtils.getProperty("redisCacheTime")),TimeUnit.DAYS);
 		}
 		
 		return result;

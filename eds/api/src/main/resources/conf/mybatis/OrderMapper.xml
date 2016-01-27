@@ -677,6 +677,192 @@
 		</set>
 		where Id = #{id,jdbcType=INTEGER}
 	</update>
+	<update id="updateByPrimaryKeySelectiveAndStatus" parameterType="com.edaisong.entity.Order">
+		update [order]
+		<set>
+			<if test="orderno != null">
+				OrderNo = #{orderno,jdbcType=NVARCHAR},
+			</if>
+			<if test="pickupaddress != null">
+				PickUpAddress = #{pickupaddress,jdbcType=NVARCHAR},
+			</if>
+			<if test="pickuplongitude != null">
+				PickUpLongitude = #{pickuplongitude,jdbcType=DOUBLE},
+			</if>
+			<if test="pickuplatitude != null">
+				PickUpLatitude = #{pickuplatitude,jdbcType=DOUBLE},
+			</if>
+			<if test="pubdate != null">
+				PubDate = #{pubdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="recevicename != null">
+				ReceviceName = #{recevicename,jdbcType=NVARCHAR},
+			</if>
+			<if test="recevicephoneno != null">
+				RecevicePhoneNo = #{recevicephoneno,jdbcType=NVARCHAR},
+			</if>
+			<if test="receviceaddress != null">
+				ReceviceAddress = #{receviceaddress,jdbcType=NVARCHAR},
+			</if>
+			<if test="actualdonedate != null">
+				ActualDoneDate = #{actualdonedate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ispay != null">
+				IsPay = #{ispay,jdbcType=BIT},
+			</if>
+			<if test="amount != null">
+				Amount = #{amount,jdbcType=NUMERIC},
+			</if>
+				<if test="tipamount != null">
+				tipamount = #{tipamount,jdbcType=DOUBLE},
+			</if>
+			<if test="ordercommission != null">
+				OrderCommission = #{ordercommission,jdbcType=NUMERIC},
+			</if>
+			<if test="distribsubsidy != null">
+				DistribSubsidy = #{distribsubsidy,jdbcType=NUMERIC},
+			</if>
+			<if test="websitesubsidy != null">
+				WebsiteSubsidy = #{websitesubsidy,jdbcType=NUMERIC},
+			</if>
+			<if test="remark != null">
+				Remark = #{remark,jdbcType=NVARCHAR},
+			</if>
+			<if test="status != null">
+				Status = #{status,jdbcType=TINYINT},
+			</if>
+			<if test="clienterid != null">
+				clienterId = #{clienterid,jdbcType=INTEGER},
+			</if>
+			<if test="businessid != null">
+				businessId = #{businessid,jdbcType=INTEGER},
+			</if>
+			<if test="recevicecity != null">
+				ReceviceCity = #{recevicecity,jdbcType=NVARCHAR},
+			</if>
+			<if test="recevicelongitude != null">
+				ReceviceLongitude = #{recevicelongitude,jdbcType=DOUBLE},
+			</if>
+			<if test="recevicelatitude != null">
+				ReceviceLatitude = #{recevicelatitude,jdbcType=DOUBLE},
+			</if>
+			<if test="orderfrom != null">
+				OrderFrom = #{orderfrom,jdbcType=INTEGER},
+			</if>
+			<if test="originalorderid != null">
+				OriginalOrderId = #{originalorderid,jdbcType=BIGINT},
+			</if>
+			<if test="originalorderno != null">
+				OriginalOrderNo = #{originalorderno,jdbcType=NVARCHAR},
+			</if>
+			<if test="quantity != null">
+				Quantity = #{quantity,jdbcType=INTEGER},
+			</if>
+			<if test="weight != null">
+				Weight = #{weight,jdbcType=NUMERIC},
+			</if>
+			<if test="receiveprovince != null">
+				ReceiveProvince = #{receiveprovince,jdbcType=NVARCHAR},
+			</if>
+			<if test="receivearea != null">
+				ReceiveArea = #{receivearea,jdbcType=NVARCHAR},
+			</if>
+			<if test="receiveprovincecode != null">
+				ReceiveProvinceCode = #{receiveprovincecode,jdbcType=NVARCHAR},
+			</if>
+			<if test="receivecitycode != null">
+				ReceiveCityCode = #{receivecitycode,jdbcType=NVARCHAR},
+			</if>
+			<if test="receiveareacode != null">
+				ReceiveAreaCode = #{receiveareacode,jdbcType=NVARCHAR},
+			</if>
+			<if test="ordertype != null">
+				OrderType = #{ordertype,jdbcType=INTEGER},
+			</if>
+			<if test="km != null">
+				KM = #{km,jdbcType=DOUBLE},
+			</if>
+			<if test="guojuqty != null">
+				GuoJuQty = #{guojuqty,jdbcType=INTEGER},
+			</if>
+			<if test="lujuqty != null">
+				LuJuQty = #{lujuqty,jdbcType=INTEGER},
+			</if>
+			<if test="songcandate != null">
+				SongCanDate = #{songcandate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ordercount != null">
+				OrderCount = #{ordercount,jdbcType=INTEGER},
+			</if>
+			<if test="commissionrate != null">
+				CommissionRate = #{commissionrate,jdbcType=NUMERIC},
+			</if>
+			<if test="payment != null">
+				Payment = #{payment,jdbcType=INTEGER},
+			</if>
+			<if test="commissionformulamode != null">
+				CommissionFormulaMode = #{commissionformulamode,jdbcType=INTEGER},
+			</if>
+			<if test="adjustment != null">
+				Adjustment = #{adjustment,jdbcType=DECIMAL},
+			</if>
+			<if test="businesscommission != null">
+				BusinessCommission = #{businesscommission,jdbcType=DECIMAL},
+			</if>
+			<if test="settlemoney != null">
+				SettleMoney = #{settlemoney,jdbcType=NUMERIC},
+			</if>
+			<if test="dealcount != null">
+				DealCount = #{dealcount,jdbcType=INTEGER},
+			</if>
+			<if test="pickupcode != null">
+				PickupCode = #{pickupcode,jdbcType=VARCHAR},
+			</if>
+			<if test="othercancelreason != null">
+				OtherCancelReason = #{othercancelreason,jdbcType=NVARCHAR},
+			</if>
+			<if test="commissiontype != null">
+				CommissionType = #{commissiontype,jdbcType=INTEGER},
+			</if>
+			<if test="commissionfixvalue != null">
+				CommissionFixValue = #{commissionfixvalue,jdbcType=DECIMAL},
+			</if>
+			<if test="businessgroupid != null">
+				BusinessGroupId = #{businessgroupid,jdbcType=INTEGER},
+			</if>
+			<if test="timespan != null">
+				TimeSpan = #{timespan,jdbcType=NVARCHAR},
+			</if>
+			<if test="invoice != null">
+				Invoice = #{invoice,jdbcType=NVARCHAR},
+			</if>
+			<if test="businessreceivable != null">
+				BusinessReceivable = #{businessreceivable,jdbcType=DECIMAL},
+			</if>
+			<if test="mealssettlemode != null">
+				MealsSettleMode = #{mealssettlemode,jdbcType=INTEGER},
+			</if>
+			<if test="finishdatelength != null">
+				FinishDateLength = #{finishdatelength,jdbcType=INTEGER},
+			</if>
+			<if test="finishall != null">
+				FinishAll = #{finishall,jdbcType=INTEGER},
+			</if>
+			<if test="realordercommission != null">
+				RealOrderCommission = #{realordercommission,jdbcType=NUMERIC},
+			</if>
+			<if test="groupbusinessid != null">
+				groupbusinessid = #{groupbusinessid,jdbcType=NUMERIC},
+			</if>
+			<if test="basecommission != null">
+				basecommission = #{basecommission,jdbcType=NUMERIC},
+			</if>
+			<if test="isreceivecode != null">
+				isreceivecode = #{isreceivecode,jdbcType=INTEGER},
+			</if>
+		</set>
+		where Id = #{id,jdbcType=INTEGER} and Status=50
+	</update>
 
 
 	<!-- 后台订单列表页面 查询列集合 add by caoheyang 20150728 -->
