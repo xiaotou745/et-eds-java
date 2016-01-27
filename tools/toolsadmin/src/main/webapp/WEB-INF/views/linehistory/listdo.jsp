@@ -37,7 +37,7 @@
 			<td><%=list.get(i).getOnLineProduct() %></td>
 			<td><%=list.get(i).getDevVersion() %></td>			
 			<td><%=ParseHelper.ToDateString(list.get(i).getOnLineTime(), "") %></td> 
-			<td><a href="javascript:void(0)" onclick="modifyLineHistory(<%=list.get(i).getId()%>)">修改</a>&nbsp;
+			<td><a href="javascript:void(0)" onclick="modifyLineHistory(<%=list.get(i).getId()%>,'<%=list.get(i).getDevPlatform()%>','<%=list.get(i).getOnLineProduct()%>','<%=list.get(i).getDevVersion()%>','<%=list.get(i).getOnLineTime()%>','<%=list.get(i).getOnLineContent()%>','<%=list.get(i).getRemark() %>')">修改</a>&nbsp;
 			<a href="javascript:void(0)" onclick="deleteLineHistory(<%=list.get(i).getId()%>)">删除</a>
 			</td>
 		</tr>
@@ -52,11 +52,16 @@
 					
 <script>
 //修改
-	function modifyLineHistory(id){
-		
-	}
+function modifyLineHistory(id,devPlatform,onlineProduct,devVersion,onlineTime,onlineContent,remark) {
+	$("#modifyDevPlatform").val(devPlatform);
+	$("#modifyOnlineProduct").val(onlineProduct);
+	$("#txtModifyDevVersion").val(devVersion);
+	$("#modifyonlineDate").val(onlineTime);
+	$("#txtModifyOnLineContent").val(onlineContent);
+	$("#txtModifyRemark").val(remark);
+}
 //删除
-	function deleteLineHistory(id){
-	
-	}
+function deleteLineHistory(id){
+
+}
 </script>

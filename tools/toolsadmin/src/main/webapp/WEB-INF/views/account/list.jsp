@@ -115,8 +115,6 @@ List<AuthorityRole> roleData = (List<AuthorityRole>) request.getAttribute("roleD
 </div>
 
 <script>
-
-
 var jss={
 		search:function(currentPage){
 			var keyword=$("#txtKeyword").val();
