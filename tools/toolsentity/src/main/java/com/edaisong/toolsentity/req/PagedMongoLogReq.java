@@ -15,6 +15,8 @@ private int exceptionShowType;
 private int orderType;
 private String orderBy;
 private String appversion;
+private String beginDay;
+private String endDay;
 
 private BasicDBObject queryObject;
 private BasicDBObject sortObject;
@@ -104,6 +106,22 @@ public int getYearInfo() {
 
 public void setYearInfo(int yearInfo) {
 	this.yearInfo = yearInfo;
+}
+
+public String getBeginDay() {
+	return beginDay;
+}
+
+public void setBeginDay(String beginDay) {
+	this.beginDay = beginDay;
+}
+
+public String getEndDay() {
+	return endDay;
+}
+
+public void setEndDay(String endDay) {
+	this.endDay = endDay;
 }
 
 }

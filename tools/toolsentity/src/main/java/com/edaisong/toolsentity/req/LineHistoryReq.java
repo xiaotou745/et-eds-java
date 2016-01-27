@@ -5,6 +5,14 @@ import java.util.Date;
 
 public class LineHistoryReq implements Serializable{
 	private int id;
+	
+	private String appName;
+	public String getAppName() {
+		return appName;
+	}
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
 	public int getId() {
 		return id;
 	}
@@ -30,11 +38,25 @@ public class LineHistoryReq implements Serializable{
 	/**
 	 * 所属平台
 	 */
+	private String devPlatformValue;
 	private String devPlatform;
-
 	/**
 	 * 上线产品
 	 */
+	private String onLineProductValue;
+	public String getDevPlatformValue() {
+		return devPlatformValue;
+	}
+	public void setDevPlatformValue(String devPlatformValue) {
+		this.devPlatformValue = devPlatformValue;
+	}
+	public String getOnLineProductValue() {
+		return onLineProductValue;
+	}
+	public void setOnLineProductValue(String onLineProductValue) {
+		this.onLineProductValue = onLineProductValue;
+	}
+
 	private String onLineProduct;
 
 	/**

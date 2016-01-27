@@ -18,6 +18,8 @@
 				<!-- 本地开发用的配置环境 -->
 				<value>classpath:conf/core/current-conf.properties</value>
 				<value>classpath:conf/core/current-env.properties</value>
+				<!-- <value>classpath:conf/custom/pro-conf.properties</value> -->
+				<!-- <value>classpath:conf/custom/pro-env.properties</value> -->
 			</list>
 		</property>
 	</bean>

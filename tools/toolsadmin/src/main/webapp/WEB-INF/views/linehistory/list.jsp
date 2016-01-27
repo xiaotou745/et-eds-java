@@ -69,15 +69,14 @@
 <div class="modal inmodal"  id="addLineHistoryModal" tabindex="-1" role="dialog"
 	aria-hidden="true">
 	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
+		<div class="modal-content" >
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 				</button>
 				<h4 class="modal-title">添加里程</h4>
-			</div>
-
-			<div class="modal-body" style="height: 500px;overflow: auto; margin-top: 10px; border-bottom: solid 1px #dcdcdc;">
+			</div> 
+			<div class="modal-body" style="overflow: auto; margin-top: 10px; border-bottom: solid 1px #dcdcdc;">
 				<fieldset> 
 					<div class="control-group">
 						项目：<select id="devPlatform_sel" class="form-control m-b">
@@ -99,10 +98,10 @@
 						上线时间：<input class="form-control" style="width:190px" type="text" name="onlineDate" id="onlineDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00'})"/>
 					</div>
 					<div class="control-group"> 
-						上线内容：<textarea id="txtOnLineContent" style="width:200px;height:120px;max-width:350px;max-height:120px;"></textarea>
+						上线内容：<textarea id="txtOnLineContent" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
 					</div>
 					<div class="control-group"> 
-						备注：<textarea id="txtRemark" style="width:200px;height:120px;max-width:350px;max-height:120px;"></textarea>
+						备注：<textarea id="txtRemark" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
 					</div>
 				</fieldset> 
 			</div>
@@ -125,17 +124,22 @@
 			<div class="modal-body" style="height: 500px; overflow: auto; margin-top: 10px; border-bottom: solid 1px #dcdcdc;">
 				<fieldset> 
 					<div class="control-group">
-						项目：<select id="modifydevPlatform_sel" class="form-control m-b">
-						          <option value="请选择" selected="selected">请选择</option>
-						          <option value="glht">管理后台</option>
-						          <option value="eds">E代送</option>
-						          <option value="zndd">智能调度</option>
-						      </select>
+						项目：<input type="text" class="input-sm form-control" id="modifyDevPlatform" readonly="readonly" value="" />
 					</div>
 					<div class="control-group"> 
-						产品：<select id="modifyonlineProduct_sel" class="form-control m-b">
-						<option value="请选择" selected="selected">请选择</option>
-						</select>
+						产品：<input type="text" class="input-sm form-control" id="modifyOnlineProduct" readonly="readonly" value="" />
+					</div>
+					<div class="control-group"> 
+						版本号：<input type="text" class="input-sm form-control" id="txtModifyDevVersion" value="" />
+					</div>
+					<div class="control-group"> 
+						上线时间：<input class="form-control" style="width:190px" type="text" name="modifyonlineDate" id="onlineDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00'})"/>
+					</div>
+					<div class="control-group"> 
+						上线内容：<textarea id="txtModifyOnLineContent" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
+					</div>
+					<div class="control-group"> 
+						备注：<textarea id="txtModifyRemark" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
 					</div>
 				</fieldset> 
 			</div>
@@ -146,10 +150,26 @@
 		</div>
 	</div>
 </div>
-<script> 
-$("#btnSearch").click(function(){
-	//jss.search(1);
-}); 
+<script>
+var jss = {
+		search : function(currentPage) {
+		$("#_hiddenCurrentPage").val(currentPage);
+		 var data={
+			 
+		 };
+		 $.post("<%=basePath%>/linehistory/listdo", data,
+					function(d) {
+						$("#content").html(d);
+					});
+		}
+	}
+	$("#btnSearch").click(function() {
+		if($("#selappname").val()==""){
+			alert("请选择系统名称");
+			return;
+		}		
+		jss.search(1);
+	});
 var jsonDevPlatform=[{'name':'glht','value':"[{'name':'edsglht','value':'E代送管理后台'}]"},{'name':'eds','value':"[{'name':'edssh','value':'E代送商户'},{'name':'edsqs','value':'E代送骑士'},{'name':'edslcjf','value':'E代送（里程计费）'},{'name':'edssjzx','value':'商家中心'}]"},{'name':'zndd','value':"[{'name':'edszndd','value':'E代送智能调度'},{'name':'edsqqs','value':'E代送轻骑士'}]"}];
  
 $("#devPlatform_sel").change(function(){
@@ -168,41 +188,34 @@ $("#devPlatform_sel").change(function(){
 	 		$("#onlineProduct_sel").html(temp_html);
 		}
 	});
-});
-$("#selDevPlatform").change(function(){
-	var selval= $(this).val(); 
-	if(selval == "请选择"){
-		$("#selOnlineProduct").html("<option value='请选择'>请选择</option>");
-		return;
-	}
-	$.each(jsonDevPlatform, function (n, ojson) { 
-		if(selval == ojson.name){ 
-	 		var dataObj=eval("("+ojson.value+")");
-	 		var temp_html;
-			$.each(dataObj, function (nn, kkjson) {  
-				temp_html+="<option value='"+kkjson.name+"'>"+kkjson.value+"</option>";
-			});
-	 		$("#selOnlineProduct").html(temp_html);
-		}
-	});
-});
+}); 
 //显示新建里程弹窗
 $("#btnCrtLineHistory").click(function(){
+	var syst=$("#selappname").val();
+	if(syst == ""){
+		alert("请选择系统名称");
+		return;
+	}
 	$("#devPlatform_sel")[0].selectedIndex=0;
 	$("#onlineProduct_sel").html("<option value='请选择'>请选择</option>");
 	$("#addLineHistoryModal").modal("show");
 });
 //保存
 $("#saveLineHistory").click(function(){
-	var devPlatform= $('#devPlatform_sel').val();
-    var onlineProduct = $('#onlineProduct_sel').val();
+	var devPlatformValue= $('#devPlatform_sel').val();
+	var devPlatformText=$('#devPlatform_sel').find("option:selected").text();
+    var onlineProductValue = $('#onlineProduct_sel').val();
+    var onlineProductText=$('#onlineProduct_sel').find("option:selected").text();
     var devVersion = $('#txtDevVersion').val().trim();
     var onlineDate = $('#onlineDate').val();
     var onLineContent = $('#txtOnLineContent').val().trim();
     var remark = $('#txtRemark').val().trim(); 
     var paramaters = {
-            "devPlatform": devPlatform,
-            "onlineProduct": onlineProduct,
+    		"appName":$("#selappname").val(),
+            "devPlatform": devPlatformText,
+            "devPlatformValue":devPlatformValue,
+            "onlineProduct": onlineProductText,
+            "onlineProductValue": onlineProductValue,
             "devVersion":devVersion, 
             "onLineTime":onlineDate,
             "onLineContent":onLineContent,
