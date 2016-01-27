@@ -7,6 +7,7 @@
     <%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
 <%@page import="com.edaisong.toolsentity.LineHistory"%>
 <%@page import="java.util.List"%>
+<%@page import="org.apache.commons.codec.binary.Base64"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
 %>
@@ -34,10 +35,10 @@
 		<tr>
 			<td><%=(i+1)%></td>
 			<td><%=list.get(i).getDevPlatform() %></td>
-			<td><%=list.get(i).getOnLineProduct() %></td>
+			<td><a href="javascript:void(0)" onclick="showLineHistory('<%=new String(Base64.encodeBase64(list.get(i).getDevPlatform().getBytes("UTF-8")))%>','<%=new String(Base64.encodeBase64(list.get(i).getOnLineProduct().getBytes("UTF-8")))%>','<%=new String(Base64.encodeBase64(list.get(i).getDevVersion().getBytes("UTF-8")))%>','<%=ParseHelper.ToDateString(list.get(i).getOnLineTime(), "")%>','<%=new String(Base64.encodeBase64(list.get(i).getOnLineContent().getBytes("UTF-8")))%>','<%=new String(Base64.encodeBase64(list.get(i).getRemark().getBytes("UTF-8"))) %>')"><%=list.get(i).getOnLineProduct() %></a></td>			
 			<td><%=list.get(i).getDevVersion() %></td>			
 			<td><%=ParseHelper.ToDateString(list.get(i).getOnLineTime(), "") %></td> 
-			<td><a href="javascript:void(0)" onclick="modifyLineHistory(<%=list.get(i).getId()%>,'<%=list.get(i).getDevPlatform()%>','<%=list.get(i).getOnLineProduct()%>','<%=list.get(i).getDevVersion()%>','<%=list.get(i).getOnLineTime()%>','<%=list.get(i).getOnLineContent()%>','<%=list.get(i).getRemark() %>')">修改</a>&nbsp;
+			<td><a href="javascript:void(0)" onclick="modifyLineHistory(<%=list.get(i).getId()%>,'<%=new String(Base64.encodeBase64(list.get(i).getDevPlatform().getBytes("UTF-8")))%>','<%=new String(Base64.encodeBase64(list.get(i).getOnLineProduct().getBytes("UTF-8")))%>','<%=new String(Base64.encodeBase64(list.get(i).getDevVersion().getBytes("UTF-8")))%>','<%=ParseHelper.ToDateString(list.get(i).getOnLineTime(), "")%>','<%=new String(Base64.encodeBase64(list.get(i).getOnLineContent().getBytes("UTF-8")))%>','<%=new String(Base64.encodeBase64(list.get(i).getRemark().getBytes("UTF-8"))) %>')">修改</a>
 			<a href="javascript:void(0)" onclick="deleteLineHistory(<%=list.get(i).getId()%>)">删除</a>
 			</td>
 		</tr>
@@ -49,19 +50,3 @@
 <%=PageHelper.getPage(data.getPageSize(),
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
-					
-<script>
-//修改
-function modifyLineHistory(id,devPlatform,onlineProduct,devVersion,onlineTime,onlineContent,remark) {
-	$("#modifyDevPlatform").val(devPlatform);
-	$("#modifyOnlineProduct").val(onlineProduct);
-	$("#txtModifyDevVersion").val(devVersion);
-	$("#modifyonlineDate").val(onlineTime);
-	$("#txtModifyOnLineContent").val(onlineContent);
-	$("#txtModifyRemark").val(remark);
-}
-//删除
-function deleteLineHistory(id){
-
-}
-</script>

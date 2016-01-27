@@ -5,33 +5,6 @@ import java.util.Date;
 
 public class LineHistoryReq implements Serializable{
 	private int id;
-	
-	private String appName;
-	public String getAppName() {
-		return appName;
-	}
-	public void setAppName(String appName) {
-		this.appName = appName;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getModifyName() {
-		return modifyName;
-	}
-	public void setModifyName(String modifyName) {
-		this.modifyName = modifyName;
-	}
-	public String getModifyTime() {
-		return modifyTime;
-	}
-	public void setModifyTime(String modifyTime) {
-		this.modifyTime = modifyTime;
-	} 
-	
 	private String modifyName;
 	
 	private String modifyTime;
@@ -44,19 +17,6 @@ public class LineHistoryReq implements Serializable{
 	 * 上线产品
 	 */
 	private String onLineProductValue;
-	public String getDevPlatformValue() {
-		return devPlatformValue;
-	}
-	public void setDevPlatformValue(String devPlatformValue) {
-		this.devPlatformValue = devPlatformValue;
-	}
-	public String getOnLineProductValue() {
-		return onLineProductValue;
-	}
-	public void setOnLineProductValue(String onLineProductValue) {
-		this.onLineProductValue = onLineProductValue;
-	}
-
 	private String onLineProduct;
 
 	/**
@@ -88,6 +48,46 @@ public class LineHistoryReq implements Serializable{
 	 * 创建人
 	 */
 	private String createName; 
+	private String appName;
+	public String getAppName() {
+		return appName;
+	}
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getModifyName() {
+		return modifyName;
+	}
+	public void setModifyName(String modifyName) {
+		this.modifyName = modifyName;
+	}
+	public String getModifyTime() {
+		return modifyTime;
+	}
+	public void setModifyTime(String modifyTime) {
+		this.modifyTime = modifyTime;
+	} 
+	
+	
+	public String getDevPlatformValue() {
+		return devPlatformValue;
+	}
+	public void setDevPlatformValue(String devPlatformValue) {
+		this.devPlatformValue = devPlatformValue;
+	}
+	public String getOnLineProductValue() {
+		return onLineProductValue;
+	}
+	public void setOnLineProductValue(String onLineProductValue) {
+		this.onLineProductValue = onLineProductValue;
+	}
+
  
 	/**
 	 * 获取所属平台
