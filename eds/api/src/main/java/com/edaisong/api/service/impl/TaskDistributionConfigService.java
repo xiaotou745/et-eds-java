@@ -212,7 +212,7 @@ public class TaskDistributionConfigService implements
 			double currDistributionPrice=list.get(i).getDistributionPrice();
 			int currSteps=list.get(i).getSteps();
 			
-			if(currKM>baseKM && record.getkM()>currKM)//获取第一个符合的值
+			if(currKM>=baseKM && record.getkM()>currKM)//获取第一个符合的值
 			{		
 				int currFlg=0;
 				if((record.getkM()-currKM)%currSteps==0)
@@ -236,7 +236,7 @@ public class TaskDistributionConfigService implements
 			double currDistributionPrice=list.get(i).getDistributionPrice();
 			int currSteps=list.get(i).getSteps();
 			
-			if(currKG>baseKG && record.getkG()>currKG)//获取第一个符合的值
+			if(currKG>=baseKG && record.getkG()>currKG)//获取第一个符合的值
 			{			
 				int currFlg=0;
 				if((record.getkG()-currKG)%currSteps==0)

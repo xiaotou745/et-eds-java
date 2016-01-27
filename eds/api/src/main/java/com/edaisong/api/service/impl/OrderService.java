@@ -2433,21 +2433,24 @@ public class OrderService implements IOrderService {
 			if(oId2<0)
 				throw new TransactionalRuntimeException("更新订单小费错误");
 		}	
-
-		//发送短信
-		String Content1="尊敬的E代送用户您好，您的订单取货码是：#验证码#";
-		Content1 = Content1.replace("#验证码#", oModel.getPickupcode());
-		try {
-			SmsUtils.sendSMS(oModel.getPubphoneno(),Content1);
-		} catch (MalformedURLException | UnsupportedEncodingException e) {		
-			e.printStackTrace();
-		}		
-		String Content2="尊敬的E代送用户您好，您的订单收货码是：#验证码#";
-		Content2 = Content2.replace("#验证码#", oModel.getReceivecode());
-		try {
-			SmsUtils.sendSMS(oModel.getRecevicephoneno(),Content2);
-		} catch (MalformedURLException | UnsupportedEncodingException e) {
-			e.printStackTrace();
+		
+		if(!oModel.getIspay())
+		{
+			//发送短信
+			String Content1="尊敬的E代送用户您好，您的订单取货码是：#验证码#";
+			Content1 = Content1.replace("#验证码#", oModel.getPickupcode());
+			try {
+				SmsUtils.sendSMS(oModel.getPubphoneno(),Content1);
+			} catch (MalformedURLException | UnsupportedEncodingException e) {		
+				e.printStackTrace();
+			}		
+			String Content2="尊敬的E代送用户您好，您的订单收货码是：#验证码#";
+			Content2 = Content2.replace("#验证码#", oModel.getReceivecode());
+			try {
+				SmsUtils.sendSMS(oModel.getRecevicephoneno(),Content2);
+			} catch (MalformedURLException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		resp.setStatus(PublishOrderReturnEnum.Success.value());
