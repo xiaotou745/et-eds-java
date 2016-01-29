@@ -2011,7 +2011,7 @@ where a.orderno=#{ordernNo}
         ISNULL(o.amount,0)+ISNULL(o.tipamount,0) as amountAndTip,o.receivecode,
         o.IsReceiveCode,
 case o.Payment when 0 then ''余额''  when 1 then ''支付宝''  when 2 then ''微信'' end paymentstr,
-case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送商户版''  when 3 then ''E代送智能调度'' end platformstr
+case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调度''  when 3 then ''E代送'' end platformstr
 	</sql>
 	<!--   移动端 订单列表add by caoheyang 20150910 -->
 	<sql id="shanSongqueryOrderFrom">
