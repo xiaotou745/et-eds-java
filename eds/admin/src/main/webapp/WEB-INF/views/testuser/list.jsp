@@ -8,136 +8,129 @@
 <%
 String basePath =PropertyUtils.getProperty("java.admin.url");
 %>
+<div class="wrapper wrapper-content animated fadeInRight">
 
-<div class="row">
-	<div class="col-lg-12">
-		<div class="wrapper wrapper-content animated fadeInUp">
-			<div class="ibox">
-				<div class="ibox-title">
-					<h5>所有账号</h5>
-					<div class="ibox-tools">
-						<a href="javascript:showCreateNewLayer();"
-							tppabs="http://www.zi-han.net/theme/hplus/projects.html"
-							class="btn btn-primary btn-xs">创建新账号</a>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">手机号:</label>
+						<div class="col-sm-8">
+							<input type="text" placeholder="请输入测试手机号"
+								class="input-sm form-control" id="phoneNo"
+								style="width: 250px; height: 34px;" value="" />
+						</div>
 					</div>
 				</div>
-				<%
-					if(request.getAttribute("testUsers") == null){
-				%>
-				<h3>当前没有测试账户</h3>
-				<%
-					}else{
-				%>
-				<div class="ibox-content">
-					<div class="project-list">
-						<table class="table table-hover" id="tableData">
-							<tr>
-								<th class="project-status">编号</th>
-								<th class="project-title">测试手机号</th>
-								<th class="project-completion">角色</th>
-								<th class="project-actions">操作</th>
-							</tr>
-							<tbody>
-								<%
-									List<TestUserRecord> list = (List<TestUserRecord>)request.getAttribute("testUsers");
-									for(TestUserRecord ts : list){
-								%>
-								<tr>
-									<td class="project-status"><span
-										class="label label-primary"><%=ts.getId()%></td>
-									<td class="project-title"><%=ts.getPhoneNo()%></td>
-									<td class="project-completion">-</td>
-									<td class="project-actions"><a href="javascript:void(0)"
-										onclick="showDeleteConfirmLayer(<%=ts.getPhoneNo()%>,this.parentNode.parentNode);"
-										class="btn btn-white btn-sm" id="btnDelete"><i
-											class="fa fa-folder"></i> 删除 </a> <a href="projects.html#"
-										tppabs="http://www.zi-han.net/theme/hplus/projects.html#"
-										class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>
-											编辑 </a></td>
-								</tr>
-								<%
-									}
-								%>
-							</tbody>
-						</table>
-					</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3">
+					<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+						style="margin-left: 3px;">查询</button>
+					<button type="button" class="btn btn-w-m btn-primary" id="add"
+						style="margin-left: 3px;">创建新账号</button>
 				</div>
-				<%
-					}
-				%>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="content"></div>
+
+
+
+<div class="modal inmodal fade" id="myModal" tabindex="-1" role="dialog"
+	aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title">创建新账号</h4>
+			</div>
+
+			<div class="modal-body">
+				  手机号：<input id="newphoneNo" class="form-control"/>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="save">保存</button>
+
 			</div>
 		</div>
 	</div>
 </div>
 <!-- layer方法 -->
 <script type="text/javascript">
-	var html = "<div style='width: 250px;margin: 0 auto;padding:30px;'><label>测试手机号:</label><input name='txtPhone' id='txtPhone' type='text'></div>";
-	html += "<p style='text-align:center;'><input value='确认' type='button' id='btnConfimAdd' onclick='addUserAjax()'></p>";
-	
-	function showCreateNewLayer(){
-		//页面层
-		layer.open({
-		    type: 1,
-		    skin: 'layui-layer-rim', //加上边框
-		    area: ['420px', '240px'], //宽高
-		    content: html
-		});
+var jss = {
+		search : function(currentPage) {
+			var data={"phoneNo":$("#phoneNo").val(),
+					  "currentPage":currentPage
+					 };
+			$.post("<%=basePath%>/testuser/listdo", data, function(d) {
+				$("#content").html(d);
+			});
+		}
 	}
-	
-	function showDeleteConfirmLayer(phoneNo,tr){
-		//询问框
-		layer.confirm('确定要删除吗？', {
-		    btn: ['确定','取消'], //按钮
-		    shade: false //不显示遮罩
-		}, function(){
-			deleteTestUserAjax(phoneNo,tr);
-		}, function(){
-		    layer.msg('删除失败', {shift: 6});
-		});
-	}
-	
-	function deleteTestUserAjax(phoneNo,tr){
-		var paramaters = {"phoneNo": phoneNo};
-        var url = "<%=basePath%>/testuser/delete";
+	jss.search(1);
+	$("#btnSearch").click(function() {
+		jss.search(1);
+	});
+	$("#add").click(function() {
+		$('#myModal').modal('show');
+	});
+	$("#save").click(function() {
+		if($("#newphoneNo").val()==""){
+			alert("手机号不能为空");
+			return;
+		}
+		var pars = { "phoneNo": $("#newphoneNo").val() };
+        $.ajax({
+            type: 'POST',
+            url: '<%=basePath%>/testuser/add',
+            data: pars,
+            success: function (result) {
+            	if(result>0){
+    				alert("操作成功");
+    				window.location.href = window.location.href;
+            	}else{
+    				alert("操作失败:手机号已经存在");
+            	}
+            }
+        });
+	});
+	///删除骑士
+    function deleteInfo(phone,infoType) {
+		switch(infoType){
+		case 1:
+			if (!confirm("确定删除该骑士?")){
+				return;
+			}
+			break;
+		case 2:
+			if (!confirm("确定删除订单数据?")){
+				return;
+			}
+			break;
+		case 3:
+			if (!confirm("确定删除该门店?")){
+				return;
+			}
+			break;
+		}
+
+        var pars = { "phoneNo": phone,"infoType":infoType };
+        var url = "<%=basePath%>/testuser/deleteinfo";
         $.ajax({
             type: 'POST',
             url: url,
-            data: paramaters,
+            data: pars,
             success: function (result) {
-                if (result.responseCode==0) {
-                	layer.msg('删除成功', {icon: 1});
-                	tr.remove();
-                } else {
-                	layer.msg('删除失败', {shift: 6});
-                }
+				alert("操作成功");
+				window.location.href = window.location.href;
             }
         });
-	}
-	
-	function addUserAjax(){
-		phoneNo = document.getElementById("txtPhone");
-		var paramaters = { "phoneNo": phoneNo};
-        var url = "<%=basePath%>/testuser/add";
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: paramaters,
-            success: function (result) {
-            	if (result.responseCode==0) {
-                	layer.msg(result.message, {shift: 6});
-                    window.reload();
-                } else {
-                	layer.msg(result.message, {shift: 6});
-                }
-            }
-        });
-        addUserTr(phoneNo);
-	}
-	
-	function addUserTr(phoneNo){
-/* 		var tr = document.createElement("tr");
-		tr.innerHTML = "aaaaaaaaaaaaaaaaaaaaaaaaa";
-		document.getElementById("tableData").appendChild(tr); */
-		window.location.href = "/testuser/list";
-	}
+    }
 </script>
