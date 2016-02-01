@@ -16,127 +16,14 @@
     Id, UserType, UserID, OptType, OptUserId, OptUserName, OptUserType, OptDateTime, 
     Remark
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from UserOptRecord
-    where Id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from UserOptRecord
-    where Id = #{id,jdbcType=INTEGER}
-  </delete>
   <insert id="insert" parameterType="com.edaisong.entity.UserOptRecord" >
-    insert into UserOptRecord (Id, UserType, UserID, 
+    insert into UserOptRecord (UserType, UserID, 
       OptType, OptUserId, OptUserName, 
       OptUserType, OptDateTime, Remark
       )
-    values (#{id,jdbcType=INTEGER}, #{usertype,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+    values (#{usertype,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
       #{opttype,jdbcType=INTEGER}, #{optuserid,jdbcType=INTEGER}, #{optusername,jdbcType=NVARCHAR}, 
-      #{optusertype,jdbcType=INTEGER}, #{optdatetime,jdbcType=TIMESTAMP}, #{remark,jdbcType=NVARCHAR}
+      #{optusertype,jdbcType=INTEGER}, getdate(), #{remark,jdbcType=NVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.UserOptRecord" >
-    insert into UserOptRecord
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="usertype != null" >
-        UserType,
-      </if>
-      <if test="userid != null" >
-        UserID,
-      </if>
-      <if test="opttype != null" >
-        OptType,
-      </if>
-      <if test="optuserid != null" >
-        OptUserId,
-      </if>
-      <if test="optusername != null" >
-        OptUserName,
-      </if>
-      <if test="optusertype != null" >
-        OptUserType,
-      </if>
-      <if test="optdatetime != null" >
-        OptDateTime,
-      </if>
-      <if test="remark != null" >
-        Remark,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="usertype != null" >
-        #{usertype,jdbcType=INTEGER},
-      </if>
-      <if test="userid != null" >
-        #{userid,jdbcType=INTEGER},
-      </if>
-      <if test="opttype != null" >
-        #{opttype,jdbcType=INTEGER},
-      </if>
-      <if test="optuserid != null" >
-        #{optuserid,jdbcType=INTEGER},
-      </if>
-      <if test="optusername != null" >
-        #{optusername,jdbcType=NVARCHAR},
-      </if>
-      <if test="optusertype != null" >
-        #{optusertype,jdbcType=INTEGER},
-      </if>
-      <if test="optdatetime != null" >
-        #{optdatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=NVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.UserOptRecord" >
-    update UserOptRecord
-    <set >
-      <if test="usertype != null" >
-        UserType = #{usertype,jdbcType=INTEGER},
-      </if>
-      <if test="userid != null" >
-        UserID = #{userid,jdbcType=INTEGER},
-      </if>
-      <if test="opttype != null" >
-        OptType = #{opttype,jdbcType=INTEGER},
-      </if>
-      <if test="optuserid != null" >
-        OptUserId = #{optuserid,jdbcType=INTEGER},
-      </if>
-      <if test="optusername != null" >
-        OptUserName = #{optusername,jdbcType=NVARCHAR},
-      </if>
-      <if test="optusertype != null" >
-        OptUserType = #{optusertype,jdbcType=INTEGER},
-      </if>
-      <if test="optdatetime != null" >
-        OptDateTime = #{optdatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remark != null" >
-        Remark = #{remark,jdbcType=NVARCHAR},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.UserOptRecord" >
-    update UserOptRecord
-    set UserType = #{usertype,jdbcType=INTEGER},
-      UserID = #{userid,jdbcType=INTEGER},
-      OptType = #{opttype,jdbcType=INTEGER},
-      OptUserId = #{optuserid,jdbcType=INTEGER},
-      OptUserName = #{optusername,jdbcType=NVARCHAR},
-      OptUserType = #{optusertype,jdbcType=INTEGER},
-      OptDateTime = #{optdatetime,jdbcType=TIMESTAMP},
-      Remark = #{remark,jdbcType=NVARCHAR}
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
 </mapper>

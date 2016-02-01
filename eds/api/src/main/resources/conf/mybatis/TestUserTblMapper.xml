@@ -8,67 +8,74 @@
   <sql id="Base_Column_List" >
     Id, PhoneNo
   </sql>
-  <!-- 根据指定id查询账号 -->
-  <select id="selectByPrimaryKey" resultType="com.edaisong.entity.TestUserTbl" parameterType="java.util.Map" >
-    select 
-    <include refid="Base_Column_List" />
-    from TestUserTbl
-    where Id = #{id,jdbcType=INTEGER}
-  </select>
+
   <!-- 删除指定账号 -->
-  <delete id="deleteByPrimaryKey" parameterType="java.util.Map" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from TestUserTbl
     where Id = #{id,jdbcType=INTEGER}
   </delete>
   <!-- 根据电话号码删除指定账号 -->
-  <delete id="deleteByPhoneNo" parameterType="java.util.Map" >
+  <delete id="deleteByPhoneNo" parameterType="java.lang.String" >
     delete from TestUserTbl
     where phoneNo = #{phoneNo,jdbcType=VARCHAR}
   </delete>
     <!-- 插入测试账号 -->
-  <insert id="insert" parameterType="java.util.Map" >
+  <insert id="insert" parameterType="java.lang.String" >
+  IF not EXISTS (SELECT 1 FROM dbo.TestUserTbl(NOLOCK) WHERE PhoneNo=#{phoneNo,jdbcType=VARCHAR})
     insert into TestUserTbl (phoneNo)
     values (#{phoneNo})
   </insert>
-  <insert id="insertSelective" parameterType="com.edaisong.entity.TestUserTbl" >
-    insert into TestUserTbl
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="phoneno != null" >
-        PhoneNo,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="phoneno != null" >
-        #{phoneno,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.TestUserTbl" >
-    update TestUserTbl
-    <set >
-      <if test="phoneno != null" >
-        PhoneNo = #{phoneno,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <!-- 更新账号 -->
-  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.TestUserTbl" >
-    update TestUserTbl
-    set PhoneNo = #{phoneno,jdbcType=VARCHAR}
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <!-- 获取测试账号列表 -->
-  <select id="selectAllTestUsers" resultType="com.edaisong.entity.domain.TestUserRecord">
-  	SELECT T.Id,T.PhoneNo,CASE ISNULL(C.Id,0) WHEN 0 THEN 0 ELSE 1 END AS IsC
-    ,CASE ISNULL(B.Id,0) WHEN 0 THEN 0 ELSE 1 END AS IsB
-      FROM  dbo.TestUserTbl(nolock) T left JOIN dbo.clienter(nolock) C ON T.PhoneNo=C.PhoneNo 
-     left JOIN dbo.business(nolock) B ON T.PhoneNo=B.PhoneNo
-  </select>
+  <!-- 删除测试骑士 -->
+  <delete id="deleteTestClienter" parameterType="java.lang.String" >
+  IF EXISTS (SELECT 1 FROM dbo.TestUserTbl(NOLOCK) WHERE PhoneNo=#{phoneNo,jdbcType=VARCHAR})
+      BEGIN
+          update dbo.[order] set Status=3 ,clienterId=null where [order].clienterId =
+          (select id from dbo.clienter(nolock) where PhoneNo=#{phoneNo,jdbcType=VARCHAR}) 
+          delete from dbo.clienter where PhoneNo=#{phoneNo,jdbcType=VARCHAR}
+      END
+  </delete>
+    <!-- 删除测试订单-->
+  <delete id="deleteTestOrder" parameterType="java.lang.String" >
+IF EXISTS (SELECT 1 FROM dbo.TestUserTbl(NOLOCK) WHERE PhoneNo=#{phoneNo,jdbcType=VARCHAR})
+     BEGIN
+        delete from [order] where businessId in (SELECT id FROM  dbo.business(nolock) where PhoneNo=#{phoneNo,jdbcType=VARCHAR})  
+     END 
+  </delete>
+    <!--  删除测试商家 -->
+  <delete id="deleteTestBusiness" parameterType="java.lang.String" >
+IF EXISTS (SELECT 1 FROM dbo.TestUserTbl(NOLOCK) WHERE PhoneNo=#{phoneNo,jdbcType=VARCHAR})
+   BEGIN
+       delete from [order] where businessId in (SELECT id FROM  dbo.business(nolock) where PhoneNo=#{phoneNo,jdbcType=VARCHAR})
+       delete from business where PhoneNo=#{phoneNo,jdbcType=VARCHAR}
+   END
+  </delete>
+  <sql id="getPagedListWhere">
+		1=1
+		<if test="phoneNo != null and phoneNo != ''">
+			and T.PhoneNo=''${phoneNo}''
+		</if>
+	</sql>
+  <select id="getPagedList" resultType="com.edaisong.entity.domain.TestUserRecord"
+		parameterType="com.edaisong.entity.req.PagedTestUserReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' T.ID desc ',
+		'
+		T.Id,T.PhoneNo,CASE ISNULL(C.Id,0) WHEN 0 THEN 0 ELSE 1 END AS IsC
+    	,CASE ISNULL(B.Id,0) WHEN 0 THEN 0 ELSE 1 END AS IsB
+		',
+		'
+		dbo.TestUserTbl(nolock) T left JOIN dbo.clienter(nolock) C ON T.PhoneNo=C.PhoneNo 
+     	left JOIN dbo.business(nolock) B ON T.PhoneNo=B.PhoneNo
+		',
+		'
+		<include refid="getPagedListWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 </mapper>

@@ -17,16 +17,16 @@ public class TestUserRecord {
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
-	public boolean isC() {
+	public boolean getIsC() {
 		return isC;
 	}
-	public void setC(boolean isC) {
+	public void setIsC(boolean isC) {
 		this.isC = isC;
 	}
-	public boolean isB() {
+	public boolean getIsB() {
 		return isB;
 	}
-	public void setB(boolean isB) {
+	public void setIsB(boolean isB) {
 		this.isB = isB;
 	}
 }
