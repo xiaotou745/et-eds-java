@@ -2,19 +2,13 @@ package com.eds.common;
 
 
 import org.springframework.stereotype.Component;
-
-
-
-import com.edaisong.api.common.TransactionalRuntimeException;
-import com.edaisong.core.enums.returnenums.HttpReturnRnums;
-import com.edaisong.core.util.StringUtils;
-import com.edaisong.entity.common.HttpResultModel;
+import com.eds.entity.HttpResultModel;
+import com.eds.entity.HttpReturnRnums;
+import com.eds.entity.TransactionalRuntimeException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.ext.ExceptionMapper;
-
 import java.util.Locale;
 
 /**
@@ -44,7 +38,7 @@ public class GlobalExceptionHandler implements ExceptionMapper {
         rb.language(Locale.SIMPLIFIED_CHINESE);
         Response r = rb.build();
         return r;
-    }  
+    }
 }
 
 

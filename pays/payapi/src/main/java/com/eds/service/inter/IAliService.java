@@ -1,25 +1,13 @@
 package com.eds.service.inter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.response.AlipayMobilePublicMessagePushResponse;
-import com.alipay.api.response.AlipayTradePrecreateResponse;
-import com.alipay.api.response.AlipayTradeQueryResponse;
-import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.alipay.parmodel.ParamAliModel;
 import com.alipay.parmodel.ParamBatchTransModel;
-
-import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.cxf.message.Message;
-
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 @Path("/aliservice")
