@@ -39,6 +39,7 @@
 				          	<option value="glht">管理后台</option>
 				          	<option value="eds">E代送</option>
 				          	<option value="zndd">智能调度</option>
+				          	<option value="rrt">人人推</option>
 						</select> 
 						</div> 
 					</div>
@@ -82,6 +83,7 @@
 						          <option value="glht">管理后台</option>
 						          <option value="eds">E代送</option>
 						          <option value="zndd">智能调度</option>
+						          <option value="rrt">人人推</option>
 						      </select> 
 					</div>
 					<div class="control-group"> 
@@ -209,23 +211,24 @@ var jss1 = {
 		}		
 		jss1.search(1);
 	});
-var jsonEdsDevPlatform=[{'name':'glht','value':"[{'name':'edsglht','value':'E代送管理后台'}]"},{'name':'eds','value':"[{'name':'edssh','value':'E代送商户'},{'name':'edsqs','value':'E代送骑士'},{'name':'edslcjf','value':'E代送（里程计费）'},{'name':'edssjzx','value':'商家中心'}]"},{'name':'zndd','value':"[{'name':'edszndd','value':'E代送智能调度'},{'name':'edsqqs','value':'E代送轻骑士'}]"}];
-var jsonRenrenDevPlatform=[{'name': 'rrtglht','value': "[{'name':'edsglht','value':'人人推管理后台'}]"},{'name': 'rrtqs','value': "[{'name':'rrtqsapp','value':'人人推骑士'}]"}];
+var jsonEdsDevPlatform=[{'name':'rrt','value':"[{'name':'edsglht','value':'人人推管理后台'},{'name':'rrtqsapp','value':'人人推骑士'}]"},{'name':'glht','value':"[{'name':'edsglht','value':'E代送管理后台'}]"},{'name':'eds','value':"[{'name':'edssh','value':'E代送商户'},{'name':'edsqs','value':'E代送骑士'},{'name':'edslcjf','value':'E代送（里程计费）'},{'name':'edssjzx','value':'商家中心'}]"},{'name':'zndd','value':"[{'name':'edszndd','value':'E代送智能调度'},{'name':'edsqqs','value':'E代送轻骑士'}]"}];
+//var jsonRenrenDevPlatform=[{'name': 'rrtglht','value': "[{'name':'edsglht','value':'人人推管理后台'}]"},{'name': 'rrtqs','value': "[{'name':'rrtqsapp','value':'人人推骑士'}]"}];
 var myjson=[];
 
 $(function(){
 	selChange("devPlatform_sel","onlineProduct_sel");
 	selChange("selDevPlatform","selOnlineProduct");
 });
-$("#selappname").change(function(){
-	$("#content").html("");
-	if($(this).val() !=''){
+$("#selappname").change(function(){ 
+	var seldb=$(this).val();
+	$("#content").html("");  
+	if(seldb !=''){
 		$("#btnSelLineHistory").click();
-	}
+	} 
 });
-function selChange(a,b){
+function selChange(a,b){ 
 	$("#"+a).change(function(){
-		var selval= $(this).val(); 
+		var selval= $(this).val();
 		if(selval == ""){
 			$("#"+b).html("<option value='' selected='selected'>请选择</option>");
 			if($("#selappname").val() !=''){
