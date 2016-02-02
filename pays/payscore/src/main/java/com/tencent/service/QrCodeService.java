@@ -27,10 +27,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.tencent.model.PayResultModel;
+
 //import com.tencent.qrcode.Data;
 
 public class QrCodeService {
-	private final static Logger logger = LoggerFactory.getLogger(QrCodeService.class);
+	private final static Logger logger = LoggerFactory
+			.getLogger(QrCodeService.class);
 	private final static int RIGHT_MOVE_STEP = 4;
 	private final static int ARR_LEN_MUL = 2;
 	private static final char hexDigits[] = { '0', '1', '2', '3', '4', '5',
@@ -156,6 +158,29 @@ public class QrCodeService {
 			return false;
 		}
 		return true;
+	}
+
+	public static String GetPrepayId(String xmlData) {
+		String resXml = postData(
+				"https://api.mch.weixin.qq.com/pay/unifiedorder", xmlData);
+		Document dd = null;
+		try {
+			dd = DocumentHelper.parseText(resXml);
+		} catch (DocumentException e) {
+			return "";
+		}
+		if (dd == null || dd.getRootElement()==null) {
+			return "";
+		}
+	
+		Element root = dd.getRootElement();
+		Element ElementPrepay_id = root.element("prepay_id");
+		if (ElementPrepay_id == null) {
+			return "";
+		}
+		String prepay_id=ElementPrepay_id.getText();
+		System.out.println(prepay_id);
+		return prepay_id;
 	}
 
 	public static PayResultModel getCodeUrl(String xmlData) {
