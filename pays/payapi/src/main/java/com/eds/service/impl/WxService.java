@@ -14,7 +14,11 @@ import com.tencent.common.Util;
 import com.tencent.model.PayParamModel;
 import com.tencent.model.PayResultModel;
 import com.tencent.protocol.pay_protocol.ScanPayReqData;
+import com.tencent.protocol.pay_query_protocol.ScanPayQueryReqData;
+import com.tencent.protocol.refund_protocol.RefundReqData;
 import com.tencent.service.QrCodeService;
+import com.tencent.service.RefundService;
+import com.tencent.service.ScanPayQueryService;
 import com.tencent.service.ScanPayService;
 
 @Service
@@ -26,10 +30,6 @@ public class WxService implements IWxService {
 	 * */
 	@Override
 	public String GetAppUrl(PayParamModel model) throws Exception {
-//		ScanPayReqData scanPayReqData = new ScanPayReqData("authCode", "body",
-//				"attr", model.getOrder_no(), 1, "dev", "", "", "", "");
-//		String s = new ScanPayService().request(scanPayReqData);
-//		return s;
 		HashMap<String, String> paramMap = Maps.newHashMap();
 		paramMap.put("trade_type", "APP"); // 交易类型
 		paramMap.put("spbill_create_ip", Util.localIp()); // 本机的Ip
@@ -69,6 +69,49 @@ public class WxService implements IWxService {
 				QrCodeService.getSign(paramMap, Configure.getKey()));// 根据微信签名规则，生成签名
 		String xmlData = QrCodeService.mapToXml(paramMap);// 把参数转换成XML数据格式
 		return QrCodeService.getCodeUrl(xmlData);
+	}
+
+	/**
+	 * 订单查询
+	 * */
+	@Override
+	public void Query(String out_trade_no) throws Exception {
+		// TODO Auto-generated method stub
+		ScanPayQueryReqData scanPayQueryReqData = new ScanPayQueryReqData("",
+				out_trade_no);
+		String result = new ScanPayQueryService().request(scanPayQueryReqData);
+		System.out.println(result);
+	}
+
+	/**
+	 * 退款
+	 * */
+	@Override
+	public void Refund(RefundReqData model) throws Exception {
+		RefundReqData refundReqData = new RefundReqData(
+				model.getTransaction_id(), model.getOut_trade_no(),
+				model.getDevice_info(), model.getOut_refund_no(),
+				model.getTotal_fee(), model.getRefund_fee(),
+				model.getOp_user_id(), model.getRefund_fee_type());
+		String result = new RefundService().request(refundReqData);
+		System.out.println(result);
+	}
+
+	/**
+	 * 关闭订单
+	 * */
+	@Override
+	public String Close(String out_trade_no) throws Exception {
+		HashMap<String, String> paramMap = Maps.newHashMap();
+		paramMap.put("out_trade_no", out_trade_no); // 平台单号
+		paramMap.put("appid", Configure.getAppid()); // appid
+		paramMap.put("mch_id", Configure.getMchid()); // 商户号
+		paramMap.put("nonce_str",
+				RandomStringGenerator.getRandomStringByLength(32)); // 随机数
+		paramMap.put("sign",
+				QrCodeService.getSign(paramMap, Configure.getKey()));// 根据微信签名规则，生成签名
+		String xmlData = QrCodeService.mapToXml(paramMap);// 把参数转换成XML数据格式
+		return QrCodeService.CloseOrder(xmlData);
 	}
 
 	/**
