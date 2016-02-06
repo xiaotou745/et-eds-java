@@ -74,8 +74,7 @@ public class XMLParser {
         while (i < allNodes.getLength()) {
             node = allNodes.item(i);
             if(node instanceof Element){
-            	//微信支付这里会有问题。
-//                map.put(node.getNodeName(),node.getTextContent());
+                map.put(node.getNodeName(),node.getTextContent());
             }
             i++;
         }

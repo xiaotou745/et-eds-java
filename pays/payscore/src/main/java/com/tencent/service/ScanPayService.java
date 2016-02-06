@@ -27,6 +27,7 @@ public class ScanPayService extends BaseService{
      * @throws Exception
      */
     public String request(ScanPayReqData scanPayReqData) throws Exception {
+
         //--------------------------------------------------------------------
         //发送HTTPS的Post请求到API地址
         //--------------------------------------------------------------------
