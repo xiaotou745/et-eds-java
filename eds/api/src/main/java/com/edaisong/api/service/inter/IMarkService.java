@@ -44,5 +44,10 @@ public interface IMarkService {
 	 * @return
 	 */
 	List<Mark> getMarksListByType(int type);
+	/*
+	 * 订单管理页面获取所有标签
+	 * wangchao
+	 */
+	ResponseBase getTag();
 
 }

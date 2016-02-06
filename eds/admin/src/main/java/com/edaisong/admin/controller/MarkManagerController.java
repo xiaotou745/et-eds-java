@@ -79,4 +79,15 @@ public class MarkManagerController {
 		response = markService.modifyMarkStatus(markEditReq);
 		return response;	
 	}
+	/*
+	 * 订单管理页面获取所有标签
+	 * wangchao
+	 */
+	@RequestMapping("gettag")
+	@ResponseBody
+	 public ResponseBase getTag(){
+		ResponseBase response = new ResponseBase();
+		response = markService.getTag();
+		return response;
+	}
 }

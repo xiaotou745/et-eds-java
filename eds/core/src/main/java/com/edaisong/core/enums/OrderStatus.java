@@ -34,6 +34,9 @@ public enum OrderStatus {
 	 * 待接入
 	 */
 	DraftCancel(51, "取消闪送未支付"),
+	
+	AuditStatusOk(11,"审核通过"),
+	AuditStatusRefuse(12,"审核拒绝"),
 		/*
 	 * 待接入
 	 */

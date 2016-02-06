@@ -4,11 +4,11 @@ public enum TagType {
 	/**
 	 * 0门店
 	 */
-    Business(0,"门店"),
+    Business(0,"门店标签"),
     /**
 	 * 1骑士
 	 */
-    Clienter (1,"骑士");
+    Clienter (1,"骑士标签");
     
 	private int value = 0;
 	private String desc;

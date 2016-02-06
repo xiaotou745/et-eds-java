@@ -90,5 +90,13 @@ public class MarkDao extends DaoBase implements IMarkDao {
 	public List<Mark> getMarksListByType(int type) {
 		return getReadOnlySqlSessionUtil().selectList("IMarkDao.getMarksListByType",type);
 	}
+	/*
+	 * 订单管理页面获取所有标签
+	 * wangchao
+	 */
+	@Override
+	public List<Mark> getTag() { 
+		return getReadOnlySqlSessionUtil().selectList("IMarkDao.getTag");
+	}
 
 }

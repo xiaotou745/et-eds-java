@@ -878,7 +878,7 @@
 		o.[ReceviceLongitude] , o.[ReceviceLatitude] , o.[OrderFrom] ,
 		o.[OriginalOrderId] ,o.[OriginalOrderNo] , o.[Quantity] ,o.[Weight] ,
 		o.[ReceiveProvince] , o.[ReceiveArea] , o.[ReceiveProvinceCode]
-		,o.[ReceiveCityCode] ,o.[ReceiveAreaCode] ,
+		,o.[ReceiveCityCode] ,o.[ReceiveAreaCode] ,o.SettleMoney,
 		o.[SongCanDate] ,
 		 o.[OrderCount] ,o.[CommissionRate] ,
 		 c.TrueName ClienterName ,
@@ -906,12 +906,24 @@
 		join business b with ( nolock ) on b.Id = o.businessId
 		left join [group] g with ( nolock ) on g.id = o.OrderFrom
 		join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
+		<if test="groupBusinessId >0 ">
+			left join GroupBusinessRelation gbr(nolock) on o.BusinessId=b.id 
+		</if>
+		<if test="tagType == 0 and tagId>0">
+			join dbo.TagRelation tagR on b.Id=tagR.UserId and tagR.IsEnable=1 and tagR.UserType=0 and  tagR.TagId=${tagId} 
+		</if>
+		<if test="tagType == 1 and tagId>0">
+			join dbo.TagRelation tagR on c.Id=tagR.UserId and tagR.IsEnable=1 and tagR.UserType=1 and  tagR.TagId=${tagId} 
+		</if>
 	</sql>
 	<!-- 后台订单列表页面 动态查询条件 add by caoheyang 20150728 -->
 	<sql id="GetOrdersColumsWhere">
-		1=1
+		1=1 and 3>=o.Platform 
 		<if test="businessName != null and businessName != ''">
 			and b.Name=''${businessName}''
+		</if>
+		<if test="groupBusinessId >0 ">
+			and gbr.GroupId=${groupBusinessId} 
 		</if>
 		<if test="businessID != null">
 			and b.id=${businessID}
@@ -947,10 +959,6 @@
 		<if test="groupId != null and groupId != -1">
 			and o.OrderFrom = ${groupId}
 		</if>
-	    <if test="groupId != null and groupId != -1">
-			and o.OrderFrom = ${groupId}
-		</if>
-
 		<if test="authorityCityNameList != null">
 			and b.city in
 			<foreach item="item" index="index" collection="authorityCityNameList"
@@ -968,7 +976,7 @@
 		parameterType="com.edaisong.entity.req.PagedOrderSearchReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' o.PubDate desc ',
+		' o.Status ASC,o.Id DESC ',
 		'
 		<include refid="GetOrdersColums" />
 		',

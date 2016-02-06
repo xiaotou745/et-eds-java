@@ -13,8 +13,8 @@ public enum PayStyle {
 	/**
 	 * 骑士支付
 	 */
-	ClienterPay(2,"骑士支付");
-	
+	ClienterPay(2,"骑士支付"),
+	BusinessPay(3,"商家支付");
 	private int value = 0;
 	private String desc;
 	private PayStyle(int value, String desc) { // 必须是private的，否则编译错误
