@@ -35,6 +35,16 @@ public class BIController {
 		view.addObject("everyDayData",list);
 		return view;
 	}
+	/**
+	 * 版本升级记录页面
+	 * 茹化肖
+	 * @return
+	 */
+	@RequestMapping("linehistory")
+	public ModelAndView linehistory(){
+		ModelAndView view = new ModelAndView("bi/linehistory");
+		return view;
+	}
 	
 	
 }

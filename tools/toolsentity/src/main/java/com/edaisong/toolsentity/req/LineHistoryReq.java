@@ -4,6 +4,26 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class LineHistoryReq implements Serializable{
+	/**
+	 * 平台编号
+	 */
+	private Integer devPlatformCode;
+	/**
+	 * 产品编号
+	 */
+	private Integer onLineProductCode;
+	public Integer getDevPlatformCode() {
+		return devPlatformCode;
+	}
+	public void setDevPlatformCode(Integer devPlatformCode) {
+		this.devPlatformCode = devPlatformCode;
+	}
+	public Integer getOnLineProductCode() {
+		return onLineProductCode;
+	}
+	public void setOnLineProductCode(Integer onLineProductCode) {
+		this.onLineProductCode = onLineProductCode;
+	}
 	private int id;
 	private String modifyName;
 	

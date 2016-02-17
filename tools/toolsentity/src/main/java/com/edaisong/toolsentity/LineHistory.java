@@ -48,8 +48,26 @@ public class LineHistory implements Serializable{
 	 * 创建人
 	 */
 	private String createName;
-
-
+	/**
+	 * 平台编号
+	 */
+	private Integer devPlatformCode;
+	/**
+	 * 产品编号
+	 */
+	private Integer onLineProductCode;
+	public Integer getOnLineProductCode() {
+		return onLineProductCode;
+	}
+	public void setOnLineProductCode(Integer onLineProductCode) {
+		this.onLineProductCode = onLineProductCode;
+	}
+	public Integer getDevPlatformCode() {
+		return devPlatformCode;
+	}
+	public void setDevPlatformCode(Integer devPlatformCode) {
+		this.devPlatformCode = devPlatformCode;
+	}
 	/**
 	 * 获取主键
 	 */

@@ -21,7 +21,11 @@ import com.edaisong.toolsentity.req.PagedLineHistoryReq;
 public class LineHistoryService implements ILineHistoryService{
 
 	@Autowired
-	private ToolsHelper toolsHelper; 
+	private ToolsHelper toolsHelper;
+	/**
+	 * 分页查询
+	 * 茹化肖
+	 */
 	@Override
 	public PagedResponse<LineHistory> getList(PagedLineHistoryReq req) {
 		List<AppDbConfig> appConfig=toolsHelper.getAppConfigList(ServerType.SqlServer,req.getAppName());//构造数据库连接
@@ -31,6 +35,9 @@ public class LineHistoryService implements ILineHistoryService{
 		}
 		return null;
 	}
+	/**
+	 * 添加一个上线记录
+	 */
 	@Override
 	public int addLineHistory(LineHistoryReq req) { 
 		List<AppDbConfig> appConfig=toolsHelper.getAppConfigList(ServerType.SqlServer,req.getAppName());//构造数据库连接

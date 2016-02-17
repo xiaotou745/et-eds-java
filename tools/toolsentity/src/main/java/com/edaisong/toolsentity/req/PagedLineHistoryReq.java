@@ -3,32 +3,35 @@ package com.edaisong.toolsentity.req;
 import com.edaisong.toolsentity.common.PagedRequestBase;
 
 public class PagedLineHistoryReq extends PagedRequestBase{
+/**
+ * 	数据库
+ */
 	private String appName;
 	/**
 	 * 所属平台
 	 */
-	private String devPlatform;
-
-	public String getDevPlatform() {
-		return devPlatform;
-	}
-
-	public void setDevPlatform(String devPlatform) {
-		this.devPlatform = devPlatform;
-	}
-
-	public String getOnLineProduct() {
-		return onLineProduct;
-	}
-
-	public void setOnLineProduct(String onLineProduct) {
-		this.onLineProduct = onLineProduct;
-	}
-
+	private int devPlatform;
 	/**
 	 * 上线产品
 	 */
-	private String onLineProduct;
+	private int onLineProduct;
+	
+	public int getDevPlatform() {
+		return devPlatform;
+	}
+
+	public void setDevPlatform(int devPlatform) {
+		this.devPlatform = devPlatform;
+	}
+
+	public int getOnLineProduct() {
+		return onLineProduct;
+	}
+
+	public void setOnLineProduct(int onLineProduct) {
+		this.onLineProduct = onLineProduct;
+	}
+
 	public String getAppName() {
 		return appName;
 	}
