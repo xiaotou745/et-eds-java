@@ -12,10 +12,12 @@ public class Configure {
 	// 公众号里的私钥
 	private static String appsecret = "1937e6b47786c86fac37303f97d5ed91";
 	// 微信分配的公众号ID（开通公众号之后可以获取到）
-	private static String appID = "wxb89ebba3cec98a8c";
+	// private static String appID = "wxb89ebba3cec98a8c";//第一版
+	private static String appID = "wx5505d0e3b58607a6";
 
 	// 微信支付分配的商户号ID（开通公众号的微信支付功能之后可以获取到）
-	private static String mchID = "1243442302";
+	// private static String mchID = "1243442302";//第一版
+	private static String mchID = "1291102901";
 
 	// 受理模式下给子商户分配的子商户号
 	private static String subMchID = "";
@@ -24,7 +26,8 @@ public class Configure {
 	private static String certLocalPath = "G:\\project\\e代送众包版\\Eds.SuperMan\\SuperManWebApi\\cert\\apiclient_cert.p12";
 
 	// HTTPS证书密码，默认密码等于商户号MCHID
-	private static String certPassword = "1233410002";
+	// private static String certPassword = "1233410002";//第一版
+	private static String certPassword = "1291102901";
 
 	// 是否使用异步线程的方式来上报API测速，默认为异步模式
 	private static boolean useThreadToDoReport = true;

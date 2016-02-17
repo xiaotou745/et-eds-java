@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@page import="java.sql.Date"%>
+<%@page import="com.edaisong.core.util.PropertyUtils"%>
 <%@page import="com.edaisong.entity.common.PagedResponse"%>
 <%@page import="java.lang.Double"%>
 <%@page import="com.edaisong.core.util.PageHelper"%>
@@ -36,6 +37,7 @@
 		<%
 			PagedResponse<OrderListModel> responsePageList = (PagedResponse<OrderListModel>) request
 					.getAttribute("listData");
+			String basePath =PropertyUtils.getProperty("java.admin.url");
 			List<OrderListModel> data = responsePageList.getResultList();
 			if (data == null) {
 				data = new ArrayList<OrderListModel>();
@@ -67,7 +69,7 @@
 		<tr>
 			<td><%=i + 1%></td>
 			<td>
-			<%=data.get(i).getOrderNo()%> <br /> 
+			<a href="<%=basePath %>/order/detail?orderno=<%=data.get(i).getOrderNo()%>&orderid=<%=data.get(i).getId() %> "><%=data.get(i).getOrderNo()%></a><br /> 
 				来源:<%=ParseHelper.ShowString(data.get(i).getGroupName())%><br/>原单号:<%=ParseHelper.ShowString(data.get(i).getOriginalOrderNo())%>
 		    </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getBusinessName())%> <br /> <%=data.get(i).getBusinessPhoneNo()%>
@@ -103,7 +105,7 @@
 			<%
 				}
 			%>
-			<td><%=data.get(i).getBusinessCommission()%></td>
+			<td><%=data.get(i).getSettleMoney() %></td>
 			<td><%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%><br/> <%=OrderAuditStatus.getEnum(data.get(i).getAuditStatus()).desc()%></td>
 			<td><%=data.get(i).getHadUploadCount()%>/<%=data.get(i).getOrderCount()%></td>
 			<td style="<%=grabToCompleteStyle%>"><%=grabToCompleteStr%></td>

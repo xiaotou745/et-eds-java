@@ -83,5 +83,22 @@ public class MarkService implements IMarkService {
 	public List<Mark> getMarksListByType(int type) {
 		return markDao.getMarksListByType(type);
 	}
+	/*
+	 * 订单管理页面获取所有标签
+	 * wangchao
+	 */
+	@Override
+	public ResponseBase getTag() {
+		ResponseBase responseBase=new ResponseBase();
+		List<Mark> markList= markDao.getTag();
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append(String.format("<option value='' style='display:block'>全部</option>"));
+		for (int i = 0; i < markList.size(); i++) {
+			sBuffer.append(String.format("<option value='%s' style='display:none' tagType='%s'>%s</option>",markList.get(i).getId(),markList.get(i).getTagType(),markList.get(i).getTagName()));
+		}
+		responseBase.setResponseCode(1);
+		responseBase.setMessage(sBuffer.toString());
+		return responseBase;
+	}
 
 }

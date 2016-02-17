@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.edaisong.api.dao.inter.IBiDao;
 import com.edaisong.api.service.inter.IBiService;
 import com.edaisong.entity.Everyday;
+import com.edaisong.entity.domain.LineHistoryModel;
 
 @Service
 public class BiService implements IBiService {
@@ -19,6 +20,11 @@ public class BiService implements IBiService {
 	public List<Everyday> queryEveryDay() {
 		List<Everyday> list = biDao.queryEveryDayDao();
 		return list;
+	}
+
+	@Override
+	public List<LineHistoryModel> getLineHistoryModel() {
+		return biDao.getLineHistoryModel();
 	}
 
 }

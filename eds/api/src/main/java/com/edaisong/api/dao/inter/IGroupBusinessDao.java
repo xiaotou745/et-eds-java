@@ -1,5 +1,7 @@
 package com.edaisong.api.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.Business;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.GroupBusinessRecharge;
@@ -35,4 +37,9 @@ public interface IGroupBusinessDao {
 	 */
 	int recharge(int groupID,double amount);
 	GroupBusiness select(int groupID);
+	/*
+	 * 获取集团商户
+	 * achao
+	 */
+	List<GroupBusinessModel> get();
 }

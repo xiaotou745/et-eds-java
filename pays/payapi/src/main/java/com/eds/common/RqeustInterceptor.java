@@ -19,15 +19,9 @@ import java.lang.reflect.Method;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.edaisong.api.common.LogServiceBLL;
-import com.edaisong.core.enums.returnenums.HttpReturnRnums;
-import com.edaisong.core.util.JsonUtil;
-import com.edaisong.core.util.ParseHelper;
-import com.edaisong.core.util.StringUtils;
-import com.edaisong.core.util.SystemUtils;
-import com.edaisong.entity.common.HttpResultModel;
-import com.edaisong.entity.domain.ActionLog;
-
+import com.eds.entity.ActionLog;
+import com.eds.entity.HttpResultModel;
+import com.eds.entity.HttpReturnRnums;
 
 public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 	@Autowired

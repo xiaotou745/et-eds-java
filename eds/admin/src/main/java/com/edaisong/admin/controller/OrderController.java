@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IAccountCityRelationService;
+import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
@@ -25,6 +26,7 @@ import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StringUtils;
+import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
@@ -53,7 +55,8 @@ public class OrderController {
 	 private HttpServletRequest request;
 	 @Autowired
 	 private IAccountCityRelationService accountCityRelationService;
-	 
+	 @Autowired
+	 private IGroupBusinessService groupBusinessService;
 	/**
 	 * 订单列表页面 
 	 * @author CaoHeYang
@@ -70,6 +73,7 @@ public class OrderController {
 		GroupReq groupReq = new GroupReq();
 		groupReq.setIsValid(1);
 		model.addObject("groupListData", iGroupService.getGroupList(groupReq));   //下拉集团   
+		model.addObject("groupBusiness", groupBusinessService.get()); //获取集团商户  achao
 		model.addObject("viewPath", "order/list");
 		return model;
 	}

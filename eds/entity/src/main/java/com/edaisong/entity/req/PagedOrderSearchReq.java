@@ -23,6 +23,9 @@ public class PagedOrderSearchReq extends PagedRequestBase{
      private String deliveryCompany ;
      private Integer businessID ; 
      private Integer auditStatus;
+     private Integer groupBusinessId;
+     private Integer tagId;
+     private Integer tagType;
      /**
       * 超人电话
       */
@@ -198,6 +201,24 @@ public class PagedOrderSearchReq extends PagedRequestBase{
 	 */
 	public void setAuditStatus(Integer auditStatus) {
 		this.auditStatus = auditStatus;
+	}
+	public Integer getGroupBusinessId() {
+		return groupBusinessId;
+	}
+	public void setGroupBusinessId(Integer groupBusinessId) {
+		this.groupBusinessId = groupBusinessId;
+	}
+	public Integer getTagId() {
+		return tagId;
+	}
+	public void setTagId(Integer tagId) {
+		this.tagId = tagId;
+	}
+	public Integer getTagType() {
+		return tagType;
+	}
+	public void setTagType(Integer tagType) {
+		this.tagType = tagType;
 	}
 
 

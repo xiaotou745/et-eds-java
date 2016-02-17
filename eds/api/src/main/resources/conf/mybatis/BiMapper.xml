@@ -41,5 +41,17 @@ activeClienter, rechargeTotal, systemRecharge,systemPresented,
 from    dbo.Statistic s(nolock) 
 order by id desc
   </select>
- 
+  <!-- 查询上线记录 -->
+   <select id="getLineHistoryModel" resultType="com.edaisong.entity.domain.LineHistoryModel">
+
+SELECT  DevPlatform ,
+        DevPlatformCode ,
+        OnLineProduct ,
+        REPLACE(CONVERT(VARCHAR(10), OnLineTime, 120), '-', '/') AS OnLineTime ,
+        OnLineContent
+FROM    dbo.LineHistory AS lh ( NOLOCK )
+WHERE lh.IsEnable=1
+ORDER BY OnLineTime DESC
+
+  </select>
 </mapper>

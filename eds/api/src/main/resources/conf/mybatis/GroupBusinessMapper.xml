@@ -210,4 +210,7 @@
 		select top 1 * from   GroupBusiness with(nolock)
 		where id = #{groupID,jdbcType=INTEGER} 
 	</select>
+	<select id="get" resultType="com.edaisong.entity.domain.GroupBusinessModel">
+		select id,groupbusiname from GroupBusiness with(nolock) order by id desc
+	</select>
 </mapper>

@@ -12,7 +12,7 @@
       )
   </insert>
   
-    <!-- 获取订单操作日志  Caoheyang 20150827 -->
+    <!-- 获取订单操作日志  Caoheyang 20150827 条件里面为啥要写 and 101>Platform  这个 我去掉了achao-->
 	<select id="GetOrderOptionLog" resultType="com.edaisong.entity.OrderSubsidiesLog"
 		parameterType="java.util.Map">
 		SELECT  Id,
@@ -24,7 +24,7 @@
                                     Platform,
                                     Remark
                             FROM OrderSubsidiesLog (nolock)
-                            WHERE OrderId= #{orderId,jdbcType=INTEGER} and 101>Platform
+                            WHERE OrderId= #{orderId,jdbcType=INTEGER}  
                             ORDER BY Id;
 	</select>
 	    <!-- 获取智能调度操作日志  zhaohl 20151105 -->

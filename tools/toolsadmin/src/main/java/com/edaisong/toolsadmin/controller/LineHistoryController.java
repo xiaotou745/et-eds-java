@@ -14,6 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edaisong.toolsadmin.common.UserContext;
 import com.edaisong.toolsapi.common.ToolsHelper;
 import com.edaisong.toolsapi.service.inter.ILineHistoryService;
+import com.edaisong.toolscore.enums.DevPlatformType;
+import com.edaisong.toolscore.enums.OnLineProductType;
+import com.edaisong.toolscore.util.EnumHelper;
+import com.edaisong.toolscore.util.HtmlHelper;
 import com.edaisong.toolsentity.LineHistory;
 import com.edaisong.toolsentity.common.PagedResponse;
 import com.edaisong.toolsentity.req.LineHistoryReq;
@@ -35,11 +39,49 @@ public class LineHistoryController {
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "上线里程");
 		view.addObject("currenttitle", "上线里程"); 
-		view.addObject("appNameList", toolsHelper.getAppNameList(null,null));
+		view.addObject("appNameList", toolsHelper.getConnList());
 		view.addObject("viewPath", "linehistory/list"); 
 		return view;
 	}
-	
+	/**
+	 * 根据数据库名称获取项目下拉框选项
+	 * @param dbname
+	 * @return
+	 */
+	@RequestMapping("getdevplatform")
+	@ResponseBody
+	public String getdevplatform(String dbname)
+	{
+		String optionString="";
+		if(dbname.toLowerCase().equals("superman"))
+		{
+			optionString=HtmlHelper.getSelect("aa", DevPlatformType.getListbyId(1), "desc", "value");
+		}else {
+			optionString=HtmlHelper.getSelect("aa", DevPlatformType.getListbyId(2), "desc", "value");
+		}
+		return optionString;
+	}
+	/**
+	 * 根据项目ID获取上线产品
+	 * @param dbname
+	 * @return
+	 */
+	@RequestMapping("getonlineproduct")
+	@ResponseBody
+	public String getonlineproduct(int typeid)
+	{
+		String optionString="";
+		if(typeid!=-1)
+		{
+			optionString=HtmlHelper.getSelect("aa",OnLineProductType.getListbyplatform(typeid), "desc", "value");
+		}
+		return optionString;
+	}
+	/**
+	 * 
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedLineHistoryReq req) {
 		ModelAndView view = new ModelAndView("linehistory/listdo"); 
@@ -47,7 +89,13 @@ public class LineHistoryController {
 		view.addObject("listData", datalist);
 		return view;
 	}
-	
+	/**
+	 * 
+	 * 添加一个上线记录
+	 * @param request
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("addlinehistory")
 	@ResponseBody
 	public int addLineHistory(HttpServletRequest request,LineHistoryReq req){
