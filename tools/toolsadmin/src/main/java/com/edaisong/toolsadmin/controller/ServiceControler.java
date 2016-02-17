@@ -115,7 +115,7 @@ public class ServiceControler {
 	 */
 	@RequestMapping("querystartlist")
 	@ResponseBody
-	public QuartzHttpModel queryStartList(int appSource,String versionCode) {
+	public QuartzHttpModel queryStartList(Integer appSource,String versionCode) {
 		QuartzHttpModel result= quartzService.queryStartList(appSource);
 		//如果版本号一致，则说明没有变更，则返回空集合，减少网络传输
 		//此处必须和qutartzservice中的Main.refreshDo保持一致
