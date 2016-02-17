@@ -223,6 +223,7 @@
 					alert("操作成功");
 					window.location.href = "<%=basePath%>/quartz/list";   
 					break;
+				case -1:
 				case 0:
 					if(paramaters.optype=="0"){
 						 alert("操作失败:当前服务处于启动状态或修改后的服务名称或请求地址与现有的服务相同，不能修改");
