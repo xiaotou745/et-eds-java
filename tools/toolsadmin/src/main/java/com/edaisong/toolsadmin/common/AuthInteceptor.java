@@ -1,6 +1,5 @@
 package com.edaisong.toolsadmin.common;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +10,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.edaisong.toolsapi.common.AjaxNotLoginRunTimeException;
-import com.edaisong.toolsapi.common.LoginHelper;
 import com.edaisong.toolsapi.service.inter.IAuthorityMenuClassService;
-import com.edaisong.toolscore.consts.GlobalSettings;
 import com.edaisong.toolscore.util.PropertyUtils;
 import com.edaisong.toolsentity.domain.MenuEntity;
 
@@ -27,6 +24,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 			boolean isLogin = LoginUtil.checkIsLogin(request,response);
 			if (!isLogin&& 
 				!request.getServletPath().equals("/account/login") && 
+				!request.getServletPath().equals("/service/querystartlist")&&
 				!request.getServletPath().equals("/account/code")) {
 				if(isAjax(request)){
 					throw new AjaxNotLoginRunTimeException("请重新登录");

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.toolsapi.dao.inter.IQuartzServiceDao">
+	<sql id="Base_Column_List">
+	 Id,appSource,ReqUrl,Name,ExecTime,IsStart,Remark,createTime,createName,updateTime,updateName
+	</sql>
+	<insert id="insert" parameterType="com.edaisong.toolsentity.QuartzServiceModel">
+	if not exists(select 1 from QuartzService where ReqUrl=#{reqUrl} or Name=#{name})
+		insert into QuartzService(
+		appSource,reqUrl,Name,ExecTime,IsStart,Remark,createTime,createName,updateTime,updateName
+		) values(#{appSource,jdbcType=INTEGER},
+		#{reqUrl,jdbcType=NVARCHAR},
+		#{name,jdbcType=NVARCHAR},
+		#{execTime,jdbcType=NVARCHAR},
+		0,
+		#{remark,jdbcType=NVARCHAR},
+		getdate(),
+		#{createName,jdbcType=NVARCHAR},
+		getdate(),
+		#{updateName,jdbcType=NVARCHAR}
+		)
+	</insert>
+	<update id="updateStatus" parameterType="com.edaisong.toolsentity.req.QuartzUpdateReq">
+		update dbo.QuartzService 
+		<set >
+      <if test="status != null" >
+        IsStart=#{status,jdbcType=INTEGER},
+        updateTime=getdate(),
+		updateName=#{updateName,jdbcType=NVARCHAR},
+      </if>
+    </set>
+	where id=#{id,jdbcType=INTEGER}
+	</update>
+	<update id="update" parameterType="com.edaisong.toolsentity.QuartzServiceModel">
+	if not exists(select 1 from QuartzService where id!=#{id} and  (reqUrl=#{reqUrl} or Name=#{name}))
+		update dbo.QuartzService set 
+		reqUrl=#{reqUrl,jdbcType=NVARCHAR},
+		name=#{name,jdbcType=NVARCHAR},
+		ExecTime=#{execTime,jdbcType=NVARCHAR},
+		remark=#{remark,jdbcType=NVARCHAR},
+		updateTime=getdate(),
+		updateName=#{updateName,jdbcType=NVARCHAR}
+		where id=#{id,jdbcType=INTEGER} and IsStart=0
+	</update>
+	<sql id="pagedQueryWhere">
+		1=1
+		<if test="status != null and status>=0">
+			and IsStart=${status}
+		</if>
+	   <if test="appSource >0" >
+       and appSource = ${appSource}
+    	</if>
+	</sql>
+	<select id="pagedQuery" resultType="com.edaisong.toolsentity.QuartzServiceModel"
+		parameterType="com.edaisong.toolsentity.req.PagedQuartzServiceReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' id desc ',
+		'
+		<include refid="Base_Column_List" />
+		',
+		'QuartzService with(nolock)',
+		'
+		<include refid="pagedQueryWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+	<select id="queryStartList"  resultType="com.edaisong.toolsentity.QuartzServiceModel"
+	parameterType="java.lang.Integer" >
+	 select 
+    <include refid="Base_Column_List" />
+    from QuartzService with(nolock)
+    where IsStart = 1 
+    <if test="_parameter >0" >
+       and appSource = #{appSource,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>
