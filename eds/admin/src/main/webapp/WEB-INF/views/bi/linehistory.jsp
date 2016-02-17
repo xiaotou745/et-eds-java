@@ -1,7 +1,14 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="com.edaisong.entity.domain.LineHistoryModel"%>
+<%@page import="java.util.List"%>
+<%@page import="com.edaisong.core.enums.DevPlatformType"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.admin.url");
+	List<LineHistoryModel> list= (List<LineHistoryModel>) request.getAttribute("list");
+	List<String> yearlist= (List<String>) request.getAttribute("yearlist");
+	List<DevPlatformType> typeList= (List<DevPlatformType>) request.getAttribute("typeList");
 %>
 <!DOCTYPE html>
 <html>
@@ -37,260 +44,75 @@
                 <div class="logo"></div>
                 <div class="title">全部</div>
             </div>
-            <div class="step-item" data-type="1">
-                <div class="logo"></div>
-                <div class="title">商家中心</div>
-            </div>
-            <div class="step-item" data-type="2">
-                <div class="logo"></div>
-                <div class="title">智能调度</div>
-            </div>
-            <div class="step-item" data-type="3">
-                <div class="logo"></div>
-                <div class="title">管理后台</div>
-            </div>
+            <% for(int i=0;i<typeList.size();i++) 
+            {
+            	%>
+            	<div class="step-item" data-type="<%=typeList.get(i).value()%>">
+               		<div class="logo"></div>
+                	<div class="title"><%=typeList.get(i).desc()%></div>
+            	</div>
+            	<% 
+            }%>
+            
         </div>
     </div>
     <div class="timeline">
         <div class="timeline_split"></div>
-        <div class="year">
-            <div class="point"></div>
-            2016年
-        </div>
-        <div class="time_point t1">
-            <div class="time_point_wrap">
-                <img src="<%=basePath%>/img/point.jpg" alt="">
-                <div class="time">
-                    2016/01/08
+        <%
+        for(int i=0;i<yearlist.size();i++)
+        {
+        	%>
+        	  <div class="year">
+            	<div class="point"></div>
+            	<%=yearlist.get(i)%>年
+        	  </div>
+        	  
+        	<%
+        	for(int j=0;j<list.size();j++)
+        	{
+        		if(list.get(j).getOnLineTime().contains(yearlist.get(i)))
+        		{
+        			%>
+        			 <div class="time_point t<%=list.get(j).getDevPlatformCode()%> <%=j%2==0?"odd":""%>">
+            		<div class="time_point_wrap">
+                	<img src="<%=basePath%>/img/point.jpg" alt="">
+               		<div class="time">
+                    <%=list.get(j).getOnLineTime()%>
                     <img src="<%=basePath%>/img/iapple.jpg" alt="">
-                </div>
-                <div class="des">
+                	</div>
+                	<div class="des">
                     <div class="arrow"></div>
                     <div class="des_wrap">
-                        <div class="title"><span>E代送</span>商家中心</div>
+                        <div class="title"><span><%=list.get(j).getDevPlatform()%></span><%=list.get(j).getOnLineProduct()%></div>
                         <ul>
-                            <li>1、UPDATE dbo.LineHistory SET IsEnable=1</li>
-                            <li>2、UPDATE dbo.LineHistory SET IsEnable=1；</li>
-                            <li>3、UPDATE dbo.LineHistory SET IsEnable=1</li>
+                        <% 
+                        String[] stra=list.get(j).getOnLineContent().split("@");
+                        for(String s:stra)
+                        {%>
+                        <li><%=s%></li>
+                        <%}%>
                         </ul>
                     </div>
-                </div>
-            </div>
-        </div>
-        <!-- point -->
-        <div class="time_point t2 odd">
-            <div class="time_point_wrap">
-                <img src="<%=basePath%>/img/point.jpg" alt="">
-                <div class="time">
-                    2016/01/05
-                    <img src="<%=basePath%>/img/iandroid.jpg" alt="">
-                </div>
-                <div class="des">
-                    <div class="des_wrap">
-                        <div class="title"><span>E代送</span>智能调度</div>
-                        <ul>
-                            <li>1、智能调度</li>
-                            <li>2、智能调度</li>
-                            <li>3、智能调度</li>
-                        </ul>
-                    </div>
-                    <div class="arrow"></div>
-                </div>
-            </div>
-        </div>
-        <!-- point end-->
-        <div class="year">
-            <div class="point"></div>
-            2015年
-        </div>
-        <!-- point -->
-        <div class="time_point t3 ">
-            <div class="time_point_wrap">
-                <img src="<%=basePath%>/img/point.jpg" alt="">
-                <div class="time">
-                    2015/12/26
-                    <img src="<%=basePath%>/img/isetting.jpg" alt="">
-                </div>
-                <div class="des">
-                    <div class="arrow"></div>
-                    <div class="des_wrap">
-                        <div class="title"><span>管理后台</span></div>
-                        <ul>
-                            <li>1、管理后台</li>
-                            <li>2、管理后台；</li>
-                            <li>3、管理后台；</li>
-                            <li>4、管理后台。</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- point end-->
-        <!-- point -->
-        <div class="time_point t1 odd">
-            <div class="time_point_wrap">
-                <img src="<%=basePath%>/img/point.jpg" alt="">
-                <div class="time">
-                    2015/12/18
-                    <img src="<%=basePath%>/img/iandroid.jpg" alt="">
-                </div>
-                <div class="des">
-                    <div class="arrow"></div>
-                    <div class="des_wrap">
-                        <div class="title"><span>E代送</span>商家中心</div>
-                        <ul>
-                            <li>1、商家中心；</li>
-                            <li>2、商家中心；</li>
-                            <li>3、商家中心；</li>
-                            <li>4、商家中心。</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- point end-->
-        <!-- point -->
-        <div class="time_point t1">
-            <div class="time_point_wrap">
-                <img src="<%=basePath%>/img/point.jpg" alt="">
-                <div class="time">
-                    2015/12/08
-                    <img src="<%=basePath%>/img/iapple.jpg" alt="">
-                </div>
-                <div class="des">
-                    <div class="arrow"></div>
-                    <div class="des_wrap">
-                        <div class="title"><span>E代送</span>商家中心</div>
-                        <ul>
-                            <li>1、商家中心；</li>
-                            <li>2、商家中心；</li>
-                            <li>3、商家中心；</li>
-                            <li>4、商家中心。</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- point end-->
-        <!-- point -->
-        <div class="time_point t2">
-            <div class="time_point_wrap">
-                <img src="<%=basePath%>/img/point.jpg" alt="">
-                <div class="time">
-                    2015/11/18
-                    <img src="<%=basePath%>/img/iandroid.jpg" alt="">
-                </div>
-                <div class="des">
-                    <div class="arrow"></div>
-                    <div class="des_wrap">
-                        <div class="title"><span>E代送</span>智能调度</div>
-                        <ul>
-                            <li>智能调度 </li>
-                            <li>智能调度</li>
-                            <li>智能调度</li>
-                            <li>智能调度</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- point end-->
-		<!-- point -->
-        <div class="time_point t2 odd">
-            <div class="time_point_wrap">
-                <img src="<%=basePath%>/img/point.jpg" alt="">
-                <div class="time">
-                    2015/11/18
-                    <img src="<%=basePath%>/img/iandroid.jpg" alt="">
-                </div>
-                <div class="des">
-                    <div class="arrow"></div>
-                    <div class="des_wrap">
-                        <div class="title"><span>E代送</span>智能调度</div>
-                        <ul>
-                            <li>智能调度 </li>
-                            <li>智能调度</li>
-                            <li>智能调度</li>
-                            <li>智能调度</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- point end-->
-		<!-- point -->
-        <div class="time_point t2">
-            <div class="time_point_wrap">
-                <img src="<%=basePath%>/img/point.jpg" alt="">
-                <div class="time">
-                    2015/11/18
-                    <img src="<%=basePath%>/img/iandroid.jpg" alt="">
-                </div>
-                <div class="des">
-                    <div class="arrow"></div>
-                    <div class="des_wrap">
-                        <div class="title"><span>E代送</span>智能调度</div>
-                        <ul>
-                            <li>智能智能 </li>
-                            <li>智能调度</li>
-                            <li>智能调度</li>
-                            <li>智能调度</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- point end-->
-		<!-- point -->
-        <div class="time_point t2 odd">
-            <div class="time_point_wrap">
-                <img src="<%=basePath%>/img/point.jpg" alt="">
-                <div class="time">
-                    2015/11/18
-                    <img src="<%=basePath%>/img/iandroid.jpg" alt="">
-                </div>
-                <div class="des">
-                    <div class="arrow"></div>
-                    <div class="des_wrap">
-                        <div class="title"><span>E代送</span>智能调度</div>
-                        <ul>
-                            <li>智能调度 </li>
-                            <li>智能调度</li>
-                            <li>智能调度</li>
-                            <li>智能调度</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- point end-->
-		<!-- point -->
-        <div class="time_point t2">
-            <div class="time_point_wrap">
-                <img src="<%=basePath%>/img/point.jpg" alt="">
-                <div class="time">
-                    2015/11/18
-                    <img src="<%=basePath%>/img/iandroid.jpg" alt="">
-                </div>
-                <div class="des">
-                    <div class="arrow"></div>
-                    <div class="des_wrap">
-                        <div class="title"><span>E代送</span>智能调度</div>
-                        <ul>
-                            <li>智能调度 </li>
-                            <li>智能调度</li>
-                            <li>智能调度</li>
-                            <li>智能调度</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- point end-->
-        <div class="year start" style="margin-top:20px;margin-bottom:0;">
+                	</div>
+            		</div>
+        			</div>
+        			<%
+        		}
+        	}
+        }
+        
+        if(list.size()>0)
+        {
+        	%>
+        	  <div class="year start" style="margin-top:20px;margin-bottom:0;">
             <div class="point"></div>
             START
         </div>
+        	<% 
+        }
+        %>
+        
+      
         <div style="height:40px;background:#fff;"></div>
     </div>
     <script src="<%=basePath%>/js/jquery.1.2.6.js"></script>

@@ -94,10 +94,10 @@
 						上线时间：<input class="form-control" style="width:190px" type="text" name="onlineDate" id="onlineDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00'})"/>
 					</div>
 					<div class="control-group"> 
-						上线内容：<textarea id="txtOnLineContent" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
+						上线内容：('@'分隔换行)<textarea maxlength="400" id="txtOnLineContent" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
 					</div>
 					<div class="control-group"> 
-						备注：<textarea id="txtRemark" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
+						备注：<textarea maxlength="400" id="txtRemark" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
 					</div>
 				</fieldset> 
 			</div>
@@ -136,10 +136,10 @@
 						上线时间：<input class="form-control" style="width:190px" type="text" name="modifyonlineDate" id="modifyonlineDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00'})"/>
 					</div>
 					<div class="control-group"> 
-						上线内容：<textarea id="txtModifyOnLineContent" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
+						上线内容：('@'分隔换行)<textarea maxlength="400" id="txtModifyOnLineContent" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
 					</div>
 					<div class="control-group"> 
-						备注：<textarea id="txtModifyRemark" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
+						备注：<textarea maxlength="400" id="txtModifyRemark" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
 					</div>
 				</fieldset> 
 			</div>
@@ -177,10 +177,10 @@
 						上线时间：<input class="form-control" style="width:190px" type="text" name="showonlineDate" id="showonlineDate" disabled="disabled"/>
 					</div>
 					<div class="control-group"> 
-						上线内容：<textarea id="txtshowOnLineContent" disabled="disabled" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
+						上线内容：<textarea maxlength="400" id="txtshowOnLineContent" disabled="disabled" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
 					</div>
 					<div class="control-group"> 
-						备注：<textarea id="txtshowRemark" disabled="disabled" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
+						备注：<textarea maxlength="400" id="txtshowRemark" disabled="disabled" style="width:220px;height:120px;max-width:220px;max-height:120px;"></textarea>
 					</div>
 				</fieldset> 
 			</div>
