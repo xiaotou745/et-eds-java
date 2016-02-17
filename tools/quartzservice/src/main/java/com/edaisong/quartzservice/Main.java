@@ -25,7 +25,12 @@ public class Main {
 		// writeLog();
 		init();
 	}
-
+	/**
+	 * 轮训获取已启动的服务列表
+	 * @author hailongzhao
+	 * @date 20160217
+	 * @return
+	 */
 	private static void init() {
 		Thread dThread = new Thread(new Runnable() {
 			@Override
@@ -48,7 +53,12 @@ public class Main {
 		dThread.start();
 	}
 
-
+	/**
+	 * 获取已启动的服务列表，用于更新quartz中的服务
+	 * @author hailongzhao
+	 * @date 20160217
+	 * @return
+	 */
 	private static void refreshDo(String configPath, String appSource) {
 
 		try {

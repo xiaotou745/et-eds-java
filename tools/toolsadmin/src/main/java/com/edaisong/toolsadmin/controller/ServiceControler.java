@@ -24,10 +24,12 @@ public class ServiceControler {
 	@Autowired
 	IQuartzService quartzService;
 
-	/**
-	 * @author haichao
-	 * @date 2015年12月10日 10:15:58 获取所有服务列表
-	 * */
+/**
+ * 服务管理页面
+ * @author hailongzhao
+ * @date 20160217
+ * @return
+ */
 	@RequestMapping("list")
 	public ModelAndView list() {
 		ModelAndView model = new ModelAndView("adminView");
@@ -36,7 +38,12 @@ public class ServiceControler {
 		model.addObject("viewPath", "service/list");
 		return model;
 	}
-
+	/**
+	 * 服务管理页面分页
+	 * @author hailongzhao
+	 * @date 20160217
+	 * @return
+	 */
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedQuartzServiceReq req) {
 		ModelAndView model = new ModelAndView("service/listdo");
@@ -45,7 +52,12 @@ public class ServiceControler {
 
 		return model;
 	}
-
+	/**
+	 * 停止或启动服务
+	 * @author hailongzhao
+	 * @date 20160217
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value="updatestatus")
 	public int updateStatus(QuartzUpdateReq req,HttpServletRequest request) {
@@ -56,6 +68,7 @@ public class ServiceControler {
 	/**
 	 * 新增一个服务
 	 * @author hailongzhao
+	 * @date 20160217
 	 * @param record
 	 * @param request
 	 * @return
@@ -70,6 +83,8 @@ public class ServiceControler {
 	}
 	/**
 	 * 保存一个服务的配置信息
+	 * @author hailongzhao
+	 * @date 20160217
 	 * @param record
 	 * @param optype
 	 * @param request
@@ -90,11 +105,20 @@ public class ServiceControler {
 			return quartzService.insert(record);
 		}
 	}
+	/**
+	 * qutartzservice调用的获取已启动的服务列表
+	 * @author hailongzhao
+	 * @date 20160217
+	 * @param appSource
+	 * @param versionCode
+	 * @return
+	 */
 	@RequestMapping("querystartlist")
 	@ResponseBody
 	public QuartzHttpModel queryStartList(int appSource,String versionCode) {
 		QuartzHttpModel result= quartzService.queryStartList(appSource);
 		//如果版本号一致，则说明没有变更，则返回空集合，减少网络传输
+		//此处必须和qutartzservice中的Main.refreshDo保持一致
 		if (result!=null&&result.getVersionCode().equals(versionCode)) {
 			result.setListData(null);
 		}
