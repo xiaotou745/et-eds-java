@@ -93,6 +93,7 @@
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 					<button class="btn btn-primary" type="button" id="save">保存</button>
+					<span id="tip" style="color:red"></span>
 				</div>
 			</small>
 		</div>
@@ -105,9 +106,13 @@
 <script>		
 	var jss={
 			search:function(currentPage){	
+// 				$("#tip").html("正在查询。。。");
+// 				$("#btnSearch").attr("disabled",true);
                 $("#_hiddenCurrentPage").val(currentPage);
 		 		var data=$("#searchForm").serialize();
 				$.post("<%=basePath%>/quartz/listdo",data, function(d) {
+// 					$("#tip").html("");
+// 					$("#btnSearch").attr("disabled",false);
 					$("#content").html(d);
 				});
 
@@ -203,6 +208,8 @@
 		
 	});
 	function saveInfo(paramaters){
+		$("#tip").html("正在执行...");
+		$("#save").attr("disabled",true);
 		var url = "<%=basePath%>/quartz/save";
 		$.ajax({
 			type : 'POST',
@@ -210,10 +217,11 @@
 			data : paramaters,
 			success : function(result) {
 				$("#tip").html("");
+				$("#save").attr("disabled",false);
 				switch(result){
 				case 1:
 					alert("操作成功");
-					window.location.href = window.location.href;
+					window.location.href = "<%=basePath%>/quartz/list";   
 					break;
 				case 0:
 					if(paramaters.optype=="0"){
