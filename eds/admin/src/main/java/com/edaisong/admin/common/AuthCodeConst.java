@@ -17,4 +17,9 @@ public class AuthCodeConst {
 	 * 修改信息
 	 */
 	public static String SuperManManager_SuperManManager_ModifyInfo_Btn="SuperManManager_SuperManManager_ModifyInfo_Btn";
+	
+	/**
+	 * 添加阶梯配置
+	 */
+	public static String Admin_BusinessSetpCharge_Add_Btn="Admin_BusinessSetpCharge_Add_Btn";
 }
