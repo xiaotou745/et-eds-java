@@ -49,10 +49,12 @@
 	SELECT f.Id,f.UserType, f.FeedbackType,f.Content,f.CreateTime,
 	 b.Name, b.PhoneNo, b.City FROM Feedback f with(nolock) 
 	JOIN dbo.business   b with(nolock)  ON f.FeedbackId= b.Id AND f.userType=1
+	join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
 	UNION
 	SELECT f.Id,f.UserType,f.FeedbackType,f.Content,f.CreateTime,
        c.TrueName as Name , c.PhoneNo, c.City FROM Feedback f with(nolock) 
 	JOIN dbo.clienter   c with(nolock)  ON f.FeedbackId= c.Id AND f.userType=2
+	join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=c.City
 ) AS t',
 '<include refid="queryWhere" />',
 #{pageSize,mode=IN,jdbcType=INTEGER},

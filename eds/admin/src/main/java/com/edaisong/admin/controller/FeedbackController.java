@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IClienterBalanceRecordService;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
@@ -49,6 +51,8 @@ public class FeedbackController {
 	 //开放城市
 	 @Autowired
 	 private IPublicProvinceCityService  publicProvinceCityService;
+	 @Autowired
+	 private HttpServletRequest request;
 	/**
 	 * 意见反馈列表管理页面 
 	 * @author hulignbo
@@ -57,8 +61,8 @@ public class FeedbackController {
 	 * @return
 	 */
 	@RequestMapping("list")
-	public ModelAndView list(){			
-		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);		
+	public ModelAndView list(HttpServletRequest request){			
+		List<AreaModel> areaListData=UserContext.getCurrentContext(request).getUserCity();		
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "客户服务");
 		model.addObject("currenttitle", "意见与反馈");
@@ -77,7 +81,7 @@ public class FeedbackController {
 	 */	
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedFeedbackReq req) throws ParseException {		
-		
+		req.setAuthCityStr(UserContext.getCurrentContext(request).getUserCityStr());
 		PagedResponse<FeedbackModel> resp = feedbackService.query(req);
 		ModelAndView model = new ModelAndView("feedback/listdo");
 		model.addObject("listData", resp);

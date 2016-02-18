@@ -2,11 +2,14 @@ package com.edaisong.admin.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IAlipayBatchService;
 import com.edaisong.api.service.inter.IClienterWithdrawFormService;
 import com.edaisong.api.service.inter.IOrderService;
@@ -31,10 +34,12 @@ public class FinanceController {
 	 private IAlipayBatchService alipayBatchService;
 	 @Autowired
 	 private IClienterWithdrawFormService clienterWithdrawFormService;
+	 @Autowired
+	 private HttpServletRequest request;
 	 
 	@RequestMapping("bustasklist")
-	public ModelAndView list() {
-		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);
+	public ModelAndView list(HttpServletRequest request) {
+		List<AreaModel> areaListData=UserContext.getCurrentContext(request).getUserCity();
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("areaListData", areaListData);
 		model.addObject("subtitle", "财务管理");
@@ -45,6 +50,7 @@ public class FinanceController {
 	
 	@RequestMapping("bustasklistdo")
 	public ModelAndView listdo(PagedBusTaskListReq req) {
+		req.setAuthCityStr(UserContext.getCurrentContext(request).getUserCityStr());
 		String startString=req.getStartDate();
 		String endString=req.getEndDate();
 		ModelAndView model = new ModelAndView("finance/bustasklistdo");

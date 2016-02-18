@@ -79,8 +79,7 @@ public class ClienterController {
 	 */
 	@RequestMapping("list")
 	public ModelAndView list(HttpServletRequest request){		
-	
-		//List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);
+
 		//获取用户城市下拉框
 		UserContext userContext=UserContext.getCurrentContext(request);
 		List<AreaModel> areaListData=userContext.getUserCity();
@@ -251,8 +250,8 @@ public class ClienterController {
 	 * WangChao
 	 */	
 	@RequestMapping("forzenbalancelist")
-	public ModelAndView forzenBalanceList(){ 
-		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);
+	public ModelAndView forzenBalanceList(HttpServletRequest request){ 
+		List<AreaModel> areaListData=UserContext.getCurrentContext(request).getUserCity();
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "骑士管理");
 		model.addObject("currenttitle", "余额冻结");
