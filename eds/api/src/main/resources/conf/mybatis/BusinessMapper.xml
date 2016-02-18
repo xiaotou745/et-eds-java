@@ -548,6 +548,7 @@
 		JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK )
 		ON
 		b.BusinessGroupId =bg.Id
+		join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
 	</sql>
 
 	<sql id="getBusinessListWhere">

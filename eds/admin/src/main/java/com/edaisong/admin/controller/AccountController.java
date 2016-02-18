@@ -80,7 +80,7 @@ public class AccountController {
 		view.addObject("subtitle", "用户设置");
 		view.addObject("currenttitle", "用户管理");
 
-		List<AreaModel> listArea = UserContext.getCurrentContext(request).getUserCity();
+		List<AreaModel> listArea = publicProvinceCityService.getOpenCityByJiBie(3);
 		List<DeliveryCompany> listDc = deliveryCompanyService.getDeliveryCompanyList();
 
 		view.addObject("listArea", listArea);
