@@ -78,9 +78,12 @@ public class ClienterController {
 	 * @return
 	 */
 	@RequestMapping("list")
-	public ModelAndView list(){		
+	public ModelAndView list(HttpServletRequest request){		
 	
-		List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);
+		//List<AreaModel> areaListData=publicProvinceCityService.getOpenCityByJiBie(3);
+		//获取用户城市下拉框
+		UserContext userContext=UserContext.getCurrentContext(request);
+		List<AreaModel> areaListData=userContext.getUserCity();
 		List<DeliveryCompany> dCListData=deliveryCompanyService.getDeliveryCompanyList();	
 		List<Mark> marklistList=markService.getMarksListByType(1);
 		ModelAndView model = new ModelAndView("adminView");
@@ -101,10 +104,10 @@ public class ClienterController {
 	 * @return
 	 */	
 	@RequestMapping("listdo")
-	public ModelAndView listdo(PagedClienterReq req) {		
-		
+	public ModelAndView listdo(PagedClienterReq req,HttpServletRequest request) {	
+		//设置用户城市权限
+		req.setAuthCityStr(UserContext.getCurrentContext(request).getUserCityStr());
 		PagedResponse<ClienterModel> resp = clienterService.query(req);
-		//ModelAndView model = new ModelAndView();//默认listdo.jsp
 		ModelAndView model = new ModelAndView("clienter/listdo");
 		model.addObject("listData", resp);
 		return model;
