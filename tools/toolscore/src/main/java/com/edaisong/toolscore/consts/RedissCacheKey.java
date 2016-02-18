@@ -11,4 +11,5 @@ public class RedissCacheKey {
     public static final String GlobalConfig_Key = "GlobalConfig_Key_";
     public static final String AppVersion_Key = "AppVersion_Key_";//日志分析中的app名称
     public static final String AppName_Key = "AppName_Key_Name";//日志分析中的app名称
+    public static final String QuartzConfig_Key = "QuartzConfig_Key_";//quartz服务用到的获取服务配置的key
 }

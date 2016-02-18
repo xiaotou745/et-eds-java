@@ -1,11 +1,11 @@
-<%@page import="com.edaisong.core.util.ParseHelper"%>
-<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%@page import="com.edaisong.toolscore.util.ParseHelper"%>
 <%@page import="java.util.List"%>
-<%@page import="com.edaisong.entity.QuartzServiceModel"%>
-<%@page import="com.edaisong.core.util.PropertyUtils"%>
-<%@page import="com.edaisong.entity.common.PagedResponse"%>
+<%@page import="com.edaisong.toolsentity.QuartzServiceModel"%>
+<%@page import="com.edaisong.toolscore.util.PropertyUtils"%>
+<%@page import="com.edaisong.toolsentity.common.PagedResponse"%>
 <%@page import="java.lang.Double"%>
-<%@page import="com.edaisong.core.util.PageHelper"%>
+<%@page import="com.edaisong.toolscore.enums.AppSource"%>
+<%@page import="com.edaisong.toolscore.util.PageHelper"%>
 <%@page import="org.springframework.web.util.HtmlUtils"%>
 <%@page import="org.apache.commons.codec.binary.Base64"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
@@ -22,10 +22,10 @@ List<QuartzServiceModel> data = responsePageList.getResultList();
 	<thead>
 		<tr>
 			<th style="width: 60px;">编号</th>
+			<th style="width: 150px;">系统名称</th>
 			<th style="width: 150px;">服务名称</th>
-			<th style="width: 150px;">bean名称</th>
+			<th style="width: 150px;">请求地址</th>
 			<th style="width: 150px;">cron表达式</th>
-			<th style="width: 150px;">第一次执行时间</th>
 			<th style="width: 150px;">备注</th>
 			<th style="width: 200px;">状态</th>
 			<th style="width: 150px;">创建人</th>
@@ -47,10 +47,10 @@ List<QuartzServiceModel> data = responsePageList.getResultList();
 		%>
 		<tr>
 			<td><%=(i+1)%></td>
+			<td><%=AppSource.getEnum(data.get(i).getAppSource()).desc()%></td>
 			<td><%=data.get(i).getName()%></td>
-			<td><%=data.get(i).getBeanName()%></td>
+			<td><%=data.get(i).getReqUrl()%></td>
 			<td><%=data.get(i).getExecTime()%></td>
-			<td><%=ParseHelper.ToDateString(data.get(i).getFirstFireTime())%></td>
 			<td><%=data.get(i).getRemark()%></td>
 			<td><%=data.get(i).getIsStart()==1?"启动":"停止"%></td>
 			<td><%=data.get(i).getCreateName()%></td>
@@ -61,7 +61,7 @@ List<QuartzServiceModel> data = responsePageList.getResultList();
 			<%=data.get(i).getIsStart()==1?"停止":"启动"%></a>
 			<%if(data.get(i).getIsStart()==0){%>
 				<br/>
-				<a href="javascript:void(0)" onclick="modify('<%=data.get(i).getId()%>','<%=name%>','<%=data.get(i).getBeanName()%>','<%=cron%>','<%=remark%>')">修改</a>	
+				<a href="javascript:void(0)" onclick="modify('<%=data.get(i).getId()%>','<%=name%>','<%=data.get(i).getReqUrl()%>','<%=cron%>','<%=remark%>')">修改</a>	
 			<%} %>
 			</td>
 		</tr>
