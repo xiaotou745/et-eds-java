@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.edaisong.dao.inter.IBusinessSetpChargeDao">
+<mapper namespace="com.edaisong.api.dao.inter.IBusinessSetpChargeDao">
 
 	<resultMap type="com.edaisong.entity.BusinessSetpCharge" id="baseResultMap">
 		<id property="id" column="Id" jdbcType="BIGINT"></id>
@@ -76,9 +76,42 @@ VALUES  ( #{setpChargeId,jdbcType=BIGINT} ,
 	<select id="getById" resultMap="baseResultMap" parameterType="java.lang.Integer">
 		select <include refid="baseColumnList"></include> from BusinessSetpCharge bsc(nolock) where Id=#{id,jdbcType=BIGINT} 
 	</select>
+	<!-- 分页查询 茹化肖 -->
+	<sql id="selectWhere">
+		1=1
+		<if test="beginDate != null and beginDate!=''">
+			and bsc.CreateDate > CONVERT(DATETIME,''${beginDate}'',120)
+		</if>
+		<if test="endDate != null and endDate!=''">
+			and  DATEADD(DAY,1,CONVERT(DATETIME,''${endDate}'',120))> bsc.CreateDate
+		</if>
+		<if test="title != null and title!=''">
+			and  bsc.Title LIKE ''%${title}%''
+		</if>
+	</sql>
+	<select id="select" resultType="com.edaisong.entity.BusinessSetpCharge"
+		parameterType="com.edaisong.entity.req.PagedBusinessSetpReq"
+		statementType="CALLABLE">
 
-	<select id="select" resultMap="baseResultMap">
-		select <include refid="baseColumnList"></include> from BusinessSetpCharge bsc(nolock) where Id=#{id,jdbcType=BIGINT} 
+		{call Sp_CustomPage2015_V1(
+		' bsc.id ',
+		'
+		<include refid="baseColumnList"></include>
+		',
+		'
+		dbo.BusinessSetpCharge AS bsc(NOLOCK)
+		'
+		,
+		'
+		<include refid="selectWhere"></include>
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER},
+		1,
+		#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+		#{totalPage,mode=OUT,jdbcType=VARCHAR}
+		)}
 	</select>
+	
 
 </mapper>

@@ -9,6 +9,8 @@ import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IBusinessSetpChargeDao;
 import com.edaisong.entity.BusinessSetpCharge;
 import com.edaisong.entity.BusinessSetpChargeChild;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.PagedBusinessSetpReq;
 
 
 /**
@@ -71,8 +73,8 @@ public class BusinessSetpChargeDao extends DaoBase implements IBusinessSetpCharg
 	 * @param businessSetpChargeQueryInfo 查询条件
 	 */
 	@Override
-	public List<BusinessSetpCharge> select(BusinessSetpCharge businessSetpChargeQueryInfo) {
-		return null;
+	public PagedResponse<BusinessSetpCharge> select(PagedBusinessSetpReq businessSetpChargeQueryInfo) {
+		return getReadOnlySqlSessionUtil().selectPageList("IBusinessSetpChargeDao.select", businessSetpChargeQueryInfo);
 	}
 	/**
 	 * 添加一个策略子项

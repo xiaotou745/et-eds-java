@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.edaisong.entity.BusinessSetpCharge;
 import com.edaisong.entity.BusinessSetpChargeChild;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.PagedBusinessSetpReq;
 
 /**
  * 领域对象接口 IBusinessSetpChargeDao
@@ -58,6 +60,6 @@ public interface IBusinessSetpChargeDao {
 	 * @date 2016-02-18 12:36:32
 	 * @param businessSetpChargeQueryInfo 查询条件
 	 */
-	List<BusinessSetpCharge> select(BusinessSetpCharge businessSetpChargeQueryInfo);
+	PagedResponse<BusinessSetpCharge> select(PagedBusinessSetpReq businessSetpChargeQueryInfo);
 
 }

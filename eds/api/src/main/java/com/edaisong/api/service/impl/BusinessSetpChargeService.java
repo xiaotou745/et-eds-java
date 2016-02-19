@@ -10,7 +10,9 @@ import com.edaisong.api.dao.inter.IBusinessSetpChargeDao;
 import com.edaisong.api.service.inter.IBusinessSetpChargeService;
 import com.edaisong.entity.BusinessSetpCharge;
 import com.edaisong.entity.BusinessSetpChargeChild;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.BusinessSetpChargeReq;
+import com.edaisong.entity.req.PagedBusinessSetpReq;
 
 /**
  * 服务提供对象 BusinessSetpChargeService
@@ -67,12 +69,13 @@ public class BusinessSetpChargeService implements IBusinessSetpChargeService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	/**
+	 * 分页查询列表
+	 * 茹化肖
+	 */
 	@Override
-	public List<BusinessSetpCharge> query(
-			BusinessSetpCharge businessSetpChargeQueryInfo) {
-		// TODO Auto-generated method stub
-		return null;
+	public PagedResponse<BusinessSetpCharge> query(PagedBusinessSetpReq businessSetpChargeQueryInfo) {
+		return businessSetpChargeDao.select(businessSetpChargeQueryInfo);
 	}
 
 }
