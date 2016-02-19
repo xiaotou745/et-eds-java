@@ -126,6 +126,8 @@ public class BusinessController {
 	
 	@Autowired
 	private IMarkService markService;
+	@Autowired
+	 private HttpServletRequest request;
 
 
 	@RequestMapping("list")
@@ -134,10 +136,8 @@ public class BusinessController {
 		GroupReq groupReq = new GroupReq();
 		groupReq.setIsValid(1);
 		List<GroupModel> resultList = iGroupService.getGroupList(groupReq);
-
-		int accountID = 0;// 如果管理后台的类型是所有权限就传0，否则传管理后台id
 		//获取城市
-		List<AreaModel> openCityList = iPublicProvinceCityService.getOpenCityListByAccountID(accountID);
+		List<AreaModel> openCityList = UserContext.getCurrentContext(request).getUserCity();
 		List<BusinessGroup> businessGroupListData = iBusinessGroupService.getBusinessGroupList();
 
 		ModelAndView model = new ModelAndView("adminView");
@@ -154,6 +154,7 @@ public class BusinessController {
 
 	@RequestMapping("selectlist")
 	public ModelAndView list(PagedBusinessReq req) {
+		req.setAuthCityStr(UserContext.getCurrentContext(request).getUserCityStr());
 		PagedResponse<BusinessModel> resp = iBusinessService.getBusinessList(req);
 
 		ModelAndView model = new ModelAndView("business/listdo");

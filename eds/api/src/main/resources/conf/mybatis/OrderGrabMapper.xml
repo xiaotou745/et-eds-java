@@ -246,7 +246,8 @@ GROUP BY b.Name ,
 FROM    OrderGrabChild m WITH ( NOLOCK )
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
         JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
-        LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId 
+        LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId
+        join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City 
         where <include refid="queryColumsWhere" />
 GROUP BY o.id ,
         o.GrabOrderNo ,

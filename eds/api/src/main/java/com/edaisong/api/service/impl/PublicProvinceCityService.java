@@ -78,7 +78,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 			// redisService.set(
 			// RedissCacheKey.Ets_Service_Provider_Common_GetOpenCity_New,
 			// JsonUtil.obj2string(areaList));
-		}
+		}//TODO:注释掉的代码是否需要打开?
 		return opencitys;
 	}
 
@@ -92,6 +92,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 		// AreaModelList areaList = JsonUtil
 		// .str2obj(jsonData, AreaModelList.class);
 		// return areaList.getAreaModels();
+		//TODO:注释掉的代码是否需要打开?
 	}
 	@Override
 	public List<AreaModel> getOpenCityByJiBie(int jiBie)

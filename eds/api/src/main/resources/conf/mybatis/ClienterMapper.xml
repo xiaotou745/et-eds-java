@@ -80,6 +80,7 @@
 		with(nolock) on c.DeliveryCompanyId=dc.id
 		left join dbo.clienter cl
 		with(nolock) on c.recommendPhone=cl.PhoneNo
+		join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=c.City
 		</if>
 		
 		<if test="markId != -1" >
@@ -91,6 +92,7 @@
 		with(nolock) on c.DeliveryCompanyId=dc.id
 		left join dbo.clienter cl
 		with(nolock) on c.recommendPhone=cl.PhoneNo
+		join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=c.City
 		</if>
 		
 	</sql>

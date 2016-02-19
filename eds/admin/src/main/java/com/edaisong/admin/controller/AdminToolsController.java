@@ -16,13 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IAppVersionService;
+import com.edaisong.api.service.inter.IBusinessSetpChargeService;
 import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.ITaskDistributionConfigService;
+import com.edaisong.core.util.JsonUtil;
 import com.edaisong.entity.BusinessMessage;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GlobalConfigModel;
+import com.edaisong.entity.req.BusinessSetpChargeReq;
 import com.edaisong.entity.req.ConfigSaveReq;
 import com.edaisong.entity.req.PagedGlobalConfigReq;
 import com.edaisong.entity.req.TaskDistributionConfigReq;
@@ -44,6 +47,10 @@ public class AdminToolsController {
 	private ITaskDistributionConfigService taskDistributionConfigService;
 	@Autowired
 	IAppVersionService appVersionService;
+	@Autowired
+	IBusinessSetpChargeService businessSetpChargeService;
+	@Autowired
+	HttpServletRequest request;
 	@RequestMapping("list")
 	public ModelAndView globalConfigManager(HttpServletRequest request, HttpServletResponse res){
 		ModelAndView model = new ModelAndView("adminView");
@@ -154,5 +161,31 @@ public class AdminToolsController {
 		} else {
 			return appVersionService.update(version);
 		}
+	}
+	
+	/**
+	 * 阶梯收费配置
+	 * 茹化肖
+	 * @return
+	 */
+	@RequestMapping("businesssetpcharge")
+	public ModelAndView businesssetpcharge() {
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "管理员");
+		view.addObject("currenttitle", "阶梯收费配置");
+		view.addObject("viewPath", "admintools/businesssetpcharge");
+		return view;
+	}
+	
+	/**
+	 * 添加阶梯收费配置
+	 * 茹化肖
+	 * @return
+	 */
+	@RequestMapping("businesssetpchargeadd")
+	@ResponseBody
+	public int businesssetpchargeAdd(String data) {
+		BusinessSetpChargeReq req=JsonUtil.str2obj(data,BusinessSetpChargeReq.class);
+		return businessSetpChargeService.create(req);
 	}
 }

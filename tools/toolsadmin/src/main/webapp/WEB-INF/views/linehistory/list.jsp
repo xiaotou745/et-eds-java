@@ -308,6 +308,11 @@ function modifyLineHistory(id,devPlatform,onlineProduct,devVersion,onlineTime,on
 $("#saveModifyLineHistory").click(function(){ 
     var devVersion = $('#txtModifyDevVersion').val().trim();
     var onlineDate = $('#modifyonlineDate').val();
+    if(onlineDate=='')
+    {
+    	alert('请输入上线时间!');
+    	return;
+    }
     var onLineContent = $('#txtModifyOnLineContent').val().trim();
     var remark = $('#txtModifyRemark').val().trim(); 
     var modifyId=$('#modifyId').val();
@@ -364,15 +369,17 @@ function deleteLineHistory(id){
 }
 //添加保存
 $("#saveLineHistory").click(function(){
-	if (!window.confirm("确认要保存？")) {
-        return;
-    }
 	var devPlatformValue= $('#devPlatform_sel').val();
 	var devPlatformText=$('#devPlatform_sel').find("option:selected").text();
     var onlineProductValue = $('#onlineProduct_sel').val();
     var onlineProductText=$('#onlineProduct_sel').find("option:selected").text();
     var devVersion = $('#txtDevVersion').val().trim();
     var onlineDate = $('#onlineDate').val();
+    if(onlineDate=='')
+    {
+    	alert('请输入上线时间!');
+    	return;
+    }
     var onLineContent = $('#txtOnLineContent').val().trim();
     var remark = $('#txtRemark').val().trim(); 
     var paramaters = {

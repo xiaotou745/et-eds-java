@@ -12,10 +12,6 @@ public class TestDouService  implements IJobDo{
 	@Autowired
 	ITestDao testDao;
 
-	public void insert(String val) {
-		// TODO Auto-generated method stub
-		testDao.insert(val);
-	}
 	@Override
 	public void run() {
 		testDao.insert("1000");

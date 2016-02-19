@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.edaisong.dao.inter.IBusinessSetpChargeDao">
+
+	<resultMap type="com.edaisong.entity.BusinessSetpCharge" id="baseResultMap">
+		<id property="id" column="Id" jdbcType="BIGINT"></id>
+		<result property="title" column="Title" jdbcType="NVARCHAR" />
+		<result property="remark" column="Remark" jdbcType="NVARCHAR" />
+		<result property="createDate" column="CreateDate" jdbcType="TIMESTAMP" />
+		<result property="modifyDate" column="ModifyDate" jdbcType="TIMESTAMP" />
+		<result property="createName" column="CreateName" jdbcType="NVARCHAR" />
+		<result property="modifyName" column="ModifyName" jdbcType="NVARCHAR" />
+		<result property="enable" column="Enable" jdbcType="INTEGER" />
+		<result property="setpLength" column="SetpLength" jdbcType="DECIMAL" />
+		<result property="minLimit" column="MinLimit" jdbcType="DECIMAL" />
+		<result property="maxLimit" column="MaxLimit" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<sql id="baseColumnList">
+		bsc.Id,bsc.Title,bsc.Remark,bsc.CreateDate,bsc.ModifyDate,bsc.CreateName,bsc.ModifyName,bsc.Enable,bsc.SetpLength,bsc.MinLimit,bsc.MaxLimit
+	</sql>
+	<!-- 插入一个策略 茹化肖 -->
+	<insert id="insert" parameterType="com.edaisong.entity.BusinessSetpCharge" useGeneratedKeys="true" keyProperty="id">
+	    <selectKey resultType="java.lang.Long" keyProperty="id"
+			order="AFTER">
+			select @@IDENTITY as id
+		</selectKey>
+		insert into BusinessSetpCharge(Title,Remark,CreateName,ModifyName,SetpLength,MinLimit,MaxLimit)
+		values(
+			#{title,jdbcType=NVARCHAR},
+			#{remark,jdbcType=NVARCHAR},
+			#{createName,jdbcType=NVARCHAR},
+			#{modifyName,jdbcType=NVARCHAR},
+			#{setpLength,jdbcType=DECIMAL},
+			#{minLimit,jdbcType=DECIMAL},
+			#{maxLimit,jdbcType=DECIMAL}
+		)
+	</insert>
+	<!-- 插入一个策略子项 茹化肖 -->
+	<insert id="insertChild" parameterType="com.edaisong.entity.BusinessSetpChargeChild">
+	INSERT INTO dbo.BusinessSetpChargeChild
+        ( SetpChargeId ,
+          MinValue ,
+          MaxValue ,
+          ChargeValue
+        )
+VALUES  ( #{setpChargeId,jdbcType=BIGINT} , 
+          #{minValue,jdbcType=DECIMAL} , 
+          #{maxValue,jdbcType=DECIMAL} , 
+          #{chargeValue,jdbcType=DECIMAL} 
+        )
+	</insert>
+
+	<update id="update" parameterType="com.edaisong.entity.BusinessSetpCharge">
+		
+		update BusinessSetpCharge
+		set Title=#{title,jdbcType=NVARCHAR},
+			Remark=#{remark,jdbcType=NVARCHAR},
+			CreateDate=#{createDate,jdbcType=TIMESTAMP},
+			ModifyDate=#{modifyDate,jdbcType=TIMESTAMP},
+			CreateName=#{createName,jdbcType=NVARCHAR},
+			ModifyName=#{modifyName,jdbcType=NVARCHAR},
+			Enable=#{enable,jdbcType=INTEGER},
+			SetpLength=#{setpLength,jdbcType=DECIMAL},
+			MinLimit=#{minLimit,jdbcType=DECIMAL},
+			MaxLimit=#{maxLimit,jdbcType=DECIMAL}
+		where Id=#{id,jdbcType=BIGINT} 
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from BusinessSetpCharge where Id=#{id,jdbcType=BIGINT} 
+	</delete>
+
+	<select id="getById" resultMap="baseResultMap" parameterType="java.lang.Integer">
+		select <include refid="baseColumnList"></include> from BusinessSetpCharge bsc(nolock) where Id=#{id,jdbcType=BIGINT} 
+	</select>
+
+	<select id="select" resultMap="baseResultMap">
+		select <include refid="baseColumnList"></include> from BusinessSetpCharge bsc(nolock) where Id=#{id,jdbcType=BIGINT} 
+	</select>
+
+</mapper>

@@ -1,20 +1,24 @@
 package com.edaisong.admin.common;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.mvel2.util.ThisLiteral;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.edaisong.api.service.inter.IAccountService;
 import com.edaisong.api.service.inter.IAuthorityMenuClassService;
+import com.edaisong.api.service.inter.IPublicProvinceCityService;
 import com.edaisong.core.security.AES;
 import com.edaisong.core.util.CookieUtils;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.SpringBeanHelper;
 import com.edaisong.entity.Account;
+import com.edaisong.entity.domain.AreaModel;
 import com.edaisong.entity.domain.SimpleUserInfoModel;
 
 public class UserContext {
@@ -22,11 +26,14 @@ public class UserContext {
 	private String host="";
 	private final static IAuthorityMenuClassService authorityMenuClassService;
 	private final static IAccountService accountService;
+	private final static IPublicProvinceCityService publicProvinceCityService;
 	static {
 		authorityMenuClassService = SpringBeanHelper
 				.getCustomBeanByType(IAuthorityMenuClassService.class);
 		accountService = SpringBeanHelper
 				.getCustomBeanByType(IAccountService.class);
+		publicProvinceCityService = SpringBeanHelper
+				.getCustomBeanByType(IPublicProvinceCityService.class);
 	}
 
 	private UserContext(SimpleUserInfoModel account,String host) {
@@ -107,5 +114,37 @@ public class UserContext {
 			}
 		}
 		return 1;
+	}
+	/**
+	 * 获取当前用户的有权限的城市
+	 * 茹化肖
+	 * @return
+	 */
+	public  List<AreaModel> getUserCity()
+	{
+		int accountID=account.getId();
+		return publicProvinceCityService.getOpenCityListByAccountID(accountID);
+	}
+	
+	/**
+	 * 获取当前用户的有权限的城市(字符串分隔)
+	 * 茹化肖
+	 * @return
+	 */
+	public  String getUserCityStr()
+	{
+		int accountID=account.getId();
+		List<AreaModel> list=publicProvinceCityService.getOpenCityListByAccountID(accountID);
+		StringBuilder sBuilder=new StringBuilder();
+		String resultString="";
+		if(list.size()>0)
+		{
+			for (AreaModel areaModel : list) {
+				sBuilder.append(areaModel.getName());
+				sBuilder.append(",");
+			}
+			resultString=sBuilder.toString().substring(0,sBuilder.length()-1);
+		}
+		return resultString;
 	}
 }

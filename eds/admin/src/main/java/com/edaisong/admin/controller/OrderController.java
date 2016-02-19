@@ -64,8 +64,8 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("list")
-	public ModelAndView order(){
-		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityByJiBie(3);
+	public ModelAndView order(HttpServletRequest request){
+		List<AreaModel> areaListData=UserContext.getCurrentContext(request).getUserCity();
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "订单管理");
 		model.addObject("currenttitle", "订单管理");
@@ -86,6 +86,7 @@ public class OrderController {
 	 */
 	@RequestMapping("listdo")
 	public ModelAndView order(PagedOrderSearchReq searchWebReq){
+		searchWebReq.setAuthCityStr(UserContext.getCurrentContext(request).getUserCityStr());
 		PagedResponse<OrderListModel> resp = orderService.getOrders(searchWebReq);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "order/listdo");
@@ -246,8 +247,8 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("shansonglist")
-	public ModelAndView shansonglist(){
-		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityByJiBie(3);
+	public ModelAndView shansonglist(HttpServletRequest request){
+		List<AreaModel> areaListData=UserContext.getCurrentContext(request).getUserCity();
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "订单管理");
 		model.addObject("currenttitle", "E单列表");
@@ -264,6 +265,7 @@ public class OrderController {
 	 */
 	@RequestMapping("shansonglistdo")
 	public ModelAndView shansonglistdo(PagedOrderSearchReq searchWebReq,HttpServletRequest request){
+		searchWebReq.setAuthCityStr(UserContext.getCurrentContext(request).getUserCityStr());
         PagedResponse<ShanSongOrderListModel> resp = orderService.getShanSongOrders(searchWebReq);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "order/shansonglistdo");
