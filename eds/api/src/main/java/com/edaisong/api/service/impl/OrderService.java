@@ -2856,10 +2856,10 @@ public class OrderService implements IOrderService {
 		{		
 			return FlashPushOrderEnum.ReceviceAddressIsNull;
 		}	
-		if(req.getProductname()==null || req.getProductname().equals(""))
+	/*	if(req.getProductname()==null || req.getProductname().equals(""))
 		{		
 			return FlashPushOrderEnum.ProductNameIsNull;
-		}
+		}*/
 		if(req.getAmount()<=0)
 		{		
 			return FlashPushOrderEnum.AmountIsErr;

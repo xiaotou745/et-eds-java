@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edaisong.api.dao.inter.ITaskDistributionDao" >
+  <resultMap id="BaseResultMap" type="com.edaisong.entity.TaskDistribution" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Name" property="name" jdbcType="NVARCHAR" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+    <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="UpdateName" property="updatename" jdbcType="NVARCHAR" />
+    <result column="UpdateTime" property="updatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, Name, Remark, CreateName, CreateTime, UpdateName, UpdateTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from TaskDistribution
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+        <sql id="queryWhere">
+		1=1
+		 <if test="name != null and  name  !='' ">
+			and name=''${name}''
+		</if> 
+		 <if test="dataStart != null and  dataStart !='' ">
+			and UpdateTime>''${dataStart}''
+		</if> 
+		 <if test="dataEnd != null and  dataEnd !='' ">
+			and ''${dataEnd}''>=UpdateTime
+		</if> 	
+
+	</sql>
+ <select id="query_Sp" resultType="com.edaisong.entity.TaskDistribution" 
+  parameterType="com.edaisong.entity.req.PagedTaskDistributionReq" 
+  statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+' Id',
+' Id,Name,Remark,CreateName,CreateTime,UpdateName,UpdateTime',
+' 	TaskDistribution WITH (NOLOCK)',
+'<include refid="queryWhere" />',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER}
+,1,
+#{totalRecord,mode=OUT,jdbcType=INTEGER},
+#{totalPage,mode=OUT,jdbcType=INTEGER}
+)}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from TaskDistribution
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.edaisong.entity.TaskDistribution" >
+    insert into TaskDistribution (Id, Name, Remark, 
+      CreateName, CreateTime, UpdateName, 
+      UpdateTime)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR}, 
+      #{createname,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=NVARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.edaisong.entity.TaskDistribution" >
+    insert into TaskDistribution
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="createname != null" >
+        CreateName,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="updatename != null" >
+        UpdateName,
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+      <if test="createname != null" >
+        #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null" >
+        #{updatename,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.edaisong.entity.TaskDistribution" >
+    update TaskDistribution
+    <set >
+      <if test="name != null" >
+        Name = #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+      <if test="createname != null" >
+        CreateName = #{createname,jdbcType=NVARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null" >
+        UpdateName = #{updatename,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.edaisong.entity.TaskDistribution" >
+    update TaskDistribution
+    set Name = #{name,jdbcType=NVARCHAR},
+      Remark = #{remark,jdbcType=NVARCHAR},
+      CreateName = #{createname,jdbcType=NVARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=NVARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
