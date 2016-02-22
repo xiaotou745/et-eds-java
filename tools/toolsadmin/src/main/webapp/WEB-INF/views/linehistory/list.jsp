@@ -9,7 +9,6 @@
 <%@page import="com.edaisong.toolsentity.domain.SelectAppModel"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.toolsadmin.url");
-	List<String> appNameList = (List<String>) request.getAttribute("appNameList");
 	List<SelectAppModel> appNameList = (List<SelectAppModel>) request.getAttribute("appNameList");
 %>
 <script src="<%=basePath%>/js/util.js"></script>
