@@ -57,7 +57,7 @@
 		%>
 		<tr>
 			<td><%=i + 1%></td>
-			<td><a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getOrderNo()%>"><%=data.get(i).getOrderNo()%></a></td>
+			<td><%=data.get(i).getOrderNo()%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getBusinessName())%></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getPubDate())%></td>
 			<td style="text-align: left;">

@@ -25,8 +25,8 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 					<input type="button" class="fl" value="搜索按钮" id="customerSearch">
 				</p>
 			</h3>
-				<form method="POST" action="#" class="form-horizontal" id="searchForm">
-	<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
+			<form method="POST" action="#" class="form-horizontal" id="searchForm">
+	        <input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 			<div class="function">
 				<input type="button" class="fr" value="导出报表" id="btnExport" style="line-height:30px;">
 				<input type="button" class="fr" value="搜索" id="btnSearch" style="line-height:30px;">
@@ -56,9 +56,12 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 					<input type="radio" name="timeType" value="3">
 					区间
 				</label>
-				<span class="intime"><input type="text" disabled="disabled" class="dinput" id="orderPubStart" name="orderPubStart"><s onClick="WdatePicker({el:'orderPubStart',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="intime">
+				<input type="text" disabled="disabled" class="dinput" id="orderPubStart" name="orderPubStart" />
+				<s onClick="WdatePicker({el:'orderPubStart',dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'orderPubEnd\')||\'new Date()\'}'});"></s></span>
 				<span class="inblock">至</span>
-				<span class="intime"><input type="text" class="dinput" disabled="disabled" id="orderPubEnd" name="orderPubEnd"><s onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd'});"></s></span>
+				<span class="intime"><input type="text" class="dinput" disabled="disabled" id="orderPubEnd" name="orderPubEnd">
+				<s onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'orderPubStart\')}',maxDate:new Date()});"></s></span>
 			</div>
 			</form>
 </div>
@@ -69,6 +72,20 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 var searchType=0;
 var jss = {
 	search : function(currentPage) {
+		
+		var date1=$("#orderPubStart").val();
+		var date2=$("#orderPubEnd").val();
+		if(date1!=null&&date2!=null&&date1!=""&&date2!=""){
+		    var date11=new Date(date1);
+		 	var date22=new Date(date2);
+		 	var date1Seconds=new Date(date11.getFullYear(),date11.getMonth()+2,date11.getDate());
+		 	var date2Seconds=new Date(date22.getFullYear(),date22.getMonth(),date22.getDate());
+		    if(date1Seconds<date2Seconds)
+		    {
+		    	alert("查询开始日期与结束日期最大间隔为两个月！")
+		    	return;
+		    }
+		} 
 		if(searchType==0){//点击了查询按钮
 			$("#_hiddenCurrentPage").val(currentPage);
 			 var data=$("#searchForm").serialize();
