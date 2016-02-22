@@ -3,7 +3,9 @@ package com.edaisong.api.service.inter;
 import java.util.List;
 
 import com.edaisong.entity.BusinessSetpCharge;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.req.BusinessSetpChargeReq;
+import com.edaisong.entity.req.PagedBusinessSetpReq;
 
 /**
  * 服务接口 IBusinessSetpChargeService
@@ -51,6 +53,11 @@ public interface IBusinessSetpChargeService {
 	 * @date 2016-02-18 12:36:32
 	 * @param businessSetpChargeQueryInfo 查询条件
 	 */
-	List<BusinessSetpCharge> query(BusinessSetpCharge businessSetpChargeQueryInfo);
+	PagedResponse<BusinessSetpCharge> query(PagedBusinessSetpReq businessSetpChargeQueryInfo);
+	/**
+	 * 
+	 * @param id
+	 */
+	String getSetpinfo(Long id);
 
 }

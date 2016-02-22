@@ -425,6 +425,7 @@
 			</if>
 			<if test="cityid != null">
 				cityid = #{cityid,jdbcType=NVARCHAR},
+				CityCode = #{cityid,jdbcType=NVARCHAR},
 			</if>
 			<if test="city != null">
 				city = #{city,jdbcType=NVARCHAR},
@@ -584,13 +585,6 @@
 		</if>
 		<if test="businessCity != null and businessCity!='' and businessCity!=-1">
 			and b.city=''${businessCity}''
-		</if>
-		<if test="authorityCityNameList != null">
-			and b.city in
-			<foreach item="item" index="index" collection="authorityCityNameList"
-				open="(''" separator="'',''" close="'')">
-				#{item}
-			</foreach>
 		</if>
 		<!-- </trim> -->
 	</sql>

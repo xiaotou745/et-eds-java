@@ -2,12 +2,14 @@ package com.edaisong.quartzservice;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.edaisong.toolscore.util.HttpUtil;
 
 
 public class ChildJob implements Job {
-
+	private final  static Logger log = LoggerFactory.getLogger("com.edaisong.quartzservice.ChildJob");
 	/**
 	 * 封装quartz服务的接口
 	 * @author hailongzhao
@@ -18,7 +20,7 @@ public class ChildJob implements Job {
 		String reqUrl = context.getJobDetail().getName();
 		try {
 			String result = HttpUtil.sendPost(reqUrl, "","application/json; charset=utf-8");
-			System.out.println(result);
+			log.info(reqUrl+"执行的结果:"+result);
 		} catch (Exception e) {
 			Helper.sendMail("执行job:"+reqUrl+"时出错:",e);
 		}

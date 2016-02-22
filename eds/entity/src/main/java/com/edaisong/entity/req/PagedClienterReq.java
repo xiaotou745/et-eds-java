@@ -13,7 +13,7 @@ public class PagedClienterReq extends PagedRequestBase{
 	private String phoneNo;	
 	private Byte status;//审核状态       
 	private String recommendPhone;
-	private int code;
+	private String code;
 	private int deliveryCompanyId ;	
 	private int markId;
 	public int getMarkId() {
@@ -46,10 +46,10 @@ public class PagedClienterReq extends PagedRequestBase{
 	public void setRecommendPhone(String recommendPhone) {
 		this.recommendPhone = recommendPhone;
 	}
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 	public int getDeliveryCompanyId() {

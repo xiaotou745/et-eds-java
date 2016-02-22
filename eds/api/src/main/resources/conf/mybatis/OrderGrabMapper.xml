@@ -290,8 +290,8 @@ GROUP BY o.id ,
 		<if test="orderGrabEnd != null and orderGrabEnd!=''">
 			and  ''${orderGrabEnd} 23:59:59''>=o.GrabTime
 		</if>
-		<if test="businessCity != null and businessCity>-1">
-			and b.cityCode= ${businessCity}
+		<if test="businessCity != null and businessCity!=''">
+			and b.city= ''${businessCity}''
 		</if>
 	</sql> 
 	 <!-- ???��???? ????��??? add by zhaohl 20151102 -->

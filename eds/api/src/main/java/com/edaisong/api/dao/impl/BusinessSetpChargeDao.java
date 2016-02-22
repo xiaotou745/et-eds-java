@@ -9,6 +9,8 @@ import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IBusinessSetpChargeDao;
 import com.edaisong.entity.BusinessSetpCharge;
 import com.edaisong.entity.BusinessSetpChargeChild;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.PagedBusinessSetpReq;
 
 
 /**
@@ -38,8 +40,8 @@ public class BusinessSetpChargeDao extends DaoBase implements IBusinessSetpCharg
 	 * @param businessSetpCharge 要更改的对象
 	 */
 	@Override
-	public void update(BusinessSetpCharge businessSetpCharge) {
-		getMasterSqlSessionUtil().update("IBusinessSetpChargeDao.update", businessSetpCharge);
+	public int update(BusinessSetpCharge businessSetpCharge) {
+		return getMasterSqlSessionUtil().update("IBusinessSetpChargeDao.update", businessSetpCharge);
 	}
 
 	/**
@@ -61,7 +63,7 @@ public class BusinessSetpChargeDao extends DaoBase implements IBusinessSetpCharg
 	 */
 	@Override
 	public BusinessSetpCharge getById(Long id) {
-		return getMasterSqlSessionUtil().selectOne("IBusinessSetpChargeDao.getById", id);
+		return getReadOnlySqlSessionUtil().selectOne("IBusinessSetpChargeDao.getById", id);
 	}
 
 	/**
@@ -71,8 +73,8 @@ public class BusinessSetpChargeDao extends DaoBase implements IBusinessSetpCharg
 	 * @param businessSetpChargeQueryInfo 查询条件
 	 */
 	@Override
-	public List<BusinessSetpCharge> select(BusinessSetpCharge businessSetpChargeQueryInfo) {
-		return null;
+	public PagedResponse<BusinessSetpCharge> select(PagedBusinessSetpReq businessSetpChargeQueryInfo) {
+		return getReadOnlySqlSessionUtil().selectPageList("IBusinessSetpChargeDao.select", businessSetpChargeQueryInfo);
 	}
 	/**
 	 * 添加一个策略子项
@@ -82,6 +84,20 @@ public class BusinessSetpChargeDao extends DaoBase implements IBusinessSetpCharg
 	@Override
 	public int insertChild(BusinessSetpChargeChild child) {
 		return getMasterSqlSessionUtil().insert("IBusinessSetpChargeDao.insertChild", child);
+	}
+	/**
+	 * 查询子项
+	 */
+	@Override
+	public List<BusinessSetpChargeChild> getListBySetpChargeId(Long id) {
+		return getReadOnlySqlSessionUtil().selectList("IBusinessSetpChargeDao.getListBySetpChargeId", id);
+	}
+	/**
+	 * 清除子项数据
+	 */
+	@Override
+	public int clearSetpChargeChild(Long setpChargeId) {
+		return getMasterSqlSessionUtil().update("IBusinessSetpChargeDao.clearSetpChargeChild", setpChargeId);
 	}
 
 }

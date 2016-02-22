@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.edaisong.entity.BusinessSetpCharge;
 import com.edaisong.entity.BusinessSetpChargeChild;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.PagedBusinessSetpReq;
 
 /**
  * 领域对象接口 IBusinessSetpChargeDao
@@ -34,7 +36,7 @@ public interface IBusinessSetpChargeDao {
 	 * @date 2016-02-18 12:36:32
 	 * @param businessSetpCharge 要更改的对象
 	 */
-	void update(BusinessSetpCharge businessSetpCharge);
+	int update(BusinessSetpCharge businessSetpCharge);
 
 	/**
 	 * 删除一条记录
@@ -58,6 +60,18 @@ public interface IBusinessSetpChargeDao {
 	 * @date 2016-02-18 12:36:32
 	 * @param businessSetpChargeQueryInfo 查询条件
 	 */
-	List<BusinessSetpCharge> select(BusinessSetpCharge businessSetpChargeQueryInfo);
+	PagedResponse<BusinessSetpCharge> select(PagedBusinessSetpReq businessSetpChargeQueryInfo);
+	/**
+	 * 查询子项
+	 * @param id
+	 * @return
+	 */
+	List<BusinessSetpChargeChild> getListBySetpChargeId(Long id);
+	/**
+	 * 清除子项数据
+	 * @param setpChargeId
+	 * @return
+	 */
+	int clearSetpChargeChild(Long setpChargeId);
 
 }

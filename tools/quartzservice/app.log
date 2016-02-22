@@ -1,0 +1,50 @@
+[2016-02-22 13:02:54 Thread-0] org.quartz.impl.StdSchedulerFactory 1179: Using default implementation for ThreadExecutor
+[2016-02-22 13:02:54 Thread-0] org.quartz.simpl.SimpleThreadPool 270: Job execution threads will use class loader of thread: Thread-0
+[2016-02-22 13:02:54 Thread-0] org.quartz.core.SchedulerSignalerImpl 60: Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[2016-02-22 13:02:54 Thread-0] org.quartz.core.QuartzScheduler 229: Quartz Scheduler v.1.8.6 created.
+[2016-02-22 13:02:54 Thread-0] org.quartz.simpl.RAMJobStore 139: RAMJobStore initialized.
+[2016-02-22 13:02:54 Thread-0] org.quartz.core.QuartzScheduler 255: Scheduler meta-data: Quartz Scheduler (v1.8.6) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[2016-02-22 13:02:54 Thread-0] org.quartz.impl.StdSchedulerFactory 1324: Quartz scheduler 'DefaultQuartzScheduler' initialized from default resource file in Quartz package: 'quartz.properties'
+[2016-02-22 13:02:54 Thread-0] org.quartz.impl.StdSchedulerFactory 1328: Quartz scheduler version: 1.8.6
+[2016-02-22 13:02:54 Thread-0] org.quartz.core.QuartzScheduler 519: Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+[2016-02-22 13:17:55 main] com.edaisong.quartzservice.Main 127: 写进程id
+[2016-02-22 13:17:56 main] com.edaisong.quartzservice.Main 38: 启动业务线程
+[2016-02-22 13:17:56 Thread-0] com.edaisong.quartzservice.Main 68: 发送http://tool.eds.com/quartz/querystartlistpost请求
+[2016-02-22 13:17:56 Thread-0] com.edaisong.quartzservice.Main 79: VersionCode从更新为20160222122942
+[2016-02-22 13:17:56 Thread-0] com.edaisong.quartzservice.Main 84: 第一次启动，新增1个服务
+[2016-02-22 13:19:58 main] com.edaisong.quartzservice.Main 127: 写进程id
+[2016-02-22 13:19:58 main] com.edaisong.quartzservice.Main 38: 启动业务线程
+[2016-02-22 13:19:58 Thread-0] com.edaisong.quartzservice.Main 68: 发送http://tool.eds.com/quartz/querystartlistpost请求
+[2016-02-22 13:19:58 Thread-0] com.edaisong.quartzservice.Main 79: VersionCode从更新为20160222122942
+[2016-02-22 13:19:58 Thread-0] com.edaisong.quartzservice.Main 84: 第一次启动，新增1个服务
+[2016-02-22 13:19:58 Thread-0] org.quartz.impl.StdSchedulerFactory 1179: Using default implementation for ThreadExecutor
+[2016-02-22 13:19:58 Thread-0] org.quartz.simpl.SimpleThreadPool 270: Job execution threads will use class loader of thread: Thread-0
+[2016-02-22 13:19:58 Thread-0] org.quartz.core.SchedulerSignalerImpl 60: Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[2016-02-22 13:19:58 Thread-0] org.quartz.core.QuartzScheduler 229: Quartz Scheduler v.1.8.6 created.
+[2016-02-22 13:19:58 Thread-0] org.quartz.simpl.RAMJobStore 139: RAMJobStore initialized.
+[2016-02-22 13:19:58 Thread-0] org.quartz.core.QuartzScheduler 255: Scheduler meta-data: Quartz Scheduler (v1.8.6) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[2016-02-22 13:19:58 Thread-0] org.quartz.impl.StdSchedulerFactory 1324: Quartz scheduler 'DefaultQuartzScheduler' initialized from default resource file in Quartz package: 'quartz.properties'
+[2016-02-22 13:19:58 Thread-0] org.quartz.impl.StdSchedulerFactory 1328: Quartz scheduler version: 1.8.6
+[2016-02-22 13:19:58 Thread-0] org.quartz.core.QuartzScheduler 519: Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+[2016-02-22 13:20:00 DefaultQuartzScheduler_Worker-1] com.edaisong.quartzservice.ChildJob 23: http://10.8.8.64:8080/renrenapihttp/services/httpquartzservice/expiretask执行的结果:{"code":200,"msg":"success","data":null}
+[2016-02-22 13:20:05 DefaultQuartzScheduler_Worker-2] com.edaisong.quartzservice.ChildJob 23: http://10.8.8.64:8080/renrenapihttp/services/httpquartzservice/expiretask执行的结果:{"code":200,"msg":"success","data":null}
+[2016-02-22 13:20:08 Thread-0] com.edaisong.quartzservice.Main 68: 发送http://tool.eds.com/quartz/querystartlistpost请求
+[2016-02-22 13:20:10 DefaultQuartzScheduler_Worker-3] com.edaisong.quartzservice.ChildJob 23: http://10.8.8.64:8080/renrenapihttp/services/httpquartzservice/expiretask执行的结果:{"code":200,"msg":"success","data":null}
+[2016-02-22 13:20:15 DefaultQuartzScheduler_Worker-4] com.edaisong.quartzservice.ChildJob 23: http://10.8.8.64:8080/renrenapihttp/services/httpquartzservice/expiretask执行的结果:{"code":200,"msg":"success","data":null}
+[2016-02-22 13:20:18 Thread-0] com.edaisong.quartzservice.Main 68: 发送http://tool.eds.com/quartz/querystartlistpost请求
+[2016-02-22 13:20:20 DefaultQuartzScheduler_Worker-5] com.edaisong.quartzservice.ChildJob 23: http://10.8.8.64:8080/renrenapihttp/services/httpquartzservice/expiretask执行的结果:{"code":200,"msg":"success","data":null}
+[2016-02-22 13:20:25 DefaultQuartzScheduler_Worker-6] com.edaisong.quartzservice.ChildJob 23: http://10.8.8.64:8080/renrenapihttp/services/httpquartzservice/expiretask执行的结果:{"code":200,"msg":"success","data":null}

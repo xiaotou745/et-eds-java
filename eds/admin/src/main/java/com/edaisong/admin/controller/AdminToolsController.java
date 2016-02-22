@@ -21,12 +21,14 @@ import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.ITaskDistributionConfigService;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.entity.BusinessMessage;
+import com.edaisong.entity.BusinessSetpCharge;
 import com.edaisong.entity.GlobalConfig;
 import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GlobalConfigModel;
 import com.edaisong.entity.req.BusinessSetpChargeReq;
 import com.edaisong.entity.req.ConfigSaveReq;
+import com.edaisong.entity.req.PagedBusinessSetpReq;
 import com.edaisong.entity.req.PagedGlobalConfigReq;
 import com.edaisong.entity.req.TaskDistributionConfigReq;
 import com.edaisong.entity.AppVersion;
@@ -178,6 +180,19 @@ public class AdminToolsController {
 	}
 	
 	/**
+	 * 阶梯收费配置分页列表
+	 * 茹化肖
+	 * @return
+	 */
+	@RequestMapping("businesssetpchargedo")
+	public ModelAndView businesssetpchargedo(PagedBusinessSetpReq req) {
+		ModelAndView view = new ModelAndView("admintools/businesssetpchargedo");
+		PagedResponse<BusinessSetpCharge> list = businessSetpChargeService.query(req);
+		view.addObject("listData", list);
+		return view;
+	}
+	
+	/**
 	 * 添加阶梯收费配置
 	 * 茹化肖
 	 * @return
@@ -186,6 +201,20 @@ public class AdminToolsController {
 	@ResponseBody
 	public int businesssetpchargeAdd(String data) {
 		BusinessSetpChargeReq req=JsonUtil.str2obj(data,BusinessSetpChargeReq.class);
+		String  useNameString=UserContext.getCurrentContext(request).getUserName();
+		req.getSetp().setCreateName(useNameString);
+		req.getSetp().setModifyName(useNameString);
 		return businessSetpChargeService.create(req);
+	}
+	/**
+	 * 添加阶梯收费配置
+	 * 茹化肖
+	 * @return
+	 */
+	@RequestMapping("getsetpinfo")
+	@ResponseBody
+	public String getSetpinfo(Long id) {
+
+		return businessSetpChargeService.getSetpinfo(id);
 	}
 }

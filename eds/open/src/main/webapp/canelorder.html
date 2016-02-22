@@ -22,18 +22,18 @@
     </div>
     <div class="index_box">
         <div class="box_top">
-            <a href="index.html">首页</a> > 获取订单类目信息
+            <a href="index.html">首页</a> > 订单API > 取消订单
         </div>
         <div class="box_left">
             <h3>订单API</h3>
             <ul>
-                <li><a href="orderlist.html">接收物流订单API</a></li>
+                <li><a href="orderlist.html">物流接收订单API</a></li>
                 <li><a href="getstatus.html">订单状态查询</a></li>
-                <li class="on"><a href="#">订单取消</a></li>
+                <li class="on"><a href="#">取消订单</a></li>
             </ul>
         </div>
         <div class="box_right">
-            <h3>获取订单类目信息</h3>
+            <h3>取消订单</h3>
             <div class="right_ty">
                 <h4>API功能描述</h4>
                 <p>目前只支持对接方取消当前订单。</p>
@@ -41,7 +41,7 @@
           
             <div class="right_ty">
                 <h4>api地址</h4>
-                <p>/order/ ChangeStatus</p>
+                <p>/order/Cancel</p>
             </div>
             <div class="right_ty">
                 <h4>系统参数</h4>
@@ -58,16 +58,10 @@
                         <th>描述</th>
                     </tr>
                     <tr>
-                        <td>order_no</td>
+                        <td>order_id</td>
                         <td>string</td>
                         <td>是</td>
                         <td>商家订单号（第三方的订单号)</td>
-                    </tr>
-                    <tr>
-                        <td>status</td>
-                        <td>string</td>
-                        <td>是</td>
-                        <td>3：取消订单 目前只有3有效</td>
                     </tr>
                 </table>
                 <p>调用json数据示例：</p>
@@ -79,7 +73,7 @@
     "v": "1.0",
     "sign": "D58E3582AFA99040E27B92B13C8F2280",
     "fields": {
-        "order_no": "12121212121"，"status": 3
+        "order_id": "12121212121"
     }
 }
 </pre>
@@ -143,8 +137,24 @@
                         <td>订单不存在</td>
                     </tr>
                     <tr>
-                        <td>20000</td>
-                        <td>订单已经接入到E代送系统，无法取消订单</td>
+                        <td>10005</td>
+                        <td>订单已取消</td>
+                    </tr>
+                    <tr>
+                        <td>10014</td>
+                        <td>订单已完成</td>
+                    </tr>
+                    <tr>
+                        <td>10015</td>
+                        <td>订单已接单</td>
+                    </tr>
+                     <tr>
+                        <td>10016</td>
+                        <td>订单已取货</td>
+                    </tr>
+                    <tr>
+                        <td>-1</td>
+                        <td>失败</td>
                     </tr>
                     <tr>
                 </table>
