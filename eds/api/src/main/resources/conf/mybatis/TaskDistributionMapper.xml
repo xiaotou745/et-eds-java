@@ -60,6 +60,10 @@
       #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.edaisong.entity.TaskDistribution" >
+  		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			select @@IDENTITY as id
+		</selectKey>
     insert into TaskDistribution
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

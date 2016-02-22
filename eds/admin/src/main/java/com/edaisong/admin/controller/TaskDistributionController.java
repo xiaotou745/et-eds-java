@@ -100,7 +100,17 @@ public class TaskDistributionController {
 		record.setCreatetime(new Date());
 		record.setUpdatename(UserContext.getCurrentContext(request).getLoginName());
 		record.setUpdatetime(new Date());
-		return taskDistributionService.add(record);
+		HttpResultModel<TaskDistributionResp> resp= taskDistributionService.add(record);
+		
+		TaskDistributionConfig recordConfig=new TaskDistributionConfig();
+		recordConfig.setkG(5);
+		recordConfig.setkM(5);
+		recordConfig.setDistributionPrice(16);
+		recordConfig.setIsMaster(1);
+		recordConfig.setTaskDistributionId(record.getId());		
+		taskDistributionConfigService.add(recordConfig);
+		
+		return resp;
 	}
 
 	

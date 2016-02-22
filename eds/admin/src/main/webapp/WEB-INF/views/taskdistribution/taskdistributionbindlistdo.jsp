@@ -22,10 +22,10 @@ if(list == null){
 <table class="table table-striped table-bordered table-hover dataTables-example">
 						<thead>
 							<tr>
-							<th>距离(km)</th>
-								<th>重量(kg)</th>
-								<th>计价阶梯</th>
-								<th>变量值</th>
+							<th>距离(千米)</th>
+								<th>重量(公斤)</th>
+								<th>阶梯增量(距离/重量)</th>
+								<th>配送费(元)</th>
 								<th>是否基础值</th>
 								<th>操作</th>
 							</tr>
@@ -95,7 +95,7 @@ function del(id){
                 "id": id
             };
        var url = "<%=basePath%>/taskdistribution/delconfig";
-	   var la= layer.confirm('是否确认删除配置费？', {
+	   var la= layer.confirm('是否确认删除规则？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
 		},function(){

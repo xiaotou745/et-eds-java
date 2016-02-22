@@ -101,7 +101,7 @@ width: 100%;
 			    <div class="row">
 						<div class="col-lg-3">						
 						<button type="button" class="btn btn-w-m btn-primary" id="btnCalculator"  onclick="showCalculator()"
-					style="margin-left: 3px;height:30px;">配送费计算器
+					style="margin-left: 3px;height:30px;">计算器
 					</button>
 					 
 					</div>
@@ -119,23 +119,23 @@ width: 100%;
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
-				<h4 class="modal-title">添加配送费</h4>
+				<h4 class="modal-title">添加规则</h4>
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
 					<fieldset>
             <br>
             <div class="control-group">  
-                <label>距离：</label><input  name="txtUKM" id="txtUKM" type="text" >
+                <label>距离(千米)：</label><input  name="txtUKM" id="txtUKM" type="text" >
             </div>
             <div class="control-group">  
-                <label>重量：</label><input  name="txtUKG" id="txtUKG" type="text" >
+                <label>重量(公斤)：</label><input  name="txtUKG" id="txtUKG" type="text" >
             </div>
             <div class="control-group">  
-                <label>计价阶梯：</label><input  name="txtUSteps" id="txtUSteps" type="text" >
+                <label>阶梯增量(千米/公斤)：</label><input  name="txtUSteps" id="txtUSteps" type="text" >
             </div>            
               <div class="control-group">  
-                <label>金额：</label><input  name="txtUDistributionPrice" id="txtUDistributionPrice" type="text" >
+                <label>配送费(元)：</label><input  name="txtUDistributionPrice" id="txtUDistributionPrice" type="text" >
             </div>
         </fieldset>
 				</div>
@@ -156,25 +156,25 @@ width: 100%;
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
-				<h4 class="modal-title">修改配送费</h4>
+				<h4 class="modal-title">修改规则</h4>
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
 					<fieldset>
             <br>
             <div class="control-group">  
-                <label>距离：</label><input  name="txtEKM" id="txtEKM" type="text" >
+                <label>距离(千米)：</label><input  name="txtEKM" id="txtEKM" type="text" >
                 <input  name="txtEId" id="txtEId" type="hidden">
                 <input  name="txtEIsMaster" id="txtEIsMaster" type="hidden">
             </div>
             <div class="control-group">  
-                <label>重量：</label><input  name="txtEKG" id="txtEKG" type="text" >
+                <label>重量(公斤)：</label><input  name="txtEKG" id="txtEKG" type="text" >
             </div>
                     <div class="control-group">  
-                <label>计价阶梯：</label><input  name="txtESteps" id="txtESteps" type="text" >
+                <label>阶梯增量(千米/公斤)：</label><input  name="txtESteps" id="txtESteps" type="text" >
             </div>     
               <div class="control-group">  
-                <label>金额：</label><input  name="txtEDistributionPrice" id="txtEDistributionPrice" type="text" >
+                <label>配送费(元)：</label><input  name="txtEDistributionPrice" id="txtEDistributionPrice" type="text" >
             </div>
               <div class="control-group">  
                 <label>备注：</label>
@@ -292,12 +292,12 @@ width: 100%;
 		 }
 		 if(txtUSteps == "")
 		 {
-			 alert("计价阶梯不能为空");
+			 alert("阶梯增量不能为空");
 		    return;
 		 }
 		 if(txtUSteps == "0")
 		 {
-			 alert("计价阶梯不能为0");
+			 alert("阶梯增量不能为0");
 		    return;
 		 }
 		 
@@ -320,7 +320,7 @@ width: 100%;
             };
 	    
        var url = "<%=basePath%>/taskdistribution/addconfig";
-       var la= layer.confirm('是否确认创建配置费？', {
+       var la= layer.confirm('是否确认创建规则？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
 		},function(){
@@ -362,8 +362,7 @@ width: 100%;
 			 alert("重量不能为空");
 		    return;
 		 }
-		 if (txtEIsMaster==0)
-			 {
+		
 				 if(txtKM>0 && txtKG>0)
 		    	 {
 					 alert("距离， 重量只能配置1个值");
@@ -385,23 +384,14 @@ width: 100%;
 				   }	
 				 if(txtESteps == "")
 				 {
-					 alert("计价阶梯不能为空");
+					 alert("阶梯增量不能为空");
 				    return;
 				 }
 				 if(txtESteps == "0")
 				 {
-					 alert("计价阶梯不能为0");
+					 alert("阶梯增量不能为0");
 				    return;
 				 }
-			 }
-		 else
-			 {
-				 if(txtERemark == "")
-				 {
-					 alert("备注不能为空");
-				    return;
-				 }
-			 }
 	    var paramaters = {	    		
 	    		"Id": txtId.trim(),
                 "KM": txtKM.trim(),
@@ -412,7 +402,7 @@ width: 100%;
                 "Remark": txtERemark.trim(),
             };
        var url = "<%=basePath%>/taskdistribution/modifyconfig";
-	   var la= layer.confirm('是否确认修改配置费？', {
+	   var la= layer.confirm('是否确认修改规则？', {
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
 		},function(){
