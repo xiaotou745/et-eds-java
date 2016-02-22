@@ -16,21 +16,21 @@
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
 		<tr>
-			<th style="width: 60px;">编号</th>
-			<th style="width: 150px;">订单号</th>
-			<th style="width: 200px;">商户信息</th>
-			<th style="width: 115px;">超人信息</th>
-			<th style="width: 100px;">发布时间</th>
-			<th style="width: 150px;">送货地址</th>
-			<th style="width: 100px;">完成时间</th>
-			<th style="width: 150px;">订单明细</th>
-		    <th style="width: 150px;">补贴</th>
-			<th style="width: 110px;">扣除补贴</th>
-			<th style="width: 110px;">商家结算</th>
-			<th style="width: 110px;">订单状态</th>
-			<th style="width: 110px;">已传/总计</th>
-			<th style="width: 110px;">抢单-完成</th>
-			<th style="width: 60px;">操作</th>
+			<th >编号</th>
+			<th >订单号</th>
+			<th >商户信息</th>
+			<th>超人信息</th>
+			<th>发布时间</th>
+			<th >送货地址</th>
+			<th >完成时间</th>
+			<th>订单明细</th>
+		    <th >补贴</th>
+			<th >扣除补贴</th>
+			<th>商家结算</th>
+			<th>订单状态</th>
+			<th >已传/总计</th>
+			<th >抢单-完成</th>
+			<th >操作</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -106,7 +106,7 @@
 				}
 			%>
 			<td><%=data.get(i).getSettleMoney() %></td>
-			<td><%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%><br/> <%=OrderAuditStatus.getEnum(data.get(i).getAuditStatus()).desc()%></td>
+			<td>订单状态:<%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%><br/> 审核状态:<%=OrderAuditStatus.getEnum(data.get(i).getAuditStatus()).desc()%></td>
 			<td><%=data.get(i).getHadUploadCount()%>/<%=data.get(i).getOrderCount()%></td>
 			<td style="<%=grabToCompleteStyle%>"><%=grabToCompleteStr%></td>
 			<td><a href="javascript:showMapData('<%=data.get(i).getId()%>')">地图</a></td>
