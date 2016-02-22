@@ -19,6 +19,8 @@ public interface ITaskDistributionConfigDao {
 	 * */
 	List<TaskDistributionConfig> query();
 	
+	List<TaskDistributionConfig> queryByTaskDistributionId(int TaskDistributionId); 
+	
 	/**
 	 * @author haichao
 	 * @date 2015年11月25日 11:44:04
