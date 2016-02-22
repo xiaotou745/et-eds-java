@@ -963,6 +963,21 @@
 		<if test="businessCity != null and businessCity!=''">
 			and b.city = ''${businessCity}''
 		</if>
+<<<<<<< .mine
+
+
+
+
+
+
+=======
+		<if test="groupBusinessId != null">
+			and o.GroupBusinessId =${groupBusinessId}
+		</if>
+		<!-- <if test="authorityCityNameListStr != null and authorityCityNameListStr!=''"> -->
+		<!-- and b.City in ''$${authorityCityNameListStr}'' -->
+		<!-- </if> -->
+>>>>>>> .theirs
 	</sql>
 
 	<!--后台订单列表页面 add by caoheyang 20150728 -->

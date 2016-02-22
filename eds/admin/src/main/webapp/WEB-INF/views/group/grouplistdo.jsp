@@ -8,6 +8,8 @@
 <%@page import="java.util.List"%>
 <%@page import="com.edaisong.entity.Group"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
+<%@page import="com.edaisong.core.enums.GroupAuditStatu"%>
+
 <%
 String basePath =PropertyUtils.getProperty("java.admin.url");
 %>
@@ -17,12 +19,12 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 	<thead>
 		<tr class="tdbg">
 			<th width="%5">序号</th>
-			<th width="%5">第三方平台名称</th>
-			<th width="%5">第三方平台创建时间</th>
-			<th width="%5">第三方平台AppKey</th>
-			<th width="%5">第三方平台AppSecrect</th>
-			<th width="%5">APP版本</th>
-			<th width="%5">状态</th>
+			<th width="%5">账号</th>
+			<th width="%5">名称</th>
+		    <th width="%5">AppKey</th>
+			<th width="%5">AppSecrect</th>
+			<th width="%5">账号状态</th>
+			<th width="%5">使用状态</th>
 			<th width="%5">操作人</th>
 			<th width="%5">操作</th>
 		</tr>
@@ -37,21 +39,19 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 			 %>
 		<tr>
 			<td><%=data.get(i).getGroupId()%></td>
-			<td><%=data.get(i).getGroupName() %></td>
-			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime()) %></td>
-			<td><%=ParseHelper.ShowString(data.get(i).getAppKey()) %></td>
-			<td><%=ParseHelper.ShowString(data.get(i).getAppSecret()) %></td>
-			<td><%=ParseHelper.ShowString(data.get(i).getAppVersion()) %></td>
+			<td><%=ParseHelper.ShowString(data.get(i).getPhoneNo())%></td>
+			<td><%=ParseHelper.ShowString(data.get(i).getGroupName())%></td>
+		    <td><%=ParseHelper.ShowString(data.get(i).getAppKey()) %></td>
+			<td><%=ParseHelper.ShowString(data.get(i).getAppSecret())%></td>
+			<td><%=ParseHelper.ShowString(GroupAuditStatu.getEnum( data.get(i).getAuditStatu()).desc())%></td>
+			<td width="5%" >
 			<%if (data.get(i).getIsValid() == 1)
                     { %>
-			<td width="5%"><a href="javascript:void(0);"
-				onclick="SetGourpStatus(<%=data.get(i).getGroupId()%>,0)">启用</a></td>
-			<% }
-                    else
-                    {%>
-			<td width="5%"><a href="javascript:void(0);"
-				onclick="SetGourpStatus(<%=data.get(i).getGroupId()%>,1)">禁用</a></td>
+				<a href="javascript:void(0);" onclick="SetGourpStatus(<%=data.get(i).getGroupId()%>,0)">启用</a>
+			<% }else{%>
+				<a href="javascript:void(0);" onclick="SetGourpStatus(<%=data.get(i).getGroupId()%>,1)">紧用</a>
 			<% } %>
+			</td>
 			<td><%=data.get(i).getCreateName() %></td>
 			<td><a href="javascript:void(0)"
 				onclick="funcGShowView('<%=data.get(i).getGroupId() %>','<%=data.get(i).getGroupName() %>')">修改</a>

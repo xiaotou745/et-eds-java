@@ -18,6 +18,17 @@ public class GroupApiConfigModel {
 	private byte isValid;
 	private String createName;
 	private Date createTime;
+	
+	/**
+	 * 登录帐号
+	 */
+	private String phoneNo;
+
+	/**
+	 * 审核状态 0待审核 1审核通过 2 审核拒绝
+	 */
+	private Integer auditStatu;
+
 
 	public int getId() {
 		return id;
@@ -170,5 +181,34 @@ public class GroupApiConfigModel {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+	
+	/**
+	 * 获取登录帐号
+	 */
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+	/**
+	 * 设置登录帐号
+	 * @param phoneNo 登录帐号
+	 */
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	/**
+	 * 获取审核状态 0待审核 1审核通过 2 审核拒绝
+	 */
+	public Integer getAuditStatu() {
+		return auditStatu;
+	}
+	/**
+	 * 设置审核状态 0待审核 1审核通过 2 审核拒绝
+	 * @param auditStatu 审核状态 0待审核 1审核通过 2 审核拒绝
+	 */
+	public void setAuditStatu(Integer auditStatu) {
+		this.auditStatu = auditStatu;
+	}
+
 
 }

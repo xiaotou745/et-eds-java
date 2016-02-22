@@ -204,4 +204,55 @@ public class OrderController {
 		req.setBusinessid(UserContext.getCurrentContext(request).getBusinessID());
 		return orderService.getBalanceInfo(req);
 	}
+	
+	
+	/**
+	 * 集团订单列表页面
+	 * 
+	 * @author zhaohailong
+	 * @Date 20150806
+	 * @return
+	 */
+	@RequestMapping("grouporderlist")
+	public ModelAndView groupOrderList() {
+		ModelAndView view = new ModelAndView("businessView");
+		view.addObject("subtitle", "全部订单");
+		view.addObject("currenttitle", "全部订单");
+		view.addObject("viewPath", "order/grouporderlist");
+		return view;
+	}
+
+	/**
+	 * 集团订单列表页面
+	 * 
+	 * @author zhaohailong
+	 * @Date 20150806
+	 * @return
+	 */
+	@RequestMapping("grouporderlistdo")
+	public ModelAndView groupOrderListdo(Integer timeType,PagedOrderSearchReq searchWebReq,HttpServletRequest request) {
+		Date tDate=new Date();
+		switch (timeType) {
+		case 0://今天的订单
+			searchWebReq.setOrderPubStart(ParseHelper.ToDateString(tDate, "yyyy-MM-dd"));
+			searchWebReq.setOrderPubEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
+			break;
+		case 1://7天的订单
+			searchWebReq.setOrderPubStart(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,-7), "yyyy-MM-dd"));
+			searchWebReq.setOrderPubEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
+			break;
+		case 2://30天的订单
+			searchWebReq.setOrderPubStart(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,1,-1), "yyyy-MM-dd"));
+			searchWebReq.setOrderPubEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
+			break;
+		default:
+			break;
+		}
+		//UserContext.getCurrentContext(request)
+		searchWebReq.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());
+		PagedResponse<OrderListModel> resp = orderService.getOrders(searchWebReq);
+		ModelAndView view = new ModelAndView("order/grouporderlistdo");
+		view.addObject("listData", resp);
+		return view;
+	}
 }

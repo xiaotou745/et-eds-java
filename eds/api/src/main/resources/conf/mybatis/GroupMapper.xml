@@ -152,7 +152,8 @@
 		parameterType="com.edaisong.entity.req.PagedGroupReq" statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
 		' g.Id ',
-		'g.id as GroupId,g.GroupName,g.CreateName,g.CreateTime,g.IsValid,isnull(gc.AppKey,'''') AppKey,isnull(gc.AppSecret,'''') AppSecret,isnull(gc.AppVersion,'''') AppVersion  
+		'g.id as GroupId,g.GroupName,g.CreateName,g.CreateTime,g.IsValid,isnull(gc.AppKey,'''') AppKey,isnull(gc.AppSecret,'''') AppSecret
+		,isnull(gc.AppVersion,'''') AppVersion,g.PhoneNo,g.AuditStatu  
 		',
 		'
 		[group] g with(nolock) left join GroupApiConfig gc with(nolock) on g.Id = gc.GroupId
