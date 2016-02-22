@@ -62,6 +62,19 @@ public interface IOrderDao {
 	 * @return
 	 */
 	PagedResponse<OrderListModel> getOrders(PagedOrderSearchReq search);
+	
+	
+	/**
+	 * 后台订单列表页面
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20160222
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	PagedResponse<OrderListModel> getGroupOrders(PagedOrderSearchReq search);
+	
 
 	Order selectByPrimaryKey(int id); 
 	 /**

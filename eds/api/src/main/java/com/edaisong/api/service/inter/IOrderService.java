@@ -69,6 +69,17 @@ public interface IOrderService {
 	PagedResponse<OrderListModel> getOrders(PagedOrderSearchReq search);
 	
 	/**
+	 * 集团中心订单列表页面
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20160222
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	PagedResponse<OrderListModel> getGroupOrders(PagedOrderSearchReq search);
+	
+	/**
 	 * 导出订单
 	 * 
 	 * @author CaoHeYang

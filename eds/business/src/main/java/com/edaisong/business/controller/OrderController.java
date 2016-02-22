@@ -248,9 +248,8 @@ public class OrderController {
 		default:
 			break;
 		}
-		//UserContext.getCurrentContext(request)
 		searchWebReq.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());
-		PagedResponse<OrderListModel> resp = orderService.getOrders(searchWebReq);
+		PagedResponse<OrderListModel> resp = orderService.getGroupOrders(searchWebReq);
 		ModelAndView view = new ModelAndView("order/grouporderlistdo");
 		view.addObject("listData", resp);
 		return view;
