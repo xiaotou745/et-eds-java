@@ -52,17 +52,14 @@ VALUES  ( #{setpChargeId,jdbcType=BIGINT} ,
           #{chargeValue,jdbcType=DECIMAL} 
         )
 	</insert>
-
+<!-- 更新策略 -->
 	<update id="update" parameterType="com.edaisong.entity.BusinessSetpCharge">
 		
 		update BusinessSetpCharge
 		set Title=#{title,jdbcType=NVARCHAR},
 			Remark=#{remark,jdbcType=NVARCHAR},
-			CreateDate=#{createDate,jdbcType=TIMESTAMP},
-			ModifyDate=#{modifyDate,jdbcType=TIMESTAMP},
-			CreateName=#{createName,jdbcType=NVARCHAR},
+			ModifyDate=GETDATE(),
 			ModifyName=#{modifyName,jdbcType=NVARCHAR},
-			Enable=#{enable,jdbcType=INTEGER},
 			SetpLength=#{setpLength,jdbcType=DECIMAL},
 			MinLimit=#{minLimit,jdbcType=DECIMAL},
 			MaxLimit=#{maxLimit,jdbcType=DECIMAL}
@@ -112,6 +109,13 @@ VALUES  ( #{setpChargeId,jdbcType=BIGINT} ,
 		#{totalPage,mode=OUT,jdbcType=VARCHAR}
 		)}
 	</select>
+	<select id="getListBySetpChargeId" resultType="com.edaisong.entity.BusinessSetpChargeChild" parameterType="java.lang.Long">
+	SELECT *	 FROM dbo.BusinessSetpChargeChild AS bscc(nolock)
+	WHERE Enable=1 and SetpChargeId=#{id,jdbcType=BIGINT}  
+	</select>
+	<update id="clearSetpChargeChild" parameterType="java.lang.Long">
+		UPDATE dbo.BusinessSetpChargeChild SET Enable=0 WHERE Enable=1 AND SetpChargeId=#{setpChargeId,jdbcType=BIGINT} 
+	</update>
 	
 
 </mapper>

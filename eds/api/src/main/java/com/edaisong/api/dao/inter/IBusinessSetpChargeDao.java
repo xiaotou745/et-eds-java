@@ -36,7 +36,7 @@ public interface IBusinessSetpChargeDao {
 	 * @date 2016-02-18 12:36:32
 	 * @param businessSetpCharge 要更改的对象
 	 */
-	void update(BusinessSetpCharge businessSetpCharge);
+	int update(BusinessSetpCharge businessSetpCharge);
 
 	/**
 	 * 删除一条记录
@@ -61,5 +61,17 @@ public interface IBusinessSetpChargeDao {
 	 * @param businessSetpChargeQueryInfo 查询条件
 	 */
 	PagedResponse<BusinessSetpCharge> select(PagedBusinessSetpReq businessSetpChargeQueryInfo);
+	/**
+	 * 查询子项
+	 * @param id
+	 * @return
+	 */
+	List<BusinessSetpChargeChild> getListBySetpChargeId(Long id);
+	/**
+	 * 清除子项数据
+	 * @param setpChargeId
+	 * @return
+	 */
+	int clearSetpChargeChild(Long setpChargeId);
 
 }

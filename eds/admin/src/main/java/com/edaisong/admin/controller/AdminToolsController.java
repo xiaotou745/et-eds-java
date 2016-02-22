@@ -206,4 +206,15 @@ public class AdminToolsController {
 		req.getSetp().setModifyName(useNameString);
 		return businessSetpChargeService.create(req);
 	}
+	/**
+	 * 添加阶梯收费配置
+	 * 茹化肖
+	 * @return
+	 */
+	@RequestMapping("getsetpinfo")
+	@ResponseBody
+	public String getSetpinfo(Long id) {
+
+		return businessSetpChargeService.getSetpinfo(id);
+	}
 }

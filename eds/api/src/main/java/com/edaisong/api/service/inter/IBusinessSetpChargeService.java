@@ -54,5 +54,10 @@ public interface IBusinessSetpChargeService {
 	 * @param businessSetpChargeQueryInfo 查询条件
 	 */
 	PagedResponse<BusinessSetpCharge> query(PagedBusinessSetpReq businessSetpChargeQueryInfo);
+	/**
+	 * 
+	 * @param id
+	 */
+	String getSetpinfo(Long id);
 
 }

@@ -80,7 +80,7 @@ boolean canAdd=context.isHasAuthByCode(AuthCodeConst.Admin_BusinessSetpCharge_Ad
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 				</button>
-				<h4 class="modal-title">添加配置</h4>
+				<h4 class="modal-title" id="boxtitle">添加配置</h4>
 			</div>
 			<div class="modal-body form-horizontal">
 				<!-- 弹窗BODY  KAISHI -->
@@ -91,6 +91,7 @@ boolean canAdd=context.isHasAuthByCode(AuthCodeConst.Admin_BusinessSetpCharge_Ad
 									<div class="col-lg-6">
 										<input maxlength="50" type="text" placeholder="" class="form-control brokerage" id="Addtitle">
 										<input type="hidden" placeholder="" id="AddItemCount" value="0">
+										<input type="hidden" placeholder="" id="modifyID" value="0">
                                     </div>
                                 </div>
                                 <div class="form-group" >
@@ -133,6 +134,7 @@ boolean canAdd=context.isHasAuthByCode(AuthCodeConst.Admin_BusinessSetpCharge_Ad
 			<div class="modal-footer">
 				<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
 				<button type="button" id="btnSave" class="btn btn-primary">保存</button>
+				<button type="button" id="btnSaveEdit" class="btn btn-primary">修改保存</button>
 			</div>
 		</div>
 	</div>
@@ -153,7 +155,16 @@ $(function(){
      });
 	//弹窗
 	$('#btnAdd').click(function(){
+		$('#btnSaveEdit').hide();
+		$('#btnSave').show();
 		$('#AddItemCount').val('0');
+		$('#Addtitle').val('');
+		$('#modifyID').val('0');
+		$('#MaxLimitValue').val('');
+		$('#setpcharge').val('');
+		$('#Remark').val('');
+		$('#SetpBody').html('');
+		$('#boxtitle').html('添加配置')
 		$('#AddBox').modal('show');
 	});
 	//点击生成
@@ -162,7 +173,10 @@ $(function(){
 	});
 	//保存
 	$('#btnSave').click(function(){
-		Save();
+		Save(1);
+	});
+	$('#btnSaveEdit').click(function(){
+		editSave();
 	});
 	//查询
 	$('#btnSearch').click(function(){
@@ -217,7 +231,7 @@ $(function(){
 			var te=maxvalue;
 			//步长+上次下限>最大上限,上限为最大上限,否则为步长+上次下限
 			maxvalue=(setpvale+maxvalue)>maxlimit?maxlimit:(setpvale+maxvalue);
-			htmStr+=getTRtemp(te,maxvalue,i);
+			htmStr+=getTRtemp(te,maxvalue,i,'');
 			$('#AddItemCount').val(i+1);
 		}
 		if(htmStr!='')
@@ -226,10 +240,10 @@ $(function(){
 		}
 	}
 //获取TR标签	
-function getTRtemp(minvalue,maxvalue,index)
+function getTRtemp(minvalue,maxvalue,index,charge)
 {
 	var trtemp='<tr><td>'+minvalue+'＜X≤'+maxvalue+'</td><td>'
-			+'<input style="width:120px" class="form-control brokerage" type="text" id="SetpValue'+index+'" value=""/>'
+			+'<input style="width:120px" class="form-control brokerage" type="text" id="SetpValue'+index+'" value="'+charge+'"/>'
 			+'<input  type="hidden" id="SetpValuemin'+index+'" value="'+minvalue+'"/><input  type="hidden" id="SetpValuemax'+index+'" value="'+maxvalue+'"/>'
 			+'</td></tr>'
 			+'</td></tr>';
@@ -277,15 +291,24 @@ function SaveCheck()
 	return true;
 }
 //保存阶梯步骤
-function Save()
+function Save(flag)
 {
+	//flag  1 添加 2 修改
+	
+	var tipstr='添加';
+	
+	if(flag==2)
+	{
+		tipstr='修改';
+	}
 	if(!SaveCheck())
 	{
 		return ;
 	}
-	alert('验证通过');
+	//alert('验证通过');
 	//构建策略对象
 	var SetpCharge=new Object();
+	SetpCharge.id=$('#modifyID').val();
 	SetpCharge.title=$('#Addtitle').val();
 	SetpCharge.remark=$('#Remark').val();
 	SetpCharge.setpLength=parseFloat($('#setpcharge').val());
@@ -310,13 +333,48 @@ function Save()
 	$.post(url,{"data":JsonStr},function(d){
 		if(d==1|d=='1')
 		{
-			alert('添加成功!');
+			alert(tipstr+'成功!');
 			window.location.href = "<%=basePath%>/admintools/businesssetpcharge";
 		}
 		else
 		{
-			alert('添加失败!');
+			alert(tipstr+'失败!');
 		}
 	});
+}
+//修改
+function Edit(id)
+{
+	var url='<%=basePath%>/admintools/getsetpinfo';
+	$.post(url,{"id":id},function(d){
+		
+		var obj=JSON.parse(d);
+		createBox(obj);
+	});
+}
+function createBox(obj)
+{
+	$('#btnSaveEdit').show();
+	$('#btnSave').hide();
+	$('#Addtitle').val(obj.setp.title);
+	$('#modifyID').val(obj.setp.id);
+	$('#MaxLimitValue').val(obj.setp.maxLimit);
+	$('#setpcharge').val(obj.setp.setpLength);
+	$('#Remark').val(obj.setp.remark);
+	var list=obj.childs;
+	$('#AddItemCount').val(list.length);
+	$('#boxtitle').html('修改配置')
+	var html='';
+	for(var i=0;i<list.length;i++)
+	{
+		html+=getTRtemp(list[i].minValue,list[i].maxValue,i,list[i].chargeValue);
+	}
+	$('#SetpBody').html(html);
+	$('#AddBox').modal('show');
+}
+//修改保存
+function editSave()
+{
+	Save(2);
 }
 </script>

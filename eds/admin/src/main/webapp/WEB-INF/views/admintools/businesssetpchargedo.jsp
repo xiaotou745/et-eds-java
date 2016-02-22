@@ -32,7 +32,8 @@ if(data == null){
 								<td><%=data.get(i).getRemark()%></td>
 								<td><%=ParseHelper.ToDateString(data.get(i).getModifyDate())%></td>
 								<td><%=data.get(i).getModifyName() %></td>
-								<td>修改</td>
+								<td><a href="javascript:void(0)" onclick="Edit(<%=data.get(i).getId()%>)">修改</a></td>
+								
 							</tr>
 
 							<%
