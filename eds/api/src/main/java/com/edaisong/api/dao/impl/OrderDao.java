@@ -90,7 +90,7 @@ public class OrderDao extends DaoBase implements IOrderDao {
 
 	
 	/**
-	 * 后台订单列表页面
+	 * 集团中心订单列表页面
 	 * 
 	 * @author CaoHeYang
 	 * @Date 20160222
@@ -105,6 +105,21 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		result = getReadOnlySqlSessionUtil().selectPageList(
 				"IOrderDao.getGroupOrders", search);
 		return result;
+	}
+	
+	/**
+	 * 集团中心订单列表页面 导出
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20160222
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public List<OrderListModel> exportGroupOrders(PagedOrderSearchReq search) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"IOrderDao.exportGroupOrders", search);
 	}
 	
 	/**

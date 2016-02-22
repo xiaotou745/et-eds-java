@@ -62,7 +62,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 					    request.getServletPath().equals("/group/alipayapi")||
 					    request.getServletPath().equals("/group/return_url")||
 					    request.getServletPath().equals("/order/grouporderlist")||
-					    request.getServletPath().equals("/order/detail")) {
+					    request.getServletPath().equals("/order/detail")||
+					    request.getServletPath().equals("/order/exportgrouporders")) {
 						return true;
 					}
 				} else {

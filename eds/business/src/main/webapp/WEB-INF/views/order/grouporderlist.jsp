@@ -28,6 +28,7 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 				<form method="POST" action="#" class="form-horizontal" id="searchForm">
 	<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 			<div class="function">
+				<input type="button" class="fr" value="导出报表" id="btnExport" style="line-height:30px;">
 				<input type="button" class="fr" value="搜索" id="btnSearch" style="line-height:30px;">
 				<span class="fl">订单状态</span>
 				<select class="fl"  name="orderStatus"  id="orderStatus">
@@ -115,5 +116,18 @@ $("input[type='radio']").click(function() {
 		$("#orderPubStart").removeAttr("disabled");
 		$("#orderPubEnd").removeAttr("disabled");
 	}
+});
+
+//导出功能
+$("#btnExport").click(function() {
+	    var orderStatus = $("#orderStatus").val();
+	    var timeType=$('input[name="timeType"]:checked').val();
+	    var orderPubStart = $("#orderPubStart").val();
+	    var orderPubEnd = $("#orderPubEnd").val();
+        var url = "<%=basePath%>/order/exportgrouporders?orderStatus=" + orderStatus 
+        		+ "&timeType=" + timeType + "&orderPubStart=" + orderPubStart
+        		+ "&orderPubEnd=" + orderPubEnd;
+        window.location.href = url;
+        return true;
 });
 </script>
