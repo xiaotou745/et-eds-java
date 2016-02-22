@@ -80,27 +80,4 @@
 <%=PageHelper.getPage(responsePageList.getPageSize(),
 					responsePageList.getCurrentPage(),
 					responsePageList.getTotalRecord(),
-					responsePageList.getTotalPage())%>
-<script type="text/javascript">
-function cancelOrder(orderId,orderNo){
-	if (!window.confirm("是否确认取消订单？")) {
-        return;
-    }
-    var paramaters = { "orderId": orderId,"orderNo":orderNo };
-    var url = "<%=basePath%>/order/canelorder";
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: paramaters,
-        success: function (result) {
-        	if (result.responseCode==0) {
-        		 alert("操作成功");
-                window.location.href = "<%=basePath%>/order/list";
-            } else {
-                alert(result.message);
-            }
-        }
-    });
-}
-</script>
-					
+					responsePageList.getTotalPage())%>		

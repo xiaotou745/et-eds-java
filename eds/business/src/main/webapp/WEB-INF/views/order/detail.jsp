@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.business.common.UserContext"%>
 <%@page import="org.apache.jasper.tagplugins.jstl.core.If"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -138,7 +139,8 @@
 		</div>
 	</div>
 	<div class="right2 fl">
-		    <% if(modelDatas.getOrderModel().getStatus()==OrderStatus.New.value()){%>
+		    <% if(modelDatas.getOrderModel().getStatus()==OrderStatus.New.value()
+		    &&UserContext.getCurrentContext(request).getBusinessType()!=1){%>
 	    <input type="button" value="取消订单"  class="qxOrder">
 	    		<% }%>
 		<h2>订单明细</h2>

@@ -119,7 +119,9 @@ public class OrderController {
 	public ModelAndView detail(String orderno,HttpServletRequest request) {
 		OrderDetailBusinessReq req=new OrderDetailBusinessReq();
 		req.setOrderNo(orderno);
-		req.setBusinessId(UserContext.getCurrentContext(request).getBusinessID());
+		if (UserContext.getCurrentContext(request).getBusinessType()==0) { //商户登录
+			req.setBusinessId(UserContext.getCurrentContext(request).getBusinessID());
+		}
 		ModelAndView model = new ModelAndView("businessView");
 		model.addObject("subtitle", "订单中心");
 		model.addObject("currenttitle", "订单详情");
