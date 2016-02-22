@@ -66,7 +66,7 @@
 			<%=customerAddress%></td>
 			<td>￥<%=data.get(i).getAmount()%></td>
 			<td>￥<%=ParseHelper.ToDouble(data.get(i).getSettleMoney(), 0.00)%></td>
-			<td></td>
+			<td><%=ParseHelper.ShowString(data.get(i).getPayBy())%></td>
 			<td><%=OrderStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td>
 			<a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getOrderNo()%>">详情</a>

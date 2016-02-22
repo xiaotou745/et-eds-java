@@ -88,6 +88,25 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		return result;
 	}
 
+	
+	/**
+	 * 后台订单列表页面
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20160222
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public PagedResponse<OrderListModel> getGroupOrders(PagedOrderSearchReq search) {
+
+		PagedResponse<OrderListModel> result = new PagedResponse<OrderListModel>();
+		result = getReadOnlySqlSessionUtil().selectPageList(
+				"IOrderDao.getGroupOrders", search);
+		return result;
+	}
+	
 	/**
 	 * 根据orderID获取订单地图数据
 	 * 

@@ -72,7 +72,7 @@ public class OrderListModel {
     private String receiptPic ;
     private String otherCancelReason ;
     private Double tipAmount ;
-    
+    private String payBy;
      public Double getTipAmount() {
 		return tipAmount;
 	}
@@ -116,6 +116,8 @@ public class OrderListModel {
 
     private  int finishAll;
     private int isOrderChecked;
+    
+
     
     /**
      * 是否已完成
@@ -1202,5 +1204,23 @@ public class OrderListModel {
 	public void setOrderDetailList(List<OrderDetail> orderDetailList) {
 		OrderDetailList = orderDetailList;
 	}
+
+	
+	/**
+	 * 集团 订单列表 支出方
+	 * @return
+	 */
+	public String getPayBy() {
+		return payBy;
+	}
+
+	/**
+	 * 集团 订单列表 支出方
+	 * @return
+	 */
+	public void setPayBy(String payBy) {
+		this.payBy = payBy;
+	}
+	
 	
 }

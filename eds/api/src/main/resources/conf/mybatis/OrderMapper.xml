@@ -970,9 +970,6 @@
 		<if test="groupBusinessId != null">
 			and o.GroupBusinessId =${groupBusinessId}
 		</if>
-		<!-- <if test="authorityCityNameListStr != null and authorityCityNameListStr!=''"> -->
-		<!-- and b.City in ''$${authorityCityNameListStr}'' -->
-		<!-- </if> -->
 	</sql>
 
 	<!--后台订单列表页面 add by caoheyang 20150728 -->
@@ -2045,4 +2042,85 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 			and  CONVERT(VARCHAR(100), PubDate, 23)=''${dateInfo}''
 		</if> 
 	</sql>
+	
+	<!-- 后台订单列表页面 查询列集合 add by caoheyang 20150728 -->
+	<sql id="getGroupOrdersColums">
+		o.[Id] ,o.[OrderNo],o.[PickUpAddress] ,
+		o.[PubDate] ,
+		o.[ReceviceName]
+		,o.[RecevicePhoneNo] ,o.[ReceviceAddress] ,
+		 o.[Amount] , o.[OrderCommission] ,
+		o.[Remark] ,
+		o.[Status] , o.[clienterId] , o.[businessId] , o.[ReceviceCity] ,
+	    o.[OrderFrom] ,
+		o.[ReceiveProvince] , o.[ReceiveArea] , o.[ReceiveProvinceCode]
+		,o.[ReceiveCityCode] ,o.[ReceiveAreaCode] ,o.SettleMoney,
+		o.[OrderCount] ,o.[CommissionRate] ,
+		c.TrueName ClienterName ,
+		c.PhoneNo ClienterPhoneNo , b.Name BusinessName ,b.PhoneNo BusinessPhoneNo ,
+		b.Address BusinessAddress ,
+		o.[Adjustment] ,
+		o.BusinessCommission,
+        case when  d.GroupId=0 or d.GroupId is null then ''门店'' 
+        else  ''集团''  end  as payBy
+	</sql>
+
+	<!-- 后台订单列表页面 查询列集来源 add by caoheyang 20150728 -->
+	<sql id="getGroupOrdersFrom">
+		[order] o with ( nolock )
+		left join clienter c with ( nolock ) on c.Id = o.clienterId
+		join business b with ( nolock ) on b.Id = o.businessId  
+		left join BusinessBalanceRecord d  with ( nolock ) on o.id = d.WithwardId and d.RecordType=1
+	</sql>
+	<!-- 后台订单列表页面 动态查询条件 add by caoheyang 20150728 -->
+	<sql id="getGroupOrdersColumsWhere">
+		1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} 
+		<if test="businessName != null and businessName != ''">
+			and b.Name=''${businessName}''
+		</if>
+		<if test="orderId != null and orderId!=''">
+			and o.OrderNo=''${orderId}''
+		</if>
+		<if test="orderStatus != null and orderStatus>-1">
+			and o.Status=${orderStatus}
+		</if>
+		<if test="orderPubStart != null and orderPubStart!=''">
+			and o.PubDate>= ''${orderPubStart} 00:00:00''
+		</if>
+		<if test="orderPubEnd != null and orderPubEnd!=''">
+         <![CDATA[ and o.PubDate<=]]>
+			''${orderPubEnd} 23:59:59''
+		</if>
+		<if test="authorityCityNameList != null">
+			and b.city in
+			<foreach item="item" index="index" collection="authorityCityNameList"
+				open="(''" separator="'',''" close="'')">
+				#{item}
+			</foreach>
+		</if>
+	</sql>
+
+	<!--后台订单列表页面 add by caoheyang 20150728 -->
+	<select id="getGroupOrders" resultType="com.edaisong.entity.domain.OrderListModel"
+		parameterType="com.edaisong.entity.req.PagedOrderSearchReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' o.Status ASC,o.Id DESC ',
+		'
+		<include refid="getGroupOrdersColums" />
+		',
+		'
+		<include refid="getGroupOrdersFrom" />
+		',
+		'
+		<include refid="getGroupOrdersColumsWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+	
 </mapper>
