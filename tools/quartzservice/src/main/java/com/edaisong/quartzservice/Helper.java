@@ -4,12 +4,16 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolscore.util.StringUtils;
 import com.edaisong.toolscore.util.SystemUtils;
 
 public class Helper {
 	private static final Properties prop = new Properties();
+	private final  static Logger log = LoggerFactory.getLogger("com.edaisong.quartzservice.Helper");
     static {
 		try {
 			InputStream inputStream = Helper.class.getClassLoader().getResourceAsStream("conf.properties");
@@ -25,7 +29,7 @@ public class Helper {
 		return prop.getProperty(key);
 	}
 	public static void sendMail(String remark, Exception e) {
-		System.out.println(remark + e.getMessage());
+		log.info(remark + e.getMessage());
 		String isSendMail=getProperty("IsSendMail");
 		if (isSendMail.equals("1")) {
 			String stackTrace = StringUtils.getStackTrace(e);
