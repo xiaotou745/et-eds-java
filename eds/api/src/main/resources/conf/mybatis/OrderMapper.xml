@@ -960,16 +960,13 @@
 		<if test="groupId != null and groupId != -1">
 			and o.OrderFrom = ${groupId}
 		</if>
-		<if test="authorityCityNameList != null">
-			and b.city in
-			<foreach item="item" index="index" collection="authorityCityNameList"
-				open="(''" separator="'',''" close="'')">
-				#{item}
-			</foreach>
+		<if test="businessCity != null and businessCity!=''">
+			and b.city = ''${businessCity}''
 		</if>
 		<if test="groupBusinessId != null">
 			and o.GroupBusinessId =${groupBusinessId}
 		</if>
+
 	</sql>
 
 	<!--后台订单列表页面 add by caoheyang 20150728 -->
