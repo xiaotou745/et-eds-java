@@ -28,7 +28,7 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 				<form method="POST" action="#" class="form-horizontal" id="searchForm">
 	<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 			<div class="function">
-				<input type="button" class="fr" value="搜索" id="btnSearch">
+				<input type="button" class="fr" value="搜索" id="btnSearch" style="line-height:30px;">
 				<span class="fl">订单状态</span>
 				<select class="fl"  name="orderStatus"  id="orderStatus">
 					<option value="-1">全部</option>

@@ -1182,8 +1182,10 @@
 		join dbo.OrderOther ( nolock ) b on a.Id=b.OrderId
 		LEFT join dbo.clienter ( nolock ) c on a.clienterId=c.Id
 		left join dbo.[group] d on a.OrderFrom=d.Id
-		where a.OrderNo=#{orderNo,jdbcType=NVARCHAR} and a.BusinessId=
-		#{businessId,jdbcType=INTEGER}
+		where a.OrderNo=#{orderNo,jdbcType=NVARCHAR} 
+		<if test="businessId !=0 ">
+			and a.BusinessId= #{businessId,jdbcType=INTEGER}
+		</if>
 	</select>
 	<!-- 商户取消订单功能 add by caoheyang 20150804 -->
 	<update id="cancelOrderBusiness" parameterType="com.edaisong.entity.Order">
