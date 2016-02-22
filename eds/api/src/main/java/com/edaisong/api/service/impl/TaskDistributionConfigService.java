@@ -197,8 +197,8 @@ public class TaskDistributionConfigService implements
 	public double calculator(TaskDistributionConfig record)
 	{
 		double cost=0;
-		List<TaskDistributionConfig> list= taskDistributionConfigDao.query();
-		if (list==null)
+		List<TaskDistributionConfig> list= taskDistributionConfigDao.queryByTaskDistributionId(record.getTaskDistributionId());
+		if (list==null ||list.size()==0)
 			return cost;
 		
 		double baseKM=list.get(0).getkM();

@@ -27,7 +27,11 @@ public class TaskDistributionConfigDao extends DaoBase implements ITaskDistribut
 	public List<TaskDistributionConfig> query() {
 		return getReadOnlySqlSessionUtil().selectList("ITaskDistributionConfigDao.query");
 	}
-
+	
+	@Override
+	public List<TaskDistributionConfig> queryByTaskDistributionId(int taskDistributionId) {
+		return getReadOnlySqlSessionUtil().selectList("ITaskDistributionConfigDao.queryByTaskDistributionId",taskDistributionId);
+	}
 	/**
 	 * @author haichao
 	 * @date 2015年11月25日 11:44:04
