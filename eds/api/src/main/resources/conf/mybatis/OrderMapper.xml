@@ -958,6 +958,9 @@
 				#{item}
 			</foreach>
 		</if>
+		<if test="groupBusinessId != null">
+			and o.GroupBusinessId =${groupBusinessId}
+		</if>
 		<!-- <if test="authorityCityNameListStr != null and authorityCityNameListStr!=''"> -->
 		<!-- and b.City in ''$${authorityCityNameListStr}'' -->
 		<!-- </if> -->

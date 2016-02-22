@@ -23,6 +23,7 @@ public class PagedOrderSearchReq extends PagedRequestBase{
      private String deliveryCompany ;
      private Integer businessID ; 
      private Integer auditStatus;
+     private Integer groupBusinessId;
      /**
       * 超人电话
       */
@@ -198,6 +199,20 @@ public class PagedOrderSearchReq extends PagedRequestBase{
 	 */
 	public void setAuditStatus(Integer auditStatus) {
 		this.auditStatus = auditStatus;
+	}
+	/**
+	 * 门店集团Id
+	 * @return
+	 */
+	public Integer getGroupBusinessId() {
+		return groupBusinessId;
+	}
+	/**
+	 * 门店集团Id
+	 * @param groupBusinessId
+	 */
+	public void setGroupBusinessId(Integer groupBusinessId) {
+		this.groupBusinessId = groupBusinessId;
 	}
 
 
