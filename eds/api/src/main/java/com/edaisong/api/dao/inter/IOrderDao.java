@@ -65,7 +65,7 @@ public interface IOrderDao {
 	
 	
 	/**
-	 * 后台订单列表页面
+	 * 集团中心订单列表页面
 	 * 
 	 * @author CaoHeYang
 	 * @Date 20160222
@@ -74,6 +74,17 @@ public interface IOrderDao {
 	 * @return
 	 */
 	PagedResponse<OrderListModel> getGroupOrders(PagedOrderSearchReq search);
+	
+	/**
+	 *集团中心订单列表页面  导出
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20160222
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	List<OrderListModel> exportGroupOrders(PagedOrderSearchReq search);
 	
 
 	Order selectByPrimaryKey(int id); 

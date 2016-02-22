@@ -244,6 +244,20 @@ public class OrderService implements IOrderService {
 	}
 	
 	/**
+	 * 后台订单列表页面 导出
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20160222
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public List<OrderListModel> exportGroupOrders(PagedOrderSearchReq search) {
+		return orderDao.exportGroupOrders(search);
+	}
+	
+	/**
 	 * 后台订单列表页面 
 	 * @author CaoHeYang
 	 * @Date 20150728

@@ -4,6 +4,7 @@ import java.lang.Double;
 import java.util.Date;
 import java.util.List;
 
+import com.edaisong.core.enums.OrderStatus;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.OrderDetail;
 
@@ -370,6 +371,9 @@ public class OrderListModel {
      */
 	public byte getStatus() {
 		return status;
+	}
+	public String getStatusStr() {
+		return OrderStatus.getEnum(status).desc();
 	}
 
     /**

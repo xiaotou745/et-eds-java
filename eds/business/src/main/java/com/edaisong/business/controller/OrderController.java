@@ -1,9 +1,11 @@
 package com.edaisong.business.controller;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,8 +33,10 @@ import com.edaisong.entity.resp.OrderDetailBusinessResp;
 import com.edaisong.entity.resp.OrderResp;
 import com.edaisong.business.common.UserContext;
 import com.edaisong.core.enums.OrderFrom;
+import com.edaisong.core.util.ExcelUtils;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
+import com.edaisong.core.util.PropertyUtils;
 
 
 @Controller
@@ -256,4 +260,59 @@ public class OrderController {
 		view.addObject("listData", resp);
 		return view;
 	}
+	
+	/**
+	 * 集团订单列表页面
+	 * 
+	 * @author caoheyang 
+	 * @Date 20160222
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("exportgrouporders")
+	public void exportGroupOrders(Integer timeType,PagedOrderSearchReq searchWebReq,HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		Date tDate=new Date();
+		switch (timeType) {
+		case 0://今天的订单
+			searchWebReq.setOrderPubStart(ParseHelper.ToDateString(tDate, "yyyy-MM-dd"));
+			searchWebReq.setOrderPubEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
+			break;
+		case 1://7天的订单
+			searchWebReq.setOrderPubStart(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,-7), "yyyy-MM-dd"));
+			searchWebReq.setOrderPubEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
+			break;
+		case 2://30天的订单
+			searchWebReq.setOrderPubStart(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,1,-1), "yyyy-MM-dd"));
+			searchWebReq.setOrderPubEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
+			break;
+		default:
+			break;
+		}
+		searchWebReq.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());
+	    List<OrderListModel> records=	 orderService.exportGroupOrders(searchWebReq) ;
+	    if(records.size() > 0){
+				String fileName = "e代送-%s-集团外卖订单数据";
+				fileName = String.format(fileName, searchWebReq.getOrderPubStart()+ "到" + searchWebReq.getOrderPubEnd());
+				LinkedHashMap<String, String> columnTitiles = new LinkedHashMap<String, String>();
+				columnTitiles.put("订单号", "orderNo");
+				columnTitiles.put("发单门店", "businessName");
+				columnTitiles.put("下单时间", "pubDate");
+				columnTitiles.put("接单时间", "grabTime");
+				columnTitiles.put("取货时间", "takeTime");
+				columnTitiles.put("完成时间", "actualDoneDate");
+				columnTitiles.put("菜品金额", "amount");
+				columnTitiles.put("订单数量", "orderCount");
+				columnTitiles.put("订单状态", "statusStr");
+				columnTitiles.put("骑士信息", "clienterName");
+				columnTitiles.put("配送费", "settleMoney");
+				columnTitiles.put("配送费支出方", "payBy");
+				ExcelUtils.export2Excel(fileName, "闪送订单记录", columnTitiles,records, request, response);
+				return;
+			}else {
+				String basePath = PropertyUtils.getProperty("java.business.url");
+				response.sendRedirect(basePath+"/order/grouporderlist");
+			}
+	}
+	
 }

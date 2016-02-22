@@ -2042,7 +2042,7 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 		</if> 
 	</sql>
 	
-	<!-- 后台订单列表页面 查询列集合 add by caoheyang 20150728 -->
+	<!--集团中心订单列表页面  查询列集合 add by caoheyang 20160222 -->
 	<sql id="getGroupOrdersColums">
 		o.[Id] ,o.[OrderNo],o.[PickUpAddress] ,
 		o.[PubDate] ,
@@ -2064,14 +2064,14 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
         else  ''集团''  end  as payBy
 	</sql>
 
-	<!-- 后台订单列表页面 查询列集来源 add by caoheyang 20150728 -->
+	<!-- 后台订单列表页面 查询列集来源 add by caoheyang 20160222 -->
 	<sql id="getGroupOrdersFrom">
 		[order] o with ( nolock )
 		left join clienter c with ( nolock ) on c.Id = o.clienterId
 		join business b with ( nolock ) on b.Id = o.businessId  
 		left join BusinessBalanceRecord d  with ( nolock ) on o.id = d.WithwardId and d.RecordType=1
 	</sql>
-	<!-- 后台订单列表页面 动态查询条件 add by caoheyang 20150728 -->
+	<!-- 集团中心订单列表页面  动态查询条件 add by caoheyang 20160222 -->
 	<sql id="getGroupOrdersColumsWhere">
 		1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} 
 		<if test="businessName != null and businessName != ''">
@@ -2099,7 +2099,7 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 		</if>
 	</sql>
 
-	<!--后台订单列表页面 add by caoheyang 20150728 -->
+	<!--集团中心订单列表页面 add by caoheyang 20160222 -->
 	<select id="getGroupOrders" resultType="com.edaisong.entity.domain.OrderListModel"
 		parameterType="com.edaisong.entity.req.PagedOrderSearchReq"
 		statementType="CALLABLE">
@@ -2122,4 +2122,52 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 		)}
 	</select>
 	
+  <!--集团中心订单列表页面  导出 add by caoheyang 20160222 -->
+	<select id="exportGroupOrders" resultType="com.edaisong.entity.domain.OrderListModel"
+	parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
+	select 
+		 o.orderNo ,
+        ISNULL(b.Name, '') businessName ,
+         o.PubDate,oo.GrabTime,oo.TakeTime,o.ActualDoneDate,
+        o.amount ,
+        o.orderCount ,
+        o.status ,
+        ISNULL(c.TrueName, '匿名')+':'+ ISNULL(c.PhoneNo, '未知') clienterName ,
+        o.settleMoney ,
+        CASE when d.GroupId = 0
+                  or d.GroupId is null then '门店'
+             else '集团'
+        end as payBy 
+	  from  
+       [order] o with ( nolock )
+        join dbo.OrderOther oo with ( nolock ) on o.Id = oo.OrderId
+	 	left join clienter c with ( nolock ) on c.Id = o.clienterId
+		join business b with ( nolock ) on b.Id = o.businessId  
+		left join BusinessBalanceRecord d  with ( nolock ) on o.id = d.WithwardId and d.RecordType=1
+	where  
+	 1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} 
+		<if test="businessName != null and businessName != ''">
+			and b.Name='${businessName}'
+		</if>
+		<if test="orderId != null and orderId!=''">
+			and o.OrderNo='${orderId}'
+		</if>
+		<if test="orderStatus != null and orderStatus>-1">
+			and o.Status=${orderStatus}
+		</if>
+		<if test="orderPubStart != null and orderPubStart!=''">
+			and o.PubDate>= '${orderPubStart} 00:00:00'
+		</if>
+		<if test="orderPubEnd != null and orderPubEnd!=''">
+         <![CDATA[ and o.PubDate<=]]>
+			'${orderPubEnd} 23:59:59'
+		</if>
+		<if test="authorityCityNameList != null">
+			and b.city in
+			<foreach item="item" index="index" collection="authorityCityNameList"
+				open="('" separator="','" close="')">
+				#{item}
+			</foreach>
+		</if>
+	</select>
 </mapper>
