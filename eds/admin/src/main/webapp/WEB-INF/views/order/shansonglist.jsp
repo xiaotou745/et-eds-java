@@ -19,6 +19,10 @@
 String basePath =PropertyUtils.getProperty("java.admin.url");
 	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 %>
+<!-- 下拉框的样式以及JS -->
+<link href="<%=basePath%>/css/plugins/chosen/chosen.css"  rel="stylesheet">
+<script src="<%=basePath%>/js/plugins/chosen/chosen.jquery.js" ></script>
+<!-- 下拉框的样式以及JS -->
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"></script>
@@ -54,7 +58,8 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">发单城市:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="businessCity"  id="businessCity"/>
+							<%=HtmlHelper.getSelectAuto("businessCity", areaListData, "name", "name","","","全部") %>
+<!-- 								<input type="text" class="form-control" name="businessCity"  id="businessCity"/> -->
 						<%-- 	  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部") %> --%>
 							</div>
 						</div>
