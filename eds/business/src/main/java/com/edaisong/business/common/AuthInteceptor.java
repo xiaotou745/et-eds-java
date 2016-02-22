@@ -60,7 +60,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				if (userContext.getBusinessType() == 1) {// 集团商家登录
 					if (request.getServletPath().equals("/group/recharge")|| 
 					    request.getServletPath().equals("/group/alipayapi")||
-					    request.getServletPath().equals("/group/return_url")) {
+					    request.getServletPath().equals("/group/return_url")||
+					    request.getServletPath().equals("/order/grouporderlist")) {
 						return true;
 					}
 				} else {

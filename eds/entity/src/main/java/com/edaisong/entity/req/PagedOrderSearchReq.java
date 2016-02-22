@@ -202,13 +202,20 @@ public class PagedOrderSearchReq extends PagedRequestBase{
 	public void setAuditStatus(Integer auditStatus) {
 		this.auditStatus = auditStatus;
 	}
+/**
+	 * 门店集团Id
+	 * @return
+	 */
 	public Integer getGroupBusinessId() {
 		return groupBusinessId;
 	}
+	/**
+	 * 门店集团Id
+	 * @param groupBusinessId
+	 */
 	public void setGroupBusinessId(Integer groupBusinessId) {
 		this.groupBusinessId = groupBusinessId;
-	}
-	public Integer getTagId() {
+	}public Integer getTagId() {
 		return tagId;
 	}
 	public void setTagId(Integer tagId) {
@@ -220,6 +227,5 @@ public class PagedOrderSearchReq extends PagedRequestBase{
 	public void setTagType(Integer tagType) {
 		this.tagType = tagType;
 	}
-
 
 }
