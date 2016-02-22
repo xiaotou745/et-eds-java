@@ -141,8 +141,8 @@ public class BusinessController {
 		List<BusinessGroup> businessGroupListData = iBusinessGroupService.getBusinessGroupList();
 
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "商户");
-		model.addObject("currenttitle", "商户管理");
+		model.addObject("subtitle", "门店");
+		model.addObject("currenttitle", "门店管理");
 		model.addObject("groupId", 0);
 		model.addObject("groupListData", resultList);
 		model.addObject("openCityList", openCityList);

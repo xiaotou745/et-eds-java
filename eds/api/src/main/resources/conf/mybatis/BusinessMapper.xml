@@ -425,6 +425,7 @@
 			</if>
 			<if test="cityid != null">
 				cityid = #{cityid,jdbcType=NVARCHAR},
+				CityCode = #{cityid,jdbcType=NVARCHAR},
 			</if>
 			<if test="city != null">
 				city = #{city,jdbcType=NVARCHAR},

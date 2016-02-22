@@ -260,6 +260,11 @@ function GetDevPlatform(dbname)
 function GetOnLineProduct(devplatformId)
 {
 	var data={"typeid":devplatformId}
+	if(devplatformId==-1||devplatformId=='-1')
+	{
+		$('#selOnlineProduct').html('<option value="-1">请选择</option>');
+		return;
+	}
 	$.post("<%=basePath%>/linehistory/getonlineproduct",
 			data,
 			function(d){
