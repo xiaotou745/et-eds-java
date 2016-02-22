@@ -963,7 +963,7 @@
 		<if test="businessCity != null and businessCity!=''">
 			and b.city = ''${businessCity}''
 		</if>
-		<if test="groupBusinessId != null">
+		<if test="groupBusinessId != null and groupBusinessId!=-1">
 			and o.GroupBusinessId =${groupBusinessId}
 		</if>
 
