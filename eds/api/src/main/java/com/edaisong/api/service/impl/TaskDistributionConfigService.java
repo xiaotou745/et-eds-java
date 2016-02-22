@@ -121,24 +121,31 @@ public class TaskDistributionConfigService implements
 		
 		HttpResultModel<TaskDistributionConfigResp> resp = new HttpResultModel<TaskDistributionConfigResp>();
 
-		if(record.getkM()>0)
+		if(record.getIsMaster()==1)
 		{
-			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(0, record.getkM());
-			if(selectModel!=null)
-			{
-				resp.setStatus(TaskDistributionConfigEnum.KMErr.value());
-				resp.setMessage(TaskDistributionConfigEnum.KMErr.desc());
-				return resp;
-			}
+		
 		}
 		else
 		{
-			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(0, record.getkG());
-			if(selectModel!=null)
+			if(record.getkM()>0)
 			{
-				resp.setStatus(TaskDistributionConfigEnum.KGErr.value());
-				resp.setMessage(TaskDistributionConfigEnum.KGErr.desc());
-				return resp;
+				TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(0, record.getkM());
+				if(selectModel!=null)
+				{
+					resp.setStatus(TaskDistributionConfigEnum.KMErr.value());
+					resp.setMessage(TaskDistributionConfigEnum.KMErr.desc());
+					return resp;
+				}
+			}
+			else
+			{
+				TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(0, record.getkG());
+				if(selectModel!=null)
+				{
+					resp.setStatus(TaskDistributionConfigEnum.KGErr.value());
+					resp.setMessage(TaskDistributionConfigEnum.KGErr.desc());
+					return resp;
+				}
 			}
 		}
 		taskDistributionConfigDao.insertSelective(record);
@@ -197,8 +204,8 @@ public class TaskDistributionConfigService implements
 	public double calculator(TaskDistributionConfig record)
 	{
 		double cost=0;
-		List<TaskDistributionConfig> list= taskDistributionConfigDao.query();
-		if (list==null)
+		List<TaskDistributionConfig> list= taskDistributionConfigDao.queryByTaskDistributionId(record.getTaskDistributionId());
+		if (list==null ||list.size()==0)
 			return cost;
 		
 		double baseKM=list.get(0).getkM();

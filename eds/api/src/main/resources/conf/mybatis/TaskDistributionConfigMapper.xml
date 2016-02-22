@@ -12,6 +12,11 @@
  <select id="query" resultMap="BaseResultMap">
   SELECT Id,KM,KG,DistributionPrice,Steps,IsMaster,Remark FROM TaskDistributionConfig(nolock)   order by IsMaster desc,km desc,kg desc
   </select>
+  
+   <select id="queryByTaskDistributionId" resultType="com.edaisong.entity.TaskDistributionConfig"  parameterType="java.lang.Integer">
+  SELECT Id,KM,KG,DistributionPrice,Steps,IsMaster,Remark FROM TaskDistributionConfig(nolock)  where taskDistributionId= #{taskDistributionId,jdbcType=INTEGER}
+    order by IsMaster desc,km desc,kg desc
+  </select>
   <select id="selectByPrimaryKey" resultType="com.edaisong.entity.TaskDistributionConfig" parameterType="java.lang.Integer" >
     select    Id,KM,KG,steps,DistributionPrice,IsMaster,Remark 
     from TaskDistributionConfig
@@ -34,6 +39,9 @@
 		</if>
 	<if  test="KG != null and KG != ''">	
 				and KG=''${KG}''
+		</if>
+			<if  test="taskDistributionId != null and taskDistributionId != ''">	
+				and taskDistributionId=''${taskDistributionId}''
 		</if>
 	</sql>
         <select id="query_Sp" resultType="com.edaisong.entity.TaskDistributionConfig" 
@@ -61,6 +69,9 @@
    <insert id="insertSelective" parameterType="com.edaisong.entity.TaskDistributionConfig" >
     insert into TaskDistributionConfig
     <trim prefix="(" suffix=")" suffixOverrides="," >
+     <if test="taskDistributionId != null" >
+        taskDistributionId,
+      </if>
       <if test="kM != null" >
         KM,
       </if>
@@ -78,6 +89,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+          <if test="taskDistributionId != null" >
+        #{taskDistributionId,jdbcType=INTEGER},
+      </if>
       <if test="kM != null" >
         #{kM,jdbcType=DOUBLE},
       </if>

@@ -32,20 +32,18 @@ public class TaskDistributionDao extends DaoBase implements ITaskDistributionDao
 
 	@Override
 	public int insertSelective(TaskDistribution record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().insert(
+				"ITaskDistributionDao.insertSelective", record);
 	}
 
 	@Override
 	public TaskDistribution selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		return getReadOnlySqlSessionUtil().selectOne("ITaskDistributionDao.selectByPrimaryKey",id);
 	}
 
 	@Override
 	public int updateByPrimaryKeySelective(TaskDistribution record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().update("ITaskDistributionDao.updateByPrimaryKeySelective",record);
 	}
 
 	@Override

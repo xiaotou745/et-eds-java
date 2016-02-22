@@ -111,11 +111,12 @@ width: 100%;
 					<fieldset>
             <br>
             <div class="control-group">  
-                <label>名称：</label><input  name="txtAKM" id="txtAKM" type="text" >
+                <label>名称：</label><input  name="txtAName" id="txtAName" type="text" >
             </div>
             <div class="control-group">  
                 <label>描述：</label>
                 <textarea name="txtARemark" id="txtARemark" style="width:300px;height:100px;max-width:300px;max-height:100px;">
+                </textarea>
             </div>       
         </fieldset>
 				</div>
@@ -141,12 +142,16 @@ width: 100%;
 				<div class="modal-body">
 					<fieldset>
             <br>
+       <div class="control-group">  
+                <label>名称：</label>
+                        <input  name="txtEId" id="txtEId" type="hidden">
+                <input  name="txtEName" id="txtEName" type="text" >
+            </div>
             <div class="control-group">  
-                        
-            </div>  
-              <div class="control-group">  
-            
-             </div>       
+                <label>描述：</label>
+                <textarea name="txtERemark" id="txtERemark" style="width:300px;height:100px;max-width:300px;max-height:100px;">
+                </textarea>
+            </div>    
         </fieldset>
 				</div>
 				<div class="modal-footer">
@@ -166,16 +171,7 @@ width: 100%;
           forceParse: false,
           calendarWeeks: true,
           autoclose: true
-      });
-	  //获取所有标签
-	  $.ajax({
-          type: 'POST',
-          url: '<%=basePath%>/mark/gettag',
-          data: {},
-          success: function (result) {
-          	  $("#tagId").html(result.message);
-          }
-      });
+      });	
  });
  
  var jss={
@@ -208,16 +204,97 @@ width: 100%;
 
 
 	function showAdd(){ 
-        $('#txtAKM').val('');
+        $('#txtAName').val('');
         $('#txtARemark').val('');     
         $('#addConfig').modal('show');
 }
 	function saveAdd()
 	{
+		var txtAName= $('#txtAName').val().trim();
+		var txtARemark= $('#txtARemark').val().trim();	
+
+
+		 if(txtAName == "")
+		 {
+			 alert("名称不能为空");
+		    return;
+		 }
+		 if(txtARemark == "")
+		 {
+			 alert("描述不能为空");
+		    return;
+		 }		 
 		
+	    var paramaters = {
+                "name": txtAName.trim(),
+                "remark": txtARemark.trim(),      
+            };
+	    
+       var url = "<%=basePath%>/taskdistribution/add";
+       var la= layer.confirm('是否确认创建配置？', {
+		    btn: ['确认','取消'], //按钮
+		    shade: false //显示遮罩
+		},function(){
+			layer.close(la);
+			$.ajax({
+		           type: 'POST',
+		           url: url,
+		           data: paramaters,
+		           success: function (result) {		    
+		        	   alert(result.message);		        	
+		               if (result.status == 1) {
+		            	   window.location.href = "<%=basePath%>/taskdistribution/list";		
+		               }
+		                              
+		        	  
+		           }
+		       });
+		});  
 	}
 	function saveModify()
 	{
+		var txtId= $('#txtEId').val().trim();
+		var txtEName= $('#txtEName').val().trim();
+		var txtERemark= $('#txtERemark').val().trim();	
+
+
+		 if(txtEName == "")
+		 {
+			 alert("名称不能为空");
+		    return;
+		 }
+		 if(txtERemark == "")
+		 {
+			 alert("描述不能为空");
+		    return;
+		 }		 
+		
+	    var paramaters = {
+	    		"Id": txtId.trim(),
+                "name": txtEName.trim(),
+                "remark": txtERemark.trim(),      
+            };		
+	  
+       var url = "<%=basePath%>/taskdistribution/modify";
+	   var la= layer.confirm('是否确认修改配置？', {
+		    btn: ['确认','取消'], //按钮
+		    shade: false //显示遮罩
+		},function(){
+			layer.close(la);
+			$.ajax({
+		           type: 'POST',
+		           url: url,
+		           data: paramaters,
+		           success: function (result) {		    
+		        	   alert(result.message);		        	
+		               if (result.status == 1) {
+		            	   window.location.href = "<%=basePath%>/taskdistribution/list";		
+		               }
+		                              
+		        	  
+		           }
+		       });
+		});       	    
 	}
 	 
 </script>

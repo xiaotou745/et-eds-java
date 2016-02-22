@@ -40,7 +40,8 @@ if(list == null){
 								<td><%=list.get(i).getUpdatename()%></td>							
 						
 								<td>						
-								<a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId() %>)">修改</a>
+								<a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId() %>,<%=list.get(i).getName() %>,<%=list.get(i).getRemark() %>)">修改</a>
+   							   <a href="<%=basePath%>/taskdistribution/taskdistributionbindlist?taskDistributionId=<%=list.get(i).getId()%>">配置规则</a>
 								
 					
 								</td>
@@ -56,16 +57,12 @@ if(list == null){
 					data.getTotalPage())%>
 					
 <script>				
-function modify(id)
+function modify(id,name,remark)
 {    		
-// 	 	$('#txtEId').val(id);    	
-//         $('#txtEName').val('');
-//         $('#txtERemark').val('');         	
-    	
-        $('#aaaaaa').modal('show');
-    	
-    	
-	
+	 	$('#txtEId').val(id);    	
+        $('#txtEName').val(name);
+        $('#txtERemark').val(remark);         	    	
+        $('#modifyConfig').modal('show');
 	
 }
 
