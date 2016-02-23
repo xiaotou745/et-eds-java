@@ -193,6 +193,19 @@ public class AdminToolsController {
 	}
 	
 	/**
+	 * 阶梯收费配置分页列表(商户详情用)
+	 * 茹化肖
+	 * @return
+	 */
+	@RequestMapping("bussetplistdo")
+	public ModelAndView bussetplistdo(PagedBusinessSetpReq req) {
+		ModelAndView view = new ModelAndView("admintools/bussetplistdo");
+		PagedResponse<BusinessSetpCharge> list = businessSetpChargeService.query(req);
+		view.addObject("listData", list);
+		return view;
+	}
+	
+	/**
 	 * 添加阶梯收费配置
 	 * 茹化肖
 	 * @return

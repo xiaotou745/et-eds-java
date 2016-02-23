@@ -74,7 +74,16 @@ public class OrderListModel {
     private String otherCancelReason ;
     private Double tipAmount ;
     private String payBy;
-     public Double getTipAmount() {
+    private Integer platform;
+     public Integer getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Integer platform) {
+		this.platform = platform;
+	}
+
+	public Double getTipAmount() {
 		return tipAmount;
 	}
 
