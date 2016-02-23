@@ -3,7 +3,7 @@ package com.tencent.common;
 /**
  * User: rizenguo Date: 2014/10/29 Time: 14:40 这里放置各种配置数据
  */
-public class Configure {
+public class Configure_ {
 	// 这个就是自己要保管好的私有Key了（切记只能放在自己的后台代码里，不能放在任何可能被看到源代码的客户端程序中）
 	// 每次自己Post数据给API的时候都要用这个key来对所有字段进行签名，生成的签名会放在Sign这个字段，API收到Post数据的时候也会用同样的签名算法对Post过来的数据进行签名和验证
 	// 收到API的返回的时候也要用这个key来对返回的数据算下签名，跟API的Sign数据进行比较，如果值不一致，有可能数据被第三方给篡改
@@ -37,7 +37,7 @@ public class Configure {
 	}
 
 	public static void setAppsecret(String appsecret) {
-		Configure.appsecret = appsecret;
+		Configure_.appsecret = appsecret;
 	}
 
 	// 机器IP
@@ -70,37 +70,37 @@ public class Configure {
 	}
 
 	public static void setUseThreadToDoReport(boolean useThreadToDoReport) {
-		Configure.useThreadToDoReport = useThreadToDoReport;
+		Configure_.useThreadToDoReport = useThreadToDoReport;
 	}
 
 	public static String HttpsRequestClassName = "com.tencent.common.HttpsRequest";
 
 	public static void setKey(String key) {
-		Configure.key = key;
+		Configure_.key = key;
 	}
 
 	public static void setAppID(String appID) {
-		Configure.appID = appID;
+		Configure_.appID = appID;
 	}
 
 	public static void setMchID(String mchID) {
-		Configure.mchID = mchID;
+		Configure_.mchID = mchID;
 	}
 
 	public static void setSubMchID(String subMchID) {
-		Configure.subMchID = subMchID;
+		Configure_.subMchID = subMchID;
 	}
 
 	public static void setCertLocalPath(String certLocalPath) {
-		Configure.certLocalPath = certLocalPath;
+		Configure_.certLocalPath = certLocalPath;
 	}
 
 	public static void setCertPassword(String certPassword) {
-		Configure.certPassword = certPassword;
+		Configure_.certPassword = certPassword;
 	}
 
 	public static void setIp(String ip) {
-		Configure.ip = ip;
+		Configure_.ip = ip;
 	}
 
 	public static String getKey() {

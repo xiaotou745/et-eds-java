@@ -1,6 +1,6 @@
 package com.tencent.service;
 
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.common.HttpsRequest;
 import com.tencent.common.RandomStringGenerator;
 import com.tencent.common.Signature;
@@ -14,7 +14,7 @@ import com.tencent.protocol.refund_protocol.RefundReqData;
 public class RefundService extends BaseService{
 
     public RefundService() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        super(Configure.REFUND_API);
+        super(Configure_.REFUND_API);
     }
 
     /**

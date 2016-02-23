@@ -1,7 +1,7 @@
 package com.tencent.business;
 
 import com.tencent.WXPay;
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.common.Log;
 import com.tencent.common.Util;
 import com.tencent.common.report.ReporterFactory;
@@ -113,7 +113,7 @@ public class DownloadBillBusiness {
 
             ReportReqData reportReqData = new ReportReqData(
                     downloadBillReqData.getDevice_info(),
-                    Configure.DOWNLOAD_BILL_API,
+                    Configure_.DOWNLOAD_BILL_API,
                     (int) (totalTimeCost),//本次请求耗时
                     returnCode,
                     returnMsg,
@@ -121,11 +121,11 @@ public class DownloadBillBusiness {
                     "",
                     "",
                     "",
-                    Configure.getIP()
+                    Configure_.getIP()
             );
 
             long timeAfterReport;
-            if(Configure.isUseThreadToDoReport()){
+            if(Configure_.isUseThreadToDoReport()){
                 ReporterFactory.getReporter(reportReqData).run();
                 timeAfterReport = System.currentTimeMillis();
                 Util.log("pay+report总耗时（异步方式上报）："+(timeAfterReport-costTimeStart) + "ms");

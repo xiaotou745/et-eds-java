@@ -35,19 +35,19 @@ public interface IWxService {
 	 * */
 	@POST
 	@Path("/query")
-	public void Query(String out_trade_no) throws Exception;
+	public void Query(String out_trade_no,int platform) throws Exception;
 
 	/**
 	 * 退款
 	 * */
 	@POST
 	@Path("refund")
-	public void Refund(RefundReqData model) throws Exception;
+	public void Refund(RefundReqData model,int platform) throws Exception;
 
 	/**
 	 * 关闭订单
 	 * */
 	@POST
 	@Path("close")
-	public String Close(String out_trade_no) throws Exception;
+	public String Close(String out_trade_no,int platform) throws Exception;
 }

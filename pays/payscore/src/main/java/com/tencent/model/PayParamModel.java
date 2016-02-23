@@ -6,7 +6,14 @@ public class PayParamModel {
 	private String body;
 	private String notify;
 	private int platform;
+	private String attach;
 	
+	public String getAttach() {
+		return attach;
+	}
+	public void setAttach(String attach) {
+		this.attach = attach;
+	}
 	public String getOrder_no() {
 		return order_no;
 	}

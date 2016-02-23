@@ -1,6 +1,6 @@
 package com.tencent.service;
 
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.common.HttpsRequest;
 import com.tencent.common.RandomStringGenerator;
 import com.tencent.common.Signature;
@@ -15,7 +15,7 @@ import com.tencent.protocol.pay_query_protocol.ScanPayQueryReqData;
 public class ScanPayQueryService extends BaseService{
 
     public ScanPayQueryService() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        super(Configure.PAY_QUERY_API);
+        super(Configure_.PAY_QUERY_API);
     }
 
     /**

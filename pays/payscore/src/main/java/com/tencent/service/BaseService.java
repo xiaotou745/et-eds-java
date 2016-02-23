@@ -1,6 +1,6 @@
 package com.tencent.service;
 
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -24,7 +24,7 @@ public class BaseService{
 
     public BaseService(String api) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         apiURL = api;
-        Class c = Class.forName(Configure.HttpsRequestClassName);
+        Class c = Class.forName(Configure_.HttpsRequestClassName);
         serviceRequest = (IServiceRequest) c.newInstance();
     }
 
