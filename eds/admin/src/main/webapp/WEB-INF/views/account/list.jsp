@@ -171,7 +171,7 @@ var jss={
 			$("#selAcountType").val(1);
 			$("#divcity").hide();
 			$("#divdc").hide();
-		    $("#radyes").attr("checked","checked");
+		    $("#radyes").prop("checked",true);
 		    $("input[name='checkDeliveryCompany']").each(function() {
 		        $(this).prop("checked", false);
 		    });

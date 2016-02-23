@@ -200,7 +200,7 @@
 		$("#editTagName").val(''); 
 		$("#editTagType").val(0);
 		$("#editRemark").val('');
-        $("#rIsEnableY").attr("checked", "checked");
+        $("#rIsEnableY").prop("checked", true);
 		$("#hdOperateType").val(0);
 		$("#editTip").html("添加标签");
 		$('#showEditTag').modal('show');

@@ -105,6 +105,11 @@ public class ServiceControler {
 			return quartzService.insert(record);
 		}
 	}
+	@ResponseBody
+	@RequestMapping(value="del")
+	public int deleteService(long id) {
+		return quartzService.delete(id);
+	}
 	/**
 	 * qutartzservice调用的获取已启动的服务列表
 	 * @author hailongzhao
