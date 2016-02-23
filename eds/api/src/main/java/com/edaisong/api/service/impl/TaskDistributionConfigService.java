@@ -60,7 +60,7 @@ public class TaskDistributionConfigService implements
 		if(req!=null)
 		{
 			BusinessModel businessModel = businessDao.getBusiness((long) req.getBusinessId());
-			taskDistributionId=businessModel.getSetpChargeId();
+			taskDistributionId=businessModel.getTaskDistributionId();
 			if(taskDistributionId==0)
 				taskDistributionId=1;		
 		}	

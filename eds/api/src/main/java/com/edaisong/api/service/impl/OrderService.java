@@ -2193,7 +2193,7 @@ public class OrderService implements IOrderService {
 			resp.setMessage(FlashPushOrderEnum.BusinessIsEnableErr.desc());
 			return resp;	
 		}
-		int taskDistributionid= businessModel.getSetpChargeId();
+		int taskDistributionid= businessModel.getTaskDistributionId();
 		if(taskDistributionid==0)
 			taskDistributionid=1;
 		TaskDistributionConfig recordConfig=new TaskDistributionConfig();

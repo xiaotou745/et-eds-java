@@ -18,6 +18,27 @@ public class GroupBusinessRelationModel extends GroupBusinessRelation{
 	private String phoneNo;
 	private double balancePrice;
 	private double useGroupMoney;//消费集团金额
+	private String phoneNo2;
+	private String landline;
+	private String address;
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getPhoneNo2() {
+		return phoneNo2;
+	}
+	public void setPhoneNo2(String phoneNo2) {
+		this.phoneNo2 = phoneNo2;
+	}
+	public String getLandline() {
+		return landline;
+	}
+	public void setLandline(String landline) {
+		this.landline = landline;
+	}
 	public String getGroupName() {
 		return groupName;
 	}

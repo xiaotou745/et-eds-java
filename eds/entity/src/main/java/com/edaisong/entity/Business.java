@@ -101,13 +101,13 @@ public class Business implements Serializable{
     
     private Integer isenable; 
     
-    public int getSetpChargeId() {
-		return SetpChargeId;
-	}
-
-	public void setSetpChargeId(int setpChargeId) {
-		SetpChargeId = setpChargeId;
-	}
+//    public int getSetpChargeId() {
+//		return SetpChargeId;
+//	}
+//
+//	public void setSetpChargeId(int setpChargeId) {
+//		SetpChargeId = setpChargeId;
+//	}
 
 	public int getReceivableType() {
 		return ReceivableType;
@@ -117,9 +117,19 @@ public class Business implements Serializable{
 		ReceivableType = receivableType;
 	}
 
-	private int SetpChargeId;
+	//private int SetpChargeId;
     
     private int ReceivableType;
+    
+    private int TaskDistributionId;
+
+	public int getTaskDistributionId() {
+		return TaskDistributionId;
+	}
+
+	public void setTaskDistributionId(int taskDistributionId) {
+		TaskDistributionId = taskDistributionId;
+	}
 
 	public Integer getIsenable() {
 		return isenable;
