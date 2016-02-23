@@ -22,6 +22,7 @@ import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.ExportShanSongOrder;
+import com.edaisong.entity.domain.GroupTodayStatistics;
 import com.edaisong.entity.domain.OrderDetailBusiness;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -551,5 +552,58 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		PagedResponse<QueryOrder> result=  getReadOnlySqlSessionUtil().selectPageList(
 				"IOrderDao.shanSongQueryOrderB", query);
 		return result.getResultList();
+	}
+
+	 /**
+	  * 集团首页  当前余额 今日消费 今日营业额
+	  * @author CaoHeYang 
+	  * @param groupId  集团id
+	  * @date  20160223
+	  * @return
+	  */
+	@Override
+	public GroupTodayStatistics groupTodayStatistics(int groupId) {
+		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.groupTodayStatistics",groupId);
+	}
+
+	/**
+	 * 订单数量统计
+	 * 
+	 * @author CaoHeYang
+	 * @param businessId
+	 *            商户id
+	 * @param businessGroupId
+	 *            集团id
+	 * @date 20160223
+	 * @return
+	 */
+	@Override
+	public BusinessOrderSummaryModel groupTodayOrderStatistics(
+			Integer businessId, Integer groupBusinessId) {
+		Map<String, Object> paramMap = new HashedMap();
+		paramMap.put("businessId", businessId);
+		paramMap.put("groupBusinessId", groupBusinessId);
+		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.groupTodayOrderStatistics",paramMap);
+	}
+
+
+	/**
+	 * 集团首页 按小时统计
+	 * 
+	 * @author CaoHeYang
+	 * @param businessId
+	 *            商户id
+	 * @param groupBusinessId
+	 *            集团id
+	 * @date 20160223
+	 * @return
+	 */
+	@Override
+	public List<BusiPubOrderTimeStatisticsModel> groupTodayOrderStatisticsReport(
+			Integer businessId, Integer groupBusinessId) {
+		Map<String, Object> paramMap = new HashedMap();
+		paramMap.put("businessId", businessId);
+		paramMap.put("groupBusinessId", groupBusinessId);
+		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.groupTodayOrderStatisticsReport",paramMap);
 	}
 }

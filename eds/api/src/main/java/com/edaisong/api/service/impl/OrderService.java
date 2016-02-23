@@ -110,6 +110,7 @@ import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.ExportShanSongOrder;
+import com.edaisong.entity.domain.GroupTodayStatistics;
 import com.edaisong.entity.domain.InStoreOrderRegionInfo;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderCommission; 
@@ -3288,4 +3289,50 @@ public class OrderService implements IOrderService {
 		order.setIsreceivecode(1);
 		return orderDao.updateByPrimaryKeySelective(order);
 	}
+
+	 /**
+	  * 集团首页  当前余额 今日消费 今日营业额
+	  * @author CaoHeYang 
+	  * @param groupId  集团id
+	  * @date  20160223
+	  * @return
+	  */
+	@Override
+	public GroupTodayStatistics groupTodayStatistics(int groupId) {
+		return orderDao.groupTodayStatistics(groupId);
+	}
+	
+
+	 /**
+	  *  订单数量统计
+	  * @author CaoHeYang 
+	  * @param businessId  商户id
+	  * @param groupBusinessId  集团id
+	  * @date  20160223
+	  * @return
+	  */
+	@Override
+	public BusinessOrderSummaryModel groupTodayOrderStatistics(
+			Integer businessId, Integer groupBusinessId) {
+		return orderDao.groupTodayOrderStatistics(businessId,groupBusinessId);
+	}
+
+	/**
+	 * 集团首页 按小时统计
+	 * 
+	 * @author CaoHeYang
+	 * @param businessId
+	 *            商户id
+	 * @param groupBusinessId
+	 *            集团id
+	 * @date 20160223
+	 * @return
+	 */
+	@Override
+	public List<BusiPubOrderTimeStatisticsModel> groupTodayOrderStatisticsReport(
+			Integer businessId, Integer groupBusinessId) {
+		return orderDao.groupTodayOrderStatisticsReport(businessId,groupBusinessId);
+	}
+	
+	
 }

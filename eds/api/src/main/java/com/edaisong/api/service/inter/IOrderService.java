@@ -10,8 +10,9 @@ import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.BusTaskList;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
-import com.edaisong.entity.domain.ExportOrder; 
+import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.ExportShanSongOrder;
+import com.edaisong.entity.domain.GroupTodayStatistics;
 import com.edaisong.entity.domain.InStoreTask;
 import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.OrderMapDetail;
@@ -24,7 +25,7 @@ import com.edaisong.entity.req.GetPushClienterIdsReq;
 import com.edaisong.entity.req.OptOrder;
 import com.edaisong.entity.req.CancelOrderBusinessReq;
 import com.edaisong.entity.req.OrderBlancePayReq;
-import com.edaisong.entity.req.OrderDetailBusinessReq; 
+import com.edaisong.entity.req.OrderDetailBusinessReq;
 import com.edaisong.entity.req.OrderDetailReq;
 import com.edaisong.entity.req.OrderDraftReq;
 import com.edaisong.entity.req.OrderDraftReturnReq;
@@ -52,11 +53,12 @@ import com.edaisong.entity.resp.QueryOrderCResp;
 public interface IOrderService {
 	/**
 	 * 根据id查询订单数据
+	 * 
 	 * @param id
 	 * @return
 	 */
-	Order selectByPrimaryKey(int id); 
-	
+	Order selectByPrimaryKey(int id);
+
 	/**
 	 * 后台订单列表页面
 	 * 
@@ -67,7 +69,7 @@ public interface IOrderService {
 	 * @return
 	 */
 	PagedResponse<OrderListModel> getOrders(PagedOrderSearchReq search);
-	
+
 	/**
 	 * 集团中心订单列表页面
 	 * 
@@ -78,6 +80,7 @@ public interface IOrderService {
 	 * @return
 	 */
 	PagedResponse<OrderListModel> getGroupOrders(PagedOrderSearchReq search);
+
 	/**
 	 * 集团中心订单列表页面 导出
 	 * 
@@ -87,8 +90,8 @@ public interface IOrderService {
 	 *            查询条件实体
 	 * @return
 	 */
-	List<OrderListModel>  exportGroupOrders(PagedOrderSearchReq search);
-	
+	List<OrderListModel> exportGroupOrders(PagedOrderSearchReq search);
+
 	/**
 	 * 导出订单
 	 * 
@@ -166,7 +169,7 @@ public interface IOrderService {
 	 * @return
 	 */
 	OrderResp AddOrder(OrderReq req);
-	
+
 	/**
 	 * 发布订单 api调用
 	 * 
@@ -177,11 +180,10 @@ public interface IOrderService {
 	 * @return
 	 */
 	HttpResultModel<OrderResp> PushOrder(OrderReq req);
-	
-	
+
 	// region 闪送模式
 	/**
-	 * 发布订单 api调用 闪送模式 
+	 * 发布订单 api调用 闪送模式
 	 * 
 	 * @param req
 	 *            参数
@@ -190,9 +192,9 @@ public interface IOrderService {
 	 * @return
 	 */
 	HttpResultModel<OrderResp> FlashPushOrder(OrderDraftReq req);
-	
+
 	/**
-	 * 余额支付 闪送模式 
+	 * 余额支付 闪送模式
 	 * 
 	 * @param req
 	 *            参数
@@ -201,9 +203,9 @@ public interface IOrderService {
 	 * @return
 	 */
 	HttpResultModel<OrderBlancePayResp> OrderBalancePay(OrderBlancePayReq req);
-	
+
 	/**
-	 * 获取订单详情  闪送模式 api
+	 * 获取订单详情 闪送模式 api
 	 * 
 	 * @param req
 	 *            参数
@@ -212,9 +214,9 @@ public interface IOrderService {
 	 * @return
 	 */
 	HttpResultModel<OrderDetailResp> GetOrderDetails(OrderDetailReq req);
-	
+
 	/**
-	 * 获取订单状态  闪送模式 api
+	 * 获取订单状态 闪送模式 api
 	 * 
 	 * @param req
 	 *            参数
@@ -223,7 +225,8 @@ public interface IOrderService {
 	 * @return
 	 */
 	HttpResultModel<OrderStatusResp> GetOrderStatus(OrderIdReq req);
-	// endregion 
+
+	// endregion
 
 	/**
 	 * 商户发单，点击按纽钱查询商户余额信息，以及该订单的结算信息
@@ -277,60 +280,70 @@ public interface IOrderService {
 	 * @return
 	 */
 	ResponseBase auditOk(OptOrder auditOkOrder);
+
 	/**
 	 * 订单审核拒绝
+	 * 
 	 * @param auditRefuseOrder
 	 * @author CaoHeYang
 	 * @date 20150831
 	 * @return
 	 */
 	ResponseBase auditRefuse(OptOrder auditRefuseOrder);
-	
+
 	/**
 	 * B端任务统计接口
+	 * 
 	 * @author CaoHeYang
 	 * @date 20150910
-	 * @param data 
+	 * @param data
 	 * @return
 	 */
-	HttpResultModel<OrderStatisticsBResp> getOrderStatisticsB(OrderStatisticsBReq orderStatisticsBReq);
-    /**
-     * C端任务统计接口
-     * @author WangXuDan
-     * @date 20150910
-     * @param orderStatisticsCReq
-     */
-    OrderStatisticsCResp getOrderStatisticsC(OrderStatisticsCReq orderStatisticsCReq);
+	HttpResultModel<OrderStatisticsBResp> getOrderStatisticsB(
+			OrderStatisticsBReq orderStatisticsBReq);
+
+	/**
+	 * C端任务统计接口
+	 * 
+	 * @author WangXuDan
+	 * @date 20150910
+	 * @param orderStatisticsCReq
+	 */
+	OrderStatisticsCResp getOrderStatisticsC(
+			OrderStatisticsCReq orderStatisticsCReq);
 
 	/**
 	 * B 端首页 订单列表
+	 * 
 	 * @author CaoHeYang
 	 * @date 20150910
-	 * @param data 
+	 * @param data
 	 * @return
 	 */
-    HttpResultModel< QueryOrderBResp> queryOrderB(QueryOrderReq query) ;
-    
-    /**
+	HttpResultModel<QueryOrderBResp> queryOrderB(QueryOrderReq query);
+
+	/**
 	 * C 端我的任务
 	 * 
 	 * @author CaoHeYang
 	 * @date 20150911
 	 * @param para
 	 */
-    HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq query );
-    
-    /**
-     * B端已完成任务列表或者配送员配送列表
-     * @author CaoHeYang
-     * @date 20150910
-     * @param query
-     * @type  0 B端 1 C端
-     * @return
-     */
-    HttpResultModel<List<QueryOrder>> getCompliteOrder(QueryOrderReq query,int type);
-    
-    /**
+	HttpResultModel<QueryOrderCResp> queryOrderC(QueryOrderReq query);
+
+	/**
+	 * B端已完成任务列表或者配送员配送列表
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param query
+	 * @type 0 B端 1 C端
+	 * @return
+	 */
+	HttpResultModel<List<QueryOrder>> getCompliteOrder(QueryOrderReq query,
+			int type);
+
+	/**
 	 * 门店审核列表
 	 * 
 	 * @author 茹化肖
@@ -340,56 +353,66 @@ public interface IOrderService {
 	 * @return
 	 */
 	PagedResponse<BusTaskList> busTaskList(PagedBusTaskListReq req);
+
 	/**
 	 * 获取商家的今日订单的区域统计数据
+	 * 
 	 * @date 20151030
 	 * @author hailongzhao
 	 * @param businessId
 	 * @return
 	 */
-	List<RegionOrderTotal> queryTodayOrderTotal(Long businessId) ;
+	List<RegionOrderTotal> queryTodayOrderTotal(Long businessId);
+
 	/**
 	 * 获取商家的今日订单的区域统计详细数据
+	 * 
 	 * @date 20151030
 	 * @author hailongzhao
 	 * @param businessId
 	 * @return
 	 */
-	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId) ;	
+	List<RegionOrderDetail> queryTodayOrderDetail(Long businessId);
+
 	/**
-	 *  骑士端获取店内任务
-	 * @version 3.0  
+	 * 骑士端获取店内任务
+	 * 
+	 * @version 3.0
 	 * @author CaoHeYang
 	 * @date 20151030
 	 * @param para
 	 * @return
 	 */
-	List<InStoreTask>  getInStoreTask(InStoreTaskReq para);
+	List<InStoreTask> getInStoreTask(InStoreTaskReq para);
+
 	/**
 	 * 获取指定区域下今日未完成的订单数量
+	 * 
 	 * @date 20151030
 	 * @author hailongzhao
 	 * @param regionId
 	 * @return
 	 */
-	Long queryIngOrderByRegionId(Long regionId) ;
+	Long queryIngOrderByRegionId(Long regionId);
+
 	/**
-	 * C端任务统计接口 
+	 * C端任务统计接口
+	 * 
 	 * @author wangchao
 	 * @param data
 	 */
 	OrderStatisticsCResp getOrderGrabStatisticsC(
 			OrderStatisticsCReq orderStatisticsCReq);
+
 	/*
-	 * B端任务统计
-	 * wangchao
+	 * B端任务统计 wangchao
 	 */
 	HttpResultModel<OrderStatisticsBResp> getOrderGrabStatisticsB(
 			OrderStatisticsBReq para);
 
-	HttpResultModel<List<QueryOrder>> getCompliteOrderGrab(QueryOrderReq query,int type);
-	
-	
+	HttpResultModel<List<QueryOrder>> getCompliteOrderGrab(QueryOrderReq query,
+			int type);
+
 	/**
 	 * 后台E单订单列表页面
 	 * 
@@ -399,7 +422,9 @@ public interface IOrderService {
 	 *            查询条件实体
 	 * @return
 	 */
-	PagedResponse<ShanSongOrderListModel> getShanSongOrders(PagedOrderSearchReq search);
+	PagedResponse<ShanSongOrderListModel> getShanSongOrders(
+			PagedOrderSearchReq search);
+
 	/**
 	 * 导出订单
 	 * 
@@ -410,72 +435,120 @@ public interface IOrderService {
 	 * @return
 	 */
 
-	 List<ExportShanSongOrder> exportShanSongOrder(PagedOrderSearchReq search); 
-	 
-		/**
-		 * 根据订单号/订单id查订单信息
-		 * 
-		 * @author CaoHeYang
-		 * @param ordernNo
-		 *            订单号
-		 * @param orderId
-		 *            订单id
-		 * @Date 20150827
-		 * @return
-		 */
-	   ShanSongOrderListModel getShanSongOrderByNo(String ordernNo);
-		/**
-		 * 闪送管理后台取消订单
-		 * 
-		 * @author CaoHeYang
-		 * @param auditOkOrde
-		 * @date 20151126
-		 * @return
-		 */
-		ResponseBase shanSongCancelOrder(OptOrder cancelOrder);
-		
-		/**
-		 * B 端首页 闪送订单列表
-		 * @author CaoHeYang
-		 * @date 20150910
-		 * @param data 
-		 * @return
-		 */
-	    HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(QueryShanSongOrderReq query) ;
-	    
-	    /**
-	     * 里程计算 推单   新订单
-	     * @author CaoHeYang
-	     * @date 20160104
-	     * @param req
-	     * @param orderId
-	     * @return
-	     */
-	    Boolean shanSongPushOrder(GetPushClienterIdsReq req,int orderId);
-	    /**
-	     * 里程计算 推单   订单已被处理
-	     * @author CaoHeYang
-	     * @date 20160104
-	     * @param orderId
-	     * @return
-	     */
-	    Boolean shanSongPushOrder(Long orderId);
-		/**
-		 * 异步里程计算 推单  (处理订单) 
-		 * @author CaoHeYang
-		 * @date 20150105
-		 * @param orderId
-		 */
-		 void asyncShanSongPushOrder(Long orderId);
-	    /**
-		 *  异步里程计算 推单  (新订单) 
-		 *  @author CaoHeYang
-		 *  @date 20150105
-		 * @param req
-		 * @param orderId
-		 */
-		 void asyncShanSongPushOrder(GetPushClienterIdsReq req,int orderId);
-		 
-		 public int updateIsReceiveCode(int id);
-}
+	List<ExportShanSongOrder> exportShanSongOrder(PagedOrderSearchReq search);
 
+	/**
+	 * 根据订单号/订单id查订单信息
+	 * 
+	 * @author CaoHeYang
+	 * @param ordernNo
+	 *            订单号
+	 * @param orderId
+	 *            订单id
+	 * @Date 20150827
+	 * @return
+	 */
+	ShanSongOrderListModel getShanSongOrderByNo(String ordernNo);
+
+	/**
+	 * 闪送管理后台取消订单
+	 * 
+	 * @author CaoHeYang
+	 * @param auditOkOrde
+	 * @date 20151126
+	 * @return
+	 */
+	ResponseBase shanSongCancelOrder(OptOrder cancelOrder);
+
+	/**
+	 * B 端首页 闪送订单列表
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150910
+	 * @param data
+	 * @return
+	 */
+	HttpResultModel<QueryOrderBResp> shanSongQueryOrderB(
+			QueryShanSongOrderReq query);
+
+	/**
+	 * 里程计算 推单 新订单
+	 * 
+	 * @author CaoHeYang
+	 * @date 20160104
+	 * @param req
+	 * @param orderId
+	 * @return
+	 */
+	Boolean shanSongPushOrder(GetPushClienterIdsReq req, int orderId);
+
+	/**
+	 * 里程计算 推单 订单已被处理
+	 * 
+	 * @author CaoHeYang
+	 * @date 20160104
+	 * @param orderId
+	 * @return
+	 */
+	Boolean shanSongPushOrder(Long orderId);
+
+	/**
+	 * 异步里程计算 推单 (处理订单)
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150105
+	 * @param orderId
+	 */
+	void asyncShanSongPushOrder(Long orderId);
+
+	/**
+	 * 异步里程计算 推单 (新订单)
+	 * 
+	 * @author CaoHeYang
+	 * @date 20150105
+	 * @param req
+	 * @param orderId
+	 */
+	void asyncShanSongPushOrder(GetPushClienterIdsReq req, int orderId);
+
+	public int updateIsReceiveCode(int id);
+
+	/**
+	 * 集团首页 当前余额 今日消费 今日营业额
+	 * 
+	 * @author CaoHeYang
+	 * @param groupId
+	 *            集团id
+	 * @date 20160223
+	 * @return
+	 */
+	public GroupTodayStatistics groupTodayStatistics(int groupId);
+
+	/**
+	 * 集团首页 订单数量统计
+	 * 
+	 * @author CaoHeYang
+	 * @param businessId
+	 *            商户id
+	 * @param groupBusinessId
+	 *            集团id
+	 * @date 20160223
+	 * @return
+	 */
+	public BusinessOrderSummaryModel groupTodayOrderStatistics(
+			Integer businessId, Integer groupBusinessId);
+
+	/**
+	 * 集团首页 按小时统计
+	 * 
+	 * @author CaoHeYang
+	 * @param businessId
+	 *            商户id
+	 * @param groupBusinessId
+	 *            集团id
+	 * @date 20160223
+	 * @return
+	 */
+	List<BusiPubOrderTimeStatisticsModel> groupTodayOrderStatisticsReport(
+			Integer businessId, Integer groupBusinessId);
+}
