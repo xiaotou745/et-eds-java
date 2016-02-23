@@ -436,17 +436,12 @@
 								"orderNo":orderNo
 							},
 							success : function(result) {
-								if (result.responseCode==0) {		
-									layer.alert(result.message, {
-									    icon: 1
-									},function(){
-										window.location.reload();
-									});
+								if (result.responseCode==0||result.responseCode=='0') {		
+									window.location.href=window.location.href;
+	
 								}else
 								{
-									layer.alert(result.message, {
-									    icon: 2
-							    	});
+									alert(result.message);
 								}
 							}
 			 });
@@ -473,7 +468,7 @@
 					layer.alert('审核成功！', {
 					    icon: 1
 					},function(){
-						window.location.reload();
+						window.location.href=window.location.href;
 					});
 				} else {
 					layer.alert(result.message, {

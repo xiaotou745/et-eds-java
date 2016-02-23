@@ -1056,6 +1056,7 @@
 		parameterType="java.util.Map">
 		SELECT top 1 o.[Id]
 		,o.[OrderNo]
+		,o.[Platform]
 		,o.[PickUpAddress]
 		,o.PubDate
 		,o.[ReceviceName]
@@ -2067,13 +2068,14 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 	<!-- 后台订单列表页面 查询列集来源 add by caoheyang 20160222 -->
 	<sql id="getGroupOrdersFrom">
 		[order] o with ( nolock )
+		join dbo.OrderOther oo with ( nolock ) on o.Id = oo.OrderId
 		left join clienter c with ( nolock ) on c.Id = o.clienterId
 		join business b with ( nolock ) on b.Id = o.businessId  
 		left join BusinessBalanceRecord d  with ( nolock ) on o.id = d.WithwardId and d.RecordType=1
 	</sql>
 	<!-- 集团中心订单列表页面  动态查询条件 add by caoheyang 20160222 -->
 	<sql id="getGroupOrdersColumsWhere">
-		1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} 
+		1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} and (o.OrderFrom=0 or o.OrderFrom=99)
 		<if test="businessName != null and businessName != ''">
 			and b.Name=''${businessName}''
 		</if>
@@ -2144,8 +2146,8 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 	 	left join clienter c with ( nolock ) on c.Id = o.clienterId
 		join business b with ( nolock ) on b.Id = o.businessId  
 		left join BusinessBalanceRecord d  with ( nolock ) on o.id = d.WithwardId and d.RecordType=1
-	where  
-	 1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} 
+	 where  
+	 1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} and (o.OrderFrom=0 or o.OrderFrom=99)
 		<if test="businessName != null and businessName != ''">
 			and b.Name='${businessName}'
 		</if>
@@ -2169,5 +2171,6 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 				#{item}
 			</foreach>
 		</if>
+		 order by o.Status ASC,o.Id DESC 
 	</select>
 </mapper>

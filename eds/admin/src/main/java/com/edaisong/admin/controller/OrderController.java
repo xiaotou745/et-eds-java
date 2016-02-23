@@ -184,8 +184,11 @@ public class OrderController {
 	  private boolean isShowAuditBtn(OrderListModel orderModel)
       {
           //只有在已完成订单并且已上传完小票的情况下显示该按钮
-          if (orderModel != null && /*已完成*/ orderModel.getFinishAll() == 1 && /*订单未分账*/ orderModel.getIsJoinWithdraw() == 0
-              && orderModel.getIsEnable() == 1)
+          if (orderModel != null && /*已完成*/ 
+        	  orderModel.getFinishAll() == 1 && /*订单未分账*/ 
+        	  orderModel.getIsJoinWithdraw() == 0
+              && orderModel.getIsEnable() == 1
+              &&orderModel.getPlatform()!=3)//非闪送
           {
               return true;
           }
