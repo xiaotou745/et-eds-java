@@ -275,7 +275,15 @@ public class AdminToolsController {
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "导出数据管理");
 		view.addObject("viewPath", "admintools/export");
-		view.addObject("appNameList", toolsHelper.getAppNameList(ServerType.SqlServer,null));
+		//目前只有superman支持导出数据
+		List<AppDbConfig> appConfig = toolsHelper.getAppConfigList(ServerType.SqlServer, null);
+		List<String> appNameList = appConfig
+				.stream()
+				.filter(m -> m.getConfigvalue().toLowerCase()
+						.indexOf("superman") > 0).map(t -> t.getAppname())
+				.distinct().collect(Collectors.toList());
+		view.addObject("appNameList", appNameList);
+		//view.addObject("appNameList", toolsHelper.getAppNameList(ServerType.SqlServer,null));
 		return view;
 	}
 	@RequestMapping("exportinsert")
@@ -313,9 +321,6 @@ public class AdminToolsController {
 		ModelAndView view = new ModelAndView("admintools/exportdo");
 		List<AppDbConfig> appConfig=toolsHelper.getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
 		if (appConfig.size()>0) {
-			if (appConfig.get(0).getConfigvalue().toLowerCase().indexOf("superman")<=0) {
-				return null;
-			}
 			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
 			PagedResponse<ExportSqlManage> resp= MybatisUtil.getSqlSessionUtil(conInfo).selectPageList("IExportSqlManageDao.query",req);
 			view.addObject("listData", resp);
