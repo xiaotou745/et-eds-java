@@ -13,6 +13,7 @@ package com.edaisong.toolsapi.common;
 
 import java.util.Date;
 
+import org.quartz.CronExpression;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -302,15 +303,16 @@ public class QuartzManager {
 	 * @date 20151211   
 	 * @return      
 	 */     
-	public static boolean isValidExpression(final String cronExpression){         
-        try {     
-    		CronTrigger trigger=new CronTrigger("testname","testgroup");
-    		trigger.setCronExpression(cronExpression);// 触发器时间设定    
-			Date date = trigger.computeFirstFireTime(null);      
-	        return date != null && date.after(new Date());        
-		} catch (Exception e) { 
-		}      
-        return false;     
+	public static boolean isValidExpression(final String cronExpression){   
+		return CronExpression.isValidExpression(cronExpression);
+//        try {     
+//    		CronTrigger trigger=new CronTrigger("testname","testgroup");
+//    		trigger.setCronExpression(cronExpression);// 触发器时间设定    
+//			Date date = trigger.computeFirstFireTime(null);      
+//	        return date != null && date.after(new Date());        
+//		} catch (Exception e) { 
+//		}      
+//        return false;     
 	}  
 	/**     
 	 * 获取cron表达式的下次执行时间
@@ -319,7 +321,7 @@ public class QuartzManager {
 	 * @date 20151211   
 	 * @return      
 	 */     
-	public static Date getFirstFireTime(final String cronExpression){         
+	public static Date getFirstFireTime(final String cronExpression){     
         try {     
     		CronTrigger trigger=new CronTrigger("testname","testgroup");
     		trigger.setCronExpression(cronExpression);// 触发器时间设定    

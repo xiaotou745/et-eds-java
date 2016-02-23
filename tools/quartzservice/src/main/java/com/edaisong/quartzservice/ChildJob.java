@@ -2,6 +2,7 @@ package com.edaisong.quartzservice;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
+import org.quartz.impl.JobDetailImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ public class ChildJob implements Job {
 	 */
 	@Override
 	public void execute(JobExecutionContext context) {
-		String reqUrl = context.getJobDetail().getName();
+		String reqUrl = ((JobDetailImpl)context.getJobDetail()).getName();
 		try {
 			String result = HttpUtil.sendPost(reqUrl, "","application/json; charset=utf-8");
 			log.info(reqUrl+"执行的结果:"+result);
