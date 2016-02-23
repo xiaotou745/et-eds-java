@@ -2183,4 +2183,51 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 		</if>
 		 order by o.Status ASC,o.Id DESC 
 	</select>
+<!-- 集团首页  add by caoheyang 20160223 -->
+	<select id="groupTodayStatistics" resultType="com.edaisong.entity.domain.GroupTodayStatistics"
+	parameterType="java.lang.Integer">
+declare @balancePrice NUMERIC(18,2); --集团当前余额
+declare @todayPay NUMERIC(18,2); --集团今日支出金额
+declare @todayDishTotal NUMERIC(18,2); --今日使用集团余额产生的餐品金额
+set @balancePrice=0.00;
+set @todayPay=0.00;
+set @todayDishTotal=0.00;
+select @balancePrice=ISNULL(Amount,0) from dbo.GroupBusiness (nolock) where Id=#{groupId}; -- 集团当前余额
+select @todayPay=-ISNULL(SUM(a.Amount),0),@todayDishTotal=ISNULL(SUM(b.Amount),0) from dbo.BusinessBalanceRecord (nolock) a
+join dbo.[order] (nolock) b on  a.WithwardId=b.Id and a.RecordType=1 and a.Status=1   and
+a.GroupId= #{groupId} and CONVERT(varchar(100), a.OperateTime, 23)=CONVERT(varchar(100), GETDATE(), 23)
+select @balancePrice as balancePrice,@todayPay as todayPay,@todayDishTotal as todayDishTotal
+	</select>
+  <!-- 集团首页 订单数量 统计  caoheyang 20160223-->
+  <select id="groupTodayOrderStatistics" resultMap="businessOrderSummaryResultMap"
+	parameterType="java.util.Map">
+		SELECT ISNULL(sum(CASE WHEN [Status]=1 THEN 1 ELSE 0 end),0)  AS 'finish',
+		ISNULL(sum(CASE WHEN [Status]=2 THEN 1 ELSE 0 end),0) AS 'received', --待抢单
+		ISNULL(sum(CASE WHEN [Status]=3 THEN 1 ELSE 0 end),0) AS 'cancel', --已完成
+		ISNULL(sum(CASE WHEN [Status]=4 THEN 1 ELSE 0 end),0) AS 'pickUp', --已取消
+		ISNULL(sum(CASE WHEN [Status]=0 THEN 1 ELSE 0 end),0) AS 'unReceive'--配送中
+		FROM dbo.[order] (NOLOCK)
+		 where 1=1 and  CONVERT(varchar(100), PubDate, 23)=CONVERT(varchar(100), GETDATE(), 23)
+		<if test="businessId != null and businessId!=0">
+		 and  businessId=#{businessId} 
+		</if>
+	    <if test="groupBusinessId != null and groupBusinessId!=0">
+		 and  GroupBusinessId=#{groupBusinessId} 
+		</if>
+   	</select>	
+   	  <!--集团首页 订单数量 统计 按小时统计  caoheyang 20160223-->
+   	 <select id="groupTodayOrderStatisticsReport" resultMap="busiPubOrderTimeStatisticsResultMap"
+		parameterType="java.util.Map">
+		SELECT SUM(OrderCount) as pubCount, DATENAME(HOUR,o.PubDate) AS hour,status
+		FROM dbo.[order] (NOLOCK) o
+		WHERE 1=1 AND
+		CONVERT(varchar(100), PubDate, 23)=CONVERT(varchar(100), GETDATE(), 23)
+	    <if test="businessId != null and businessId!=0">
+		 and  businessId=#{businessId} 
+		</if>
+	    <if test="groupBusinessId != null and groupBusinessId!=0">
+		 and  GroupBusinessId=#{groupBusinessId} 
+		</if>
+		GROUP BY status,DATENAME(HOUR,o.PubDate) ORDER BY hour;
+	</select>
 </mapper>
