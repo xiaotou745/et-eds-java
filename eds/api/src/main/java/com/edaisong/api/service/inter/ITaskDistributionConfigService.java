@@ -6,6 +6,7 @@ import com.edaisong.entity.OrderTip;
 import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.PagedOrderTipReq;
 import com.edaisong.entity.req.PagedTaskDistributionConfigReq;
 import com.edaisong.entity.req.TaskDistributionConfigReq;
@@ -33,7 +34,7 @@ public interface ITaskDistributionConfigService {
 	* @date 2015年11月26日 09:54:08
 	* 获取普通任务配送费配置
 	* */
-	HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig();
+	HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig(BusinessReq req);
 	
 	
 	PagedResponse<TaskDistributionConfig> query(PagedTaskDistributionConfigReq req);

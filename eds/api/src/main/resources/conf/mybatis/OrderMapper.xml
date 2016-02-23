@@ -878,7 +878,7 @@
 		o.[ReceviceLongitude] , o.[ReceviceLatitude] , o.[OrderFrom] ,
 		o.[OriginalOrderId] ,o.[OriginalOrderNo] , o.[Quantity] ,o.[Weight] ,
 		o.[ReceiveProvince] , o.[ReceiveArea] , o.[ReceiveProvinceCode]
-		,o.[ReceiveCityCode] ,o.[ReceiveAreaCode] ,
+		,o.[ReceiveCityCode] ,o.[ReceiveAreaCode] ,o.SettleMoney,
 		o.[SongCanDate] ,
 		 o.[OrderCount] ,o.[CommissionRate] ,
 		 c.TrueName ClienterName ,
@@ -906,12 +906,28 @@
 		join business b with ( nolock ) on b.Id = o.businessId
 		left join [group] g with ( nolock ) on g.id = o.OrderFrom
 		join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
+		<if test="groupBusinessId >0 ">
+			left join GroupBusinessRelation gbr(nolock) on o.BusinessId=b.id 
+		</if>
+		<if test="tagType == 0 and tagId>0">
+			join dbo.TagRelation tagR on b.Id=tagR.UserId and tagR.IsEnable=1 and tagR.UserType=0 and  tagR.TagId=${tagId} 
+		</if>
+		<if test="tagType == 1 and tagId>0">
+			join dbo.TagRelation tagR on c.Id=tagR.UserId and tagR.IsEnable=1 and tagR.UserType=1 and  tagR.TagId=${tagId} 
+		</if>
+		<if test="authCityStr !=null and authCityStr!=''">
+		join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
+		</if>
+		
 	</sql>
 	<!-- 后台订单列表页面 动态查询条件 add by caoheyang 20150728 -->
 	<sql id="GetOrdersColumsWhere">
-		1=1
+		1=1 and 3>=o.Platform 
 		<if test="businessName != null and businessName != ''">
 			and b.Name=''${businessName}''
+		</if>
+		<if test="groupBusinessId >0 ">
+			and gbr.GroupId=${groupBusinessId} 
 		</if>
 		<if test="businessID != null">
 			and b.id=${businessID}
@@ -947,20 +963,13 @@
 		<if test="groupId != null and groupId != -1">
 			and o.OrderFrom = ${groupId}
 		</if>
-	    <if test="groupId != null and groupId != -1">
-			and o.OrderFrom = ${groupId}
+		<if test="businessCity != null and businessCity!=''">
+			and b.city = ''${businessCity}''
+		</if>
+		<if test="groupBusinessId != null and groupBusinessId!=-1">
+			and o.GroupBusinessId =${groupBusinessId}
 		</if>
 
-		<if test="authorityCityNameList != null">
-			and b.city in
-			<foreach item="item" index="index" collection="authorityCityNameList"
-				open="(''" separator="'',''" close="'')">
-				#{item}
-			</foreach>
-		</if>
-		<!-- <if test="authorityCityNameListStr != null and authorityCityNameListStr!=''"> -->
-		<!-- and b.City in ''$${authorityCityNameListStr}'' -->
-		<!-- </if> -->
 	</sql>
 
 	<!--后台订单列表页面 add by caoheyang 20150728 -->
@@ -968,7 +977,7 @@
 		parameterType="com.edaisong.entity.req.PagedOrderSearchReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' o.PubDate desc ',
+		' o.Status ASC,o.Id DESC ',
 		'
 		<include refid="GetOrdersColums" />
 		',
@@ -1050,6 +1059,7 @@
 		parameterType="java.util.Map">
 		SELECT top 1 o.[Id]
 		,o.[OrderNo]
+		,o.[Platform]
 		,o.[PickUpAddress]
 		,o.PubDate
 		,o.[ReceviceName]
@@ -1176,8 +1186,10 @@
 		join dbo.OrderOther ( nolock ) b on a.Id=b.OrderId
 		LEFT join dbo.clienter ( nolock ) c on a.clienterId=c.Id
 		left join dbo.[group] d on a.OrderFrom=d.Id
-		where a.OrderNo=#{orderNo,jdbcType=NVARCHAR} and a.BusinessId=
-		#{businessId,jdbcType=INTEGER}
+		where a.OrderNo=#{orderNo,jdbcType=NVARCHAR} 
+		<if test="businessId !=0 ">
+			and a.BusinessId= #{businessId,jdbcType=INTEGER}
+		</if>
 	</select>
 	<!-- 商户取消订单功能 add by caoheyang 20150804 -->
 	<update id="cancelOrderBusiness" parameterType="com.edaisong.entity.Order">
@@ -1620,7 +1632,15 @@ where   Status = 1
 			and b.PhoneNo = ''${selectValue}''
 		</if> 
 	</sql>
+	<sql id="busTaskListTables">
 	
+		 dbo.[order] AS o ( NOLOCK )
+        INNER JOIN dbo.business AS b ( NOLOCK ) ON b.Id = o.businessId 
+        JOIN dbo.OrderOther AS oo(nolock) ON o.id=oo.OrderId
+        <if test="authCityStr !=null and authCityStr!=''">
+        join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
+        </if>
+	</sql>
 	<select id="busTaskList" resultType="com.edaisong.entity.domain.BusTaskList"
 		parameterType="com.edaisong.entity.req.PagedBusTaskListReq"
 		statementType="CALLABLE">
@@ -1634,9 +1654,7 @@ where   Status = 1
         SUM(o.OrderCount) AS TaskCount 
 		',
 		'
-		 dbo.[order] AS o ( NOLOCK )
-        INNER JOIN dbo.business AS b ( NOLOCK ) ON b.Id = o.businessId 
-        JOIN dbo.OrderOther AS oo(nolock) ON o.id=oo.OrderId
+		<include refid="busTaskListTables" />
 		',
 		'
 		<include refid="busTaskList_Where" />
@@ -1791,6 +1809,9 @@ GROUP BY a.id ,
 	<sql id="getShanSongOrdersFrom">
 	   dbo.[order] (nolock)  a
         join business b with ( nolock ) on b.Id = a.businessId
+        <if test="authCityStr !=null and authCityStr!=''">
+        join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
+        </if>
         left join dbo.clienter (nolock) c on a.ClienterId = c.Id
         left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
 	</sql>
@@ -1821,13 +1842,6 @@ GROUP BY a.id ,
 		<if test="orderPubEnd != null and orderPubEnd!=''">
          <![CDATA[ and a.PubDate<=]]>
 			''${orderPubEnd} 23:59:59''
-		</if>
-		<if test="authorityCityNameList != null">
-			and b.city in
-			<foreach item="item" index="index" collection="authorityCityNameList"
-				open="(" separator="," close=")">
-				''${item}''
-			</foreach>
 		</if>
 	</sql>
 
@@ -2038,4 +2052,135 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 			and  CONVERT(VARCHAR(100), PubDate, 23)=''${dateInfo}''
 		</if> 
 	</sql>
+	
+	<!--集团中心订单列表页面  查询列集合 add by caoheyang 20160222 -->
+	<sql id="getGroupOrdersColums">
+		o.[Id] ,o.[OrderNo],o.[PickUpAddress] ,
+		o.[PubDate] ,
+		o.[ReceviceName]
+		,o.[RecevicePhoneNo] ,o.[ReceviceAddress] ,
+		 o.[Amount] , o.[OrderCommission] ,
+		o.[Remark] ,
+		o.[Status] , o.[clienterId] , o.[businessId] , o.[ReceviceCity] ,
+	    o.[OrderFrom] ,
+		o.[ReceiveProvince] , o.[ReceiveArea] , o.[ReceiveProvinceCode]
+		,o.[ReceiveCityCode] ,o.[ReceiveAreaCode] ,o.SettleMoney,
+		o.[OrderCount] ,o.[CommissionRate] ,
+		c.TrueName ClienterName ,
+		c.PhoneNo ClienterPhoneNo , b.Name BusinessName ,b.PhoneNo BusinessPhoneNo ,
+		b.Address BusinessAddress ,
+		o.[Adjustment] ,
+		o.BusinessCommission,
+        case when  d.GroupId=0 or d.GroupId is null then ''门店'' 
+        else  ''集团''  end  as payBy
+	</sql>
+
+	<!-- 后台订单列表页面 查询列集来源 add by caoheyang 20160222 -->
+	<sql id="getGroupOrdersFrom">
+		[order] o with ( nolock )
+		join dbo.OrderOther oo with ( nolock ) on o.Id = oo.OrderId
+		left join clienter c with ( nolock ) on c.Id = o.clienterId
+		join business b with ( nolock ) on b.Id = o.businessId  
+		left join BusinessBalanceRecord d  with ( nolock ) on o.id = d.WithwardId and d.RecordType=1
+	</sql>
+	<!-- 集团中心订单列表页面  动态查询条件 add by caoheyang 20160222 -->
+	<sql id="getGroupOrdersColumsWhere">
+		1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} and (o.OrderFrom=0 or o.OrderFrom=99)
+		<if test="businessName != null and businessName != ''">
+			and b.Name=''${businessName}''
+		</if>
+		<if test="orderId != null and orderId!=''">
+			and o.OrderNo=''${orderId}''
+		</if>
+		<if test="orderStatus != null and orderStatus>-1">
+			and o.Status=${orderStatus}
+		</if>
+		<if test="orderPubStart != null and orderPubStart!=''">
+			and o.PubDate>= ''${orderPubStart} 00:00:00''
+		</if>
+		<if test="orderPubEnd != null and orderPubEnd!=''">
+         <![CDATA[ and o.PubDate<=]]>
+			''${orderPubEnd} 23:59:59''
+		</if>
+		<if test="authorityCityNameList != null">
+			and b.city in
+			<foreach item="item" index="index" collection="authorityCityNameList"
+				open="(''" separator="'',''" close="'')">
+				#{item}
+			</foreach>
+		</if>
+	</sql>
+
+	<!--集团中心订单列表页面 add by caoheyang 20160222 -->
+	<select id="getGroupOrders" resultType="com.edaisong.entity.domain.OrderListModel"
+		parameterType="com.edaisong.entity.req.PagedOrderSearchReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' o.Status ASC,o.Id DESC ',
+		'
+		<include refid="getGroupOrdersColums" />
+		',
+		'
+		<include refid="getGroupOrdersFrom" />
+		',
+		'
+		<include refid="getGroupOrdersColumsWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+	
+  <!--集团中心订单列表页面  导出 add by caoheyang 20160222 -->
+	<select id="exportGroupOrders" resultType="com.edaisong.entity.domain.OrderListModel"
+	parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
+	select 
+		 o.orderNo ,
+        ISNULL(b.Name, '') businessName ,
+         o.PubDate,oo.GrabTime,oo.TakeTime,o.ActualDoneDate,
+        o.amount ,
+        o.orderCount ,
+        o.status ,
+        ISNULL(c.TrueName, '匿名')+':'+ ISNULL(c.PhoneNo, '未知') clienterName ,
+        o.settleMoney ,
+        CASE when d.GroupId = 0
+                  or d.GroupId is null then '门店'
+             else '集团'
+        end as payBy 
+	  from  
+       [order] o with ( nolock )
+        join dbo.OrderOther oo with ( nolock ) on o.Id = oo.OrderId
+	 	left join clienter c with ( nolock ) on c.Id = o.clienterId
+		join business b with ( nolock ) on b.Id = o.businessId  
+		left join BusinessBalanceRecord d  with ( nolock ) on o.id = d.WithwardId and d.RecordType=1
+	 where  
+	 1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} and (o.OrderFrom=0 or o.OrderFrom=99)
+		<if test="businessName != null and businessName != ''">
+			and b.Name='${businessName}'
+		</if>
+		<if test="orderId != null and orderId!=''">
+			and o.OrderNo='${orderId}'
+		</if>
+		<if test="orderStatus != null and orderStatus>-1">
+			and o.Status=${orderStatus}
+		</if>
+		<if test="orderPubStart != null and orderPubStart!=''">
+			and o.PubDate>= '${orderPubStart} 00:00:00'
+		</if>
+		<if test="orderPubEnd != null and orderPubEnd!=''">
+         <![CDATA[ and o.PubDate<=]]>
+			'${orderPubEnd} 23:59:59'
+		</if>
+		<if test="authorityCityNameList != null">
+			and b.city in
+			<foreach item="item" index="index" collection="authorityCityNameList"
+				open="('" separator="','" close="')">
+				#{item}
+			</foreach>
+		</if>
+		 order by o.Status ASC,o.Id DESC 
+	</select>
 </mapper>

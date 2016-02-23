@@ -246,7 +246,10 @@ GROUP BY b.Name ,
 FROM    OrderGrabChild m WITH ( NOLOCK )
         JOIN [ordergrab] o WITH ( NOLOCK ) ON o.Id = m.GrabOrderId
         JOIN business b WITH ( NOLOCK ) ON b.Id = m.businessId
-        LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId 
+        <if test="authCityStr !=null and authCityStr!=''">
+        join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City 
+        </if>
+        LEFT JOIN clienter c WITH ( NOLOCK ) ON c.Id = o.clienterId
         where <include refid="queryColumsWhere" />
 GROUP BY o.id ,
         o.GrabOrderNo ,
@@ -289,8 +292,8 @@ GROUP BY o.id ,
 		<if test="orderGrabEnd != null and orderGrabEnd!=''">
 			and  ''${orderGrabEnd} 23:59:59''>=o.GrabTime
 		</if>
-		<if test="businessCity != null and businessCity>-1">
-			and b.cityCode= ${businessCity}
+		<if test="businessCity != null and businessCity!=''">
+			and b.city= ''${businessCity}''
 		</if>
 	</sql> 
 	 <!-- ???��???? ????��??? add by zhaohl 20151102 -->

@@ -159,7 +159,7 @@
 	        $('#txtAddLoginName').val('');
 	        $('#txtAddPassword').val('');
 	        $('#txtAddConfirmPassword').val(''); 
-	        $("input:radio[name='rModifyIsAllowOverdraft'][value='0']").attr("checked",true);
+	        $("input:radio[name='rModifyIsAllowOverdraft'][value='0']").prop("checked",true);
 	        $('#addGroupBusiness').modal('show');
 	}
 	//保存集团商户

@@ -1,3 +1,5 @@
+<%@page import="com.edaisong.core.enums.TagType"%>
+<%@page import="com.edaisong.entity.domain.GroupBusinessModel"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
@@ -19,7 +21,12 @@
 String basePath =PropertyUtils.getProperty("java.admin.url");
 	List<AreaModel> areaListData=	(List<AreaModel>)request.getAttribute("areaListData");
 	List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupListData");
+	List<GroupBusinessModel> groupBusiness = (List<GroupBusinessModel>)request.getAttribute("groupBusiness");
 %>
+<!-- 下拉框的样式以及JS -->
+<link href="<%=basePath%>/css/plugins/chosen/chosen.css"  rel="stylesheet">
+<script src="<%=basePath%>/js/plugins/chosen/chosen.jquery.js" ></script>
+<!-- 下拉框的样式以及JS -->
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"></script>
@@ -112,7 +119,8 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">
-							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部") %>
+							<%=HtmlHelper.getSelectAuto("businessCity", areaListData, "name", "name","","","全部") %>
+<%-- 							  <%=HtmlHelper.getSelect("businessCity", areaListData, "name", "name","-1","-1","全部") %> --%>
 							</div>
 						</div>
 					</div>
@@ -151,6 +159,32 @@ width: 100%;
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="row"> 
+				<div class="col-lg-3">
+					<div class="form-group">
+					<label class="col-sm-4 control-label">标签:</label> 
+						<div class="col-sm-8">
+							 <%=HtmlHelper.getSelect("tagType", EnumHelper.GetEnumItems(TagType.class), "desc","value","-1","-1","全部") %>
+						</div>
+					</div>
+				</div> 
+				<div class="col-lg-3">
+					<div class="form-group"> 
+						<div class="col-sm-8" >
+							<select id="tagId" name="tagId" class="form-control m-b">
+							</select>
+						</div>
+					</div>
+				</div> 
+				<div class="col-lg-3">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">所属集团:</label>
+						<div class="col-sm-8">
+							<%=HtmlHelper.getSelect("groupBusinessId", groupBusiness, "groupbusiname","id","-1","-1","全部") %>
+						</div>
+					</div>
+				</div>
 				</div>
 			    <div class="row">
 						<div class="col-lg-3">
@@ -196,6 +230,15 @@ width: 100%;
           calendarWeeks: true,
           autoclose: true
       });
+	  //获取所有标签
+	  $.ajax({
+          type: 'POST',
+          url: '<%=basePath%>/mark/gettag',
+          data: {},
+          success: function (result) {
+          	  $("#tagId").html(result.message);
+          }
+      });
  });
 	var jss = {
 		search : function(currentPage) {
@@ -212,6 +255,22 @@ width: 100%;
 		jss.search(1);
 	});
 	
+	$("#tagType").change(function(){
+		var selval= $(this).val(); 
+		if(selval == -1){ 
+			$("#tagId").find("option[value='']").attr("selected",true);
+			$("#tagId option[tagtype='0']").hide();
+			$("#tagId option[tagtype='1']").hide();
+		}
+		if(selval == 0){
+			$("#tagId option[tagtype='0']").show();
+			$("#tagId option[tagtype='1']").hide();
+		}
+		if(selval == 1){
+			$("#tagId option[tagtype='0']").hide();
+			$("#tagId option[tagtype='1']").show();
+		}
+	});
 	//导出功能
 	$("#btnExport").click(function() {
 		    var superManPhone = $("#txtSuperManPhone").val();

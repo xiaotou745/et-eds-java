@@ -5,6 +5,14 @@ import java.util.List;
 public class RequestBase {
 
 	private List<String> authorityCityNameList;
+	private String authCityStr;//用户权限城市字符串
+	public String getAuthCityStr() {
+		return authCityStr;
+	}
+
+	public void setAuthCityStr(String authCityStr) {
+		this.authCityStr = authCityStr;
+	}
 
 	private int cityAuthType;
 
@@ -41,4 +49,5 @@ public class RequestBase {
 	public void setAuthorityCityNameList(List<String> authorityCityNameList) {
 		this.authorityCityNameList = authorityCityNameList;
 	}
+
 }

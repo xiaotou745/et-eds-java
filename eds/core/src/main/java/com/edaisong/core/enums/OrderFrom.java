@@ -46,6 +46,14 @@ public enum OrderFrom {
 	 * 商家版后台
 	 */
 	BusinessWeb(99, "商户web版"),
+	/**
+	 * 商家版后台
+	 */
+	TaoDianDian(100, "淘点点"),
+	/**
+	 * 商家版后台
+	 */
+	QuanJuDe(101, "全聚德")
 	;
 	private int value = 0;
 	private String desc;
@@ -66,6 +74,6 @@ public enum OrderFrom {
 				return c;
 			}
 		}
-		return null;
+		return EDaiSong;  //未知E代送
 	}
 }

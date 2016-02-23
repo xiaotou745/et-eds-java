@@ -15,6 +15,10 @@ List<GroupModel> groupListData=	(List<GroupModel>)request.getAttribute("groupLis
 int groupId=(int)request.getAttribute("groupId");
 String busname=ParseHelper.ToString(request.getAttribute("businessName"),"");
 %>
+<!-- 下拉框的样式以及JS -->
+<link href="<%=basePath%>/css/plugins/chosen/chosen.css"  rel="stylesheet">
+<script src="<%=basePath%>/js/plugins/chosen/chosen.jquery.js" ></script>
+<!-- 下拉框的样式以及JS -->
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <style type="text/css">
@@ -31,10 +35,11 @@ width: 100%;
 }
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
-<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
+
 	<div class="row">
 		<div class="col-lg-12">
 			<form method="POST" action="#" class="form-horizontal" id="searchForm">
+			<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
@@ -64,7 +69,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">门店电话: </label>
 							<div class="col-sm-8">
-							 <input id="businessPhone"				type="text" name="businessPhone" />
+							 <input  class="form-control" id="businessPhone"				type="text" name="businessPhone" />
 							</div>
 						</div>
 					</div>	
@@ -72,7 +77,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">结算比例: </label>
 							<div class="col-sm-8">
-							 <input	id="businessSettlementRatio" type="text" name="businessSettlementRatio" />
+							 <input class="form-control"	id="businessSettlementRatio" type="text" name="businessSettlementRatio" />
 							</div>
 						</div>
 					</div>	
@@ -82,7 +87,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市: </label>
 							<div class="col-sm-8">
-							 <%=HtmlHelper.getSelect("businessCity", openCityList, "name", "code",null,"","全部")%>
+							 <%=HtmlHelper.getSelectAuto("businessCity", openCityList, "name", "code",null,"","全部")%>
 							</div>
 						</div>
 					</div>	
@@ -121,16 +126,16 @@ width: 100%;
 						</div>
 					</div>	
 				</div>
-				<div class="row">					
-				<div class="col-lg-3">
+				<div class="row">	
+				<div class="col-lg-3">				
 						<div class="form-group">
 							<label class="col-sm-4 control-label">推荐人电话: </label>
 							<div class="col-sm-8">
-							<input id="recommendPhone"
-				type="text" name="recommendPhone" />
+							<input class="form-control" id="recommendPhone"type="text" name="recommendPhone" />
 							</div>
 						</div>
 					</div>
+				</div>
 				</div>
 			    <div class="row">
 						<div class="col-lg-3">

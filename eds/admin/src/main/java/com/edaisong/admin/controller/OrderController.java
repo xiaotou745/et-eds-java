@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IAccountCityRelationService;
+import com.edaisong.api.service.inter.IGroupBusinessService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
@@ -25,6 +26,7 @@ import com.edaisong.core.util.JsonUtil;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.core.util.StringUtils;
+import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
@@ -53,7 +55,8 @@ public class OrderController {
 	 private HttpServletRequest request;
 	 @Autowired
 	 private IAccountCityRelationService accountCityRelationService;
-	 
+	 @Autowired
+	 private IGroupBusinessService groupBusinessService;
 	/**
 	 * 订单列表页面 
 	 * @author CaoHeYang
@@ -61,8 +64,8 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("list")
-	public ModelAndView order(){
-		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityByJiBie(3);
+	public ModelAndView order(HttpServletRequest request){
+		List<AreaModel> areaListData=UserContext.getCurrentContext(request).getUserCity();
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "订单管理");
 		model.addObject("currenttitle", "订单管理");
@@ -70,6 +73,7 @@ public class OrderController {
 		GroupReq groupReq = new GroupReq();
 		groupReq.setIsValid(1);
 		model.addObject("groupListData", iGroupService.getGroupList(groupReq));   //下拉集团   
+		model.addObject("groupBusiness", groupBusinessService.get()); //获取集团商户  achao
 		model.addObject("viewPath", "order/list");
 		return model;
 	}
@@ -82,6 +86,7 @@ public class OrderController {
 	 */
 	@RequestMapping("listdo")
 	public ModelAndView order(PagedOrderSearchReq searchWebReq){
+		searchWebReq.setAuthCityStr(UserContext.getCurrentContext(request).getUserCityStr());
 		PagedResponse<OrderListModel> resp = orderService.getOrders(searchWebReq);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "order/listdo");
@@ -179,8 +184,11 @@ public class OrderController {
 	  private boolean isShowAuditBtn(OrderListModel orderModel)
       {
           //只有在已完成订单并且已上传完小票的情况下显示该按钮
-          if (orderModel != null && /*已完成*/ orderModel.getFinishAll() == 1 && /*订单未分账*/ orderModel.getIsJoinWithdraw() == 0
-              && orderModel.getIsEnable() == 1)
+          if (orderModel != null && /*已完成*/ 
+        	  orderModel.getFinishAll() == 1 && /*订单未分账*/ 
+        	  orderModel.getIsJoinWithdraw() == 0
+              && orderModel.getIsEnable() == 1
+              &&orderModel.getPlatform()!=3)//非闪送
           {
               return true;
           }
@@ -242,8 +250,8 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("shansonglist")
-	public ModelAndView shansonglist(){
-		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityByJiBie(3);
+	public ModelAndView shansonglist(HttpServletRequest request){
+		List<AreaModel> areaListData=UserContext.getCurrentContext(request).getUserCity();
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "订单管理");
 		model.addObject("currenttitle", "E单列表");
@@ -260,6 +268,7 @@ public class OrderController {
 	 */
 	@RequestMapping("shansonglistdo")
 	public ModelAndView shansonglistdo(PagedOrderSearchReq searchWebReq,HttpServletRequest request){
+		searchWebReq.setAuthCityStr(UserContext.getCurrentContext(request).getUserCityStr());
         PagedResponse<ShanSongOrderListModel> resp = orderService.getShanSongOrders(searchWebReq);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "order/shansonglistdo");

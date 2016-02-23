@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.edaisong.api.common.TransactionalRuntimeException;
 import com.edaisong.api.dao.inter.IBiDao;
+import com.edaisong.api.dao.inter.IBusinessDao;
 import com.edaisong.api.dao.inter.IOptLogDao;
 import com.edaisong.api.dao.inter.ITaskDistributionConfigDao;
+import com.edaisong.api.dao.inter.ITaskDistributionDao;
 import com.edaisong.api.service.inter.ITaskDistributionConfigService;
 import com.edaisong.core.enums.FlashPushOrderEnum;
 import com.edaisong.core.enums.OptLogEnum;
@@ -17,9 +19,12 @@ import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.TaskDistributionConfigEnum;
 import com.edaisong.entity.OptLog;
 import com.edaisong.entity.OrderTip;
+import com.edaisong.entity.TaskDistribution;
 import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessModel;
+import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.req.PagedOrderTipReq;
 import com.edaisong.entity.req.PagedTaskDistributionConfigReq;
 import com.edaisong.entity.req.TaskDistributionConfigReq;
@@ -31,8 +36,14 @@ public class TaskDistributionConfigService implements
 		ITaskDistributionConfigService {
 
 	@Autowired
+	private ITaskDistributionDao taskDistributionDao;
+	
+	@Autowired
 	private ITaskDistributionConfigDao taskDistributionConfigDao;
 
+	@Autowired
+	private IBusinessDao businessDao;
+	
 	@Autowired
 	private IOptLogDao optLogDao;
 
@@ -42,9 +53,21 @@ public class TaskDistributionConfigService implements
 	 * 获取普通任务配送费配置
 	 * */
 	@Override
-	public HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig() {
+	public HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig(BusinessReq req) {
 		HttpResultModel<List<TaskDistributionConfig>> resultModel=new HttpResultModel<List<TaskDistributionConfig>>();
-		List<TaskDistributionConfig> list= taskDistributionConfigDao.query();//获取所有配送费配置 
+		
+		int taskDistributionId=1;
+		if(req!=null&&req.getBusinessId()!=null&&req.getBusinessId().intValue()>0){
+			BusinessModel businessModel = businessDao.getBusiness((long) req.getBusinessId());
+			if (businessModel!=null&&businessModel.getTaskDistributionId()>0) {
+				taskDistributionId=businessModel.getTaskDistributionId();
+			}		
+		}	
+		
+		TaskDistribution taskDistributionModel= taskDistributionDao.selectByPrimaryKey(taskDistributionId);
+
+		List<TaskDistributionConfig> list= taskDistributionConfigDao.queryByTaskDistributionId(taskDistributionId);//获取所有配送费配置
+		resultModel.setMessage(taskDistributionModel.getRemark());
 		resultModel.setResult(list);
 		return resultModel;
 	}
@@ -121,24 +144,31 @@ public class TaskDistributionConfigService implements
 		
 		HttpResultModel<TaskDistributionConfigResp> resp = new HttpResultModel<TaskDistributionConfigResp>();
 
-		if(record.getkM()>0)
+		if(record.getIsMaster()==1)
 		{
-			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(0, record.getkM());
-			if(selectModel!=null)
-			{
-				resp.setStatus(TaskDistributionConfigEnum.KMErr.value());
-				resp.setMessage(TaskDistributionConfigEnum.KMErr.desc());
-				return resp;
-			}
+		
 		}
 		else
 		{
-			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(0, record.getkG());
-			if(selectModel!=null)
+			if(record.getkM()>0)
 			{
-				resp.setStatus(TaskDistributionConfigEnum.KGErr.value());
-				resp.setMessage(TaskDistributionConfigEnum.KGErr.desc());
-				return resp;
+				TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(0, record.getkM());
+				if(selectModel!=null)
+				{
+					resp.setStatus(TaskDistributionConfigEnum.KMErr.value());
+					resp.setMessage(TaskDistributionConfigEnum.KMErr.desc());
+					return resp;
+				}
+			}
+			else
+			{
+				TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(0, record.getkG());
+				if(selectModel!=null)
+				{
+					resp.setStatus(TaskDistributionConfigEnum.KGErr.value());
+					resp.setMessage(TaskDistributionConfigEnum.KGErr.desc());
+					return resp;
+				}
 			}
 		}
 		taskDistributionConfigDao.insertSelective(record);
@@ -197,8 +227,8 @@ public class TaskDistributionConfigService implements
 	public double calculator(TaskDistributionConfig record)
 	{
 		double cost=0;
-		List<TaskDistributionConfig> list= taskDistributionConfigDao.query();
-		if (list==null)
+		List<TaskDistributionConfig> list= taskDistributionConfigDao.queryByTaskDistributionId(record.getTaskDistributionId());
+		if (list==null ||list.size()==0)
 			return cost;
 		
 		double baseKM=list.get(0).getkM();

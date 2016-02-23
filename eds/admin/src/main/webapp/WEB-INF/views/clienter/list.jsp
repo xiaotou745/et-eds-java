@@ -64,7 +64,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市:</label>
 							<div class="col-sm-8">
-							 <%=HtmlHelper.getSelectAuto("businessCityId", areaListData, "name", "code") %>
+							 <%=HtmlHelper.getSelectAuto("businessCityId", areaListData, "name", "name","","","全部") %>
 							</div>
 						</div>
 					</div>
@@ -189,7 +189,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
                  var deliveryCompanyId=$("#deliveryCompanyId").val();   
                  if (code==null || code=="")
                  {
-                	  code=-1;             
+                	  code="";             
                 	 }
                  if (deliveryCompanyId==null || deliveryCompanyId=="")
             	 {

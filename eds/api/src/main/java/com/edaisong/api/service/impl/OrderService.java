@@ -45,6 +45,7 @@ import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IClienterService;
 import com.edaisong.api.service.inter.IOrderService;
+import com.edaisong.api.service.inter.ITaskDistributionConfigService;
 import com.edaisong.core.consts.RedissCacheKey;
 import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessBalanceRecordStatus;
@@ -95,6 +96,7 @@ import com.edaisong.entity.OrderOther;
 import com.edaisong.entity.OrderRegion;
 import com.edaisong.entity.OrderSubsidiesLog;
 import com.edaisong.entity.OrderTipCost;
+import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.Location;
 import com.edaisong.entity.common.PagedResponse;
@@ -176,7 +178,7 @@ public class OrderService implements IOrderService {
 	@Autowired
 	private IClienterService clienterService;
 	@Autowired
-	private RedisService redisService;
+	private RedisService redisService; 
 	@Autowired
 	private IOrderDetailDao orderDetailDao;
 	@Autowired
@@ -205,6 +207,9 @@ public class OrderService implements IOrderService {
 	@Autowired
 	private IClienterPushLogDao clienterPushLogDao;
 	
+	@Autowired
+	private ITaskDistributionConfigService taskDistributionConfigService;
+	
 	/**
 	 * 根据id查询订单数据
 	 * @param id
@@ -229,6 +234,34 @@ public class OrderService implements IOrderService {
 		return orderDao.getOrders(search);
 	}
 
+	/**
+	 * 后台订单列表页面
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20160222
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public PagedResponse<OrderListModel> getGroupOrders(PagedOrderSearchReq search) {
+		return orderDao.getGroupOrders(search);
+	}
+	
+	/**
+	 * 后台订单列表页面 导出
+	 * 
+	 * @author CaoHeYang
+	 * @Date 20160222
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public List<OrderListModel> exportGroupOrders(PagedOrderSearchReq search) {
+		return orderDao.exportGroupOrders(search);
+	}
+	
 	/**
 	 * 后台订单列表页面 
 	 * @author CaoHeYang
@@ -2138,7 +2171,7 @@ public class OrderService implements IOrderService {
 				bModel.setPhoneno2(req.getBusinessphoneno());
 				bModel.setPassword(MD5Util.MD5(req.getVerificationcode().trim()));				
 				bModel.setStatus((byte)0);//审核未通过
-				bModel.setRegisterFrom(2);//注册来源				
+				bModel.setRegisterFrom(2);//注册来源			
 				int bId= businessDao.insertSelective(bModel);
 				if(bId<1)
 				{
@@ -2160,6 +2193,21 @@ public class OrderService implements IOrderService {
 			resp.setMessage(FlashPushOrderEnum.BusinessIsEnableErr.desc());
 			return resp;	
 		}
+		int taskDistributionid= businessModel.getTaskDistributionId();
+		if(taskDistributionid==0)
+			taskDistributionid=1;
+		TaskDistributionConfig recordConfig=new TaskDistributionConfig();
+		recordConfig.setTaskDistributionId(taskDistributionid);
+		recordConfig.setkG((int)req.getWeight());
+		recordConfig.setkM((int)req.getKm());
+		double currAmount= taskDistributionConfigService.calculator(recordConfig);
+		if(req.getAmount()!=currAmount)
+		{
+			resp.setStatus(FlashPushOrderEnum.AmountIsErr.value());
+			resp.setMessage(FlashPushOrderEnum.AmountIsErr.desc());
+			return resp;			
+		}	
+				
 
 		// 订单主表		
 		Order order = fillFlashPushOrder(req, businessModel);	
@@ -2856,10 +2904,10 @@ public class OrderService implements IOrderService {
 		{		
 			return FlashPushOrderEnum.ReceviceAddressIsNull;
 		}	
-		if(req.getProductname()==null || req.getProductname().equals(""))
+	/*	if(req.getProductname()==null || req.getProductname().equals(""))
 		{		
 			return FlashPushOrderEnum.ProductNameIsNull;
-		}
+		}*/
 		if(req.getAmount()<=0)
 		{		
 			return FlashPushOrderEnum.AmountIsErr;
@@ -2868,7 +2916,7 @@ public class OrderService implements IOrderService {
 		{			
 			return FlashPushOrderEnum.WeightIsErr;
 		}
-		if(req.getKm()==null)
+		if(req.getKm()<=0)
 		{			
 			return FlashPushOrderEnum.KMIsNull;
 		}
@@ -2883,7 +2931,7 @@ public class OrderService implements IOrderService {
 		if(req.getPubaddress().equals(req.getReceviceaddress()))
 		{
 			return FlashPushOrderEnum.AddressSame;
-		}		
+		}				
 		
 		
 		return FlashPushOrderEnum.VerificationSuccess;
@@ -2984,7 +3032,7 @@ public class OrderService implements IOrderService {
 	
 		order.setProductname(req.getProductname());//物品名称
 		order.setRemark(req.getRemark());//备注
-		order.setAmount(req.getAmount());//金额				
+		order.setAmount(req.getAmount());//金额
 		order.setWeight(req.getWeight());//订单总重量
 		order.setKm(req.getKm());//	距离		
 

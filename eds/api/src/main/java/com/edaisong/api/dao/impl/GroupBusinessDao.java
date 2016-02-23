@@ -7,6 +7,7 @@ import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.core.security.MD5Util;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.edaisong.entity.Business;
@@ -65,5 +66,13 @@ public class GroupBusinessDao extends DaoBase implements IGroupBusinessDao {
 		return getMasterSqlSessionUtil().selectOne(
 				"IGroupBusinessDao.select",
 				groupID);
+	}
+	/*
+	 * 获取集团商户
+	 * achao
+	 */
+	@Override
+	public List<GroupBusinessModel> get() {
+		return getReadOnlySqlSessionUtil().selectList("IGroupBusinessDao.get");
 	}
 }

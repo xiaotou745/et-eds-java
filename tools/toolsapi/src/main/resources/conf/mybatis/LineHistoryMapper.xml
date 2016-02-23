@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edaisong.toolsapi.dao.inter.ILineHistoryDao" >
+<!-- 添加一个上线记录 茹化肖 -->
    <insert id="addLineHistory" parameterType="com.edaisong.toolsentity.req.LineHistoryReq" >
 	   insert into dbo.LineHistory
 	        ( DevPlatform ,
@@ -9,7 +10,9 @@
 	          OnLineTime ,
 	          OnLineContent ,
 	          Remark ,
-	          CreateName
+	          CreateName,
+	          OnLineProductCode,
+	          DevPlatformCode
 	        )
 	values  (
 				#{devPlatform,jdbcType=NVARCHAR},
@@ -18,7 +21,9 @@
 				#{onLineTime,jdbcType=TIMESTAMP},
 				#{onLineContent,jdbcType=NVARCHAR},
 				#{remark,jdbcType=NVARCHAR},
-				#{createName,jdbcType=NVARCHAR}
+				#{createName,jdbcType=NVARCHAR},
+				#{onLineProductCode,jdbcType=INTEGER},
+				#{devPlatformCode,jdbcType=INTEGER}
 	        )
    </insert>
    <update id="deleteLineHistory" parameterType="com.edaisong.toolsentity.req.LineHistoryReq">
@@ -44,11 +49,11 @@
   </select> 
   <sql id="queryWhere"> 
 		1=1 and IsEnable=1  
-		<if test="devPlatform !='请选择'">
-			and DevPlatform=''${devPlatform}''
+		<if test="devPlatform != -1">
+			and DevPlatformCode=${devPlatform}
 		</if>
-		<if test="onLineProduct !='请选择'">
-			and OnLineProduct=''${onLineProduct}''
+		<if test="onLineProduct != -1">
+			and OnLineProductCode=${onLineProduct}
 		</if>
 	</sql>
 </mapper>

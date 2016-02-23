@@ -159,7 +159,7 @@
   </sql>
   
   <sql id="getBusinessBindListColumns">
-  	gbr.Id id,b.Name name,b.phoneNo,b.BalancePrice balancePrice,gbr.createTime,gbr.isBind,gbr.createBy
+  	b.Address,b.PhoneNo2,b.Landline,gbr.Id id,b.Name name,b.phoneNo,b.BalancePrice balancePrice,gbr.createTime,gbr.isBind,gbr.createBy
   	,gbr.updateBy,gbr.updateTime,gbr.businessId,gbr.groupid groupid,gbr.isEnable,ISNULL(r.useGroupMoney,0) useGroupMoney
   </sql>
   

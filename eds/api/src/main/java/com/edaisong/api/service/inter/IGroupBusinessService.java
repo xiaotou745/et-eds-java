@@ -35,6 +35,11 @@ public interface IGroupBusinessService {
 
 	int modifyGroupBusiness(GroupBusiness groupBusiness);
 	/*
+	 * 获取集团商户
+	 * achao
+	 */
+	List<GroupBusinessModel> get();
+	/*
 	 * 获取该集团的收支记录
 	 */
 	PagedResponse<GroupBusinessBalanceRecord> getGroupBusinessRecord(

@@ -22,18 +22,18 @@
     </div>
     <div class="index_box">
         <div class="box_top">
-            <a href="index.html">首页</a> > 获取订单类目信息
+            <a href="index.html">首页</a> > 订单API > 物流接收订单API
         </div>
         <div class="box_left">
             <h3>订单API</h3>
             <ul>
-                <li class="on"><a href="#">接收物流订单API</a></li>
+                <li class="on"><a href="#">物流接收订单API</a></li>
                 <li><a href="getstatus.html">订单状态查询</a></li>
-               <!--  <li><a href="changestatus.html">订单取消</a></li> -->
+                <li><a href="canelorder.html">取消订单</a></li> 
             </ul>
         </div>
         <div class="box_right">
-            <h3>获取订单类目信息</h3>
+            <h3>物流接收订单API</h3>
             <div class="right_ty">
                 <h4>API功能描述</h4>
                 <p>物流订单接收接口</p>
@@ -133,6 +133,12 @@
                         <td>int</td>
                         <td>否</td>
                         <td>订单数量，默认为1（并单时使用)</td>
+                    </tr>
+                    <tr>
+                        <td>returnurl</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>状态异步通知地址</td>
                     </tr>
                 </table>
                 <p>address-收货地址信息</p>
@@ -368,6 +374,7 @@
         "receive_time": "2015-03-12 00:21:42",
         "is_pay": true,
         "total_price": 55,
+        "returnurl":"http://www.baidu.com"
         "address": {
             "user_name": "张三",
             "user_phone": "13612345678",

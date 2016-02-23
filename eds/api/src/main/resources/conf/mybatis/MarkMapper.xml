@@ -300,4 +300,7 @@ WHERE   tagType = #{type,jdbcType=INTEGER}
         AND IsEnable = 1
         AND IsDelete = 0
   </select>
+  <select id="getTag" resultType="com.edaisong.entity.Mark">
+  	select Id,TagName,TagType from tag (nolock) where IsEnable=1 and IsDelete=0
+  </select>
 </mapper>

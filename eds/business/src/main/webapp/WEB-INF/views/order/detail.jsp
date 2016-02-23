@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.business.common.UserContext"%>
 <%@page import="org.apache.jasper.tagplugins.jstl.core.If"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -138,13 +139,15 @@
 		</div>
 	</div>
 	<div class="right2 fl">
-		    <% if(modelDatas.getOrderModel().getStatus()==OrderStatus.New.value()){%>
+		    <% if(modelDatas.getOrderModel().getStatus()==OrderStatus.New.value()
+		    &&UserContext.getCurrentContext(request).getBusinessType()!=1){%>
 	    <input type="button" value="取消订单"  class="qxOrder">
 	    		<% }%>
 		<h2>订单明细</h2>
 		<p>
 			总金额：<span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
-					.getAmount())%></span> 结算支出：<span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
+					.getAmount())%></span>
+					 <%if(UserContext.getCurrentContext(request).getBusinessType()==0){ %> 结算支出：<%}else{ %>配送费<%} %><span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getSettleMoney())%></span> 订单佣金：<span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getOrderCommission())%></span> 用户付款状态：<span> <%=ParseHelper.ShowString(OrderIsPay.getEnum(
 					modelDatas.getOrderModel().getIsPay()).desc())%>
@@ -153,7 +156,7 @@
 		<table class="stripe" width="100%">
 			<tr>
 				<td>订单金额</td>
-				<td>配送费</td>
+				<%if(UserContext.getCurrentContext(request).getBusinessType()==0){ %> <td>配送费</td><%}%>
 				<td>支付状态</td>
 				<td>支付类型</td>
 				<td>小票</td>
@@ -165,8 +168,10 @@
 				<td>￥<%=ParseHelper.ShowString(modelDatas.getOrderChilds()
 						.get(i).getGoodprice())%>
 				</td>
+				<%if(UserContext.getCurrentContext(request).getBusinessType()==0){ %>
 				<td>￥<%=ParseHelper.ShowString(modelDatas.getOrderChilds()
 						.get(i).getDeliveryprice())%></td>
+				<%}%>
 				<td><%=ParseHelper.ShowString(PayStatus.getEnum(
 						modelDatas.getOrderChilds().get(i).getPaystatus())
 						.desc())%></td>

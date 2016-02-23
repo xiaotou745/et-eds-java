@@ -132,4 +132,12 @@ public class GroupBusinessService implements IGroupBusinessService {
 	public GroupBusinessRecharge getRechargeDetail(String orderNo) {
 		 return groupBusinessRechargeService.getByOrderNo(orderNo);
 	}
+	/*
+	 * 获取集团商户
+	 * achao
+	 */
+	@Override
+	public List<GroupBusinessModel> get() {
+		return groupBusinessDao.get();
+	}
 }

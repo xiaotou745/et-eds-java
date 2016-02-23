@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edaisong.admin.common.UserContext;
 import com.edaisong.api.service.inter.IOrderGrabService;
 import com.edaisong.api.service.inter.IOrderSubsidiesLogService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
@@ -43,6 +44,8 @@ public class FastOrderController {
 	 private IPublicProvinceCityService  iPublicProvinceCityService;
 	 @Autowired
 	 private IOrderSubsidiesLogService orderSubsidiesLogService;
+	 @Autowired
+	 private HttpServletRequest request;
 	/**
 	 * 快单列表页面 
 	 * @author zhaohl
@@ -50,8 +53,8 @@ public class FastOrderController {
 	 * @return
 	 */
 	@RequestMapping("list")
-	public ModelAndView order(){
-		List<AreaModel> areaListData=iPublicProvinceCityService.getOpenCityByJiBie(3);
+	public ModelAndView order(HttpServletRequest request){
+		List<AreaModel> areaListData=UserContext.getCurrentContext(request).getUserCity();
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "订单管理");
 		model.addObject("currenttitle", "智能调度列表");
@@ -68,6 +71,7 @@ public class FastOrderController {
 	 */
 	@RequestMapping("listdo")
 	public ModelAndView order(PagedFastOrderSearchReq searchReq){
+		searchReq.setAuthCityStr(UserContext.getCurrentContext(request).getUserCityStr());
 		PagedResponse<FastOrderModel> resp = orderGrabService.query(searchReq);
 		ModelAndView view = new ModelAndView();
 		view.addObject("viewPath", "fastorder/listdo");
