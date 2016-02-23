@@ -3,6 +3,7 @@ package com.edaisong.admin.common;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -66,7 +67,8 @@ public class UserContext {
 	}
 
 	public int getAccountType() {
-		return account.getAccountType();
+		//return account.getAccountType();
+		return accountService.getByID(account.getId()).getAccounttype();
 	}
 
 	public String getLoginName() {
@@ -134,17 +136,15 @@ public class UserContext {
 	public  String getUserCityStr()
 	{
 		int accountID=account.getId();
-		List<AreaModel> list=publicProvinceCityService.getOpenCityListByAccountID(accountID);
-		StringBuilder sBuilder=new StringBuilder();
-		String resultString="";
-		if(list.size()>0)
+		if(this.getAccountType()==1)
 		{
-			for (AreaModel areaModel : list) {
-				sBuilder.append(areaModel.getName());
-				sBuilder.append(",");
-			}
-			resultString=sBuilder.toString().substring(0,sBuilder.length()-1);
+			//全部城市权限
+			return "";
 		}
-		return resultString;
+		else {
+			List<AreaModel> list=publicProvinceCityService.getOpenCityListByAccountID(accountID);
+			
+			return String.join(",", list.stream().map(t->t.getName()).collect(Collectors.toList()));
+		}
 	}
 }

@@ -35,10 +35,11 @@ width: 100%;
 }
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
-<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
+
 	<div class="row">
 		<div class="col-lg-12">
 			<form method="POST" action="#" class="form-horizontal" id="searchForm">
+			<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
