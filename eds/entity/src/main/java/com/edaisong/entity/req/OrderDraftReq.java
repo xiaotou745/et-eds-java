@@ -71,7 +71,7 @@ public class OrderDraftReq {
 
 	private double weight;
 
-    private Double km;
+    private double km;
     
     private Double tipamount;    
         
@@ -317,11 +317,11 @@ public class OrderDraftReq {
         this.weight = weight;
     }
 
-    public Double getKm() {
+    public double getKm() {
         return km;
     }
 
-    public void setKm(Double km) {
+    public void setKm(double km) {
         this.km = km;
     }
 

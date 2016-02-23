@@ -14,7 +14,11 @@ public enum TaskDistributionConfigEnum {
 	/**
 	 * 重量重复
 	 */
-	KGErr(-2,"重量重复");
+	KGErr(-2,"重量重复"),
+	/**
+	 * 商户不存在
+	 */
+	BusinessIsnull(-3,"商户不存在");
 
 	private int value = 0;
 	private String desc;
