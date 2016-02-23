@@ -47,7 +47,7 @@ public class BusinessManagerController {
 		ModelAndView view = new ModelAndView("businessmanager/listdo");
 		req.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());//设置ID
 		PagedResponse<GroupBusinessRelationModel> resp = groupBusinessRelationService.getBusinessBindList(req);
-		view.addObject("listData", "门店管理");
+		view.addObject("listData", resp);
 		return view;
 	}
 
