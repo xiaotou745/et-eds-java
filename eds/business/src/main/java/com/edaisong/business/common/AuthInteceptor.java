@@ -63,7 +63,9 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 					    request.getServletPath().equals("/group/return_url")||
 					    request.getServletPath().equals("/order/grouporderlist")||
 					    request.getServletPath().equals("/order/detail")||
-					    request.getServletPath().equals("/order/exportgrouporders")) {
+					    request.getServletPath().equals("/order/exportgrouporders")||
+					    request.getServletPath().equals("/groupstatistics/today")
+					    ) {
 						return true;
 					}
 				} else {
