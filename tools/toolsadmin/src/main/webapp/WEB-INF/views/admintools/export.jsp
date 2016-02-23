@@ -82,6 +82,10 @@ List<String> appNameList = (List<String>)request.getAttribute("appNameList");
 <script>
 var jss={
 		search:function(currentPage){
+				if($("#sourceSys").val()!="superman"){
+					$("#content").html("");
+					return;
+				}
 				$("#tip").html("正在查询。。。");
 				$("#btnSearch").attr("disabled",true);
 			    var data={"currentPage":currentPage,

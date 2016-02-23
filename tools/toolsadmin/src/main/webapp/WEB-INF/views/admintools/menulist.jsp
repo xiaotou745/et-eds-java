@@ -23,6 +23,7 @@
 							<div class="col-sm-8">
 							   <%=HtmlHelper.getSelect("appname", appNameList, "appName", "dbName",null,null,"全部")%>
 							</div>
+							<span id="tip" style="color:red"></span>
 						</div>
 					</div>
 				</div>
@@ -377,12 +378,14 @@ var detail="";
 var $checkableTree;
 var jss={
 		search:function(currentPage){
+			$("#tip").html("正在查询。。。");
 			$('#detail').hide();
 			var url="<%=basePath%>/admintools/menulistdo";
 			var par={
 					"appName":$('#appname option:selected').text(),
 			};
 			$.post(url,par,function(result){
+				$("#tip").html("");
 				if (result!="")
 				{
 	       		 $checkableTree=$('#treeview11').treeview({
