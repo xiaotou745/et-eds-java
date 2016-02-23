@@ -39,11 +39,11 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
-	<mvc:interceptors>
-		<bean class="com.eds.common.GlobalLogInteceptor">
-			<property name="sourceSys" value="payapi"></property>
-		</bean>
-	</mvc:interceptors>
+	<!-- <mvc:interceptors> -->
+	<!-- <bean class="com.eds.common.GlobalLogInteceptor"> -->
+	<!-- <property name="sourceSys" value="payapi"></property> -->
+	<!-- </bean> -->
+	<!-- </mvc:interceptors> -->
 	<!-- 日期转换 -->
 	<bean id="conversionService"
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">

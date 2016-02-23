@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import com.eds.common.Config;
 import com.eds.service.inter.IWxService;
 import com.google.common.collect.Maps;
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.common.RandomStringGenerator;
+import com.tencent.common.Signature;
 import com.tencent.common.Util;
 import com.tencent.model.PayParamModel;
 import com.tencent.model.PayResultModel;
+import com.tencent.parmodel.ParamPlatformModel;
+import com.tencent.parmodel.PlatformModel;
 import com.tencent.protocol.pay_protocol.ScanPayReqData;
 import com.tencent.protocol.pay_query_protocol.ScanPayQueryReqData;
 import com.tencent.protocol.refund_protocol.RefundReqData;
@@ -31,6 +34,8 @@ public class WxService implements IWxService {
 	@Override
 	public String GetAppUrl(PayParamModel model) throws Exception {
 		HashMap<String, String> paramMap = Maps.newHashMap();
+		ParamPlatformModel paramPlatformModel = new PlatformModel()
+				.getPlayformModel(model.getPlatform());
 		paramMap.put("trade_type", "APP"); // 交易类型
 		paramMap.put("spbill_create_ip", Util.localIp()); // 本机的Ip
 		paramMap.put("product_id", model.getOrder_no()); // 商户根据自己业务传递的参数 必填
@@ -38,12 +43,16 @@ public class WxService implements IWxService {
 		paramMap.put("out_trade_no", model.getOrder_no()); // 商户 后台的贸易单号
 		paramMap.put("total_fee", "" + model.getTotal_fee()); // 金额必须为整数 单位为分
 		paramMap.put("notify_url", WxPayNotify); // 支付成功后，回调地址
-		paramMap.put("appid", Configure.getAppid()); // appid
-		paramMap.put("mch_id", Configure.getMchid()); // 商户号
+		paramMap.put("appid", paramPlatformModel.getAppid()); // appid
+		paramMap.put("mch_id", paramPlatformModel.getMchid()); // 商户号
 		paramMap.put("nonce_str",
 				RandomStringGenerator.getRandomStringByLength(32)); // 随机数
+		String attach = model.getNotify() + "|" + model.getPlatform() + "^"
+				+ model.getAttach();
+		paramMap.put("attach", attach);
+
 		paramMap.put("sign",
-				QrCodeService.getSign(paramMap, Configure.getKey()));// 根据微信签名规则，生成签名
+				QrCodeService.getSign(paramMap, paramPlatformModel.getKey()));// 根据微信签名规则，生成签名
 		String xmlData = QrCodeService.mapToXml(paramMap);// 把参数转换成XML数据格式
 		return QrCodeService.GetPrepayId(xmlData);
 	}
@@ -54,6 +63,8 @@ public class WxService implements IWxService {
 	@Override
 	public PayResultModel GetQrUrl(PayParamModel model) throws Exception {
 		HashMap<String, String> paramMap = Maps.newHashMap();
+		ParamPlatformModel paramPlatformModel = new PlatformModel()
+				.getPlayformModel(model.getPlatform());
 		paramMap.put("trade_type", "NATIVE"); // 交易类型
 		paramMap.put("spbill_create_ip", Util.localIp()); // 本机的Ip
 		paramMap.put("product_id", model.getOrder_no()); // 商户根据自己业务传递的参数 必填
@@ -61,12 +72,14 @@ public class WxService implements IWxService {
 		paramMap.put("out_trade_no", model.getOrder_no()); // 商户 后台的贸易单号
 		paramMap.put("total_fee", "" + model.getTotal_fee()); // 金额必须为整数 单位为分
 		paramMap.put("notify_url", WxPayNotify); // 支付成功后，回调地址
-		paramMap.put("appid", Configure.getAppid()); // appid
-		paramMap.put("mch_id", Configure.getMchid()); // 商户号
+		paramMap.put("appid", paramPlatformModel.getAppid()); // appid
+		paramMap.put("mch_id", paramPlatformModel.getMchid()); // 商户号
 		paramMap.put("nonce_str",
 				RandomStringGenerator.getRandomStringByLength(32)); // 随机数
+		String attach = model.getNotify() + "|" + model.getPlatform();
+		paramMap.put("attach", attach);
 		paramMap.put("sign",
-				QrCodeService.getSign(paramMap, Configure.getKey()));// 根据微信签名规则，生成签名
+				QrCodeService.getSign(paramMap, paramPlatformModel.getKey()));// 根据微信签名规则，生成签名
 		String xmlData = QrCodeService.mapToXml(paramMap);// 把参数转换成XML数据格式
 		return QrCodeService.getCodeUrl(xmlData);
 	}
@@ -75,7 +88,7 @@ public class WxService implements IWxService {
 	 * 订单查询
 	 * */
 	@Override
-	public void Query(String out_trade_no) throws Exception {
+	public void Query(String out_trade_no, int platform) throws Exception {
 		// TODO Auto-generated method stub
 		ScanPayQueryReqData scanPayQueryReqData = new ScanPayQueryReqData("",
 				out_trade_no);
@@ -87,7 +100,7 @@ public class WxService implements IWxService {
 	 * 退款
 	 * */
 	@Override
-	public void Refund(RefundReqData model) throws Exception {
+	public void Refund(RefundReqData model, int platform) throws Exception {
 		RefundReqData refundReqData = new RefundReqData(
 				model.getTransaction_id(), model.getOut_trade_no(),
 				model.getDevice_info(), model.getOut_refund_no(),
@@ -101,15 +114,18 @@ public class WxService implements IWxService {
 	 * 关闭订单
 	 * */
 	@Override
-	public String Close(String out_trade_no) throws Exception {
+	public String Close(String out_trade_no, int platform) throws Exception {
+
 		HashMap<String, String> paramMap = Maps.newHashMap();
+		ParamPlatformModel paramPlatformModel = new PlatformModel()
+				.getPlayformModel(platform);
 		paramMap.put("out_trade_no", out_trade_no); // 平台单号
-		paramMap.put("appid", Configure.getAppid()); // appid
-		paramMap.put("mch_id", Configure.getMchid()); // 商户号
+		paramMap.put("appid", paramPlatformModel.getAppid()); // appid
+		paramMap.put("mch_id", paramPlatformModel.getMchid()); // 商户号
 		paramMap.put("nonce_str",
 				RandomStringGenerator.getRandomStringByLength(32)); // 随机数
 		paramMap.put("sign",
-				QrCodeService.getSign(paramMap, Configure.getKey()));// 根据微信签名规则，生成签名
+				QrCodeService.getSign(paramMap, paramPlatformModel.getKey()));// 根据微信签名规则，生成签名
 		String xmlData = QrCodeService.mapToXml(paramMap);// 把参数转换成XML数据格式
 		return QrCodeService.CloseOrder(xmlData);
 	}
@@ -133,12 +149,12 @@ public class WxService implements IWxService {
 	public static void initSDKConfiguration(String key, String appID,
 			String mchID, String sdbMchID, String certLocalPath,
 			String certPassword) {
-		Configure.setKey(key);
-		Configure.setAppID(appID);
-		Configure.setMchID(mchID);
-		Configure.setSubMchID(sdbMchID);
-		Configure.setCertLocalPath(certLocalPath);
-		Configure.setCertPassword(certPassword);
+		Configure_.setKey(key);
+		Configure_.setAppID(appID);
+		Configure_.setMchID(mchID);
+		Configure_.setSubMchID(sdbMchID);
+		Configure_.setCertLocalPath(certLocalPath);
+		Configure_.setCertPassword(certPassword);
 	}
 
 }

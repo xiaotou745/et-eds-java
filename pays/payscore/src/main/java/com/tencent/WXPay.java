@@ -4,7 +4,7 @@ import com.tencent.business.DownloadBillBusiness;
 import com.tencent.business.RefundBusiness;
 import com.tencent.business.RefundQueryBusiness;
 import com.tencent.business.ScanPayBusiness;
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.protocol.downloadbill_protocol.DownloadBillReqData;
 import com.tencent.protocol.pay_protocol.ScanPayReqData;
 import com.tencent.protocol.pay_query_protocol.ScanPayQueryReqData;
@@ -28,12 +28,12 @@ public class WXPay {
      * @param certPassword HTTP证书的密码，默认等于MCHID
      */
     public static void initSDKConfiguration(String key,String appID,String mchID,String sdbMchID,String certLocalPath,String certPassword){
-        Configure.setKey(key);
-        Configure.setAppID(appID);
-        Configure.setMchID(mchID);
-        Configure.setSubMchID(sdbMchID);
-        Configure.setCertLocalPath(certLocalPath);
-        Configure.setCertPassword(certPassword);
+        Configure_.setKey(key);
+        Configure_.setAppID(appID);
+        Configure_.setMchID(mchID);
+        Configure_.setSubMchID(sdbMchID);
+        Configure_.setCertLocalPath(certLocalPath);
+        Configure_.setCertPassword(certPassword);
     }
 
     /**

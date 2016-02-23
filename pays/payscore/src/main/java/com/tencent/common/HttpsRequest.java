@@ -65,9 +65,9 @@ public class HttpsRequest implements IServiceRequest{
     private void init() throws IOException, KeyStoreException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyManagementException {
 
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
-        FileInputStream instream = new FileInputStream(new File(Configure.getCertLocalPath()));//加载本地的证书进行https加密传输
+        FileInputStream instream = new FileInputStream(new File(Configure_.getCertLocalPath()));//加载本地的证书进行https加密传输
         try {
-            keyStore.load(instream, Configure.getCertPassword().toCharArray());//设置证书密码
+            keyStore.load(instream, Configure_.getCertPassword().toCharArray());//设置证书密码
         } catch (CertificateException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
@@ -78,7 +78,7 @@ public class HttpsRequest implements IServiceRequest{
 
         // Trust own CA and all self-signed certs
         SSLContext sslcontext = SSLContexts.custom()
-                .loadKeyMaterial(keyStore, Configure.getCertPassword().toCharArray())
+                .loadKeyMaterial(keyStore, Configure_.getCertPassword().toCharArray())
                 .build();
         // Allow TLSv1 protocol only
         SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(

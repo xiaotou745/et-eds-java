@@ -1,7 +1,7 @@
 package com.tencent.business;
 
 import com.tencent.WXPay;
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.common.Log;
 import com.tencent.common.Signature;
 import com.tencent.common.Util;
@@ -84,7 +84,7 @@ public class RefundBusiness {
 
         ReportReqData reportReqData = new ReportReqData(
                 refundResData.getDevice_info(),
-                Configure.REFUND_API,
+                Configure_.REFUND_API,
                 (int) (totalTimeCost),//本次请求耗时
                 refundResData.getReturn_code(),
                 refundResData.getReturn_msg(),
@@ -92,11 +92,11 @@ public class RefundBusiness {
                 refundResData.getErr_code(),
                 refundResData.getErr_code_des(),
                 refundResData.getOut_trade_no(),
-                Configure.getIP()
+                Configure_.getIP()
         );
 
         long timeAfterReport;
-        if(Configure.isUseThreadToDoReport()){
+        if(Configure_.isUseThreadToDoReport()){
             ReporterFactory.getReporter(reportReqData).run();
             timeAfterReport = System.currentTimeMillis();
             Util.log("pay+report总耗时（异步方式上报）："+(timeAfterReport-costTimeStart) + "ms");

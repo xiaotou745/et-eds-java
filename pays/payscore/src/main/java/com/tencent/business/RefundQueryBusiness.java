@@ -96,7 +96,7 @@ public class RefundQueryBusiness {
 
         ReportReqData reportReqData = new ReportReqData(
                 refundQueryReqData.getDevice_info(),
-                Configure.REFUND_QUERY_API,
+                Configure_.REFUND_QUERY_API,
                 (int) (totalTimeCost),//本次请求耗时
                 refundQueryResData.getReturn_code(),
                 refundQueryResData.getReturn_msg(),
@@ -104,11 +104,11 @@ public class RefundQueryBusiness {
                 refundQueryResData.getErr_code(),
                 refundQueryResData.getErr_code_des(),
                 refundQueryResData.getOut_trade_no(),
-                Configure.getIP()
+                Configure_.getIP()
         );
 
         long timeAfterReport;
-        if(Configure.isUseThreadToDoReport()){
+        if(Configure_.isUseThreadToDoReport()){
             ReporterFactory.getReporter(reportReqData).run();
             timeAfterReport = System.currentTimeMillis();
             Util.log("pay+report总耗时（异步方式上报）："+(timeAfterReport-costTimeStart) + "ms");
