@@ -57,12 +57,11 @@ public class TaskDistributionConfigService implements
 		HttpResultModel<List<TaskDistributionConfig>> resultModel=new HttpResultModel<List<TaskDistributionConfig>>();
 		
 		int taskDistributionId=1;
-		if(req!=null)
-		{
+		if(req!=null&&req.getBusinessId()!=null&&req.getBusinessId().intValue()>0){
 			BusinessModel businessModel = businessDao.getBusiness((long) req.getBusinessId());
-			taskDistributionId=businessModel.getTaskDistributionId();
-			if(taskDistributionId==0)
-				taskDistributionId=1;		
+			if (businessModel!=null&&businessModel.getTaskDistributionId()>0) {
+				taskDistributionId=businessModel.getTaskDistributionId();
+			}		
 		}	
 		
 		TaskDistribution taskDistributionModel= taskDistributionDao.selectByPrimaryKey(taskDistributionId);
