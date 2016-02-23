@@ -35,7 +35,7 @@ if(list == null){
 								<td><%=list.get(i).getId()%></td>
 								<td><%=list.get(i).getName()%></td>
 								<td><%=list.get(i).getRemark()%></td>
-								<td>0</td>
+								<td><%=list.get(i).getUserCount()%></td>
 									<td><%=ParseHelper.ToDateString(list.get(i).getUpdatetime())%>	</td>
 								<td><%=list.get(i).getUpdatename()%></td>							
 						

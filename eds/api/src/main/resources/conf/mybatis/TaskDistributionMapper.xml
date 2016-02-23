@@ -36,9 +36,12 @@
   parameterType="com.edaisong.entity.req.PagedTaskDistributionReq" 
   statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
-' Id',
-' Id,Name,Remark,CreateName,CreateTime,UpdateName,UpdateTime',
-' 	TaskDistribution WITH (NOLOCK)',
+' t.Id',
+'  t.Id, t.Name, t.Remark, t.CreateName, t.CreateTime, t.UpdateName, t.UpdateTime,isnull(v.userCount,0) userCount',
+' 	TaskDistribution t WITH (NOLOCK)
+	LEFT JOIN (	SELECT  TaskDistributionid, COUNT(TaskDistributionid) AS userCount FROM 	dbo.business
+	GROUP BY TaskDistributionid) v
+	ON t.id=v.TaskDistributionid',
 '<include refid="queryWhere" />',
 #{pageSize,mode=IN,jdbcType=INTEGER},
 #{currentPage,mode=IN,jdbcType=INTEGER}

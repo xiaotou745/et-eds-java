@@ -16,8 +16,18 @@ public class TaskDistribution {
     private String updatename;
 
     private Date updatetime;
+    
+    private Integer userCount;
 
-    public Integer getId() {
+    public Integer getUserCount() {
+		return userCount;
+	}
+
+	public void setUserCount(Integer userCount) {
+		this.userCount = userCount;
+	}
+
+	public Integer getId() {
         return id;
     }
 
