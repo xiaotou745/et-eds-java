@@ -57,19 +57,17 @@ public class TaskDistributionConfigService implements
 		HttpResultModel<List<TaskDistributionConfig>> resultModel=new HttpResultModel<List<TaskDistributionConfig>>();
 		
 		int taskDistributionId=1;
-		if(req==null || req.getBusinessId()==null)
-		{
-			
-		}	
-		else
+		if(req!=null && req.getBusinessId()!=null && req.getBusinessId()>0 )
 		{
 			BusinessModel businessModel = businessDao.getBusiness((long) req.getBusinessId());
-			taskDistributionId=businessModel.getTaskDistributionId();
-			if(taskDistributionId==0)
-				taskDistributionId=1;	
-		}
-		
-		
+			if(businessModel!=null)
+			{
+				taskDistributionId=businessModel.getTaskDistributionId();
+				if(taskDistributionId==0)
+					taskDistributionId=1;
+			}
+		}			
+				
 		TaskDistribution taskDistributionModel= taskDistributionDao.selectByPrimaryKey(taskDistributionId);
 
 		List<TaskDistributionConfig> list= taskDistributionConfigDao.queryByTaskDistributionId(taskDistributionId);//获取所有配送费配置
