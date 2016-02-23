@@ -13,6 +13,7 @@ import com.edaisong.api_http.service.inter.ICommonService;
 import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.RecordType;
+import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.resp.TaskDistributionConfigResp;
 
 /**
@@ -60,8 +61,8 @@ public class CommonService implements ICommonService {
 	* 获取普通任务配送费配置
 	* */
 	@Override
-	public HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig() {
-		return taskDistributionConfigService.getTaskDistributionConfig();
+	public HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig(BusinessReq req) {
+		return taskDistributionConfigService.getTaskDistributionConfig(req);
 	}
 	
 }

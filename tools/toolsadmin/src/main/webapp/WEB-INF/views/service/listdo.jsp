@@ -62,6 +62,8 @@ List<QuartzServiceModel> data = responsePageList.getResultList();
 			<%if(data.get(i).getIsStart()==0){%>
 				<br/>
 				<a href="javascript:void(0)" onclick="modify('<%=data.get(i).getId()%>','<%=name%>','<%=data.get(i).getReqUrl()%>','<%=cron%>','<%=remark%>')">修改</a>	
+				<br/>
+				<a href="javascript:void(0)" onclick="del('<%=data.get(i).getId()%>')">删除</a>	
 			<%} %>
 			</td>
 		</tr>

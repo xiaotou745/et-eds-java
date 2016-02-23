@@ -17,7 +17,7 @@ import java.security.UnrecoverableKeyException;
 public class ScanPayService extends BaseService{
 
     public ScanPayService() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        super(Configure.PAY_API);
+        super(Configure_.PAY_API);
     }
 
     /**

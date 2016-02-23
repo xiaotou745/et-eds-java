@@ -1,6 +1,6 @@
 package com.tencent.service;
 
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.common.HttpsRequest;
 import com.tencent.common.RandomStringGenerator;
 import com.tencent.common.Signature;
@@ -14,7 +14,7 @@ import com.tencent.protocol.reverse_protocol.ReverseReqData;
 public class ReverseService extends BaseService{
 
     public ReverseService() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        super(Configure.REVERSE_API);
+        super(Configure_.REVERSE_API);
     }
 
     /**

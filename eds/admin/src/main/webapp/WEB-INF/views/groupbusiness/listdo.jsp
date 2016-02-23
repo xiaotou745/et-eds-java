@@ -59,11 +59,11 @@ function showMidfyGroupBusiness(id,groupbusiName,loginName,isAllowOverdraft){
 	 $('#txtModifyGroupBusinessName').val(groupbusiName);
      $('#txtModifyLoginName').val(loginName);
      $("#txtModifyGroupBusinessId").val(id);
-     $("input:radio[name='rModifyIsAllowOverdraft'][value='0']").attr("checked",true);
+     $("input:radio[name='rModifyIsAllowOverdraft'][value='0']").prop("checked",true);
      if(isAllowOverdraft == 1){
-    	 $("input:radio[name='rModifyIsAllowOverdraft'][value='1']").attr("checked",true);
+    	 $("input:radio[name='rModifyIsAllowOverdraft'][value='1']").prop("checked",true);
      }else{
-    	 $("input:radio[name='rModifyIsAllowOverdraft'][value='0']").attr("checked",true);
+    	 $("input:radio[name='rModifyIsAllowOverdraft'][value='0']").prop("checked",true);
      }
      var url = "<%=basePath%>/groupbusiness/getgroupbusinesslog";
      $.ajax({

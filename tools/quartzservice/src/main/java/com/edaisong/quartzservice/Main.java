@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.edaisong.toolsapi.common.QuartzManager;
+
 import com.edaisong.toolscore.util.HttpUtil;
 import com.edaisong.toolscore.util.JsonUtil;
 import com.edaisong.toolsentity.QuartzServiceModel;
@@ -104,18 +104,19 @@ public class Main {
 				}
 				List<Integer> updateOldIds = new ArrayList<Integer>(oldIds);
 				updateOldIds.retainAll(newIds);// updateOldIds中剩余的是交集，即可能需要重新设置的服务
-				log.info("本次需要重置"+updateOldIds.size()+"个服务");
+				int resetNum=0;
 				for (Integer oldId : updateOldIds) {
 					QuartzServiceModel oldModel = oldListData.stream().filter(m -> m.getId() == oldId).findFirst().get();
 					QuartzServiceModel newModel = newListData.stream().filter(m -> m.getId() == oldId).findFirst().get();
 					// 请求地址或执行频率变更了，则需要重置服务
 					if (!oldModel.getReqUrl().equals(newModel.getReqUrl())
 							|| !oldModel.getExecTime().equals(newModel.getExecTime())) {
+						resetNum++;
 						QuartzManager.removeJob(oldModel.getReqUrl());
 						QuartzManager.addJob(newModel.getReqUrl(),ChildJob.class, newModel.getExecTime());
 					}
-
 				}
+				log.info("本次需要重置"+resetNum+"个服务");
 			}
 			oldListData = newListData;
 		} catch (Exception e) {

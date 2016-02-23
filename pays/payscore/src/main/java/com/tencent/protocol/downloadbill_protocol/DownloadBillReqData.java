@@ -1,6 +1,6 @@
 package com.tencent.protocol.downloadbill_protocol;
 
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.common.RandomStringGenerator;
 import com.tencent.common.Signature;
 
@@ -36,10 +36,10 @@ public class DownloadBillReqData {
     public DownloadBillReqData(String deviceInfo,String billDate,String billType){
 
         //微信分配的公众号ID（开通公众号之后可以获取到）
-        setAppid(Configure.getAppid());
+        setAppid(Configure_.getAppid());
 
         //微信支付分配的商户号ID（开通公众号的微信支付功能之后可以获取到）
-        setMch_id(Configure.getMchid());
+        setMch_id(Configure_.getMchid());
 
         //商户自己定义的扫码支付终端设备号，方便追溯这笔交易发生在哪台终端设备上
         setDevice_info(deviceInfo);

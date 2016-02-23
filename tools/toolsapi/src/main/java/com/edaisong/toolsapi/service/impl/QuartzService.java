@@ -82,4 +82,9 @@ public class QuartzService implements IQuartzService {
 
 		return redisModel;
 	}
+
+	@Override
+	public int delete(long id) {
+		return quartzServiceDao.delete(id);
+	}
 }

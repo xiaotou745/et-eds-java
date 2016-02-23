@@ -275,7 +275,15 @@ public class AdminToolsController {
 		view.addObject("subtitle", "APP控制");
 		view.addObject("currenttitle", "导出数据管理");
 		view.addObject("viewPath", "admintools/export");
-		view.addObject("appNameList", toolsHelper.getAppNameList(ServerType.SqlServer,null));
+		//目前只有superman支持导出数据
+		List<AppDbConfig> appConfig = toolsHelper.getAppConfigList(ServerType.SqlServer, null);
+		List<String> appNameList = appConfig
+				.stream()
+				.filter(m -> m.getConfigvalue().toLowerCase()
+						.indexOf("superman") > 0).map(t -> t.getAppname())
+				.distinct().collect(Collectors.toList());
+		view.addObject("appNameList", appNameList);
+		//view.addObject("appNameList", toolsHelper.getAppNameList(ServerType.SqlServer,null));
 		return view;
 	}
 	@RequestMapping("exportinsert")

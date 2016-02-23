@@ -23,6 +23,7 @@
 							<div class="col-sm-8">
 							   <%=HtmlHelper.getSelect("appname", appNameList, "appName", "dbName",null,null,"全部")%>
 							</div>
+							<span id="tip" style="color:red"></span>
 						</div>
 					</div>
 				</div>
@@ -144,7 +145,7 @@
 
 <!-- 新增菜单 -->
 <div tabindex="-1" class="modal inmodal" id="addNewMenubox" role="dialog" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-sm">
 		<div class="modal-content animated bounceInRight">
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal">
@@ -157,10 +158,10 @@
 					<fieldset>
 						<br>
 						<div class="control-group">
-							<label>菜单名称：</label> <input name="menuName" id="1jimenuName" type="text"/>
+							<label>菜单名称：</label> <input class="form-control" name="menuName" id="1jimenuName" type="text"/>
 						</div>
 						<div class="control-group">
-							<label>AuthCode：</label> <input name="menuName" id="1jiAuthCode" type="text"/>
+							<label>AuthCode：</label> <input class="form-control" name="menuName" id="1jiAuthCode" type="text"/>
 						</div>
 					</fieldset>
 				</div>
@@ -177,7 +178,7 @@
 </div>
 <!-- 新增二级菜单 -->
 <div tabindex="-1" class="modal inmodal" id="addNewMenubox2ji" role="dialog" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-sm">
 		<div class="modal-content animated bounceInRight">
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal">
@@ -190,13 +191,13 @@
 					<fieldset>
 						<br>
 						<div class="control-group">
-							<label>菜单名称：</label> <input name="menuName" id="2jimenuName" type="text"/>
+							<label>菜单名称：</label> <input class="form-control" name="menuName" id="2jimenuName" type="text"/>
 						</div>
 						<div class="control-group">
-							<label>AuthCode：</label> <input name="menuName" id="2jiAuthCode" type="text"/>
+							<label>AuthCode：</label> <input class="form-control" name="menuName" id="2jiAuthCode" type="text"/>
 						</div>
 						<div class="control-group">
-							<label>Url：</label> <input name="menuName" id="2jiUrl" type="text"/>
+							<label>Url：</label> <input class="form-control" name="menuName" id="2jiUrl" type="text"/>
 						</div>
 					</fieldset>
 				</div>
@@ -213,7 +214,7 @@
 </div>
 <!-- 新增按钮 -->
 <div tabindex="-1" class="modal inmodal" id="addNewMenubox3ji" role="dialog" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-sm">
 		<div class="modal-content animated bounceInRight">
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal">
@@ -226,10 +227,10 @@
 					<fieldset>
 						<br>
 						<div class="control-group">
-							<label>按钮名称：</label> <input name="menuName" id="3jimenuName" type="text"/>
+							<label>按钮名称：</label> <input class="form-control" name="menuName" id="3jimenuName" type="text"/>
 						</div>
 						<div class="control-group">
-							<label>AuthCode：</label> <input name="menuName" id="3jiAuthCode" type="text"/>
+							<label>AuthCode：</label> <input class="form-control" name="menuName" id="3jiAuthCode" type="text"/>
 						</div>
 					</fieldset>
 				</div>
@@ -247,7 +248,7 @@
 
 <!-- 编辑 -->
 <div tabindex="-1" class="modal inmodal" id="edit1ji" role="dialog" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-sm">
 		<div class="modal-content animated bounceInRight">
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal">
@@ -262,7 +263,7 @@
 						<br>
 						<input id="edit1hide" type="hidden"/>
 						<div class="control-group">
-							<label>菜单名称：</label> <input name="menuName" id="edit1jimenuName" type="text"/>
+							<label>菜单名称：</label> <input name="menuName" id="edit1jimenuName" type="text"  class="form-control"/>
 						</div>
 						<div class="control-group">
 							<label>是否锁定：</label> 
@@ -270,7 +271,7 @@
 							<input name="edit1radion" id="edit1radionN"  type="radio" value="0" />否
 						</div>
 						<div class="control-group">
-							<label>AuthCode：</label> <input name="menuName" id="edit1AuthCode" type="text"/>
+							<label>AuthCode：</label> <input name="menuName" id="edit1AuthCode" type="text"  class="form-control"/>
 						</div>
 					</fieldset>
 				</div>
@@ -288,7 +289,7 @@
 
 <!-- 编辑2级菜单 -->
 <div tabindex="-1" class="modal inmodal" id="edit2ji" role="dialog" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-sm">
 		<div class="modal-content animated bounceInRight">
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal">
@@ -303,10 +304,10 @@
 						<br>
 						<input id="edit2hide" type="hidden"/>
 						<div class="control-group">
-							<label>菜单名称：</label> <input name="menuName" id="edit2jimenuName" type="text"/>
+							<label>菜单名称：</label> <input name="menuName" id="edit2jimenuName" type="text"  class="form-control"/>
 						</div>
 						<div class="control-group">
-							<label>URL：</label> <input name="menuName" id="edit2jiurl" type="text"/>
+							<label>URL：</label> <input name="menuName" id="edit2jiurl" type="text"  class="form-control"/>
 						</div>
 						<div class="control-group">
 							<label>是否锁定：</label> 
@@ -314,7 +315,7 @@
 							<input name="edit2radion" id="edit2radionN"  type="radio" value="0" />否
 						</div>
 						<div class="control-group">
-							<label>AuthCode：</label> <input name="menuName" id="edit2AuthCode" type="text"/>
+							<label>AuthCode：</label> <input name="menuName" id="edit2AuthCode" type="text"  class="form-control"/>
 						</div>
 					</fieldset>
 				</div>
@@ -331,7 +332,7 @@
 </div>
 <!-- 编辑3级菜单 -->
 <div tabindex="-1" class="modal inmodal" id="edit3ji" role="dialog" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-sm">
 		<div class="modal-content animated bounceInRight">
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal">
@@ -346,7 +347,7 @@
 						<br>
 						<input id="edit3hide" type="hidden"/>
 						<div class="control-group">
-							<label>按钮名称：</label> <input name="menuName" id="edit3jimenuName" type="text"/>
+							<label>按钮名称：</label> <input name="menuName" id="edit3jimenuName" type="text"  class="form-control"/>
 						</div>
 						<div class="control-group">
 							<label>是否锁定：</label> 
@@ -354,7 +355,7 @@
 							<input name="edit3radion" id="edit3radionN"  type="radio" value="0" />否
 						</div>
 						<div class="control-group">
-							<label>AuthCode：</label> <input name="menuName" id="edit3AuthCode" type="text"/>
+							<label>AuthCode：</label> <input name="menuName" id="edit3AuthCode" type="text"  class="form-control"/>
 						</div>
 					</fieldset>
 				</div>
@@ -377,12 +378,14 @@ var detail="";
 var $checkableTree;
 var jss={
 		search:function(currentPage){
+			$("#tip").html("正在查询。。。");
 			$('#detail').hide();
 			var url="<%=basePath%>/admintools/menulistdo";
 			var par={
 					"appName":$('#appname option:selected').text(),
 			};
 			$.post(url,par,function(result){
+				$("#tip").html("");
 				if (result!="")
 				{
 	       		 $checkableTree=$('#treeview11').treeview({
@@ -465,11 +468,11 @@ var jss={
 			$('#edit1AuthCode').val(detail.authCode);
 			if(detail.belock==true)
 			{
-				$('#edit1radionY').attr("checked","checked");
+				$('#edit1radionY').prop("checked",true);
 			}
 			else
 			{
-				$('#edit1radionN').attr("checked","checked");
+				$('#edit1radionN').prop("checked",true);
 			}
 			$('#edit1ji').modal('show');
 		}
@@ -485,11 +488,11 @@ var jss={
 			}
 			if(detail.belock==true)
 			{
-				$('#edit2radionY').attr("checked","checked");
+				$('#edit2radionY').prop("checked",true);
 			}
 			else
 			{
-				$('#edit2radionN').attr("checked","checked");
+				$('#edit2radionN').prop("checked",true);
 			}
 			$('#edit2ji').modal('show');
 		}
@@ -500,11 +503,11 @@ var jss={
 			$('#edit3AuthCode').val(detail.authCode);
 			if(detail.belock==true)
 			{
-				$('#edit3radionY').attr("checked","checked");
+				$('#edit3radionY').prop("checked",true);
 			}
 			else
 			{
-				$('#edit3radionN').attr("checked","checked");
+				$('#edit3radionN').prop("checked",true);
 			}
 			$('#edit3ji').modal('show')
 		}

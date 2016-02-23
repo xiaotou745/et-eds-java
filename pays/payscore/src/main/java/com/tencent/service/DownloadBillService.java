@@ -1,6 +1,6 @@
 package com.tencent.service;
 
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.common.HttpsRequest;
 import com.tencent.common.RandomStringGenerator;
 import com.tencent.common.Signature;
@@ -14,7 +14,7 @@ import com.tencent.protocol.downloadbill_protocol.DownloadBillReqData;
 public class DownloadBillService extends BaseService{
 
     public DownloadBillService() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        super(Configure.DOWNLOAD_BILL_API);
+        super(Configure_.DOWNLOAD_BILL_API);
     }
 
     //ALL，返回当日所有订单信息，默认值

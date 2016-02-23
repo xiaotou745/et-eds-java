@@ -1,6 +1,6 @@
 package com.tencent.common.report.protocol;
 
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.common.RandomStringGenerator;
 import com.tencent.common.Signature;
 
@@ -55,14 +55,14 @@ public class ReportReqData {
      */
     public ReportReqData(String deviceInfo, String interfaceUrl,int executeTimeCost, String returnCode,String returnMsg,String resultCode,String errCode,String errCodeDes, String outTradeNo,String userIp){
         //微信分配的公众号ID（开通公众号之后可以获取到）
-        setAppid(Configure.getAppid());
+        setAppid(Configure_.getAppid());
 
         //商户系统自己生成的唯一的订单号
         setOut_trade_no(outTradeNo);
 
         //微信支付分配的商户号ID（开通公众号的微信支付功能之后可以获取到）
-        setMch_id(Configure.getMchid());
-        setSub_mch_id(Configure.getSubMchid());
+        setMch_id(Configure_.getMchid());
+        setSub_mch_id(Configure_.getSubMchid());
         setDevice_info(deviceInfo);
         setInterface_url(interfaceUrl);
         setExecute_time_cost(executeTimeCost);

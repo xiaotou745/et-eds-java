@@ -174,6 +174,22 @@
 			};
 		return paramaters;
 	}
+	function del(id){
+		if(!window.confirm("是否确认删除?")) return;
+		var url = "<%=basePath%>/quartz/del";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : {"id":id},
+			success : function(result) {
+				if(result>0){
+					window.location.href = "<%=basePath%>/quartz/list";   
+				}else{
+					alert("操作失败，请重试！");
+				}
+			}
+		});
+	}
 	$("#save").click(function(){
 		var paramaters=getValue();
 		if(paramaters.name==""){

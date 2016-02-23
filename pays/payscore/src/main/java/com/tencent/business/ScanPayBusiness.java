@@ -1,6 +1,6 @@
 package com.tencent.business;
 
-import com.tencent.common.Configure;
+import com.tencent.common.Configure_;
 import com.tencent.common.Log;
 import com.tencent.common.Signature;
 import com.tencent.common.Util;
@@ -120,7 +120,7 @@ public class ScanPayBusiness {
 
         ReportReqData reportReqData = new ReportReqData(
                 scanPayReqData.getDevice_info(),
-                Configure.PAY_API,
+                Configure_.PAY_API,
                 (int) (totalTimeCost),//本次请求耗时
                 scanPayResData.getReturn_code(),
                 scanPayResData.getReturn_msg(),
@@ -131,7 +131,7 @@ public class ScanPayBusiness {
                 scanPayReqData.getSpbill_create_ip()
         );
         long timeAfterReport;
-        if (Configure.isUseThreadToDoReport()) {
+        if (Configure_.isUseThreadToDoReport()) {
             ReporterFactory.getReporter(reportReqData).run();
             timeAfterReport = System.currentTimeMillis();
             log.i("pay+report总耗时（异步方式上报）：" + (timeAfterReport - costTimeStart) + "ms");

@@ -18,6 +18,7 @@ public interface IQuartzService {
 	QuartzHttpModel queryStartList(int appSource);
 	int insert(QuartzServiceModel record);
 	int update(QuartzServiceModel record);
+	int delete(long id);
 	boolean checkCron(String cron);
 	/**
 	 * @author haichao
