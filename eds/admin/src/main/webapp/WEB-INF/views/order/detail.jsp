@@ -468,7 +468,7 @@
 					layer.alert('审核成功！', {
 					    icon: 1
 					},function(){
-						window.location.reload();
+						window.location.href=window.location.href;
 					});
 				} else {
 					layer.alert(result.message, {
