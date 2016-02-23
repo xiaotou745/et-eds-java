@@ -915,7 +915,10 @@
 		<if test="tagType == 1 and tagId>0">
 			join dbo.TagRelation tagR on c.Id=tagR.UserId and tagR.IsEnable=1 and tagR.UserType=1 and  tagR.TagId=${tagId} 
 		</if>
+		<if test="authCityStr !=null and authCityStr!=''">
 		join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
+		</if>
+		
 	</sql>
 	<!-- 后台订单列表页面 动态查询条件 add by caoheyang 20150728 -->
 	<sql id="GetOrdersColumsWhere">
@@ -1629,7 +1632,15 @@ where   Status = 1
 			and b.PhoneNo = ''${selectValue}''
 		</if> 
 	</sql>
+	<sql id="busTaskListTables">
 	
+		 dbo.[order] AS o ( NOLOCK )
+        INNER JOIN dbo.business AS b ( NOLOCK ) ON b.Id = o.businessId 
+        JOIN dbo.OrderOther AS oo(nolock) ON o.id=oo.OrderId
+        <if test="authCityStr !=null and authCityStr!=''">
+        join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
+        </if>
+	</sql>
 	<select id="busTaskList" resultType="com.edaisong.entity.domain.BusTaskList"
 		parameterType="com.edaisong.entity.req.PagedBusTaskListReq"
 		statementType="CALLABLE">
@@ -1643,10 +1654,7 @@ where   Status = 1
         SUM(o.OrderCount) AS TaskCount 
 		',
 		'
-		 dbo.[order] AS o ( NOLOCK )
-        INNER JOIN dbo.business AS b ( NOLOCK ) ON b.Id = o.businessId 
-        JOIN dbo.OrderOther AS oo(nolock) ON o.id=oo.OrderId
-        join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
+		<include refid="busTaskListTables" />
 		',
 		'
 		<include refid="busTaskList_Where" />
@@ -1801,9 +1809,11 @@ GROUP BY a.id ,
 	<sql id="getShanSongOrdersFrom">
 	   dbo.[order] (nolock)  a
         join business b with ( nolock ) on b.Id = a.businessId
+        <if test="authCityStr !=null and authCityStr!=''">
+        join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
+        </if>
         left join dbo.clienter (nolock) c on a.ClienterId = c.Id
         left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
-        join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
 	</sql>
 	<!--  后台E单订单列表页面 动态查询条件 add by caoheyang 20151124 -->
 	<sql id="getShanSongOrdersColumsWhere">
