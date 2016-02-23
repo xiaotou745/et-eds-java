@@ -16,6 +16,7 @@ public interface IQuartzServiceDao {
 	List<QuartzServiceModel> queryStartList(int appSource);
 	int insert(QuartzServiceModel record);
 	int update(QuartzServiceModel record);
+	int delete(long id);
 	/**
 	 * @author haichao
 	 * @date 2015年12月10日 10:18:44 修改服务状态

@@ -48,4 +48,10 @@ public class QuartzServiceDao extends DaoBase implements IQuartzServiceDao {
 		return getReadOnlySqlSessionUtil().selectList(
 				"IQuartzServiceDao.queryStartList", appSource);
 	}
+
+	@Override
+	public int delete(long id) {
+		return getMasterSqlSessionUtil().delete(
+				"IQuartzServiceDao.delete", id);
+	}
 }
