@@ -436,7 +436,7 @@
 								"orderNo":orderNo
 							},
 							success : function(result) {
-								if (result.responseCode==0) {		
+								if (result.responseCode==0||result.responseCode=='0') {		
 									layer.alert(result.message, {
 									    icon: 1
 									},function(){

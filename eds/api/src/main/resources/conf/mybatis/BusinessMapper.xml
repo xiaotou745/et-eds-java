@@ -572,7 +572,7 @@
 			and ISNULL(b.mealsSettleMode,0)=${mealsSettleMode}
 		</if>
 		<if test="businessSettlementRatio!=null and businessSettlementRatio>0">
-			and b.businessCommission=#{businessSettlementRatio}
+			and b.businessCommission=${businessSettlementRatio}
 		</if>
 		<if test="groupId!=null and groupId!=0">
 			and b.groupId=${groupId}
