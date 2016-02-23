@@ -2203,8 +2203,10 @@ public class OrderService implements IOrderService {
 		double currAmount= taskDistributionConfigService.calculator(recordConfig);
 		if(req.getAmount()!=currAmount)
 		{
-			resp.setStatus(FlashPushOrderEnum.AmountIsErr.value());
-			resp.setMessage(FlashPushOrderEnum.AmountIsErr.desc());
+			oResp.setAmount(new Double(currAmount));	  
+			resp.setResult(oResp);
+			resp.setStatus(FlashPushOrderEnum.Success.value());
+			resp.setMessage(FlashPushOrderEnum.Success.desc());
 			return resp;			
 		}	
 				

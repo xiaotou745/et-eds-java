@@ -136,6 +136,16 @@ public class OrderResp extends ResponseBase{
 		    private String timespan;
 		    
 		    private String appkey;
+		    
+		    private Double amount;
+
+			public Double getAmount() {
+				return amount;
+			}
+
+			public void setAmount(Double amount) {
+				this.amount = amount;
+			}
 
 			public String getAppkey() {
 				return appkey;
