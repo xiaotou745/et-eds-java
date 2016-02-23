@@ -313,6 +313,9 @@ public class AdminToolsController {
 		ModelAndView view = new ModelAndView("admintools/exportdo");
 		List<AppDbConfig> appConfig=toolsHelper.getAppConfigList(ServerType.SqlServer,appName);//构造数据库连接
 		if (appConfig.size()>0) {
+			if (appConfig.get(0).getConfigvalue().toLowerCase().indexOf("superman")<=0) {
+				return null;
+			}
 			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
 			PagedResponse<ExportSqlManage> resp= MybatisUtil.getSqlSessionUtil(conInfo).selectPageList("IExportSqlManageDao.query",req);
 			view.addObject("listData", resp);
