@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.RecordType;
+import com.edaisong.entity.req.BusinessReq;
 import com.edaisong.entity.resp.TaskDistributionConfigResp;
 
 /**
@@ -48,6 +49,6 @@ public interface ICommonService {
 	 * */
 	@POST
 	@Path("/gettaskdistributionconfig")
-	public HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig();
+	public HttpResultModel<List<TaskDistributionConfig>> getTaskDistributionConfig(BusinessReq req);
 }
 
