@@ -1030,7 +1030,8 @@ where   phoneNo= #{phone}  and GroupId=0
 		        bg.StrategyId AS StrategyId ,
 		        b.IsOrderChecked ,
 		        ISNULL(g.groupid, 0) AS groupBusinessID,
-		        b.pushOrderType
+		        b.pushOrderType ,
+		         b.TaskDistributionId
 		FROM    business b WITH ( NOLOCK )
 		        LEFT JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON b.BusinessGroupId = bg.Id
 		        LEFT JOIN GroupBusinessRelation g WITH ( NOLOCK ) ON b.id = g.businessid AND g.IsBind=1 AND g.IsEnable=1
