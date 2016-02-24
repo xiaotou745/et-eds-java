@@ -422,11 +422,16 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
 				<h4 class="modal-title">里程计费</h4>
+				<div style="margin-bottom: -40px;  margin-top: 18px;">
+				<input type="text" placeholder="配置名称" class="form-control" id="LichengName" style="width: 100px;"/>
+				<button type="button" class="btn btn-w-m btn-primary" id="LichengSerach" style="margin-left: -180px;margin-top: -50px;">查询</button>	
+				</div>
+				
 			</div>
 			<small class="font-bold">
+				
 				<div style="height: 500px; overflow: auto; margin-top: 10px; border-bottom: solid 1px #dcdcdc;">
-				<input type="text" placeholder="配置名称"  value="" id="LichengName"/>
-				<input type="button"  value="查询" id="LichengSerach"/>
+				
 				<div class="modal-body" id="LichengBoxBody">
 					
 				</div>
