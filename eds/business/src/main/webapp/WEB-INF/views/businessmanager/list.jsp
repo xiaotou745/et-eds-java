@@ -48,5 +48,24 @@ jss.search(1);
 $('#customerSearch').click(function(){
 	jss.search(1);
 });
-
+//移除绑定
+function RemoveBusinessBind(bid)
+{
+	if(!confirm('确定移除吗 ？'))
+	{
+		return;
+	}
+	var url='<%=basePath%>/businessmanager/removebind';
+	var par={"bid":bid};
+	$.post(url,par,function(d){
+		if(d==1)
+		{
+			alert('操作成功!');
+			jss.search(1);
+		}
+		else{
+			alert('操作失败!');
+			}
+	});
+}
 </script>

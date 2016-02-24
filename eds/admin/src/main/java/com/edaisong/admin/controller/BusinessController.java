@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
 
 
 
+
+
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,6 +30,7 @@ import com.edaisong.api.service.inter.IBusinessExpressRelationService;
 import com.edaisong.api.service.inter.IBusinessFinanceAccountService;
 import com.edaisong.api.service.inter.IBusinessGroupService;
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.api.service.inter.IBusinessSetpChargeService;
 import com.edaisong.api.service.inter.IBusinessThirdRelationService;
 import com.edaisong.api.service.inter.IClienterBindOptionLogService;
 import com.edaisong.api.service.inter.IClienterService;
@@ -34,7 +39,7 @@ import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.IGroupService;
 import com.edaisong.api.service.inter.IMarkService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
-
+import com.edaisong.api.service.inter.ITaskDistributionService;
 import com.edaisong.core.enums.BusinessClienterRelationAuditStatus;
 import com.edaisong.core.enums.ClienterGradeType;
 import com.edaisong.core.util.ExcelUtils;
@@ -48,10 +53,12 @@ import com.edaisong.entity.BusinessExpressRelation;
 import com.edaisong.entity.BusinessFinanceAccount;
 import com.edaisong.entity.BusinessGroup;
 import com.edaisong.entity.BusinessOptionLog;
+import com.edaisong.entity.BusinessSetpCharge;
 import com.edaisong.entity.Clienter;
 import com.edaisong.entity.ClienterBindOptionLog;
 import com.edaisong.entity.DeliveryCompany;
 import com.edaisong.entity.Mark;
+import com.edaisong.entity.TaskDistribution;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
@@ -128,6 +135,10 @@ public class BusinessController {
 	private IMarkService markService;
 	@Autowired
 	 private HttpServletRequest request;
+	@Autowired
+	 private IBusinessSetpChargeService businessSetpChargeService;
+	@Autowired
+	 private ITaskDistributionService taskDistributionService;
 
 
 	@RequestMapping("list")
@@ -168,7 +179,23 @@ public class BusinessController {
 		if (detail == null) {
 			throw new Exception("没找到businessID为" + businessID + "的详细信息");
 		}
-
+		//阶梯计费
+		BusinessSetpCharge charge=businessSetpChargeService.getById(Long.valueOf(detail.getSetpChargeId()));
+		if(charge!=null)
+		{
+			detail.setSetpChargeTitle(charge.getTitle());
+		}else {
+			
+			detail.setSetpChargeTitle("");
+		}
+		TaskDistribution tdb=taskDistributionService.selectByPrimaryKey(detail.getTaskDistributionId());
+		//里程计费
+		if(tdb!=null)
+		{
+			detail.setLichengTitle(tdb.getName());
+		}else {
+			detail.setLichengTitle("");
+		}
 		String isStarTimeSubsidies = adminToolsService.getConfigValueByKey(detail.getBusinessgroupid(),
 				"IsStarTimeSubsidies");
 		String isStartOverStoreSubsidies = adminToolsService.getConfigValueByKey(detail.getBusinessgroupid(),

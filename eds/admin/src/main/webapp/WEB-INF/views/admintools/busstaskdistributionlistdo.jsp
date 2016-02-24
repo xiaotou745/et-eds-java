@@ -28,7 +28,7 @@ if(data == null){
 								<td><%=data.get(i).getId()%></td>
 								<td><%=data.get(i).getName()%></td>
 								<td><%=data.get(i).getRemark()%></td>
-								<td><a href="javascript:void(0)" onclick="Choose(<%=data.get(i).getId()%>,<%=data.get(i).getName()%>)">选择</a></td>
+								<td><a href="javascript:void(0)" onclick="LichengChoosed(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>')">选择</a></td>
 							</tr>
 
 							<%
@@ -38,7 +38,7 @@ if(data == null){
 					</table>
 <%=PageHelper.getPage(responsePageList.getPageSize(),
 		responsePageList.getCurrentPage(), responsePageList.getTotalRecord(),
-		responsePageList.getTotalPage())%>
+		responsePageList.getTotalPage()).replace("jss.search", "jsslicheng.search")%>
 		
 <script>
 $(function() {

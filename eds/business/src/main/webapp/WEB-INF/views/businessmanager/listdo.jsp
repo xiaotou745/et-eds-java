@@ -25,7 +25,7 @@ if (data == null) {
 			<td style="width:150px">门店账号</td>
 			<td style="width:150px">联系电话</td>
 			<td style="width:150px">地址</td>
-			<td>门店余额</td>
+			<td style="width:150px">门店余额</td>
 			<td style="width:80px">消费集团金额</td>
 			<td style="width:80px">操作</td>
 		</tr>

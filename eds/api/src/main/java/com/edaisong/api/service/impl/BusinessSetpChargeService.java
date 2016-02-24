@@ -78,8 +78,8 @@ public class BusinessSetpChargeService implements IBusinessSetpChargeService {
 
 	@Override
 	public BusinessSetpCharge getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return businessSetpChargeDao.getById(id);
 	}
 	/**
 	 * 分页查询列表

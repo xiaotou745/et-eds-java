@@ -100,35 +100,31 @@ public class Business implements Serializable{
     private String appkey;
     
     private Integer isenable; 
-    
-//    public int getSetpChargeId() {
-//		return SetpChargeId;
-//	}
-//
-//	public void setSetpChargeId(int setpChargeId) {
-//		SetpChargeId = setpChargeId;
-//	}
-
-	public int getReceivableType() {
-		return ReceivableType;
+    private Integer setpChargeId;
+    private Integer receivableType;
+    private Integer taskDistributionId;
+	public Integer getTaskDistributionId() {
+		return taskDistributionId;
 	}
 
-	public void setReceivableType(int receivableType) {
-		ReceivableType = receivableType;
+	public void setTaskDistributionId(Integer taskDistributionId) {
+		this.taskDistributionId = taskDistributionId;
 	}
 
-	//private int SetpChargeId;
-    
-    private int ReceivableType;
-    
-    private int TaskDistributionId;
-
-	public int getTaskDistributionId() {
-		return TaskDistributionId;
+	public Integer getReceivableType() {
+		return receivableType;
 	}
 
-	public void setTaskDistributionId(int taskDistributionId) {
-		TaskDistributionId = taskDistributionId;
+	public void setReceivableType(Integer receivableType) {
+		this.receivableType = receivableType;
+	}
+
+	public Integer getSetpChargeId() {
+		return setpChargeId;
+	}
+
+	public void setSetpChargeId(Integer setpChargeId) {
+		this.setpChargeId = setpChargeId;
 	}
 
 	public Integer getIsenable() {

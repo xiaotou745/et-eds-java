@@ -28,7 +28,7 @@ if(data == null){
 								<td><%=data.get(i).getId()%></td>
 								<td><%=data.get(i).getTitle()%></td>
 								<td><%=data.get(i).getRemark()%></td>
-								<td><a href="javascript:void(0)" onclick="Choose(<%=data.get(i).getId()%>,<%=data.get(i).getTitle()%>)">选择</a></td>
+								<td><a href="javascript:void(0)" onclick=Choosed(<%=data.get(i).getId()%>,'<%=data.get(i).getTitle()%>')>选择</a></td>
 							</tr>
 
 							<%
@@ -41,7 +41,5 @@ if(data == null){
 		responsePageList.getTotalPage())%>
 		
 <script>
-$(function() {
 
-});
 </script>
