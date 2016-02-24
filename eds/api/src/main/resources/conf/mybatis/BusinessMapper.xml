@@ -51,7 +51,9 @@
 		b.isemployertask ,
 		ISNULL(b.RecommendPhone, '') AS
 		recommendphone,
-		b.PushOrderType
+		b.PushOrderType,
+		b.SetpChargeId,
+		b.ReceivableType
 		FROM business b WITH ( NOLOCK )
 		LEFT JOIN
 		BusinessFinanceAccount bfa WITH ( NOLOCK ) ON b.Id =
@@ -485,6 +487,12 @@
 			</if>
 			<if test="isAllowCashPay != null">
 				isAllowCashPay = #{isAllowCashPay,jdbcType=INTEGER},
+			</if>
+			<if test="setpChargeId != null">
+				SetpChargeId = #{setpChargeId,jdbcType=INTEGER},
+			</if>
+			<if test="receivableType != null">
+				ReceivableType = #{receivableType,jdbcType=INTEGER},
 			</if>
 		</set>
 		OUTPUT
