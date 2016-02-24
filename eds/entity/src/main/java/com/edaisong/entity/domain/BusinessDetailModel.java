@@ -13,6 +13,15 @@ public class BusinessDetailModel extends Business {
 	private int isModifyBind;
 	private String businessgroupidname;
 	private String setpChargeTitle;
+	private String lichengTitle;
+	public String getLichengTitle() {
+		return lichengTitle;
+	}
+
+	public void setLichengTitle(String lichengTitle) {
+		this.lichengTitle = lichengTitle;
+	}
+
 	public String getSetpChargeTitle() {
 		return setpChargeTitle;
 	}

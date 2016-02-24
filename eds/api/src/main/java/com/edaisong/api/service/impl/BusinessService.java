@@ -282,6 +282,11 @@ public class BusinessService implements IBusinessService {
 				remark.append(String.format("阶梯收费原值:%s,修改为%s;",brm.getSetpChargeId().toString(),
 						model.getSetpChargeId().toString()));
 			}
+			//里程收费模式
+			if (model.getTaskDistributionId()!=null&&brm.getTaskDistributionId() != model.getTaskDistributionId()) {
+				remark.append(String.format("里程计费原值:%s,修改为%s;",brm.getTaskDistributionId().toString(),
+						model.getTaskDistributionId().toString()));
+			}
 			//现金支付
 			if (model.getIsAllowCashPay()!=null&&brm.getIsAllowCashPay() != model.getIsAllowCashPay()) {
 				remark.append(String.format("是否可以现金支付原值:%s,修改为%s;",

@@ -162,6 +162,12 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
       <!-- 其他设置开始 -->
 	      <form action="" id="formqtsz">
 	      		<div class="control-group">
+					<label style="margin-left: 20px;width:150px;">里程计费配置：</label> 
+					 <label id="LichengTitle"><%=detail.getLichengTitle()%></label>
+	                 <input type="hidden" id="LichengId" name="LichengId" value="<%=detail.getTaskDistributionId()%>" />
+					<a href="javascript:void(0)" onclick="LichengChoose()">选择里程计费</a>
+				</div>
+	      		<div class="control-group">
 					<label style="margin-left: 20px;width:150px;">发单模式：</label> 
 					<input id="rPushOrderTypeN" name="rPushOrderType" type="radio" value="0"  <%=detail.getPushOrderType()==0?"checked" : ""%>> 
 					<label>普通模式</label>
@@ -172,7 +178,7 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 					<label style="margin-left: 20px;width:150px;">应收门店：</label> 
 					<input id="rReceivableType1" name="rReceivableType" type="radio" value="1"  <%=detail.getReceivableType()==1?"checked" : ""%>> 
 					<label>默认标准</label>
-					<input id="rReceivableType2" name="rReceivableType" type="radio" value="2" <%=detail.getReceivableType()==2?"checked" : ""%>> 
+					<input id="rReceivableType2" name="rReceivableType" type="radio" value="2" <%=detail.getReceivableType()==2?"checked" : ""%> <%=detail.getPushOrderType()==1?"disabled=\"disabled\"" :"" %>> 
 					<label>阶梯收费</label>
 				</div>
 				<div class="control-group" id="ReceivableBox1" <%=detail.getReceivableType()==2?"style=\"display:none;\"" : ""%>>
@@ -186,7 +192,9 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 	            </div>
 	            <div class="control-group" id="ReceivableBox2" <%=detail.getReceivableType()==1?"style=\"display:none;\"" : ""%>>
 	                    <label style="margin-left: 20px;width:150px;">应收：</label>
-	                    <label id="SetpChargeTitle"><%=detail.getSetpChargeTitle()%></label>
+	                    <label id="SetpChargeTitle" title="<%=detail.getSetpChargeTitle()%>">
+	                    <%=detail.getSetpChargeTitle()%>
+	                    </label>
 	                    <input type="hidden" id="SetpChargeId" name="SetpChargeId" value="<%=detail.getSetpChargeId()%>" />
 	                 	<a href="javascript:void(0)" onclick="SetpChargeChoose()">选择阶梯计费</a>
 	            </div>
@@ -404,6 +412,35 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 	<small class="font-bold"> </small>
 </div>    
 <!-- 选择阶梯计费弹窗 --> 
+
+<!-- 选择里程配置弹窗 -->
+<div tabindex="-1" class="modal inmodal" id="LichengBox" role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">里程计费</h4>
+			</div>
+			<small class="font-bold">
+				<div style="height: 500px; overflow: auto; margin-top: 10px; border-bottom: solid 1px #dcdcdc;">
+				<input type="text" placeholder="配置名称"  value="" id="LichengName"/>
+				<input type="button"  value="查询" id="LichengSerach"/>
+				<div class="modal-body" id="LichengBoxBody">
+					
+				</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>
+</div>    
+<!-- 选择阶梯计费弹窗 --> 
 <script type="text/javascript">
 
 	var formjbxx="";//基本信息表单
@@ -475,11 +512,22 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 	 //更新 设置 发单模式功能 add by caoheyang 20151104
     $("input[name='rPushOrderType']").change(function () {
         if ($("input[name='rPushOrderType']:checked").val() == 0) {
+        	//普通模式
             $("#busCommissionText").val('0.00');
             $("#busCommissionText").removeAttr("disabled");
+            $("#rReceivableType2").removeAttr("disabled");
+            
         } else if ($("input[name='rPushOrderType']:checked").val() == 1) {
+        	//智能调度模式
             $("#busCommissionText").val('0.00');
             $("#busCommissionText").attr("disabled", "disabled");
+            //设置默认应收模式
+            $("#rReceivableType1").prop("checked",true);
+            $("#rReceivableType2").attr("disabled", "disabled");
+            $('#SetpChargeId').val(0);
+            $('#SetpChargeTitle').html('');
+            $('#ReceivableBox1').show();
+            $('#ReceivableBox2').hide();
         }
     });
 	 
@@ -520,6 +568,33 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 		$('#SetpChargeBox').modal('hide');
 	}
 	//点击请选择阶梯计费事件结束
+	//里程计费
+	//点击请选择阶梯计费事件
+	var jsslicheng = {
+		search : function(currentPage) {
+			var data={"currentPage":currentPage,
+					  "name":$('#LichengName').val()};
+			$.post("<%=basePath%>/admintools/busstaskdistributionlistdo",
+					data,
+					function(d) {
+				$("#LichengBoxBody").html(d);
+			});
+		}
+	}
+	$('#LichengSerach').click(function(){
+		jsslicheng.search(1);
+	});
+	function LichengChoose(){
+		jsslicheng.search(1);
+		$('#LichengBox').modal('show');
+	}
+	function LichengChoosed(id,title)
+	{
+		$('#LichengTitle').html(title);
+		$('#LichengId').val(id);
+		$('#LichengBox').modal('hide');
+	}
+	//里程计费结束
 	//百度地图
 	$("#postion").click(function() {
 		$('#MapShow').modal('show');
@@ -707,6 +782,7 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 		 var isAllowCashPay = $('input[name="rIsAllowCashPay"]:checked').val();//现金支付 
 		 var receivableType=$('input[name="rReceivableType"]:checked').val();//应收模式
 		 var setpChargeId=$('#SetpChargeId').val();
+		 var taskDistributionId=$('#LichengId').val();
 		 if(receivableType==1||receivableType=='1')
 			{
 			 if (isNaN(parseFloat(distribSubsidy)) || parseFloat(distribSubsidy) < 0 || parseFloat(distribSubsidy) >100) {
@@ -748,6 +824,7 @@ List<Mark> tagsData=(List<Mark>)request.getAttribute("tagsData");
 	 			"oldbusinessgroupidname":oldbusinessgroupidname,//旧的补贴策略名字
 	 			"setpChargeId":setpChargeId,//阶梯策略ID
 	 			"receivableType":receivableType,//应收 
+	 			"taskDistributionId":taskDistributionId
 			};
 			var url = "<%=basePath%>/business/modifybusiness";
 			$.ajax({

@@ -53,7 +53,8 @@
 		recommendphone,
 		b.PushOrderType,
 		b.SetpChargeId,
-		b.ReceivableType
+		b.ReceivableType,
+		b.TaskDistributionId
 		FROM business b WITH ( NOLOCK )
 		LEFT JOIN
 		BusinessFinanceAccount bfa WITH ( NOLOCK ) ON b.Id =
@@ -493,6 +494,9 @@
 			</if>
 			<if test="receivableType != null">
 				ReceivableType = #{receivableType,jdbcType=INTEGER},
+			</if>
+			<if test="taskDistributionId != null">
+				TaskDistributionId = #{taskDistributionId,jdbcType=INTEGER},
 			</if>
 		</set>
 		OUTPUT

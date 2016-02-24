@@ -102,6 +102,14 @@ public class Business implements Serializable{
     private Integer isenable; 
     private Integer setpChargeId;
     private Integer receivableType;
+    private Integer taskDistributionId;
+	public Integer getTaskDistributionId() {
+		return taskDistributionId;
+	}
+
+	public void setTaskDistributionId(Integer taskDistributionId) {
+		this.taskDistributionId = taskDistributionId;
+	}
 
 	public Integer getReceivableType() {
 		return receivableType;
@@ -117,17 +125,6 @@ public class Business implements Serializable{
 
 	public void setSetpChargeId(Integer setpChargeId) {
 		this.setpChargeId = setpChargeId;
-	}
-
-    
-    private int TaskDistributionId;
-
-	public int getTaskDistributionId() {
-		return TaskDistributionId;
-	}
-
-	public void setTaskDistributionId(int taskDistributionId) {
-		TaskDistributionId = taskDistributionId;
 	}
 
 	public Integer getIsenable() {
