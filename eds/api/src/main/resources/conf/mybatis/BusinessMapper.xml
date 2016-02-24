@@ -584,7 +584,7 @@
 		<if test="commissionType!=null and commissionType>0">
 			and b.commissionType=${commissionType}
 		</if>
-		<if test="businessCity != null and businessCity!='' and businessCity!=-1">
+		<if test="businessCity != null and businessCity!=''">
 			and b.city=''${businessCity}''
 		</if>
 		<!-- </trim> -->

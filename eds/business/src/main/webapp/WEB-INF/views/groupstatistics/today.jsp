@@ -13,8 +13,14 @@
 	String basePath = PropertyUtils.getProperty("java.business.url");
 	GroupTodayStatistics g = (GroupTodayStatistics)request.getAttribute("g");
 	BusinessOrderSummaryModel b= (BusinessOrderSummaryModel)request.getAttribute("b");
-	List<BusiPubOrderTimeStatisticsModel> pubOrderTimestatistics = 
-			(List<BusiPubOrderTimeStatisticsModel>)request.getAttribute("pubOrderTimestatistics");
+	List<BusiPubOrderTimeStatisticsModel> bdaysNew = 
+			(List<BusiPubOrderTimeStatisticsModel>)request.getAttribute("bdaysNew");
+	List<BusiPubOrderTimeStatisticsModel> bdaysDelivery = 
+			(List<BusiPubOrderTimeStatisticsModel>)request.getAttribute("bdaysDelivery");
+	List<BusiPubOrderTimeStatisticsModel> bdaysTaking = 
+			(List<BusiPubOrderTimeStatisticsModel>)request.getAttribute("bdaysTaking");
+	List<BusiPubOrderTimeStatisticsModel> bdaysComplite = 
+			(List<BusiPubOrderTimeStatisticsModel>)request.getAttribute("bdaysComplite");
 %>
 <style type="text/css">
 * {
@@ -39,32 +45,82 @@
 
 <script type="text/javascript">
 	//统计图
-	var statistics = new Array();
-<%if(pubOrderTimestatistics != null){
-		StringBuilder sb = new StringBuilder();
-		for(BusiPubOrderTimeStatisticsModel model : pubOrderTimestatistics){
-			sb.append(String.format("statistics[%d]=%d;", model.getHour(),model.getPubCount()));
-		}%>
-	
-<%=sb.toString()%>
-	
+	var bdaysNew = new Array();
+	var bdaysDelivery = new Array();
+	var bdaysTaking = new Array();
+	var bdaysComplite = new Array();
+<%if(bdaysNew != null){
+		StringBuilder sbbdaysNew = new StringBuilder();
+		
+		for(BusiPubOrderTimeStatisticsModel model : bdaysNew){
+			sbbdaysNew.append(String.format("bdaysNew[%d]=%d;", model.getHour(),model.getPubCount()));
+		}
+		%>
+<%=sbbdaysNew.toString()%>
 <%}%>
+
+<%if(bdaysDelivery != null){
+	StringBuilder sbbdaysDelivery = new StringBuilder();
+	for(BusiPubOrderTimeStatisticsModel model : bdaysDelivery){
+		sbbdaysDelivery.append(String.format("bdaysDelivery[%d]=%d;", model.getHour(),model.getPubCount()));
+	}
+	%>
+<%=sbbdaysDelivery.toString()%>
+<%}%>
+
+<%if(bdaysTaking != null){
+	StringBuilder sbbdaysTaking = new StringBuilder();
+	for(BusiPubOrderTimeStatisticsModel model : bdaysTaking){
+		sbbdaysTaking.append(String.format("bdaysTaking[%d]=%d;", model.getHour(),model.getPubCount()));
+	}
+	%>
+<%=sbbdaysTaking.toString()%>
+<%}%>
+
+<%if(bdaysComplite != null){
+	StringBuilder sbbdaysComplite = new StringBuilder();
+	for(BusiPubOrderTimeStatisticsModel model : bdaysComplite){
+		sbbdaysComplite.append(String.format("bdaysComplite[%d]=%d;", model.getHour(),model.getPubCount()));
+	}
+	%>
+<%=sbbdaysComplite.toString()%>
+<%}%>
+
 	var hours = [];
-	var counts = [];
+	var counts1 = [];
+	var counts2 = [];
+	var counts3 = [];
+	var counts4 = [];
 	for (i = 0; i < 24; i++) {
 		var c = i + 1;
 		hours[i] = (c).toString();
-		if (!statistics[c]) {
-			counts[i] = 0;
+		if (!bdaysNew[c]) {
+			counts1[i] = 0;
 		} else {
-			counts[i] = statistics[c];
+			counts1[i] = bdaysNew[c];
+		}
+		if (!bdaysDelivery[c]) {
+			counts2[i] = 0;
+		} else {
+			counts2[i] = bdaysDelivery[c];
+		}
+		if (!bdaysTaking[c]) {
+			counts3[i] = 0;
+		} else {
+			counts3[i] = bdaysTaking[c];
+		}
+		if (!bdaysComplite[c]) {
+			counts4[i] = 0;
+		} else {
+			counts4[i] = bdaysComplite[c];
 		}
 	}
+	
 	$(function() {
- 		var notice = $("#notice").text();
+		var notice = $("#notice").text();
 		if (notice.length > 30) {
 			$("#notice").text(notice.substr(0, 30) + "...");
-		} 
+		}
 
 		//统计图
 		$('#container').highcharts({
@@ -94,15 +150,18 @@
 				},
 				minTickInterval : 1,
 				tickAmount : 11,
-				allowDecimals:false
+				allowDecimals : false
 			},
 			tooltip : {
 				crosshairs : true,
 				shared : true
 			},
-			legend : {
-				enabled : false
-			},
+		   legend: {
+	            layout: 'vertical',
+	            align: 'right',
+	            verticalAlign: 'middle',
+	            borderWidth: 0
+	        },
 			credits : {
 				enabled : false
 			},
@@ -120,9 +179,20 @@
 			},
 			series : [ {
 				type : 'area',
-				name : '该时间段订单数量',
-				data : counts
-
+				name : '待接单',
+				data : counts1
+			}, {
+				type : 'area',
+				name : '取货中',
+				data : counts2
+			}, {
+				type : 'area',
+				name : '配送中',
+				data : counts3
+			}, {
+				type : 'area',
+				name : '已完成',
+				data : counts4
 			} ]
 		});
 	});
