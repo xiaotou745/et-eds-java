@@ -2216,7 +2216,7 @@ select @balancePrice as balancePrice,@todayPay as todayPay,@todayDishTotal as to
 		</if>
    	</select>	
    	  <!--集团首页 订单数量 统计 按小时统计  caoheyang 20160223-->
-   	 <select id="groupTodayOrderStatisticsReport" resultMap="busiPubOrderTimeStatisticsResultMap"
+   	 <select id="groupTodayOrderStatisticsReport" resultType="com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel"
 		parameterType="java.util.Map">
 		SELECT SUM(OrderCount) as pubCount, DATENAME(HOUR,o.PubDate) AS hour,status
 		FROM dbo.[order] (NOLOCK) o

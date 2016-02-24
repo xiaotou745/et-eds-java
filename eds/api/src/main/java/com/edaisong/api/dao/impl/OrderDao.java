@@ -604,6 +604,6 @@ public class OrderDao extends DaoBase implements IOrderDao {
 		Map<String, Object> paramMap = new HashedMap();
 		paramMap.put("businessId", businessId);
 		paramMap.put("groupBusinessId", groupBusinessId);
-		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.groupTodayOrderStatisticsReport",paramMap);
+		return getReadOnlySqlSessionUtil().selectList("IOrderDao.groupTodayOrderStatisticsReport",paramMap);
 	}
 }
