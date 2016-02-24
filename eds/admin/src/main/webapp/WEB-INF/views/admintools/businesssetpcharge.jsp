@@ -125,7 +125,7 @@ boolean canAdd=context.isHasAuthByCode(AuthCodeConst.Admin_BusinessSetpCharge_Ad
                         	 <div class="form-group" >
                                 	<label class="col-lg-3 control-label ">描述</label>
 									<div class="col-lg-6">
-										<textarea maxlength="400" rows=6 cols=40 id="Remark"></textarea>
+										<textarea maxlength="100" rows=6 cols=40 id="Remark"></textarea>
                                     </div>
                              </div>
                         </div>
@@ -201,10 +201,12 @@ $(function(){
 	function CreateTr()
 	{
 		$('#AddItemCount').val(0);
+		
 		//判断
-		if($('#Addtitle').val()=='')
+		var title =$('#Addtitle').val().replace(' ');
+		if(title.length>50||title.length<2)
 		{
-			alert('计算规则名称必填!');
+			alert('计算规则名称2-50个字符!');
 			return;
 		}
 		if (parseFloat($('#MaxLimitValue').val()) < 0.01
@@ -228,11 +230,20 @@ $(function(){
 		var htmStr='';
 		for(var i=0;maxvalue<maxlimit;i++)
 		{
-			var te=maxvalue;
-			//步长+上次下限>最大上限,上限为最大上限,否则为步长+上次下限
-			maxvalue=(setpvale+maxvalue)>maxlimit?maxlimit:(setpvale+maxvalue);
-			htmStr+=getTRtemp(te,maxvalue,i,'');
-			$('#AddItemCount').val(i+1);
+			console.log(i);
+			if(i<20)
+			{
+				var te=maxvalue;
+				//步长+上次下限>最大上限,上限为最大上限,否则为步长+上次下限
+				maxvalue=(setpvale+maxvalue)>maxlimit?maxlimit:(setpvale+maxvalue);
+				htmStr+=getTRtemp(te,maxvalue,i,'');
+				$('#AddItemCount').val(i+1);
+			}
+			else
+				{
+				break;
+				}
+			
 		}
 		if(htmStr!='')
 		{
@@ -253,10 +264,12 @@ function getTRtemp(minvalue,maxvalue,index,charge)
 function SaveCheck()
 {
 	//判断
-	if($('#Addtitle').val()=='')
+	
+	var title =$('#Addtitle').val().replace(' ');
+	if(title.length>50||title.length<2)
 	{
-		alert('计算规则名称必填!');
-		return false;
+		alert('计算规则名称2-50个字符!');
+		return;
 	}
 	if (parseFloat($('#MaxLimitValue').val()) < 0.01
 			|| isNaN(parseFloat($('#MaxLimitValue').val()))||
