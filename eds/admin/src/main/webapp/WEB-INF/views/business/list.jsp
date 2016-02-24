@@ -87,7 +87,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">筛选城市: </label>
 							<div class="col-sm-8">
-							 <%=HtmlHelper.getSelectAuto("businessCity", openCityList, "name", "code",null,"","全部")%>
+							 <%=HtmlHelper.getSelectAuto("businessCity", openCityList, "name", "name",null,"","全部")%>
 							</div>
 						</div>
 					</div>	
