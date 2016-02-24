@@ -203,7 +203,7 @@ $(function(){
 		$('#AddItemCount').val(0);
 		
 		//判断
-		var title =$('#Addtitle').val().replace(' ');
+		var title =$.trim($('#Addtitle').val());
 		if(title.length>50||title.length<2)
 		{
 			alert('计算规则名称2-50个字符!');
@@ -265,7 +265,7 @@ function SaveCheck()
 {
 	//判断
 	
-	var title =$('#Addtitle').val().replace(' ');
+	var title =$.trim($('#Addtitle').val());
 	if(title.length>50||title.length<2)
 	{
 		alert('计算规则名称2-50个字符!');
