@@ -19,10 +19,12 @@ import com.edaisong.api.service.inter.IAppVersionService;
 import com.edaisong.api.service.inter.IBusinessSetpChargeService;
 import com.edaisong.api.service.inter.IGlobalConfigService;
 import com.edaisong.api.service.inter.ITaskDistributionConfigService;
+import com.edaisong.api.service.inter.ITaskDistributionService;
 import com.edaisong.core.util.JsonUtil;
 import com.edaisong.entity.BusinessMessage;
 import com.edaisong.entity.BusinessSetpCharge;
 import com.edaisong.entity.GlobalConfig;
+import com.edaisong.entity.TaskDistribution;
 import com.edaisong.entity.TaskDistributionConfig;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GlobalConfigModel;
@@ -30,6 +32,7 @@ import com.edaisong.entity.req.BusinessSetpChargeReq;
 import com.edaisong.entity.req.ConfigSaveReq;
 import com.edaisong.entity.req.PagedBusinessSetpReq;
 import com.edaisong.entity.req.PagedGlobalConfigReq;
+import com.edaisong.entity.req.PagedTaskDistributionReq;
 import com.edaisong.entity.req.TaskDistributionConfigReq;
 import com.edaisong.entity.AppVersion;
 import com.edaisong.entity.common.PagedRequestBase;
@@ -53,6 +56,10 @@ public class AdminToolsController {
 	IBusinessSetpChargeService businessSetpChargeService;
 	@Autowired
 	HttpServletRequest request;
+	
+	 @Autowired
+	 private ITaskDistributionService  taskDistributionService;	 
+	 
 	@RequestMapping("list")
 	public ModelAndView globalConfigManager(HttpServletRequest request, HttpServletResponse res){
 		ModelAndView model = new ModelAndView("adminView");
@@ -201,6 +208,19 @@ public class AdminToolsController {
 	public ModelAndView bussetplistdo(PagedBusinessSetpReq req) {
 		ModelAndView view = new ModelAndView("admintools/bussetplistdo");
 		PagedResponse<BusinessSetpCharge> list = businessSetpChargeService.query(req);
+		view.addObject("listData", list);
+		return view;
+	}
+	
+	/**
+	 * 里程规则配置分页列表(商户详情用)
+	 * 胡灵波
+	 * @return
+	 */
+	@RequestMapping("busstaskdistributionlistdo")
+	public ModelAndView busstaskdistributionlistdo(PagedTaskDistributionReq req) {
+		ModelAndView view = new ModelAndView("admintools/busstaskdistributionlistdo");
+		PagedResponse<TaskDistribution> list = taskDistributionService.query(req);
 		view.addObject("listData", list);
 		return view;
 	}
