@@ -170,7 +170,11 @@ public class TaskDistributionController {
 		TaskDistributionConfig model=taskDistributionConfigService.selectByPrimaryKey(id);
 		return model;
 	}
-	
+	/**
+	 * 里程计算器
+	 * @param record
+	 * @return
+	 */
 	@RequestMapping("calculatorconfig")
 	@ResponseBody
 	public double calculator(TaskDistributionConfig record) {
