@@ -131,7 +131,7 @@
 		groupamount = #{groupamount,jdbcType=DECIMAL}
 		where Id = #{id,jdbcType=BIGINT}
 	</update>
-	<!-- 获取交易明细的Where条件 -->
+	<!-- 获取交易明细的Where条件，endDate已经处理过了，不需要再加1天 -->
 	<sql id="getTransDetailListWhere">
 		bbr.[RecordType] IN (1,2,8,9,12,13) 
 		<if test="startDate != null and startDate != ''">
@@ -199,7 +199,7 @@
 		#{totalPage,mode=OUT,jdbcType=VARCHAR}
 		)}
 	</select>
-
+<!-- 获取商户充值总金额 -->
 	<select id="queryBusinessRechargeTotalAmount" resultType="double"
 		parameterType="java.util.HashMap">
 		SELECT ISNULL(SUM(bbr.amount),0) AS totalAmount
@@ -214,7 +214,7 @@
 		</if>
 
 		<if test="endDate != null and endDate != ''">
-			AND '${endDate}'>bbr.operatetime
+			AND DATEADD(d, 1, '${endDate}')>bbr.operatetime
 		</if>
 
 		<if test="name != null and name != ''">
@@ -277,16 +277,16 @@
 			AND bbr.[RelationNo]=#{relationNo,jdbcType=VARCHAR}
 		</if>
 		<if test="startDate != null and startDate != ''">
-			AND
-			CONVERT(CHAR(10),bbr.OperateTime,120)>=CONVERT(CHAR(10),#{startDate,jdbcType=VARCHAR},120)
+			AND bbr.OperateTime>=#{startDate,jdbcType=VARCHAR}
 		</if>
 		<if test="endDate != null and endDate != ''">
-			AND CONVERT(CHAR(10),#{endDate,jdbcType=VARCHAR},120) >
-			CONVERT(CHAR(10),bbr.OperateTime,120)
+			AND  DATEADD(d, 1, '${endDate}')>bbr.OperateTime
 		</if>
 		ORDER BY bbr.Id DESC
 	</select>
-	<select id="getAccountBillBList" resultType="com.edaisong.entity.domain.AccountBillModel">
+<!-- b端，获取月账单，endDate已经处理过，不用加1天 -->
+	<select id="getAccountBillBList" resultType="com.edaisong.entity.domain.AccountBillModel" 
+	parameterType="java.util.HashMap">
 		select
 		Convert ( varchar(10), OperateTime, 120) as DayInfo,
 		SUM(CASE WHEN Amount>0 THEN Amount ELSE 0 END) as InMoney,
@@ -294,7 +294,7 @@
 		FROM
 		BusinessBalanceRecord (NOLOCK)
 		WHERE BusinessId=#{businessId,jdbcType=INTEGER}
-		AND OperateTime > #{startDate,jdbcType=VARCHAR} AND
+		AND OperateTime >= #{startDate,jdbcType=VARCHAR} AND
 		#{endDate,jdbcType=VARCHAR} > OperateTime
 		AND RecordType IN (1,2,8,9,12,13)
 		GROUP by
@@ -303,8 +303,8 @@
 	<!-- 获取商户日账单分页 的Where条件 茹化肖 -->
 	<sql id="getAccountBillDayBList_Where">
 		BusinessId=${businessId}
-		AND OperateTime > ''${stratDate}''
-		AND ''${endDate}'' >= OperateTime
+		AND OperateTime >= ''${stratDate}''
+		AND DATEADD(d, 1, ''${endDate}'')>OperateTime
 		<if test="billType == 1"><!-- 出账 -->
 			AND RecordType IN (1)
 		</if>
@@ -366,8 +366,8 @@ sum(case when Amount>0 then amount else 0 end) as inMoney
  FROM dbo.BusinessBalanceRecord bbr(nolock)
 where 
 BusinessId=${businessId} AND RecordType IN (1,2,8,9,12,13) 
-AND OperateTime >'${stratDate}' 
-AND '${endDate}' > OperateTime
+AND OperateTime >='${stratDate}' 
+AND DATEADD(d, 1, '${endDate}') > OperateTime
  group by BusinessId
 	</select>
 	

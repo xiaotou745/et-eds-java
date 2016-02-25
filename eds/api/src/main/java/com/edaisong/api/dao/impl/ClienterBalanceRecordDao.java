@@ -1,6 +1,7 @@
 package com.edaisong.api.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IClienterBalanceRecordDao;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.ClienterBalanceRecord;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.*;
@@ -96,19 +98,7 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	@Override
 	public Map<String, AccountBillModel> getAccountBillListC(AccountBillCReq par) {
 		String startDate=par.getMonthInfo()+"-01 00:00:00";
-		String year=par.getMonthInfo().split("-")[0];//年
-		String month=par.getMonthInfo().split("-")[1];//月
-		String endDate="";
-		if(month.equals("12"))
-		{
-			year=String.valueOf(Integer.parseInt(year, 10)+1);//十二月将年+1
-			endDate=year+"-01-01 00:00:00";//结束时间为 2016-01-01 00:00:00
-		}
-		else {
-			//结束时间为下个月一号之前
-			month=String.valueOf(Integer.parseInt(month,10)+1);//将月份+1
-			endDate=year+"-"+month+"-01 00:00:00";//结束时间为 2015-12-01 00:00:00
-		}
+		String endDate=ParseHelper.ToDateString(ParseHelper.plusDate(ParseHelper.ToDate(startDate), 1, 1));
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("clienterId", par.getClienterId());
 		params.put("startDate", startDate);

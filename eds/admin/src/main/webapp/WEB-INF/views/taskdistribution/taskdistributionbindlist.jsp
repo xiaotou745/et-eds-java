@@ -13,8 +13,7 @@
 TaskDistribution detail = (TaskDistribution) request
 		.getAttribute("detail");
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 <style type="text/css">
 #map_contain {
     height: 90%;

@@ -25,10 +25,10 @@
   <sql id="getTransDetailListWhere">
     	1=1 AND bbr.GroupId > 0  
 	 <if test="startDate != null and startDate != ''">
-	      AND bbr.OperateTime >= convert(char(10),''${startDate}'',120) 
+	      AND bbr.OperateTime >= ''${startDate}''
      </if>
      <if test="endDate != null and endDate != ''">
-	      AND DATEADD(DAY,1,CONVERT(CHAR(10),''${endDate}'',120))> bbr.OperateTime 
+	      AND DATEADD(DAY,1,''${endDate}'')> bbr.OperateTime 
      </if>
      <if test="recordType != null and recordType != '' and recordType != -1">
 	      AND bbr.RecordType =${recordType}
@@ -88,13 +88,13 @@ where 1=1 AND bbr.GroupId > 0
 	      AND bbr.[RelationNo]=#{relationNo,jdbcType=VARCHAR}
     </if>
     <if test="startDate != null and startDate != ''">
-	    AND bbr.OperateTime>=convert(char(10),#{startDate,jdbcType=VARCHAR},120) 
+	    AND bbr.OperateTime>='${startDate}'
     </if>
     <if test="endDate != null and endDate != ''">
-	    AND  DATEADD(DAY,1,CONVERT(CHAR(10),#{endDate,jdbcType=VARCHAR},120)) > bbr.OperateTime
+	    AND  DATEADD(DAY,1,'${endDate}') > bbr.OperateTime
     </if>
     <if test="businessName !=null and businessName!=''">
-	       AND b.name=''${businessName}'' 
+	       AND b.name='${businessName}'
      </if>
      <if test="groupbusinessId >0 ">
 	       AND bbr.GroupId=${groupbusinessId}

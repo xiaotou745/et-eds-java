@@ -77,10 +77,10 @@ VALUES  ( #{setpChargeId,jdbcType=BIGINT} ,
 	<sql id="selectWhere">
 		1=1
 		<if test="beginDate != null and beginDate!=''">
-			and bsc.CreateDate > CONVERT(DATETIME,''${beginDate}'',120)
+			and bsc.CreateDate >=''${beginDate}''
 		</if>
 		<if test="endDate != null and endDate!=''">
-			and  DATEADD(DAY,1,CONVERT(DATETIME,''${endDate}'',120))> bsc.CreateDate
+			and  DATEADD(DAY,1,''${endDate}'')> bsc.CreateDate
 		</if>
 		<if test="title != null and title!=''">
 			and  bsc.Title LIKE ''%${title}%''

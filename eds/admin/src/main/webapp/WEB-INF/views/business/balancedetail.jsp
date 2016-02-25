@@ -13,10 +13,6 @@
 	double chargeTotalAmount = (double) request
 			.getAttribute("chargeTotalAmount");
 %>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script
-	src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <table class="tbstyle222" border="0"
 	style="font-size: 14px; font-weight: bold; line-height: 300%; width: 900px">
 	<tr class="trclass">
@@ -219,15 +215,6 @@
 
 
 <script>
- $(function(){
-	  $(' .input-group.date').datepicker({
-          todayBtn: "linked",
-          keyboardNavigation: false,
-          forceParse: false,
-          calendarWeeks: true,
-          autoclose: true
-      });
- });
 	var jss = {
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);

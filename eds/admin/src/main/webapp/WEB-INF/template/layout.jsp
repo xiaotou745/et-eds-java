@@ -39,7 +39,8 @@
 
 <!-- 第三方弹窗js -->
 <script src="<%=basePath%>/js/layer.js"></script>
-
+<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
+<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script>
     $(document).ajaxError( function(event, jqXHR, options, errorMsg){
    	 var content="内部服务器错误";
@@ -71,6 +72,14 @@
     });
     
 	$(document).ready(function() {
+		  //初始化时间控件
+		  $(' .input-group.date').datepicker({
+		        todayBtn: "linked",
+		        keyboardNavigation: false,
+		        forceParse: false,
+		        calendarWeeks: true,
+		        autoclose: true
+		    });
 		$("#gloablShowError").click(function() {
 			if ($("#gloablShowError").html() == "显示详细信息") {
 				$("#gloablShowError").html("隐藏详细信息");

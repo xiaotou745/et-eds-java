@@ -23,8 +23,7 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 <link href="<%=basePath%>/css/plugins/chosen/chosen.css"  rel="stylesheet">
 <script src="<%=basePath%>/js/plugins/chosen/chosen.jquery.js" ></script>
 <!-- 下拉框的样式以及JS -->
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=dAeaG6HwIFGlkbqtyKkyFGEC"></script>
 <style type="text/css">
@@ -158,15 +157,6 @@ width: 100%;
 		<small class="font-bold"> </small>
 	</div>
 <script>
- $(function(){
-	  $(' .input-group.date').datepicker({
-          todayBtn: "linked",
-          keyboardNavigation: false,
-          forceParse: false,
-          calendarWeeks: true,
-          autoclose: true
-      });
- });
 	var jss = {
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);
