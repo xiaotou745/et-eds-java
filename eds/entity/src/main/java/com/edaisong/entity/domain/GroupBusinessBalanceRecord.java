@@ -177,7 +177,11 @@ public class GroupBusinessBalanceRecord {
         this.statusString = statusString;
     }
     public String getRecordtypeString() {
-        return  BusinessBalanceRecordRecordType.getEnum(this.recordtype).desc();
+    	BusinessBalanceRecordRecordType recordRecordType=BusinessBalanceRecordRecordType.getEnum(this.recordtype);
+        if (recordRecordType==null) {
+			return "";
+		}
+    	return  recordRecordType.desc();
     }
 
     public void setRecordtypeString(String recordtypeString) {
