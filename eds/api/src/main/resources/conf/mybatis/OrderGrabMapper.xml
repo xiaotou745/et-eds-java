@@ -290,7 +290,7 @@ GROUP BY o.id ,
 			and o.GrabTime>= ''${orderGrabStart} 00:00:00''
 		</if>
 		<if test="orderGrabEnd != null and orderGrabEnd!=''">
-			and  ''${orderGrabEnd} 23:59:59''>=o.GrabTime
+			and DATEADD(d, 1, ''${orderGrabEnd}'')>o.GrabTime
 		</if>
 		<if test="businessCity != null and businessCity!=''">
 			and b.city= ''${businessCity}''
@@ -360,10 +360,10 @@ GROUP BY o.id ,
 			and o.GrabTime>= '${orderGrabStart} 00:00:00'
 		</if>
 		<if test="orderGrabEnd != null and orderGrabEnd!=''">
-			and  '${orderGrabEnd} 23:59:59'>=o.GrabTime
+		AND DATEADD(d, 1, '${orderGrabEnd}')>o.GrabTime
 		</if>
-		<if test="businessCity != null and businessCity>-1">
-			and b.cityCode= ${businessCity}
+		<if test="businessCity != null and businessCity!=''">
+			and b.city= ${businessCity}
 		</if>
 	</sql> 
   <select id="exportOrder" resultType="com.edaisong.entity.domain.FastOrderExportModel" 

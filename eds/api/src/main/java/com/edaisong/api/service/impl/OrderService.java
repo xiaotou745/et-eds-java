@@ -1196,7 +1196,7 @@ public class OrderService implements IOrderService {
 			req.setEndDate("");
 		}
 		if (req.getEndDate() != null && !req.getEndDate().equals("")) {
-			req.setEndDate(req.getEndDate() + " 23:59:59");
+			req.setEndDate(req.getEndDate() + " 00:00:00");
 		}
 		if (req.getSelectValue().equals("门店名称/注册电话")) {
 			req.setSelectValue("");

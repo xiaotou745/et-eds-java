@@ -14,8 +14,6 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 String  clienterId=	request.getAttribute("clienterId").toString();
 ClienterDetailModel  detail=(ClienterDetailModel)request.getAttribute("detail");
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12">
@@ -146,15 +144,6 @@ ClienterDetailModel  detail=(ClienterDetailModel)request.getAttribute("detail");
 
 
 <script>	
-$(function(){
-	$(' .input-group.date').datepicker({
-        todayBtn: "linked",
-        keyboardNavigation: false,
-        forceParse: false,
-        calendarWeeks: true,
-        autoclose: true
-    });
-});
 	var jss={
 			search:function(currentPage){	
 

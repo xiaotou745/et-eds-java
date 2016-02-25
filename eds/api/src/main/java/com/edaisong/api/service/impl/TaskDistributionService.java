@@ -1,5 +1,8 @@
 package com.edaisong.api.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import com.edaisong.core.enums.OptLogEnum;
 import com.edaisong.core.enums.PublishOrderReturnEnum;
 import com.edaisong.core.enums.TaskDistributionConfigEnum;
 import com.edaisong.core.enums.TaskDistributionEnum;
+import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.OptLog;
 import com.edaisong.entity.OrderTip;
 import com.edaisong.entity.TaskDistribution;
@@ -52,6 +56,20 @@ public class TaskDistributionService implements
 	@Override
 	public PagedResponse<TaskDistribution> query(
 			PagedTaskDistributionReq req) {
+		if(!req.getDataEnd().equals(""))
+		{
+			String dataEnd=req.getDataEnd();
+			java.text.SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");	
+			Date date=null;
+			try {
+				date = formatter.parse(dataEnd);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+			ParseHelper.plusDate(date, 0, 1);
+			req.setDataEnd(formatter.format(date));
+		}
 		return taskDistributionDao.query(req);		
 	}
 

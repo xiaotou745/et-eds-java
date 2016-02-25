@@ -112,7 +112,6 @@ public class TaskDistributionController {
 		
 		return resp;
 	}
-
 	
 	@RequestMapping("modify")
 	@ResponseBody
@@ -122,6 +121,13 @@ public class TaskDistributionController {
 		return taskDistributionService.modify(record);
 	}
 	
+	@RequestMapping("selectbyprimarykey")
+	@ResponseBody
+	public TaskDistribution selectByPrimaryKey(int id)
+	{
+		TaskDistribution model=taskDistributionService.selectByPrimaryKey(id);
+		return model;
+	}
 	
 	@RequestMapping("taskdistributionbindlist")
 	public ModelAndView taskdistributionbindlist(int taskDistributionId) throws Exception {
@@ -165,12 +171,16 @@ public class TaskDistributionController {
 	
 	@RequestMapping("selectbyprimarykeyconfig")
 	@ResponseBody
-	public TaskDistributionConfig selectByPrimaryKey(int id)
+	public TaskDistributionConfig selectbyprimarykeyconfig(int id)
 	{
 		TaskDistributionConfig model=taskDistributionConfigService.selectByPrimaryKey(id);
 		return model;
 	}
-	
+	/**
+	 * 里程计算器
+	 * @param record
+	 * @return
+	 */
 	@RequestMapping("calculatorconfig")
 	@ResponseBody
 	public double calculator(TaskDistributionConfig record) {

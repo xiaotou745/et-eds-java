@@ -38,10 +38,10 @@ public interface ITaskDistributionConfigDao {
     int insertSelective(TaskDistributionConfig record);   
 
     
-	TaskDistributionConfig selectByKM(int id, double km);
+	TaskDistributionConfig selectByKM(int id,int taskDistributionId, double km);
 	
 	
-	TaskDistributionConfig selectByKG(int id,double kg);
+	TaskDistributionConfig selectByKG(int id,int taskDistributionId,double kg);
 	
 	TaskDistributionConfig selectByPrimaryKey(int id);
 	

@@ -14,12 +14,7 @@
 	GroupBusinessModel detail = (GroupBusinessModel)request.getAttribute("detail");
 %>
 
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script
-	src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-<table class="tbstyle222" border="0"
-	style="font-size: 14px; font-weight: bold; line-height: 300%; width: 900px">
+<table class="tbstyle222" border="0" style="font-size: 14px; font-weight: bold; line-height: 300%; width: 900px">
 	<tr class="trclass">
 		<td>集团名称：<%=ParseHelper.ToString(detail.getGroupbusiname(), "")%></td>
 		<td>联系电话：<%=ParseHelper.ToString(detail.getLoginname(), "")%></td>
@@ -56,11 +51,13 @@
 						<div class="form-group">
 						<label class="col-sm-4 control-label">开始日期:</label>
 							<div class="col-sm-6">
-								<div class="input-group date">
-									<span class="input-group-addon"><i
-										class="fa fa-calendar"></i></span> 
-										<input class="form-control" style="width:180px" type="text" name="startDate" id="startDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'endDate\')||\'2020-10-01\'}'})"/>
-								</div>
+							<div class="input-group date">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span> 
+										<input type="text" class="form-control"  name="startDate" id="startDate" value=""/>
+									</div>
+								
 							</div>
 						</div>
 					</div>
@@ -68,11 +65,13 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">结束日期:</label>
 							<div class="col-sm-8">
-								<div class="input-group date">
-									<span class="input-group-addon"><i
-										class="fa fa-calendar"></i></span> 
-										<input class="form-control" style="width:180px" type="text"  name="endDate" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'2020-10-01'})"/>
-								</div>
+							<div class="input-group date">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span> 
+										<input type="text" class="form-control"  name="endDate" id="endDate" value=""/>
+									</div>
+								
 							</div>
 						</div>
 					</div>

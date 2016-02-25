@@ -100,7 +100,10 @@ public class ExportShanSongOrder {
 		this.status = status;
 	}
 	public String getPayType() {
-		return this.payType==null?"": PayType.getEnum(this.payType).desc();
+		if (this.payType!=null&&PayType.getEnum(this.payType)!=null) {
+			return PayType.getEnum(this.payType).desc();
+		}
+		return "";
 	}
 	public void setPayType(int payType) {
 		this.payType = payType;

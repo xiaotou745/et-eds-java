@@ -20,10 +20,7 @@
 <%	
 String basePath =PropertyUtils.getProperty("java.admin.url");
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=dAeaG6HwIFGlkbqtyKkyFGEC"></script>
+
 <style type="text/css">
 #map_contain {
     height: 90%;
@@ -115,7 +112,7 @@ width: 100%;
             </div>
             <div class="control-group">  
                 <label>描述：</label>
-                <textarea name="txtARemark" id="txtARemark" style="width:300px;height:100px;max-width:300px;max-height:100px;">
+                <textarea name="txtARemark" id="txtARemark" placeholder="此描述会显示在app价格表中" class="input-sm form-control" style="width:300px;height:100px;max-width:300px;max-height:100px;">
                 </textarea>
             </div>       
         </fieldset>
@@ -164,15 +161,6 @@ width: 100%;
 </div>
  
 <script>
- $(function(){
-	  $(' .input-group.date').datepicker({
-          todayBtn: "linked",
-          keyboardNavigation: false,
-          forceParse: false,
-          calendarWeeks: true,
-          autoclose: true
-      });	
- });
  
  var jss={
 			search:function(currentPage){	
@@ -221,10 +209,22 @@ width: 100%;
 		 }
 		 if(txtARemark == "")
 		 {
-			 alert("描述不能为空");
+			 alert("备注不能为空");
 		    return;
 		 }		 
 		
+		 if(txtAName.length<2 || txtAName.length>50  )
+		 {
+			 alert("名称长度应为2-50个字符");
+		    return;
+		 }
+		 
+		 if(txtARemark.length<30 || txtARemark.length>200  )
+		 {
+			 alert("备注长度应为30-200个字符");
+		    return;
+		 }
+		 
 	    var paramaters = {
                 "name": txtAName.trim(),
                 "remark": txtARemark.trim(),      

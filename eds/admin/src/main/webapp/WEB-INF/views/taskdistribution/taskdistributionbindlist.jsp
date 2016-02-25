@@ -13,8 +13,7 @@
 TaskDistribution detail = (TaskDistribution) request
 		.getAttribute("detail");
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 <style type="text/css">
 #map_contain {
     height: 90%;
@@ -42,8 +41,8 @@ width: 100%;
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
 
-	<div class="row">
-		<div class="col-lg-12">			
+	<div class="row" >
+		<div class="col-lg-12" style="display:none">			
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
@@ -89,23 +88,16 @@ width: 100%;
 
 			    <div class="row">
 						<div class="col-lg-3">
-						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>
+<!-- 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch -->
+<!-- 							style="margin-left: 3px;height:30px;">查询</button> -->
 								<button type="button" class="btn btn-w-m btn-primary" id="add"  onclick="showAdd()"
 					style="margin-left: 3px;height:30px;">新增		</button>	
-					 
-					</div>
-			</div>
-			<Br/>
-			
-			    <div class="row">
-						<div class="col-lg-3">						
-						<button type="button" class="btn btn-w-m btn-primary" id="btnCalculator"  onclick="showCalculator()"
+					<button type="button" class="btn btn-w-m btn-primary" id="btnCalculator"  onclick="showCalculator()"
 					style="margin-left: 3px;height:30px;">计算器
 					</button>
-					 
 					</div>
-			</div>
+	
+
 		</div>
 	</div>	
 </div>
@@ -256,19 +248,27 @@ width: 100%;
 	});		
 
 	function showAdd(){ 
+		//判断当前是否超过10条
+		var len=$('#content').find('tbody').find('tr').length;
+		if(len>=10)
+		{
+			alert('配送费规则不能超过10条!');
+			return;
+		}
         $('#txtUKM').val('0');
         $('#txtUKG').val('0');
         $('#txtUSteps').val('1');
         $('#txtUDistributionPrice').val('0');
         $('#addConfig').modal('show');
 }
+	//新增 
 	function saveAdd(){
+		
 		var txtKM= $('#txtUKM').val().trim();
 		var txtKG= $('#txtUKG').val().trim();	
 		var txtSteps= $('#txtUSteps').val().trim();
 		var txtDistributionPrice= $('#txtUDistributionPrice').val().trim();
 		var taskDistributionId= $('#taskDistributionId').val().trim();
-		
 
 		 if(txtKM == "")
 		 {
@@ -279,6 +279,16 @@ width: 100%;
 		 {
 			 alert("重量不能为空");
 		    return;
+		 }
+		 if(!isInt(txtKM))
+		    {
+		    	 alert("距离只能填整数");
+				    return;
+		    }
+		 if(!isInt(txtKG))
+		 {
+		    	 alert("重量只能填整数");
+				    return;
 		 }
 		 if(txtKM>0 && txtKG>0)
     	 {
@@ -310,7 +320,51 @@ width: 100%;
 		    	alert("配送费必须大于零");
 		    	return;
 		   }		    
-	    
+	    //配置必须大于基础配置 //公里
+	    if(parseInt(txtKM)!=0&&parseInt(txtKG)==0)
+	    {
+	    	var flag=true;
+	    	var basekm=parseInt($('.xiaokm1').html());
+	    	if(parseInt(txtKM)<=basekm)
+	    	{
+	    		alert('新建规则公里必须大于基础配置公里')
+	    	}
+	    	$('.xiaokm0').each(function(e){
+	    		var ha=parseInt($(this).html());
+	    		if(ha==parseInt(txtKM))
+	    		{
+	    			alert('不能添加相同的配置!');
+	    			flag=false;
+	    			return false;
+	    		}
+	    	});
+	    	if(!flag)
+	    	{
+	    		return;
+	    	}
+	    }  //配置必须大于基础配置 //公里
+	    if(parseInt(txtKM)==0&&parseInt(txtKG)!=0)
+	    {
+	    	var flag=true;
+	    	var basekm=parseInt($('.xiaokg1').html());
+	    	if(parseInt(txtKG)<=basekm)
+	    	{
+	    		alert('新建规则重量必须大于基础配置重量')
+	    	}
+	    	$('.xiaokg0').each(function(e){
+	    		var ha=parseInt($(this).html());
+	    		if(ha==parseInt(txtKG))
+	    		{
+	    			alert('不能添加相同的配置!');
+	    			flag=false;
+	    			return false;
+	    		}
+	    	});
+	    	if(!flag)
+	    	{
+	    		return;
+	    	}
+	    }
 	    var paramaters = {
                 "KM": txtKM.trim(),
                 "KG": txtKG.trim(),
@@ -362,7 +416,18 @@ width: 100%;
 			 alert("重量不能为空");
 		    return;
 		 }
-		
+		 if(!isInt(txtKM))
+		    {
+		    	 alert("距离只能填整数");
+				    return;
+		    }
+		    if(!isInt(txtKG))
+		    {
+		    	 alert("重量只能填整数");
+				    return;
+		    }
+		 if (txtEIsMaster==0)//非基础
+		 {
 				 if(txtKM>0 && txtKG>0)
 		    	 {
 					 alert("距离， 重量只能配置1个值");
@@ -392,6 +457,91 @@ width: 100%;
 					 alert("阶梯增量不能为0");
 				    return;
 				 }
+				//配置必须大于基础配置 //公里
+				    if(parseInt(txtKM)!=0&&parseInt(txtKG)==0)
+				    {
+				    	var flag=true;
+				    	var basekm=parseInt($('.xiaokm1').html());
+				    	if(parseInt(txtKM)<=basekm)
+				    	{
+				    		alert('修改规则公里必须大于基础配置公里')
+				    	}
+				    	$('.xiaokm0').each(function(e){
+				    		var ha=parseInt($(this).html());
+				    		if(ha==parseInt(txtKM))
+				    		{
+				    			alert('不能添加相同的配置!');
+				    			flag=false;
+				    			return false;
+				    		}
+				    	});
+				    	if(!flag)
+				    	{
+				    		return;
+				    	}
+				    }  //配置必须大于基础配置 //公里
+				    if(parseInt(txtKM)==0&&parseInt(txtKG)!=0)
+				    {
+				    	var flag=true;
+				    	var basekm=parseInt($('.xiaokg1').html());
+				    	if(parseInt(txtKG)<=basekm)
+				    	{
+				    		alert('修改规则重量必须大于基础配置重量')
+				    	}
+				    	$('.xiaokg0').each(function(e){
+				    		var ha=parseInt($(this).html());
+				    		if(ha==parseInt(txtKG))
+				    		{
+				    			alert('不能添加相同的配置!');
+				    			flag=false;
+				    			return false;
+				    		}
+				    	});
+				    	if(!flag)
+				    	{
+				    		return;
+				    	}
+				    }
+		 }
+		 else//基础
+		 {
+			 var basekm=parseInt(txtKM);
+			 var basekg=parseInt(txtKG);
+			 var kmarr=new Array();
+			 $('.xiaokm0').each(function(index){
+				 var temp=$(this).html();
+				 if(temp!='--')
+				 {
+					 kmarr.push(parseInt(temp));
+				 }
+			 });
+			 //排序
+			 kmarr.sort(compare);
+//			 kmarr.reverse();
+			 console.log(kmarr);
+			 if(basekm>=kmarr[0])
+			 {
+				alert('基础配置公里必须小于现有所有配置!');
+				return false;
+			 }
+			 var kgarr=new Array();
+			 $('.xiaokg0').each(function(index){
+				 var temp=$(this).html();
+				 if(temp!='--')
+				 {
+					 kgarr.push(parseInt(temp));
+				 }
+			 });
+			 //排序
+			 kgarr.sort(compare);
+			 //kgarr.reverse();
+			 console.log(kgarr);
+			 if(basekg>=kgarr[0])
+			 {
+				alert('基础配置重量必须小于现有所有重量!');
+				return false;
+			 }
+		 }
 	    var paramaters = {	    		
 	    		"Id": txtId.trim(),
                 "KM": txtKM.trim(),
@@ -445,7 +595,16 @@ width: 100%;
 			 alert("重量不能为空");
 		    return;
 		 }	
-	    
+	    if(!isInt(txtKM))
+	    {
+	    	 alert("距离只能填整数");
+			    return;
+	    }
+	    if(!isInt(txtKG))
+	    {
+	    	 alert("重量只能填整数");
+			    return;
+	    }
 	    var paramaters = {
                 "KM": txtKM.trim(),
                 "KG": txtKG.trim(),
@@ -464,5 +623,32 @@ width: 100%;
 		           }
 		       });	       	    
 	}
+	
+	function isInt(n)
+	{
+		if(n.indexOf('.')>=0)
+		{
+			return false;
+		}
+	     return n == Math.abs( parseInt( n ) );
+	}
+	
+	 function compare(value1, value2) {
+
+		   if (value1 < value2) {
+
+		       return -1;
+
+		   } else if (value1 > value2) {
+
+		       return 1;
+
+		   } else {
+
+		       return 0;
+
+		   }
+
+		} 
 	</script>		
 	

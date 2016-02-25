@@ -21,16 +21,15 @@
   </select>
         <sql id="queryWhere">
 		1=1
-		 <if test="name != null and  name  !='' ">
-			and name=''${name}''
-		</if> 
 		 <if test="dataStart != null and  dataStart !='' ">
 			and UpdateTime>''${dataStart}''
 		</if> 
 		 <if test="dataEnd != null and  dataEnd !='' ">
 			and ''${dataEnd}''>=UpdateTime
 		</if> 	
-
+		<if test="name != null and  name  !='' ">
+			and name LIKE ''%${name}%''
+		</if> 
 	</sql>
  <select id="query_Sp" resultType="com.edaisong.entity.TaskDistribution" 
   parameterType="com.edaisong.entity.req.PagedTaskDistributionReq" 
