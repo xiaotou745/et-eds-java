@@ -42,8 +42,8 @@ width: 100%;
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
 
-	<div class="row">
-		<div class="col-lg-12">			
+	<div class="row" >
+		<div class="col-lg-12" style="display:none">			
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
@@ -87,7 +87,7 @@ width: 100%;
 					</div>
 				</div>
 
-			    <div class="row">
+			    <div class="row" style="display:none">
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 							style="margin-left: 3px;height:30px;">查询</button>
@@ -96,9 +96,9 @@ width: 100%;
 					 
 					</div>
 			</div>
-			<Br/>
+	
 			
-			    <div class="row">
+			    <div class="row" >
 						<div class="col-lg-3">						
 						<button type="button" class="btn btn-w-m btn-primary" id="btnCalculator"  onclick="showCalculator()"
 					style="margin-left: 3px;height:30px;">计算器
