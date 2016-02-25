@@ -78,9 +78,6 @@ if(list == null){
 							%>
 						</tbody>
 					</table>
-		<%=PageHelper.getPage(data.getPageSize(),
-					data.getCurrentPage(), data.getTotalRecord(),
-					data.getTotalPage())%>
 					
 <script>				
     function modify(id,isMaster)
