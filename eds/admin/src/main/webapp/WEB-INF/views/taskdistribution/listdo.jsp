@@ -40,7 +40,7 @@ if(list == null){
 								<td><%=list.get(i).getUpdatename()%></td>							
 						
 								<td>						
-								<a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId() %>,<%=list.get(i).getName() %>,<%=list.get(i).getRemark() %>)">修改</a>
+								<a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId() %>)">修改</a>
    							   <a href="<%=basePath%>/taskdistribution/taskdistributionbindlist?taskDistributionId=<%=list.get(i).getId()%>">配置规则</a>
 								
 					
@@ -57,13 +57,35 @@ if(list == null){
 					data.getTotalPage())%>
 					
 <script>				
-function modify(id,name,remark)
+function modify(id)
 {    		
-	 	$('#txtEId').val(id);    	
-        $('#txtEName').val(name);
-        $('#txtERemark').val(remark);         	    	
-        $('#modifyConfig').modal('show');
+//	alert(id);
+// 	alert(name);
+// 	alert(remark);
+// 	 	$('#txtEId').val(id);    	
+//         $('#txtEName').val(name);
+//         $('#txtERemark').val(remark);      
+//     	alert(id);
+//     	alert(name);
+//     	alert(remark);
+//         $('#modifyConfig').modal('show');
 	
+	 var paramaters = {
+             "id": id
+         };
+	 var url = "<%=basePath%>/taskdistribution/selectbyprimarykey";
+	 $.ajax({
+         type: 'POST',
+         url: url,
+         data: paramaters,
+         success: function (result) {		    
+      	             	
+      	 	  $('#txtEId').val(result.id);    	
+              $('#txtEName').val(result.name);              
+              $('#txtERemark').val(result.remark);              
+              $('#modifyConfig').modal('show');
+         }
+     });  
 }
 
     </script>
