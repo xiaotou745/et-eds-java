@@ -221,10 +221,22 @@ width: 100%;
 		 }
 		 if(txtARemark == "")
 		 {
-			 alert("描述不能为空");
+			 alert("备注不能为空");
 		    return;
 		 }		 
 		
+		 if(txtAName.length<2 || txtAName.length>50  )
+		 {
+			 alert("名称长度应为2-50个字符");
+		    return;
+		 }
+		 
+		 if(txtARemark.length<30 || txtARemark.length>200  )
+		 {
+			 alert("备注长度应为30-200个字符");
+		    return;
+		 }
+		 
 	    var paramaters = {
                 "name": txtAName.trim(),
                 "remark": txtARemark.trim(),      
