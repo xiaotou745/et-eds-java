@@ -362,7 +362,8 @@ width: 100%;
 			 alert("重量不能为空");
 		    return;
 		 }
-		
+		 if (txtEIsMaster==0)
+		 {
 				 if(txtKM>0 && txtKG>0)
 		    	 {
 					 alert("距离， 重量只能配置1个值");
@@ -392,6 +393,7 @@ width: 100%;
 					 alert("阶梯增量不能为0");
 				    return;
 				 }
+		 }
 	    var paramaters = {	    		
 	    		"Id": txtId.trim(),
                 "KM": txtKM.trim(),
