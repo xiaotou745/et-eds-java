@@ -445,7 +445,16 @@ width: 100%;
 			 alert("重量不能为空");
 		    return;
 		 }	
-	    
+	    if(!isInt(txtKM))
+	    {
+	    	 alert("距离只能填整数");
+			    return;
+	    }
+	    if(!isInt(txtKG))
+	    {
+	    	 alert("重量只能填整数");
+			    return;
+	    }
 	    var paramaters = {
                 "KM": txtKM.trim(),
                 "KG": txtKG.trim(),
@@ -463,6 +472,15 @@ width: 100%;
 
 		           }
 		       });	       	    
+	}
+	
+	function isInt(n)
+	{
+		if(n.indexOf('.')>=0)
+		{
+			return false;
+		}
+	     return n == Math.abs( parseInt( n ) );
 	}
 	</script>		
 	
