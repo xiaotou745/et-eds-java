@@ -148,7 +148,7 @@
 	      AND gbr.UpdateTime >=''${startDate}''
      </if>
      <if test="endDate != null and endDate != ''">
-	      AND ''${endDate}'' > gbr.UpdateTime 
+	      AND  DATEADD(d, 1, ''${endDate}'')> gbr.UpdateTime 
      </if>
      <if test="bizName != null and bizName!=''">
 	    and b.Name like ''%${bizName}%''

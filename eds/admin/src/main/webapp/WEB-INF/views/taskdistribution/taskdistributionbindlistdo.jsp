@@ -58,22 +58,18 @@ if(list == null){
 					
 							<tr>
 							<td><%=strMaster%></td>	
-								<td><%=strKm%></td>
-									<td><%=strKg%></td>		
-										<td><%=strSteps%></td>					
-							
-									<td><%=list.get(i).getDistributionPrice()%>	</td>
-														
-						
-								<td>						
+							<td class="xiaokm<%=IsMaster%>"><%=strKm%></td>
+							<td class="xiaokg<%=IsMaster%>"><%=strKg%></td>		
+							<td><%=strSteps%></td>					
+							<td><%=list.get(i).getDistributionPrice()%>	</td>
+							<td>						
 								<a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId() %>,<%=list.get(i).getIsMaster() %>)">修改</a>
 								
-								<%		
-								
-					if ( list.get(i).getIsMaster()==0)
-					{			%>
+							<%
+							if( list.get(i).getIsMaster()==0)
+							{%>
 								<a href="javascript:void(0)" onclick="del('<%=list.get(i).getId() %>')">删除</a>
-							<%}	%>
+							<%}%>
 								</td>
 							</tr>
 

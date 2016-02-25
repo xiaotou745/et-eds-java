@@ -175,7 +175,7 @@
 			AND t.CreateTime>=''${startDate}''
 		</if>
 		<if test="endDate != null and endDate != ''">
-			AND ''${endDate}''>=t.CreateTime
+			AND DATEADD(d, 1, ''${endDate}'')>t.CreateTime
 		</if>
 		<if test="tagName != null and tagName != ''">
 			AND t.TagName LIKE ''%${tagName}%''

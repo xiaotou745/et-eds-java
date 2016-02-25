@@ -2,6 +2,7 @@ package com.edaisong.admin.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -401,7 +402,7 @@ public class GroupBusinessController {
 		// 导出数据
 		String filename = "集团收支记录%s";
 		if (!StringUtils.isEmpty(req.getStartDate()) && !StringUtils.isEmpty(req.getEndDate())) {
-			filename = String.format(filename, req.getStartDate().replace(" 00:00:00", "") + "~" + req.getEndDate().replace(" 23:59:59",""));
+			filename = String.format(filename, req.getStartDate() + "~" + req.getEndDate());
 		}
 		 if (records!=null&&records.size()>0) {
 			 exportGroupBusinessBalanceRecord(filename, records,request, response);

@@ -107,7 +107,7 @@ public class ClienterBalanceRecordService implements IClienterBalanceRecordServi
 			PagedAccountBillDayCReq par) {
 		String daystr=par.getDayInfo();
 		par.setStratDate(daystr+" 00:00:00");//设置开始时间
-		par.setEndDate(daystr+" 23:59:59");//设置结束时间
+		par.setEndDate(daystr+" 00:00:00");//设置结束时间
 		List<AccountBillDayCModel> list=clienterBalanceRecordDao.getAccountBillListDayC(par);
 //		double outmoney=0;
 //		double inmoney=0;

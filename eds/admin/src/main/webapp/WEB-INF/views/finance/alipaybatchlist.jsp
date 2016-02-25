@@ -16,10 +16,7 @@
 String basePath =PropertyUtils.getProperty("java.admin.url");
 String netUrl = PropertyUtils.getProperty("net.admin.url");
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=dAeaG6HwIFGlkbqtyKkyFGEC"></script>
+
 <style type="text/css">
 #map_contain {
     height: 90%;

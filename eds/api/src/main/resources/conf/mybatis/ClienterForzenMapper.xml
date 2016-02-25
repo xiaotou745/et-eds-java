@@ -169,16 +169,16 @@
 			AND CF.Status=${forzenStatus}
 		</if>
 		<if test="dateType ==1 and startDate != null and startDate != ''">
-			AND cf.ForzenDate>''${startDate}''
+			AND cf.ForzenDate>=''${startDate}''
 		</if>
 		<if test="dateType ==1 and endDate != null and endDate != ''">
-			AND ''${endDate}''>=cf.ForzenDate
+			AND DATEADD(d, 1, ''${endDate}'')>cf.ForzenDate
 		</if>
 		<if test="dateType ==2 and startDate != null and startDate != ''">
-			AND cf.ThawDate>''${startDate}''
+			AND cf.ThawDate>=''${startDate}''
 		</if>
 		<if test="dateType ==2 and endDate != null and endDate != ''">
-			AND ''${endDate}''>=cf.ThawDate
+			AND DATEADD(d, 1, ''${endDate}'')>cf.ThawDate
 		</if>
 		<if test="clienterPhone != null and clienterPhone != ''">
 			AND c.PhoneNo=''${clienterPhone}''

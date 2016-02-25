@@ -32,7 +32,13 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">创建时间:</label>
 							<div class="col-sm-8">
-							<input id="txtstartdate" class="form-control" type="text" name="startdate" placeholder="创建时间起"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00',maxDate:'#F{$dp.$D(\'txtenddate\')||\'2120-10-01\'}'})"/>
+							<div class="input-group date">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span> 
+										<input type="text" class="form-control"  name="startdate" id="txtstartdate" placeholder="创建时间起" value=""/>
+									</div>
+							
 							</div>
 						</div>
 					</div>
@@ -40,7 +46,13 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">到:</label>
 							<div class="col-sm-8">
-							<input id="txtenddate" class="form-control" type="text" name="enddate" placeholder="创建时间止"  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59',minDate:'#F{$dp.$D(\'txtstartdate\')}',maxDate:'2120-10-01'})"/>
+							<div class="input-group date">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span> 
+										<input type="text" class="form-control"  name="enddate" id="txtenddate" placeholder="创建时间止" value=""/>
+									</div>
+							
 							</div>
 						</div>
 					</div>

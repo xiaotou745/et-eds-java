@@ -15,8 +15,7 @@
 			and a.lastOptTime>= ''${lastOptTimeStart} 00:00:00''
 		</if>
 		<if test="lastOptTimeEnd != null and lastOptTimeEnd!=''">
-         <![CDATA[ and a.lastOptTime <=]]>
-			''${lastOptTimeEnd} 23:59:59''
+		AND DATEADD(d, 1, ''${lastOptTimeEnd}'')>a.lastOptTime
 		</if>
 	</sql>
 	<!--支付宝批次单列表页查询 add by caoheyang 20151020 -->
