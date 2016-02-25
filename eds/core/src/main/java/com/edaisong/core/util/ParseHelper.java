@@ -261,6 +261,20 @@ public class ParseHelper {
 		}
 		
 	}
+	
+	/**
+	 * 获取当月第一天
+	 * @author 茹化肖
+	 * @param 
+	 * @return 返回当月第一天日期 yyyy-MM-dd
+	 */
+	public static String GetCurrentMonthFirstDay()
+	{   
+        //获取前月的第一天
+        Calendar   cal_1=Calendar.getInstance();//获取当前日期 
+        cal_1.set(Calendar.DAY_OF_MONTH,1);//设置为1号,
+        return ToDateString(cal_1.getTime(), "yyyy-MM-dd");
+	}
 	/**
 	 * 获取时间中的月份
 	 * @author 茹化肖
