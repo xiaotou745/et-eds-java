@@ -33,8 +33,10 @@ if(list == null){
 							<%for (int i = 0; i < list.size(); i++) { %>
 							<tr>
 								<td><%=list.get(i).getId()%></td>
-								<td><%=list.get(i).getName()%></td>
-								<td><%=list.get(i).getRemark()%></td>
+								<td ><%=list.get(i).getName()%>
+								
+								</td>
+								<td title=<%=list.get(i).getRemark()%>><%=list.get(i).getRemark()%></td>
 								<td><%=list.get(i).getUserCount()%></td>
 									<td><%=ParseHelper.ToDateString(list.get(i).getUpdatetime())%>	</td>
 								<td><%=list.get(i).getUpdatename()%></td>							
@@ -59,16 +61,6 @@ if(list == null){
 <script>				
 function modify(id)
 {    		
-//	alert(id);
-// 	alert(name);
-// 	alert(remark);
-// 	 	$('#txtEId').val(id);    	
-//         $('#txtEName').val(name);
-//         $('#txtERemark').val(remark);      
-//     	alert(id);
-//     	alert(name);
-//     	alert(remark);
-//         $('#modifyConfig').modal('show');
 	
 	 var paramaters = {
              "id": id
