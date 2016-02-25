@@ -2291,4 +2291,54 @@ where   1 = 1
             left join b on a.MonthDate = b.pubDateStr 
 	</select>
 	
+	  <!--集团订单统计 每日统计  caoheyang 20160224-->
+   	 <select id="exportStatistics" resultType="com.edaisong.entity.domain.ExportStatistics"
+		parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
+select  CONVERT(VARCHAR(100), o.PubDate, 23) monthDate ,
+        MIN(b.name) businessName ,
+        ISNULL(SUM(CASE o.Status
+                     when 1 then 1
+                     else 0
+                   end), 0) as compliteCount ,
+        ISNULL(SUM(CASE o.Status
+                     when 3 then 1
+                     else 0
+                   end), 0) as canelCount ,
+        ISNULL(SUM(CASE o.Status
+                     when 1 then SettleMoney
+                     else 0
+                   end), 0) totalSettleMoney ,
+        ISNULL(SUM(CASE o.Status
+                     when 1 then o.Amount
+                     else 0
+                   end), 0) as totalAmount ,
+        ISNULL(SUM(CASE when o.Status = 1
+                             and bb.GroupId != 0 then o.SettleMoney
+                        else 0
+                   end), 0) as groupPay ,
+        ISNULL(SUM(CASE when o.Status = 1
+                             and bb.GroupId = 0 then o.SettleMoney
+                        else 0
+                   end), 0) as businessPay
+from    dbo.[order] (nolock) o
+        join dbo.business (nolock) b on o.businessId = b.Id
+        join dbo.BusinessBalanceRecord (nolock) bb on o.Id = bb.WithwardId
+                                                      and bb.RecordType = 1
+where   1 = 1
+        and PubDate >= '${orderPubStart}'
+        and PubDate <![CDATA[<]]> = '${orderPubEnd}'
+        and ( o.Status = 3
+              or o.Status = 1
+            )
+        and GroupBusinessId = ${groupBusinessId}
+        <if test="businessID != null and businessID!=0">
+		     and  o.businessId=#{businessID} 
+	    </if>
+        and ( o.OrderFrom = 0
+              or o.OrderFrom = 99
+            )
+group by b.Name ,
+        CONVERT(VARCHAR(100), o.PubDate, 23)
+	</select>
+	
 </mapper>
