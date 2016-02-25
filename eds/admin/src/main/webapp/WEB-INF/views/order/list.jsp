@@ -99,7 +99,7 @@ width: 100%;
 							<div class="col-sm-8">
 							<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" value="" name="OrderPubStart"  id="txtOrderPubStart"/>
+                                        <input type="text" class="form-control" value="<%=ParseHelper.GetCurrentMonthFirstDay()%>" name="OrderPubStart"  id="txtOrderPubStart"/>
                                     </div>
 							</div>
 						</div>
