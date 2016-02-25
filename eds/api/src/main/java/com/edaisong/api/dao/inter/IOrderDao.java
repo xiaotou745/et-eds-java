@@ -13,6 +13,7 @@ import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.ExportShanSongOrder;
+import com.edaisong.entity.domain.ExportStatistics;
 import com.edaisong.entity.domain.GroupOrderDaystatistics;
 import com.edaisong.entity.domain.GroupOrderstatistics;
 import com.edaisong.entity.domain.GroupTodayStatistics;
@@ -476,4 +477,13 @@ public interface IOrderDao {
 	 * @date 20160224
 	 */
 	List<GroupOrderDaystatistics> groupOrderDaystatistics(PagedOrderSearchReq req);
+	
+	/**
+	 * 集团订单统计  导出报表
+	 * 
+	 * @author CaoHeYang
+	 * @param req
+	 * @date 20160225
+	 */
+	List<ExportStatistics> exportStatistics(PagedOrderSearchReq req);
 }

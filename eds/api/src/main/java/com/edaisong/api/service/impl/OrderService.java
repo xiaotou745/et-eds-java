@@ -112,6 +112,7 @@ import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.ExportShanSongOrder;
+import com.edaisong.entity.domain.ExportStatistics;
 import com.edaisong.entity.domain.GroupOrderstatistics;
 import com.edaisong.entity.domain.GroupTodayStatistics;
 import com.edaisong.entity.domain.InStoreOrderRegionInfo;
@@ -3373,6 +3374,18 @@ public class OrderService implements IOrderService {
 		}
 		r.setDays(orderDao.groupOrderDaystatistics(req));
 		return r;
+	}
+
+	/**
+	 * 集团订单统计  导出报表
+	 * 
+	 * @author CaoHeYang
+	 * @param req
+	 * @date 20160225
+	 */
+	@Override
+	public List<ExportStatistics> exportStatistics(PagedOrderSearchReq req) {
+		return  orderDao.exportStatistics(req);
 	}
 	
 	

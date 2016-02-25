@@ -1,10 +1,13 @@
 package com.edaisong.business.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +18,16 @@ import com.edaisong.api.service.inter.IBusinessService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.business.common.UserContext;
 import com.edaisong.core.enums.OrderStatus;
+import com.edaisong.core.util.ExcelUtils;
+import com.edaisong.core.util.ParseHelper;
+import com.edaisong.core.util.PropertyUtils;
 import com.edaisong.entity.domain.BusiPubOrderTimeStatisticsModel;
 import com.edaisong.entity.domain.BusinessOrderSummaryModel;
+import com.edaisong.entity.domain.ExportStatistics;
 import com.edaisong.entity.domain.GroupOrderDaystatistics;
 import com.edaisong.entity.domain.GroupOrderstatistics;
 import com.edaisong.entity.domain.GroupTodayStatistics;
+import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.domain.ServiceClienter;
 import com.edaisong.entity.req.PagedOrderSearchReq;
 
@@ -94,5 +102,44 @@ public class GroupStatisticsController {
 		req.setOrderStatus(OrderStatus.Cancel.value());
 		GroupOrderstatistics list=orderService.groupOrderstatistics(req);
 		return model;
+	}
+	
+	
+	
+	/**
+	 * 集团订单统计
+	 * 
+	 * @author caoheyang 
+	 * @Date 20160222
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("exportstatistics")
+	public void exportStatistics(Integer timeType,PagedOrderSearchReq searchWebReq,HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		searchWebReq.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());
+		searchWebReq.setOrderPubStart("2016-01-12");
+		searchWebReq.setOrderPubEnd("2016-03-12");
+		searchWebReq.setOrderStatus(OrderStatus.Cancel.value());
+		searchWebReq.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());
+	    List<ExportStatistics> records=	 orderService.exportStatistics(searchWebReq);
+	    if(records.size() > 0){
+				String fileName = "e代送-%s-集团订单统计";
+				fileName = String.format(fileName, searchWebReq.getOrderPubStart()+ "到" + searchWebReq.getOrderPubEnd());
+				LinkedHashMap<String, String> columnTitiles = new LinkedHashMap<String, String>();
+				columnTitiles.put("日期", "monthDate");
+				columnTitiles.put("门店名称", "businessName");
+				columnTitiles.put("订单数量", "compliteCount");
+				columnTitiles.put("配送费支出", "totalSettleMoney");
+				columnTitiles.put("消费集团金额", "groupPay");
+				columnTitiles.put("门店自费金额", "businessPay");
+				columnTitiles.put("菜品总金额", "totalAmount");
+				columnTitiles.put("取消订单量", "canelCount");
+				ExcelUtils.export2Excel(fileName, "集团订单统计", columnTitiles,records, request, response);
+				return;
+			}else {
+				String basePath = PropertyUtils.getProperty("java.business.url");
+				response.sendRedirect(basePath+"/groupstatistics/exportstatistics");
+			}
 	}
 }

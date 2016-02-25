@@ -22,6 +22,7 @@ import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.ExportShanSongOrder;
+import com.edaisong.entity.domain.ExportStatistics;
 import com.edaisong.entity.domain.GroupOrderDaystatistics;
 import com.edaisong.entity.domain.GroupOrderstatistics;
 import com.edaisong.entity.domain.GroupTodayStatistics;
@@ -632,5 +633,17 @@ public class OrderDao extends DaoBase implements IOrderDao {
 	public List<GroupOrderDaystatistics> groupOrderDaystatistics(
 			PagedOrderSearchReq req) {
 		return getReadOnlySqlSessionUtil().selectList("IOrderDao.groupOrderDaystatistics",req);
+	}
+
+	/**
+	 * 集团订单统计  导出报表
+	 * 
+	 * @author CaoHeYang
+	 * @param req
+	 * @date 20160225
+	 */
+	@Override
+	public List<ExportStatistics> exportStatistics(PagedOrderSearchReq req) {
+		return getReadOnlySqlSessionUtil().selectList("IOrderDao.exportStatistics",req);
 	}
 }
