@@ -112,7 +112,7 @@ width: 100%;
             </div>
             <div class="control-group">  
                 <label>描述：</label>
-                <textarea name="txtARemark" id="txtARemark" style="width:300px;height:100px;max-width:300px;max-height:100px;">
+                <textarea name="txtARemark" id="txtARemark" placeholder="此描述会显示在app价格表中" class="input-sm form-control" style="width:300px;height:100px;max-width:300px;max-height:100px;">
                 </textarea>
             </div>       
         </fieldset>
