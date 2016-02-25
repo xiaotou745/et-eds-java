@@ -2223,4 +2223,72 @@ select @balancePrice as balancePrice,@todayPay as todayPay,@todayDishTotal as to
 		</if>
 		GROUP BY status,DATENAME(HOUR,o.PubDate) ORDER BY hour;
 	</select>
+	 <!--集团订单统计  主数据  caoheyang 20160224-->
+   	 <select id="groupOrderstatistics" resultType="com.edaisong.entity.domain.GroupOrderstatistics"
+		parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
+		select  ISNULL(SUM(CASE Status
+              when 1 then 1
+              else 0
+            end),0) as compliteCount,
+        ISNULL(SUM(CASE Status
+              when 3 then 1
+              else 0
+            end),0) as canelCount ,
+        ISNULL(SUM(CASE Status
+              when 1 then SettleMoney
+              else 0
+            end),0) totalSettleMoney,
+        ISNULL(SUM(CASE Status
+              when 1 then Amount
+              else 0
+            end),0) as totalAmount
+from    dbo.[order] (nolock) o
+where   1 = 1
+        and PubDate >= '${orderPubStart}'
+        and PubDate <![CDATA[<]]>  = '${orderPubEnd}'
+        and ( Status = 3
+              or Status = 1
+            )
+          <if test="businessID != null and businessID!=0">
+		                   and  businessId=#{businessID} 
+		 </if>
+        and GroupBusinessId = ${groupBusinessId}
+        and ( o.OrderFrom = 0
+              or o.OrderFrom = 99
+            )
+	</select>
+	
+	  <!--集团订单统计 每日统计  caoheyang 20160224-->
+   	 <select id="groupOrderDaystatistics" resultType="com.edaisong.entity.domain.GroupOrderDaystatistics"
+		parameterType="com.edaisong.entity.req.PagedOrderSearchReq">
+		with  a as ( select   CONVERT(VARCHAR(100), DATEADD(dd, number, '${orderPubStart}'), 23) as monthDate
+               from     master..spt_values
+               where    type = 'P'
+                        and DATEADD(dd, number, '${orderPubStart}')  <![CDATA[<]]> DATEADD(mm, 1,
+                                                              '${orderPubEnd}')
+             ),
+        b as ( select   COUNT(1) as orderCount ,
+                        CONVERT(VARCHAR(100), PubDate, 23) as pubDateStr,
+                        SUM(SettleMoney) as SettleMoney,
+                        SUM(Amount) as amount
+               from     dbo.[order] (nolock) o
+               where    1 = 1
+                        and PubDate >= '${orderPubStart}'
+                        and PubDate <![CDATA[<]]> = '${orderPubEnd}'
+                        and Status = ${orderStatus}
+                        and GroupBusinessId=${groupBusinessId}
+                        and (o.OrderFrom=0 or o.OrderFrom=99)
+                        <if test="businessID != null and businessID!=0">
+		                   and  businessId=#{businessID} 
+		                </if>
+               group by CONVERT(VARCHAR(100), PubDate, 23)
+             )
+    select  a.monthDate ,
+           ISNULL( b.orderCount,0) orderCount,
+           ISNULL( b.SettleMoney,0) settleMoney,
+           ISNULL( b.amount,0) amount
+    from    a
+            left join b on a.MonthDate = b.pubDateStr 
+	</select>
+	
 </mapper>

@@ -156,7 +156,7 @@ public class TaskDistributionConfigService implements
 		{
 			if(record.getkM()>0)
 			{
-				TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(0, record.getkM());
+				TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(0,record.getTaskDistributionId(), record.getkM());
 				if(selectModel!=null)
 				{
 					resp.setStatus(TaskDistributionConfigEnum.KMErr.value());
@@ -166,7 +166,7 @@ public class TaskDistributionConfigService implements
 			}
 			else
 			{
-				TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(0, record.getkG());
+				TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(0,record.getTaskDistributionId(), record.getkG());
 				if(selectModel!=null)
 				{
 					resp.setStatus(TaskDistributionConfigEnum.KGErr.value());
@@ -189,7 +189,7 @@ public class TaskDistributionConfigService implements
 		
 		if(record.getIsMaster()==0 &&record.getkM()>0)
 		{
-			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(record.getId(), record.getkM());
+			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKM(record.getId(),record.getTaskDistributionId(), record.getkM());
 			if(selectModel!=null)
 			{
 				resp.setStatus(TaskDistributionConfigEnum.KMErr.value());
@@ -199,7 +199,7 @@ public class TaskDistributionConfigService implements
 		}
 		else if(record.getIsMaster()==0 &&record.getkM()==0)
 		{
-			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(record.getId(), record.getkG());
+			TaskDistributionConfig selectModel= taskDistributionConfigDao.selectByKG(record.getId(),record.getTaskDistributionId(), record.getkG());
 			if(selectModel!=null)
 			{
 				resp.setStatus(TaskDistributionConfigEnum.KGErr.value());
@@ -213,14 +213,14 @@ public class TaskDistributionConfigService implements
 		return resp;
 	}
 	
-	public TaskDistributionConfig selectByKM(int id, double km)
+	public TaskDistributionConfig selectByKM(int id, int taskDistributionId, double km)
 	{
-		return taskDistributionConfigDao.selectByKM(id,km);	
+		return taskDistributionConfigDao.selectByKM(id,taskDistributionId,km);	
 	}
 	
-	public TaskDistributionConfig selectByKG(int id,double kg)
+	public TaskDistributionConfig selectByKG(int id, int taskDistributionId,double kg)
 	{
-		return taskDistributionConfigDao.selectByKG(id,kg);	
+		return taskDistributionConfigDao.selectByKG(id,taskDistributionId,kg);	
 	}
     
 	public int deleteByPrimaryKey(Integer id)

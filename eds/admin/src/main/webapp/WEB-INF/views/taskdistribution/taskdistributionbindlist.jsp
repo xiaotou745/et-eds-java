@@ -41,8 +41,8 @@ width: 100%;
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
 
-	<div class="row">
-		<div class="col-lg-12">			
+	<div class="row" >
+		<div class="col-lg-12" style="display:none">			
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
@@ -86,7 +86,7 @@ width: 100%;
 					</div>
 				</div>
 
-			    <div class="row">
+			    <div class="row" style="display:none">
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 							style="margin-left: 3px;height:30px;">查询</button>
@@ -95,9 +95,9 @@ width: 100%;
 					 
 					</div>
 			</div>
-			<Br/>
+	
 			
-			    <div class="row">
+			    <div class="row" >
 						<div class="col-lg-3">						
 						<button type="button" class="btn btn-w-m btn-primary" id="btnCalculator"  onclick="showCalculator()"
 					style="margin-left: 3px;height:30px;">计算器
@@ -255,13 +255,22 @@ width: 100%;
 	});		
 
 	function showAdd(){ 
+		//判断当前是否超过10条
+		var len=$('#content').find('tbody').find('tr').length;
+		if(len>=10)
+		{
+			alert('配送费规则不能超过10条!');
+			return;
+		}
         $('#txtUKM').val('0');
         $('#txtUKG').val('0');
         $('#txtUSteps').val('1');
         $('#txtUDistributionPrice').val('0');
         $('#addConfig').modal('show');
 }
+	//新增 
 	function saveAdd(){
+		
 		var txtKM= $('#txtUKM').val().trim();
 		var txtKG= $('#txtUKG').val().trim();	
 		var txtSteps= $('#txtUSteps').val().trim();
@@ -361,7 +370,8 @@ width: 100%;
 			 alert("重量不能为空");
 		    return;
 		 }
-		
+		 if (txtEIsMaster==0)
+		 {
 				 if(txtKM>0 && txtKG>0)
 		    	 {
 					 alert("距离， 重量只能配置1个值");
@@ -391,6 +401,7 @@ width: 100%;
 					 alert("阶梯增量不能为0");
 				    return;
 				 }
+		 }
 	    var paramaters = {	    		
 	    		"Id": txtId.trim(),
                 "KM": txtKM.trim(),
@@ -444,7 +455,16 @@ width: 100%;
 			 alert("重量不能为空");
 		    return;
 		 }	
-	    
+	    if(!isInt(txtKM))
+	    {
+	    	 alert("距离只能填整数");
+			    return;
+	    }
+	    if(!isInt(txtKG))
+	    {
+	    	 alert("重量只能填整数");
+			    return;
+	    }
 	    var paramaters = {
                 "KM": txtKM.trim(),
                 "KG": txtKG.trim(),
@@ -462,6 +482,15 @@ width: 100%;
 
 		           }
 		       });	       	    
+	}
+	
+	function isInt(n)
+	{
+		if(n.indexOf('.')>=0)
+		{
+			return false;
+		}
+	     return n == Math.abs( parseInt( n ) );
 	}
 	</script>		
 	

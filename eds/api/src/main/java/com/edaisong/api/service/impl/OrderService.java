@@ -112,6 +112,7 @@ import com.edaisong.entity.domain.DaySatisticsB;
 import com.edaisong.entity.domain.DaySatisticsC;
 import com.edaisong.entity.domain.ExportOrder;
 import com.edaisong.entity.domain.ExportShanSongOrder;
+import com.edaisong.entity.domain.GroupOrderstatistics;
 import com.edaisong.entity.domain.GroupTodayStatistics;
 import com.edaisong.entity.domain.InStoreOrderRegionInfo;
 import com.edaisong.entity.domain.InStoreTask;
@@ -3354,6 +3355,24 @@ public class OrderService implements IOrderService {
 	public List<BusiPubOrderTimeStatisticsModel> groupTodayOrderStatisticsReport(
 			Integer businessId, Integer groupBusinessId) {
 		return orderDao.groupTodayOrderStatisticsReport(businessId,groupBusinessId);
+	}
+
+	
+	/**
+	 * 集团订单统计
+	 * 
+	 * @author CaoHeYang
+	 * @param req
+	 * @date 20160224
+	 */
+	@Override
+	public GroupOrderstatistics groupOrderstatistics(PagedOrderSearchReq req) {
+		GroupOrderstatistics r = orderDao.groupOrderstatistics(req);
+		if (r == null) {
+			r = new GroupOrderstatistics();
+		}
+		r.setDays(orderDao.groupOrderDaystatistics(req));
+		return r;
 	}
 	
 	

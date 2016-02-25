@@ -25,12 +25,12 @@
    <select id="selectByKM" resultType="com.edaisong.entity.TaskDistributionConfig" parameterType="java.util.Map" >
     select Id,KM,KG,DistributionPrice,IsMaster 
     from TaskDistributionConfig
-    where    IsMaster!=1 and KM!=0 and KM= #{kM,jdbcType=DOUBLE} and id!=#{id,jdbcType=INTEGER}
+    where    IsMaster!=1 and KM!=0 and taskDistributionId= #{taskDistributionId,jdbcType=INTEGER} and KM= #{kM,jdbcType=DOUBLE} and id!=#{id,jdbcType=INTEGER}
   </select>
    <select id="selectByKG" resultType="com.edaisong.entity.TaskDistributionConfig" parameterType="java.util.Map" >
     select Id,KM,KG,DistributionPrice,IsMaster 
     from TaskDistributionConfig
-    where   IsMaster!=1 and KG!=0 and KG= #{kG,jdbcType=DOUBLE}  and id!=#{id,jdbcType=INTEGER}
+    where   IsMaster!=1 and KG!=0 and taskDistributionId= #{taskDistributionId,jdbcType=INTEGER} and KG= #{kG,jdbcType=DOUBLE}  and id!=#{id,jdbcType=INTEGER}
   </select>
       <sql id="queryWhere">
 		1=1
