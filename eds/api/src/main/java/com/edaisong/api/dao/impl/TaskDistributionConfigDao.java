@@ -58,20 +58,22 @@ public class TaskDistributionConfigDao extends DaoBase implements ITaskDistribut
 				"ITaskDistributionConfigDao.insertSelective", record);
 	}
 	
-	public TaskDistributionConfig selectByKM(int id, double km)
+	public TaskDistributionConfig selectByKM(int id, int taskDistributionId, double km)
 	{
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", id);
+		paramMap.put("taskDistributionId", taskDistributionId);
 		paramMap.put("kM", km);
 		
 		return getMasterSqlSessionUtil().selectOne(
 				"ITaskDistributionConfigDao.selectByKM", paramMap);
 	}
 	
-	public TaskDistributionConfig selectByKG(int id,double kg)
+	public TaskDistributionConfig selectByKG(int id,int taskDistributionId,double kg)
 	{
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", id);
+		paramMap.put("taskDistributionId", taskDistributionId);
 		paramMap.put("kG", kg);
 		
 		return getMasterSqlSessionUtil().selectOne(
