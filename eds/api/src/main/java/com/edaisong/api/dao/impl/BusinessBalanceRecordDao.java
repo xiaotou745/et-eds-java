@@ -78,13 +78,6 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 
 	@Override
 	public double queryBusinessRechargeTotalAmount(BussinessBalanceQueryReq par) throws ParseException {
-		//Map<String, Object> paramsMap = new HashMap<String, Object>();
-		//paramsMap.put("where", getBussinessBalanceQueryWhere(par));
-		if (!StringUtils.isEmpty(par.getEndDate())) {
-			Date finalDt = ParseHelper.ToDate(par.getEndDate(), "yyyy-MM-dd");
-			finalDt = ParseHelper.plusDate(finalDt, 2, 1);
-			par.setEndDate(ParseHelper.ToDateString(finalDt, "yyyy-MM-dd"));
-		}
 		return getReadOnlySqlSessionUtil().selectOne(
 				"IBusinessBalanceRecordDao.queryBusinessRechargeTotalAmount", par);
 	}
@@ -110,19 +103,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 	@Override
 	public Map<String,AccountBillModel>  getAccountBillListB(AccountBillBReq par) {
 		String startDate=par.getMonthInfo()+"-01 00:00:00";
-		String year=par.getMonthInfo().split("-")[0];//年
-		String month=par.getMonthInfo().split("-")[1];//月
-		String endDate="";
-		if(month.equals("12"))
-		{
-			year=String.valueOf(Integer.parseInt(year, 10)+1);//十二月将年+1
-			endDate=year+"-01-01 00:00:00";//结束时间为 2016-01-01 00:00:00
-		}
-		else {
-			//结束时间为下个月一号之前
-			month=String.valueOf(Integer.parseInt(month,10)+1);//将月份+1
-			endDate=year+"-"+month+"-01 00:00:00";//结束时间为 2015-12-01 00:00:00
-		}
+		String endDate=ParseHelper.ToDateString(ParseHelper.plusDate(ParseHelper.ToDate(startDate), 1, 1));
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("businessId", par.getBusinessId());
 		params.put("startDate", startDate);

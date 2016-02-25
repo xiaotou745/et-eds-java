@@ -198,8 +198,9 @@
 from  ClienterBalanceRecord (nolock)
 where  WithwardId= #{id,jdbcType=BIGINT} and Remark='无效订单'
   </select>
-  <!-- 骑士获取月账单列表 茹化肖 2015年9月14日17:01:28 -->
-  <select id="getAccountBillCList" resultType="com.edaisong.entity.domain.AccountBillModel">
+  <!-- 骑士获取月账单列表 茹化肖 2015年9月14日17:01:28，endDate是开始日期加了一个月，因此不需要加一天 -->
+  <select id="getAccountBillCList" resultType="com.edaisong.entity.domain.AccountBillModel" 
+   parameterType="java.util.Map">
 		select
 		Convert ( varchar(10), OperateTime, 120) as DayInfo,
 		SUM(CASE WHEN Amount>0 THEN Amount ELSE 0 END) as InMoney,
@@ -208,16 +209,16 @@ where  WithwardId= #{id,jdbcType=BIGINT} and Remark='无效订单'
 		 ClienterBalanceRecord (NOLOCK)
  		 WHERE ClienterId=#{clienterId,jdbcType=INTEGER}
  		AND RecordType!=7
-		AND OperateTime > #{startDate,jdbcType=VARCHAR} 
-		AND #{endDate,jdbcType=VARCHAR} > OperateTime
+		AND OperateTime >= #{startDate,jdbcType=VARCHAR} 
+		AND  #{endDate,jdbcType=VARCHAR}> OperateTime
 		GROUP by
 		Convert ( VARCHAR(10), OperateTime, 120)
 	</select>
 	<!-- 获取骑士日账单分页 的Where条件 茹化肖 -->
 	<sql id="getAccountBillDayCList_Where">
 		ClienterId=${clienterId}
-		AND OperateTime > ''${stratDate}''
-		AND ''${endDate}'' >= OperateTime
+		AND OperateTime >= ''${stratDate}''
+	    AND DATEADD(d, 1, ''${endDate}'')>OperateTime
 		<if test="billType == 1"><!-- 出账 -->
 			AND 0>Amount
 		</if>
@@ -278,8 +279,8 @@ sum(case when Amount>0 then amount else 0 end) as inMoney
  FROM dbo.ClienterBalanceRecord cbr(nolock)
 where 
 ClienterId=${clienterId} and RecordType!=7
-AND OperateTime >'${stratDate}' 
-AND '${endDate}' > OperateTime
+AND OperateTime >='${stratDate}' 
+AND  DATEADD(d, 1, '${endDate}')> OperateTime
  group by ClienterId
 	</select>
 </mapper>

@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.edaisong.core.util.PropertyUtils"%>
-<%@page import="java.sql.Date"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.lang.Double"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edaisong.entity.domain.AreaModel"%>
@@ -27,8 +27,6 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 <link href="<%=basePath%>/css/plugins/chosen/chosen.css"  rel="stylesheet">
 <script src="<%=basePath%>/js/plugins/chosen/chosen.jquery.js" ></script>
 <!-- 下拉框的样式以及JS -->
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=dAeaG6HwIFGlkbqtyKkyFGEC"></script>
 <style type="text/css">
@@ -99,7 +97,7 @@ width: 100%;
 							<div class="col-sm-8">
 							<div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" value="" name="OrderPubStart"  id="txtOrderPubStart"/>
+                                        <input type="text" class="form-control" value="<%=ParseHelper.ToDateString(ParseHelper.plusDate(new Date(), 1, -1) , "yyyy-MM-dd") %>" name="OrderPubStart"  id="txtOrderPubStart"/>
                                     </div>
 							</div>
 						</div>
@@ -223,13 +221,6 @@ width: 100%;
 	</div>
 <script>
  $(function(){
-	  $(' .input-group.date').datepicker({
-          todayBtn: "linked",
-          keyboardNavigation: false,
-          forceParse: false,
-          calendarWeeks: true,
-          autoclose: true
-      });
 	  //获取所有标签
 	  $.ajax({
           type: 'POST',

@@ -882,8 +882,7 @@
 		o.[SongCanDate] ,
 		 o.[OrderCount] ,o.[CommissionRate] ,
 		 c.TrueName ClienterName ,
-		c.PhoneNo ClienterPhoneNo , b.Name BusinessName ,b.PhoneNo
-		BusinessPhoneNo ,
+		c.PhoneNo ClienterPhoneNo , b.Name BusinessName ,b.PhoneNo BusinessPhoneNo ,
 		b.Address BusinessAddress ,
 		 isnull(g.GroupName,'''') as GroupName,
 		 isnull(g.GroupName,'''') as OrderFromName,
@@ -902,13 +901,8 @@
 	<!-- 后台订单列表页面 查询列集来源 add by caoheyang 20150728 -->
 	<sql id="GetOrdersFrom">
 		[order] o with ( nolock )
-		left join clienter c with ( nolock ) on c.Id = o.clienterId
-		join business b with ( nolock ) on b.Id = o.businessId
-		left join [group] g with ( nolock ) on g.id = o.OrderFrom
 		join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
-		<if test="groupBusinessId >0 ">
-			left join GroupBusinessRelation gbr(nolock) on o.BusinessId=b.id 
-		</if>
+		join business b with ( nolock ) on b.Id = o.businessId
 		<if test="tagType == 0 and tagId>0">
 			join dbo.TagRelation tagR on b.Id=tagR.UserId and tagR.IsEnable=1 and tagR.UserType=0 and  tagR.TagId=${tagId} 
 		</if>
@@ -918,7 +912,11 @@
 		<if test="authCityStr !=null and authCityStr!=''">
 		join [dbo].[Fn_SplitToTable](''${authCityStr}'') AS FS ON FS.Value=b.City
 		</if>
-		
+		<if test="groupBusinessId >0 ">
+			left join GroupBusinessRelation gbr(nolock) on o.BusinessId=gbr.BusinessId 
+		</if>
+		left join clienter c with ( nolock ) on c.Id = o.clienterId
+		left join [group] g with ( nolock ) on g.id = o.OrderFrom
 	</sql>
 	<!-- 后台订单列表页面 动态查询条件 add by caoheyang 20150728 -->
 	<sql id="GetOrdersColumsWhere">
@@ -954,8 +952,7 @@
 			and o.PubDate>= ''${orderPubStart} 00:00:00''
 		</if>
 		<if test="orderPubEnd != null and orderPubEnd!=''">
-         <![CDATA[ and o.PubDate<=]]>
-			''${orderPubEnd} 23:59:59''
+		AND DATEADD(d, 1, ''${orderPubEnd}'')>o.PubDate
 		</if>
 		<if test="auditStatus != null and auditStatus>-1">
 			and oo.auditStatus= ${auditStatus}
@@ -1012,10 +1009,11 @@
                 ISNULL(o.[Adjustment], 0) as Adjustment ,
                 ISNULL(o.[SettleMoney], 0) as SettleMoney
 		from [order] o with ( nolock )
-		left join clienter c with ( nolock ) on c.Id = o.clienterId
-		join business b with ( nolock ) on b.Id = o.businessId
-		left join [group] g with ( nolock ) on g.id = o.OrderFrom
 		join dbo.OrderOther oo ( nolock ) on o.Id = oo.OrderId
+		join business b with ( nolock ) on b.Id = o.businessId
+		left join clienter c with ( nolock ) on c.Id = o.clienterId
+		left join [group] g with ( nolock ) on g.id = o.OrderFrom
+
 		where 1=1    
  		<if test="businessName != null  and businessName !=''">
 			and b.Name=#{businessName}
@@ -1036,8 +1034,7 @@
 			and o.PubDate>= '${orderPubStart} 00:00:00'
 		</if>
 		<if test="orderPubEnd != null and orderPubEnd!=''">
-         <![CDATA[ and o.PubDate<=]]>
-			'${orderPubEnd} 23:59:59'
+		AND DATEADD(d, 1, '${orderPubEnd}')>o.PubDate
 		</if>
 		<if test="groupId != null and groupId != -1">
 			and o.OrderFrom = #{groupId}
@@ -1121,9 +1118,9 @@
 		,ISNULL(o.SettleMoney,0)  SettleMoney
 		,o.MealsSettleMode
 		FROM [order] o WITH ( NOLOCK )
+		JOIN OrderOther oo WITH (NOLOCK) ON oo.OrderId=o.Id
 		LEFT JOIN business b WITH ( NOLOCK ) ON b.Id = o.businessId
 		LEFT JOIN clienter c WITH (NOLOCK) ON o.clienterId=c.Id
-		LEFT JOIN OrderOther oo WITH (NOLOCK) ON oo.OrderId=o.Id
 		LEFT JOIN [group] g WITH ( NOLOCK ) ON g.Id = o.orderfrom
 		WHERE 1=1
 		<if test="orderNo != null and orderNo != '' ">
@@ -1617,10 +1614,10 @@ where   Status = 1
 		<sql id="busTaskList_Where">
 		 o.Status!=3 and oo.AuditStatus=0 
 	    <if test="startDate != null and  startDate !='' ">
-			and o.PubDate>''${startDate}''
+			and o.PubDate>=''${startDate}''
 		</if> 
 		 <if test="endDate != null and  endDate !='' ">
-			and ''${endDate}''>=o.PubDate
+		 	AND DATEADD(d, 1, ''${endDate}'')>o.PubDate
 		</if> 
 		 <if test="cityName != null and  cityName  !='' ">
 			and b.city=''${cityName}''
@@ -1833,15 +1830,14 @@ GROUP BY a.id ,
 		<if test="superManPhone != null and superManPhone!='' ">
 			and c.PhoneNo=''${superManPhone}''
 		</if>
+		<if test="businessCity != null and businessCity !=''">
+			and b.city  = ''${businessCity}''
+		</if>
 		<if test="orderPubStart != null and orderPubStart!=''">
 			and a.PubDate>= ''${orderPubStart} 00:00:00''
 		</if>
-	    <if test="businessCity != null and businessCity !=''">
-			and b.city  = ''${businessCity}''
-		</if>
 		<if test="orderPubEnd != null and orderPubEnd!=''">
-         <![CDATA[ and a.PubDate<=]]>
-			''${orderPubEnd} 23:59:59''
+		AND DATEADD(d, 1, ''${orderPubEnd}'')>a.PubDate
 		</if>
 	</sql>
 
@@ -1879,10 +1875,10 @@ ISNULL(c.TrueName,'匿名') ClienterName,
 ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
 ISNULL( b.PhoneNo ,'无') BusinessPhoneNo 
 from  dbo.[order] (nolock) a 
+join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
+join dbo.OrderChild e ( nolock ) on  a.Id=e.OrderId
 join business b with ( nolock ) on b.Id = a.businessId and  a.[Platform]=3
 left join dbo.clienter (nolock) c on a.ClienterId = c.Id
-left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId
-LEFT join dbo.OrderChild e ( nolock ) on  a.Id=d.OrderId
 where 
 1=1
 		<if test="businessPhone != null and businessPhone!='' ">
@@ -1900,15 +1896,14 @@ where
 		<if test="superManPhone != null and superManPhone!='' ">
 			and c.PhoneNo='${superManPhone}'
 		</if>
-		<if test="orderPubStart != null and orderPubStart!=''">
-			and a.PubDate>= '${orderPubStart} 00:00:00'
-		</if>
 	    <if test="businessCity != null and businessCity !=''">
 			and b.city  = '${businessCity}'
 		</if>
+		<if test="orderPubStart != null and orderPubStart!=''">
+			and a.PubDate>= '${orderPubStart} 00:00:00'
+		</if>
 		<if test="orderPubEnd != null and orderPubEnd!=''">
-         <![CDATA[ and a.PubDate<=]]>
-			'${orderPubEnd} 23:59:59'
+		AND DATEADD(d, 1, '${orderPubEnd}')>a.PubDate
 		</if>
 		<if test="authorityCityNameList != null">
 			and b.city in
@@ -1929,8 +1924,8 @@ ISNULL(  c.PhoneNo,'无') ClienterPhoneNo,
 ISNULL( b.PhoneNo ,'无') BusinessPhoneNo ,a.Remark,a.ProductName,a.IsEnable 
 from  dbo.[order] (nolock) a
 join business b with ( nolock ) on b.Id = a.businessId and a.[Platform]=3
+ join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId 
 left join dbo.clienter (nolock) c on a.ClienterId = c.Id
-left join dbo.OrderOther d ( nolock ) on a.Id = d.OrderId 
 where a.orderno=#{ordernNo}
 </select>
 <!--闪送商家端我的任务 addby wangchao -->
@@ -2079,8 +2074,8 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 	<sql id="getGroupOrdersFrom">
 		[order] o with ( nolock )
 		join dbo.OrderOther oo with ( nolock ) on o.Id = oo.OrderId
-		left join clienter c with ( nolock ) on c.Id = o.clienterId
 		join business b with ( nolock ) on b.Id = o.businessId  
+		left join clienter c with ( nolock ) on c.Id = o.clienterId
 		left join BusinessBalanceRecord d  with ( nolock ) on o.id = d.WithwardId and d.RecordType=1
 	</sql>
 	<!-- 集团中心订单列表页面  动态查询条件 add by caoheyang 20160222 -->
@@ -2099,8 +2094,7 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 			and o.PubDate>= ''${orderPubStart} 00:00:00''
 		</if>
 		<if test="orderPubEnd != null and orderPubEnd!=''">
-         <![CDATA[ and o.PubDate<=]]>
-			''${orderPubEnd} 23:59:59''
+		AND DATEADD(d, 1, ''${orderPubEnd}'')>o.PubDate
 		</if>
 		<if test="authorityCityNameList != null">
 			and b.city in
@@ -2153,8 +2147,8 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 	  from  
        [order] o with ( nolock )
         join dbo.OrderOther oo with ( nolock ) on o.Id = oo.OrderId
+        join business b with ( nolock ) on b.Id = o.businessId  
 	 	left join clienter c with ( nolock ) on c.Id = o.clienterId
-		join business b with ( nolock ) on b.Id = o.businessId  
 		left join BusinessBalanceRecord d  with ( nolock ) on o.id = d.WithwardId and d.RecordType=1
 	 where  
 	 1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} and (o.OrderFrom=0 or o.OrderFrom=99)
@@ -2171,8 +2165,7 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 			and o.PubDate>= '${orderPubStart} 00:00:00'
 		</if>
 		<if test="orderPubEnd != null and orderPubEnd!=''">
-         <![CDATA[ and o.PubDate<=]]>
-			'${orderPubEnd} 23:59:59'
+		AND DATEADD(d, 1, '${orderPubEnd}')>o.PubDate
 		</if>
 		<if test="authorityCityNameList != null">
 			and b.city in

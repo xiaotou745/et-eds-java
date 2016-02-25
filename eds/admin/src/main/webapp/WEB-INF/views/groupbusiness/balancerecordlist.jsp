@@ -11,10 +11,6 @@
 	String basePath = PropertyUtils.getProperty("java.admin.url");
     GroupBusinessModel detail = (GroupBusinessModel) request.getAttribute("groupBusinessModel");
 %>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script
-	src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <table class="tbstyle222" border="0"
 	style="font-size: 14px; font-weight: bold; line-height: 300%; width: 900px">
 	<tr class="trclass">

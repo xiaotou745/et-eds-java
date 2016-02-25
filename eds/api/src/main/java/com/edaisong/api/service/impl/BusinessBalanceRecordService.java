@@ -115,7 +115,7 @@ public class BusinessBalanceRecordService implements IBusinessBalanceRecordServi
 			PagedAccountBillDayReq par) {
 		String daystr=par.getDayInfo();
 		par.setStratDate(daystr+" 00:00:00");//设置开始时间
-		par.setEndDate(daystr+" 23:59:59");//设置结束时间
+		par.setEndDate(daystr+" 00:00:00");//设置结束时间
 		List<AccountBillDayModel> list=businessBalanceRecordDao.getAccountBillListDayB(par);
 //		double outmoney=0;
 //		double inmoney=0;

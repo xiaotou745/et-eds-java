@@ -14,8 +14,6 @@ String basePath =PropertyUtils.getProperty("java.admin.url");
 UserContext context=UserContext.getCurrentContext(request);
 boolean canAdd=context.isHasAuthByCode(AuthCodeConst.Admin_BusinessSetpCharge_Add_Btn);
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">
@@ -145,14 +143,6 @@ boolean canAdd=context.isHasAuthByCode(AuthCodeConst.Admin_BusinessSetpCharge_Ad
 
 
 $(function(){
-	//日期控件初始化
-	 $(' .input-group.date').datepicker({
-         todayBtn: "linked",
-         keyboardNavigation: false,
-         forceParse: false,
-         calendarWeeks: true,
-         autoclose: true
-     });
 	//弹窗
 	$('#btnAdd').click(function(){
 		$('#btnSaveEdit').hide();

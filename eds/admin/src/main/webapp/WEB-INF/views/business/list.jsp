@@ -19,8 +19,6 @@ String busname=ParseHelper.ToString(request.getAttribute("businessName"),"");
 <link href="<%=basePath%>/css/plugins/chosen/chosen.css"  rel="stylesheet">
 <script src="<%=basePath%>/js/plugins/chosen/chosen.jquery.js" ></script>
 <!-- 下拉框的样式以及JS -->
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <style type="text/css">
 #map_contain {
     height: 90%;
