@@ -256,13 +256,22 @@ width: 100%;
 	});		
 
 	function showAdd(){ 
+		//判断当前是否超过10条
+		var len=$('#content').find('tbody').find('tr').length;
+		if(len>=10)
+		{
+			alert('配送费规则不能超过10条!');
+			return;
+		}
         $('#txtUKM').val('0');
         $('#txtUKG').val('0');
         $('#txtUSteps').val('1');
         $('#txtUDistributionPrice').val('0');
         $('#addConfig').modal('show');
 }
+	//新增 
 	function saveAdd(){
+		
 		var txtKM= $('#txtUKM').val().trim();
 		var txtKG= $('#txtUKG').val().trim();	
 		var txtSteps= $('#txtUSteps').val().trim();
