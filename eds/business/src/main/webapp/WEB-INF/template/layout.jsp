@@ -18,6 +18,7 @@
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/newProjects.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/b_home.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/autocomplete.css">
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/b_order.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/popup.css">
@@ -180,7 +181,7 @@ function regTrEvent(){
 	<tiles:insertAttribute name="header"></tiles:insertAttribute>
 	<div class="content content2  cb">
 		<tiles:insertAttribute name="leftmenu"></tiles:insertAttribute>
-			<div class="center recharge">
+			<div class="center"> 	<!-- <div class="center recharge"> -->
 			<tiles:insertAttribute name="breadcrumbs"></tiles:insertAttribute>
 			<tiles:insertAttribute name="body"></tiles:insertAttribute>
 			<tiles:insertAttribute name="footer" ignore="true"></tiles:insertAttribute>	

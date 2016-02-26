@@ -12,34 +12,55 @@
 <%
 	String basePath = PropertyUtils.getProperty("java.business.url");
 %>
-<style type="text/css">
-* {
-	-webkit-box-sizing: initial;
-	-moz-box-sizing: initial;
-	box-sizing: content-box;
-}
-</style>
-
-<div class="top cb">
-	<form method="POST" action="#" class="form-horizontal" id="searchForm">
-		<input type="hidden" name="currentPage" id="_hiddenCurrentPage"
-			value="1" />
-		<div class="function">
-			<input type="button" class="fr" value="导出报表" id="btnExport"
-				style="line-height: 30px;"> 
-			<input type="button" class="fr"
-				value="搜索" id="btnSearch" style="line-height: 30px;"> 
-			<span class="intime">
-				<input type="text"  class="dinput" id="orderPubStart" name="orderPubStart" />
-				<s onClick="WdatePicker({el:'orderPubStart',dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'orderPubEnd\')||\'new Date()\'}'});"></s></span>
-				<span class="inblock">至</span>
-				<span class="intime"><input type="text" class="dinput"  id="orderPubEnd" name="orderPubEnd">
-				<s onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'orderPubStart\')}',maxDate:new Date()});"></s></span>
+	<div class="content-wrap">
+		<div class="top cb">
+			<h3 class="cb">订单统计</h3>
+			<form method="POST" action="#" class="form-horizontal"
+				id="searchForm">
+				<div class="function">
+					<div class="store_filter">
+						<input type="text" placeholder="门店名称" />
+						<div class="icon-dropdown"></div>
+					</div>
+					<span class="intime"> <input type="text" class="dinput"
+						id="orderPubStart" name="orderPubStart" /> <s
+						onClick="WdatePicker({el:'orderPubStart',dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'orderPubEnd\')||\'new Date()\'}'});"></s></span>
+					<span class="inblock">至</span> <span class="intime"><input
+						type="text" class="dinput" id="orderPubEnd" name="orderPubEnd">
+						<s
+						onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'orderPubStart\')}',maxDate:new Date()});"></s></span>
+					<input type="button" class="fr" value="下载报表" id="btnExport">
+					<input type="button" class="btn fr" value="搜索" id="btnSearch">
+				</div>
+				<div class="report">
+					<div class="menu">
+						<ul>
+							<li class="active" idx="0">
+								<div class="num">100</div>
+								<div class="des">订单数量（单）</div>
+							</li>
+							<li idx="1">
+								<div class="num">300</div>
+								<div class="des">配送费支出（元）</div>
+							</li>
+							<li idx="2">
+								<div class="num">48</div>
+								<div class="des">菜品金额（元）</div>
+							</li>
+							<li idx="3">
+								<div class="num">0</div>
+								<div class="des">拒单数量（单）</div>
+							</li>
+						</ul>
+					</div>
+					<div class="chart"></div>
+				</div>
+			</form>
 		</div>
-	</form>
-</div>
-<div class="bottom bottom2 bottom3" id="content"></div>
 
+	</div>
+<script type="text/javascript"
+	src="<%=basePath%>/js/jquery.autocomplete.js"></script>
 <script>
 var jss = {
 	search : function(currentPage) {

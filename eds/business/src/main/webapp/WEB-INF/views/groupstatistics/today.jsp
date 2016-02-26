@@ -33,7 +33,6 @@
 	src="<%=basePath%>/js/highcharts/js/highcharts.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>/js/highcharts/js/modules/exporting.js"></script>
-<div class="center">
 	<div class="content-wrap">
 		<div class="master">
 			<div class="m-item i1">
@@ -105,7 +104,6 @@
 			<div class="chart" style="width: 100%; height: 300px;"></div>
 		</div>
 	</div>
-</div>
 
   <script>
 	var bdaysNew = new Array();
