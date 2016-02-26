@@ -214,7 +214,7 @@ width: 100%;
 		</div> 
 	</div> 
 </div>
-	<script>		
+	<script>	
 	var jss={
 			search:function(currentPage){	
 			   var KM = $("#txtKM").val();
@@ -462,16 +462,20 @@ width: 100%;
 				    	var basekm=parseInt($('.xiaokm1').html());
 				    	if(parseInt(txtKM)<basekm)
 				    	{
-				    		alert('修改规则公里必须大于基础配置公里')
+				    		alert('修改规则公里必须大于基础配置公里');
+				    		return;
 				    	}
 				    	$('.xiaokm0').each(function(e){
 				    		var ha=parseInt($(this).html());
-				    		if(ha==parseInt(txtKM))
+				    		var tempid=$(this).prev().find('input').val();
+				    		console.log(tempid);
+				    		if(ha==parseInt(txtKM)&&txtId!=tempid)
 				    		{
-				    			alert('不能添加相同的配置!');
-				    			flag=false;
-				    			return false;
+				    				alert('不能添加相同的配置!');
+					    			flag=false;
+					    			return false;
 				    		}
+				    		
 				    	});
 				    	if(!flag)
 				    	{
@@ -482,17 +486,21 @@ width: 100%;
 				    {
 				    	var flag=true;
 				    	var basekm=parseInt($('.xiaokg1').html());
+				    	
 				    	if(parseInt(txtKG)<basekm)
 				    	{
-				    		alert('修改规则重量必须大于基础配置重量')
+				    		alert('修改规则重量必须大于基础配置重量');
+				    		return;
 				    	}
 				    	$('.xiaokg0').each(function(e){
 				    		var ha=parseInt($(this).html());
-				    		if(ha==parseInt(txtKG))
+				    		var tempid=$(this).prev().prev().find('input').val();
+				    		console.log(tempid);
+				    		if(ha==parseInt(txtKG)&&txtId!=tempid)
 				    		{
-				    			alert('不能添加相同的配置!');
-				    			flag=false;
-				    			return false;
+				    				alert('不能添加相同的配置!');
+					    			flag=false;
+					    			return false;
 				    		}
 				    	});
 				    	if(!flag)
@@ -517,7 +525,7 @@ width: 100%;
 			 kmarr.sort(compare);
 //			 kmarr.reverse();
 			 console.log(kmarr);
-			 if(basekm>=kmarr[0])
+			 if(basekm>kmarr[0])
 			 {
 				alert('基础配置公里必须小于现有所有配置!');
 				return false;
@@ -534,7 +542,7 @@ width: 100%;
 			 kgarr.sort(compare);
 			 //kgarr.reverse();
 			 console.log(kgarr);
-			 if(basekg>=kgarr[0])
+			 if(basekg>kgarr[0])
 			 {
 				alert('基础配置重量必须小于现有所有重量!');
 				return false;
