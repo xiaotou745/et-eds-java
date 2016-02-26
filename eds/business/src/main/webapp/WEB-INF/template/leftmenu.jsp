@@ -29,6 +29,7 @@
 				<span <%=viewPath=="group/recharge"?"class='on'":""%>><a class="six" href="<%=basePath%>/group/recharge">充值</a></span>
 				<span <%=viewPath=="order/grouporderlist"?"class='on'":""%>><a class="six" href="<%=basePath%>/order/grouporderlist">外卖订单</a></span>
 				<span <%=viewPath=="businessmanager/list"?"class='on'":""%>><a class="six" href="<%=basePath%>/businessmanager/list">门店管理</a></span>
+				<span <%=viewPath=="businessmanager/list"?"class='on'":""%>><a class="six" href="<%=basePath%>/groupstatistics/statistics">订单统计</a></span>
 			<%}
 		}%>
 	</div>

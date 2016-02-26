@@ -105,7 +105,7 @@ for(int i=0;i< g1.getDays().size();i++){
         			text : ""
         		},
         		xAxis : {
-        			categories :  <%=(canel+"]")%>
+        			categories :  <%=(monthDate+"]")%>
         		},
         		yAxis : {
         			title : {
