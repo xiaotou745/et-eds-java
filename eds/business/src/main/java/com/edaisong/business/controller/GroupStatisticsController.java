@@ -96,14 +96,25 @@ public class GroupStatisticsController {
 		model.addObject("subtitle", "首页");
 		model.addObject("currenttitle", "订单统计");
 		model.addObject("viewPath", "groupstatistics/statistics");
-		req.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());
-		req.setOrderPubStart("2016-01-12");
-		req.setOrderPubEnd("2016-03-12");
-		req.setOrderStatus(OrderStatus.Cancel.value());
-		GroupOrderstatistics list=orderService.groupOrderstatistics(req);
+		model.addObject("pubStart", ParseHelper.ToDateString(ParseHelper.plusDate(new Date(), 2, -7), "yyyy-MM-dd"));
+		model.addObject("pubEnd", ParseHelper.ToDateString(new Date(), "yyyy-MM-dd"));
 		return model;
 	}
 	
+	@RequestMapping("statisticsdo")
+	public ModelAndView statisticsdo(PagedOrderSearchReq req,
+			HttpServletRequest request) {
+		ModelAndView model = new ModelAndView();
+		model.addObject("viewPath", "groupstatistics/statisticsdo");
+		req.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());
+		req.setOrderStatus(OrderStatus.Complite.value());
+		GroupOrderstatistics list1=orderService.groupOrderstatistics(req);
+		model.addObject("g", list1);
+		req.setOrderStatus(OrderStatus.Cancel.value());
+		GroupOrderstatistics list2=orderService.groupOrderstatistics(req);
+		model.addObject("g1", list2);
+		return model;
+	}
 	
 	
 	/**
