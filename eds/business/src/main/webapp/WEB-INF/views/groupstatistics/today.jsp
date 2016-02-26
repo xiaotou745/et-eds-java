@@ -42,7 +42,7 @@
 						<img src="<%=basePath%>/images/b_home/m1.jpg" alt="">
 					</div>
 					<div class="mi-ctx">
-						<span class="num"><%=g.getBalancePrice()%> </span>元 <a href="#">充值</a>
+						<span class="num"><%=g.getBalancePrice()%> </span>元 <a href="<%=basePath%>/group/recharge">充值</a>
 					</div>
 				</div>
 			</div>

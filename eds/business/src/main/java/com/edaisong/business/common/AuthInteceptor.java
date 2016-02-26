@@ -36,7 +36,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				if (!request.getServletPath().equals("/account/logoff")&&
 					!isHasAuth(request,userContext)) {
 					if (userContext.getBusinessType() == 1) {					
-						response.sendRedirect(basePath + "/group/recharge");
+						response.sendRedirect(basePath + "/groupstatistics/today");
 						return false;
 					} else {
 						response.sendRedirect(basePath + "/index");
