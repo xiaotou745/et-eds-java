@@ -2264,7 +2264,7 @@ where   1 = 1
 		with  a as ( select   CONVERT(VARCHAR(100), DATEADD(dd, number, '${orderPubStart}'), 23) as monthDate
                from     master..spt_values
                where    type = 'P'
-                        and DATEADD(dd, number, '${orderPubStart}')  <![CDATA[<]]> DATEADD(mm, 1,
+                        and DATEADD(dd, number, '${orderPubStart}')  <![CDATA[<]]> DATEADD(mm, 0,
                                                               '${orderPubEnd}')
              ),
         b as ( select   COUNT(1) as orderCount ,

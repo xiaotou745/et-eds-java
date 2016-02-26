@@ -168,10 +168,6 @@ width: 100%;
               <div class="control-group">  
                 <label>配送费(元)：</label><input  name="txtEDistributionPrice" id="txtEDistributionPrice" type="text" >
             </div>
-              <div class="control-group">  
-                <label>备注：</label>
-                <textarea name="txtERemark" id="txtERemark" style="width:200px;height:80px;"></textarea>               
-            </div>
             
         </fieldset>
 				</div>
@@ -218,7 +214,7 @@ width: 100%;
 		</div> 
 	</div> 
 </div>
-	<script>		
+	<script>	
 	var jss={
 			search:function(currentPage){	
 			   var KM = $("#txtKM").val();
@@ -250,9 +246,9 @@ width: 100%;
 	function showAdd(){ 
 		//判断当前是否超过10条
 		var len=$('#content').find('tbody').find('tr').length;
-		if(len>=10)
+		if(len>10)
 		{
-			alert('配送费规则不能超过10条!');
+			alert('新增规则不能超过10条!');
 			return;
 		}
         $('#txtUKM').val('0');
@@ -325,9 +321,10 @@ width: 100%;
 	    {
 	    	var flag=true;
 	    	var basekm=parseInt($('.xiaokm1').html());
-	    	if(parseInt(txtKM)<=basekm)
+	    	if(parseInt(txtKM)<basekm)
 	    	{
-	    		alert('新建规则公里必须大于基础配置公里')
+	    		alert('新建规则公里必须大于基础配置公里');
+	    		return;
 	    	}
 	    	$('.xiaokm0').each(function(e){
 	    		var ha=parseInt($(this).html());
@@ -347,9 +344,10 @@ width: 100%;
 	    {
 	    	var flag=true;
 	    	var basekm=parseInt($('.xiaokg1').html());
-	    	if(parseInt(txtKG)<=basekm)
+	    	if(parseInt(txtKG)<basekm)
 	    	{
-	    		alert('新建规则重量必须大于基础配置重量')
+	    		alert('新建规则重量必须大于基础配置重量');
+	    		return;
 	    	}
 	    	$('.xiaokg0').each(function(e){
 	    		var ha=parseInt($(this).html());
@@ -401,7 +399,7 @@ width: 100%;
 		var txtKM= $('#txtEKM').val().trim();
 		var txtKG= $('#txtEKG').val().trim();
 		var txtESteps= $('#txtESteps').val().trim();
-		var txtERemark= $('#txtERemark').val().trim();	
+		var txtERemark= '';	
 		var txtDistributionPrice= $('#txtEDistributionPrice').val().trim();		
 		var txtEIsMaster= $('#txtEIsMaster').val().trim();		
 		var taskDistributionId= $('#taskDistributionId').val().trim();
@@ -462,18 +460,22 @@ width: 100%;
 				    {
 				    	var flag=true;
 				    	var basekm=parseInt($('.xiaokm1').html());
-				    	if(parseInt(txtKM)<=basekm)
+				    	if(parseInt(txtKM)<basekm)
 				    	{
-				    		alert('修改规则公里必须大于基础配置公里')
+				    		alert('修改规则公里必须大于基础配置公里');
+				    		return;
 				    	}
 				    	$('.xiaokm0').each(function(e){
 				    		var ha=parseInt($(this).html());
-				    		if(ha==parseInt(txtKM))
+				    		var tempid=$(this).prev().find('input').val();
+				    		console.log(tempid);
+				    		if(ha==parseInt(txtKM)&&txtId!=tempid)
 				    		{
-				    			alert('不能添加相同的配置!');
-				    			flag=false;
-				    			return false;
+				    				alert('不能添加相同的配置!');
+					    			flag=false;
+					    			return false;
 				    		}
+				    		
 				    	});
 				    	if(!flag)
 				    	{
@@ -484,17 +486,21 @@ width: 100%;
 				    {
 				    	var flag=true;
 				    	var basekm=parseInt($('.xiaokg1').html());
-				    	if(parseInt(txtKG)<=basekm)
+				    	
+				    	if(parseInt(txtKG)<basekm)
 				    	{
-				    		alert('修改规则重量必须大于基础配置重量')
+				    		alert('修改规则重量必须大于基础配置重量');
+				    		return;
 				    	}
 				    	$('.xiaokg0').each(function(e){
 				    		var ha=parseInt($(this).html());
-				    		if(ha==parseInt(txtKG))
+				    		var tempid=$(this).prev().prev().find('input').val();
+				    		console.log(tempid);
+				    		if(ha==parseInt(txtKG)&&txtId!=tempid)
 				    		{
-				    			alert('不能添加相同的配置!');
-				    			flag=false;
-				    			return false;
+				    				alert('不能添加相同的配置!');
+					    			flag=false;
+					    			return false;
 				    		}
 				    	});
 				    	if(!flag)
@@ -519,7 +525,7 @@ width: 100%;
 			 kmarr.sort(compare);
 //			 kmarr.reverse();
 			 console.log(kmarr);
-			 if(basekm>=kmarr[0])
+			 if(basekm>kmarr[0])
 			 {
 				alert('基础配置公里必须小于现有所有配置!');
 				return false;
@@ -536,7 +542,7 @@ width: 100%;
 			 kgarr.sort(compare);
 			 //kgarr.reverse();
 			 console.log(kgarr);
-			 if(basekg>=kgarr[0])
+			 if(basekg>kgarr[0])
 			 {
 				alert('基础配置重量必须小于现有所有重量!');
 				return false;
@@ -549,7 +555,7 @@ width: 100%;
                 "Steps": txtESteps.trim(),                
                 "DistributionPrice": txtDistributionPrice.trim(),
                 "IsMaster": txtEIsMaster.trim(),
-                "Remark": txtERemark.trim(),
+                "Remark": '',
             };
        var url = "<%=basePath%>/taskdistribution/modifyconfig";
 	   var la= layer.confirm('是否确认修改规则？', {

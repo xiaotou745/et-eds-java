@@ -209,7 +209,7 @@ width: 100%;
 		 }
 		 if(txtARemark == "")
 		 {
-			 alert("备注不能为空");
+			 alert("描述不能为空");
 		    return;
 		 }		 
 		
@@ -221,7 +221,7 @@ width: 100%;
 		 
 		 if(txtARemark.length<30 || txtARemark.length>200  )
 		 {
-			 alert("备注长度应为30-200个字符");
+			 alert("描述长度应为30-200个字符");
 		    return;
 		 }
 		 

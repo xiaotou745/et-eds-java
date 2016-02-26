@@ -4,6 +4,7 @@
 <%	
 String basePath =PropertyUtils.getProperty("java.business.url");
 %>
+<div class="recharge">
 <div class="top cb">
   <h3 class="cb">充值</h3>
 </div>
@@ -70,7 +71,7 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 <!-- 		<a class="wt" href="javascript:void(0)" onclick="failRecharge()">充值未成功</a> -->
 	</div>
 </div>
-
+</div>
 
 <script>
 function reload(){

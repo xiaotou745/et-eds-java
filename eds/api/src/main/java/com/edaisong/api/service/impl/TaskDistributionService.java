@@ -56,19 +56,9 @@ public class TaskDistributionService implements
 	@Override
 	public PagedResponse<TaskDistribution> query(
 			PagedTaskDistributionReq req) {
-		if(!req.getDataEnd().equals(""))
+		if(req.getDataEnd()!=null&&!req.getDataEnd().equals(""))
 		{
-			String dataEnd=req.getDataEnd();
-			java.text.SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");	
-			Date date=null;
-			try {
-				date = formatter.parse(dataEnd);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}		
-			ParseHelper.plusDate(date, 0, 1);
-			req.setDataEnd(formatter.format(date));
+			req.setDataEnd(ParseHelper.ToDateString(ParseHelper.plusDate(ParseHelper.ToDate(req.getDataEnd()), 2, 1)));
 		}
 		return taskDistributionDao.query(req);		
 	}
