@@ -325,9 +325,10 @@ width: 100%;
 	    {
 	    	var flag=true;
 	    	var basekm=parseInt($('.xiaokm1').html());
-	    	if(parseInt(txtKM)<=basekm)
+	    	if(parseInt(txtKM)<basekm)
 	    	{
-	    		alert('新建规则公里必须大于基础配置公里')
+	    		alert('新建规则公里必须大于基础配置公里');
+	    		return;
 	    	}
 	    	$('.xiaokm0').each(function(e){
 	    		var ha=parseInt($(this).html());
@@ -347,9 +348,10 @@ width: 100%;
 	    {
 	    	var flag=true;
 	    	var basekm=parseInt($('.xiaokg1').html());
-	    	if(parseInt(txtKG)<=basekm)
+	    	if(parseInt(txtKG)<basekm)
 	    	{
-	    		alert('新建规则重量必须大于基础配置重量')
+	    		alert('新建规则重量必须大于基础配置重量');
+	    		return;
 	    	}
 	    	$('.xiaokg0').each(function(e){
 	    		var ha=parseInt($(this).html());
@@ -462,7 +464,7 @@ width: 100%;
 				    {
 				    	var flag=true;
 				    	var basekm=parseInt($('.xiaokm1').html());
-				    	if(parseInt(txtKM)<=basekm)
+				    	if(parseInt(txtKM)<basekm)
 				    	{
 				    		alert('修改规则公里必须大于基础配置公里')
 				    	}
@@ -484,7 +486,7 @@ width: 100%;
 				    {
 				    	var flag=true;
 				    	var basekm=parseInt($('.xiaokg1').html());
-				    	if(parseInt(txtKG)<=basekm)
+				    	if(parseInt(txtKG)<basekm)
 				    	{
 				    		alert('修改规则重量必须大于基础配置重量')
 				    	}
