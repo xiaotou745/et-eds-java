@@ -15,6 +15,7 @@ import com.edaisong.entity.req.AccountBillCReq;
 import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedAccountBillDayReq;
+import com.edaisong.entity.req.PagedBusinessBalanceRecordReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
 
@@ -75,6 +76,8 @@ public interface IBusinessBalanceRecordService {
 	 * 
 	 * */
 	AccountBillDetailModel getAccountBillDetailB(AccountBillDetailReq par);
+	
+	PagedResponse<BusinessBalanceRecordModel> getGroupBalanceRecord(PagedBusinessBalanceRecordReq search);
 	
 	
 }

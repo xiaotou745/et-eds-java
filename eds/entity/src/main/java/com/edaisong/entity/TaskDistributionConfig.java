@@ -17,19 +17,19 @@ public class TaskDistributionConfig {
 		this.taskDistributionId = taskDistributionId;
 	}
 
-	public int getkM() {
+	public double getkM() {
 		return kM;
 	}
 
-	public void setkM(int kM) {
+	public void setkM(double kM) {
 		this.kM = kM;
 	}
 
-	public int getkG() {
+	public double getkG() {
 		return kG;
 	}
 
-	public void setkG(int kG) {
+	public void setkG(double kG) {
 		this.kG = kG;
 	}
 
@@ -69,9 +69,9 @@ public class TaskDistributionConfig {
 	
 	private int taskDistributionId;
 	
-	private int kM;
+	private double kM;
 	
-	private int kG;
+	private double kG;
 	
 	private int steps;	
 

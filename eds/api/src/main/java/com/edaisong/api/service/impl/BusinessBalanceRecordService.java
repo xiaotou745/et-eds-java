@@ -26,6 +26,7 @@ import com.edaisong.entity.req.AccountBillCReq;
 import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedAccountBillDayReq;
+import com.edaisong.entity.req.PagedBusinessBalanceRecordReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
 @Service
@@ -146,6 +147,11 @@ public class BusinessBalanceRecordService implements IBusinessBalanceRecordServi
 		return businessBalanceRecordDao.getAccountBillDetailB(par);
 		
 	}
-
+	
+	@Override
+	public PagedResponse<BusinessBalanceRecordModel> getGroupBalanceRecord(PagedBusinessBalanceRecordReq search)
+	{
+		return businessBalanceRecordDao.getGroupBalanceRecord(search);
+	}
 
 }
