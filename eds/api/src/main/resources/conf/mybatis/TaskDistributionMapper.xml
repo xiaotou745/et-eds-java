@@ -38,7 +38,9 @@
 ' t.Id',
 '  t.Id, t.Name, t.Remark, t.CreateName, t.CreateTime, t.UpdateName, t.UpdateTime,isnull(v.userCount,0) userCount',
 ' 	TaskDistribution t WITH (NOLOCK)
-	LEFT JOIN (	SELECT  TaskDistributionid, COUNT(TaskDistributionid) AS userCount FROM 	dbo.business
+	LEFT JOIN (	SELECT  TaskDistributionid, COUNT(TaskDistributionid) AS userCount 
+	FROM 	dbo.business b (nolock)
+	JOIN dbo.[BusinessGroup] bg WITH ( NOLOCK ) ON b.BusinessGroupId = bg.Id
 	GROUP BY TaskDistributionid) v
 	ON t.id=v.TaskDistributionid',
 '<include refid="queryWhere" />',
