@@ -58,8 +58,8 @@ public class BusinessBalanceRecordController {
 	@RequestMapping("grouplist")
 	public ModelAndView grouplist() {
 		ModelAndView view = new ModelAndView("businessView");
-		view.addObject("subtitle", "全部订单");
-		view.addObject("currenttitle", "全部订单");
+		view.addObject("subtitle", "集团商户流水");
+		view.addObject("currenttitle", "集团商户流水");
 		view.addObject("viewPath", "businessbalancerecord/grouplist");
 		return view;
 	}
@@ -75,15 +75,15 @@ public class BusinessBalanceRecordController {
 	public ModelAndView grouplistdo(Integer timeType,PagedBusinessBalanceRecordReq searchWebReq,HttpServletRequest request) {
 		Date tDate=new Date();
 		switch (timeType) {
-		case 0://今天的订单
+		case 0://今天的商户流水
 			searchWebReq.setOperateTimeStart(ParseHelper.ToDateString(tDate, "yyyy-MM-dd"));
 			searchWebReq.setOperateTimeEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));	
 			break;
-		case 1://7天的订单
+		case 1://7天的商户流水
 			searchWebReq.setOperateTimeStart(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,-7), "yyyy-MM-dd"));
 			searchWebReq.setOperateTimeEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
 			break;
-		case 2://30天的订单
+		case 2://30天的商户流水
 			searchWebReq.setOperateTimeStart(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,1,-1), "yyyy-MM-dd"));
 			searchWebReq.setOperateTimeEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
 			break;
