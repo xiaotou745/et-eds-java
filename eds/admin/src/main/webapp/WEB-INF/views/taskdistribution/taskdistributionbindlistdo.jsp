@@ -57,7 +57,7 @@ if(list == null){
 								%>
 					
 							<tr>
-							<td><%=strMaster%></td>	
+							<td><%=strMaster%><input type="hidden" value="<%=list.get(i).getId() %>"/></td>	
 							<td class="xiaokm<%=IsMaster%>"><%=strKm%></td>
 							<td class="xiaokg<%=IsMaster%>"><%=strKg%></td>		
 							<td><%=strSteps%></td>					
@@ -79,13 +79,14 @@ if(list == null){
 						</tbody>
 					</table>
 					
+					
 <script>				
     function modify(id,isMaster)
     {    	
     	 var paramaters = {
                    "id": id
                };
-    	 
+		$('#modifyIDtemp').val(id);
     	 var url = "<%=basePath%>/taskdistribution/selectbyprimarykeyconfig";
     	 $.ajax({
 	           type: 'POST',
