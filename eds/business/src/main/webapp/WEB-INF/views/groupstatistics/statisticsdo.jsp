@@ -118,7 +118,7 @@ for(int i=0;i< g1.getDays().size();i++){
         			} ]
         		},
         		tooltip : {
-        			valueSuffix : "单"
+        			valueSuffix : ""
         		},
         		legend : {
         			layout : "vertical",
