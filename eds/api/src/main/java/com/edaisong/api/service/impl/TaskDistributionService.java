@@ -56,7 +56,7 @@ public class TaskDistributionService implements
 	@Override
 	public PagedResponse<TaskDistribution> query(
 			PagedTaskDistributionReq req) {
-		if(!req.getDataEnd().equals(""))
+		if(req.getDataEnd()!=null&&!req.getDataEnd().equals(""))
 		{
 			String dataEnd=req.getDataEnd();
 			java.text.SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");	

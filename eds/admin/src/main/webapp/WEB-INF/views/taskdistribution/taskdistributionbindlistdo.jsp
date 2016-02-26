@@ -85,6 +85,7 @@ if(list == null){
     	 var paramaters = {
                    "id": id
                };
+    	 
     	 var url = "<%=basePath%>/taskdistribution/selectbyprimarykeyconfig";
     	 $.ajax({
 	           type: 'POST',

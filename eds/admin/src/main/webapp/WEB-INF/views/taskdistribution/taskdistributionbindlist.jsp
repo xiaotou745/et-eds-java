@@ -168,10 +168,6 @@ width: 100%;
               <div class="control-group">  
                 <label>配送费(元)：</label><input  name="txtEDistributionPrice" id="txtEDistributionPrice" type="text" >
             </div>
-              <div class="control-group">  
-                <label>备注：</label>
-                <textarea name="txtERemark" id="txtERemark" style="width:200px;height:80px;"></textarea>               
-            </div>
             
         </fieldset>
 				</div>
@@ -250,9 +246,9 @@ width: 100%;
 	function showAdd(){ 
 		//判断当前是否超过10条
 		var len=$('#content').find('tbody').find('tr').length;
-		if(len>=10)
+		if(len>10)
 		{
-			alert('配送费规则不能超过10条!');
+			alert('新增规则不能超过10条!');
 			return;
 		}
         $('#txtUKM').val('0');
@@ -403,7 +399,7 @@ width: 100%;
 		var txtKM= $('#txtEKM').val().trim();
 		var txtKG= $('#txtEKG').val().trim();
 		var txtESteps= $('#txtESteps').val().trim();
-		var txtERemark= $('#txtERemark').val().trim();	
+		var txtERemark= '';	
 		var txtDistributionPrice= $('#txtEDistributionPrice').val().trim();		
 		var txtEIsMaster= $('#txtEIsMaster').val().trim();		
 		var taskDistributionId= $('#taskDistributionId').val().trim();
@@ -551,7 +547,7 @@ width: 100%;
                 "Steps": txtESteps.trim(),                
                 "DistributionPrice": txtDistributionPrice.trim(),
                 "IsMaster": txtEIsMaster.trim(),
-                "Remark": txtERemark.trim(),
+                "Remark": '',
             };
        var url = "<%=basePath%>/taskdistribution/modifyconfig";
 	   var la= layer.confirm('是否确认修改规则？', {
