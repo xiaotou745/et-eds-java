@@ -16,12 +16,14 @@
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/commen.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/index.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/newProjects.css">
-
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/b_home.css">
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/autocomplete.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/dataTables.bootstrap.css">
 <link type="text/css" rel="stylesheet" href="<%=basePath%>/css/popup.css">
 <script type="text/javascript" src="<%=basePath%>/js/jquery-1.11.2.min.js"></script>
  <script type="text/javascript" src="<%=basePath%>/js/date/WdatePicker.js"></script> 
+ 
 <script>
 $(document).ready(function() {
 	$("#gloablShowError").click(function() {
