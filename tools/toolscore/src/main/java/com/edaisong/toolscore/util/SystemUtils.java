@@ -107,7 +107,7 @@ public class SystemUtils {
 		    MimeMessage message = new MimeMessage(session);
 		    message.setFrom(new InternetAddress(emailFrom));
 		    message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailTo));
-		    message.setSubject(title);//标题
+		    message.setSubject(title, "utf-8");//标题
 		    message.setText(body,"utf-8");//内容
 		    //http协议部分会自动转换成超链接
 		    message.saveChanges();
