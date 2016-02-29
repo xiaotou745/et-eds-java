@@ -21,7 +21,11 @@ import com.edaisong.business.pay.AlipayNotify;
 import com.edaisong.core.util.OrderNoHelper;
 import com.edaisong.core.util.ParseHelper;
 import com.edaisong.entity.GroupBusinessRecharge;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.domain.GroupBusinessBalance;
+import com.edaisong.entity.req.PagedBusinessBalanceRecordReq;
+import com.edaisong.entity.req.PagedGroupBusinessRechargeReq;
 
 @Controller
 @RequestMapping("group")
@@ -150,4 +154,40 @@ public class GroupController {
 		return params;
 	}
 	// *******以上方法为集团商户充值支付宝相关页面********//
+//	/**
+//	 * 集团商户充值流水列表页面
+//	 * 
+//	 * @author 胡灵波
+//	 * @Date 2016年2月26日13:19:38
+//	 * @return
+//	 */
+//	@RequestMapping("grouplist")
+//	public ModelAndView grouplist() {
+//		ModelAndView view = new ModelAndView("businessView");
+//		view.addObject("subtitle", "集团商户充值流水");
+//		view.addObject("currenttitle", "集团商户充值流水");
+//		view.addObject("viewPath", "businessbalancerecord/grouplist");
+//		return view;
+//	}
+
+	/**
+	 * 集团商户流水列表页面
+	 * 
+	 * @author 胡灵波
+	 * @Date 2016年2月26日13:39:35
+	 * @return
+	 */
+	@RequestMapping("rechargelistdo")
+	public ModelAndView rechargelistdo(Integer timeType,PagedGroupBusinessRechargeReq searchWebReq,HttpServletRequest request) {
+//		Date tDate=new Date();
+//		searchWebReq.setOperateTimeStart(ParseHelper.ToDateString(tDate, "yyyy-MM-dd"));
+//		searchWebReq.setOperateTimeEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));	
+			
+		searchWebReq.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());
+		PagedResponse<GroupBusinessRecharge> resp = groupBusinessRechargeService.getGroupBusinessRechargelist(searchWebReq);
+		ModelAndView view = new ModelAndView("group/rechargelistdo");
+		view.addObject("listData", resp);
+		return view;
+	}
+
 }

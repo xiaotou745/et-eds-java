@@ -7,7 +7,10 @@ import org.springframework.stereotype.Repository;
 import com.edaisong.api.common.DaoBase;
 import com.edaisong.api.dao.inter.IGroupBusinessRechargeDao;
 import com.edaisong.entity.GroupBusinessRecharge;
+import com.edaisong.entity.common.PagedResponse;
+import com.edaisong.entity.domain.BusinessBalanceRecordModel;
 import com.edaisong.entity.domain.GroupBusinessBalance;
+import com.edaisong.entity.req.PagedGroupBusinessRechargeReq;
 
 @Repository
 public class GroupBusinessRechargeDao extends DaoBase implements
@@ -37,6 +40,16 @@ public class GroupBusinessRechargeDao extends DaoBase implements
 	@Override
 	public List<GroupBusinessBalance> getGroupBalance(int groupBusinessID) {
 		return getMasterSqlSessionUtil().selectList("IGroupBusinessRechargeDao.getGroupBalance", groupBusinessID);
+	}
+	
+	@Override
+	public PagedResponse<GroupBusinessRecharge> getGroupBusinessRechargelist(PagedGroupBusinessRechargeReq search)
+	{
+		PagedResponse<GroupBusinessRecharge> result = new PagedResponse<GroupBusinessRecharge>();
+		result = getReadOnlySqlSessionUtil().selectPageList(
+				"IGroupBusinessRechargeDao.getGroupBusinessRechargRecord", search);
+		return result;		
+
 	}
 
 }
