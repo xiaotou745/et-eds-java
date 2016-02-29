@@ -2933,10 +2933,10 @@ public class OrderService implements IOrderService {
 		{
 			return FlashPushOrderEnum.PhoneNoIsSame;			
 		}
-		if(req.getPubaddress().equals(req.getReceviceaddress()))
-		{
-			return FlashPushOrderEnum.AddressSame;
-		}				
+//		if(req.getPubaddress().equals(req.getReceviceaddress()))
+//		{
+//			return FlashPushOrderEnum.AddressSame;
+//		}				
 		
 		
 		return FlashPushOrderEnum.VerificationSuccess;
