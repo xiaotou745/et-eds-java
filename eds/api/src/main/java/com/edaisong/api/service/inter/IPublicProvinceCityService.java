@@ -2,6 +2,7 @@ package com.edaisong.api.service.inter;
 
 import java.util.List;
 
+import com.edaisong.core.enums.AreaLevel;
 import com.edaisong.entity.PublicProvinceCity;
 import com.edaisong.entity.common.ResponseBase;
 import com.edaisong.entity.domain.AreaModel;
@@ -31,20 +32,14 @@ public interface IPublicProvinceCityService {
 	  * @Date 20150721
 	  */
 	 ResponseBase modifyOpenCityByCode(String openCityCodeList, String closeCityCodeList);
-	 
-	 /**
-	  * 修改开发城市后更新Redis缓存
-	  * @author CaoHeYang
-	  * @Date 20150727
-	  */
-	 List<AreaModel> resetOpenCityListRedis();
+
 	 
 	 /**
 	  * 获取开通市
 	  * 赵海龙
 	  * 2015年7月29日 10:40:36
 	  * */
-	 List<AreaModel> getOpenCityByJiBie(int jiBie);
+	 List<AreaModel> getOpenCityByJiBie(AreaLevel jiBie);
 	 
 	/**
 	 * 按照accountID获取二级开放城市列表
