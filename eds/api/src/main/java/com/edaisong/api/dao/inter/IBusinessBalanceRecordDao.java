@@ -97,4 +97,6 @@ public interface IBusinessBalanceRecordDao {
 	 * 窦海超 
 	 * */
 	AccountBillDayResultModel getAccountInMoneyAndOutMoney(PagedAccountBillDayReq par);
+	
+	PagedResponse<BusinessBalanceRecordModel> getGroupBalanceRecord(PagedBusinessBalanceRecordReq search);
 }

@@ -19,4 +19,13 @@ public class BusinessBalanceRecordModel extends BusinessBalanceRecord{
 	public void setOpenBank(String openBank) {
 		this.openBank = openBank;
 	}
+	
+    private String BusinessName;
+	public String getBusinessName() {
+		return BusinessName;
+	}
+	public void setBusinessName(String businessName) {
+		BusinessName = businessName;
+	}
+    
 }

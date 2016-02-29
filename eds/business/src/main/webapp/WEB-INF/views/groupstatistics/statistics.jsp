@@ -12,6 +12,10 @@
 <%
 	String basePath = PropertyUtils.getProperty("java.business.url");
 %>
+<script type="text/javascript"
+	src="<%=basePath%>/js/highcharts/js/highcharts.js"></script>
+<script type="text/javascript"
+	src="<%=basePath%>/js/highcharts/js/modules/exporting.js"></script>
 	<div class="content-wrap">
 		<div class="top cb">
 			<h3 class="cb">订单统计</h3>
@@ -22,45 +26,24 @@
 						<input type="text" placeholder="门店名称" />
 						<div class="icon-dropdown"></div>
 					</div>
-					<span class="intime"> <input type="text" class="dinput"
+					<span class="intime"> <input type="text" class="dinput" value="<%=(String)request.getAttribute("pubStart")%>"
 						id="orderPubStart" name="orderPubStart" /> <s
 						onClick="WdatePicker({el:'orderPubStart',dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'orderPubEnd\')||\'new Date()\'}'});"></s></span>
-					<span class="inblock">至</span> <span class="intime"><input
+					<span class="inblock">至</span> <span class="intime"><input value="<%=(String)request.getAttribute("pubEnd")%>"
 						type="text" class="dinput" id="orderPubEnd" name="orderPubEnd">
 						<s
 						onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'orderPubStart\')}',maxDate:new Date()});"></s></span>
 					<input type="button" class="fr" value="下载报表" id="btnExport">
 					<input type="button" class="btn fr" value="搜索" id="btnSearch">
 				</div>
-				<div class="report">
-					<div class="menu">
-						<ul>
-							<li class="active" idx="0">
-								<div class="num">100</div>
-								<div class="des">订单数量（单）</div>
-							</li>
-							<li idx="1">
-								<div class="num">300</div>
-								<div class="des">配送费支出（元）</div>
-							</li>
-							<li idx="2">
-								<div class="num">48</div>
-								<div class="des">菜品金额（元）</div>
-							</li>
-							<li idx="3">
-								<div class="num">0</div>
-								<div class="des">拒单数量（单）</div>
-							</li>
-						</ul>
-					</div>
-					<div class="chart"></div>
+				<div class="report" id="content">
+					
 				</div>
 			</form>
 		</div>
 
 	</div>
-<script type="text/javascript"
-	src="<%=basePath%>/js/jquery.autocomplete.js"></script>
+
 <script>
 var jss = {
 	search : function(currentPage) {
@@ -76,6 +59,12 @@ var jss = {
 		    	alert("查询开始日期与结束日期最大间隔为两个月！")
 		    	return;
 		    }
+		    var data={"orderPubStart":date1,"orderPubEnd":date2};
+		    $.post("<%=basePath%>/groupstatistics/statisticsdo", data, function(d) {
+				$("#content").html(d);
+			});
+		}else{
+			alert("日期不能为空")
 		} 
 	}
 }

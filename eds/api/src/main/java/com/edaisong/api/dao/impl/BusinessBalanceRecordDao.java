@@ -15,6 +15,8 @@ import java.util.Map;
 
 
 
+
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -28,12 +30,15 @@ import com.edaisong.entity.domain.AccountBillDayResultModel;
 import com.edaisong.entity.domain.AccountBillDetailModel;
 import com.edaisong.entity.domain.AccountBillModel;
 import com.edaisong.entity.domain.BusinessBalanceRecordModel;
+import com.edaisong.entity.domain.OrderListModel;
 import com.edaisong.entity.req.AccountBillBReq;
 import com.edaisong.entity.req.AccountBillCReq;
 import com.edaisong.entity.req.AccountBillDetailReq;
 import com.edaisong.entity.req.BussinessBalanceQueryReq;
 import com.edaisong.entity.req.PagedAccountBillDayReq;
+import com.edaisong.entity.req.PagedBusinessBalanceRecordReq;
 import com.edaisong.entity.req.PagedCustomerSearchReq;
+import com.edaisong.entity.req.PagedOrderSearchReq;
 import com.edaisong.entity.req.PagedTransDetailReq;
 
 @Repository
@@ -150,5 +155,23 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 		return result;
 	}
 
+	
+	/**
+	 * 集团中心商户流水列表页面
+	 * 
+	 * @author 胡灵波
+	 * @Date 2016年2月26日14:23:26
+	 * @param search
+	 *            查询条件实体
+	 * @return
+	 */
+	@Override
+	public PagedResponse<BusinessBalanceRecordModel> getGroupBalanceRecord(PagedBusinessBalanceRecordReq search) {
+
+		PagedResponse<BusinessBalanceRecordModel> result = new PagedResponse<BusinessBalanceRecordModel>();
+		result = getReadOnlySqlSessionUtil().selectPageList(
+				"IBusinessBalanceRecordDao.getGroupBalanceRecord", search);
+		return result;
+	}
 
 }

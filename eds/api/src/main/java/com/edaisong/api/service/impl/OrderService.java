@@ -2201,8 +2201,8 @@ public class OrderService implements IOrderService {
 			taskDistributionid=1;
 		TaskDistributionConfig recordConfig=new TaskDistributionConfig();
 		recordConfig.setTaskDistributionId(taskDistributionid);
-		recordConfig.setkG((int)req.getWeight());
-		recordConfig.setkM((int)req.getKm());
+		recordConfig.setkG(req.getWeight());
+		recordConfig.setkM(req.getKm());
 		double currAmount= taskDistributionConfigService.calculator(recordConfig);
 		if(req.getAmount()!=currAmount)
 		{
@@ -2933,10 +2933,10 @@ public class OrderService implements IOrderService {
 		{
 			return FlashPushOrderEnum.PhoneNoIsSame;			
 		}
-		if(req.getPubaddress().equals(req.getReceviceaddress()))
-		{
-			return FlashPushOrderEnum.AddressSame;
-		}				
+//		if(req.getPubaddress().equals(req.getReceviceaddress()))
+//		{
+//			return FlashPushOrderEnum.AddressSame;
+//		}				
 		
 		
 		return FlashPushOrderEnum.VerificationSuccess;

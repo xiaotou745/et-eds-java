@@ -13,8 +13,8 @@ List<TaskDistributionConfig> list =(List<TaskDistributionConfig>) request.getAtt
 TaskDistributionConfig entityMaster=(TaskDistributionConfig)list.get(0);
 TaskDistributionConfig entityOne=(TaskDistributionConfig)list.get(1);
 TaskDistributionConfig entityTwo=(TaskDistributionConfig)list.get(2);
-int masterKM=entityMaster.getkM();
-int masterKG=entityMaster.getkG();
+double masterKM=entityMaster.getkM();
+double masterKG=entityMaster.getkG();
 double masterPirce=entityMaster.getDistributionPrice();
 
 

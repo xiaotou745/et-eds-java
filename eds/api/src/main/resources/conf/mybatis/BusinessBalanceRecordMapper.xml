@@ -30,6 +30,52 @@
 		from BusinessBalanceRecord
 		where Id = #{id,jdbcType=BIGINT}
 	</select>
+	
+		<sql id="getGroupBalanceRecordColums">
+		bbr.RecordType,bbr.RelationNo,bbr.Amount,bbr.GroupId,bbr.Balance,  bbr.OperateTime, b.Name as BusinessName
+	</sql>
+		<sql id="getGroupBalanceRecordFrom">
+		dbo.BusinessBalanceRecord (nolock) bbr
+		LEFT JOIN business (nolock) b ON bbr.BusinessId=b.Id
+		LEFT JOIN GroupBusinessRelation( NOLOCK) gbr ON b.Id=gbr.BusinessId
+	</sql>
+	<sql id="getGroupBalanceRecordWhere">
+		1=1 and bbr.recordtype in(1,2,8,13)  and gbr.GroupId =${groupBusinessId} 
+		<if test="groupid != null and groupid>-1">
+			and bbr.groupid=${groupid}
+		</if>
+		<if test="recordtype != null and recordtype>-1">
+			and bbr.recordtype=${recordtype}
+		</if>
+		<if test="operateTimeStart != null and operateTimeStart!=''">
+			and bbr.OperateTime>= ''${operateTimeStart} 00:00:00''
+		</if>
+		<if test="operateTimeEnd != null and operateTimeEnd!=''">
+		AND DATEADD(d, 1, ''${operateTimeEnd}'')>bbr.OperateTime
+		</if>
+	</sql>
+	<!--集团中心商户流水页面  -->
+	<select id="getGroupBalanceRecord" resultType="com.edaisong.entity.domain.BusinessBalanceRecordModel"
+		parameterType="com.edaisong.entity.req.PagedBusinessBalanceRecordReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' bbr.Id DESC ',
+		'
+		<include refid="getGroupBalanceRecordColums" />
+		',
+		'
+		<include refid="getGroupBalanceRecordFrom" />
+		',
+		'
+		<include refid="getGroupBalanceRecordWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from BusinessBalanceRecord
 		where Id = #{id,jdbcType=BIGINT}

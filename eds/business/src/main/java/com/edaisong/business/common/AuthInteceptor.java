@@ -36,7 +36,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				if (!request.getServletPath().equals("/account/logoff")&&
 					!isHasAuth(request,userContext)) {
 					if (userContext.getBusinessType() == 1) {					
-						response.sendRedirect(basePath + "/group/recharge");
+						response.sendRedirect(basePath + "/groupstatistics/today");
 						return false;
 					} else {
 						response.sendRedirect(basePath + "/index");
@@ -67,7 +67,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 					    request.getServletPath().equals("/businessmanager/list")||
 					    request.getServletPath().equals("/groupstatistics/today")||
 					    request.getServletPath().equals("/groupstatistics/statistics")||
-					    request.getServletPath().equals("/groupstatistics/exportstatistics")
+					    request.getServletPath().equals("/groupstatistics/exportstatistics")||
+					    request.getServletPath().equals("/businessbalancerecord/grouplist")
 					    ) {
 						return true;
 					}
