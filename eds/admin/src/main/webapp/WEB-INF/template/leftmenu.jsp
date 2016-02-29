@@ -49,7 +49,10 @@
 				</div>
 				<div class="logo-element">IN+</div>
 			</li>
-
+			<li><a href="<%=adminUrl%>/HomeCount/Index">			
+				<i class="fa fa-th-large"></i>
+				<span class="nav-label">后台首页</span> <span class="fa arrow"></span></a>
+			</li>
 			<%
 			        String parentClass="";
 					for (MenuEntity menu : menuList) {

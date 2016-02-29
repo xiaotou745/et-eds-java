@@ -84,7 +84,7 @@ boolean business_WithDraw=context.isHasAuth(AuthCode.Business_WithDraw);
 			<td>
 			<% if(business_AuditPass){
 				%>
-			    <a href="javascript:void(0)" <%=statusStyle%> onclick="businessOk(<%=checkAddress%>,<%=data.get(i).getId()%>,<%=data.get(i).getBusinesscommission()%>,<%=checkImage%>,<%=data.get(i).getCommissiontype()%>,<%=data.get(i).getLatitude()%>,<%=data.get(i).getLongitude()%>)">审核通过</a>
+			    <a href="javascript:void(0)" <%=statusStyle%> onclick="businessOk(<%=checkAddress%>,<%=data.get(i).getId()%>,<%=data.get(i).getBusinesscommission()%>,<%=checkImage%>,<%=data.get(i).getCommissiontype()%>,<%=data.get(i).getLatitude()%>,<%=data.get(i).getLongitude()%>,<%=data.get(i).getReceivableType()%>)">审核通过</a>
 				<a href="javascript:void(0)" onclick="businessCancel(<%=data.get(i).getId()%>)" <%=statusStyle2%>>取消资格</a>
 				<%}
 				if(business_Modify)
@@ -136,7 +136,7 @@ boolean business_WithDraw=context.isHasAuth(AuthCode.Business_WithDraw);
         });
     }
     ///操作审核验证
-    function businessOk(checkAddress, businessId, Proportion, checkImage, commissionType, Latitude, Longitude) {
+    function businessOk(checkAddress, businessId, Proportion, checkImage, commissionType, Latitude, Longitude,ReceivableType) {
         if (!window.confirm("是否审核通过？")) {
             return;
         }
@@ -144,7 +144,7 @@ boolean business_WithDraw=context.isHasAuth(AuthCode.Business_WithDraw);
             alert("该商家未填写配送地址，不能通过审核。")
             return;
         }
-        if (Proportion < 10 && commissionType == 1) {
+        if (Proportion < 10 && commissionType == 1&&ReceivableType==1) {
             alert("该商家结算比例小于10%，不能通过审核。")
             return;
         }
