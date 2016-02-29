@@ -44,5 +44,49 @@
       #{createby,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updateby,jdbcType=NVARCHAR}, 
       #{updatetime,jdbcType=TIMESTAMP})
   </insert>
-
+  <!-- 商家充值 -->
+  <update id="businessRecharge"  parameterType="com.edaisong.entity.domain.BusinessRechargeLog">
+update b
+set    b.BalancePrice=ISNULL(b.BalancePrice, 0)+${rechargeAmount},
+       b.AllowWithdrawPrice=ISNULL(b.AllowWithdrawPrice,0)+${rechargeAmount}
+OUTPUT
+  Inserted.Id,
+  ${rechargeAmount},
+  1,
+  Inserted.BalancePrice,
+  ${rechargeType},
+  '${optName}',
+  GETDATE(),
+  '${remark}'
+INTO BusinessBalanceRecord
+  ( [BusinessId]
+   ,[Amount]
+   ,[Status]
+   ,[Balance]
+   ,[RecordType]
+   ,[Operator]
+   ,[OperateTime]
+   ,[Remark])
+from business b WITH ( ROWLOCK )
+where b.Id=${businessId}; 
+insert into dbo.BusinessRecharge
+        ( BusinessId ,
+          PayType ,
+          OrderNo ,
+          payAmount ,
+          PayStatus ,
+          PayBy ,
+          PayTime ,
+          OriginalOrderNo
+        )
+values  (
+        ${businessId},
+        ${payType},
+        '',
+        ${rechargeAmount},
+        1,
+        '${optName}',
+        GETDATE(),
+        '' );
+  </update>
 </mapper>

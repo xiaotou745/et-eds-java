@@ -32,6 +32,7 @@ import com.edaisong.api.service.inter.IAuthorityAccountMenuSetService;
 import com.edaisong.api.service.inter.IAuthorityRoleService;
 import com.edaisong.api.service.inter.IDeliveryCompanyService;
 import com.edaisong.api.service.inter.IPublicProvinceCityService;
+import com.edaisong.core.enums.AreaLevel;
 import com.edaisong.core.security.AES;
 import com.edaisong.core.security.MD5Util;
 import com.edaisong.core.util.CookieUtils;
@@ -80,7 +81,7 @@ public class AccountController {
 		view.addObject("subtitle", "用户设置");
 		view.addObject("currenttitle", "用户管理");
 
-		List<AreaModel> listArea = publicProvinceCityService.getOpenCityByJiBie(3);
+		List<AreaModel> listArea = publicProvinceCityService.getOpenCityByJiBie(AreaLevel.City);
 		List<DeliveryCompany> listDc = deliveryCompanyService.getDeliveryCompanyList();
 
 		view.addObject("listArea", listArea);

@@ -9,6 +9,20 @@ public class BusinesRechargeModel {
 
 	private int optId;
 
+	private String optName;
+
+	private Date insertTime;
+
+	private int platform;
+
+	private String remark;
+
+	private Double rechargeAmount;
+
+	private Double rechargeAmountFree;
+
+	private int rechargeType;
+
 	public int getBusinessId() {
 		return businessId;
 	}
@@ -111,18 +125,5 @@ public class BusinesRechargeModel {
 		this.rechargeType = rechargeType;
 	}
 
-	private String optName;
-
-	private Date insertTime;
-
-	private int platform;
-
-	private String remark;
-
-	private Double rechargeAmount;
-
-	private Double rechargeAmountFree;
-
-	private int rechargeType;
 
 }

@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.admin.common.UserContext;
+import com.edaisong.api.service.impl.BusinessService;
 import com.edaisong.api.service.inter.IBusinessBalanceRecordService;
 import com.edaisong.api.service.inter.IBusinessClienterRelationService;
 import com.edaisong.api.service.inter.IBusinessExpressRelationService;
@@ -139,6 +141,7 @@ public class BusinessController {
 	 private IBusinessSetpChargeService businessSetpChargeService;
 	@Autowired
 	 private ITaskDistributionService taskDistributionService;
+	@Autowired IBusinessService businessService;
 
 
 	@RequestMapping("list")
@@ -354,11 +357,18 @@ public class BusinessController {
 		BusinessFinanceAccount resultAccount = businessFinanceAccountService.getDetailByBusinesID(businessID);
 		return resultAccount;
 	}
-
+	/**
+	 * 商家充值
+	 * 茹化肖
+	 * 2016年2月29日16:40:48
+	 * @param param
+	 * @return
+	 */
 	@RequestMapping("recharge")
 	@ResponseBody
 	public int businessRecharge(BusinesRechargeModel param) {
-		return 0;
+		param.setOptName(UserContext.getCurrentContext(request).getUserName());
+		return businessService.businessRecharge(param)?1:0;
 	}
 
 	/**

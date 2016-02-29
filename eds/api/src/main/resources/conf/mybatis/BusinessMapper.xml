@@ -553,7 +553,8 @@
 		allowwithdrawprice ,
 		ISNULL(b.RecommendPhone, '''') AS recommendphone ,
 		b.LastLoginTime,
-		b.isAllowCashPay
+		b.isAllowCashPay,
+		b.ReceivableType
 	</sql>
 
 	<sql id="getBusinessListFrom">

@@ -195,11 +195,11 @@ width: 100%;
 					<fieldset>
             <br>
             <div class="control-group">  
-                <label>距离：</label><input  name="txtCKM" id="txtCKM" type="text" >
+                <label>距离：</label><input  name="txtCKM" id="txtCKM" type="text"  maxlength="6">
                 <input type="hidden" name="jstaskDistributionId" id="jstaskDistributionId" value="<%=detail.getId()%>"/>
             </div>
             <div class="control-group">  
-                <label>重量：</label><input  name="txtCKG" id="txtCKG" type="text" >
+                <label>重量：</label><input  name="txtCKG" id="txtCKG" type="text" maxlength="6">
             </div>      
               <div class="control-group">  
                 <label>配送费：</label><input  name="txtPSF" id="txtPSF" type="text"  disabled="disabled">
@@ -323,7 +323,7 @@ width: 100%;
 	    	var basekm=parseInt($('.xiaokm1').html());
 	    	if(parseInt(txtKM)<basekm)
 	    	{
-	    		alert('新建规则公里必须大于基础配置公里');
+	    		alert('新建规则距离必须大于基础配置距离');
 	    		return;
 	    	}
 	    	$('.xiaokm0').each(function(e){
