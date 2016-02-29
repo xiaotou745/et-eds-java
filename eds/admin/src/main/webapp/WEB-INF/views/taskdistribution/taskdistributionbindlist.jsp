@@ -323,7 +323,7 @@ width: 100%;
 	    	var basekm=parseInt($('.xiaokm1').html());
 	    	if(parseInt(txtKM)<basekm)
 	    	{
-	    		alert('新建规则公里必须大于基础配置公里');
+	    		alert('新建规则距离必须大于基础配置距离');
 	    		return;
 	    	}
 	    	$('.xiaokm0').each(function(e){

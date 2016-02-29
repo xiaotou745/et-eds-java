@@ -13,12 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.edaisong.api.dao.inter.IBusinessBalanceRecordDao;
 import com.edaisong.api.dao.inter.IBusinessDao;
+import com.edaisong.api.dao.inter.IBusinessFinanceAccountDao;
 import com.edaisong.api.dao.inter.IGroupBusinessDao;
 import com.edaisong.api.dao.inter.IMarkDao;
 import com.edaisong.api.redis.RedisService;
 import com.edaisong.api.service.inter.IBusinessService; 
 import com.edaisong.core.consts.GlobalSettings;
 import com.edaisong.core.consts.RedissCacheKey;
+import com.edaisong.core.enums.BusinessBalanceRecordRecordType;
 import com.edaisong.core.enums.BusinessPushOrderType;
 import com.edaisong.core.enums.BusinessStatusEnum;
 import com.edaisong.core.security.MD5Util;
@@ -36,11 +38,13 @@ import com.edaisong.entity.common.HttpResultModel;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.common.ResponseCode;
 import com.edaisong.entity.domain.BindClienterBusiness;
+import com.edaisong.entity.domain.BusinesRechargeModel;
 import com.edaisong.entity.domain.BusinessBasicInfoModel;
 import com.edaisong.entity.domain.BusinessDetailModel;
 import com.edaisong.entity.domain.BusinessModel;
 import com.edaisong.entity.domain.BusinessModifyModel;
 import com.edaisong.entity.domain.BusinessRechargeDetailModel;
+import com.edaisong.entity.domain.BusinessRechargeLog;
 import com.edaisong.entity.domain.TagRelationModel;
 import com.edaisong.entity.domain.OrderRespModel;
 import com.edaisong.entity.req.BCheckCodeReq;
@@ -69,6 +73,9 @@ public class BusinessService implements IBusinessService {
 	private IGroupBusinessDao groupBusinessDao;
 	@Autowired
 	private IMarkDao markDao;
+	
+	@Autowired
+	private IBusinessFinanceAccountDao businessFinanceAccountDao;
 	private static final int MAX_LOING_COUNT = 5;
 
 	@Override
@@ -528,4 +535,58 @@ public class BusinessService implements IBusinessService {
 	public int register(BusinessRegisterReq req) { 
 		return iBusinessDao.register(req);
 	}
+	/**
+	 * 商户充值
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public boolean businessRecharge(BusinesRechargeModel model) {
+		boolean result=false;
+		if(model.getRechargeType()==1)//充值
+		{
+			BusinessRechargeLog log=new BusinessRechargeLog();
+			log.setBusinessId(model.getBusinessId());
+			log.setOptName(model.getOptName());
+			log.setRechargeAmount(model.getRechargeAmount());
+			log.setRechargeType(BusinessBalanceRecordRecordType.Recharge.value());
+			log.setRemark(model.getRemark());
+			log.setPayType(3);
+			result=businessFinanceAccountDao.businessRecharge(log);
+		}
+		if(model.getRechargeType()==2)//赠送
+		{
+			BusinessRechargeLog log=new BusinessRechargeLog();
+			log.setBusinessId(model.getBusinessId());
+			log.setOptName(model.getOptName());
+			log.setRechargeAmount(model.getRechargeAmountFree());
+			log.setRechargeType(BusinessBalanceRecordRecordType.RechargeGift.value());
+			log.setRemark(model.getRemark());
+			log.setPayType(4);
+			result=businessFinanceAccountDao.businessRecharge(log);
+		}
+		if(model.getRechargeType()==3)//充值+赠送
+		{
+			//充值
+			BusinessRechargeLog log=new BusinessRechargeLog();
+			log.setBusinessId(model.getBusinessId());
+			log.setOptName(model.getOptName());
+			log.setRechargeAmount(model.getRechargeAmount());
+			log.setRechargeType(BusinessBalanceRecordRecordType.Recharge.value());
+			log.setRemark(model.getRemark());
+			log.setPayType(3);
+			boolean result1=businessFinanceAccountDao.businessRecharge(log);
+			//赠送
+			BusinessRechargeLog logfree=new BusinessRechargeLog();
+			logfree.setBusinessId(model.getBusinessId());
+			logfree.setOptName(model.getOptName());
+			logfree.setRechargeAmount(model.getRechargeAmountFree());
+			logfree.setRechargeType(BusinessBalanceRecordRecordType.RechargeGift.value());
+			logfree.setRemark(model.getRemark());
+			logfree.setPayType(4);
+			boolean result2=businessFinanceAccountDao.businessRecharge(logfree);
+			result=result1&&result2;
+		}
+		return result;
+	}
+	
 }

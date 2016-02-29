@@ -101,9 +101,13 @@ if(list == null){
 	                $("#txtEDistributionPrice").val(result.distributionPrice);       
 	                $("#txtEIsMaster").val(result.isMaster); 
 	                $("#txtERemark").val(result.remark);    		
-	              	$('#txtERemark').attr("disabled",false);     
+	              	$('#txtERemark').attr("disabled",false);
+	              	$('#txtESteps').attr("disabled","disabled");
 	            	if(isMaster==0) 
-	            		$('#txtERemark').attr("disabled",true)    	
+	            	{
+	            		$('#txtESteps').removeAttr("disabled");
+	            		$('#txtERemark').attr("disabled",true)	
+	            	}    	
 	            		
 	                $('#modifyConfig').modal('show');
 	           }
