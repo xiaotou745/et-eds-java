@@ -30,12 +30,7 @@
 				<span <%=viewPath=="order/grouporderlist"?"class='on'":""%>><a class="two" href="<%=basePath%>/order/grouporderlist">外卖订单</a></span>
 				<span <%=viewPath=="groupstatistics/statistics"?"class='on'":""%>><a class="three" href="<%=basePath%>/groupstatistics/statistics">订单统计</a></span>
 				<span <%=viewPath=="group/recharge"?"class='on'":""%>><a class="six" href="<%=basePath%>/group/recharge">充值</a></span>
-<<<<<<< HEAD
-				<span <%=viewPath=="order/grouporderlist"?"class='on'":""%>><a class="six" href="<%=basePath%>/order/grouporderlist">外卖订单</a></span>
 				<span <%=viewPath=="businessbalancerecord/grouplist"?"class='on'":""%>><a class="six" href="<%=basePath%>/businessbalancerecord/grouplist">交易明细</a></span>
-=======
-				
->>>>>>> 5550f2e7d3ba27cc4c40f28ef78b43c5c162deba
 				<span <%=viewPath=="businessmanager/list"?"class='on'":""%>><a class="six" href="<%=basePath%>/businessmanager/list">门店管理</a></span>
 
 			<%}
