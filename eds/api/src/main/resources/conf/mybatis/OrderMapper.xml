@@ -2084,6 +2084,9 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 		<if test="businessName != null and businessName != ''">
 			and b.Name=''${businessName}''
 		</if>
+		<if test="businessID != null and businessID  != ''">
+			and o.businessID=''${businessID}''
+		</if>
 		<if test="orderId != null and orderId!=''">
 			and o.OrderNo=''${orderId}''
 		</if>

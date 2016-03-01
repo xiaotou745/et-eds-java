@@ -12,24 +12,32 @@
 <%@page import="com.edaisong.entity.domain.OrderListModel"%>
 <%@page import="com.edaisong.core.util.ParseHelper"%>
 <%@page import="com.edaisong.core.util.EnumHelper"%>
+<style type="text/css">
+.inputcss{
+width: 220px;
+height: 32px;
+color: #888;
+font-size: 14px;
+padding-left: 7px;
+border: 1px solid #c0c2cb;
+border-radius: 3px 0 0 3px;
+float: left;
+margin-top: 6px;
+line-height: 30px;
+}
+
+</style>
 
 <%	
 String basePath =PropertyUtils.getProperty("java.business.url");
+String BusList=(String)request.getAttribute("BusList");
 %>
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/autocomplete.css">
+<script src="<%=basePath%>/js/jquery.autocomplete.js"></script>
 <div class="top cb">
-
-			<h3 class="cb">
-				外卖订单
-				<p class="fr">
-					<input type="text" class="fl" placeholder="订单号，骑士姓名或手机号" id="customerInfo">
-					<input type="button" class="fl" value="搜索按钮" id="customerSearch">
-				</p>
-			</h3>
 			<form method="POST" action="#" class="form-horizontal" id="searchForm">
 	        <input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
-			<div class="function">
-				<input type="button" class="fr" value="导出报表" id="btnExport" style="line-height:30px;">
-				<input type="button" class="fr" value="搜索" id="btnSearch" style="line-height:30px;">
+			<div class="function" style="height:100px;">	
 				<span class="fl">订单状态</span>
 				<select class="fl"  name="orderStatus"  id="orderStatus">
 					<option value="-1">全部</option>
@@ -62,12 +70,47 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 				<span class="inblock">至</span>
 				<span class="intime"><input type="text" class="dinput" disabled="disabled" id="orderPubEnd" name="orderPubEnd">
 				<s onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'orderPubStart\')}',maxDate:new Date()});"></s></span>
+
+		    	<span class="fl">订单号</span>
+				<input type="text" class="inputcss" placeholder="订单号" id="orderId" name="orderId">
+				 <br/>
+				<div style="clear:both"></div>
+			    <span class="fl">门&nbsp;&nbsp;&nbsp;&nbsp;店</span>
+				<input type="text" class="inputcss"  id="businessName" style="margin-right:10px;" />
+				<input type="hidden"  id="businessID" name="businessID"/>
+
+				<input type="button" class="fr" value="搜索" id="btnSearch" style="line-height:30px;float:left">
+						    	<input type="button" class="fr" value="导出报表" id="btnExport" style="line-height:30px;float:left">
 			</div>
+
 			</form>
 </div>
 		<div class="bottom bottom2 bottom3" id="content">
 		</div>
 <script>
+
+$(function(){
+	var businessNameDate=<%=BusList%>;
+	 $("#businessName").AutoComplete({
+	        data: businessNameDate,
+	        ajaxDataType: "json",
+	        width: 240,
+	        listStyle: "custom",
+	        matchHandler: function() {
+	            return ! 0
+	        },
+	        afterSelectedHandler: function(d) {
+	        	$('#businessName').val(d.label);////1.文本框ID
+	        	$('#businessID').val(d.value);////2.隐藏域文本框ID
+	        },
+	        createItemHandler: function(t, i) {
+	            var s = $("<div " + (i.unlink ? 'class="disabled"': "") + ">" + i.label + (i.unlink ? "[已解绑]": "") + "</div>");
+	            return s
+	        }
+	    })
+	   // <!-- 下拉框 END-->
+
+	})
 
 var searchType=0;
 var jss = {
