@@ -1,5 +1,7 @@
 package com.edaisong.api.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.edaisong.api.common.DaoBase;
@@ -84,5 +86,11 @@ public class GroupBusinessRelationDao extends DaoBase implements IGroupBusinessR
 	public PagedResponse<GroupBusinessRelationModel> getBusinessList(PagedBizBindsReq req) {
 		return getReadOnlySqlSessionUtil()
 				.selectPageList("IGroupBusinessRelationDao.getBusinessList", req);
+	}
+
+	@Override
+	public List<GroupBusinessRelationModel> getBusinessListForStr(int groupid) {
+		return getReadOnlySqlSessionUtil()
+				.selectList("IGroupBusinessRelationDao.getBusinessListForStr", groupid);
 	}
 }

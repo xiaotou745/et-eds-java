@@ -24,4 +24,10 @@ public interface IGroupBusinessRelationService {
 	boolean checkHaveBind(BusinessBindOptionReq req);
 	
 	PagedResponse<GroupBusinessRelationModel> getBusinessList(PagedBizBindsReq req);
+	/**
+	 * 获取集团下拉数据
+	 * @param groupId
+	 * @return
+	 */
+	String getGroupBusListString(int groupId);
 }

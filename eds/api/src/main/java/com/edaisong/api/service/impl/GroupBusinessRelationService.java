@@ -1,5 +1,8 @@
 package com.edaisong.api.service.impl;
 
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,5 +58,22 @@ public class GroupBusinessRelationService implements IGroupBusinessRelationServi
 	@Override
 	public PagedResponse<GroupBusinessRelationModel> getBusinessList(PagedBizBindsReq req) {
 		return groupBusinessRelationDao.getBusinessList(req);
+	}
+
+	@Override
+	public String getGroupBusListString(int groupId) {
+		List<GroupBusinessRelationModel> modellist=groupBusinessRelationDao.getBusinessListForStr(groupId);
+		StringBuilder sBuilder=new StringBuilder();
+		sBuilder.append("[");
+		for (int i = 0; i < modellist.size(); i++) {
+			sBuilder.append("{\"label\":\""+modellist.get(i).getName()+"\",");
+			sBuilder.append("\"value\":\""+modellist.get(i).getBusinessid()+"\",");
+			String tem=modellist.get(i).getIsbind().equals(Short.valueOf("1"))?"false":"true";
+			sBuilder.append("\"unlink\":"+tem+"}");
+			sBuilder.append(",");
+		}
+		String str=sBuilder.substring(0, sBuilder.length()-1);
+		str+="]";
+		return str;
 	}
 }
