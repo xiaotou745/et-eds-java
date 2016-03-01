@@ -8,13 +8,15 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 .tabHead{
      padding:0;
      margin:0;
+      background-color:#CCCCFF;
+      height:50px;
     }
     
     .tabHead li{
      display:block;
      float:left;
      margin:5px;
-     background-color:#CCCCFF;
+     font-size:18px;
     }
     
     .tabHead a{
@@ -154,10 +156,10 @@ page.style.position="absolute";
 			<div class="function">
               <input type="button" class="fr" value="搜索" id="btnSearch" style="line-height:30px;">
 				<span class="intime">
-				<input type="text" disabled="disabled" class="dinput" id="operateTimeStart" name="operateTimeStart" />
+				<input type="text"  class="dinput" id="operateTimeStart" name="operateTimeStart" />
 				<s onClick="WdatePicker({el:'operateTimeStart',dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'operateTimeEnd\')||\'new Date()\'}'});"></s></span>
 				<span class="inblock">至</span>
-				<span class="intime"><input type="text" class="dinput" disabled="disabled" id="operateTimeEnd" name="operateTimeEnd">
+				<span class="intime"><input type="text" class="dinput" id="operateTimeEnd" name="operateTimeEnd">
 				<s onClick="WdatePicker({el:'operateTimeEnd',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'operateTimeStart\')}',maxDate:new Date()});"></s></span>
 			</div>
 			</form>
