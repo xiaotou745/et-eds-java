@@ -68,7 +68,7 @@ public class GroupBusinessRelationService implements IGroupBusinessRelationServi
 		for (int i = 0; i < modellist.size(); i++) {
 			sBuilder.append("{\"label\":\""+modellist.get(i).getName()+"\",");
 			sBuilder.append("\"value\":\""+modellist.get(i).getBusinessid()+"\",");
-			String tem=modellist.get(i).getIsbind().equals(Short.valueOf("1"))?"false":"true";
+			String tem=modellist.get(i).getIsbind().equals(Short.valueOf("1"))&&modellist.get(i).getIsenable().equals(Short.valueOf("1"))?"false":"true";
 			sBuilder.append("\"unlink\":"+tem+"}");
 			sBuilder.append(",");
 		}
