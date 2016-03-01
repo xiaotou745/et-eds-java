@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.api.service.inter.IGroupBusinessRelationService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.business.common.UserContext;
 import com.edaisong.core.enums.OrderStatus;
@@ -42,6 +43,8 @@ public class GroupStatisticsController {
 	@Autowired
 	IOrderService orderService;
 
+	@Autowired
+	private IGroupBusinessRelationService groupBusinessRelationService;
 	/**
 	 * 
 	 * @param request
@@ -89,6 +92,14 @@ public class GroupStatisticsController {
 	}
 
 	
+	/**
+	 * 订单统计
+	 * @author CaoHeYang
+	 * @date 20160301
+	 * @param req
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("statistics")
 	public ModelAndView statistics(PagedOrderSearchReq req,
 			HttpServletRequest request) {
@@ -98,9 +109,19 @@ public class GroupStatisticsController {
 		model.addObject("viewPath", "groupstatistics/statistics");
 		model.addObject("pubStart", ParseHelper.ToDateString(ParseHelper.plusDate(new Date(), 2, -7), "yyyy-MM-dd"));
 		model.addObject("pubEnd", ParseHelper.ToDateString(new Date(), "yyyy-MM-dd"));
+		String string=groupBusinessRelationService.getGroupBusListString(UserContext.getCurrentContext(request).getBusinessID());
+		model.addObject("BusList",string );
 		return model;
 	}
 	
+	/**
+	 * 订单统计异步
+	 * @author CaoHeYang
+	 * @date  20160301
+	 * @param req
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("statisticsdo")
 	public ModelAndView statisticsdo(PagedOrderSearchReq req,
 			HttpServletRequest request) {

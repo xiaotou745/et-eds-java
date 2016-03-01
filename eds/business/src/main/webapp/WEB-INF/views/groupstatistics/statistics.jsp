@@ -11,11 +11,19 @@
 
 <%
 	String basePath = PropertyUtils.getProperty("java.business.url");
+//门店下拉数据
+String BusList=(String)request.getAttribute("BusList");
 %>
+<!-- 下拉框 -->
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/autocomplete.css">
+<script src="<%=basePath%>/js/jquery.autocomplete.js"></script>
+<!-- 下拉框 -->
+
 <script type="text/javascript"
 	src="<%=basePath%>/js/highcharts/js/highcharts.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>/js/highcharts/js/modules/exporting.js"></script>
+	
 	<div class="content-wrap">
 		<div class="top cb">
 			<h3 class="cb">订单统计</h3>
@@ -23,7 +31,8 @@
 				id="searchForm">
 				<div class="function">
 					<div class="store_filter">
-						<input type="text" placeholder="门店名称" />
+						<input type="text" placeholder="门店名称" id="businessName" />
+					<input type="hidden"  id="businessIdValue">
 						<div class="icon-dropdown"></div>
 					</div>
 					<span class="intime"> <input type="text" class="dinput" value="<%=(String)request.getAttribute("pubStart")%>"
@@ -45,10 +54,35 @@
 	</div>
 
 <script>
+$(function(){
+	var businessNameDate=<%=BusList%>;
+	 $("#businessName").AutoComplete({
+	        data: businessNameDate,
+	        ajaxDataType: "json",
+	        width: 240,
+	        listStyle: "custom",
+	        matchHandler: function() {
+	            return ! 0
+	        },
+	        afterSelectedHandler: function(d) {
+	        	$('#businessName').val(d.label);////1.文本框ID
+	        	$('#businessIdValue').val(d.value);////2.隐藏域文本框ID
+	        },
+	        createItemHandler: function(t, i) {
+	            var s = $("<div " + (i.unlink ? 'class="disabled"': "") + ">" + i.label + (i.unlink ? "[已解绑]": "") + "</div>");
+	            return s
+	        }
+	    })
+	   // <!-- 下拉框 END-->
+
+	})
+	
+
 var jss = {
 	search : function(currentPage) {
 		var date1=$("#orderPubStart").val();
 		var date2=$("#orderPubEnd").val();
+		var businessID=$('#businessIdValue').val();
 		if(date1!=null&&date2!=null&&date1!=""&&date2!=""){
 		    var date11=new Date(date1);
 		 	var date22=new Date(date2);
@@ -59,7 +93,7 @@ var jss = {
 		    	alert("查询开始日期与结束日期最大间隔为两个月！")
 		    	return;
 		    }
-		    var data={"orderPubStart":date1,"orderPubEnd":date2};
+		    var data={"orderPubStart":date1,"orderPubEnd":date2,"businessID":businessID};
 		    $.post("<%=basePath%>/groupstatistics/statisticsdo", data, function(d) {
 				$("#content").html(d);
 			});
@@ -70,7 +104,9 @@ var jss = {
 }
 jss.search(1);
 $("#btnSearch").click(function() {
-	$("#businessID").val("");
+	if($("#businessName").val()==""){
+		$("#businessIdValue").val("");
+	}
 	var startDate = $('#orderPubStart').val();
     var endDate = $('#orderPubEnd').val();
     if (startDate != "" && endDate != "") {

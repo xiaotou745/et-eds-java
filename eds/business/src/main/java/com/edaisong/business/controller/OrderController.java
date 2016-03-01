@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.api.service.inter.IGroupBusinessRelationService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.entity.OrderChild;
 import com.edaisong.entity.common.PagedResponse;
@@ -46,6 +47,9 @@ public class OrderController {
 	IOrderService orderService;
 	@Autowired
 	IBusinessService businessService;
+	
+	@Autowired
+	private IGroupBusinessRelationService groupBusinessRelationService;
 
 	/**
 	 * 订单列表页面
@@ -220,11 +224,13 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("grouporderlist")
-	public ModelAndView groupOrderList() {
+	public ModelAndView groupOrderList(HttpServletRequest request) {
 		ModelAndView view = new ModelAndView("businessView");
 		view.addObject("subtitle", "全部订单");
 		view.addObject("currenttitle", "全部订单");
 		view.addObject("viewPath", "order/grouporderlist");
+		String string=groupBusinessRelationService.getGroupBusListString(UserContext.getCurrentContext(request).getBusinessID());
+		view.addObject("BusList",string );
 		return view;
 	}
 
