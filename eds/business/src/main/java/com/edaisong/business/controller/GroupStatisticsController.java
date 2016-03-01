@@ -45,25 +45,45 @@ public class GroupStatisticsController {
 
 	@Autowired
 	private IGroupBusinessRelationService groupBusinessRelationService;
+	
 	/**
-	 * 
+	 * @author CaoHeYang
+	 * @date 20160301
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping("today")
 	public ModelAndView today(HttpServletRequest request) {
+
 		GroupTodayStatistics g = orderService.groupTodayStatistics(UserContext
 				.getCurrentContext(request).getBusinessID());
-		BusinessOrderSummaryModel b = orderService.groupTodayOrderStatistics(
-				null, UserContext.getCurrentContext(request).getBusinessID());
-		List<BusiPubOrderTimeStatisticsModel> bdays = orderService
-				.groupTodayOrderStatisticsReport(null, UserContext
-						.getCurrentContext(request).getBusinessID());
+		
 		ModelAndView model = new ModelAndView("businessView");
 		model.addObject("subtitle", "首页");
 		model.addObject("currenttitle", "今日统计");
 		model.addObject("viewPath", "groupstatistics/today");
 		model.addObject("g", g);
+		String string=groupBusinessRelationService.getGroupBusListString(UserContext.getCurrentContext(request).getBusinessID());
+		model.addObject("BusList",string );
+		return model;
+	}
+
+	
+	/**
+	 * @author CaoHeYang
+	 * @date 20160301
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("todaydo")
+	public ModelAndView todaydo(PagedOrderSearchReq req,HttpServletRequest request) {
+		BusinessOrderSummaryModel b = orderService.groupTodayOrderStatistics(
+				req.getBusinessID(), UserContext.getCurrentContext(request).getBusinessID());
+		List<BusiPubOrderTimeStatisticsModel> bdays = orderService
+				.groupTodayOrderStatisticsReport(req.getBusinessID(), UserContext
+						.getCurrentContext(request).getBusinessID());
+		ModelAndView model = new ModelAndView();
+		model.addObject("viewPath", "groupstatistics/todaydo");
 		model.addObject("b", b);
 		if (bdays == null) {
 			bdays = new ArrayList<BusiPubOrderTimeStatisticsModel>();
@@ -90,8 +110,6 @@ public class GroupStatisticsController {
 		model.addObject("bdaysComplite", bdaysComplite);
 		return model;
 	}
-
-	
 	/**
 	 * 订单统计
 	 * @author CaoHeYang
