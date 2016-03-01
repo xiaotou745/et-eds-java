@@ -19,6 +19,45 @@
 		OriginalOrderNo =#{originalorderno,jdbcType=VARCHAR}
 		where OrderNo = #{orderno,jdbcType=VARCHAR} and PayStatus!=#{paystatus,jdbcType=INTEGER}
 	</update>
+	  	<!--集团中心商户充值流水页面  -->
+	  	  <sql id="Base_Column_List" >
+  GroupBusinessId, PayType,       OrderNo, PayAmount, PayStatus, 
+      PayBy, RequestTime, PayTime,       OriginalOrderNo
+  </sql> 
+  	<sql id="getGroupBusinessRechargRecordFrom">
+		dbo.GroupBusinessRecharge (nolock) 
+	</sql>
+	<sql id="getGroupBusinessRechargRecordWhere">
+		1=1   and GroupBusinessId =${groupBusinessId} 	
+		<if test="operateTimeStart != null and operateTimeStart!=''">
+			and RequestTime>= ''${operateTimeStart} 00:00:00''
+		</if>
+		<if test="operateTimeEnd != null and operateTimeEnd!=''">
+		AND DATEADD(d, 1, ''${operateTimeEnd}'')>RequestTime
+		</if>
+	</sql>
+	<select id="getGroupBusinessRechargRecord" resultType="com.edaisong.entity.GroupBusinessRecharge"
+		parameterType="com.edaisong.entity.req.PagedGroupBusinessRechargeReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' Id DESC ',
+		'
+		<include refid="Base_Column_List" />
+		',
+		'
+		<include refid="getGroupBusinessRechargRecordFrom" />
+		',
+		'
+		<include refid="getGroupBusinessRechargRecordWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+	
 	  <select id="getByOrderNo" resultType="com.edaisong.entity.GroupBusinessRecharge" parameterType="java.lang.String">
 		select top 1 * from  GroupBusinessRecharge
 		where OrderNo = #{orderNO,jdbcType=VARCHAR} 

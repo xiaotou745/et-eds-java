@@ -4,7 +4,79 @@
 <%	
 String basePath =PropertyUtils.getProperty("java.business.url");
 %>
-<div class="recharge">
+<style>  
+.tabHead{
+     padding:0;
+     margin:0;
+    }
+    
+    .tabHead li{
+     display:block;
+     float:left;
+     margin:5px;
+     background-color:#CCCCFF;
+    }
+    
+    .tabHead a{
+        text-decoration:none;
+    }
+    
+    .tabBody{
+
+    }
+    
+    .tabBody .tabPage{
+     width:100%;
+     height:100%;
+    }
+    
+    .tabPageShow{
+        border:1px solid red;
+    }
+    
+    .tabPageHidden{
+    
+    }
+    
+    .tabHeadShow{
+    
+    }
+    
+    .tabHeadHidden{
+    
+    }
+</style>
+
+<script type="text/javascript">
+function $get(id){
+    return document.getElementById(id);
+}
+
+function setTab(tabHeadPreFix,tabPagePreFix,currentPageIndex,pageCounts){
+    for(var i=1;i<=pageCounts;i++){
+ 
+var head=$get(tabHeadPreFix+i);
+var page=$get(tabPagePreFix+i);
+
+if(i==currentPageIndex){
+page.style.visibility = "visible";
+page.style.position="static";
+}else{
+page.style.visibility="hidden";
+page.style.position="absolute";
+}
+ }
+}
+</script>
+
+<div class="tabcontainer">
+  <ul class="tabHead">
+   　<li id="head1"><a href="javascript:setTab('head','page',1,4)">充值</a></li>
+  　 <li id="head2"><a href="javascript:setTab('head','page',2,4)">充值明细</a></li>
+  </ul>
+  <div class="tabBody">
+  　　 <div class="tabPage" id="page1">
+   　　　　<div class="recharge" >
 <div class="top cb">
   <h3 class="cb">充值</h3>
 </div>
@@ -72,11 +144,84 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 	</div>
 </div>
 </div>
+   　　</div>
+   
+   　　<div class="tabPage" id="page2"  style="position:absolute;visibility:hidden">
+   　　　　<div class="top cb">
+
+			<form method="POST" action="#" class="form-horizontal" id="searchForm">
+	        <input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
+			<div class="function">
+              <input type="button" class="fr" value="搜索" id="btnSearch" style="line-height:30px;">
+				<span class="intime">
+				<input type="text" disabled="disabled" class="dinput" id="operateTimeStart" name="operateTimeStart" />
+				<s onClick="WdatePicker({el:'operateTimeStart',dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'operateTimeEnd\')||\'new Date()\'}'});"></s></span>
+				<span class="inblock">至</span>
+				<span class="intime"><input type="text" class="dinput" disabled="disabled" id="operateTimeEnd" name="operateTimeEnd">
+				<s onClick="WdatePicker({el:'operateTimeEnd',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'operateTimeStart\')}',maxDate:new Date()});"></s></span>
+			</div>
+			</form>
+</div>
+		<div class="bottom bottom2 bottom3" id="content">
+		</div>
+  　　 </div>   
+
+  </div>
+ </div>
+ 
+
 
 <script>
+var jss = {
+	search : function(currentPage) {
+		
+		var date1=$("#operateTimeStart").val();
+		var date2=$("#operateTimeEnd").val();
+		if(date1!=null&&date2!=null&&date1!=""&&date2!=""){
+		    var date11=new Date(date1);
+		 	var date22=new Date(date2);
+		 	var date1Seconds=new Date(date11.getFullYear(),date11.getMonth()+2,date11.getDate());
+		 	var date2Seconds=new Date(date22.getFullYear(),date22.getMonth(),date22.getDate());
+		    if(date1Seconds<date2Seconds)
+		    {
+		    	alert("查询开始日期与结束日期最大间隔为两个月！")
+		    	return;
+		    }
+		} 				  
+	
+			$("#_hiddenCurrentPage").val(currentPage);
+			 var data=$("#searchForm").serialize();
+				$.post("<%=basePath%>/group/rechargelistdo",data, function(d) {
+					$("#content").html(d);
+				});
+		
+
+	}
+}
+jss.search(1);
+$("#btnSearch").click(function() {
+	searchType=0;
+	$("#customerInfo").val("");
+	var startDate = $('#operateTimeStart').val();
+    var endDate = $('#operateTimeEnd').val();
+    if (startDate != "" && endDate != "") {
+        var intStartDate = startDate.replace(/-/g, "");
+        var intEndDate = endDate.replace(/-/g, "");
+        if (intStartDate > intEndDate) {
+            alert('开始日期不能大于结束日期');
+            $('#operateTimeStart').val("");
+            return;
+        }
+    }
+	jss.search(1);
+});
+
+
+
 function reload(){
 	window.location.href = window.location.href;
 }
+
 function showRechargeStatus(){
 	var url = "<%=basePath%>/group/getrechargestatus";
 	$.ajax({

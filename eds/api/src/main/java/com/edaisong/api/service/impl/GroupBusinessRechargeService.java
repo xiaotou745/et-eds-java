@@ -16,7 +16,9 @@ import com.edaisong.core.enums.BusinessBalanceRecordStatus;
 import com.edaisong.entity.BusinessBalanceRecord;
 import com.edaisong.entity.GroupBusiness;
 import com.edaisong.entity.GroupBusinessRecharge;
+import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GroupBusinessBalance;
+import com.edaisong.entity.req.PagedGroupBusinessRechargeReq;
 
 @Service
 public class GroupBusinessRechargeService implements
@@ -67,5 +69,14 @@ public class GroupBusinessRechargeService implements
 	@Override
 	public List<GroupBusinessBalance> getGroupBalance(int groupBusinessID) {
 		return groupBusinessRechargeDao.getGroupBalance(groupBusinessID);
-	} 
+	}
+
+	@Override
+	public PagedResponse<GroupBusinessRecharge> getGroupBusinessRechargelist(
+			PagedGroupBusinessRechargeReq search) {
+		return groupBusinessRechargeDao.getGroupBusinessRechargelist(search);
+	
+	}
+	
+
 }
