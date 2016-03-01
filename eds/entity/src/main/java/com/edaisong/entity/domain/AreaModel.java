@@ -1,12 +1,14 @@
 package com.edaisong.entity.domain;
 
+import java.io.Serializable;
+
 
 /**
  *开通城市的省市区 domain model
  * @author CaoHeYang
  * @Date 20150727
  */
-public class AreaModel {
+public class AreaModel implements Serializable{
 	
     private int code ;
     
