@@ -17,8 +17,8 @@ if(data == null){
 						<thead>
 							<tr>
 								<th>编号</th>
-								<th>名称</th>
-								<th>描述</th>
+								<th style="width:150px">名称</th>
+								<th style="width:150px">描述</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -26,8 +26,8 @@ if(data == null){
 							<%for (int i = 0; i < data.size(); i++) { %>
 							<tr>
 								<td><%=data.get(i).getId()%></td>
-								<td><%=data.get(i).getName()%></td>
-								<td><%=data.get(i).getRemark()%></td>
+								<td style="word-break:break-all"><%=data.get(i).getName()%></td>
+								<td style="word-break:break-all"><%=data.get(i).getRemark()%></td>
 								<td><a href="javascript:void(0)" onclick="LichengChoosed(<%=data.get(i).getId()%>,'<%=data.get(i).getName()%>')">选择</a></td>
 							</tr>
 
