@@ -1,5 +1,7 @@
 package com.edaisong.api.dao.inter;
 
+import java.util.List;
+
 import com.edaisong.entity.GroupBusinessRelation;
 import com.edaisong.entity.common.PagedResponse;
 import com.edaisong.entity.domain.GroupBusinessRelationModel;
@@ -68,4 +70,6 @@ public interface IGroupBusinessRelationDao {
      * @return
      */
     PagedResponse<GroupBusinessRelationModel> getBusinessList(PagedBizBindsReq req);
+    
+    List<GroupBusinessRelationModel> getBusinessListForStr(int groupid);
 }

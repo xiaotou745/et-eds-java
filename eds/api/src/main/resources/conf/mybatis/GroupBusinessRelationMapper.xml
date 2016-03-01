@@ -283,4 +283,16 @@
 	#{totalPage,mode=OUT,jdbcType=INTEGER}
 	)}
   </select>
+  <select id="getBusinessListForStr" resultType="com.edaisong.entity.domain.GroupBusinessRelationModel" 
+    parameterType="java.lang.Integer">
+    
+SELECT  b.Name ,
+        gbr.BusinessId ,
+        gbr.IsBind,
+        gbr.IsEnable
+FROM    dbo.GroupBusinessRelation AS gbr ( NOLOCK )
+        JOIN dbo.business AS b ( NOLOCK ) ON b.id = gbr.BusinessId
+WHERE   gbr.GroupId = #{groupid,jdbcType=INTEGER}
+    
+  </select>
 </mapper>
