@@ -90,21 +90,41 @@ public class AdminToolsController {
 				Set<String> mSet=redisUtil.keys(key);
 				return String.join(",", mSet);
 			}else {
-				Object m= redisUtil.get(key, Object.class, false);
-				if (m==null) {
-					return "";
+				try {
+					Object m= redisUtil.get(key, Object.class, false);
+					if (m==null) {
+						return "";
+					}
+					if (m instanceof List) {
+						List<Object> mt=(ArrayList<Object>)m;
+						List<String> jsonList=mt.stream().map(t->JsonUtil.obj2string(t)).collect(Collectors.toList());
+						return String.join(",", jsonList);
+					}else {
+						return JsonUtil.obj2string(m);
+					}
+				} catch (Exception e) {
+					return "值无法反序列化"+e.getMessage();
 				}
-				if (m instanceof List) {
-					List<Object> mt=(ArrayList<Object>)m;
-					List<String> jsonList=mt.stream().map(t->JsonUtil.obj2string(t)).collect(Collectors.toList());
-					return String.join(",", jsonList);
-				}else {
-					return JsonUtil.obj2string(m);
-				}
+
 			}
 		}
 		return "";
 	}
+	@RequestMapping("redisremove")
+	@ResponseBody
+	public Integer redisRemove(String appName,String key) {
+		if (appName==null||appName.isEmpty()||key==null||key.isEmpty()) {
+			return 1;
+		}
+		List<AppDbConfig> appConfig=toolsHelper.getAppConfigList(ServerType.Redis,appName);
+		if (appConfig.size()>0) {
+			ConnectionInfo conInfo=JsonUtil.str2obj(appConfig.get(0).getConfigvalue(), ConnectionInfo.class) ;
+			RedisUtil redisUtil=new RedisUtil(conInfo);
+			redisUtil.remove(key);
+		}
+		return 1;
+	}
+	
 	/**
 	 * 菜单管理
 	 * @author hailongzhao

@@ -54,6 +54,7 @@ List<String> appNameList = (List<String>) request.getAttribute("appNameList");
 			<th>编号</th>
 			<th>键</th>
 			<th>值</th>
+			<th>操作</th>
 		</tr>
 	</thead>
 	<tbody id="Content">
@@ -104,9 +105,33 @@ function detail(id,key,val){
 	arr.push("<td>"+id+"</td>");
 	arr.push("<td>"+key+"</td>");
 	arr.push("<td>"+val+"</td>");
+	arr.push("<td><a href='javascript:void(0)' onclick=\"deleteKey('"+key+"')\">删除</a></td>");
 	arr.push("</tr>");
 	return arr;
 }
+function deleteKey(key) {
+	if(!confirm("确定要删除？")){
+		return;
+	}
+	var paramaters = {
+			"appName":$("#selappname").val(),
+			"key" :  key
+		};
+	var url = "<%=Config.adminurl%>/admintools/redisremove";
+	$.ajax({
+		type : 'POST',
+		url : url,
+		data : paramaters,
+		success : function(result) {
+			if (result>0) {
+				alert("操作成功");
+				window.location.href = window.location.href;
+			} else {
+				alert("操作失败");
+			}
+		}
+	});
+};
 $(function(){
 	$("#btnSearch").click(function(){
 		funGetRedis(0,"");
