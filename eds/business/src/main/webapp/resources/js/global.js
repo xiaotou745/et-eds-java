@@ -25,11 +25,11 @@ function testloginName(){
 		$(".error1").css("display", "block");
 		return false;
 	} else if (reg.test(loginName)) {
-		$(".error1").html("登陆账号不能为中文字符");
+		$(".error1").html("登录账号不能为中文字符");
 		$(".error1").css("display", "block");
 		return false;
 	} else if (loginName.length <6 || loginName.length>20) {
-		$(".error1").html("登陆账号除中文外6-20位字符");
+		$(".error1").html("登录账号除中文外6-20位字符");
 		$(".error1").css("display", "block");
 		return false;
 	}
