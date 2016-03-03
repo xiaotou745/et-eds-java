@@ -76,7 +76,7 @@ function funGetRedis(mtype,mkey){
 	var param={"appName":$("#selappname").val(),"key":key,"sType":sType};
 	$.post("<%=Config.adminurl%>/admintools/redisdo",param,function(d){
 		if(d==""){
-			alert("结果为空");
+			//alert("结果为空");
 			$("#Content").html("");
 			return;
 		}
@@ -125,10 +125,11 @@ function deleteKey(key) {
 		success : function(result) {
 			if (result>0) {
 				alert("操作成功");
-				window.location.href = window.location.href;
+				//window.location.href = window.location.href;
 			} else {
 				alert("操作失败");
 			}
+			funGetRedis(0,"");
 		}
 	});
 };
