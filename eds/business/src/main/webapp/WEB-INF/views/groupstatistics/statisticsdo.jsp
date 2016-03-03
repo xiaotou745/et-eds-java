@@ -29,8 +29,6 @@ GroupOrderstatistics g1=(GroupOrderstatistics)request.getAttribute("g1");
 	</ul>
 </div>
 <div class="chart"></div>
-<script type="text/javascript"
-	src="<%=basePath%>/js/jquery.autocomplete.js"></script>
 <script>
 <%
 StringBuilder complite=new StringBuilder("[");
@@ -76,24 +74,7 @@ for(int i=0;i< g1.getDays().size();i++){
         }];
         
         $(function() {
-        	$(".store_filter input").AutoComplete(
-        			{
-        				data : "",
-        				ajaxDataType : "json",
-        				width : 240,
-        				listStyle : "custom",
-        				matchHandler : function() {
-        					return !0
-        				},
-        				afterSelectedHandler : function() {
-        				},
-        				createItemHandler : function(t, e) {
-        					var i = $("<div " + (e.unlink ? 'class="disabled"' : "")
-        							+ ">" + e.label + (e.unlink ? "[已解绑]" : "")
-        							+ "</div>");
-        					return i
-        				}
-        			});
+        	
         	var t = {
         		title : {
         			text : "今日订单统计"

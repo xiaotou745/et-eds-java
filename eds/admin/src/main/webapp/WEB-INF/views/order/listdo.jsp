@@ -38,6 +38,7 @@
 			PagedResponse<OrderListModel> responsePageList = (PagedResponse<OrderListModel>) request
 					.getAttribute("listData");
 			String basePath =PropertyUtils.getProperty("java.admin.url");
+			String netPath =PropertyUtils.getProperty("net.admin.url");
 			List<OrderListModel> data = responsePageList.getResultList();
 			if (data == null) {
 				data = new ArrayList<OrderListModel>();
@@ -69,7 +70,7 @@
 		<tr>
 			<td><%=i + 1%></td>
 			<td>
-			<a href="<%=basePath %>/order/detail?orderno=<%=data.get(i).getOrderNo()%>&orderid=<%=data.get(i).getId() %> "><%=data.get(i).getOrderNo()%></a><br /> 
+			<a href="<%=netPath%>/Order/OrderDetail?OrderNo=<%=data.get(i).getOrderNo()%>&OrderId=<%=data.get(i).getId()%>"><%=data.get(i).getOrderNo()%></a><br /> 
 				来源:<%=ParseHelper.ShowString(data.get(i).getGroupName())%><br/>原单号:<%=ParseHelper.ShowString(data.get(i).getOriginalOrderNo())%>
 		    </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getBusinessName())%> <br /> <%=data.get(i).getBusinessPhoneNo()%>

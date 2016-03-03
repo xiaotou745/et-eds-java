@@ -32,11 +32,14 @@ public class BusinessManagerController {
 	 * @return
 	 */
 	@RequestMapping("list")
-	public ModelAndView list() {
+	public ModelAndView list(HttpServletRequest request) {
 		ModelAndView view = new ModelAndView("businessView");
+		
 		view.addObject("subtitle", "门店管理");
 		view.addObject("currenttitle", "门店列表");
 		view.addObject("viewPath", "businessmanager/list");
+		String string=groupBusinessRelationService.getGroupBusListString(UserContext.getCurrentContext(request).getBusinessID());
+		view.addObject("BusList",string );
 		return view;
 	}
 	/**

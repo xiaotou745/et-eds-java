@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edaisong.api.service.inter.IBusinessService;
+import com.edaisong.api.service.inter.IGroupBusinessRelationService;
 import com.edaisong.api.service.inter.IOrderService;
 import com.edaisong.business.common.UserContext;
 import com.edaisong.core.enums.OrderStatus;
@@ -42,25 +43,47 @@ public class GroupStatisticsController {
 	@Autowired
 	IOrderService orderService;
 
+	@Autowired
+	private IGroupBusinessRelationService groupBusinessRelationService;
+	
 	/**
-	 * 
+	 * @author CaoHeYang
+	 * @date 20160301
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping("today")
 	public ModelAndView today(HttpServletRequest request) {
+
 		GroupTodayStatistics g = orderService.groupTodayStatistics(UserContext
 				.getCurrentContext(request).getBusinessID());
-		BusinessOrderSummaryModel b = orderService.groupTodayOrderStatistics(
-				null, UserContext.getCurrentContext(request).getBusinessID());
-		List<BusiPubOrderTimeStatisticsModel> bdays = orderService
-				.groupTodayOrderStatisticsReport(null, UserContext
-						.getCurrentContext(request).getBusinessID());
+		
 		ModelAndView model = new ModelAndView("businessView");
 		model.addObject("subtitle", "首页");
 		model.addObject("currenttitle", "今日统计");
 		model.addObject("viewPath", "groupstatistics/today");
 		model.addObject("g", g);
+		String string=groupBusinessRelationService.getGroupBusListString(UserContext.getCurrentContext(request).getBusinessID());
+		model.addObject("BusList",string );
+		return model;
+	}
+
+	
+	/**
+	 * @author CaoHeYang
+	 * @date 20160301
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("todaydo")
+	public ModelAndView todaydo(PagedOrderSearchReq req,HttpServletRequest request) {
+		BusinessOrderSummaryModel b = orderService.groupTodayOrderStatistics(
+				req.getBusinessID(), UserContext.getCurrentContext(request).getBusinessID());
+		List<BusiPubOrderTimeStatisticsModel> bdays = orderService
+				.groupTodayOrderStatisticsReport(req.getBusinessID(), UserContext
+						.getCurrentContext(request).getBusinessID());
+		ModelAndView model = new ModelAndView();
+		model.addObject("viewPath", "groupstatistics/todaydo");
 		model.addObject("b", b);
 		if (bdays == null) {
 			bdays = new ArrayList<BusiPubOrderTimeStatisticsModel>();
@@ -87,8 +110,14 @@ public class GroupStatisticsController {
 		model.addObject("bdaysComplite", bdaysComplite);
 		return model;
 	}
-
-	
+	/**
+	 * 订单统计
+	 * @author CaoHeYang
+	 * @date 20160301
+	 * @param req
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("statistics")
 	public ModelAndView statistics(PagedOrderSearchReq req,
 			HttpServletRequest request) {
@@ -98,9 +127,19 @@ public class GroupStatisticsController {
 		model.addObject("viewPath", "groupstatistics/statistics");
 		model.addObject("pubStart", ParseHelper.ToDateString(ParseHelper.plusDate(new Date(), 2, -7), "yyyy-MM-dd"));
 		model.addObject("pubEnd", ParseHelper.ToDateString(new Date(), "yyyy-MM-dd"));
+		String string=groupBusinessRelationService.getGroupBusListString(UserContext.getCurrentContext(request).getBusinessID());
+		model.addObject("BusList",string );
 		return model;
 	}
 	
+	/**
+	 * 订单统计异步
+	 * @author CaoHeYang
+	 * @date  20160301
+	 * @param req
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("statisticsdo")
 	public ModelAndView statisticsdo(PagedOrderSearchReq req,
 			HttpServletRequest request) {

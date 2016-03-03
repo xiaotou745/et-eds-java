@@ -15,13 +15,22 @@
 
 <%	
 String basePath =PropertyUtils.getProperty("java.business.url");
+//门店下拉数据
+String BusList=(String)request.getAttribute("BusList");
 %>
+<!-- 下拉框 -->
+<link type="text/css" rel="stylesheet" href="<%=basePath%>/css/autocomplete.css">
+<script src="<%=basePath%>/js/jquery.autocomplete.js"></script>
+<!-- 下拉框 -->
+
 <div class="top cb">
 
 			<h3 class="cb">
 				门店管理
 				<p class="fr">
 					<input type="text" class="fl" placeholder="请输入门店名称" id="businessName">
+					<input type="hidden" class="fl" placeholder="请输入门店名称" id="businessIdValue">
+					
 					<input type="button" class="fl" value="搜索按钮" id="customerSearch">
 				</p>
 			</h3>
@@ -33,6 +42,33 @@ String basePath =PropertyUtils.getProperty("java.business.url");
 </div>
 <!-- 列表 -->
 <script>
+
+$(function(){
+	
+	// <!-- 下拉框 START-->
+	//1.文本框ID
+	var businessNameDate=<%=BusList%>
+	 $("#businessName").AutoComplete({
+	        data: businessNameDate,
+	        ajaxDataType: "json",
+	        width: 240,
+	        listStyle: "custom",
+	        matchHandler: function() {
+	            return ! 0
+	        },
+	        afterSelectedHandler: function(d) {
+	        	$('#businessName').val(d.label);////1.文本框ID
+	        	$('#businessIdValue').val(d.value);////2.隐藏域文本框ID
+	        	jss.search(1);
+	        },
+	        createItemHandler: function(t, i) {
+	            var s = $("<div " + (i.unlink ? 'class="disabled"': "") + ">" + i.label + (i.unlink ? "[已解绑]": "") + "</div>");
+	            return s
+	        }
+	    })
+	   // <!-- 下拉框 END-->
+
+	})
 var jss = {
 	search : function(currentPage) {
 	var url='<%=basePath%>/businessmanager/listdo';
