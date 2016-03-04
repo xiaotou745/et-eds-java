@@ -4,84 +4,38 @@
 <%	
 String basePath =PropertyUtils.getProperty("java.business.url");
 %>
-<style>  
-.tabHead{
-     padding:0;
-     margin:0;
-      background-color:#CCCCFF;
-      height:50px;
-    }
-    
-    .tabHead li{
-     display:block;
-     float:left;
-     margin:5px;
-     font-size:18px;
-    }
-    
-    .tabHead a{
-        text-decoration:none;
-    }
-    
-    .tabBody{
-
-    }
-    
-    .tabBody .tabPage{
-     width:100%;
-     height:100%;
-    }
-    
-    .tabPageShow{
-        border:1px solid red;
-    }
-    
-    .tabPageHidden{
-    
-    }
-    
-    .tabHeadShow{
-    
-    }
-    
-    .tabHeadHidden{
-    
-    }
+<style type="text/css">
+.tag-list{
+	height:60px;
+	
+	border-bottom:1px solid #c1c7d7; 
+}
+.tag-list1{
+	width:220px;
+	float:left;
+	line-height:40px;
+	text-align:center;
+	font-size: 16px;
+	cursor:pointer;
+	background-color:#e7e9ef;
+	border:1px solid #c1c7d7; 
+}
+.tag-cz-event{
+	background-color:#FAFBFC;
+	color:#006699;
+}
 </style>
 
-<script type="text/javascript">
-function $get(id){
-    return document.getElementById(id);
-}
-
-function setTab(tabHeadPreFix,tabPagePreFix,currentPageIndex,pageCounts){
-    for(var i=1;i<=pageCounts;i++){
- 
-var head=$get(tabHeadPreFix+i);
-var page=$get(tabPagePreFix+i);
-
-if(i==currentPageIndex){
-page.style.visibility = "visible";
-page.style.position="static";
-}else{
-page.style.visibility="hidden";
-page.style.position="absolute";
-}
- }
-}
-</script>
 
 <div class="tabcontainer">
-  <ul class="tabHead">
-   　<li id="head1"><a href="javascript:setTab('head','page',1,4)">充值</a></li>
-  　 <li id="head2"><a href="javascript:setTab('head','page',2,4)">充值明细</a></li>
-  </ul>
+      <div class="top cb tag-list">         
+                <div class="tag-list1 tag-cz-event" data="1">充值</div>
+                <div class="tag-list1" data="2">充值明细</div>
+      </div>
+
   <div class="tabBody">
   　　 <div class="tabPage" id="page1">
    　　　　<div class="recharge" >
-<div class="top cb">
-  <h3 class="cb">充值</h3>
-</div>
 <div class="box3">
 	<div class="cb sBox">
 		<span class="fl">您当前余额</span>
@@ -148,19 +102,19 @@ page.style.position="absolute";
 </div>
    　　</div>
    
-   　　<div class="tabPage" id="page2"  style="position:absolute;visibility:hidden">
+   　　<div class="tabPage" id="page2" style="display:none"  >
    　　　　<div class="top cb">
 
 			<form method="POST" action="#" class="form-horizontal" id="searchForm">
 	        <input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1"/>
-			<div class="function">
-              <input type="button" class="fr" value="搜索" id="btnSearch" style="line-height:30px;">
+			<div class="function">  
 				<span class="intime">
 				<input type="text"  class="dinput" id="operateTimeStart" name="operateTimeStart" />
 				<s onClick="WdatePicker({el:'operateTimeStart',dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'operateTimeEnd\')||\'new Date()\'}'});"></s></span>
 				<span class="inblock">至</span>
 				<span class="intime"><input type="text" class="dinput" id="operateTimeEnd" name="operateTimeEnd">
 				<s onClick="WdatePicker({el:'operateTimeEnd',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'operateTimeStart\')}',maxDate:new Date()});"></s></span>
+				<input type="button" class="fr" value="搜索" id="btnSearch" style="line-height:30px;float:left">
 			</div>
 			</form>
 </div>
@@ -170,7 +124,29 @@ page.style.position="absolute";
 
   </div>
  </div>
- 
+ <script type="text/javascript">
+$(function() {
+    $(".tag-list1").click(function(){
+		var page1=$("#page1");
+		var page2=$("#page2");	
+		page1.show();
+		page2.hide();	
+    	$(".tag-list1").attr("class","tag-list1");
+		$(this).attr("class","tag-list1 tag-cz-event");
+		if( $(this).attr("data") == 1){			
+			page1.show();
+			page2.hide();	
+		}else{		
+	
+			page1.hide();
+			page2.show();
+		
+		} 
+		
+	})
+	
+});
+</script>
 
 
 <script>
