@@ -43,6 +43,7 @@ public class Main {
 				String appSource = Helper.getProperty("appSource");
 				String configRate = Helper.getProperty("configRate");
 				long sleepMillis = Integer.parseInt(configRate) * 1000;
+				log.info("每隔"+(sleepMillis/1000)+"秒发送"+configPath+"post请求");
 				while (true) {
 					try {
 						refreshDo(configPath, appSource);
@@ -65,7 +66,6 @@ public class Main {
 	 */
 	private static void refreshDo(String configPath, String appSource) {
 		try {
-			log.info("发送"+configPath+"post请求");
 			// 发送post请求，获取最新的服务配置信息
 			String param="appSource="+appSource+"&versionCode="+oldVersionCode;
 			String result = HttpUtil.sendPost(configPath, param);
