@@ -23,7 +23,7 @@ GroupOrderstatistics g1=(GroupOrderstatistics)request.getAttribute("g1");
 			<div class="des">菜品金额（元）</div>
 		</li>
 		<li idx="3">
-			<div class="num"><%=g.getCanelCount() %></div>
+			<div class="num"><%=g1.getCanelCount() %></div>
 			<div class="des">拒单数量（单）</div>
 		</li>
 	</ul>
@@ -49,27 +49,28 @@ for(int i=0;i< g.getDays().size();i++){
 	}
 }
 for(int i=0;i< g1.getDays().size();i++){
-	canel.append(g.getDays().get(i).getOrderCount());
-	if(i<g.getDays().size()-1){
+	canel.append(g1.getDays().get(i).getOrderCount());
+	if(i<g1.getDays().size()-1){
 		canel.append(",");
 	}
 }
 %>
+    var subtitleInfo=$('#orderPubStart').val()+"-"+$('#orderPubEnd').val();
         var statistics = [{
-            subtitle: '2016.2.1-2006.2.29',
+            subtitle: subtitleInfo,
             name: '订单数量',
             data: <%=(complite+"]")%>
         }, {
             name: '配送费支出',
-            subtitle: '2016.2.1-2006.2.29',
+            subtitle: subtitleInfo,
             data: <%=(settleMoney+"]")%>
         }, {
             name: '菜品金额',
-            subtitle: '2016.2.1-2006.2.29',
+            subtitle: subtitleInfo,
             data: <%=(amount+"]")%>
         }, {
             name: '拒单数量',
-            subtitle: '2016.2.1-2006.2.29',
+            subtitle: subtitleInfo,
             data:  <%=(canel+"]")%>
         }];
         
