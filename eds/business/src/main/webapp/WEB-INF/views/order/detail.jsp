@@ -145,9 +145,9 @@
 	    		<% }%>
 		<h2>订单明细</h2>
 		<p>
-			总金额：<span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
+			订单金额：<span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getAmount())%></span>
-					 <%if(UserContext.getCurrentContext(request).getBusinessType()==0){ %> 结算支出：<%}else{ %>配送费<%} %><span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
+					 <%if(UserContext.getCurrentContext(request).getBusinessType()==0){ %> 结算支出：<%}else{ %>支出金额<%} %><span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getSettleMoney())%></span> 订单佣金：<span class="red2">￥<%=ParseHelper.ShowString(modelDatas.getOrderModel()
 					.getOrderCommission())%></span> 用户付款状态：<span> <%=ParseHelper.ShowString(OrderIsPay.getEnum(
 					modelDatas.getOrderModel().getIsPay()).desc())%>
