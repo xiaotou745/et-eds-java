@@ -154,4 +154,10 @@ public class BusinessBalanceRecordService implements IBusinessBalanceRecordServi
 		return businessBalanceRecordDao.getGroupBalanceRecord(search);
 	}
 
+	@Override
+	public List<BusinessBalanceRecordModel>  exportgrouplist(PagedBusinessBalanceRecordReq search)
+	{
+		return businessBalanceRecordDao.exportgrouplist(search);
+	}
+	
 }

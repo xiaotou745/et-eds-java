@@ -79,5 +79,5 @@ public interface IBusinessBalanceRecordService {
 	
 	PagedResponse<BusinessBalanceRecordModel> getGroupBalanceRecord(PagedBusinessBalanceRecordReq search);
 	
-	
+	List<BusinessBalanceRecordModel>  exportgrouplist(PagedBusinessBalanceRecordReq search);
 }
