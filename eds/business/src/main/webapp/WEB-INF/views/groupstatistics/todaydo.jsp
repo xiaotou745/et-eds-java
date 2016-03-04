@@ -26,17 +26,17 @@
 		<p><%=b.getUnReceive()%></p>
 		<p>待接单</p>
 	</div>
-	<div class="u1 f2" idx="1">
+	<div class="u1 f2 active" idx="1">
 		<div class="icon-wrap"></div>
 		<p><%=b.getReceived()%></p>
 		<p>取货中</p>
 	</div>
-	<div class="u1 f3" idx="2">
+	<div class="u1 f3 active" idx="2">
 		<div class="icon-wrap"></div>
 		<p><%=b.getPickUp()%></p>
 		<p>配送中</p>
 	</div>
-	<div class="u1 f4" idx="3">
+	<div class="u1 f4 active" idx="3">
 		<div class="icon-wrap"></div>
 		<p><%=b.getFinish()%></p>
 		<p>已完成</p>
@@ -142,6 +142,9 @@
 		statistics[2].color = "#e88900", statistics[2].id = 2;
 		statistics[3].color = "#d9534f", statistics[3].id = 3;
 		var s = {
+			credits:{
+			 enabled: false
+			},
 			title : {
 				text : "今日订单统计",
 				x : -20
@@ -158,6 +161,11 @@
 				title : {
 					text : "订单量"
 				},
+				  min:0,
+		          gridLineWidth: 1,
+		          startOnTick:false,
+		          maxTickInterval:10,
+		          minTickInterval:1, //刻度上允许显示的最小值
 				plotLines : [ {
 					value : 0,
 					width : 1,
@@ -168,10 +176,11 @@
 				valueSuffix : "单"
 			},
 			legend : {
-				layout : "vertical",
-				align : "right",
-				verticalAlign : "middle",
-				borderWidth : 0
+				enabled:false
+// 				layout : "vertical",
+// 				align : "right",
+// 				verticalAlign : "middle",
+// 				borderWidth : 0
 			},
 			series : [ statistics[0],statistics[1],statistics[2],statistics[3] ]
 		};
@@ -184,6 +193,11 @@
 						if (!($(".filters .active").size() > 1))
 							return;
 						s.removeClass("active"), t(s.attr("idx"))
-						} else s.addClass("active"), $(".chart").highcharts().addSeries(statistics[$(this).attr("idx") - 0]); i() })
+					}
+					else {
+						s.addClass("active"), $(".chart").highcharts().addSeries(statistics[$(this).attr("idx") - 0]);
+						i();
+						}
+					});
 	});
 </script>
