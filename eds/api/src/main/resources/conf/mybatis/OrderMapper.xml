@@ -2189,8 +2189,8 @@ set @balancePrice=0.00;
 set @todayPay=0.00;
 set @todayDishTotal=0.00;
 select @balancePrice=ISNULL(Amount,0) from dbo.GroupBusiness (nolock) where Id=#{groupId}; -- 集团当前余额
-select @todayPay=-ISNULL(SUM(a.Amount),0),@todayDishTotal=ISNULL(SUM(b.Amount),0) from dbo.BusinessBalanceRecord (nolock) a
-join dbo.[order] (nolock) b on  a.WithwardId=b.Id and a.RecordType=1 and a.Status=1   and
+select @todayPay=-ISNULL(SUM(a.GroupAmount),0),@todayDishTotal=ISNULL(SUM(b.Amount),0) from dbo.BusinessBalanceRecord (nolock) a
+join dbo.[order] (nolock) b on  a.WithwardId=b.Id and  a.Status=1   and
 a.GroupId= #{groupId} and CONVERT(varchar(100), a.OperateTime, 23)=CONVERT(varchar(100), GETDATE(), 23)
 select @balancePrice as balancePrice,@todayPay as todayPay,@todayDishTotal as todayDishTotal
 	</select>
