@@ -2097,7 +2097,7 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 			and o.PubDate>= ''${orderPubStart} 00:00:00''
 		</if>
 		<if test="orderPubEnd != null and orderPubEnd!=''">
-		AND DATEADD(d, 1, ''${orderPubEnd}'')>o.PubDate
+		AND ''${orderPubEnd}''>o.PubDate
 		</if>
 		<if test="authorityCityNameList != null">
 			and b.city in
