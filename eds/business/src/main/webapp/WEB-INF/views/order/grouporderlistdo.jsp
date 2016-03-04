@@ -33,12 +33,13 @@
 			if (data == null) {
 				data = new ArrayList<OrderListModel>();
 			}
-			String customerName="";
-			String customerPhone="";
-			String customerAddress="";
-			String clienterName="";
-			String clienterPhone="";
+			
 			for (int i = 0; i < data.size(); i++) {
+				String customerName="";
+				String customerPhone="";
+				String customerAddress="";
+				String clienterName="";
+				String clienterPhone="";
 				if(data.get(i).getReceviceName()!=null&&!data.get(i).getReceviceName().isEmpty()){
 					customerName="姓名:"+data.get(i).getReceviceName();
 				}

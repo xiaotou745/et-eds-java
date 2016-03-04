@@ -50,7 +50,7 @@
 			<td><%=ParseHelper.ToDateString(data.get(i).getOperatetime())%></td>
 				
 			<td>
-			<a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getRelationno()%>">详情</a>
+			<a class="blue2" href="<%=basePath%>/order/detail?orderno=<%=data.get(i).getRelationno()%>">详情</a>		
 			</td>
 		</tr>
 		<%
