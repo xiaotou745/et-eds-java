@@ -84,7 +84,7 @@
 	</div>
 </div>
 <div class="projects">
-	<input type="button" value="发布任务" class="fabu">
+<!-- 	<input type="button" value="发布任务" class="fabu"> -->
 </div>
 <!-- 确认发布任务弹层 -->
 <div class="popup popup1" style="display: none;">

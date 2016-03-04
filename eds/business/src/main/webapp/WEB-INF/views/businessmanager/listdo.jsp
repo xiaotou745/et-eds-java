@@ -1,3 +1,4 @@
+<%@page import="com.edaisong.core.util.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@page import="java.sql.Date"%>
@@ -38,7 +39,7 @@ if (data == null) {
 		<tr>
 			<td><%=ParseHelper.ShowString(data.get(i).getName())%></td>
 			<td><%=data.get(i).getPhoneNo()%></td>
-			<td><%=data.get(i).getPhoneNo2()%>,<%=data.get(i).getLandline()%></td>
+			<td><%=data.get(i).getPhoneNo2()%><%=StringUtils.isEmpty(data.get(i).getLandline())?"":(","+data.get(i).getLandline())%></td>
 			<td><%=data.get(i).getAddress()%></td>
 			<td><%=data.get(i).getBalancePriceString()%></td>
 			<td><%=data.get(i).getUseGroupMoneyString()%></td>

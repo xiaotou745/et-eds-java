@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -14,8 +15,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SystemUtils {
 	private volatile static   List<String> localIpInfo;
+	private final  static Logger log = LoggerFactory.getLogger("com.eds.common.SystemUtils");
 	/**
 	 * 获取本机的内网ip，本机名，外网ip
 	 * @date 20151022
@@ -60,6 +65,7 @@ public class SystemUtils {
             }  
         } catch (Exception e) {  
             e.printStackTrace();  
+            log.info("获取本机ip时异常:"+e.getMessage());
         } 
         if (localip==null) {
         	localip="";
@@ -106,6 +112,8 @@ public class SystemUtils {
 		try {
 			Properties props = new Properties();
 			// Setup mail server
+		    //否则发送邮件时，可能会报错： 501 Syntax: HELO hostname
+		    props.put("mail.smtp.localhost", "localHostAdress"); 
 			props.put("mail.smtp.host", emailHost);// 设置smtp主机
 			props.put("mail.smtp.auth", "true");// 使用smtp身份验证
 			Session session = Session.getDefaultInstance(props, null);
@@ -123,6 +131,7 @@ public class SystemUtils {
 			transport.sendMessage(message, message.getAllRecipients());
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.info(title+"发送邮件时异常:"+e.getMessage());
 		}
 
 	}

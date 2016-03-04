@@ -123,7 +123,7 @@
 								if($("#userType").val()=="0"){
 								   window.location.href = "<%=basePath %>/index";
 								}else{
-									window.location.href = "<%=basePath %>/group/recharge";
+									window.location.href = "<%=basePath %>/groupstatistics/today";
 								}
 							}else{
 								$("#error").text(data.message);
