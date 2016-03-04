@@ -194,8 +194,7 @@ $("#btnExport").click(function() {
 	    var operateTimeEnd = $("#operateTimeEnd").val();	
         var url = "<%=basePath%>/businessbalancerecord/exportgrouplist?groupid=" + groupid 
         		+  "&recordtype=" + recordtype +"&timeType=" + timeType + "&operateTimeStart=" + operateTimeStart
-        		+ "&operateTimeEnd=" + operateTimeEnd;
-        alert(url);
+        		+ "&operateTimeEnd=" + operateTimeEnd;     
         window.location.href = url;
         return true;
 });
