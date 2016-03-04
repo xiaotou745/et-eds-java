@@ -112,6 +112,8 @@ public class SystemUtils {
 		try {
 			Properties props = new Properties();
 			// Setup mail server
+		    //否则发送邮件时，可能会报错： 501 Syntax: HELO hostname
+		    props.put("mail.smtp.localhost", "localHostAdress"); 
 			props.put("mail.smtp.host", emailHost);// 设置smtp主机
 			props.put("mail.smtp.auth", "true");// 使用smtp身份验证
 			Session session = Session.getDefaultInstance(props, null);
