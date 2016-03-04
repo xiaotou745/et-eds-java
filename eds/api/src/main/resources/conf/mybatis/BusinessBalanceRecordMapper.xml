@@ -33,7 +33,10 @@
 	
 	<!--集团中心商户流水页面  -->
 		<sql id="getGroupBalanceRecordColums">
-		bbr.RecordType,bbr.RelationNo,bbr.Amount,bbr.GroupId,bbr.Balance,  bbr.OperateTime, b.Name as BusinessName
+		bbr.RecordType,bbr.RelationNo,bbr.GroupId,  bbr.OperateTime, 
+		CASE WHEN bbr.GroupId > 0 THEN bbr.GroupAmount	ELSE bbr.Amount END  AS Amount,
+	CASE WHEN bbr.GroupId > 0 THEN bbr.GroupAfterBalance	ELSE bbr.Balance END  AS Balance,
+		b.Name as BusinessName
 	</sql>
 		<sql id="getGroupBalanceRecordFrom">
 		dbo.BusinessBalanceRecord (nolock) bbr
@@ -98,8 +101,9 @@
 		WHEN 8 THEN '订单菜品费'
 		WHEN 13 THEN '返还配送费'
 		ELSE '' END as StrRecordtype,
-        bbr.RelationNo,bbr.Amount,bbr.GroupId,bbr.Balance,  bbr.OperateTime,
-        
+        bbr.RelationNo,bbr.GroupId,  bbr.OperateTime,
+        CASE WHEN bbr.GroupId > 0 THEN bbr.GroupAmount	ELSE bbr.Amount END  AS Amount,
+	    CASE WHEN bbr.GroupId > 0 THEN bbr.GroupAfterBalance	ELSE bbr.Balance END  AS Balance,
         case when  bbr.GroupId=0 or bbr.GroupId is null then '门店' 
         else  '集团'  end  as     strForm,
         case when  bbr.Status=1 then '交易成功' 

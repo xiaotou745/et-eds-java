@@ -133,9 +133,7 @@ public class BusinessBalanceRecordController {
 		}
 		
 		searchWebReq.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());
-		//PagedResponse<BusinessBalanceRecordModel> resp = businessBalanceRecordService.getGroupBalanceRecord(searchWebReq);
-
-	    List<BusinessBalanceRecordModel> records=	 businessBalanceRecordService.exportgrouplist(searchWebReq) ;
+		List<BusinessBalanceRecordModel> records=	 businessBalanceRecordService.exportgrouplist(searchWebReq) ;
 	    if(records.size() > 0){
 				String fileName = "e代送-%s-集团交易流水数据";
 				fileName = String.format(fileName, searchWebReq.getOperateTimeStart()+ "到" );

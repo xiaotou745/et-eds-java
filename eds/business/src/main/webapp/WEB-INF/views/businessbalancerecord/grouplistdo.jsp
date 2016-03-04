@@ -34,7 +34,7 @@
 			String jyf="";
 			for (int i = 0; i < data.size(); i++) {		
 				int groupid=data.get(i).getGroupid();
-				if(groupid==1)
+				if(groupid>0)
 					jyf="集团";
 				else
 					jyf="门店";
