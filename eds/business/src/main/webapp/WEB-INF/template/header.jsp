@@ -9,7 +9,11 @@
 %>
 <div class="header">
 	<a class="logo fl" href="<%=basePath%>/index"><img src="<%=basePath %>/images/logo.png" width="74" height="25" alt=""></a>
-	<b class="fl">商家中心</b>
+	<b class="fl"><%if(userContext!=null&&userContext.getBusinessType()==0){%>
+		商家中心
+		<%}else{%>
+		集团管理中心
+	<%}%></b>
 	<p class="fr">
 		<a class="fr" href="<%=basePath %>/account/logoff">退出</a>
 		<em class="fr">|</em>

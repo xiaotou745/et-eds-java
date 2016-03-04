@@ -173,7 +173,7 @@
 				verticalAlign : "middle",
 				borderWidth : 0
 			},
-			series : [ statistics[0] ]
+			series : [ statistics[0],statistics[1],statistics[2],statistics[3] ]
 		};
 		$(".chart").highcharts(s),
 		$(".u1").click(

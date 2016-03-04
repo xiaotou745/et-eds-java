@@ -17,7 +17,7 @@
 <table class="tbstyle222" border="0" style="font-size: 14px; font-weight: bold; line-height: 300%; width: 900px">
 	<tr class="trclass">
 		<td>集团名称：<%=ParseHelper.ToString(detail.getGroupbusiname(), "")%></td>
-		<td>联系电话：<%=ParseHelper.ToString(detail.getLoginname(), "")%></td>
+		<td>登录账号：<%=ParseHelper.ToString(detail.getLoginname(), "")%></td>
 		<td><a href="<%=basePath%>/groupbusiness/balancerecordlist?groupBusinessId=<%=detail.getId() %>">集团余额：<%=detail.getAmount() %></a></td>
 		<td><a href="<%=basePath%>/groupbusiness/businessbindloglist?groupBusinessId=<%=detail.getId() %>">绑定记录查询</a></td>
 	</tr>
