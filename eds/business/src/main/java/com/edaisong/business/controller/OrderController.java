@@ -299,7 +299,7 @@ public class OrderController {
 	    List<OrderListModel> records=	 orderService.exportGroupOrders(searchWebReq) ;
 	    if(records.size() > 0){
 				String fileName = "e代送-%s-集团外卖订单数据";
-				fileName = String.format(fileName, searchWebReq.getOrderPubStart()+ "到" + searchWebReq.getOrderPubEnd());
+				fileName = String.format(fileName, searchWebReq.getOrderPubStart()+ "到" + ParseHelper.ToDateString(ParseHelper.plusDate(ParseHelper.ToDate(searchWebReq.getOrderPubEnd()), 2, -1),"yyyy-MM-dd"));
 				LinkedHashMap<String, String> columnTitiles = new LinkedHashMap<String, String>();
 				columnTitiles.put("订单号", "orderNo");
 				columnTitiles.put("发单门店", "businessName");
@@ -313,7 +313,7 @@ public class OrderController {
 				columnTitiles.put("骑士信息", "clienterName");
 				columnTitiles.put("配送费", "settleMoney");
 				columnTitiles.put("配送费支出方", "payBy");
-				ExcelUtils.export2Excel(fileName, "闪送订单记录", columnTitiles,records, request, response);
+				ExcelUtils.export2Excel(fileName, "外卖订单记录", columnTitiles,records, request, response);
 				return;
 			}else {
 				String basePath = PropertyUtils.getProperty("java.business.url");
