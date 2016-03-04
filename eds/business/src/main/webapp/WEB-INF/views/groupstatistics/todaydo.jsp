@@ -164,7 +164,7 @@
 				  min:0,
 		          gridLineWidth: 1,
 		          startOnTick:false,
-		          maxTickInterval:10,
+// 		          maxTickInterval:10,
 		          minTickInterval:1, //刻度上允许显示的最小值
 				plotLines : [ {
 					value : 0,

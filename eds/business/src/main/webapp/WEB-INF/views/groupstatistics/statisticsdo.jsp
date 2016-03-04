@@ -55,7 +55,7 @@ for(int i=0;i< g1.getDays().size();i++){
 	}
 }
 %>
-    var subtitleInfo=$('#orderPubStart').val()+"-"+$('#orderPubEnd').val();
+    var subtitleInfo=$('#orderPubStart').val()+"至"+$('#orderPubEnd').val();
         var statistics = [{
             subtitle: subtitleInfo,
             name: '订单数量',
@@ -77,6 +77,9 @@ for(int i=0;i< g1.getDays().size();i++){
         $(function() {
         	
         	var t = {
+        			credits:{
+        				 enabled: false
+        				},
         		title : {
         			text : "今日订单统计"
         		},
@@ -103,10 +106,11 @@ for(int i=0;i< g1.getDays().size();i++){
         			valueSuffix : ""
         		},
         		legend : {
-        			layout : "vertical",
-        			align : "right",
-        			verticalAlign : "middle",
-        			borderWidth : 0
+        			enabled:false
+//         			layout : "vertical",
+//         			align : "right",
+//         			verticalAlign : "middle",
+//         			borderWidth : 0
         		},
         		series : [ statistics[0] ]
         	};
@@ -115,25 +119,50 @@ for(int i=0;i< g1.getDays().size();i++){
         		if (!e.hasClass("active")) {
         			$(".menu .active").removeClass("active"), e.addClass("active");
         			var i = e.attr("idx") - 0;
-        			$(".chart").highcharts($.extend({}, t, {
-        				title : {
-        					text : statistics[i].name
-        				},
-        				subtitle : {
-        					text : statistics[i].subtitle
-        				},
-        				series : [ {
-        					name : statistics[i].name,
-        					data : statistics[i].data
-        				} ],
-        				yAxis : {
-        					title : {
-        						text : statistics[i].name
-        					}
-        				}
-        			}))
+
+        			if(i==0||i==3){
+        				$(".chart").highcharts($.extend({}, t, {
+            				title : {
+            					text : statistics[i].name
+            				},
+            				subtitle : {
+            					text : statistics[i].subtitle
+            				},
+            				series : [ {
+            					name : statistics[i].name,
+            					data : statistics[i].data
+            				} ],
+            				yAxis : {
+            					title : {
+            						text : statistics[i].name
+            					},
+          	 		          minTickInterval:1,
+            				  min:0
+            				}
+            			}));
+        			}else{
+        				$(".chart").highcharts($.extend({}, t, {
+            				title : {
+            					text : statistics[i].name
+            				},
+            				subtitle : {
+            					text : statistics[i].subtitle
+            				},
+            				series : [ {
+            					name : statistics[i].name,
+            					data : statistics[i].data
+            				} ],
+            				yAxis : {
+            					title : {
+            						text : statistics[i].name
+            					}
+            				}
+            			}));
+        			}
+        			
         		}
-        	}), $(".chart").highcharts($.extend({}, t, {
+        	});
+        	$(".chart").highcharts($.extend({}, t, {
         		title : {
         			text : statistics[0].name
         		},
@@ -147,7 +176,9 @@ for(int i=0;i< g1.getDays().size();i++){
         		yAxis : {
         			title : {
         				text : statistics[0].name
-        			}
+        			},
+         			minTickInterval:1,
+    				min:0
         		}
         	}))
         });
