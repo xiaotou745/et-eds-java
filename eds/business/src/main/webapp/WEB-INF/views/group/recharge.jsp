@@ -93,7 +93,7 @@ page.style.position="absolute";
 	</div>
 </div>
 <div class="box3">
-		<form name="alipayment" id="alipayment" action="alipayapi" method="post">
+		<form name="alipayment" id="alipayment" action="alipayapi" method="post" target="_blank">
 			<div class="cb sBox" id="default">
 				<span class="fl fz14">充值金额</span> <label class="fl"> <input
 					class="fl" type="radio" name="WIDtotal_fee" value="500" checked="checked"> 500元
