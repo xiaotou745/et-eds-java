@@ -70,11 +70,11 @@ String BusList=(String)request.getAttribute("BusList");
 				<span class="inblock">至</span>
 				<span class="intime"><input type="text" class="dinput" disabled="disabled" id="orderPubEnd" name="orderPubEnd">
 				<s onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'orderPubStart\')}',maxDate:new Date()});"></s></span>
-
-		    	<span class="fl">订单号</span>
-				<input type="text" class="inputcss" placeholder="订单号" id="orderId" name="orderId">
+		    	
 				 <br/>
 				<div style="clear:both"></div>
+				<span class="fl">订单号</span>
+				<input type="text" class="inputcss" placeholder="订单号" id="orderId" name="orderId">
 			    <span class="fl">门&nbsp;&nbsp;&nbsp;&nbsp;店</span>
 				<input type="text" class="inputcss"  id="businessName" style="margin-right:10px;" />
 				<input type="hidden"  id="businessID" name="businessID"/>

@@ -69,6 +69,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 					    request.getServletPath().equals("/groupstatistics/statistics")||
 					    request.getServletPath().equals("/groupstatistics/exportstatistics")||
 					    request.getServletPath().equals("/businessbalancerecord/grouplist")||
+					    request.getServletPath().equals("/businessbalancerecord/exportgrouplist")||
 					    request.getServletPath().equals("/groupstatistics/todaydo")
 					    ) {
 						return true;

@@ -27,5 +27,31 @@ public class BusinessBalanceRecordModel extends BusinessBalanceRecord{
 	public void setBusinessName(String businessName) {
 		BusinessName = businessName;
 	}
+	
+	 public String getStrRecordtype() {
+		return strRecordtype;
+	}
+	public void setStrRecordtype(String strRecordtype) {
+		this.strRecordtype = strRecordtype;
+	}
+	public String getStrForm() {
+		return strForm;
+	}
+	public void setStrForm(String strForm) {
+		this.strForm = strForm;
+	}
+	public String getStrStatus() {
+		return strStatus;
+	}
+	public void setStrStatus(String strStatus) {
+		this.strStatus = strStatus;
+	}
+
+	private String strRecordtype;
+	 
+	 private String strForm;
+	 
+	 private String strStatus;
+	 
     
 }

@@ -99,4 +99,7 @@ public interface IBusinessBalanceRecordDao {
 	AccountBillDayResultModel getAccountInMoneyAndOutMoney(PagedAccountBillDayReq par);
 	
 	PagedResponse<BusinessBalanceRecordModel> getGroupBalanceRecord(PagedBusinessBalanceRecordReq search);
+	
+	List<BusinessBalanceRecordModel>  exportgrouplist(PagedBusinessBalanceRecordReq search);
+	
 }
