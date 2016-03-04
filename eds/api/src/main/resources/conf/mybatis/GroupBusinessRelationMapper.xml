@@ -293,6 +293,7 @@ SELECT  b.Name ,
 FROM    dbo.GroupBusinessRelation AS gbr ( NOLOCK )
         JOIN dbo.business AS b ( NOLOCK ) ON b.id = gbr.BusinessId
 WHERE   gbr.GroupId = #{groupid,jdbcType=INTEGER}
+ORDER BY gbr.IsEnable DESC
     
   </select>
 </mapper>
