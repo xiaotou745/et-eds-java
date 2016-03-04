@@ -2248,7 +2248,7 @@ select @balancePrice as balancePrice,@todayPay as todayPay,@todayDishTotal as to
 from    dbo.[order] (nolock) o
 where   1 = 1
         and PubDate >= '${orderPubStart}'
-        and PubDate <![CDATA[<]]>  = '${orderPubEnd}'
+        and DATEADD(d, 1, '${orderPubEnd}')>o.PubDate
         and ( Status = 3
               or Status = 1
             )
@@ -2267,8 +2267,7 @@ where   1 = 1
 		with  a as ( select   CONVERT(VARCHAR(100), DATEADD(dd, number, '${orderPubStart}'), 23) as monthDate
                from     master..spt_values
                where    type = 'P'
-                        and DATEADD(dd, number, '${orderPubStart}')  <![CDATA[<]]> DATEADD(mm, 0,
-                                                              '${orderPubEnd}')
+                        and DATEADD(d, 1, '${orderPubEnd}')>DATEADD(dd, number, '${orderPubStart}')  
              ),
         b as ( select   COUNT(1) as orderCount ,
                         CONVERT(VARCHAR(100), PubDate, 23) as pubDateStr,
@@ -2277,7 +2276,7 @@ where   1 = 1
                from     dbo.[order] (nolock) o
                where    1 = 1
                         and PubDate >= '${orderPubStart}'
-                        and PubDate <![CDATA[<]]> = '${orderPubEnd}'
+                         and DATEADD(d, 1, '${orderPubEnd}')>o.PubDate
                         and Status = ${orderStatus}
                         and GroupBusinessId=${groupBusinessId}
                         and (o.OrderFrom=0 or o.OrderFrom=99)
@@ -2329,7 +2328,7 @@ from    dbo.[order] (nolock) o
                                                       and bb.RecordType = 1
 where   1 = 1
         and PubDate >= '${orderPubStart}'
-        and PubDate <![CDATA[<]]> = '${orderPubEnd}'
+         and DATEADD(d, 1, '${orderPubEnd}')>o.PubDate
         and ( o.Status = 3
               or o.Status = 1
             )
