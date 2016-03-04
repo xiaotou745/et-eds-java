@@ -37,7 +37,7 @@
 				if(groupid==1)
 					jyf="集团";
 				else
-					jyf=data.get(i).getBusinessName();
+					jyf="门店";
 		%>
 		<tr>			     
 		

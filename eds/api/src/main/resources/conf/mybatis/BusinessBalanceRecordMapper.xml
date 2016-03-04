@@ -31,6 +31,7 @@
 		where Id = #{id,jdbcType=BIGINT}
 	</select>
 	
+	<!--集团中心商户流水页面  -->
 		<sql id="getGroupBalanceRecordColums">
 		bbr.RecordType,bbr.RelationNo,bbr.Amount,bbr.GroupId,bbr.Balance,  bbr.OperateTime, b.Name as BusinessName
 	</sql>
@@ -50,11 +51,22 @@
 		<if test="operateTimeStart != null and operateTimeStart!=''">
 			and bbr.OperateTime>= ''${operateTimeStart} 00:00:00''
 		</if>
+		
+		<if test="businessName != null and businessName != ''">
+			and b.Name=''${businessName}''
+		</if>
+		<if test="businessid != null and businessid  != ''">
+			and b.id=''${businessid}''
+		</if>
+		<if test="orderNo != null and orderNo!= ''">
+			and bbr.RelationNo=''${orderNo}''
+		</if>		
+		
 		<if test="operateTimeEnd != null and operateTimeEnd!=''">
 		AND DATEADD(d, 1, ''${operateTimeEnd}'')>bbr.OperateTime
 		</if>
 	</sql>
-	<!--集团中心商户流水页面  -->
+	
 	<select id="getGroupBalanceRecord" resultType="com.edaisong.entity.domain.BusinessBalanceRecordModel"
 		parameterType="com.edaisong.entity.req.PagedBusinessBalanceRecordReq"
 		statementType="CALLABLE">
@@ -75,6 +87,56 @@
 		#{totalRecord,mode=OUT,jdbcType=INTEGER},
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
+	</select>
+	
+	 <!--集团中心订单列表页面  导出 add by 胡灵波 2016年3月4日09:33:07 -->
+	<select id="exportgrouplist" resultType="com.edaisong.entity.domain.BusinessBalanceRecordModel"
+	parameterType="com.edaisong.entity.req.PagedBusinessBalanceRecordReq">
+	select 
+        	 CASE bbr.RecordType WHEN 1 THEN '发布订单'
+		WHEN 2 THEN '取消订单'
+		WHEN 8 THEN '订单菜品费'
+		WHEN 13 THEN '返还配送费'
+		ELSE '' END as StrRecordtype,
+        bbr.RelationNo,bbr.Amount,bbr.GroupId,bbr.Balance,  bbr.OperateTime,
+        
+        case when  bbr.GroupId=0 or bbr.GroupId is null then '门店' 
+        else  '集团'  end  as     strForm,
+        case when  bbr.Status=1 then '交易成功' 
+        when  bbr.Status=2 then '交易中' 
+         end  as     strStatus,       
+        b.Name as BusinessName
+	  from  
+       dbo.BusinessBalanceRecord (nolock) bbr
+		LEFT JOIN business (nolock) b ON bbr.BusinessId=b.Id
+		LEFT JOIN GroupBusinessRelation( NOLOCK) gbr ON b.Id=gbr.BusinessId		
+	 where  
+	 		1=1 and bbr.recordtype in(1,2,8,13)  and gbr.GroupId =${groupBusinessId} 
+		<if test="groupid != null and groupid>-1">
+			and bbr.groupid=${groupid}
+		</if>
+		<if test="recordtype != null and recordtype>-1">
+			and bbr.recordtype=${recordtype}
+		</if>
+		<if test="operateTimeStart != null and operateTimeStart!=''">
+			and bbr.OperateTime>= '${operateTimeStart} 00:00:00'
+		</if>
+		
+		<if test="businessName != null and businessName != ''">
+			and b.Name='${businessName}'			
+		</if>
+		<if test="businessid != null and businessid  != ''">
+			and b.id='${businessid}'
+		</if>
+		<if test="orderNo != null and orderNo!= ''">
+			and bbr.RelationNo='${orderNo}'
+		</if>		
+		
+		<if test="operateTimeEnd != null and operateTimeEnd!=''">
+		AND DATEADD(d, 1, '${operateTimeEnd}')>bbr.OperateTime
+		</if>
+		
+		 order by bbr.Id DESC
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from BusinessBalanceRecord

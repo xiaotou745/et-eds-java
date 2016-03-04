@@ -44,6 +44,28 @@ public class PagedBusinessBalanceRecordReq extends PagedRequestBase {
     
     private Integer groupBusinessId;
     
+	private String businessName ; 
+    
+    private String orderNo;
+    
+    public String getBusinessName() {
+		return businessName;
+	}
+
+	public void setBusinessName(String businessName) {
+		this.businessName = businessName;
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+
+    
     public Integer getGroupBusinessId() {
 		return groupBusinessId;
 	}

@@ -173,5 +173,13 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 				"IBusinessBalanceRecordDao.getGroupBalanceRecord", search);
 		return result;
 	}
-
+	
+	@Override
+	public List<BusinessBalanceRecordModel>  exportgrouplist(PagedBusinessBalanceRecordReq search)
+	{
+		return getReadOnlySqlSessionUtil().selectList(
+				"IBusinessBalanceRecordDao.exportgrouplist", search);
+	}		
+	
+	
 }
