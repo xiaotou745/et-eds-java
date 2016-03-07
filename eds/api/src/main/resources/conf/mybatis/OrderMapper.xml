@@ -2189,10 +2189,26 @@ set @balancePrice=0.00;
 set @todayPay=0.00;
 set @todayDishTotal=0.00;
 select @balancePrice=ISNULL(Amount,0) from dbo.GroupBusiness (nolock) where Id=#{groupId}; -- 集团当前余额
-select @todayPay=-ISNULL(SUM(a.GroupAmount),0),@todayDishTotal=ISNULL(SUM(b.Amount),0) from dbo.BusinessBalanceRecord (nolock) a
-join dbo.[order] (nolock) b on  a.WithwardId=b.Id and  a.Status=1   and
-a.GroupId= #{groupId} and CONVERT(varchar(100), a.OperateTime, 23)=CONVERT(varchar(100), GETDATE(), 23)
-select @balancePrice as balancePrice,@todayPay as todayPay,@todayDishTotal as todayDishTotal
+
+select   @todayPay=ISNULL(SUM(CASE when a.MealsSettleMode = 1
+                      and a.IsPay = 0 then a.SettleMoney - a.Amount
+                 when a.MealsSettleMode = 1
+                      and a.IsPay = 1 then a.SettleMoney
+                 else 0
+            end),0) ,@todayDishTotal=ISNULL(SUM(case  when a.MealsSettleMode = 1      --0已付款 1  未付款
+                      and a.IsPay = 1 then a.Amount else 0 end ),0)
+from    dbo.[order] (nolock) a
+        join BusinessBalanceRecord (nolock) b on a.Id = b.WithwardId
+                                                 and b.RecordType = 1
+                                                 and b.Status = 1
+where   CONVERT(VARCHAR(100), a.PubDate, 23) = CONVERT(VARCHAR(100), GETDATE(), 23)
+        and a.Status != 3
+        and a.GroupBusinessId = #{groupId};
+        
+select  @balancePrice as balancePrice ,
+@todayPay as todayPay ,
+@todayDishTotal as todayDishTotal 
+
 	</select>
   <!-- 集团首页 订单数量 统计  caoheyang 20160223-->
   <select id="groupTodayOrderStatistics" resultMap="businessOrderSummaryResultMap"
