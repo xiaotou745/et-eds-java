@@ -2192,11 +2192,9 @@ select @balancePrice=ISNULL(Amount,0) from dbo.GroupBusiness (nolock) where Id=#
 
 select   @todayPay=ISNULL(SUM(CASE when a.MealsSettleMode = 1
                       and a.IsPay = 0 then a.SettleMoney - a.Amount
-                 when a.MealsSettleMode = 1
-                      and a.IsPay = 1 then a.SettleMoney
-                 else 0
+                 else a.SettleMoney
             end),0) ,@todayDishTotal=ISNULL(SUM(case  when a.MealsSettleMode = 1      --0已付款 1  未付款
-                      and a.IsPay = 1 then a.Amount else 0 end ),0)
+                      and a.IsPay = 0 then a.Amount else 0 end ),0)
 from    dbo.[order] (nolock) a
         join BusinessBalanceRecord (nolock) b on a.Id = b.WithwardId
                                                  and b.RecordType = 1
