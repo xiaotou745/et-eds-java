@@ -178,10 +178,10 @@ $("input[type='radio']").click(function() {
 		$("#operateTimeStart").attr("disabled","disabled");
 		$("#operateTimeEnd").attr("disabled","disabled");
 		$("#operateTimeStart").val("");
-		$("#orderPubEnd").val("");
+		$("#operateTimeEnd").val("");
 	}else{
 		$("#operateTimeStart").removeAttr("disabled");
-		$("#orderPubEnd").removeAttr("disabled");
+		$("#operateTimeEnd").removeAttr("disabled");
 	}
 });
 
