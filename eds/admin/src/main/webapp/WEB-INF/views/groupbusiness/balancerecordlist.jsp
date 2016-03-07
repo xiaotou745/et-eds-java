@@ -15,7 +15,7 @@
 	style="font-size: 14px; font-weight: bold; line-height: 300%; width: 900px">
 	<tr class="trclass">
 		<td>集团名称：<%=ParseHelper.ShowString(detail.getGroupbusiname())%></td>
-		<td>联系电话：<%=ParseHelper.ShowString(detail.getLoginname())%></td>
+		<td>登录账号：<%=ParseHelper.ShowString(detail.getLoginname())%></td>
 		<td>当前余额：￥<%=detail.getAmount()%></td>
 	</tr>  
 </table>
