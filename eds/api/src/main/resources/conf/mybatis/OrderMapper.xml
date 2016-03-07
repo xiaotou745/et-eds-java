@@ -2193,7 +2193,7 @@ select @balancePrice=ISNULL(Amount,0) from dbo.GroupBusiness (nolock) where Id=#
 select   @todayPay=ISNULL(SUM(CASE when a.MealsSettleMode = 1
                       and a.IsPay = 0 then a.SettleMoney - a.Amount
                  else a.SettleMoney
-            end),0) ,@todayDishTotal=ISNULL(SUM(case  when a.MealsSettleMode = 1      --0已付款 1  未付款
+            end),0) ,@todayDishTotal=ISNULL(SUM(case  when a.MealsSettleMode = 1  
                       and a.IsPay = 0 then a.Amount else 0 end ),0)
 from    dbo.[order] (nolock) a
         join BusinessBalanceRecord (nolock) b on a.Id = b.WithwardId
@@ -2252,11 +2252,17 @@ select  @balancePrice as balancePrice ,
               else 0
             end),0) as canelCount ,
         ISNULL(SUM(CASE Status
-              when 1 then SettleMoney
+              when 1 then (CASE when o.MealsSettleMode = 1
+                                      and o.IsPay = 0 then o.SettleMoney - o.Amount
+                                 else o.SettleMoney
+                            end)
               else 0
             end),0) totalSettleMoney,
         ISNULL(SUM(CASE Status
-              when 1 then Amount
+              when 1 then (CASE when o.MealsSettleMode = 1 
+                                      and o.IsPay = 0 then o.Amount
+                                 else 0
+                            end)
               else 0
             end),0) as totalAmount
 from    dbo.[order] (nolock) o
@@ -2285,8 +2291,14 @@ where   1 = 1
              ),
         b as ( select   COUNT(1) as orderCount ,
                         CONVERT(VARCHAR(100), PubDate, 23) as pubDateStr,
-                        SUM(SettleMoney) as SettleMoney,
-                        SUM(Amount) as amount
+                        SUM(CASE when MealsSettleMode = 1
+                                      and IsPay = 0 then SettleMoney - Amount
+                                 else SettleMoney
+                            end) as SettleMoney,
+                        SUM(CASE when MealsSettleMode = 1     
+                                      and IsPay = 0 then Amount
+                                 else 0
+                            end) as amount
                from     dbo.[order] (nolock) o
                where    1 = 1
                         and PubDate >= '${orderPubStart}'
@@ -2321,11 +2333,17 @@ select  CONVERT(VARCHAR(100), o.PubDate, 23) monthDate ,
                      else 0
                    end), 0) as canelCount ,
         ISNULL(SUM(CASE o.Status
-                     when 1 then SettleMoney
+                     when 1 then (CASE when o.MealsSettleMode = 1
+                                      and o.IsPay = 0 then o.SettleMoney - o.Amount
+                                 else o.SettleMoney
+                            end)
                      else 0
                    end), 0) totalSettleMoney ,
         ISNULL(SUM(CASE o.Status
-                     when 1 then o.Amount
+                     when 1 then (CASE when o.MealsSettleMode = 1 
+                                      and o.IsPay = 0 then o.Amount
+                                 else 0
+                            end)
                      else 0
                    end), 0) as totalAmount ,
         ISNULL(SUM(CASE when o.Status = 1
