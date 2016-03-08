@@ -2189,10 +2189,24 @@ set @balancePrice=0.00;
 set @todayPay=0.00;
 set @todayDishTotal=0.00;
 select @balancePrice=ISNULL(Amount,0) from dbo.GroupBusiness (nolock) where Id=#{groupId}; -- 集团当前余额
-select @todayPay=-ISNULL(SUM(a.GroupAmount),0),@todayDishTotal=ISNULL(SUM(b.Amount),0) from dbo.BusinessBalanceRecord (nolock) a
-join dbo.[order] (nolock) b on  a.WithwardId=b.Id and  a.Status=1   and
-a.GroupId= #{groupId} and CONVERT(varchar(100), a.OperateTime, 23)=CONVERT(varchar(100), GETDATE(), 23)
-select @balancePrice as balancePrice,@todayPay as todayPay,@todayDishTotal as todayDishTotal
+
+select   @todayPay=ISNULL(SUM(CASE when a.MealsSettleMode = 1
+                      and a.IsPay = 0 then a.SettleMoney - a.Amount
+                 else a.SettleMoney
+            end),0) ,@todayDishTotal=ISNULL(SUM(case  when a.MealsSettleMode = 1  
+                      and a.IsPay = 0 then a.Amount else 0 end ),0)
+from    dbo.[order] (nolock) a
+        join BusinessBalanceRecord (nolock) b on a.Id = b.WithwardId
+                                                 and b.RecordType = 1
+                                                 and b.Status = 1
+where   CONVERT(VARCHAR(100), a.PubDate, 23) = CONVERT(VARCHAR(100), GETDATE(), 23)
+        and a.Status != 3
+        and a.GroupBusinessId = #{groupId};
+        
+select  @balancePrice as balancePrice ,
+@todayPay as todayPay ,
+@todayDishTotal as todayDishTotal 
+
 	</select>
   <!-- 集团首页 订单数量 统计  caoheyang 20160223-->
   <select id="groupTodayOrderStatistics" resultMap="businessOrderSummaryResultMap"
@@ -2238,11 +2252,17 @@ select @balancePrice as balancePrice,@todayPay as todayPay,@todayDishTotal as to
               else 0
             end),0) as canelCount ,
         ISNULL(SUM(CASE Status
-              when 1 then SettleMoney
+              when 1 then (CASE when o.MealsSettleMode = 1
+                                      and o.IsPay = 0 then o.SettleMoney - o.Amount
+                                 else o.SettleMoney
+                            end)
               else 0
             end),0) totalSettleMoney,
         ISNULL(SUM(CASE Status
-              when 1 then Amount
+              when 1 then (CASE when o.MealsSettleMode = 1 
+                                      and o.IsPay = 0 then o.Amount
+                                 else 0
+                            end)
               else 0
             end),0) as totalAmount
 from    dbo.[order] (nolock) o
@@ -2271,8 +2291,14 @@ where   1 = 1
              ),
         b as ( select   COUNT(1) as orderCount ,
                         CONVERT(VARCHAR(100), PubDate, 23) as pubDateStr,
-                        SUM(SettleMoney) as SettleMoney,
-                        SUM(Amount) as amount
+                        SUM(CASE when MealsSettleMode = 1
+                                      and IsPay = 0 then SettleMoney - Amount
+                                 else SettleMoney
+                            end) as SettleMoney,
+                        SUM(CASE when MealsSettleMode = 1     
+                                      and IsPay = 0 then Amount
+                                 else 0
+                            end) as amount
                from     dbo.[order] (nolock) o
                where    1 = 1
                         and PubDate >= '${orderPubStart}'
@@ -2307,11 +2333,17 @@ select  CONVERT(VARCHAR(100), o.PubDate, 23) monthDate ,
                      else 0
                    end), 0) as canelCount ,
         ISNULL(SUM(CASE o.Status
-                     when 1 then SettleMoney
+                     when 1 then (CASE when o.MealsSettleMode = 1
+                                      and o.IsPay = 0 then o.SettleMoney - o.Amount
+                                 else o.SettleMoney
+                            end)
                      else 0
                    end), 0) totalSettleMoney ,
         ISNULL(SUM(CASE o.Status
-                     when 1 then o.Amount
+                     when 1 then (CASE when o.MealsSettleMode = 1 
+                                      and o.IsPay = 0 then o.Amount
+                                 else 0
+                            end)
                      else 0
                    end), 0) as totalAmount ,
         ISNULL(SUM(CASE when o.Status = 1
