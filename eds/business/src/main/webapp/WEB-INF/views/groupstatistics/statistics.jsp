@@ -42,7 +42,7 @@ String BusList=(String)request.getAttribute("BusList");
 						type="text" class="dinput" id="orderPubEnd" name="orderPubEnd">
 						<s
 						onClick="WdatePicker({el:'orderPubEnd',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'orderPubStart\')}',maxDate:new Date()});"></s></span>
-					<input type="button" class="fr" value="下载报表" id="btnExport">
+					<input type="button" class="fr" value="下载报表" style="line-height:30px;padding-left: 10px;padding-right: 10px;width:auto;"  id="btnExport">
 					<input type="button" class="btn fr" value="搜索" id="btnSearch">
 				</div>
 				<div class="report" id="content">
