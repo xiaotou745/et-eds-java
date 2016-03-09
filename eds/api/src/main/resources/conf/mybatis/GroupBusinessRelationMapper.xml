@@ -165,7 +165,7 @@
   
   <sql id="getBusinessBindListTables">
   	GroupBusinessRelation gbr WITH(NOLOCK) JOIN dbo.business b WITH(NOLOCK) ON gbr.BusinessId=b.Id
-  	left join (SELECT SUM(Amount) AS useGroupMoney,bbr.BusinessId FROM dbo.BusinessBalanceRecord bbr
+  	left join (SELECT ABS(SUM(GroupAmount)) AS useGroupMoney,bbr.BusinessId FROM dbo.BusinessBalanceRecord bbr(NOLOCK)
   	<if test="groupBusinessId != 0" >
   		WHERE bbr.groupid=${groupBusinessId}
   	</if>
