@@ -80,7 +80,7 @@ String BusList=(String)request.getAttribute("BusList");
 				<input type="hidden"  id="businessID" name="businessID"/>
 
 				<input type="button" class="fr" value="搜索" id="btnSearch" style="line-height:30px;float:left">
-						    	<input type="button" class="fr" value="导出报表" id="btnExport" style="line-height:30px;float:left">
+			   <input type="button" class="fr" value="导出报表" id="btnExport" style="line-height:30px;float:left;padding-left: 10px;padding-right: 10px;width:auto;">
 			</div>
 
 			</form>
