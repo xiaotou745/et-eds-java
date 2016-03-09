@@ -114,6 +114,8 @@ for(int i=0;i< g1.getDays().size();i++){
         		},
         		series : [ statistics[0] ]
         	};
+        	//谷歌浏览器下，如果设置为1，y轴还是会带小数
+        	var minInterval=5;
         	$(".menu li").on("click", function() {
         		var e = $(this);
         		if (!e.hasClass("active")) {
@@ -136,7 +138,7 @@ for(int i=0;i< g1.getDays().size();i++){
             					title : {
             						text : statistics[i].name
             					},
-          	 		          minTickInterval:1,
+          	 		          minTickInterval:minInterval,
             				  min:0
             				}
             			}));
@@ -177,7 +179,7 @@ for(int i=0;i< g1.getDays().size();i++){
         			title : {
         				text : statistics[0].name
         			},
-         			minTickInterval:1,
+         			minTickInterval:minInterval,
     				min:0
         		}
         	}))
