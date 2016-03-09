@@ -179,10 +179,16 @@ public class GroupController {
 	 */
 	@RequestMapping("rechargelistdo")
 	public ModelAndView rechargelistdo(Integer timeType,PagedGroupBusinessRechargeReq searchWebReq,HttpServletRequest request) {
-//		Date tDate=new Date();
-//		searchWebReq.setOperateTimeStart(ParseHelper.ToDateString(tDate, "yyyy-MM-dd"));
-//		searchWebReq.setOperateTimeEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));	
-			
+		if(searchWebReq.getOperateTimeStart()==null || searchWebReq.getOperateTimeStart().equals(""))
+		{		
+			if(searchWebReq.getOperateTimeEnd()==null || searchWebReq.getOperateTimeEnd().equals("") )
+			{
+				Date tDate=new Date();
+				searchWebReq.setOperateTimeStart(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,-7), "yyyy-MM-dd"));
+				searchWebReq.setOperateTimeEnd(ParseHelper.ToDateString(ParseHelper.plusDate(tDate,2,1), "yyyy-MM-dd"));
+			}
+		}
+		
 		searchWebReq.setGroupBusinessId(UserContext.getCurrentContext(request).getBusinessID());
 		PagedResponse<GroupBusinessRecharge> resp = groupBusinessRechargeService.getGroupBusinessRechargelist(searchWebReq);
 		ModelAndView view = new ModelAndView("group/rechargelistdo");
