@@ -292,7 +292,10 @@ SELECT  b.Name ,
         gbr.IsEnable
 FROM    dbo.GroupBusinessRelation AS gbr ( NOLOCK )
         JOIN dbo.business AS b ( NOLOCK ) ON b.id = gbr.BusinessId
-WHERE   gbr.GroupId = #{groupid,jdbcType=INTEGER}
+WHERE   gbr.GroupId = #{groupid,jdbcType=INTEGER} 
+and gbr.id in (       SELECT   MAX(id) Id FROM GroupBusinessRelation  
+                    where   GroupId = #{groupid,jdbcType=INTEGER} 
+            group by BusinessId)
 ORDER BY gbr.IsEnable DESC
     
   </select>
