@@ -39,13 +39,20 @@ public class GroupBusinessRechargeService implements
 	public GroupBusinessRecharge getByOrderNo(String orderNO) {
 		return groupBusinessRechargeDao.getByOrderNo(orderNO);
 	}
+	/**
+	 * 充值回调
+	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int recharge(GroupBusinessRecharge record) {
+		//1.更新单子状态
 		int result= groupBusinessRechargeDao.update(record);
 		if (result>0) {
+			//2.查询商家信息
 			GroupBusinessRecharge recharge=	groupBusinessRechargeDao.getByOrderNo(record.getOrderno());
+			//3.更新集团金额
 			int rs=groupBusinessDao.recharge(recharge.getGroupbusinessid(), recharge.getPayamount());
+			//4.插入集团流水
 			if (rs>0) {
 				GroupBusiness groupBusiness=groupBusinessDao.select(recharge.getGroupbusinessid());
 				BusinessBalanceRecord rechargeRecord=new BusinessBalanceRecord();

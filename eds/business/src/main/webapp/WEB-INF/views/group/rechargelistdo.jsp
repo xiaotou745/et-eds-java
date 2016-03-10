@@ -28,9 +28,10 @@
 			if (data == null) {
 				data = new ArrayList<GroupBusinessRecharge>();
 			}		
-			String strPayType="";
-			String strPayStatus="";
-			for (int i = 0; i < data.size(); i++) {		
+			
+			for (int i = 0; i < data.size(); i++) {	
+				String strPayType="";
+				String strPayStatus="";
 				String payType=data.get(i).getPaytype();
 				int payStatus=data.get(i).getPaystatus();
 				if(payType.equals("alipay"))
@@ -41,6 +42,10 @@
 				if(payStatus==1)
 				{
 					strPayStatus="交易成功";
+				}
+				else if(payStatus==0)
+				{
+					strPayStatus="待支付";
 				}
 				else
 				{
