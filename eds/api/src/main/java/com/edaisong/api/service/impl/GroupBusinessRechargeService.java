@@ -60,6 +60,7 @@ public class GroupBusinessRechargeService implements
 				rechargeRecord.setRemark("易代送商家中心集团充值："+groupBusiness.getGroupbusiname());
 				rechargeRecord.setGroupid(recharge.getGroupbusinessid());
 				rechargeRecord.setGroupafterbalance(groupBusiness.getAmount());
+				rechargeRecord.setBalance(0d);
 				businessBalanceRecordDao.groupInsert(rechargeRecord);
 			}
 		}
