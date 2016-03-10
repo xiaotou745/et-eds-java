@@ -105,7 +105,10 @@ public class GroupController {
 		return view;
 	}
 
-
+	/**
+	 * 
+	 * 商家充值回调
+	 */
 	@RequestMapping("return_url")
 	public ModelAndView return_url(HttpServletRequest request) throws Exception {
 		Map<String, String> paramMap=parseParamMap(request);
@@ -124,7 +127,7 @@ public class GroupController {
 					trade_status.equals("TRADE_SUCCESS")) {
 					record.setPaystatus(1);
 				}
-			} else {
+			} else {//验证失败
 				record.setPaystatus(-1);
 			}
 			groupBusinessRechargeService.recharge(record);
