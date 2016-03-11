@@ -22,7 +22,7 @@
 			<td style="width:150px">发单时间</td>
 			<td>收货人信息</td>
 			<td style="width:80px">订单金额</td>
-			<td style="width:80px">配送费</td>
+			<td style="width:80px">支出金额</td>
 			<td style="width:100px">配送费支出方</td>
 			<td style="width:80px">全部状态</td>
 			<td style="width:80px">操作</td>
