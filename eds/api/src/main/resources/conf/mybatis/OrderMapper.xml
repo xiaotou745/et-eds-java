@@ -2077,15 +2077,16 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 		join business b with ( nolock ) on b.Id = o.businessId  
 		left join clienter c with ( nolock ) on c.Id = o.clienterId
 		left join BusinessBalanceRecord d  with ( nolock ) on o.id = d.WithwardId and d.RecordType=1
+		LEFT JOIN dbo.GroupBusinessRelation AS gbr ON gbr.GroupId=${groupBusinessId} AND gbr.IsEnable=1
 	</sql>
 	<!-- 集团中心订单列表页面  动态查询条件 add by caoheyang 20160222 -->
 	<sql id="getGroupOrdersColumsWhere">
-		1=1 and 3>=o.Platform  and o.GroupBusinessId =${groupBusinessId} and (o.OrderFrom=0 or o.OrderFrom=99)
+		1=1 and 3>o.Platform  AND gbr.BusinessId=b.Id and (o.OrderFrom=0 or o.OrderFrom=99)
 		<if test="businessName != null and businessName != ''">
 			and b.Name=''${businessName}''
 		</if>
 		<if test="businessID != null and businessID  != ''">
-			and o.businessID=''${businessID}''
+			and o.businessID=${businessID}
 		</if>
 		<if test="orderId != null and orderId!=''">
 			and o.OrderNo=''${orderId}''
@@ -2094,17 +2095,10 @@ case o.Platform when 1 then ''E代送商户版''  when 2 then ''E代送智能调
 			and o.Status=${orderStatus}
 		</if>
 		<if test="orderPubStart != null and orderPubStart!=''">
-			and o.PubDate>= ''${orderPubStart} 00:00:00''
+			and o.PubDate>= ''${orderPubStart}''
 		</if>
 		<if test="orderPubEnd != null and orderPubEnd!=''">
-		 AND DATEADD(d, 1, ''${orderPubEnd}'')>o.PubDate
-		</if>
-		<if test="authorityCityNameList != null">
-			and b.city in
-			<foreach item="item" index="index" collection="authorityCityNameList"
-				open="(''" separator="'',''" close="'')">
-				#{item}
-			</foreach>
+		 and ''${orderPubEnd}''>o.PubDate
 		</if>
 	</sql>
 
