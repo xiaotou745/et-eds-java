@@ -17,8 +17,7 @@ public class LogServiceBLL {
 	private static Logger businessLogger = Logger.getLogger("businessLogger");
 	private static Logger adminLogger = Logger.getLogger("adminLogger");
 	private static Logger apiHttpLogger = Logger.getLogger("apiHttpLogger");
-	private static Logger taobaoopenapiLogger = Logger
-			.getLogger("taobaoopenapiLogger");
+	private static Logger taobaoopenapiLogger = Logger.getLogger("taobaoopenapiLogger");
 	private static Field[] fields = ActionLog.class.getDeclaredFields();
 	private static Field[] serviceFields = ActionLog.class.getDeclaredFields();
 
@@ -57,22 +56,24 @@ public class LogServiceBLL {
 	}
 
 	private void writeFile(String sourceSys, String jsonMsg) {
-		switch (sourceSys) {
-		case "admin":
-			adminLogger.info(jsonMsg);
-			break;
-		case "business":
-			businessLogger.info(jsonMsg);
-			break;
-		case "apihttp":
-			apiHttpLogger.info(jsonMsg);
-			break;
-		case "taobaoopenapi":
-			taobaoopenapiLogger.info(jsonMsg);
-			break;
-		default:
-			break;
-		}
+		//现在请求日志都写入了mongo，异常请求发送邮件，因此没必要写入文本文件了
+		//而且每个站点都必须配置自己的logger
+//		switch (sourceSys) {
+//		case "admin":
+//			adminLogger.info(jsonMsg);
+//			break;
+//		case "business":
+//			businessLogger.info(jsonMsg);
+//			break;
+//		case "apihttp":
+//			apiHttpLogger.info(jsonMsg);
+//			break;
+//		case "taobaoopenapi":
+//			taobaoopenapiLogger.info(jsonMsg);
+//			break;
+//		default:
+//			break;
+//		}
 	}
 
 	private String getAlertBody(Object logEngity) {
