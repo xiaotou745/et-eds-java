@@ -379,7 +379,7 @@ public class ToolsHelper {
 				if (cl.getTime().compareTo(end) > 0) {
 					monthEnd = sdf.format(end);
 				} else {
-					monthEnd = sdf.format(cl.getTime());
+					monthEnd = sdf.format(ParseHelper.plusDate(cl.getTime(), 5, 24*60*60-1));
 				}
 				result.put(monthBegin, monthEnd);
 				cl.add(Calendar.DAY_OF_YEAR, 1);
